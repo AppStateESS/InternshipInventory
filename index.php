@@ -8,10 +8,16 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
 }
 
-PHPWS_Core::initModClass('skeleton', 'Skeleton.php');
-$skeleton = new Skeleton;
+switch ($_REQUEST['action']) {
+    case 'report_location':
+        //do stuff
+        break;
+    default:
+        //display default page
+        break;
+}
 
-if (isset($_REQUEST['aop'])) {
+/*if (isset($_REQUEST['aop'])) {
     $skeleton->adminMenu();
 } elseif (isset($_REQUEST['uop'])) {
     $skeleton->userMenu();
@@ -25,7 +31,7 @@ if (isset($_REQUEST['aop'])) {
     $skeleton->userMenu('view_skeleton');
 } else {
     PHPWS_Core::home();
-}
+}*/
 
 
 ?>
