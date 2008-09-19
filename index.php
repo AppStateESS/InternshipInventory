@@ -3,14 +3,24 @@
     * @author Micah Carter <mcarter at tux dot appstate dot edu>
     */
 
+
+
+// Make sure the source directory is defined
 if (!defined('PHPWS_SOURCE_DIR')) {
     include '../../config/core/404.html';
     exit();
 }
 
+// Check some permissions
+if (!Current_User::allow('sysinventory') {
+    return;
+}
+
 switch ($_REQUEST['action']) {
-    case 'report_location':
-        //do stuff
+    case 'report':
+        PHPWS_Core::initModClass('sysinventory', 'Sysinventory_Report.php');
+        Sysinventory_Report::doReport();
+        }
         break;
     default:
         //display default page
