@@ -1,6 +1,13 @@
 -- Set up tables for Sysinventory:
 -- @author Micah Carter <mcarter at tux dot appstate dot edu>
 
+CREATE TABLE sysinventory_admin (
+    id int NOT NULL,
+    username varchar NOT NULL,
+    location_id int NOT NULL,
+    PRIMARY KEY (id)
+);
+
 CREATE TABLE sysinventory_location (
     id int NOT NULL,
     description varchar NOT NULL,
@@ -11,6 +18,7 @@ CREATE TABLE sysinventory_department (
     id int NOT NULL,
     description varchar NOT NULL,
     location_id int,
+    last_update date,
     PRIMARY KEY (id)
 );
 
@@ -27,17 +35,17 @@ CREATE TABLE sysinventory_system (
     location_id int NOT NULL,
     department_id int,
     office_id int,
-    model_num varchar,
-    hard_drive varchar,
+    model varchar,
+    hdd varchar,
     proc varchar,
     ram varchar,
-    dual_monitor boolean,
+    dual_mon boolean default FALSE,
     mac macaddr,
     printer_id int,
     staff_member varchar,
     username varchar,
     telephone varchar,
-    room_num varchar,
+    room varchar,
     docking_stand boolean default FALSE,
     deep_freeze boolean default FALSE,
     purchase_date date,
@@ -46,7 +54,7 @@ CREATE TABLE sysinventory_system (
 );
 
 CREATE TABLE sysinventory_printer (
-    id int NOT NULL;
+    id int NOT NULL,
     location_id int NOT NULL,
     department_id int,
     office_id int,
@@ -60,7 +68,7 @@ CREATE TABLE sysinventory_printer (
 );
 
 CREATE TABLE sysinventory_employee (
-    id int NOT NULL;
+    id int NOT NULL,
     location_id int,
     department_id int,
     office_id int,

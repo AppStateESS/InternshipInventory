@@ -75,6 +75,7 @@
             $this->office = $off;
             return $this->office;
         }
+    }
  }
 
 ?>
