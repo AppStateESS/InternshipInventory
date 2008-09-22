@@ -17,7 +17,7 @@
         $tags['ADD_SYSTEM_LINK'] = PHPWS_Text::secureLink('Add a System','sysinventory', array('action' => 'add_system'));
         
         // Deity Stuff
-        if(isset($isDeity)){
+        if(Current_User::isDeity()){
             $tags['GRAND_TOTAL_LABEL'] = _('Total Number of Systems in Database: ');
             $db = &new PHPWS_DB('sysinventory_system');
             $gt = $db->select('count');
