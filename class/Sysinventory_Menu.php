@@ -9,6 +9,7 @@ class Sysinventory_Menu {
     function showMenu() {
         PHPWS_Core::initModClass('sysinventory','UI/Sysinventory_MenuUI.php');
         $disp = &new Sysinventory_MenuUI;
+        Layout::addStyle('sysinventory','style.css');
         Layout::add($disp->display());
     }
 }
