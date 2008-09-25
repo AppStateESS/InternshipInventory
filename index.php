@@ -24,20 +24,23 @@ switch (isset($_REQUEST['action']) ? $_REQUEST['action'] : 42) {
         Sysinventory_Query::showQueryBuilder();
         break;
     case 'edit_locations':
-        PHPWS_Core::initModClass('sysinventory','Sysinventory_EditLocations.php');
-        Sysinventory_EditLocations::showLocations();
+        PHPWS_Core::initModClass('sysinventory','Sysinventory_Location.php');
+        Sysinventory_Location::showLocations();
         break;
     case 'edit_offices':
-        PHPWS_Core::initModClass('sysinventory','Sysinventory_EditOffices.php');
-        Sysinventory_EditOffices::showOffices();
+        PHPWS_Core::initModClass('sysinventory','Sysinventory_Office.php');
+        Sysinventory_Office::showOffices();
         break;
     case 'edit_departments':
-        PHPWS_Core::initModClass('sysinventory','Sysinventory_EditDepartments.php');
-        Sysinventory_EditDepartments::showDepartments();
+        PHPWS_Core::initModClass('sysinventory','Sysinventory_Department.php');
+        Sysinventory_Department::showDepartments();
         break;
+    case 'add_department':
+        PHPWS_Core::initModClass('sysinventory','Sysinventory_Department.php');
+        Sysinventory_Department::addDepartment($_REQUEST['description']);
     case 'edit_admins':
-        PHPWS_Core::initModClass('sysinventory','Sysinventory_EditAdmins.php');
-        Sysinventory_EditAdmins::showAdmins();
+        PHPWS_Core::initModClass('sysinventory','Sysinventory_Admin.php');
+        Sysinventory_Admin::showAdmins();
         break;
     default:
         PHPWS_Core::initModClass('sysinventory','Sysinventory_Menu.php');
