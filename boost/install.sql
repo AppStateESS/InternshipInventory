@@ -19,7 +19,7 @@ CREATE TABLE sysinventory_location (
 CREATE TABLE sysinventory_department (
     id int NOT NULL,
     description varchar NOT NULL,
-    last_update date,
+    last_update int NOT NULL,
     PRIMARY KEY (id)
 );
 

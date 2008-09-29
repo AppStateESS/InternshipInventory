@@ -25,6 +25,14 @@ class Sysinventory_Department {
         return $template;
     }
 
+    function addDepartment($depName) {
+        $db = &new PHPWS_DB('sysinventory_department');
+        $db->addValue('id','NULL');
+        $db->addValue('description',$depName);
+        $db->addValue('last_update',date('U'));
+        $result = $db->insert();
+    }
+
     function getID() {
         return $this->id;
     }
