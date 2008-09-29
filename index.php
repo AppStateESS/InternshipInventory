@@ -33,9 +33,9 @@ switch (isset($_REQUEST['action']) ? $_REQUEST['action'] : 42) {
         break;
     case 'edit_departments':
         PHPWS_Core::initModClass('sysinventory','Sysinventory_Department.php');
-        if (isset($_REQUEST['addDep'])) {
+        if (isset($_REQUEST['addDep']) && !empty($_REQUEST['description'])) {
             $todo = 'addDep';
-            $thing = $_REQUEST['id'];
+            $thing = $_REQUEST['description'];
         }else if (isset($_REQUEST['delDep'])) {
             $todo = 'delDep';
             $thing = $_REQUEST['id'];

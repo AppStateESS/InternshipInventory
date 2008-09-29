@@ -1,4 +1,5 @@
 <div class="page-title">Departments</div><br />
+{HOMELINK}
 {ERROR}
 {PAGER}
 <hr width="75%" align="center" />

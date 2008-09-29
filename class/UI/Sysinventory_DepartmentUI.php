@@ -16,8 +16,8 @@
         }
 
         // Set extra page tags
+        $tpl['HOMELINK'] = PHPWS_Text::moduleLink('Back to Menu','sysinventory');
         
-
         // Form for adding new department
         $form = &new PHPWS_Form('add_department');
         $form->addText('description');
