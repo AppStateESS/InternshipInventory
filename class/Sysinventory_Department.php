@@ -10,27 +10,41 @@ class Sysinventory_Department {
     var $description = NULL;
     var $last_update = NULL;
     
-    function showDepartments() {
+    function showDepartments($whatToDo,$department) {
         PHPWS_Core::initModClass('sysinventory','UI/Sysinventory_DepartmentUI.php');
         $disp = &new Sysinventory_DepartmentUI;
+        if ($whatToDo == 'addDep' && isset($department)) {
+            Sysinventory_Department::addDepartment($department);
+        }
+        else if ($whatToDo == 'delDep' && isset($department)) {
+            Sysinventory_Department::delDepartment($department);
+        }
         Layout::addStyle('sysinventory','style.css');
         Layout::add($disp->display());
     }
 
     function get_row_tags() {
         $template = array();
-        $template['ID'] = $this->getID();
-        $template['DESCRIPTION'] = $this->getDescription();
-        $template['LAST_UPDATE'] = $this->getLastUpdate();
+        $template['LAST_UPDATE'] = date("r",$this->getLastUpdate());
+        $template['DELETE'] = PHPWS_Text::moduleLink('Delete','sysinventory',array('action'=>'edit_departments','delDep'=>TRUE,'id'=>$this->getID()));
         return $template;
     }
 
     function addDepartment($depName) {
+        //test($depName,1);
+        if (!isset($depName)) return;
         $db = &new PHPWS_DB('sysinventory_department');
         $db->addValue('id','NULL');
         $db->addValue('description',$depName);
-        $db->addValue('last_update',date('U'));
+        $db->addValue('last_update',time());
         $result = $db->insert();
+    }
+
+    function delDepartment($depName) {
+        if (!isset($depName)) return;
+        $db = new PHPWS_DB('sysinventory_department');
+        $db->addWhere('id',$depName);
+        $db->delete();
     }
 
     function getID() {

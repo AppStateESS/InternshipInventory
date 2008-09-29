@@ -23,10 +23,10 @@
         $form->addText('description');
         $form->setLabel('description','Description');
         $form->addSubmit('submit','Add Department');
-        $form->setAction('index.php?module=sysinventory');
-        $form->addHidden('action','add_department');
+        $form->setAction('index.php?module=sysinventory&action=edit_departments');
+        $form->addHidden('addDep',TRUE);
 
-        $tpl['pager'] = Sysinventory_DepartmentUI::doPager();
+        $tpl['PAGER'] = Sysinventory_DepartmentUI::doPager();
         $form->mergeTemplate($tpl);
         return PHPWS_Template::process($form->getTemplate(), 'sysinventory', 'edit_department.tpl');
     }
