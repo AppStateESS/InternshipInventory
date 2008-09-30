@@ -3,15 +3,19 @@
  * class for building queries, running them and displaying the result
  * @author Micah Carter <mcarter at tux dot appstate dot edu>
  */
+
 class Sysinventory_Query {
-    var $allowedLocations = NULL;
 
     function showQueryBuilder() {
-        $this->allowedLocations = getLocationsByUsername();
-
+        PHPWS_Core::initModClass('sysinventory','UI/Sysinventory_Query.php');
+        $disp = new Sysinventory_QueryUI;
+        $disp->departments = getDepartmentsByUsername();
+        
+        Layout::addStyle('sysinventory','style.css');
+        Layout::add($disp->display());
     }
 
-    function getLocationsByUsername(){
+    function getDepartmentsByUsername(){
         // if a user is a deity, they get everything...
         if(isset(Current_User::isDeity())){
             $db = &new PHPWS_DB('sysinventory_location');
@@ -23,6 +27,7 @@ class Sysinventory_Query {
                 PHPWS_Error::log($list);
             }
             return $list;
+        // otherwise return a list of departments they're an admin of   
         }else if(Current_User::allow('sysinventory','admin')){
             $db = &new PHPWS_DB('sysinventory_admin');
             $db->addColumn('description');
