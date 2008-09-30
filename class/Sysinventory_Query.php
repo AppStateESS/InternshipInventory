@@ -17,7 +17,7 @@ class Sysinventory_Query {
 
     function getDepartmentsByUsername(){
         // if a user is a deity, they get everything...
-        if(isset(Current_User::isDeity())){
+         if(Current_User::isDeity()){
             $db = &new PHPWS_DB('sysinventory_location');
             $db->addColumn('description');
             $db->addColumn('id');
@@ -39,6 +39,8 @@ class Sysinventory_Query {
                 PHPWS_Error::log($list);
             }
             return $list;
+        }else{
+            return NULL;
         }
  
     }

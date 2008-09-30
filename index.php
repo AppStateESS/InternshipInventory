@@ -14,7 +14,13 @@ if (!Current_User::allow('sysinventory')) {
     return;
 }
 
+$error = NULL;
+
 switch (isset($_REQUEST['action']) ? $_REQUEST['action'] : 42) {
+    case 'add_system':
+        PHPWS_Core::initModClass('sysinventory','UI/Sysinventory_SystemUI.php');
+        Sysinventory_SystemUI::showAddSystem();
+        break;
     case 'report':
         PHPWS_Core::initModClass('sysinventory', 'Sysinventory_Report.php');
         Sysinventory_Report::doReport();
@@ -51,7 +57,7 @@ switch (isset($_REQUEST['action']) ? $_REQUEST['action'] : 42) {
         break;
     case '42':
         PHPWS_Core::initModClass('sysinventory','Sysinventory_Menu.php');
-        Sysinventory_Menu::showMenu();
+        Sysinventory_Menu::showMenu($error);
         break;
 }
 

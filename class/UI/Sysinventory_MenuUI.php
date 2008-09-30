@@ -5,6 +5,8 @@
  **/
 
  class Sysinventory_MenuUI {
+    
+    var $errorMsg = NULL;
 
     function display() {
 
@@ -14,6 +16,9 @@
         $tags['ADD_SYSTEM_LINK']        = PHPWS_Text::secureLink('Add a System','sysinventory', array('action' => 'add_system'));
         $tags['EDIT_LOCATIONS_LINK']    = PHPWS_Text::secureLink('Edit Locations','sysinventory',array('action' => 'edit_locations'));
         $tags['EDIT_OFFICES_LINK']      = PHPWS_Text::secureLink('Edit Offices','sysinventory',array('action' => 'edit_offices'));
+        if(!empty($this->errorMsg)) {
+            $tags['ERROR_MSG'] = $this->errorMsg;
+        }
 
         // Deity Stuff
         if(Current_User::isDeity()){

@@ -1,4 +1,5 @@
 <div class="page-title">{TITLE}</div><br /><br />
+<span style="color:red;">{ERROR_MSG}</span>
 <table border=0 cellspacing=0 cellpadding=10>
 <tr>
     <td>{SEARCH_LINK}&nbsp;- Build a query to search for systems</td>
