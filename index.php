@@ -30,12 +30,8 @@ switch (isset($_REQUEST['action']) ? $_REQUEST['action'] : 42) {
         Sysinventory_Query::showQueryBuilder();
         break;
     case 'edit_locations':
-        PHPWS_Core::initModClass('sysinventory','Sysinventory_Location.php');
-        Sysinventory_Location::showLocations();
-        break;
-    case 'edit_offices':
-        PHPWS_Core::initModClass('sysinventory','Sysinventory_Office.php');
-        Sysinventory_Office::showOffices();
+        PHPWS_Core::initModClass('sysinventory','UI/Sysinventory_LocationUI.php');
+        Sysinventory_LocationUI::showLocations();
         break;
     case 'edit_departments':
         PHPWS_Core::initModClass('sysinventory','Sysinventory_Department.php');

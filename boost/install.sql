@@ -11,7 +11,6 @@ CREATE TABLE sysinventory_admin (
 
 CREATE TABLE sysinventory_location (
     id int NOT NULL,
-    department_id int NOT NULL,
     description varchar NOT NULL,
     PRIMARY KEY (id)
 );
@@ -20,14 +19,6 @@ CREATE TABLE sysinventory_department (
     id int NOT NULL,
     description varchar NOT NULL,
     last_update int NOT NULL,
-    PRIMARY KEY (id)
-);
-
-CREATE TABLE sysinventory_office (
-    id int NOT NULL,
-    description varchar NOT NULL,
-    department_id int NOT NULL,
-    location_id int,
     PRIMARY KEY (id)
 );
 

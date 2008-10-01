@@ -16,8 +16,8 @@
 </table>
 
 <hr width="75%" />
-<h2>Deity options:</h2>
+{DEITY}
 {EDIT_ADMINS_LINK}<br />
 {EDIT_DEPARTMENTS_LINK}<br />
-<hr width="75%" />
+{HR}
 {GRAND_TOTAL_LABEL}{GRAND_TOTAL}<br />

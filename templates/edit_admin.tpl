@@ -1,5 +1,5 @@
 <div class="page-title">{PAGE_TITLE}</div><br/>
-{HOMELINK}
+{HOME_LINK}
 {ERROR}
 {PAGER}
 <hr width="75%" align="center" />
@@ -14,6 +14,9 @@
     <td>{DEPARTMENT_ID}</td>
     <td>{USERNAME}</td>
     <td>{SUBMIT}</td>
+</tr>
+<tr>
+    <td colspan=3>Select a department and enter the desired admin's username.<br/>The user must exist and have admin priviledges in the Users module for this to work.</td>
 </tr>
 </table>
 {END_FORM}
