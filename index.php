@@ -52,8 +52,8 @@ switch (isset($_REQUEST['action']) ? $_REQUEST['action'] : 42) {
         Sysinventory_Department::showDepartments($todo,$thing);
         break;
     case 'edit_admins':
-        //PHPWS_Core::initModClass('sysinventory','Sysinventory_Admin.php');
-        //Sysinventory_Admin::showAdmins();
+        PHPWS_Core::initModClass('sysinventory','UI/Sysinventory_AdminUI.php');
+        Sysinventory_AdminUI::showAdmins();
         break;
     case '42':
         PHPWS_Core::initModClass('sysinventory','Sysinventory_Menu.php');

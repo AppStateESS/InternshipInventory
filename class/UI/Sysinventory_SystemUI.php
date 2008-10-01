@@ -7,9 +7,9 @@
 class Sysinventory_SystemUI {
 
     function showAddSystem() {
-        PHPWS_Core::initModClass('sysinventory','Sysinventory_Query.php');
+        PHPWS_Core::initModClass('sysinventory','Sysinventory_Department.php');
         $dpts = array();
-        $dpts = Sysinventory_Query::getDepartmentsByUsername();
+        $dpts = Sysinventory_Department::getDepartmentsByUsername();
         if(empty($dpts)) {
             $error = "You are not the administrator of any departments.";
             PHPWS_Core::initModClass('sysinventory','Sysinventory_Menu.php');
