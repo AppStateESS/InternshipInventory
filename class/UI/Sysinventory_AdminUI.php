@@ -8,13 +8,18 @@ class Sysinventory_AdminUI {
 
     // Show a list of admins and a form to add a new one.
     function showAdmins() {
-        // see if we need to add something to the db
+        // see if we need to do anything to the db
         if(isset($_REQUEST['newadmin'])) {
             PHPWS_Core::initModClass('sysinventory','Sysinventory_Admin.php');
             $admin = new Sysinventory_Admin;
             $admin->department_id = $_REQUEST['department_id'];
             $admin->username = $_REQUEST['username'];
             $admin->save();
+        }else if (isset($_REQUEST['deladmin'])) {
+            PHPWS_Core::initModClass('sysinventory','Sysinventory_Admin.php');
+            $admin = new Sysinventory_Admin;
+            $admin->id = $_REQUEST['id'];
+            $admin->delete();
         }
 
         // set up some stuff for the page template

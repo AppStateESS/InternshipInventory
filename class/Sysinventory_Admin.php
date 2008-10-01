@@ -22,6 +22,7 @@ class Sysinventory_Admin {
         $pager->setLink('index.php?module=sysinventory');
         $pager->setEmptyMessage('No admins found.');
         //$pager->addPageTags($pageTags);
+        $pager->addRowTags('get_row_tags');
         
         return $pager->get();
     }
@@ -34,5 +35,17 @@ class Sysinventory_Admin {
             PHPWS_Error::log($result);
         }
         return $result;
+    }
+
+    function delete() {
+        $db = new PHPWS_DB('sysinventory_admin');
+        $db->addWhere('id',$this->id);
+        $db->delete();
+    }
+
+    function get_row_tags() {
+        $template = array();
+        $template['DELETE'] = PHPWS_Text::moduleLink('Delete','sysinventory',array('action'=>'edit_admins','deladmin'=>TRUE,'id'=>$this->id));
+        return $template;
     }
 }
