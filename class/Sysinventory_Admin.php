@@ -8,6 +8,7 @@ class Sysinventory_Admin {
     var $id               = NULL;
     var $username         = NULL;
     var $department_id    = NULL;
+    var $description      = NULL; //for addRowTags in the pager
 
     function generateAdminList() {
         //$pageTags = array();
@@ -21,9 +22,15 @@ class Sysinventory_Admin {
         $pager->setTemplate('admin_pager.tpl');
         $pager->setLink('index.php?module=sysinventory');
         $pager->setEmptyMessage('No admins found.');
+        $pager->addToggle('class="toggle1"');
+        $pager->addToggle('class="toggle2"');
         //$pager->addPageTags($pageTags);
+
+        $pager->db->addJoin('left outer','sysinventory_admin','sysinventory_department','department_id','id');
+        $pager->db->addColumn('sysinventory_department.description');
+        $pager->db->addColumn('sysinventory_admin.username');
+        $pager->db->addColumn('sysinventory_admin.id');
         $pager->addRowTags('get_row_tags');
-        
         return $pager->get();
     }
 
@@ -46,6 +53,7 @@ class Sysinventory_Admin {
     function get_row_tags() {
         $template = array();
         $template['DELETE'] = PHPWS_Text::moduleLink('Delete','sysinventory',array('action'=>'edit_admins','deladmin'=>TRUE,'id'=>$this->id));
+        $template['DESCRIPTION'] = $this->description;
         return $template;
     }
 }

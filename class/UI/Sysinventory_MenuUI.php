@@ -22,12 +22,14 @@
 
         // Deity Stuff
         if(Current_User::isDeity()){
-            $tags['EDIT_DEPARTMENTS_LINK'] = PHPWS_Text::secureLink('Edit Departments','sysinventory',array('action' => 'edit_departments'));
-            $tags['EDIT_ADMINS_LINK'] = PHPWS_Text::secureLink('Edit Administrators','sysinventory',array('action' => 'edit_admins'));
-            $tags['GRAND_TOTAL_LABEL'] = _('Total Number of Systems in Database: ');
-            $db = &new PHPWS_DB('sysinventory_system');
+            $tags['DEITY']                     = '<h2>Deity Options</h2>';
+            $tags['HR']                        = '<hr width="75%"/>';
+            $tags['EDIT_DEPARTMENTS_LINK']     = PHPWS_Text::secureLink('Edit Departments','sysinventory',array('action' => 'edit_departments'));
+            $tags['EDIT_ADMINS_LINK']          = PHPWS_Text::secureLink('Edit Administrators','sysinventory',array('action' => 'edit_admins'));
+            $tags['GRAND_TOTAL_LABEL']         = _('Total Number of Systems in Database: ');
+            $db = new PHPWS_DB('sysinventory_system');
             $gt = $db->select('count');
-            $tags['GRAND_TOTAL'] = $gt;
+            $tags['GRAND_TOTAL']               = $gt;
         }
 
         return PHPWS_Template::process($tags,'sysinventory','menu.tpl');

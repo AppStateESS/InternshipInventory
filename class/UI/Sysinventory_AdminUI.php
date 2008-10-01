@@ -8,6 +8,13 @@ class Sysinventory_AdminUI {
 
     // Show a list of admins and a form to add a new one.
     function showAdmins() {
+        // permissions...
+        if(!Current_User::isDeity()) {
+           PHPWS_Core::initModClass('sysinventory','Sysinventory_Menu.php');
+           $error = 'Uh Uh Uh! You didn\'t say the magic word!';
+           Sysinventory_Menu::showMenu($error);
+           return;
+        }
         // see if we need to do anything to the db
         if(isset($_REQUEST['newadmin'])) {
             PHPWS_Core::initModClass('sysinventory','Sysinventory_Admin.php');
