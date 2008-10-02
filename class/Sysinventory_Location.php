@@ -17,6 +17,7 @@ class Sysinventory_Location {
         $pager->setLink('index.php?module=sysinventory');
         $pager->setEmptyMessage('No Locations found.');
         $pager->db->addColumn('sysinventory_location.description');
+        $pager->db->addColumn('sysinventory_location.id');
         $pager->addRowTags('get_row_tags');
         $pager->setSearch('description');
         $pager->setOrder('description','asc');

@@ -10,9 +10,6 @@
 <tr>
     <td>{EDIT_LOCATIONS_LINK}&nbsp;- Edit the list of possible locations for a system</td>
 </tr>
-<tr>
-    <td>{EDIT_OFFICES_LINK}&nbsp;- Edit the list of offices in your department(s)</td>
-</tr>
 </table>
 
 <hr width="75%" />

@@ -1,7 +1,7 @@
 {SEARCH}<br/>
 <table width="100%" border=0 cellspacing=3 cellpadding=3>
 <tr>
-    <th>Existing Locations</th>
+    <th colspan=2>Existing Locations</th>
 </tr>
 <!-- BEGIN empty_table -->
 <tr>
@@ -12,6 +12,7 @@
 <!-- BEGIN listrows -->
 <tr>
     <td>{DESCRIPTION}</td>
+    <td>{DELETE}</td>
 </tr>
 <!-- END listrows -->
 </table>
