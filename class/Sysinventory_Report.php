@@ -11,7 +11,7 @@
     var $office = NULL;
     var $employee = NULL;
     
-    function doReport() {
+    function generateReport() {
         PHPWS_Core::initCoreClass('DBPager.php');
         PHPWS_Core::initModClass('sysinventory','Sysinventory_System.php');
         
@@ -25,56 +25,35 @@
                         'hdd',
                         'proc',
                         'ram',
-                        'dual_monitor',
+                        'dual_mon',
                         'mac',
                         'printer',
                         'staff_member',
                         'username',
                         'telephone',
-                        'room',
+                        'room_number',
                         'docking_stand',
                         'deep_freeze',
                         'purchase_date',
-                        'rotation');
+                        'vlan',
+                        'reformat',
+                        'notes');
 
-        // determine what stuff we got from the request and add restrictions for it
+        // These fields must match exactly
+        $intfields = array('department_id','location_id','rotation');
+        foreach ($intfields as $intfield) {
+            if(isset($_REQUEST[$intfield]) && $_REQUEST[$intfield] != 0){
+                $pager->addWhere($intfield,$_REQUEST[$intfield],'=');
+            }
+        }
+
+        // determine what other stuff we got from the request and add restrictions for it
         foreach ($fields as $field) {
             if(isset($_REQUEST[$field])){
-                $pager->addWhere($field,$_REQUEST[$field]);
+                $pager->addWhere($field,"%$_REQUEST[$field]%",'LIKE');
             }
         }
         return $pager->get();
-    }
-    /**
-     * Accessor / Mutator Methods
-     */
-
-    //pass these an ID, not a description
-    function location($loc) {
-        if (!$loc){
-            return $this->location;
-        }else{
-            $this->location = $loc;
-            return $this->location;
-        }
-    }
-
-    function department($dpt) {
-        if (!$dpt){
-            return $this->department;
-        }else{
-            $this->department = $dpt;
-            return $this->department;
-        }
-    }
-    
-    function office($off) {
-        if (!$off){
-            return $this->office;
-        }else{
-            $this->office = $off;
-            return $this->office;
-        }
     }
  }
 

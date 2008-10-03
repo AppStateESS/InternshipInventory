@@ -7,9 +7,10 @@
 class Sysinventory_Query {
 
     function showQueryBuilder() {
-        PHPWS_Core::initModClass('sysinventory','UI/Sysinventory_Query.php');
+        PHPWS_Core::initModClass('sysinventory','UI/Sysinventory_QueryUI.php');
+        PHPWS_Core::initModClass('sysinventory','Sysinventory_Department.php');
         $disp = new Sysinventory_QueryUI;
-        $disp->departments = getDepartmentsByUsername();
+        $disp->departments = Sysinventory_Department::getDepartmentsByUsername();
         
         Layout::addStyle('sysinventory','style.css');
         Layout::add($disp->display());

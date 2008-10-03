@@ -23,7 +23,7 @@ class Sysinventory_SystemUI {
         // Departments
         PHPWS_Core::initModClass('sysinventory','Sysinventory_Department.php');
         $depts = Sysinventory_Department::getDepartmentsByUsername();
-        if(empty($depts)) { //some inline priviledge checking
+        if(empty($depts)) { //some priviledge checking
             $error = "You are not the administrator of any departments.";
             PHPWS_Core::initModClass('sysinventory','Sysinventory_Menu.php');
             Sysinventory_Menu::showMenu($error);

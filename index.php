@@ -22,8 +22,8 @@ switch (isset($_REQUEST['action']) ? $_REQUEST['action'] : 42) {
         Sysinventory_SystemUI::showAddSystem();
         break;
     case 'report':
-        PHPWS_Core::initModClass('sysinventory', 'Sysinventory_Report.php');
-        Sysinventory_Report::doReport();
+        PHPWS_Core::initModClass('sysinventory', 'UI/Sysinventory_ReportUI.php');
+        Sysinventory_ReportUI::display();
         break;
     case 'build_query':
         PHPWS_Core::initModClass('sysinventory','Sysinventory_Query.php');
