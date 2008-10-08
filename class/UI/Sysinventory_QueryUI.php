@@ -25,7 +25,6 @@
             Sysinventory_Menu::showMenu($error);
             return;
         }
-
         $deptIdSelect = array();
         $deptIdSelect[0] = "Show All Departments";
         foreach($depts as $dept) {
@@ -41,9 +40,6 @@
             $locIdSelect[$location['id']] = $location['description'];
         }
         
-        // Rotations
-        $rots = array('0'=>'Show All','1'=>'one','2'=>'two','3'=>'three','4'=>'four');
-
         // Set up the form
         $form = new PHPWS_Form('add_system');
         $form->setAction('index.php?module=sysinventory&action=report');
@@ -82,9 +78,8 @@
         $form->addCheck('deep_freeze','yes');
         $form->setLabel('deep_freeze','Deep Freeze?');
         $form->addText('purchase_date');
+        $form->setReadOnly('purchase_date');
         $form->setLabel('purchase_date','Purchase Date:');
-        $form->addSelect('rotation',$rots);
-        $form->setLabel('rotation','Rotation:');
         $form->addText('vlan');
         $form->setLabel('vlan','VLAN:');
         $form->addCheck('reformat',TRUE);
@@ -92,9 +87,19 @@
         $form->addTextarea('notes');
         $form->setLabel('notes','Notes:');
 
+        // see if we have a query in the session already, and if so, load it up...
+        if(isset($_SESSION['query'])) {
+            $query = $_SESSION['query'];
+            foreach($query as $column => $value) {
+                $form->$column = $value;
+            }
+        }
+
         $form->mergeTemplate($tpl);
         $template = PHPWS_Template::process($form->getTemplate(),'sysinventory','build_query.tpl');
 
+        javascript('/jquery/');
+        Layout::addStyle('sysinventory','flora.datepicker.css');
         Layout::addStyle('sysinventory','style.css');
         Layout::add($template);
 

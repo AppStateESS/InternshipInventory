@@ -1,3 +1,11 @@
+<script src="mod/sysinventory/javascript/ui.datepicker.js"></script>
+
+<script>
+$(document).ready(function() {
+    $('#add_system_purchase_date').datepicker();
+});
+</script>
+
 <div class="page-title">{PAGE_TITLE}</div>
 <br/>{HOME_LINK}
 {START_FORM}

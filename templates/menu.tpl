@@ -1,20 +1,22 @@
 <div class="page-title">{TITLE}</div><br /><br />
 <span style="color:red;">{ERROR_MSG}</span>
+<center>
 <table border=0 cellspacing=0 cellpadding=10>
 <tr>
-    <td>{SEARCH_LINK}&nbsp;- Build a query to search for systems</td>
+    <td align="right">{SEARCH_LINK}</td><td>- Build a query to search for systems</td>
 </tr>
 <tr>
-    <td>{ADD_SYSTEM_LINK}&nbsp;- Add a new system to the database</td>
+    <td align="right">{ADD_SYSTEM_LINK}</td><td>- Add a new system to the database</td>
 </tr>
 <tr>
-    <td>{EDIT_LOCATIONS_LINK}&nbsp;- Edit the list of possible locations for a system</td>
+    <td align="right">{EDIT_LOCATIONS_LINK}</td><td>- Edit the list of possible locations for a system</td>
 </tr>
 </table>
 
-<hr width="75%" />
+<hr width="60%" />
 {DEITY}
 {EDIT_ADMINS_LINK}<br />
 {EDIT_DEPARTMENTS_LINK}<br />
+</center>
 {HR}
 {GRAND_TOTAL_LABEL}{GRAND_TOTAL}<br />

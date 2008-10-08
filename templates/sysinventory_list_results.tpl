@@ -1,28 +1,78 @@
+<script type="text/javascript">
+    function hideMe(actor, actee){
+        actee.hide('fast');
+    }
+
+    function showMe(actor, actee){
+        actee.show('fast');
+    }
+
+    function hideOther(){
+        this.actor;
+        this.actee;
+        
+        this.hideMe;
+        this.showMe;
+    }
+
+    function hideOther(actor, actee, hidden){
+        var parent  = this;
+        this.actor  = $("#"+actor);
+        this.actee  = $("#"+actee);
+        this.hideMe = hideMe;
+        this.showMe = showMe;
+        
+        if(hidden == true){
+            this.actee.hide();
+            this.actor.toggle(
+                function(){
+                    parent.showMe(parent.actor, parent.actee);
+                },
+                function(){
+                    parent.hideMe(parent.actor, parent.actee);
+                }
+            );
+        } else {
+            this.actor.toggle(
+                function(){
+                    parent.hideMe(parent.actor, parent.actee);
+                },
+                function(){
+                    parent.showMe(parent.actor, parent.actee);
+                }
+            );
+        }
+    }
+
+    $(document).ready(function () {$('.delete').click(function() {
+        confirmed = window.confirm('Are you sure you want to delete this entry?');
+        if (confirmed) {
+            id = this.id;
+            $.post('index.php', {'action' : 'delete_system', 'systemid' : id}, function(data) {
+                if (data == 'true') {
+                    $('#expanded'+id).hide('fast');
+                    $('#expander'+id).hide('fast');
+                }else{
+                   alert(data);
+                }
+            });
+        }
+    });
+    });
+
+</script>
+
 <div class="page-title">{PAGE_TITLE}</div>
-{HOME_LINK}
+{HOME_LINK} | {QUERY_LINK}
 <br/><br/>
-<table>
+<table width="100%" cellspacing="10px">
 <tr>
     <th>Department</th>
     <th>Location</th>
-    <th>Room Number</th>
     <th>Model</th>
-    <th>Hard Drive</th>
-    <th>Processor</th>
-    <th>RAM</th>
-    <th>Dual Monitor</th>
-    <th>MAC Address</th>
-    <th>Printer</th>
+    <th>Room Number</th>
     <th>Staff Member</th>
-    <th>Username</th>
-    <th>Telephone #</th>
-    <th>Docking Stand</th>
-    <th>Deep Freeze</th>
     <th>Purchase Date</th>
-    <th>Rotation</th>
-    <th>VLAN</th>
-    <th>Reformat</th>
-    <th>Notes</th>
 </tr>
 <!-- BEGIN empty_table -->
 <tr>
@@ -30,27 +80,49 @@
 </tr>
 <!-- END empty_table -->
 <!-- BEGIN listrows -->
-<tr {TOGGLE}>
+<tr id=expander{ID} onMouseOver="this.style.backgroundColor='#EEEEEE'" onMouseOut="this.style.backgroundColor='#FFFFFF'" style="cursor:pointer;">
     <td>{DEPARTMENT}</td>
     <td>{LOCATION}</td>
-    <td>{ROOM_NUMBER}</td>
     <td>{MODEL}</td>
-    <td>{HDD}</td>
-    <td>{PROC}</td>
-    <td>{RAM}</td>
-    <td>{DUAL_MON}</td>
-    <td>{MAC}</td>
-    <td>{PRINTER}</td>
-    <td>{STAFF_MEMBER}</td>
-    <td>{USERNAME}</td>
-    <td>{TELEPHONE}</td>
-    <td>{DOCKING_STAND}</td>
-    <td>{DEEP_FREEZE}</td>
+    <td>{ROOM_NUMBER}</td>
+    <td>{STAFF_MEMBER} ({USERNAME})</td>
     <td>{PURCHASE_DATE}</td>
-    <td>{ROTATION}</td>
-    <td>{VLAN}</td>
-    <td>{REFORMAT}</td>
-    <td>{NOTES}</td>
 </tr>
+<tr>
+    <td colspan=5>
+        <!-- EVERYTHING THAT GETS EXPANDED -->
+        <div class="expanded" id="expanded{ID}">
+            <table border=0>
+                <tr>
+                    <td class="exptd"><strong>Hard Drive:</strong> {HDD}</td><td class="exptd"><strong>Processor:</strong> {PROC}</td><td class="exptd"><strong>RAM:</strong> {RAM}</td>
+                </tr>
+                <tr>
+                    <td class="exptd"><strong>Dual Monitor?:</strong> {DUAL_MON}</td><td class="exptd"><strong>MAC Address:</strong> {MAC}</td><td colspan=3><strong>Reformat?:</strong> {REFORMAT}</td>
+                </tr>
+                <tr>
+                    <td class="exptd"><strong>Printer:</strong> {PRINTER}</td><td class="exptd"><strong>Docking Stand?:</strong> {DOCKING_STAND}</td><td class="exptd"><strong>Deep Freeze?:</strong> {DEEP_FREEZE}</td>
+                </tr>
+                <tr>
+                    <td class="exptd"><strong>Telephone:</strong> {TELEPHONE}</td><td class="exptd"><strong>Rotation:</strong> {ROTATION}</td><td class="exptd"><strong>VLAN:</strong> {VLAN}</td>
+                </tr>
+                <tr>
+                    <td class="exptd" colspan=3><strong>Notes:</strong><br/>&nbsp;&nbsp;{NOTES}</td>
+                </tr>
+                <tr>
+                    <td class="exptd" colspan=3><strong>{EDIT} | {DELETE}</strong></td>
+                </tr>
+            </table>
+        </div>
+    </td>
+</tr>
+<script type="text/javascript">
+var hider_{ID} = new hideOther("expander{ID}", "expanded{ID}", true);
+</script>
 <!-- END listrows -->
 </table>
+<div align="center">
+<br/><br/>
+<b>{PAGE_LABEL}</b><br/>
+{PAGES}<br/>
+{LIMITS}
+</div>

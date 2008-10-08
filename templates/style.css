@@ -10,3 +10,16 @@
 .toggle2 {
     background-color:#FFFDCC;
 }
+
+.expanded {
+    position:relative;
+    left:25px;
+}
+
+.exptd {
+    padding-left:5px;
+    padding-right:5px;
+}
+
+.dialog {
+}

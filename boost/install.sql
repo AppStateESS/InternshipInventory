@@ -40,7 +40,6 @@ CREATE TABLE sysinventory_system (
     docking_stand boolean default FALSE,
     deep_freeze boolean default FALSE,
     purchase_date date,
-    rotation_year int NOT NULL,
     vlan varchar,
     reformat boolean default FALSE,
     notes varchar,

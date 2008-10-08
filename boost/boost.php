@@ -3,12 +3,12 @@
 * @author Micah Carter <mcarter at tux dot appstate dot edu>
 */
 
-$proper_name  = 'Inventory';
+$proper_name  = 'System Inventory';
 $version      = '0.0.1';
 $register     = false;
 $unregister   = false;
 $import_sql   = true;
-$version_http = 'http://phpwebsite.appstate.edu/downloads/modules/skeleton/check.xml';
+$version_http = 'http://phpwebsite.appstate.edu/downloads/modules/sysinventory/check.xml';
 $about        = true;
 $priority     = 50;
 $dependency   = true;

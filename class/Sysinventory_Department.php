@@ -61,15 +61,17 @@ class Sysinventory_Department {
             return $list;
         // otherwise return a list of departments of which they're an admin   
         }else if(Current_User::allow('sysinventory','admin')){
-            $db = &new PHPWS_DB('sysinventory_admin');
-            $db->addColumn('description');
-            $db->addColumn('location_id');
+            $db = new PHPWS_DB('sysinventory_admin');
             $db->addWhere('username',Current_User::getUsername(),'ILIKE');
+            $db->addJoin('left outer','sysinventory_admin','sysinventory_department','department_id','id');
+            $db->addColumn('sysinventory_department.description');
+            $db->addColumn('sysinventory_department.id');
             $list = $db->select();
 
             if (PEAR::isError($list)){
                 PHPWS_Error::log($list);
             }
+            
             return $list;
         }else{
             return NULL;

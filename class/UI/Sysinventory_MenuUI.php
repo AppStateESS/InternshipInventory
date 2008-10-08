@@ -11,9 +11,9 @@
     function display() {
 
         $tags = array();
-        $tags['TITLE']                  = "System Inventory - Menu";
+        $tags['TITLE']                  = "Options";
         $tags['SEARCH_LINK']            = PHPWS_Text::secureLink('Search Systems','sysinventory', array('action' => 'build_query'));
-        $tags['ADD_SYSTEM_LINK']        = PHPWS_Text::secureLink('Add a System','sysinventory', array('action' => 'add_system'));
+        $tags['ADD_SYSTEM_LINK']        = PHPWS_Text::secureLink('Add a System','sysinventory', array('action' => 'edit_system'));
         $tags['EDIT_LOCATIONS_LINK']    = PHPWS_Text::secureLink('Edit Locations','sysinventory',array('action' => 'edit_locations'));
         if(!empty($this->errorMsg)) {
             $tags['ERROR_MSG'] = $this->errorMsg;

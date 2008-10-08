@@ -15,6 +15,11 @@
         PHPWS_Core::initCoreClass('DBPager.php');
         PHPWS_Core::initModClass('sysinventory','Sysinventory_System.php');
         
+        // Stuff for the template
+        $tpl = array();
+        $tpl['PAGE_TITLE'] = 'System Report';
+        $tpl['HOME_LINK'] = PHPWS_Text::moduleLink('Back to Menu','sysinventory');
+        $tpl['QUERY_LINK'] = PHPWS_Text::moduleLink('New Query','sysinventory',array('action'=>'build_query'));
         // set up the pager
         $pager = &new DBPager('sysinventory_system','Sysinventory_System');
         $pager->setModule('sysinventory');
@@ -40,7 +45,7 @@
                         'notes');
 
         // These fields must match exactly
-        $intfields = array('department_id','location_id','rotation');
+        $intfields = array('department_id','location_id');
         foreach ($intfields as $intfield) {
             if(isset($_REQUEST[$intfield]) && $_REQUEST[$intfield] != 0){
                 $pager->addWhere($intfield,$_REQUEST[$intfield],'=');
@@ -53,6 +58,11 @@
                 $pager->addWhere($field,"%$_REQUEST[$field]%",'LIKE');
             }
         }
+
+        javascript('/jquery/');
+        
+        $pager->addRowTags('get_row_tags'); 
+        $pager->addPageTags($tpl);
         return $pager->get();
     }
  }

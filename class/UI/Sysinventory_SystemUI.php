@@ -6,16 +6,18 @@
 
 class Sysinventory_SystemUI {
 
-    function showAddSystem() {
+    function showEditSystem() {
         
-        // see if we were passed a system to attempt to insert into the database
+        // see if we need to do anything before displaying
         if(isset($_REQUEST['newsystem'])) {
             Sysinventory_SystemUI::addSystem();
         }
 
+        $whatWeDo = "Add System";
+
         // Stuff for the template
         $tpl = array();
-        $tpl['PAGE_TITLE'] = 'Add System';
+        $tpl['PAGE_TITLE'] = $whatWeDo;
         $tpl['HOME_LINK'] = PHPWS_Text::moduleLink('Back to Menu','sysinventory');
 
         // Grab data for form selects
@@ -43,12 +45,9 @@ class Sysinventory_SystemUI {
             $locIdSelect[$location['id']] = $location['description'];
         }
         
-        // Rotations
-        $rots = array('1'=>'one','2'=>'two','3'=>'three','4'=>'four');
-
         // Set up the form
         $form = new PHPWS_Form('add_system');
-        $form->setAction('index.php?module=sysinventory&action=add_system');
+        $form->setAction('index.php?module=sysinventory&action=edit_system');
         $form->addSubmit('submit','Create System');
         $form->addHidden('newsystem','yes');
 
@@ -84,9 +83,8 @@ class Sysinventory_SystemUI {
         $form->addCheck('deep_freeze','yes');
         $form->setLabel('deep_freeze','Deep Freeze?');
         $form->addText('purchase_date');
+        $form->setReadOnly('purchase_date');
         $form->setLabel('purchase_date','Purchase Date:');
-        $form->addSelect('rotation',$rots);
-        $form->setLabel('rotation','Rotation:');
         $form->addText('vlan');
         $form->setLabel('vlan','VLAN:');
         $form->addCheck('reformat',TRUE);
@@ -97,6 +95,8 @@ class Sysinventory_SystemUI {
         $form->mergeTemplate($tpl);
         $template = PHPWS_Template::process($form->getTemplate(),'sysinventory','add_system.tpl');
 
+        javascript('/jquery/');
+        Layout::addStyle('sysinventory','flora.datepicker.css');
         Layout::addStyle('sysinventory','style.css');
         Layout::add($template);
     }
@@ -121,12 +121,15 @@ class Sysinventory_SystemUI {
         $sys->docking_stand       = $_REQUEST['docking_stand'];
         $sys->deep_freeze         = $_REQUEST['deep_freeze'];
         $sys->purchase_date       = $_REQUEST['purchase_date'];
-        $sys->rotation            = $_REQUEST['rotation'];
         $sys->vlan                = $_REQUEST['vlan'];
         $sys->reformat            = $_REQUEST['reformat'];
         $sys->notes               = $_REQUEST['notes'];
 
-        $sys->save();
+        $result = $sys->save();
+        if (PEAR::isError($result)) {
+            PHPWS_Core::initModClass('sysinventory','Syinventory_Menu.php');
+            Syinventory_Menu::showMenu($result);
+        }
     }
 }
 

@@ -17,10 +17,15 @@ if (!Current_User::allow('sysinventory')) {
 $error = NULL;
 
 switch (isset($_REQUEST['action']) ? $_REQUEST['action'] : 42) {
-    case 'add_system':
+    case 'edit_system':
         PHPWS_Core::initModClass('sysinventory','UI/Sysinventory_SystemUI.php');
-        Sysinventory_SystemUI::showAddSystem();
+        Sysinventory_SystemUI::showEditSystem();
         break;
+    //this one is for the AJAX delete on the query page
+    case 'delete_system':
+        PHPWS_Core::initModClass('sysinventory','Sysinventory_System.php');
+        echo Sysinventory_System::deleteSystem($_REQUEST['systemid']);
+        exit;
     case 'report':
         PHPWS_Core::initModClass('sysinventory', 'UI/Sysinventory_ReportUI.php');
         Sysinventory_ReportUI::display();

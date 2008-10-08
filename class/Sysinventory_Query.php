@@ -12,6 +12,7 @@ class Sysinventory_Query {
         $disp = new Sysinventory_QueryUI;
         $disp->departments = Sysinventory_Department::getDepartmentsByUsername();
         
+        Layout::addStyle('sysinventory','flora.datepicker.css');
         Layout::addStyle('sysinventory','style.css');
         Layout::add($disp->display());
     }

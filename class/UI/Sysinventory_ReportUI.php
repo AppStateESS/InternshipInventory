@@ -15,11 +15,6 @@ class Sysinventory_ReportUI {
             return;
         }
 
-        // Stuff for the template
-        $tpl = array();
-        $tpl['PAGE_TITLE'] = 'System Report';
-        $tpl['HOME_LINK'] = PHPWS_Text::moduleLink('Back to Menu','sysinventory');
-
         // Get stuff from the pager
         PHPWS_Core::initModClass('sysinventory','Sysinventory_Report.php');
         $report = Sysinventory_Report::generateReport();
