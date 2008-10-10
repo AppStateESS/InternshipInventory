@@ -106,7 +106,7 @@
                     <td class="exptd"><strong>Telephone:</strong> {TELEPHONE}</td><td class="exptd"><strong>Rotation:</strong> {ROTATION}</td><td class="exptd"><strong>VLAN:</strong> {VLAN}</td>
                 </tr>
                 <tr>
-                    <td class="exptd" colspan=3><strong>Notes:</strong><br/>&nbsp;&nbsp;{NOTES}</td>
+                    <td class="exptd" colspan=3><strong>Notes:</strong><br/>&nbsp;&nbsp;<div style="width:500px;">{NOTES}</div></td>
                 </tr>
                 <tr>
                     <td class="exptd" colspan=3><strong>{EDIT} | {DELETE}</strong></td>

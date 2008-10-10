@@ -18,3 +18,4 @@
 </tr>
 <!-- END listrows -->
 </table>
+<div align="center">{TOTAL_ROWS}<br/>{PAGES}<br/>{LIMITS}
