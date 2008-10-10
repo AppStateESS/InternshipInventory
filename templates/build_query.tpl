@@ -3,6 +3,10 @@
 {START_FORM}
 <table width="100%">
 <tr>
+    <td align="right">{RESET}</td>
+    <td>{SUBMIT}<br/><br/></td>
+</tr>
+<tr>
     <td align="right">{DEPARTMENT_ID_LABEL}</td>
     <td>{DEPARTMENT_ID}</td>
 </tr>
@@ -84,7 +88,8 @@
     <td>{NOTES}</td>
 </tr>
 <tr>
-    <td colspan=2 align="center">{SUBMIT}</td>
+    <td>&nbsp;</td>
+    <td>{SUBMIT}</td>
 </tr>
 </table>
 {END_FORM}

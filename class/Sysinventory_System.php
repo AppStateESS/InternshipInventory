@@ -21,6 +21,14 @@ class Sysinventory_System {
     var $reformat;
     var $notes;
 
+    function Sysinventory_System($sysid=0) {
+        if ($sysid == 0) return;
+
+        $db = new PHPWS_DB('sysinventory_system');
+        $db->addWhere('id',$sysid);
+        $result = $db->loadObject($this);
+    }
+
     function save() {
         $db = new PHPWS_DB('sysinventory_system');
         $result = $db->saveObject($this);
@@ -51,20 +59,39 @@ class Sysinventory_System {
     }
     function get_row_tags() {
        $rowTags = array();
-       // Fix the bools
-       if(isset($this->dual_mon)) $rowTags['DUAL_MON'] = 'Yes'; else $rowTags['DUAL_MON'] = 'No';
-       if(isset($this->docking_stand)) $rowTags['DOCKING_STAND'] = 'Yes'; else $rowTags['DOCKING_STAND'] = 'No';
-       if(isset($this->reformat)) $rowTags['REFORMAT'] = 'Yes'; else $rowTags['REFORMAT'] = 'No';
-       if(isset($this->deep_freeze)) $rowTags['DEEP_FREEZE'] = 'Yes'; else $rowTags['DEEP_FREEZE'] = 'No';
 
        // edit and delete links
-       $rowTags['EDIT'] = PHPWS_Text::moduleLink('Edit','sysinventory',array('action'=>'edit_system','systemid'=>$this->id));
+       $rowTags['EDIT'] = PHPWS_Text::moduleLink('Edit','sysinventory',array('action'=>'edit_system','id'=>$this->id,'redir'=>'1'));
        $rowTags['DELETE'] = '<a href="javascript:void(0);" class="delete" id=' . $this->id . '>Delete</a>'; 
        // get department and location names 
        $rowTags['DEPARTMENT'] = $this->getDepartment();
        $rowTags['LOCATION'] = $this->getLocation();
 
        return $rowTags;
+    }
+
+    public function report_row() {
+        $row['Department']       = $this->getDepartment();
+        $row['Location']         = $this->getLocation();
+        $row['Room_Number']      = $this->room_number;
+        $row['Model']            = $this->model;
+        $row['HDD']              = $this->hdd;
+        $row['Processor']        = $this->proc;
+        $row['RAM']              = $this->ram;
+        $row['Dual_Monitor']     = $this->dual_mon;
+        $row['MAC']              = $this->mac;
+        $row['Printer']          = $this->printer;
+        $row['Staff_Member']     = $this->printer;
+        $row['Username']         = $this->username;
+        $row['Telephone']        = $this->telephone;
+        $row['Docking_Stand']    = $this->docking_stand;
+        $row['Deep_Freeze']      = $this->deep_freeze;
+        $row['Purchase_Date']    = $this->purchase_date;
+        $row['VLAN']             = $this->vlan;
+        $row['Reformat']         = $this->reformat;
+        $row['Notes']            = $this->notes;
+
+        return $row;
     }
 
     function getDepartment() {

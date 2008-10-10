@@ -8,12 +8,17 @@ class Sysinventory_SystemUI {
 
     function showEditSystem() {
         
+        $whatWeDo = "Add System";
         // see if we need to do anything before displaying
         if(isset($_REQUEST['newsystem'])) {
-            Sysinventory_SystemUI::addSystem();
-        }
+            $sysid = 0;
+            if (isset($_REQUEST['id'])) {
+                $sysid = $_REQUEST['id'];
+                $whatWeDo = 'Edit System';
+                }
 
-        $whatWeDo = "Add System";
+            Sysinventory_SystemUI::addSystem($sysid);
+        }
 
         // Stuff for the template
         $tpl = array();
@@ -48,8 +53,13 @@ class Sysinventory_SystemUI {
         // Set up the form
         $form = new PHPWS_Form('add_system');
         $form->setAction('index.php?module=sysinventory&action=edit_system');
-        $form->addSubmit('submit','Create System');
+        $form->addSubmit('submit','Save');
         $form->addHidden('newsystem','yes');
+        if (isset($_REQUEST['id'])) {
+            $form->addHidden('id',$_REQUEST['id']);
+        }else{
+            $form->addHidden('id',0);
+        }
 
         // Build the form elements using data from above where necessary
         $form->addSelect('department_id',$deptIdSelect);
@@ -60,6 +70,7 @@ class Sysinventory_SystemUI {
         $form->setLabel('room_number','Room Number:');
         $form->addText('model');
         $form->setLabel('model','Model:');
+        $form->setRequired('model');
         $form->addText('hdd');
         $form->setLabel('hdd','Hard Disk Size:');
         $form->addText('proc');
@@ -85,12 +96,28 @@ class Sysinventory_SystemUI {
         $form->addText('purchase_date');
         $form->setReadOnly('purchase_date');
         $form->setLabel('purchase_date','Purchase Date:');
+        $form->setRequired('purchase_date');
         $form->addText('vlan');
         $form->setLabel('vlan','VLAN:');
-        $form->addCheck('reformat',TRUE);
+        $form->addCheck('reformat','yes');
         $form->setLabel('reformat','Reformat?');
         $form->addTextarea('notes');
         $form->setLabel('notes','Notes:');
+
+        // Populate the form if we have a system to edit
+        if(isset($_REQUEST['id'])) {
+            PHPWS_Core::initModClass('sysinventory','Sysinventory_System.php');
+            $system = new Sysinventory_System($_REQUEST['id']);
+
+            foreach($system as $column => $value) {
+                $element = $form->grab($column);
+                if(is_a($element,"Form_TextField") || is_a($element,"Form_Textarea")) {
+                    $form->setValue($column,$value);
+                }else if(is_a($element,"Form_Checkbox") || is_a($element,"Form_Select")) {
+                    $form->setMatch($column,$value);
+                }
+            }
+        }
 
         $form->mergeTemplate($tpl);
         $template = PHPWS_Template::process($form->getTemplate(),'sysinventory','add_system.tpl');
@@ -101,10 +128,17 @@ class Sysinventory_SystemUI {
         Layout::add($template);
     }
 
-    function addSystem() {
+    function addSystem($id) {
         PHPWS_Core::initModClass('sysinventory','Sysinventory_System.php');
+        if(!isset($_REQUEST['dual_mon'])) $_REQUEST['dual_mon'] = 'no';
+        if(!isset($_REQUEST['docking_stand'])) $_REQUEST['docking_stand'] = 'no';
+        if(!isset($_REQUEST['deep_freeze'])) $_REQUEST['deep_freeze'] = 'no';
+        if(!isset($_REQUEST['reformat'])) $_REQUEST['reformat'] = 'no';
+
+
         $sys = new Sysinventory_System;
 
+        $sys->id                  = $id;
         $sys->department_id       = $_REQUEST['department_id'];
         $sys->location_id         = $_REQUEST['location_id'];
         $sys->room_number         = $_REQUEST['room_number'];
@@ -127,10 +161,11 @@ class Sysinventory_SystemUI {
 
         $result = $sys->save();
         if (PEAR::isError($result)) {
-            PHPWS_Core::initModClass('sysinventory','Syinventory_Menu.php');
-            Syinventory_Menu::showMenu($result);
+            PHPWS_Core::initModClass('sysinventory','Sysinventory_Menu.php');
+            Sysinventory_Menu::showMenu($result);
         }
+        PHPWS_Core::reroute('index.php?module=sysinventory&action=report&redir=1');
     }
-}
 
+}
 ?>

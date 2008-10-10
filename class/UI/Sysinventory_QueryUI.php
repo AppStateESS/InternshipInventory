@@ -42,9 +42,12 @@
         
         // Set up the form
         $form = new PHPWS_Form('add_system');
-        $form->setAction('index.php?module=sysinventory&action=report');
+        $form->setAction('index.php?module=sysinventory');
+        $form->setMethod('get');
         $form->addSubmit('submit','Run Query');
+        $form->addReset('reset','Reset');
         $form->addHidden('showreport','yes');
+        $form->addHidden('action','report');
 
         // Build the form elements using data from above where necessary
         $form->addSelect('department_id',$deptIdSelect);
@@ -82,18 +85,12 @@
         $form->setLabel('purchase_date','Purchase Date:');
         $form->addText('vlan');
         $form->setLabel('vlan','VLAN:');
-        $form->addCheck('reformat',TRUE);
+        $form->addCheck('reformat','yes');
         $form->setLabel('reformat','Reformat?');
         $form->addTextarea('notes');
         $form->setLabel('notes','Notes:');
 
-        // see if we have a query in the session already, and if so, load it up...
-        if(isset($_SESSION['query'])) {
-            $query = $_SESSION['query'];
-            foreach($query as $column => $value) {
-                $form->$column = $value;
-            }
-        }
+        Sysinventory_QueryUI::populate($form);
 
         $form->mergeTemplate($tpl);
         $template = PHPWS_Template::process($form->getTemplate(),'sysinventory','build_query.tpl');
@@ -105,5 +102,20 @@
 
         
     }
+
+    function populate(&$form) {
+        if(isset($_SESSION['query'])) {
+            $query = $_SESSION['query'];
+            foreach($query as $column => $value) {
+                $element = $form->grab($column);
+                if(is_a($element,"Form_TextField") || is_a($element,"Form_Textarea")) {
+                    $form->setValue($column,$value);
+                }else if(is_a($element,"Form_Checkbox") || is_a($element,"Form_Select")) {
+                    $form->setMatch($column,$value);
+                }
+            }
+        }
+    }
+
  }
 ?>

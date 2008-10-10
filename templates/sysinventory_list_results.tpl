@@ -63,16 +63,16 @@
 </script>
 
 <div class="page-title">{PAGE_TITLE}</div>
-{HOME_LINK} | {QUERY_LINK}
+{HOME_LINK} | {QUERY_LINK} | {ADD_SYSTEM_LINK}
 <br/><br/>
 <table width="100%" cellspacing="10px">
 <tr>
-    <th>Department</th>
-    <th>Location</th>
-    <th>Model</th>
+    <th>Department {DESCRIPTION_SORT}</th>
+    <th>Location {LOCATION_SORT}</th>
+    <th>Model {MODEL_SORT}</th>
     <th>Room Number</th>
-    <th>Staff Member</th>
-    <th>Purchase Date</th>
+    <th>Staff Member {STAFF_MEMBER_SORT}</th>
+    <th>Purchase Date {PURCHASE_DATE_SORT}</th>
 </tr>
 <!-- BEGIN empty_table -->
 <tr>
@@ -124,5 +124,6 @@ var hider_{ID} = new hideOther("expander{ID}", "expanded{ID}", true);
 <br/><br/>
 <b>{PAGE_LABEL}</b><br/>
 {PAGES}<br/>
-{LIMITS}
+{LIMITS}<br/><br/>
+{CSV_REPORT}
 </div>

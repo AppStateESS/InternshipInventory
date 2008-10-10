@@ -10,6 +10,10 @@
 
     function display() {
 
+        //housekeeping
+        if(isset($_SESSION['query'])) unset($_SESSION['query']);
+
+
         $tags = array();
         $tags['TITLE']                  = "Options";
         $tags['SEARCH_LINK']            = PHPWS_Text::secureLink('Search Systems','sysinventory', array('action' => 'build_query'));
