@@ -3,9 +3,7 @@
 BEGIN;
 
 DROP TABLE sysinventory_admin;
-DROP TABLE sysinventory_location;
-DROP TABLE sysinventory_office;
-DROP TABLE sysinventory_system;
-DROP TABLE sysinventory_printer;
-DROP TABLE sysinventory_department;
+DROP TABLE sysinventory_system CASCADE;
+DROP TABLE sysinventory_department CASCADE;
+DROP TABLE sysinventory_location CASCADE;
 COMMIT;
