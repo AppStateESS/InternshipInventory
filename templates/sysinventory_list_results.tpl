@@ -122,6 +122,7 @@ var hider_{ID} = new hideOther("expander{ID}", "expanded{ID}", true);
 </table>
 <div align="center">
 <br/><br/>
+{TOTAL_ROWS} Results<br/>
 <b>{PAGE_LABEL}</b><br/>
 {PAGES}<br/>
 {LIMITS}<br/><br/>

@@ -26,7 +26,7 @@ CREATE TABLE sysinventory_system (
     id int NOT NULL,
     location_id int,
     department_id int NOT NULL,
-    room_number int,
+    room_number varchar,
     model varchar,
     hdd varchar,
     proc varchar,
@@ -49,5 +49,4 @@ CREATE TABLE sysinventory_system (
 ALTER TABLE sysinventory_system ADD FOREIGN KEY (department_id) REFERENCES sysinventory_department(id);
 ALTER TABLE sysinventory_system ADD FOREIGN KEY (location_id) REFERENCES sysinventory_location(id);
 ALTER TABLE sysinventory_admin ADD FOREIGN KEY (department_id) REFERENCES sysinventory_department(id);
-ALTER TABLE sysinventory_location ADD FOREIGN KEY (department_id) REFERENCES sysinventory_department(id);
 COMMIT;
