@@ -107,6 +107,45 @@ class Sysinventory_System {
         $loc = $db->select('row');
         return $loc['description'];
     }
-}
 
+    function addSystem($id) {
+        PHPWS_Core::initModClass('sysinventory','Sysinventory_System.php');
+        if(!isset($_REQUEST['dual_mon'])) $_REQUEST['dual_mon'] = 'no';
+        if(!isset($_REQUEST['docking_stand'])) $_REQUEST['docking_stand'] = 'no';
+        if(!isset($_REQUEST['deep_freeze'])) $_REQUEST['deep_freeze'] = 'no';
+        if(!isset($_REQUEST['reformat'])) $_REQUEST['reformat'] = 'no';
+
+
+        $sys = new Sysinventory_System;
+
+        $sys->id                  = $id;
+        $sys->department_id       = $_REQUEST['department_id'];
+        $sys->location_id         = $_REQUEST['location_id'];
+        $sys->room_number         = $_REQUEST['room_number'];
+        $sys->model               = $_REQUEST['model'];
+        $sys->hdd                 = $_REQUEST['hdd'];
+        $sys->proc                = $_REQUEST['proc'];
+        $sys->ram                 = $_REQUEST['ram'];
+        $sys->dual_mon            = $_REQUEST['dual_mon'];
+        $sys->mac                 = $_REQUEST['mac'];
+        $sys->printer             = $_REQUEST['printer'];
+        $sys->staff_member        = $_REQUEST['staff_member'];
+        $sys->username            = $_REQUEST['username'];
+        $sys->telephone           = $_REQUEST['telephone'];
+        $sys->docking_stand       = $_REQUEST['docking_stand'];
+        $sys->deep_freeze         = $_REQUEST['deep_freeze'];
+        $sys->purchase_date       = $_REQUEST['purchase_date'];
+        $sys->vlan                = $_REQUEST['vlan'];
+        $sys->reformat            = $_REQUEST['reformat'];
+        $sys->notes               = $_REQUEST['notes'];
+
+        $result = $sys->save();
+        if (PEAR::isError($result)) {
+            PHPWS_Core::initModClass('sysinventory','Sysinventory_Menu.php');
+            Sysinventory_Menu::showMenu($result);
+        }
+        PHPWS_Core::reroute('index.php?module=sysinventory&action=report&redir=1');
+    }
+
+}
 ?>

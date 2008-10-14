@@ -6,24 +6,29 @@
 
 class Sysinventory_SystemUI {
 
-    function showEditSystem() {
+    function showEditSystem($msg = NULL) {
         
+        // set the default page title.  Will be reset later if we're editing a system instead of adding a new one.
         $whatWeDo = "Add System";
+
         // see if we need to do anything before displaying
         if(isset($_REQUEST['newsystem'])) {
             $sysid = 0;
             if (isset($_REQUEST['id'])) {
-                $sysid = $_REQUEST['id'];
+                $sysid    = $_REQUEST['id'];
                 $whatWeDo = 'Edit System';
                 }
-
-            Sysinventory_SystemUI::addSystem($sysid);
+            PHPWS_Core::initModClass('sysinventory','Sysinventory_System.php');
+            Sysinventory_System::addSystem($sysid);
         }
 
         // Stuff for the template
-        $tpl = array();
+        $tpl               = array();
         $tpl['PAGE_TITLE'] = $whatWeDo;
-        $tpl['HOME_LINK'] = PHPWS_Text::moduleLink('Back to Menu','sysinventory');
+        $tpl['HOME_LINK']  = PHPWS_Text::moduleLink('Back to Menu','sysinventory');
+        if(!is_null($msg)) $tpl['MESSAGE'] = $msg;
+
+
 
         // Grab data for form selects
         
@@ -107,6 +112,8 @@ class Sysinventory_SystemUI {
         // Populate the form if we have a system to edit
         if(isset($_REQUEST['id'])) {
             PHPWS_Core::initModClass('sysinventory','Sysinventory_System.php');
+            // This sets the new system's id.  If this doesn't happen, the saveObject call to the db object in
+            // the system class knows to do an insert instead of an update.  PHPWS magic.
             $system = new Sysinventory_System($_REQUEST['id']);
 
             foreach($system as $column => $value) {
@@ -126,45 +133,6 @@ class Sysinventory_SystemUI {
         Layout::addStyle('sysinventory','flora.datepicker.css');
         Layout::addStyle('sysinventory','style.css');
         Layout::add($template);
-    }
-
-    function addSystem($id) {
-        PHPWS_Core::initModClass('sysinventory','Sysinventory_System.php');
-        if(!isset($_REQUEST['dual_mon'])) $_REQUEST['dual_mon'] = 'no';
-        if(!isset($_REQUEST['docking_stand'])) $_REQUEST['docking_stand'] = 'no';
-        if(!isset($_REQUEST['deep_freeze'])) $_REQUEST['deep_freeze'] = 'no';
-        if(!isset($_REQUEST['reformat'])) $_REQUEST['reformat'] = 'no';
-
-
-        $sys = new Sysinventory_System;
-
-        $sys->id                  = $id;
-        $sys->department_id       = $_REQUEST['department_id'];
-        $sys->location_id         = $_REQUEST['location_id'];
-        $sys->room_number         = $_REQUEST['room_number'];
-        $sys->model               = $_REQUEST['model'];
-        $sys->hdd                 = $_REQUEST['hdd'];
-        $sys->proc                = $_REQUEST['proc'];
-        $sys->ram                 = $_REQUEST['ram'];
-        $sys->dual_mon            = $_REQUEST['dual_mon'];
-        $sys->mac                 = $_REQUEST['mac'];
-        $sys->printer             = $_REQUEST['printer'];
-        $sys->staff_member        = $_REQUEST['staff_member'];
-        $sys->username            = $_REQUEST['username'];
-        $sys->telephone           = $_REQUEST['telephone'];
-        $sys->docking_stand       = $_REQUEST['docking_stand'];
-        $sys->deep_freeze         = $_REQUEST['deep_freeze'];
-        $sys->purchase_date       = $_REQUEST['purchase_date'];
-        $sys->vlan                = $_REQUEST['vlan'];
-        $sys->reformat            = $_REQUEST['reformat'];
-        $sys->notes               = $_REQUEST['notes'];
-
-        $result = $sys->save();
-        if (PEAR::isError($result)) {
-            PHPWS_Core::initModClass('sysinventory','Sysinventory_Menu.php');
-            Sysinventory_Menu::showMenu($result);
-        }
-        PHPWS_Core::reroute('index.php?module=sysinventory&action=report&redir=1');
     }
 
 }

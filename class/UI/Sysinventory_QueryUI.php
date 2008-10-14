@@ -117,5 +117,16 @@
         }
     }
 
+    function showQueryBuilder() {
+        PHPWS_Core::initModClass('sysinventory','UI/Sysinventory_QueryUI.php');
+        PHPWS_Core::initModClass('sysinventory','Sysinventory_Department.php');
+        $disp = new Sysinventory_QueryUI;
+        $disp->departments = Sysinventory_Department::getDepartmentsByUsername();
+        
+        Layout::addStyle('sysinventory','flora.datepicker.css');
+        Layout::addStyle('sysinventory','style.css');
+        Layout::add($disp->display());
+    }
+
  }
 ?>
