@@ -16,12 +16,18 @@ if (!Current_User::allow('sysinventory')) {
 
 $error = NULL;
 
-switch (isset($_REQUEST['action']) ? $_REQUEST['action'] : 42) {
+if(!isset($_REQUEST['action'])){
+    $req = "";
+}else{
+    $req = $_REQUEST['action'];
+}
+
+switch ($req) {
     case 'edit_system':
         PHPWS_Core::initModClass('sysinventory','UI/Sysinventory_SystemUI.php');
         Sysinventory_SystemUI::showEditSystem();
         break;
-    //this one is for the AJAX delete on the query page, so it doesn't call a new UI class
+    //this one is for the AJAX delete on the report page, so it doesn't call a new UI class
     case 'delete_system':
         PHPWS_Core::initModClass('sysinventory','Sysinventory_System.php');
         echo Sysinventory_System::deleteSystem($_REQUEST['systemid']);
@@ -52,11 +58,14 @@ switch (isset($_REQUEST['action']) ? $_REQUEST['action'] : 42) {
         }
         Sysinventory_Department::showDepartments($todo,$thing);
         break;
+    case 'addDep':
+        Sysinventory_Department::AddDepartment($_REQUEST['description']);
+        break;
     case 'edit_admins':
         PHPWS_Core::initModClass('sysinventory','UI/Sysinventory_AdminUI.php');
         Sysinventory_AdminUI::showAdmins();
         break;
-    case '42':
+    default:
         PHPWS_Core::initModClass('sysinventory','Sysinventory_Menu.php');
         Sysinventory_Menu::showMenu($error);
         break;

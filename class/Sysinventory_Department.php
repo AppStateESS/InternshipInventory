@@ -6,10 +6,38 @@
 
 class Sysinventory_Department {
     
+    # TODO: var is depricated, use public/private/protected (see PHP docs)
+
     var $id = NULL;
     var $description = NULL;
     var $last_update = NULL;
+
+    function Sysinventory_Department($id = NULL){
+        #TODO: use loadObject to initialize this object
+    }
+
+    function save()
+    {
+        #TODO - use saveObject here
+    }
     
+    function delete()
+    {
+        $db = new PHPWS_DB('sysinventory_department');
+        $db->addWhere('id',$depName);
+        $result = $db->delete();
+
+        if(!$result || PHPWS_Error::logIfError($result)){
+            return FALSE;
+        }
+
+        return TRUE;
+    }
+    
+    /********************
+     * Static functions *
+     ********************/
+
     function showDepartments($whatToDo,$department) {
         PHPWS_Core::initModClass('sysinventory','UI/Sysinventory_DepartmentUI.php');
         $disp = &new Sysinventory_DepartmentUI;
@@ -31,6 +59,15 @@ class Sysinventory_Department {
     }
 
     function addDepartment($depName) {
+        # TODO: make this object oriented
+
+        /*
+        $dept = new Sysinventory_Department();
+        $dept->description = $depName;
+        $dept->last_update = mktime();
+        $result = $dept->save();
+        */
+
         //test($depName,1);
         if (!isset($depName)) return;
         $db = &new PHPWS_DB('sysinventory_department');
@@ -40,11 +77,11 @@ class Sysinventory_Department {
         $result = $db->insert();
     }
 
-    function delDepartment($depName) {
-        if (!isset($depName)) return;
-        $db = new PHPWS_DB('sysinventory_department');
-        $db->addWhere('id',$depName);
-        $db->delete();
+    function delDepartment($depId) {
+        $dep = new Sysinventory_Department($id);
+        $result = $dep->delete();
+
+        //TODO: show an error message here
     }
 
     function getDepartmentsByUsername(){
