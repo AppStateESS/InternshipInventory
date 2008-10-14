@@ -21,7 +21,7 @@ switch (isset($_REQUEST['action']) ? $_REQUEST['action'] : 42) {
         PHPWS_Core::initModClass('sysinventory','UI/Sysinventory_SystemUI.php');
         Sysinventory_SystemUI::showEditSystem();
         break;
-    //this one is for the AJAX delete on the query page
+    //this one is for the AJAX delete on the query page, so it doesn't call a new UI class
     case 'delete_system':
         PHPWS_Core::initModClass('sysinventory','Sysinventory_System.php');
         echo Sysinventory_System::deleteSystem($_REQUEST['systemid']);
@@ -31,8 +31,8 @@ switch (isset($_REQUEST['action']) ? $_REQUEST['action'] : 42) {
         Sysinventory_ReportUI::display();
         break;
     case 'build_query':
-        PHPWS_Core::initModClass('sysinventory','Sysinventory_Query.php');
-        Sysinventory_Query::showQueryBuilder();
+        PHPWS_Core::initModClass('sysinventory','UI/Sysinventory_QueryUI.php');
+        Sysinventory_QueryUI::showQueryBuilder();
         break;
     case 'edit_locations':
         PHPWS_Core::initModClass('sysinventory','UI/Sysinventory_LocationUI.php');

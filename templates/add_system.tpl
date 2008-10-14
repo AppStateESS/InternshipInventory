@@ -7,7 +7,7 @@ $(document).ready(function() {
 </script>
 
 <div class="page-title">{PAGE_TITLE}</div>
-<br/>{HOME_LINK}
+<br/>{HOME_LINK}<br/>{MESSAGE}<br/>
 {START_FORM}
 <table width="100%">
 <tr>
