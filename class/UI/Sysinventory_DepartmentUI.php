@@ -35,7 +35,7 @@
         PHPWS_Core::initCoreClass('DBPager.php');
         PHPWS_Core::initModClass('sysinventory','Sysinventory_Department.php');
 
-        $pager = &new DBPager('sysinventory_department','Sysinventory_Department');
+        $pager = new DBPager('sysinventory_department','Sysinventory_Department');
         $pager->setModule('sysinventory');
         $pager->setTemplate('department_pager.tpl');
         $pager->addRowTags('get_row_tags');

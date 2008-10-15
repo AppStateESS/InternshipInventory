@@ -11,18 +11,6 @@ class Sysinventory_SystemUI {
         // set the default page title.  Will be reset later if we're editing a system instead of adding a new one.
         $whatWeDo = "Add System";
 
-        // see if we need to do anything before displaying
-        #TODO: move to index, write function in system class to handle adding the new system
-        if(isset($_REQUEST['newsystem'])) {
-            $sysid = 0;
-            if (isset($_REQUEST['id'])) {
-                $sysid    = $_REQUEST['id'];
-                $whatWeDo = 'Edit System';
-                }
-            PHPWS_Core::initModClass('sysinventory','Sysinventory_System.php');
-            Sysinventory_System::addSystem($sysid);
-        }
-
         // Stuff for the template
         $tpl               = array();
         $tpl['PAGE_TITLE'] = $whatWeDo;

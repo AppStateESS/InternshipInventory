@@ -8,6 +8,12 @@
     
     var $errorMsg = NULL;
 
+/*    function Sysinventory_MenuUI($error='&nbsp;') {
+        $menu = new Sysinventory_MenuUI;
+        $menu->errorMsg = $error;
+        return $menu;
+    }*/
+
     function display() {
 
         //housekeeping
@@ -28,6 +34,7 @@
             $tags['DEITY']                     = 'Deity Options';
             $tags['EDIT_DEPARTMENTS_LINK']     = PHPWS_Text::secureLink('Edit Departments','sysinventory',array('action' => 'edit_departments'));
             $tags['EDIT_ADMINS_LINK']          = PHPWS_Text::secureLink('Edit Administrators','sysinventory',array('action' => 'edit_admins'));
+            $tags['EDIT_DEFAULT_LINK']         = PHPWS_Text::secureLink('Edit Default Systems','sysinventory',array('action'=>'edit_default'));
             $tags['GRAND_TOTAL_LABEL']         = _('Total Number of Systems in Database: ');
             $db = new PHPWS_DB('sysinventory_system');
             $gt = $db->select('count');

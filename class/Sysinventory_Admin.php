@@ -11,6 +11,12 @@ class Sysinventory_Admin {
     public $department_id    = NULL;
     public $description      = NULL; //for addRowTags in the pager
 
+    function Sysinventory_Admin($adminId=0) {
+        if($adminId == 0) return;
+        $db = new PHPWS_DB('sysinventory_admin');
+        $db->addWhere('id',$adminId,'=');
+        $db->loadObject($this);
+    }
     function save() {
         $db = new PHPWS_DB('sysinventory_admin');
         $result = $db->saveObject($this);
@@ -37,6 +43,18 @@ class Sysinventory_Admin {
     /********************
      * Static Functions *
      ********************/
+
+    function newAdmin($dept_id=0,$uname=0) {
+        $admin = new Sysinventory_Admin;
+        $admin->department_id   = $dept_id;
+        $admin->username        = $uname;
+        $admin->save();
+    }
+
+    function delAdmin($id) {
+        $admin = new Sysinventory_Admin($id);
+        $admin->delete();
+    }
 
     function generateAdminList() {
 

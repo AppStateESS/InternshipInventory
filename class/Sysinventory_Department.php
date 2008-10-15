@@ -29,9 +29,8 @@ class Sysinventory_Department {
         $db = new PHPWS_DB('sysinventory_department');
         $db->addWhere('id',$this->getID());
         $result = $db->delete();
-
-        if(!$result || PHPWS_Error::logIfError($result)){
-            return FALSE;
+        if(PHPWS_Error::logIfError($result)){
+            return FALSE; 
         }
 
         return TRUE;
@@ -66,14 +65,24 @@ class Sysinventory_Department {
         $dep = new Sysinventory_Department();
         $dep->setDescription($depName);
         $dep->setLastUpdate(time());
-        return $dep->save();
+        $result = $dep->save();
+        if(PHPWS_Error::logIfError($result)) {
+            $error = "Could not delete department.";
+            PHPWS_Core::initModClass('sysinventory','Sysinventory_Error.php');
+            Sysinventory_Error::error($error);
         }
+        return;
+    }
 
     function delDepartment($depId) {
-        $dep = new Sysinventory_Department($id);
+        $dep = new Sysinventory_Department($depId);
         $result = $dep->delete();
+        if(!$result) {
+            $error = "Could not delete department.";
+            PHPWS_Core::initModClass('sysinventory','Sysinventory_Error.php');
+            Sysinventory_Error::error($error);
+        }
 
-        //TODO: show an error message here
     }
 
     function getDepartmentsByUsername(){

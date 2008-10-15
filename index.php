@@ -25,6 +25,15 @@ if(!isset($_REQUEST['action'])){
 switch ($req) {
     case 'edit_system':
         PHPWS_Core::initModClass('sysinventory','UI/Sysinventory_SystemUI.php');
+        if(isset($_REQUEST['newsystem'])) {
+            $sysid = 0;
+            if (isset($_REQUEST['id'])) {
+                $sysid    = $_REQUEST['id'];
+                $whatWeDo = 'Edit System';
+                }
+            PHPWS_Core::initModClass('sysinventory','Sysinventory_System.php');
+            Sysinventory_System::addSystem($sysid);
+        }
         Sysinventory_SystemUI::showEditSystem();
         break;
     //this one is for the AJAX delete on the report page, so it doesn't call a new UI class
@@ -41,6 +50,13 @@ switch ($req) {
         Sysinventory_QueryUI::showQueryBuilder();
         break;
     case 'edit_locations':
+        if (isset($_REQUEST['newloc']) && !empty($_REQUEST['description'])) {
+            PHPWS_Core::initModClass('sysinventory','Sysinventory_Location.php');
+            Sysinventory_Location::newLoc($_REQUEST['description']);
+        }else if (isset($_REQUEST['delloc']) && !empty($_REQUEST['id'])) {
+            PHPWS_Core::initModClass('sysinventory','Sysinventory_Location.php');
+            Sysinventory_Location::delLoc($_REQUEST['id']);
+        }
         PHPWS_Core::initModClass('sysinventory','UI/Sysinventory_LocationUI.php');
         Sysinventory_LocationUI::showLocations();
         break;
@@ -62,8 +78,26 @@ switch ($req) {
         Sysinventory_Department::AddDepartment($_REQUEST['description']);
         break;
     case 'edit_admins':
+        if (isset($_REQUEST['newadmin'])) {
+            PHPWS_Core::initModClass('sysinventory','Sysinventory_Admin.php');
+            Sysinventory_Admin::newAdmin($_REQUEST['department_id'],$_REQUEST['username']);
+        }else if (isset($_REQUEST['deladmin'])) {
+            PHPWS_Core::initModClass('sysinventory','Sysinventory_Admin.php');
+            Sysinventory_Admin::delAdmin($_REQUEST['id']);
+        }
         PHPWS_Core::initModClass('sysinventory','UI/Sysinventory_AdminUI.php');
         Sysinventory_AdminUI::showAdmins();
+        break;
+    case 'edit_default':
+        if (isset($_REQUEST['newdefault']) && isset($_REQUEST['name']) && isset($_REQUEST['model'])) {
+            PHPWS_Core::initModClass('sysinventory','Sysinventory_Default.php');
+            Sysinventory_Default::newDefault();
+        }else if (isset($_REQUEST['deldefault']) && isset($_REQUEST['id'])) {
+            PHPWS_Core::initModClass('sysinventory','Sysinventory_Default.php');
+            Sysinventory_Default::delDefault($_REQUEST['id']);
+        }
+        PHPWS_Core::initModClass('sysinventory','UI/Sysinventory_DefaultUI.php');
+        Sysinventory_DefaultUI::showDefaults();
         break;
     default:
         PHPWS_Core::initModClass('sysinventory','Sysinventory_Menu.php');

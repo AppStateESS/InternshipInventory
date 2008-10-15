@@ -16,21 +16,6 @@ class Sysinventory_AdminUI {
            return;
         }
 
-        // see if we need to do anything to the db
-        #TODO, move this catch to the index and write a function in Admin class to actually *do* the work
-        if(isset($_REQUEST['newadmin'])) {
-            PHPWS_Core::initModClass('sysinventory','Sysinventory_Admin.php');
-            $admin = new Sysinventory_Admin;
-            $admin->department_id = $_REQUEST['department_id'];
-            $admin->username = $_REQUEST['username'];
-            $admin->save();
-        }else if (isset($_REQUEST['deladmin'])) {
-            PHPWS_Core::initModClass('sysinventory','Sysinventory_Admin.php');
-            $admin = new Sysinventory_Admin;
-            $admin->id = $_REQUEST['id'];
-            $admin->delete();
-        }
-
         // set up some stuff for the page template
         $tpl                     = array();
         $tpl['PAGE_TITLE']       = 'Edit Administrators';

@@ -46,6 +46,17 @@ CREATE TABLE sysinventory_system (
     PRIMARY KEY (id)
 );
 
+CREATE TABLE sysinventory_default_system (
+    id int NOT NULL,
+    name varchar NOT NULL,
+    model varchar,
+    hdd varchar,
+    proc varchar,
+    ram varchar,
+    dual_mon varchar default 'no',
+    PRIMARY KEY (id)
+);
+
 ALTER TABLE sysinventory_system ADD FOREIGN KEY (department_id) REFERENCES sysinventory_department(id);
 ALTER TABLE sysinventory_system ADD FOREIGN KEY (location_id) REFERENCES sysinventory_location(id);
 ALTER TABLE sysinventory_admin ADD FOREIGN KEY (department_id) REFERENCES sysinventory_department(id);

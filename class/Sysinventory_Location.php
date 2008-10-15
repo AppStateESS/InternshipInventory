@@ -8,7 +8,12 @@ class Sysinventory_Location {
 
     public $id            = NULL;
     public $description   = NULL;
-
+    
+   function Sysinventory_Location($id=0) {
+       $db = new PHPWS_DB('sysinventory_location');
+       $db->addWhere('id',$id,'=');
+       $db->loadObject($this);
+   }
    function save() {
         $db = new PHPWS_DB('sysinventory_location');
         $result = $db->saveObject($this);
@@ -34,6 +39,17 @@ class Sysinventory_Location {
     /********************
      * Static Functions *
      ********************/
+
+    function newLoc($desc) {
+        $loc = new Sysinventory_Location();
+        $loc->description = $desc;
+        $loc->save();
+    }
+
+    function delLoc($id) {
+        $loc = new Sysinventory_Location($id);
+        $loc->delete();
+    }
 
     function generateLocationList() {
         PHPWS_Core::initCoreClass('DBPager.php');
