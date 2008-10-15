@@ -1,25 +1,31 @@
 <?php
+
+/**
+ * Class defines a system
+ * @author Micah Carter <mcarter at tux dot appstate dot edu>
+ **/
+
 class Sysinventory_System {
-    var $id;
-    var $location_id;
-    var $department_id;
-    var $room_number;
-    var $model;
-    var $hdd;
-    var $proc;
-    var $ram;
-    var $dual_mon;
-    var $mac;
-    var $printer;
-    var $staff_member;
-    var $username;
-    var $telephone;
-    var $docking_stand;
-    var $deep_freeze;
-    var $purchase_date;
-    var $vlan;
-    var $reformat;
-    var $notes;
+    public $id;
+    public $location_id;
+    public $department_id;
+    public $room_number;
+    public $model;
+    public $hdd;
+    public $proc;
+    public $ram;
+    public $dual_mon;
+    public $mac;
+    public $printer;
+    public $staff_member;
+    public $username;
+    public $telephone;
+    public $docking_stand;
+    public $deep_freeze;
+    public $purchase_date;
+    public $vlan;
+    public $reformat;
+    public $notes;
 
     function Sysinventory_System($sysid=0) {
         if ($sysid == 0) return;

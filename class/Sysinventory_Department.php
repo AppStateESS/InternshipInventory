@@ -6,25 +6,28 @@
 
 class Sysinventory_Department {
     
-    # TODO: var is depricated, use public/private/protected (see PHP docs)
+    public $id = NULL;
+    public $description = NULL;
+    public $last_update = NULL;
 
-    var $id = NULL;
-    var $description = NULL;
-    var $last_update = NULL;
-
-    function Sysinventory_Department($id = NULL){
-        #TODO: use loadObject to initialize this object
+    public function Sysinventory_Department($id = NULL){
+        if(is_null($id)) return;
+        $db     = new PHPWS_DB('sysinventory_department');
+        $db->addWhere('id',$id,'=');
+        $result = $db->loadObject($this);
     }
 
-    function save()
-    {
-        #TODO - use saveObject here
+    public function save(){
+        if(isset($this->description)) {
+            $db = new PHPWS_DB('sysinventory_department');
+            return $db->saveObject($this);
+        }
+        return FALSE;
     }
     
-    function delete()
-    {
+    public function delete(){
         $db = new PHPWS_DB('sysinventory_department');
-        $db->addWhere('id',$depName);
+        $db->addWhere('id',$this->getID());
         $result = $db->delete();
 
         if(!$result || PHPWS_Error::logIfError($result)){
@@ -40,7 +43,7 @@ class Sysinventory_Department {
 
     function showDepartments($whatToDo,$department) {
         PHPWS_Core::initModClass('sysinventory','UI/Sysinventory_DepartmentUI.php');
-        $disp = &new Sysinventory_DepartmentUI;
+        $disp = new Sysinventory_DepartmentUI;
         if ($whatToDo == 'addDep' && isset($department)) {
             Sysinventory_Department::addDepartment($department);
         }
@@ -59,23 +62,12 @@ class Sysinventory_Department {
     }
 
     function addDepartment($depName) {
-        # TODO: make this object oriented
-
-        /*
-        $dept = new Sysinventory_Department();
-        $dept->description = $depName;
-        $dept->last_update = mktime();
-        $result = $dept->save();
-        */
-
-        //test($depName,1);
         if (!isset($depName)) return;
-        $db = &new PHPWS_DB('sysinventory_department');
-        $db->addValue('id','NULL');
-        $db->addValue('description',$depName);
-        $db->addValue('last_update',time());
-        $result = $db->insert();
-    }
+        $dep = new Sysinventory_Department();
+        $dep->setDescription($depName);
+        $dep->setLastUpdate(time());
+        return $dep->save();
+        }
 
     function delDepartment($depId) {
         $dep = new Sysinventory_Department($id);
@@ -114,6 +106,18 @@ class Sysinventory_Department {
             return NULL;
         }
  
+    }
+    
+    public function __set($name,$value) {
+        $this->$name = $value;
+    }
+
+    public function __get($name) {
+        return $this->$name;
+    }
+
+    public function __isset($name) {
+        return isset($this->$name);
     }
 
     function getID() {
