@@ -6,9 +6,8 @@
 
 class Sysinventory_Location {
 
-    #TODO: public/private
-    var $id            = NULL;
-    var $description   = NULL;
+    public $id            = NULL;
+    public $description   = NULL;
 
    function save() {
         $db = new PHPWS_DB('sysinventory_location');

@@ -46,7 +46,15 @@ class Sysinventory_System {
     }
 
     function delete(){
-        #TODO
+        if(!isset($this->id) || $this->id == 0) return;
+        $db = new PHPWS_DB('sysinventory_system');
+        $db->addWhere('id',$this->id,'=');
+        $db->delete();
+        if($db->affectedRows() == 1) {
+            return TRUE;
+        }else{
+            return FALSE;
+        }
     }
 
     function getDepartment() {
@@ -143,24 +151,11 @@ class Sysinventory_System {
         PHPWS_Core::reroute('index.php?module=sysinventory&action=report&redir=1');
     }
 
-    #TODO: make this object oriented
     function deleteSystem($sysId) {
-        if (!isset($sysId)) {
-            return 'No System ID set.';
-        }
-
-        $db = new PHPWS_DB('sysinventory_system');
-        $db->addWhere('id',$sysId);
-        $result = $db->delete();
-
-        if(PEAR::isError($result)) {
-            PHPWS_Error::log($result);
-        }
-        if($db->affectedRows() == 1) {
-            return 'true';
-        }else{
-            return 'Database Error';
-        }
+        $sys = new Sysinventory_System($sysId);
+        $result = $sys->delete();
+        if($result) return 'true';
+        return 'Database Error';
     }
 
     

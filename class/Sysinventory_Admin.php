@@ -6,11 +6,10 @@
 
 class Sysinventory_Admin {
 
-    #TODO use public/private
-    var $id               = NULL;
-    var $username         = NULL;
-    var $department_id    = NULL;
-    var $description      = NULL; //for addRowTags in the pager
+    public $id               = NULL;
+    public $username         = NULL;
+    public $department_id    = NULL;
+    public $description      = NULL; //for addRowTags in the pager
 
     function save() {
         $db = new PHPWS_DB('sysinventory_admin');

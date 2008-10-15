@@ -6,10 +6,10 @@
  */
 
  class Sysinventory_Report {
-    var $location   = NULL;
-    var $department = NULL;
-    var $office     = NULL;
-    var $employee   = NULL;
+    public $location   = NULL;
+    public $department = NULL;
+    public $office     = NULL;
+    public $employee   = NULL;
     
     function generateReport($data) {
         PHPWS_Core::initCoreClass('DBPager.php');
