@@ -12,6 +12,7 @@ class Sysinventory_SystemUI {
         $whatWeDo = "Add System";
 
         // see if we need to do anything before displaying
+        #TODO: move to index, write function in system class to handle adding the new system
         if(isset($_REQUEST['newsystem'])) {
             $sysid = 0;
             if (isset($_REQUEST['id'])) {
@@ -27,8 +28,6 @@ class Sysinventory_SystemUI {
         $tpl['PAGE_TITLE'] = $whatWeDo;
         $tpl['HOME_LINK']  = PHPWS_Text::moduleLink('Back to Menu','sysinventory');
         if(!is_null($msg)) $tpl['MESSAGE'] = $msg;
-
-
 
         // Grab data for form selects
         

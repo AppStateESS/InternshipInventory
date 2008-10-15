@@ -15,7 +15,9 @@ class Sysinventory_AdminUI {
            Sysinventory_Menu::showMenu($error);
            return;
         }
+
         // see if we need to do anything to the db
+        #TODO, move this catch to the index and write a function in Admin class to actually *do* the work
         if(isset($_REQUEST['newadmin'])) {
             PHPWS_Core::initModClass('sysinventory','Sysinventory_Admin.php');
             $admin = new Sysinventory_Admin;

@@ -6,10 +6,10 @@
  */
 
  class Sysinventory_Report {
-    var $location = NULL;
+    var $location   = NULL;
     var $department = NULL;
-    var $office = NULL;
-    var $employee = NULL;
+    var $office     = NULL;
+    var $employee   = NULL;
     
     function generateReport($data) {
         PHPWS_Core::initCoreClass('DBPager.php');
@@ -17,9 +17,9 @@
         
         // Stuff for the template
         $tpl = array();
-        $tpl['PAGE_TITLE'] = 'System Report';
-        $tpl['HOME_LINK'] = PHPWS_Text::moduleLink('Back to Menu','sysinventory');
-        $tpl['QUERY_LINK'] = PHPWS_Text::moduleLink('New Query','sysinventory',array('action'=>'build_query'));
+        $tpl['PAGE_TITLE']      = 'System Report';
+        $tpl['HOME_LINK']       = PHPWS_Text::moduleLink('Back to Menu','sysinventory');
+        $tpl['QUERY_LINK']      = PHPWS_Text::moduleLink('New Query','sysinventory',array('action'=>'build_query'));
         $tpl['ADD_SYSTEM_LINK'] = PHPWS_Text::moduleLink('Add New System','sysinventory',array('action'=>'edit_system'));
 
         // set up the pager
@@ -68,6 +68,7 @@
                 $pager->addWhere('department_id',$dept['id'],'=');
             }
         }
+
         // determine what other stuff we got from the request and add restrictions for it
         foreach ($fields as $field) {
             if(isset($data[$field])){

@@ -14,9 +14,14 @@
 </table>
 
 <hr width="60%" />
-{DEITY}
+
+
+<!-- BEGIN deity_section -->
+<h2>{DEITY}</h2>
 {EDIT_ADMINS_LINK}<br />
 {EDIT_DEPARTMENTS_LINK}<br />
-</center>
-{HR}
+<hr width="75%">
 {GRAND_TOTAL_LABEL}{GRAND_TOTAL}<br />
+<!-- END deity_section -->
+
+</center>

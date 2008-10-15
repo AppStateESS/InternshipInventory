@@ -45,24 +45,24 @@ class Sysinventory_System {
         return $result;
     }
 
-    function deleteSystem($sysId) {
-        if (!isset($sysId)) {
-            return 'No System ID set.';
-        }
-
-        $db = new PHPWS_DB('sysinventory_system');
-        $db->addWhere('id',$sysId);
-        $result = $db->delete();
-
-        if(PEAR::isError($result)) {
-            PHPWS_Error::log($result);
-        }
-        if($db->affectedRows() == 1) {
-            return 'true';
-        }else{
-            return 'Database Error';
-        }
+    function delete(){
+        #TODO
     }
+
+    function getDepartment() {
+        $db = new PHPWS_DB('sysinventory_department');
+        $db->addWhere('id',$this->department_id);
+        $dept = $db->select('row');
+        return $dept['description'];
+    }
+
+    function getLocation() {
+        $db = new PHPWS_DB('sysinventory_location');
+        $db->addWhere('id',$this->location_id);
+        $loc = $db->select('row');
+        return $loc['description'];
+    }
+    
     function get_row_tags() {
        $rowTags = array();
 
@@ -100,19 +100,9 @@ class Sysinventory_System {
         return $row;
     }
 
-    function getDepartment() {
-        $db = new PHPWS_DB('sysinventory_department');
-        $db->addWhere('id',$this->department_id);
-        $dept = $db->select('row');
-        return $dept['description'];
-    }
-
-    function getLocation() {
-        $db = new PHPWS_DB('sysinventory_location');
-        $db->addWhere('id',$this->location_id);
-        $loc = $db->select('row');
-        return $loc['description'];
-    }
+    /********************
+     * Static Functions *
+     ********************/
 
     function addSystem($id) {
         PHPWS_Core::initModClass('sysinventory','Sysinventory_System.php');
@@ -152,6 +142,30 @@ class Sysinventory_System {
         }
         PHPWS_Core::reroute('index.php?module=sysinventory&action=report&redir=1');
     }
+
+    #TODO: make this object oriented
+    function deleteSystem($sysId) {
+        if (!isset($sysId)) {
+            return 'No System ID set.';
+        }
+
+        $db = new PHPWS_DB('sysinventory_system');
+        $db->addWhere('id',$sysId);
+        $result = $db->delete();
+
+        if(PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+        }
+        if($db->affectedRows() == 1) {
+            return 'true';
+        }else{
+            return 'Database Error';
+        }
+    }
+
+    
+
+    
 
 }
 ?>

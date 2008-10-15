@@ -8,6 +8,7 @@ class Sysinventory_LocationUI {
     
     function showLocations() {
         // see if we need to do anything to the db
+        # TODO: move this to index, write function in Location class to handle creating the new location
         if(isset($_REQUEST['newloc'])) {
             PHPWS_Core::initModClass('sysinventory','Sysinventory_Location.php');
             $loc = new Sysinventory_Location;
@@ -44,9 +45,7 @@ class Sysinventory_LocationUI {
 
         Layout::addStyle('sysinventory','style.css');
         Layout::add($template);
-
     }
-
 }
 
 ?>

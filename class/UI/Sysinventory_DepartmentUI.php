@@ -30,7 +30,7 @@
         $form->mergeTemplate($tpl);
         return PHPWS_Template::process($form->getTemplate(), 'sysinventory', 'edit_department.tpl');
     }
-
+    
     function doPager() {
         PHPWS_Core::initCoreClass('DBPager.php');
         PHPWS_Core::initModClass('sysinventory','Sysinventory_Department.php');

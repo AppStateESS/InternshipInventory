@@ -5,9 +5,36 @@
 **/
 
 class Sysinventory_Location {
-    
+
+    #TODO: public/private
     var $id            = NULL;
     var $description   = NULL;
+
+   function save() {
+        $db = new PHPWS_DB('sysinventory_location');
+        $result = $db->saveObject($this);
+
+        if(PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+        }
+        return $result;
+    }
+
+    function delete() {
+        $db = new PHPWS_DB('sysinventory_location');
+        $db->addWhere('id',$this->id);
+        $db->delete();
+    }
+
+    function get_row_tags() {
+        $template = array();
+        $template['DELETE'] = PHPWS_Text::moduleLink('Delete','sysinventory',array('action'=>'edit_locations','delloc'=>TRUE,'id'=>$this->id));
+        return $template;
+    }
+
+    /********************
+     * Static Functions *
+     ********************/
 
     function generateLocationList() {
         PHPWS_Core::initCoreClass('DBPager.php');
@@ -22,30 +49,7 @@ class Sysinventory_Location {
         $pager->setSearch('description');
         $pager->setOrder('description','asc');
 
-
         return $pager->get();
-    }
-
-    function get_row_tags() {
-        $template = array();
-        $template['DELETE'] = PHPWS_Text::moduleLink('Delete','sysinventory',array('action'=>'edit_locations','delloc'=>TRUE,'id'=>$this->id));
-        return $template;
-    }
-
-    function save() {
-        $db = new PHPWS_DB('sysinventory_location');
-        $result = $db->saveObject($this);
-
-        if(PEAR::isError($result)) {
-            PHPWS_Error::log($result);
-        }
-        return $result;
-    }
-
-    function delete() {
-        $db = new PHPWS_DB('sysinventory_location');
-        $db->addWhere('id',$this->id);
-        $db->delete();
     }
 }
 ?>

@@ -25,8 +25,7 @@
 
         // Deity Stuff
         if(Current_User::isDeity()){
-            $tags['DEITY']                     = '<h2>Deity Options</h2>';
-            $tags['HR']                        = '<hr width="75%"/>';
+            $tags['DEITY']                     = 'Deity Options';
             $tags['EDIT_DEPARTMENTS_LINK']     = PHPWS_Text::secureLink('Edit Departments','sysinventory',array('action' => 'edit_departments'));
             $tags['EDIT_ADMINS_LINK']          = PHPWS_Text::secureLink('Edit Administrators','sysinventory',array('action' => 'edit_admins'));
             $tags['GRAND_TOTAL_LABEL']         = _('Total Number of Systems in Database: ');
