@@ -98,8 +98,6 @@
         // Add the jquery library (needed for datepicker)
         javascript('/jquery/');
 
-        // build the js file and add it to the layout
-        $template .= Layout::getJavascript
         Layout::addStyle('sysinventory','flora.datepicker.css');
         Layout::addStyle('sysinventory','style.css');
         Layout::add($template);
