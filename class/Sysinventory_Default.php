@@ -67,7 +67,7 @@ class Sysinventory_Default {
     }
 
     function getJSON() {
-       return json_encode(Sysinventory_Default::getAllDefaults());
+        return json_encode(Sysinventory_Default::getAllDefaults());
     }
 
     function getAllDefaults() {

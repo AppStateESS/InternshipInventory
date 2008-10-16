@@ -1,6 +1,3 @@
-<script type="text/javascript">
-
-</script>
 <div class="page-title">{PAGE_TITLE}</div>
 <br/>
 {HOME_LINK}

@@ -11,6 +11,9 @@ class Sysinventory_SystemUI {
         // set the default page title.  Will be reset later if we're editing a system instead of adding a new one.
         $whatWeDo = "Add System";
 
+        javascript('/jquery/');
+        javascript('/modules/sysinventory/default_build_picker/');
+
         // Stuff for the template
         $tpl               = array();
         $tpl['PAGE_TITLE'] = $whatWeDo;
@@ -52,6 +55,19 @@ class Sysinventory_SystemUI {
         }else{
             $form->addHidden('id',0);
         }
+
+        PHPWS_Core::initModClass('sysinventory', 'Sysinventory_Default.php');
+
+        $all_defaults = Sysinventory_Default::getAllDefaults();
+        // Get the defaults into a state where we can use them for a drop down
+        $defaults_list      = array();
+        $defaults_list[0]   = 'Select default build';
+        foreach($all_defaults as $default){
+            $defaults_list[$default['id']] = $default['name'];
+        }
+
+        $form->addSelect('build_id', $defaults_list);
+        $form->setLabel('build_id', 'Default build: ');
 
         // Build the form elements using data from above where necessary
         $form->addSelect('department_id',$deptIdSelect);
@@ -116,7 +132,6 @@ class Sysinventory_SystemUI {
         $form->mergeTemplate($tpl);
         $template = PHPWS_Template::process($form->getTemplate(),'sysinventory','add_system.tpl');
 
-        javascript('/jquery/');
         Layout::addStyle('sysinventory','flora.datepicker.css');
         Layout::addStyle('sysinventory','style.css');
         Layout::add($template);

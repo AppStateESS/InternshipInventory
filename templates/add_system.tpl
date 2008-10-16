@@ -11,6 +11,10 @@ $(document).ready(function() {
 {START_FORM}
 <table width="100%">
 <tr>
+    <td align="right"><strong>{BUILD_ID_LABEL}</strong></td>
+    <td>{BUILD_ID}<br /><br /></td>
+</tr>
+<tr>
     <td align="right">{DEPARTMENT_ID_LABEL}</td>
     <td>{DEPARTMENT_ID}</td>
 </tr>
