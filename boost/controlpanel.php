@@ -23,9 +23,9 @@
 */
 
 $link[] = array(
-        'label'         => 'Inventory',
+        'label'         => 'System Inventory',
         'restricted'    => true,
-        'url'           => 'index.php?module=skeleton&amp;aop=menu',
+        'url'           => 'index.php?module=sysinventory',
         'description'   => 'Manage Computer System Inventory',
         'image'         => 'skeleton.png',
         'tab'           => 'content'

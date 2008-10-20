@@ -54,7 +54,10 @@
                 if (data != 'false') {
                     $('#expanded'+id).hide('fast');
                     $('#expander'+id).hide('fast');
-                    window.location = 'index.php?module=sysinventory&action=pdf';
+                    doPDF = window.confirm("System successfully removed from database./n  Would you like to produce a PDF Surplus Report?");
+                    if (doPDF) {
+                        window.location = 'index.php?module=sysinventory&action=pdf';
+                    }
                 }else{
                    alert('System could not be deleted.  Please contact ESS.');
                 }

@@ -44,10 +44,6 @@ $(document).ready(function() {
     <td>{RAM}</td>
 </tr>
 <tr>
-    <td align="right">{DUAL_MON_LABEL}</td>
-    <td>{DUAL_MON}</td>
-</tr>
-<tr>
     <td align="right">{MAC_LABEL}</td>
     <td>{MAC}</td>
 </tr>
@@ -68,14 +64,6 @@ $(document).ready(function() {
     <td>{TELEPHONE}</td>
 </tr>
 <tr>
-    <td align="right">{DOCKING_STAND_LABEL}</td>
-    <td>{DOCKING_STAND}</td>
-</tr>
-<tr>
-    <td align="right">{DEEP_FREEZE_LABEL}</td>
-    <td>{DEEP_FREEZE}</td>
-</tr>
-<tr>
     <td align="right">{PURCHASE_DATE_LABEL}</td>
     <td>{PURCHASE_DATE}</td>
 </tr>
@@ -86,6 +74,18 @@ $(document).ready(function() {
 <tr>
     <td align="right">{VLAN_LABEL}</td>
     <td>{VLAN}</td>
+</tr>
+<tr>
+    <td align="right">{DEEP_FREEZE_LABEL}</td>
+    <td>{DEEP_FREEZE}</td>
+</tr>
+<tr>
+    <td align="right">{DOCKING_STAND_LABEL}</td>
+    <td>{DOCKING_STAND}</td>
+</tr>
+<tr>
+    <td align="right">{DUAL_MON_LABEL}</td>
+    <td>{DUAL_MON}</td>
 </tr>
 <tr>
     <td align="right">{REFORMAT_LABEL}</td>
