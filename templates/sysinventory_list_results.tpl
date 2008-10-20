@@ -48,12 +48,15 @@
         confirmed = window.confirm('Are you sure you want to delete this entry?');
         if (confirmed) {
             id = this.id;
+            //url = 'index.php?module=sysinventory&action=pdf&sysid=' + id;
+            //window.location = url; 
             $.post('index.php', {'action' : 'delete_system', 'systemid' : id}, function(data) {
-                if (data == 'true') {
+                if (data != 'false') {
                     $('#expanded'+id).hide('fast');
                     $('#expander'+id).hide('fast');
+                    window.location = 'index.php?module=sysinventory&action=pdf';
                 }else{
-                   alert(data);
+                   alert('System could not be deleted.  Please contact ESS.');
                 }
             });
         }

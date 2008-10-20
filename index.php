@@ -99,6 +99,13 @@ switch ($req) {
         PHPWS_Core::initModClass('sysinventory','UI/Sysinventory_DefaultUI.php');
         Sysinventory_DefaultUI::showDefaults();
         break;
+    case 'pdf':
+        $filename = $_SESSION['filename'];
+        $path = '/tmp/';
+        header('Content-type: application/pdf');
+        header('Content-Disposition: attachment; filename="'.$filename.'"');
+        readfile($path.$filename);
+        exit;
     default:
         PHPWS_Core::initModClass('sysinventory','Sysinventory_Menu.php');
         Sysinventory_Menu::showMenu($error);

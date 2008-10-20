@@ -27,7 +27,7 @@ class Sysinventory_System {
     public $reformat;
     public $notes;
 
-    function Sysinventory_System($sysid=0) {
+    public function Sysinventory_System($sysid=0) {
         if ($sysid == 0) return;
 
         $db = new PHPWS_DB('sysinventory_system');
@@ -35,7 +35,7 @@ class Sysinventory_System {
         $result = $db->loadObject($this);
     }
 
-    function save() {
+    public function save() {
         $db = new PHPWS_DB('sysinventory_system');
         $result = $db->saveObject($this);
 
@@ -45,7 +45,7 @@ class Sysinventory_System {
         return $result;
     }
 
-    function delete(){
+    public function delete(){
         if(!isset($this->id) || $this->id == 0) return;
         $db = new PHPWS_DB('sysinventory_system');
         $db->addWhere('id',$this->id,'=');
@@ -57,21 +57,21 @@ class Sysinventory_System {
         }
     }
 
-    function getDepartment() {
+    public function getDepartment() {
         $db = new PHPWS_DB('sysinventory_department');
         $db->addWhere('id',$this->department_id);
         $dept = $db->select('row');
         return $dept['description'];
     }
 
-    function getLocation() {
+    public function getLocation() {
         $db = new PHPWS_DB('sysinventory_location');
         $db->addWhere('id',$this->location_id);
         $loc = $db->select('row');
         return $loc['description'];
     }
     
-    function get_row_tags() {
+    public function get_row_tags() {
        $rowTags = array();
 
        // edit and delete links
@@ -107,6 +107,41 @@ class Sysinventory_System {
 
         return $row;
     }
+
+    public function createPDF() {
+        $name = 'system' . $this->id . '.pdf';
+        $filename = '/tmp/' . $name;
+        $image = PHPWS_SOURCE_DIR . '/mod/sysinventory/img/surplus_form.jpg';
+        require('fpdf.php');
+        $pdf=new FPDF('P','mm','Letter');
+        $pdf->addPage();
+        $pdf->setFont('Arial','B',10);
+        $pdf->image($image,0,0,216,279,'jpg');
+        
+        // Add the "Description" field
+        $pdf->setXY(22,99);
+        $pdf->cell(150,0,'Computer System:  ' . $this->model,0,0);
+        
+        // Add the "Department" field
+        $pdf->setXY(115,225);
+        $pdf->cell(80,0,$this->getDepartment(),0,0);
+
+        // Add preparer's name
+        $pdf->setXY(115,234);
+        $pdf->cell(80,0,Current_User::getDisplayName(),0,0);
+
+        // Add the date
+        $pdf->setXY(125,242);
+        $pdf->cell(30,0,date("n/j/Y"),0,0);
+
+        // output to /tmp/ (or whatever directory we specified above
+        $pdf->output($filename);
+        
+        // Output to the browser
+
+        return $name;
+    }
+
 
     /********************
      * Static Functions *
@@ -153,9 +188,10 @@ class Sysinventory_System {
 
     function deleteSystem($sysId) {
         $sys = new Sysinventory_System($sysId);
+        $_SESSION['filename'] = $sys->createPDF();
         $result = $sys->delete();
         if($result) return 'true';
-        return 'Database Error';
+        return 'false';
     }
 
     
