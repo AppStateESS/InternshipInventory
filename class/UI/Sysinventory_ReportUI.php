@@ -10,8 +10,8 @@ class Sysinventory_ReportUI {
         // Check Permissions
         if (!Current_User::allow('sysinventory','admin')) {
            $error = 'You must be an administrator of at least one department and use the query builder to create a report.';
-            PHPWS_Core::initModClass('sysinventory','Sysinventory_Menu.php');
-            Sysinventory_Menu::showMenu($error);
+            PHPWS_Core::initModClass('sysinventory','Sysinventory_Error.php');
+            Sysinventory_Error::error($error);
             return;
         }
 

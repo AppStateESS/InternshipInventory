@@ -14,7 +14,20 @@ if (!Current_User::allow('sysinventory')) {
     return;
 }
 
-$error = NULL;
+$error =  NULL;
+
+// firefox/opera/safari/whatever is preferred, but ie7 is okay.  ie<6 cannot use this module. deal with it.
+$browser = $_SERVER['HTTP_USER_AGENT'];
+$ie7 = "/MSIE7/";
+$ie_fail = "/MSIE/";
+
+if (preg_match($ie7,$browser)) {
+    $error = 'It is STRONGLY reccommended that you use Mozilla Firefox to access the System Inventory';
+}else if (preg_match($ie_fail,$browser)) {
+    PHPWS_Core::initModClass('sysinventory','Sysinventory_Error.php');
+    Sysinventory_Error::browser_fail();
+    return;
+}
 
 if(!isset($_REQUEST['action'])){
     $req = "";
@@ -106,10 +119,6 @@ switch ($req) {
         header('Content-Disposition: attachment; filename="'.$filename.'"');
         readfile($path.$filename);
         exit;
-    case 'error':
-        PHPWS_Core::initModClass('sysinventory','Sysinventory_Error.php');
-        Sysinventory_Error::error('Holy shit you fucked up!');
-        break;
     default:
         PHPWS_Core::initModClass('sysinventory','Sysinventory_Menu.php');
         Sysinventory_Menu::showMenu($error);

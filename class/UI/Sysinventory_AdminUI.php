@@ -10,9 +10,9 @@ class Sysinventory_AdminUI {
     function showAdmins() {
         // permissions...
         if(!Current_User::isDeity()) {
-           PHPWS_Core::initModClass('sysinventory','Sysinventory_Menu.php');
+           PHPWS_Core::initModClass('sysinventory','Sysinventory_Error.php');
            $error = 'Uh Uh Uh! You didn\'t say the magic word!';
-           Sysinventory_Menu::showMenu($error);
+           Sysinventory_Error::error($error);
            return;
         }
 
