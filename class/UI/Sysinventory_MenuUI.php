@@ -8,12 +8,6 @@
     
     var $errorMsg = NULL;
 
-/*    function Sysinventory_MenuUI($error='&nbsp;') {
-        $menu = new Sysinventory_MenuUI;
-        $menu->errorMsg = $error;
-        return $menu;
-    }*/
-
     function display() {
 
         //housekeeping

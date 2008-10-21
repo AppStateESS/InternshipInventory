@@ -183,6 +183,12 @@ class Sysinventory_System {
             PHPWS_Core::initModClass('sysinventory','Sysinventory_Menu.php');
             Sysinventory_Menu::showMenu($result);
         }
+
+        // Update the department's last_update
+        PHPWS_Core::initModClass('sysinventory','Sysinventory_Department.php');
+        $dep = new Sysinventory_Department($sys->department_id);
+        $dep->update();
+
         PHPWS_Core::reroute('index.php?module=sysinventory&action=report&redir=1');
     }
 

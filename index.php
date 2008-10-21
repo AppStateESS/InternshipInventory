@@ -106,6 +106,10 @@ switch ($req) {
         header('Content-Disposition: attachment; filename="'.$filename.'"');
         readfile($path.$filename);
         exit;
+    case 'error':
+        PHPWS_Core::initModClass('sysinventory','Sysinventory_Error.php');
+        Sysinventory_Error::error('Holy shit you fucked up!');
+        break;
     default:
         PHPWS_Core::initModClass('sysinventory','Sysinventory_Menu.php');
         Sysinventory_Menu::showMenu($error);

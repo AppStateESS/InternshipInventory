@@ -36,6 +36,13 @@ class Sysinventory_Department {
         return TRUE;
     }
     
+    public function update() {
+        if(!is_null($this->id)) {
+            $this->last_update = time();
+            $result = $this->save();
+        }
+    }
+
     /********************
      * Static functions *
      ********************/
