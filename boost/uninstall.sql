@@ -6,4 +6,5 @@ DROP TABLE sysinventory_admin;
 DROP TABLE sysinventory_system CASCADE;
 DROP TABLE sysinventory_department CASCADE;
 DROP TABLE sysinventory_location CASCADE;
+DROP TABLE sysinventory_default_system CASCADE;
 COMMIT;
