@@ -11,8 +11,8 @@ class Sysinventory_SystemUI {
         // set the default page title.  Will be reset later if we're editing a system instead of adding a new one.
         $whatWeDo = "Add System";
 
-        javascript('/jquery/');
-        javascript('/modules/sysinventory/default_build_picker/');
+        javascript('jquery');
+        javascript('modules/sysinventory/default_build_picker');
 
         // Stuff for the template
         $tpl               = array();
