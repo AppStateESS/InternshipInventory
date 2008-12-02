@@ -8,7 +8,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     include '../../config/core/404.html';
     exit();
 }
-echo PHPWS_SOURCE_DIR;
+
 // Check some permissions
 if (!Current_User::allow('sysinventory')) {
     return;
