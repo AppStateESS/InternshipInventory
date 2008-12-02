@@ -1,4 +1,3 @@
-<script src="mod/sysinventory/javascript/ui.datepicker.js"></script>
 
 <script>
 $(document).ready(function() {

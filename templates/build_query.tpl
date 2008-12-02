@@ -1,68 +1,106 @@
 <div class="page-title">{PAGE_TITLE}</div>
 <br/>{HOME_LINK}
 {START_FORM}
-<table width="100%">
+<table width= "100%">
 <tr>
     <td align="right">{RESET}</td>
     <td>{SUBMIT}<br/><br/></td>
-</tr>
-<tr>
-    <td align="right">{DEPARTMENT_ID_LABEL}</td>
-    <td>{DEPARTMENT_ID}</td>
+
 </tr>
 
+</table>
+
+<table width= "100%">
+
+<h1>Department Info</h1>
+
 <tr>
+
+
+    <td align="right">{DEPARTMENT_ID_LABEL}</td>
+    <td>{DEPARTMENT_ID}</td>
+
+
+
     <td align="right">{LOCATION_ID_LABEL}</td>
     <td>{LOCATION_ID}</td>
-</tr>
-<tr>
+
+
+
     <td align="right">{ROOM_NUMBER_LABEL}</td>
     <td>{ROOM_NUMBER}</td>
 </tr>
+
+</table>
+
+<br>
+</br>
+
+
+<table width = "100%">
+
 <tr>
+<th>System Info</th>
+</tr><tr></tr>
+<tr>    
     <td align="right">{MODEL_LABEL}</td>
     <td>{MODEL}</td>
-</tr>
-<tr>
+    
+    
     <td align="right">{HDD_LABEL}</td>
     <td>{HDD}</td>
-</tr>
-<tr>
+    
+    
     <td align="right">{PROC_LABEL}</td>
     <td>{PROC}</td>
+
 </tr>
 <tr>
+    
     <td align="right">{RAM_LABEL}</td>
     <td>{RAM}</td>
-</tr>
-<tr>
+    
+    
     <td align="right">{MAC_LABEL}</td>
     <td>{MAC}</td>
-</tr>
-<tr>
+    
+    
     <td align="right">{PRINTER_LABEL}</td>
     <td>{PRINTER}</td>
 </tr>
+
+<tr>
+<th>User Info</th>
+</tr>
+
+
 <tr>
     <td align="right">{STAFF_MEMBER_LABEL}</td>
     <td>{STAFF_MEMBER}</td>
-</tr>
-<tr>
+    
+    
     <td align="right">{USERNAME_LABEL}</td>
     <td>{USERNAME}</td>
-</tr>
-<tr>
+    
+    
     <td align="right">{TELEPHONE_LABEL}</td>
     <td>{TELEPHONE}</td>
+    
 </tr>
-<tr>
+
+</table>
+
+<table width = "100%">
+    
     <td align="right">{PURCHASE_DATE_LABEL}</td>
     <td>{PURCHASE_DATE}</td>
 </tr>
+<!-- BEGIN rotation -->
 <tr>
     <td align="right">{ROTATION_LABEL}</td>
     <td>{ROTATION}</td>
 </tr>
+<!-- END rotation -->
 <tr>
     <td align="right">{VLAN_LABEL}</td>
     <td>{VLAN}</td>
