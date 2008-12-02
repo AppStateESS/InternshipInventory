@@ -13,7 +13,6 @@ class Sysinventory_SystemUI {
 
         javascript('/jquery/');
         javascript('/modules/sysinventory/default_build_picker/');
-        javascript('/modules/sysinventory/');
 
         // Stuff for the template
         $tpl               = array();

@@ -97,7 +97,7 @@
         
         // Add the jquery library (needed for datepicker)
         javascript('/jquery/');
-        javascript('/modules/sysinventory/');
+        javascript('/modules/sysinventory/default_build_picker/');
 
         Layout::addStyle('sysinventory','flora.datepicker.css');
         Layout::addStyle('sysinventory','style.css');
