@@ -13,6 +13,8 @@ class Sysinventory_SystemUI {
 
         javascript('/jquery/');
         javascript('/modules/sysinventory/default_build_picker/');
+        javascript('/modules/sysinventory/ui.datepicker.js');
+        javascript('/modules/sysinventory/ui.jquery.js');
 
         // Stuff for the template
         $tpl               = array();
