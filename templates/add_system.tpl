@@ -1,4 +1,3 @@
-
 <script>
 $(document).ready(function() {
     $('#add_system_purchase_date').datepicker();
