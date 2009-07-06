@@ -18,7 +18,7 @@ $error =  NULL;
 
 // firefox/opera/safari/whatever is preferred, but ie7 is okay.  ie<6 cannot use this module. deal with it.
 $browser = $_SERVER['HTTP_USER_AGENT'];
-$ie7 = "/MSIE 7/";
+$ie7 = "/MSIE [789]/";
 $ie_fail = "/MSIE/";
 
 if (preg_match($ie7,$browser)) {
