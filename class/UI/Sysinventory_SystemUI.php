@@ -102,7 +102,7 @@ class Sysinventory_SystemUI {
         $form->addCheck('deep_freeze','yes');
         $form->setLabel('deep_freeze','Deep Freeze?');
         $form->addText('purchase_date');
-        $form->setReadOnly('purchase_date');
+        //$form->setReadOnly('purchase_date');
         $form->setLabel('purchase_date','Purchase Date:');
         $form->setRequired('purchase_date');
         $form->addText('vlan');

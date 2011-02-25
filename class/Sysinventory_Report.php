@@ -28,7 +28,7 @@
         $pager->setTemplate('sysinventory_list_results.tpl');
         $pager->setReportRow('report_row');
         $pager->allowPartialReport(false);
-        
+
         // Make an array of possible request variables
         $fields = array('model',
                         'hdd',
@@ -76,7 +76,7 @@
                 $query[$field] = $data[$field];
             }
         }
-        
+
         // now session that request
         $_SESSION['query'] = $query;
 

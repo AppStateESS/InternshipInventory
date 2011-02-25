@@ -70,7 +70,19 @@ class Sysinventory_System {
         $loc = $db->select('row');
         return $loc['description'];
     }
-    
+
+    public function getDocuments()
+    {
+        PHPWS_Core::initModClass('sysinventory', 'Sysinventory_Document.php');
+        $db = new PHPWS_DB('sysinventory_document');
+        $db->addWhere('system_id', $this->id);
+        $result = $db->getObjects('Sysinventory_Document');
+        if(PHPWS_Error::logIfError($result)){
+            return NULL;
+        }
+        return $result;
+    }
+   
     public function get_row_tags() {
        $rowTags = array();
 
@@ -81,6 +93,8 @@ class Sysinventory_System {
        $rowTags['DEPARTMENT'] = $this->getDepartment();
        $rowTags['LOCATION'] = $this->getLocation();
 
+       // TODO: Get documents attached to this system.
+       
        return $rowTags;
     }
 
