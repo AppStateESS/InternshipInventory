@@ -95,27 +95,30 @@
     <td>{PURCHASE_DATE}</td>
 </tr>
 <tr>
-    <td colspan=5>
+    <td colspan=4>
         <!-- EVERYTHING THAT GETS EXPANDED -->
         <div class="expanded" id="expanded{ID}">
-            <table border=0>
+            <table>
                 <tr>
-                    <td class="exptd"><strong>Hard Drive:</strong> {HDD}</td><td class="exptd"><strong>Processor:</strong> {PROC}</td><td class="exptd"><strong>RAM:</strong> {RAM}</td>
+                    <td><strong>Hard Drive:</strong> {HDD}</td><td><strong>Processor:</strong> {PROC}</td><td><strong>RAM:</strong> {RAM}</td>
+                    <td rowspan=6><strong>Documents:</strong> {DOC_LIST}</td>
                 </tr>
                 <tr>
-                    <td class="exptd"><strong>Dual Monitor?:</strong> {DUAL_MON}</td><td class="exptd"><strong>MAC Address:</strong> {MAC}</td><td colspan=3><strong>Reformat?:</strong> {REFORMAT}</td>
+                    <td><strong>Dual Monitor?:</strong> {DUAL_MON}</td><td><strong>MAC Address:</strong> {MAC}</td><td><strong>Reformat?:</strong> {REFORMAT}</td>
                 </tr>
                 <tr>
-                    <td class="exptd"><strong>Printer:</strong> {PRINTER}</td><td class="exptd"><strong>Docking Stand?:</strong> {DOCKING_STAND}</td><td class="exptd"><strong>Deep Freeze?:</strong> {DEEP_FREEZE}</td>
+                    <td><strong>Printer:</strong> {PRINTER}</td><td><strong>Docking Stand?:</strong> {DOCKING_STAND}</td><td><strong>Deep Freeze?:</strong> {DEEP_FREEZE}</td>
                 </tr>
                 <tr>
-                    <td class="exptd"><strong>Telephone:</strong> {TELEPHONE}</td><td class="exptd"><strong>Rotation:</strong> {ROTATION}</td><td class="exptd"><strong>VLAN:</strong> {VLAN}</td>
+                    <td><strong>Telephone:</strong> {TELEPHONE}</td><td><strong>Rotation:</strong> {ROTATION}</td><td ><strong>VLAN:</strong> {VLAN}</td>
                 </tr>
                 <tr>
-                    <td class="exptd" colspan=3><strong>Notes:</strong><br/>&nbsp;&nbsp;<div style="width:500px;">{NOTES}</div></td>
+                    <td colspan=3><strong>Notes:</strong><br/>&nbsp;&nbsp;
+                     <div style="width:500px;">{NOTES}</div>
+                    </td>
                 </tr>
                 <tr>
-                    <td class="exptd" colspan=3><strong>{EDIT} | {DELETE}</strong></td>
+                    <td colspan=3><strong>{EDIT} | {DELETE}</strong></td>
                 </tr>
             </table>
         </div>

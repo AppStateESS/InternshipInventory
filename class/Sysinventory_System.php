@@ -70,32 +70,56 @@ class Sysinventory_System {
         $loc = $db->select('row');
         return $loc['description'];
     }
-
+    
+    /**
+     * Get Document objects related to this System.
+     */
     public function getDocuments()
     {
         PHPWS_Core::initModClass('sysinventory', 'Sysinventory_Document.php');
         $db = new PHPWS_DB('sysinventory_document');
         $db->addWhere('system_id', $this->id);
         $result = $db->getObjects('Sysinventory_Document');
+
         if(PHPWS_Error::logIfError($result)){
             return NULL;
         }
+
         return $result;
     }
    
-    public function get_row_tags() {
-       $rowTags = array();
+    public function get_row_tags() 
+    {
+        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+        PHPWS_Core::initModClass('sysinventory', 'Sysinventory_Document.php');
 
-       // edit and delete links
-       $rowTags['EDIT'] = PHPWS_Text::moduleLink('Edit','sysinventory',array('action'=>'edit_system','id'=>$this->id,'redir'=>'1'));
-       $rowTags['DELETE'] = '<a href="javascript:void(0);" class="delete" id=' . $this->id . '>Delete</a>'; 
-       // get department and location names 
-       $rowTags['DEPARTMENT'] = $this->getDepartment();
-       $rowTags['LOCATION'] = $this->getLocation();
+        $rowTags = array();
+        $tmpTpl = array();
 
-       // TODO: Get documents attached to this system.
+        // edit and delete links
+        $rowTags['EDIT'] = PHPWS_Text::moduleLink('Edit','sysinventory',array('action'=>'edit_system','id'=>$this->id,'redir'=>'1'));
+        $rowTags['DELETE'] = '<a href="javascript:void(0);" class="delete" id=' . $this->id . '>Delete</a>'; 
+        // get department and location names 
+        $rowTags['DEPARTMENT'] = $this->getDepartment();
+        $rowTags['LOCATION'] = $this->getLocation();
+
+        // Get 'Add Document' Link.
+        $folder = new Sysinventory_Folder(Sysinventory_Document::getFolderId());
+        $tmpTpl['ADD_DOC'] = $folder->documentUpload($this->id);
        
-       return $rowTags;
+        // Get documents attached to this system.
+        $docs = $this->getDocuments();
+
+        if(!is_null($docs)){
+            // Build the list of links
+            foreach($docs as $doc){
+                $tmpTpl['documents'][] = array('DOCUMENT' => $doc->getDownloadLink());
+            }
+        }
+
+        $rowTags['DOC_LIST'] = PHPWS_Template::process($tmpTpl, 'sysinventory', 'document_list.tpl');
+
+        return $rowTags;
     }
 
     public function report_row() {
@@ -213,10 +237,35 @@ class Sysinventory_System {
         if($result) return 'true';
         return 'false';
     }
-
-    
-
-    
-
 }
+
+PHPWS_Core::initModClass('filecabinet', 'Folder.php');
+class Sysinventory_Folder extends Folder 
+{
+    /**
+     * Similar to Folder::uploadLink except this one takes a system id as parameter
+     * and links to sysinventory module instead of filecabinet.
+     */
+    public function documentUpload($sysId){
+        $vars['width']   = 600;
+        $vars['height']  = 600;
+
+        $link_var['folder_id'] = $this->id;
+        $link_var['action'] = 'upload_document_form';
+        $link_var['sysId'] = $sysId;
+        $label = dgettext('filecabinet', 'Add document');
+
+        $link = new PHPWS_Link(null, 'sysinventory', $link_var, true);
+        $link->convertAmp(false);
+        $link->setSalted();
+        $vars['address'] = $link->getAddress();
+        $vars['title'] = & $label;
+
+        $vars['label']   = $label;
+        $vars['type']    = 'button';
+
+        return javascript('open_window', $vars);
+    }
+}
+
 ?>

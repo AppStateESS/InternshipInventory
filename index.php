@@ -119,6 +119,17 @@ switch ($req) {
         header('Content-Disposition: attachment; filename="'.$filename.'"');
         readfile($path.$filename);
         exit;
+    case 'upload_document_form':
+        PHPWS_Core::initModClass('sysinventory', 'Sysinventory_Document.php');
+        $docManager = new Sysinventory_Document_Manager();
+        $docManager->edit();
+        break;
+    case 'post_document_upload':
+        PHPWS_Core::initModClass('sysinventory', 'Sysinventory_Document.php');
+        $docManager = new Sysinventory_Document_Manager();
+        $docManager->postDocumentUpload();
+        break;
+     
     default:
         PHPWS_Core::initModClass('sysinventory','Sysinventory_Menu.php');
         Sysinventory_Menu::showMenu($error);

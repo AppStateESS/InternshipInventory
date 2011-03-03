@@ -60,7 +60,7 @@ CREATE TABLE sysinventory_default_system (
 CREATE TABLE sysinventory_document (
     id int NOT NULL,
     system_id int NOT NULL,
-    path varchar NOT NULL,
+    document_fc_id int NOT NULL,
     PRIMARY KEY(id)
 );
 
@@ -68,4 +68,5 @@ ALTER TABLE sysinventory_system ADD FOREIGN KEY (department_id) REFERENCES sysin
 ALTER TABLE sysinventory_system ADD FOREIGN KEY (location_id) REFERENCES sysinventory_location(id);
 ALTER TABLE sysinventory_admin ADD FOREIGN KEY (department_id) REFERENCES sysinventory_department(id);
 ALTER TABLE sysinventory_document ADD FOREIGN KEY (system_id) REFERENCES sysinventory_system(id);
+ALTER TABLE sysinventory_document ADD FOREIGN KEY (document_fc_id) REFERENCES documents(id);
 COMMIT;
