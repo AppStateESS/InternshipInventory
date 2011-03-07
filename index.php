@@ -133,6 +133,7 @@ switch ($req) {
         PHPWS_Core::initModClass('sysinventory', 'Sysinventory_Document.php');
         $doc = new Sysinventory_Document($_REQUEST['doc_id']);
         $doc->delete();
+        PHPWS_Core::reroute('index.php?module=sysinventory&action=report&redir=1');
         break;
     default:
         PHPWS_Core::initModClass('sysinventory','Sysinventory_Menu.php');
