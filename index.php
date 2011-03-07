@@ -120,16 +120,20 @@ switch ($req) {
         readfile($path.$filename);
         exit;
     case 'upload_document_form':
-        PHPWS_Core::initModClass('sysinventory', 'Sysinventory_Document.php');
+        PHPWS_Core::initModClass('sysinventory', 'Sysinventory_Document_Manager.php');
         $docManager = new Sysinventory_Document_Manager();
         $docManager->edit();
         break;
     case 'post_document_upload':
-        PHPWS_Core::initModClass('sysinventory', 'Sysinventory_Document.php');
+        PHPWS_Core::initModClass('sysinventory', 'Sysinventory_Document_Manager.php');
         $docManager = new Sysinventory_Document_Manager();
         $docManager->postDocumentUpload();
         break;
-     
+    case 'delete_document':
+        PHPWS_Core::initModClass('sysinventory', 'Sysinventory_Document.php');
+        $doc = new Sysinventory_Document($_REQUEST['doc_id']);
+        $doc->delete();
+        break;
     default:
         PHPWS_Core::initModClass('sysinventory','Sysinventory_Menu.php');
         Sysinventory_Menu::showMenu($error);

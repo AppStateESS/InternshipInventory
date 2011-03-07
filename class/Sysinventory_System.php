@@ -92,6 +92,7 @@ class Sysinventory_System {
     {
         PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
         PHPWS_Core::initModClass('sysinventory', 'Sysinventory_Document.php');
+        PHPWS_Core::initModClass('sysinventory', 'Sysinventory_Folder.php');
 
         $rowTags = array();
         $tmpTpl = array();
@@ -105,6 +106,7 @@ class Sysinventory_System {
 
         // Get 'Add Document' Link.
         $folder = new Sysinventory_Folder(Sysinventory_Document::getFolderId());
+        // A folder should always be returned if user has run the update script!
         $tmpTpl['ADD_DOC'] = $folder->documentUpload($this->id);
        
         // Get documents attached to this system.
@@ -113,7 +115,8 @@ class Sysinventory_System {
         if(!is_null($docs)){
             // Build the list of links
             foreach($docs as $doc){
-                $tmpTpl['documents'][] = array('DOCUMENT' => $doc->getDownloadLink());
+                $tmpTpl['documents'][] = array('DOCUMENT' => $doc->getDownloadLink(),
+                                               'DELETE' => $doc->getDeleteLink());
             }
         }
 
@@ -238,34 +241,4 @@ class Sysinventory_System {
         return 'false';
     }
 }
-
-PHPWS_Core::initModClass('filecabinet', 'Folder.php');
-class Sysinventory_Folder extends Folder 
-{
-    /**
-     * Similar to Folder::uploadLink except this one takes a system id as parameter
-     * and links to sysinventory module instead of filecabinet.
-     */
-    public function documentUpload($sysId){
-        $vars['width']   = 600;
-        $vars['height']  = 600;
-
-        $link_var['folder_id'] = $this->id;
-        $link_var['action'] = 'upload_document_form';
-        $link_var['sysId'] = $sysId;
-        $label = dgettext('filecabinet', 'Add document');
-
-        $link = new PHPWS_Link(null, 'sysinventory', $link_var, true);
-        $link->convertAmp(false);
-        $link->setSalted();
-        $vars['address'] = $link->getAddress();
-        $vars['title'] = & $label;
-
-        $vars['label']   = $label;
-        $vars['type']    = 'button';
-
-        return javascript('open_window', $vars);
-    }
-}
-
 ?>
