@@ -45,14 +45,16 @@ class Sysinventory_Document
         $result = $db->delete();
 
         if(PHPWS_Error::logIfError($result)){
-            return PHPWS_DB::rollback();
+            PHPWS_DB::rollback();
+            return FALSE;
         }
         
         $doc = new PHPWS_Document($this->document_fc_id);
         $result = $doc->delete();
 
         if(PHPWS_Error::logIfError($result)){
-            return PHPWS_DB::rollback();
+            PHPWS_DB::rollback();
+            return FALSE;
         }
 
         PHPWS_DB::commit();

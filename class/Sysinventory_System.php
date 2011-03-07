@@ -45,14 +45,29 @@ class Sysinventory_System {
         return $result;
     }
 
-    public function delete(){
+    public function delete()
+    {
+        PHPWS_DB::begin();
+
+        // Delete documents associated with this system.
+        $docs = $this->getDocuments();
+        foreach($docs as $doc){
+            if($doc->delete() === FALSE){
+                PHPWS_DB::rollback();
+                return FALSE;
+            }
+        }
+
+        // Delete the system.
         if(!isset($this->id) || $this->id == 0) return;
         $db = new PHPWS_DB('sysinventory_system');
         $db->addWhere('id',$this->id,'=');
         $db->delete();
         if($db->affectedRows() == 1) {
+            PHPWS_DB::commit();
             return TRUE;
         }else{
+            PHPWS_DB::rollback();
             return FALSE;
         }
     }
