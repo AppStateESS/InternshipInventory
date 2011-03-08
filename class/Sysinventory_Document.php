@@ -62,13 +62,23 @@ class Sysinventory_Document
     }
 
     /**
-     * Get the link to down this document.
+     * Get the link to download this document.
      */
     public function getDownloadLink($text=NULL)
     {
         PHPWS_Core::initModClass('filecabinet', 'Document.php');
         $doc = new PHPWS_Document($this->document_fc_id);
         return $doc->getViewLink('download');
+    }
+
+    /**
+     * Get the icon link to edit this document. 
+     */
+    public function getEditLink()
+    {
+        PHPWS_Core::initModClass('filecabinet', 'Document.php');
+        $doc = new PHPWS_Document($this->document_fc_id);
+        return $doc->editLink(true);
     }
 
     /**
@@ -84,7 +94,7 @@ class Sysinventory_Document
         $jsVars = array();
         $jsVars['QUESTION'] = 'Are you sure you want to delete this document?';
         $jsVars['ADDRESS']  = $link->getAddress();
-        $jsVars['LINK']     = '<img src="images/mod/filecabinet/delete.png"/>';
+        $jsVars['LINK']     = '<img src="images/mod/filecabinet/delete.png" title="Delete" />';
         return javascript('confirm', $jsVars);
     }
 

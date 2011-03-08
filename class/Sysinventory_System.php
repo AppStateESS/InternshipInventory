@@ -131,7 +131,8 @@ class Sysinventory_System {
             // Build the list of links
             foreach($docs as $doc){
                 $tmpTpl['documents'][] = array('DOCUMENT' => $doc->getDownloadLink(),
-                                               'DELETE' => $doc->getDeleteLink());
+                                               'EDIT'     => $doc->getEditLink(),
+                                               'DELETE'   => $doc->getDeleteLink());
             }
         }
 

@@ -1,6 +1,6 @@
-<ul>
+<ul class="document-list">
 <!-- BEGIN documents -->
-<li>{DOCUMENT} {DELETE}</li>
+<li>{DOCUMENT} {EDIT}{DELETE}</li>
 <!-- END documents -->
-<li>{ADD_DOC}</li>
+{ADD_DOC}
 </ul>
