@@ -78,7 +78,21 @@ class Sysinventory_Document
     {
         PHPWS_Core::initModClass('filecabinet', 'Document.php');
         $doc = new PHPWS_Document($this->document_fc_id);
-        return $doc->editLink(true);
+
+        $vars['document_id'] = $doc->id;
+        $vars['folder_id']   = $doc->folder_id;
+        $vars['action'] = 'upload_document_form';
+        $vars['sysId'] = $this->system_id;
+        $link = new PHPWS_Link(null, 'sysinventory', $vars, true);
+        $link->setSalted(1);
+
+        $js['address'] = $link->getAddress();
+        $js['width'] = 550;
+        $js['height'] = 500;
+
+        $js['label'] =sprintf('<img src="images/mod/filecabinet/edit.png" title="%s" />', dgettext('filecabinet', 'Edit document'));
+
+        return javascript('open_window', $js);
     }
 
     /**

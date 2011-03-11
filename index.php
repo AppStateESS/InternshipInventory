@@ -35,6 +35,13 @@ if(!isset($_REQUEST['action'])){
     $req = $_REQUEST['action'];
 }
 
+
+// Show notifications, except when a redirect has occurred.
+PHPWS_Core::initModClass('sysinventory', 'Sysinventory_Util.php');
+PHPWS_Core::initModClass('sysinventory', 'UI/Sysinventory_NotifyUI.php');
+Sysinventory_NotifyUI::display();
+
+// Show requested page.
 switch ($req) {
     case 'edit_system':
         PHPWS_Core::initModClass('sysinventory','UI/Sysinventory_SystemUI.php');
@@ -45,11 +52,11 @@ switch ($req) {
                 $whatWeDo = 'Edit System';
                 }
             PHPWS_Core::initModClass('sysinventory','Sysinventory_System.php');
+            PHPWS_Core::initModClass('sysinventory','UI/Sysinventory_ReportUI.php');
             Sysinventory_System::addSystem($sysid);
         }
         Sysinventory_SystemUI::showEditSystem();
         break;
-    //this one is for the AJAX delete on the report page, so it doesn't call a new UI class
     case 'delete_system':
         PHPWS_Core::initModClass('sysinventory','Sysinventory_System.php');
         echo Sysinventory_System::deleteSystem($_REQUEST['systemid']);
@@ -133,7 +140,8 @@ switch ($req) {
         PHPWS_Core::initModClass('sysinventory', 'Sysinventory_Document.php');
         $doc = new Sysinventory_Document($_REQUEST['doc_id']);
         $doc->delete();
-        PHPWS_Core::reroute('index.php?module=sysinventory&action=report&redir=1');
+        NQ::simple('sysinventory', SYSI_SUCCESS, 'Document deleted.');
+        Sysinventory_Util::reroute('index.php?module=sysinventory&action=report&redir=1');
         break;
     default:
         PHPWS_Core::initModClass('sysinventory','Sysinventory_Menu.php');

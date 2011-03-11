@@ -25,3 +25,31 @@
     vertical-align: middle;
     margin-top: -2px;
 }
+
+/** Notification styles **/
+.nq-container {
+    padding: 5px;
+    margin: 5px;
+    font-weight: bold;
+    text-align: center;
+    font-size: 10pt;
+}
+.notification.nq-success {
+    background: #66FF66;
+    border: 1px solid #00DD00;
+}
+
+.notification.nq-error {
+    background: #FF6666;
+    border: 1px solid #DD0000;
+}
+
+.notification.nq-warning {
+    background: #FFFF66;
+    border: 1px solid #DDDD00;
+}
+
+.notification.nq-unknown {
+    background: #E8E8E8;
+    border: 1px solid #777777;
+}

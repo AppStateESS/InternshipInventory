@@ -18,4 +18,10 @@
     <version>2.2.7</version>
     <url>http://phpwebsite.appstate.edu/downloads/modules/filecabinet/</url>
   </module>
+  <module>
+    <title>notification</title>
+    <properName>Notification</properName>
+    <version>0.0.1</version>
+    <url>http://phpwebsite.appstate.edu/downloads/modules/notification/</url>
+  </module>
 </dependency>

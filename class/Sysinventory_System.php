@@ -51,10 +51,12 @@ class Sysinventory_System {
 
         // Delete documents associated with this system.
         $docs = $this->getDocuments();
-        foreach($docs as $doc){
-            if($doc->delete() === FALSE){
-                PHPWS_DB::rollback();
-                return FALSE;
+        if(!is_null($docs)){
+            foreach($docs as $doc){
+                if($doc->delete() === FALSE){
+                    PHPWS_DB::rollback();
+                    return FALSE;
+                }
             }
         }
 
@@ -204,13 +206,16 @@ class Sysinventory_System {
      * Static Functions *
      ********************/
 
-    function addSystem($id) {
+    public static function addSystem($id) 
+    {
         PHPWS_Core::initModClass('sysinventory','Sysinventory_System.php');
+        PHPWS_Core::initModClass('sysinventory','Sysinventory_Department.php');
+        PHPWS_Core::initModClass('sysinventory','Sysinventory_Util.php');
+
         if(!isset($_REQUEST['dual_mon'])) $_REQUEST['dual_mon'] = 'no';
         if(!isset($_REQUEST['docking_stand'])) $_REQUEST['docking_stand'] = 'no';
         if(!isset($_REQUEST['deep_freeze'])) $_REQUEST['deep_freeze'] = 'no';
         if(!isset($_REQUEST['reformat'])) $_REQUEST['reformat'] = 'no';
-
 
         $sys = new Sysinventory_System;
 
@@ -236,24 +241,31 @@ class Sysinventory_System {
         $sys->notes               = $_REQUEST['notes'];
 
         $result = $sys->save();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::logIfError($result)) {
             PHPWS_Core::initModClass('sysinventory','Sysinventory_Menu.php');
-            Sysinventory_Menu::showMenu($result);
+            return Sysinventory_Util::reroute('index.php?module=sysinventory&action=report&redir=1');
         }
 
         // Update the department's last_update
-        PHPWS_Core::initModClass('sysinventory','Sysinventory_Department.php');
         $dep = new Sysinventory_Department($sys->department_id);
         $dep->update();
 
-        PHPWS_Core::reroute('index.php?module=sysinventory&action=report&redir=1');
+        if($id == 0){
+            // A new system was added.
+            NQ::simple('sysinventory', SYSI_SUCCESS, 'System added');
+        }
+
+        Sysinventory_Util::reroute('index.php?module=sysinventory&action=report&redir=1');
     }
 
-    function deleteSystem($sysId) {
+    public static function deleteSystem($sysId) 
+    {
         $sys = new Sysinventory_System($sysId);
         $_SESSION['filename'] = $sys->createPDF();
         $result = $sys->delete();
-        if($result) return 'true';
+        if($result){
+            return 'true';
+        }
         return 'false';
     }
 }

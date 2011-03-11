@@ -139,13 +139,27 @@ class Sysinventory_Document_Manager extends FC_Document_Manager
 
             $this->document->moveToFolder();
             
-            // Save new Sysinventory_Document in database.
-            PHPWS_Core::initModClass('sysinventory', 'Sysinventory_Document.php');
-            $doc = new Sysinventory_Document();
-            $doc->system_id = $_REQUEST['sysId'];
-            $doc->document_fc_id = $this->document->id;
-            $doc->save();
+            // If the document's id is set in the request
+            // then we are updating a file. Not need to insert 
+            // it into database.
+            if(!isset($_REQUEST['document_id'])){
+                // Save Sysinventory_Document in database.
+                PHPWS_Core::initModClass('sysinventory', 'Sysinventory_Document.php');
+                $doc = new Sysinventory_Document();
+                $doc->system_id = $_REQUEST['sysId'];
+                $doc->document_fc_id = $this->document->id;
+                $result = $doc->save();
+            }
 
+            // Choose the proper notification text...
+            if($_REQUEST['document_id'] && $result){
+                NQ::simple('sysinventory', SYSI_SUCCESS, "File updated.");
+            }else if($result){
+                NQ::simple('sysinventory', SYSI_SUCCESS, "File uploaded.");
+            }else if(PHPWS_Error::logIfError($result)){
+                NQ::simple('sysinventory', SYSI_ERROR, $result->toString());
+            }
+            
             if (!isset($_POST['im'])) {
                 javascript('close_refresh');
             } else {
