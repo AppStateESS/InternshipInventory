@@ -4,7 +4,7 @@
  */
 
  if (!isset($_REQUEST['module'])) {
-     $_REQUEST['module'] = 'sysinventory';
+     $_REQUEST['module'] = 'intern';
  }
 
 ?>

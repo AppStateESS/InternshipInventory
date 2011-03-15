@@ -1,8 +1,8 @@
 <?php
 
-/**
- * @author Micah Carter <mcarter at tux dot appstate dot edu>
-**/
+  /**
+   * @author Micah Carter <mcarter at tux dot appstate dot edu>
+   **/
 
 function sysinventory_update(&$content, $currentVersion)
 {
@@ -11,7 +11,7 @@ function sysinventory_update(&$content, $currentVersion)
             $files = array();
             $files[] = 'templates/add_system.tpl';
             
-            PHPWS_Boost::updateFiles($files, 'sysinventory');
+            PHPWS_Boost::updateFiles($files, 'intern');
 
         case version_compare($currentVersion, '0.0.3', '<'):
             $db = new PHPWS_DB;

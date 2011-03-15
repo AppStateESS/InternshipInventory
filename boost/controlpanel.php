@@ -1,6 +1,6 @@
 <?php
 /**
-    * skeleton - phpwebsite module
+    * intern - phpwebsite module
     *
     * See docs/AUTHORS and docs/COPYRIGHT for relevant info.
     *
@@ -23,10 +23,10 @@
 */
 
 $link[] = array(
-        'label'         => 'System Inventory',
+        'label'         => 'Intern Inventory',
         'restricted'    => true,
-        'url'           => 'index.php?module=sysinventory',
-        'description'   => 'Manage Computer System Inventory',
+        'url'           => 'index.php?module=intern',
+        'description'   => 'Manage Intern Inventory',
         'image'         => 'skeleton.png',
         'tab'           => 'content'
         );
