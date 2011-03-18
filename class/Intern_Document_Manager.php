@@ -1,22 +1,22 @@
 <?php
 
 /**
- * Sysinventory_Document_Manager
+ * Document_Manager
  *
  * A subclass is needed because we need to do a little
  * extra work when a file is submitted. Also, the ID
- * of the new file is necessary to insert a new line in sysinventory_document.
+ * of the new file is necessary to insert a new line in intern_document.
  *
  * @author Robert Bost <bostrt at tux dot appstate dot edu>
  */
 PHPWS_Core::initModClass('filecabinet', 'Document_Manager.php');
-class Sysinventory_Document_Manager extends FC_Document_Manager
+class Intern_Document_Manager extends FC_Document_Manager
 {
     /**
      * @Override FC_Document_Manager::edit()
      *
      * This is a copy and paste of the overridden function 
-     * except that the module for the form is set to sysinventory.
+     * except that the module for the form is set to intern.
      * Also, check if the folder has been set. If not create
      * one for the user and load it.
      */
@@ -27,14 +27,14 @@ class Sysinventory_Document_Manager extends FC_Document_Manager
         }
 
         // If the folder ID is zero then it was not found
-        // when Sysinventory_Folder::documentUpload() was called.
+        // when Intern_Folder::documentUpload() was called.
         // Create one and load it.
         if($this->folder->id == 0){
-            PHPWS_Core::initModClass('sysinventory', 'Sysinventory_Folder.php');
+            PHPWS_Core::initModClass('intern', 'Intern_Folder.php');
             PHPWS_Core::requireInc('filecabinet', 'defines.php');
-            $folder = new Sysinventory_Folder();
-            $folder->module_created = 'sysinventory';
-            $folder->title = 'system documents';
+            $folder = new Intern_Folder();
+            $folder->module_created = 'intern';
+            $folder->title = 'intern documents';
             $folder->public_folder = FALSE;
             $folder->ftype = DOCUMENT_FOLDER;
             $folder->loadDirectory();
@@ -45,8 +45,8 @@ class Sysinventory_Document_Manager extends FC_Document_Manager
         PHPWS_Core::initCoreClass('File.php');
 
         $form = new PHPWS_FORM;
-        $form->addHidden('module',    'sysinventory');
-        $form->addHidden('sysId',     $_REQUEST['sysId']);
+        $form->addHidden('module',    'intern');
+        $form->addHidden('internship',     $_REQUEST['internship']);
         $form->addHidden('action',    'post_document_upload');
         $form->addHidden('ms',        $this->max_size);
         $form->addHidden('folder_id', $this->folder->id);
@@ -110,7 +110,7 @@ class Sysinventory_Document_Manager extends FC_Document_Manager
      * @Override FC_Document_Manager::postDocumentUpload().
      *
      * This is a copy and past of the overriden function except
-     * that we now create a new Sysinventory_Document object
+     * that we now create a new Intern_Document object
      * and save it to databse.
      */
     public function postDocumentUpload()
@@ -143,21 +143,21 @@ class Sysinventory_Document_Manager extends FC_Document_Manager
             // then we are updating a file. Not need to insert 
             // it into database.
             if(!isset($_REQUEST['document_id'])){
-                // Save Sysinventory_Document in database.
-                PHPWS_Core::initModClass('sysinventory', 'Sysinventory_Document.php');
-                $doc = new Sysinventory_Document();
-                $doc->system_id = $_REQUEST['sysId'];
+                // Save Intern_Document in database.
+                PHPWS_Core::initModClass('intern', 'Intern_Document.php');
+                $doc = new Intern_Document();
+                $doc->internship_id = $_REQUEST['internship'];
                 $doc->document_fc_id = $this->document->id;
                 $result = $doc->save();
             }
 
             // Choose the proper notification text...
             if($_REQUEST['document_id'] && $result){
-                NQ::simple('sysinventory', SYSI_SUCCESS, "File updated.");
+                NQ::simple('intern', INTERN_SUCCESS, "File updated.");
             }else if($result){
-                NQ::simple('sysinventory', SYSI_SUCCESS, "File uploaded.");
+                NQ::simple('intern', INTERN_SUCCESS, "File uploaded.");
             }else if(PHPWS_Error::logIfError($result)){
-                NQ::simple('sysinventory', SYSI_ERROR, $result->toString());
+                NQ::simple('intern', INTERN_ERROR, $result->toString());
             }
             
             if (!isset($_POST['im'])) {

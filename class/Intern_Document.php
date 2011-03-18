@@ -1,22 +1,32 @@
 <?php
 
   /**
-   * Manages documents and uploading documents for Systems.
+   * Intern_Document
+   *
+   * Manages documents and uploading documents for internships.
    *
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
 
-class Sysinventory_Document
+PHPWS_Core::initModClass('intern', 'Model.php');
+class Intern_Document extends Model
 {
     public $id;
-    public $system_id;
+    public $internship_id;
     public $document_fc_id; // File cabinet ID. References documents(id).
+
+    /**
+     * @Override Model::getDb
+     */
+    public function getDb(){
+        return new PHPWS_DB('intern_document');
+    }
 
     public function __construct($id = NULL)
     {
         if(is_null($id)) return;
 
-        $db = new PHPWS_DB('sysinventory_document');
+        $db = self::getDb();
         $db->addWhere('id', $id);
         $db->loadObject($this);
     }
@@ -25,7 +35,7 @@ class Sysinventory_Document
      * Save row in database for this object.
      */
     public function save(){
-        $db = new PHPWS_DB('sysinventory_document');
+        $db = self::getDb();
         $result = $db->saveObject($this);
 
         return $result;
@@ -40,7 +50,7 @@ class Sysinventory_Document
         PHPWS_Core::initModClass('filecabinet', 'Document.php');
 
         PHPWS_DB::begin();
-        $db = new PHPWS_DB('sysinventory_document');
+        $db = self::getDb();
         $db->addWhere('id',$this->id);
         $result = $db->delete();
 
@@ -82,8 +92,8 @@ class Sysinventory_Document
         $vars['document_id'] = $doc->id;
         $vars['folder_id']   = $doc->folder_id;
         $vars['action'] = 'upload_document_form';
-        $vars['sysId'] = $this->system_id;
-        $link = new PHPWS_Link(null, 'sysinventory', $vars, true);
+        $vars['internship'] = $this->internship_id;
+        $link = new PHPWS_Link(null, 'intern', $vars, true);
         $link->setSalted(1);
 
         $js['address'] = $link->getAddress();
@@ -103,7 +113,7 @@ class Sysinventory_Document
         $vars = array();
         $vars['doc_id'] = $this->id;
         $vars['action'] = 'delete_document';
-        $link = new PHPWS_Link(null, 'sysinventory', $vars);
+        $link = new PHPWS_Link(null, 'intern', $vars);
         
         $jsVars = array();
         $jsVars['QUESTION'] = 'Are you sure you want to delete this document?';
@@ -118,7 +128,7 @@ class Sysinventory_Document
     public static function getFolderId()
     {
         $db = new PHPWS_DB('folders');
-        $db->addWhere('module_created', 'sysinventory');
+        $db->addWhere('module_created', 'intern');
         return $db->select('one');
     }
 }

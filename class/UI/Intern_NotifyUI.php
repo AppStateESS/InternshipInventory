@@ -1,21 +1,21 @@
 <?php
 
   /**
-   * Sysinventory_NotifyUI
+   * Intern_NotifyUI
    *
-   * Displays all notifications pushed on sysinventory's NQ.
+   * Displays all notifications pushed on intern's NQ.
    *
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
 
-define('SYSI_SUCCESS', 0);
-define('SYSI_ERROR',   1);
-define('SYSI_WARNING', 2);
-define('SYSI_UNKNOWN', 3);
+define('INTERN_SUCCESS', 0);
+define('INTERN_ERROR',   1);
+define('INTERN_WARNING', 2);
+define('INTERN_UNKNOWN', 3);
 
 PHPWS_Core::initModClass('notification', 'NQ.php');
 
-class Sysinventory_NotifyUI
+class Intern_NotifyUI
 {
     /**
      * Pop all notifications from NQ. Get the type for use with CSS.
@@ -23,7 +23,7 @@ class Sysinventory_NotifyUI
      */
     public function display()
     {
-        $notifications = NQ::popAll('sysinventory');
+        $notifications = NQ::popAll('intern');
         $tags = array();
 
         foreach($notifications as $notification)
@@ -32,7 +32,7 @@ class Sysinventory_NotifyUI
             $tags['NOTIFICATIONS'][][$type] = $notification->toString();
         }
 
-        $content = PHPWS_Template::process($tags, 'sysinventory', 'notification.tpl');
+        $content = PHPWS_Template::process($tags, 'intern', 'notification.tpl');
 
         Layout::add($content);
     }
@@ -40,11 +40,11 @@ class Sysinventory_NotifyUI
     private static function getType(Notification $n)
     {
         switch($n->getType()){
-            case SYSI_SUCCESS:
+            case INTERN_SUCCESS:
                 return 'SUCCESS';
-            case SYSI_ERROR:
+            case INTERN_ERROR:
                 return 'ERROR';
-            case SYSI_WARNING:
+            case INTERN_WARNING:
                 return 'WARNING';
             default:
                 return 'UNKNOWN';
