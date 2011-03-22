@@ -66,7 +66,11 @@ abstract class Model
         $result = $db->saveObject($this);
 
         if(PHPWS_Error::logIfError($result)){
-            throw new Exception($result->toString());
+            if($result->getCode() == DB_ERROR_CONSTRAINT){
+                throw new Exception('Already exists in database.');
+            }else{
+                throw new Exception($result->toString());
+            }
         }
 
         return $result;

@@ -122,4 +122,7 @@ INSERT INTO intern_department VALUES (38, 'Theatre and Dance');
 INSERT INTO intern_department VALUES (39, 'University College');
 -- End departments
 
+-- Create and update sequences
+CREATE SEQUENCE intern_department_seq;
+SELECT SETVAL('intern_department_seq', MAX(id)) FROM intern_department;
 COMMIT;

@@ -5,9 +5,9 @@
  * @author Robert Bost <bostrt at tux dot appstate dot edu>
  **/
 
- class DepartmentUI {
+class DepartmentUI {
 
-    function display() {
+    public static function display() {
         
         // Check permissions.  Non-deities should never see this page
         // unless they're trying to be sneaky, since the link to it would
@@ -33,16 +33,19 @@
         return PHPWS_Template::process($form->getTemplate(), 'intern', 'edit_department.tpl');
     }
     
-    function doPager() {
+    public static function doPager() 
+    {
         PHPWS_Core::initCoreClass('DBPager.php');
         PHPWS_Core::initModClass('intern','Department.php');
 
         $pager = new DBPager('intern_department','Department');
+        $pager->db->addOrder('name asc');
         $pager->setModule('intern');
         $pager->setTemplate('department_pager.tpl');
-        $pager->addRowTags('get_row_tags');
         $pager->setEmptyMessage('No Departments Found.');
+        $pager->addRowTags('getRowTags');
+
         return $pager->get();
     }
- }
+}
 ?>

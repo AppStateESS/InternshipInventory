@@ -10,7 +10,7 @@ class Sysinventory_Error {
     }
 
     function browser_fail() {
-        $tags['ERROR_MSG'] = 'System Inventory is not compatible with your browser.  Please use Mozilla Firefox or another secure browser to access the database.';
+        $tags['ERROR_MSG'] = ;
         Layout::addStyle('sysinventory','style.css');
         Layout::add(PHPWS_Template::process($tags,'sysinventory','menu.tpl'));
     }

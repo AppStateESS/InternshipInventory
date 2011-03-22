@@ -10,4 +10,6 @@ DROP TABLE intern_department CASCADE;
 DROP TABLE intern_student CASCADE;
 DROP TABLE intern_admin CASCADE;
 
+DROP SEQUENCE intern_department_seq;
+
 COMMIT;

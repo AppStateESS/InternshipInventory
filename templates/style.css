@@ -26,6 +26,11 @@
     margin-top: -2px;
 }
 
+#department-pager {
+    margin-right: auto;
+    margin-left: auto;
+}
+
 /** Notification styles **/
 .nq-container {
     padding: 5px;

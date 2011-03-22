@@ -21,25 +21,27 @@ $browser = $_SERVER['HTTP_USER_AGENT'];
 $ie7 = "/MSIE [789]/";
 $ie_fail = "/MSIE/";
 
+PHPWS_Core::initModClass('intern', 'Intern_Util.php');
+PHPWS_Core::initModClass('intern', 'UI/Intern_NotifyUI.php');
+
+// Check that user has compat. browser
 if (preg_match($ie7,$browser)) {
-    $error = 'It is STRONGLY reccommended that you use Mozilla Firefox to access the System Inventory';
+    $error = 'It is STRONGLY reccommended that you use Mozilla Firefox to access the Intern Inventory';
 }else if (preg_match($ie_fail,$browser)) {
-    PHPWS_Core::initModClass('intern','Sysinventory_Error.php');
-    Sysinventory_Error::browser_fail();
+    NQ::simple('intern', INTERN_ERROR, 'Intern Inventory is not compatible with your browser. Please use Mozilla Firefox or another secure browser to access the database.');
+    // @hack
+    Intern_NotifyUI::display();
+    Layout::addStyle('intern', 'style.css');
     return;
 }
 
+// Fetch the action from the REQUEST.
 if(!isset($_REQUEST['action'])){
     $req = "";
 }else{
     $req = $_REQUEST['action'];
 }
 
-
-// Show notifications, except when a redirect has occurred.
-PHPWS_Core::initModClass('intern', 'Sysinventory_Util.php');
-PHPWS_Core::initModClass('intern', 'UI/Sysinventory_NotifyUI.php');
-Sysinventory_NotifyUI::display();
 
 // Show requested page.
 switch ($req) {
@@ -81,18 +83,20 @@ switch ($req) {
         Sysinventory_LocationUI::showLocations();
         break;
     case 'edit_departments':
-        PHPWS_Core::initModClass('intern','Sysinventory_Department.php');
+        PHPWS_Core::initModClass('intern','Department.php');
         if (isset($_REQUEST['addDep']) && !empty($_REQUEST['description'])) {
             $todo = 'addDep';
             $thing = $_REQUEST['description'];
-        }else if (isset($_REQUEST['delDep'])) {
+        }
+        else if (isset($_REQUEST['delDep'])) {
             $todo = 'delDep';
             $thing = $_REQUEST['id'];
-        }else{
+        }
+        else{
             $todo = NULL;
             $thing = NULL;
         }
-        Sysinventory_Department::showDepartments($todo,$thing);
+        $content = Department::showDepartments($todo,$thing);
         break;
     case 'addDep':
         Sysinventory_Department::AddDepartment($_REQUEST['description']);
@@ -144,9 +148,16 @@ switch ($req) {
         Sysinventory_Util::reroute('index.php?module=sysinventory&action=report&redir=1');
         break;
     default:
-        PHPWS_Core::initModClass('intern','Sysinventory_Menu.php');
-        Sysinventory_Menu::showMenu($error);
+        PHPWS_Core::initModClass('intern','Intern_Menu.php');
+        // @hack
+        NQ::simple('intern', INTERN_ERROR, $error);
+        Intern_NotifyUI::display();
+        Intern_Menu::showMenu();
         break;
 }
-
+// Show notifications, UI, and some styleee.
+Intern_NotifyUI::display();
+if(isset($content))
+    Layout::add($content);
+Layout::addStyle('intern', 'style.css');
 ?>
