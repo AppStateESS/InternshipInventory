@@ -3,10 +3,10 @@
  * display the menu page based on what the logged user can do
  * @author Micah Carter <mcarter at tux dot appstate dot edu>
  **/
+PHPWS_Core::initModClass('intern', 'UI/UI.php');
+class Intern_MenuUI implements UI{
 
- class Intern_MenuUI {
-
-    function display() {
+    public static function display() {
 
         //housekeeping
         if(isset($_SESSION['query'])) unset($_SESSION['query']);
@@ -30,7 +30,6 @@
         }
 
         return PHPWS_Template::process($tags,'intern','menu.tpl');
-
     }
- }
- ?>
+}
+?>

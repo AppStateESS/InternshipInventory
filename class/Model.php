@@ -67,7 +67,7 @@ abstract class Model
 
         if(PHPWS_Error::logIfError($result)){
             if($result->getCode() == DB_ERROR_CONSTRAINT){
-                throw new Exception('Already exists in database.');
+                throw new Exception('Already exists.');
             }else{
                 throw new Exception($result->toString());
             }

@@ -31,6 +31,10 @@
     margin-left: auto;
 }
 
+#internship-form tr table tr {
+    background: #E3E3E3;
+}
+
 /** Notification styles **/
 .nq-container {
     padding: 5px;

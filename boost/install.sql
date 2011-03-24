@@ -44,10 +44,16 @@ CREATE TABLE intern_faculty_supervisor (
        PRIMARY KEY(id)              
 );
 
+CREATE TABLE intern_term (
+       id INT NOT NULL,
+       term INT NOT NULL UNIQUE, 
+       PRIMARY KEY (id)
+);
+
 -- Term format YYYY# (e.g. 20111 is Spring 2011, 20113 is Fall 2011)
 CREATE TABLE intern_internship (
        id INT NOT NULL,
-       term INT NOT NULL,
+       term INT NOT NULL REFERENCES intern_term(term),
        student_id INT NOT NULL REFERENCES intern_student(id),
        agency_id INT NOT NULL REFERENCES intern_agency(id),
        faculty_supervisor_id INT NOT NULL REFERENCES intern_faculty_supervisor(id),
@@ -122,7 +128,23 @@ INSERT INTO intern_department VALUES (38, 'Theatre and Dance');
 INSERT INTO intern_department VALUES (39, 'University College');
 -- End departments
 
+-- Add some terms!
+INSERT INTO intern_term VALUES (1, 20111);
+INSERT INTO intern_term VALUES (2, 20112);
+INSERT INTO intern_term VALUES (3, 20113);
+INSERT INTO intern_term VALUES (4, 20121);
+INSERT INTO intern_term VALUES (5, 20122);
+INSERT INTO intern_term VALUES (6, 20123);
+INSERT INTO intern_term VALUES (7, 20131);
+INSERT INTO intern_term VALUES (8, 20132);
+INSERT INTO intern_term VALUES (9, 20133);
+-- End terms
+
 -- Create and update sequences
 CREATE SEQUENCE intern_department_seq;
 SELECT SETVAL('intern_department_seq', MAX(id)) FROM intern_department;
+
+CREATE SEQUENCE intern_term_seq;
+SELECT SETVAL('intern_term_seq', MAX(id)) FROM intern_term;
+
 COMMIT;

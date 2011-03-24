@@ -5,7 +5,8 @@
  * @author Robert Bost <bostrt at tux dot appstate dot edu>
  **/
 
-class DepartmentUI {
+PHPWS_Core::initModClass('intern', 'UI/UI.php');
+class DepartmentUI implements UI{
 
     public static function display() {
         

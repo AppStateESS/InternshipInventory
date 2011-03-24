@@ -34,6 +34,31 @@ class Internship extends Model
         return new PHPWS_DB('intern_internship');
     }
 
+    /**
+     * Create a new internship. Save to DB.
+     */
+    public static function addInternship()
+    {
+        // Create Student.
+        
+        $i = new Internship();
+        $i->term = $_REQUEST['term'];
+        $i->student_id = $_REQUEST['student_id'];
+        $i->agency_id = $_REQUEST['agency_id'];
+        $i->faculty_supervisor_id = $_REQUEST['faculty_supervisor_id'];
+        $i->department_id = $_REQUEST['department_id'];
+        $i->start_date = $_REQUEST['start_date'];
+        $i->end_date = $_REQUEST['end_date'];
+        $i->credits = $_REQUEST['credits'];
+        $i->avg_hours_week = $_REQUEST['avg_hours_week'];
+        $i->domestic = $_REQUEST['domestic'];
+        $i->international = $_REQUEST['international'];
+        $i->paid = $_REQUEST['paid'];
+        $i->stipend = $_REQUEST['stipend'];
+        $i->unpaid = $_REQUEST['unpaid'];
+        $i->save();
+        test($i);
+    }
 }
 
 ?>

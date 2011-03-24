@@ -45,19 +45,14 @@ if(!isset($_REQUEST['action'])){
 
 // Show requested page.
 switch ($req) {
-    case 'edit_system':
-        PHPWS_Core::initModClass('intern','UI/Sysinventory_SystemUI.php');
-        if(isset($_REQUEST['newsystem'])) {
-            $sysid = 0;
-            if (isset($_REQUEST['id'])) {
-                $sysid    = $_REQUEST['id'];
-                $whatWeDo = 'Edit System';
-                }
-            PHPWS_Core::initModClass('intern','Sysinventory_System.php');
-            PHPWS_Core::initModClass('intern','UI/Sysinventory_ReportUI.php');
-            Sysinventory_System::addSystem($sysid);
-        }
-        Sysinventory_SystemUI::showEditSystem();
+    case 'edit_internship':
+        PHPWS_Core::initModClass('intern','UI/InternshipUI.php');
+        $content = InternshipUI::display();
+        break;
+    case 'add_internship':
+        PHPWS_Core::initModClass('intern', 'Internship.php');
+        PHPWS_Core::initModClass('intern', 'UI/InternshipUI.php');
+        Internship::addInternship();// NOTIFY
         break;
     case 'delete_system':
         PHPWS_Core::initModClass('intern','Sysinventory_System.php');
