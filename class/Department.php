@@ -31,6 +31,18 @@ class Department extends Model
         $tags['DELETE'] = PHPWS_Text::moduleLink('Delete','intern',array('action'=>'edit_departments','delDep'=>TRUE,'id'=>$this->getID()));
         return $tags;
     }
+
+    public static function getDepartmentsAssoc()
+    {
+        $db = self::getDb();
+        $depts = $db->getObjects('Department');
+        $deptsAssoc = array();
+        foreach($depts as $dept)
+        {
+            $deptsAssoc[$dept->id] = $dept->name;
+        }
+        return $deptsAssoc;
+    }
     
     /**
      * Show the appropriate department UI based on $todo.

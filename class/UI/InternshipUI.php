@@ -27,6 +27,7 @@ class InternshipUI implements UI
     public static function getInternshipForm(Internship $i=NULL)
     {
         PHPWS_Core::initModClass('intern', 'Term.php');
+        PHPWS_Core::initModClass('intern', 'Department.php');
 
         $form = new PHPWS_Form('internship');
         $form->setAction('index.php?module=intern&action=add_internship');
@@ -60,8 +61,65 @@ class InternshipUI implements UI
         $form->addCheck('graduated');
         $form->setLabel('graduated', 'Graduated?');
 
-        
-        
+        /**
+         * Faculty supervisor info.
+         */
+        $form->addText('supervisor_first_name');
+        $form->setLabel('supervisor_first_name', 'First Name');
+        $form->addText('supervisor_middle_name');
+        $form->setLabel('supervisor_middle_name', 'Middle Name/Initial');
+        $form->addText('supervisor_last_name');
+        $form->setLabel('supervisor_last_name', 'Last Name');
+        $form->addText('supervisor_email');
+        $form->setLabel('supervisor_email', 'Email');
+        $form->addText('supervisor_phone');
+        $form->setLabel('supervisor_phone', 'Phone');
+        $depts = Department::getDepartmentsAssoc();
+        $form->addSelect('department', $depts);
+        $form->setLabel('department', 'Department');
+
+        /**
+         * Agency supervisor info.
+         */
+        $form->addText('agency_name');
+        $form->setLabel('agency_name', 'Name');
+        $form->addText('agency_address');
+        $form->setLabel('agency_address', 'Address');
+        $form->addText('agency_phone');
+        $form->setLabel('agency_phone', 'Phone');
+        $form->addText('agency_sup_first_name');
+        $form->setLabel('agency_sup_first_name', 'First Name');
+        $form->addText('agency_sup_last_name');
+        $form->setLabel('agency_sup_last_name', 'Last Name');
+        $form->addText('agency_sup_phone');
+        $form->setLabel('agency_sup_phone', 'Phone');
+        $form->addText('agency_sup_email');
+        $form->setLabel('agency_sup_email', 'Email');
+        $form->addText('agency_sup_address');
+        $form->setLabel('agency_sup_address', 'Address');
+
+        /**
+         * Internship details.
+         */
+        $form->addText('start_date');
+        $form->setLabel('start_date', 'Start Date');
+        $form->addText('end_date');
+        $form->setLabel('end_date', 'End Date');
+        $form->addText('credits');
+        $form->setLabel('credits', 'Credits');
+        $form->addText('avg_hours_week');
+        $form->setLabel('avg_hours_week', 'Average Hours per Week');
+        $form->addCheck('domestic');
+        $form->setLabel('domestic', 'Domestic?');
+        $form->addCheck('internat');
+        $form->setLabel('internat', 'International?');
+        $form->addCheck('paid');
+        $form->setLabel('paid', 'Paid?');
+        $form->addCheck('unpaid', 'Paid?');
+        $form->setLabel('unpaid', 'Unpaid?');
+        $form->addCheck('stipend');
+        $form->setLabel('stipend', 'Stipend?');
+
         return $form;
     }
 }

@@ -3,12 +3,12 @@
 <div>
   {START_FORM}
   {TERM_LABEL} {TERM}
-  <table id="internship-form">
+  <table id="internship-form" cellspacing=20>
     <tr>
   <!-- Student info section -->
   <td>
-  <table width="50px">
-    <h3>Student Information</h3>
+  <table width="100px" class="sub-form" id="student-info">
+    <h3>Student</h3>
     <tr>
       <td>
         {STUDENT_FIRST_NAME_LABEL}
@@ -89,29 +89,227 @@
         {GRAD_PROG}
       </td>
     </tr>
-
   </table>
   </td>
   <!-- End student info section -->
   <!-- Faculty info -->
   <td>
-    <h3>Faculty Info</h3>
+    <h3>Faculty</h3>
+    <table width="50px" class="sub-form" id="faculty-info">
+      <tr>
+      <td>
+        {SUPERVISOR_FIRST_NAME_LABEL}
+      </td>
+      <td>
+        {SUPERVISOR_FIRST_NAME}
+      </td>
+      </tr>
+      <tr>
+      <td>
+        {SUPERVISOR_MIDDLE_NAME_LABEL}
+      </td>
+      <td>
+        {SUPERVISOR_MIDDLE_NAME}
+      </td>
+      </tr>
+      <tr>
+      <td>
+        {SUPERVISOR_LAST_NAME_LABEL}
+      </td>
+      <td>
+        {SUPERVISOR_LAST_NAME}
+      </td>
+      </tr>
+      <tr>
+      <td>
+        {SUPERVISOR_EMAIL_LABEL}
+      </td>
+      <td>
+        {SUPERVISOR_EMAIL}
+      </td>
+      </tr>
+      <tr>
+      <td>
+        {SUPERVISOR_PHONE_LABEL}
+      </td>
+      <td>
+        {SUPERVISOR_PHONE}
+      </td>
+      </tr>
+      <tr>
+      <td colspan=2>
+        {DEPARTMENT_LABEL}<br/ >
+          {DEPARTMENT}
+      </td>
+      </tr>
+    </table>
   </td>
   <!-- End faculty info -->
   </tr>
   <tr>
   <!-- Agency info -->
   <td>
-    <h3>Agency Info</h3>
+    <h3>Agency</h3>
+    <table width="50px" class="sub-form" id="agency-info">
+      <tr>
+        <td>
+          {AGENCY_NAME_LABEL}
+        </td>
+        <td>
+          {AGENCY_NAME}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {AGENCY_ADDRESS_LABEL}
+        </td>
+        <td>
+          {AGENCY_ADDRESS}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {AGENCY_PHONE_LABEL}
+        </td>
+        <td>
+          {AGENCY_PHONE}
+        </td>
+      </tr>
+      <tr>
+        <td colspan=2><h4>Supervisor Info</h4></td>
+      </tr>
+      <tr>
+        <td>
+          {AGENCY_SUP_FIRST_NAME_LABEL}
+        </td>
+        <td>
+          {AGENCY_SUP_FIRST_NAME}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {AGENCY_SUP_LAST_NAME_LABEL}
+        </td>
+        <td>
+          {AGENCY_SUP_LAST_NAME}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {AGENCY_SUP_PHONE_LABEL}
+        </td>
+        <td>
+          {AGENCY_SUP_PHONE}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {AGENCY_SUP_EMAIL_LABEL}
+        </td>
+        <td>
+          {AGENCY_SUP_EMAIL}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {AGENCY_SUP_FAX_LABEL}
+        </td>
+        <td>
+          {AGENCY_SUP_FAX}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {AGENCY_SUP_ADDRESS_LABEL}
+        </td>
+        <td>
+          {AGENCY_SUP_ADDRESS}
+        </td>
+      </tr>
+    </table>
   </td>
   <!-- End agency info -->
   <!-- Internship details -->
   <td> 
     <h3>Internship Details</h3>
+    <table width="50px" class="sub-form" id="agency-info">
+      <tr>
+        <td>
+          {START_DATE_LABEL}
+        </td>
+        <td>
+          <span id="start-date">{START_DATE}</span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {END_DATE_LABEL}
+        </td>
+        <td>
+          <span id="end-date">{END_DATE}</span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {CREDITS_LABEL}
+        </td>
+        <td>
+          {CREDITS}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {AVG_HOURS_WEEK_LABEL}
+        </td>
+        <td>
+          {AVG_HOURS_WEEK}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {DOMESTIC_LABEL}
+        </td>
+        <td>
+          {DOMESTIC}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {INTERNAT_LABEL}
+        </td>
+        <td>
+          {INTERNAT}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {PAID_LABEL}
+        </td>
+        <td>
+          {PAID}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {STIPEND_LABEL}
+        </td>
+        <td>
+          {STIPEND}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {UNPAID_LABEL}
+        </td>
+        <td>
+          {UNPAID}
+        </td>
+      </tr>
+    </table>
   </td>
   <!-- End internship details -->
   </tr>
-</table>
+  </table>
 {END_FORM}
 </div>
 
