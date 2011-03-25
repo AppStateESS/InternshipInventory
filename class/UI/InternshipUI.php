@@ -52,10 +52,12 @@ class InternshipUI implements UI
         $form->setLabel('student_phone', 'Phone');
         $form->addText('student_email');
         $form->setLabel('student_email', 'Email');
-        $majors = array('comp sci' => 'comp sci', 'art' => 'art', 'math' => 'math');
+        // TODO: DB table for majors
+        $majors = array('none'=> 'None', 'comp sci' => 'comp sci', 'art' => 'art', 'math' => 'math');
         $form->addSelect('ugrad_major', $majors);
         $form->setLabel('ugrad_major', 'Undergraduate Major');
-        $gradProgs = array('accounting' => 'accounting', 'something' => 'something');
+        // TODO: DB table for grad programs
+        $gradProgs = array('none'=>'None', 'accounting' => 'accounting', 'something' => 'something');
         $form->addSelect('grad_prog', $gradProgs);
         $form->setLabel('grad_prog', 'Graduate Program');
         $form->addCheck('graduated');
@@ -97,6 +99,8 @@ class InternshipUI implements UI
         $form->setLabel('agency_sup_email', 'Email');
         $form->addText('agency_sup_address');
         $form->setLabel('agency_sup_address', 'Address');
+        $form->addText('agency_sup_fax');
+        $form->setLabel('agency_sup_fax', 'Fax');
 
         /**
          * Internship details.

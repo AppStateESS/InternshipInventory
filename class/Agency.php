@@ -14,7 +14,6 @@ class Agency extends Model
     public $address;
     public $phone;
     public $supervisor_first_name;
-    public $supervisor_middle_name;
     public $supervisor_last_name;
     public $supervisor_phone;
     public $supervisor_email;
@@ -25,7 +24,7 @@ class Agency extends Model
      * @Override Model::getDb
      */
     public function getDb(){
-        return new PHPWS_DB('intern_internship');
+        return new PHPWS_DB('intern_agency');
     }
 }
 

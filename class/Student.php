@@ -9,7 +9,7 @@
    */
 
 PHPWS_Core::initModClass('intern', 'Model.php');
-class Student 
+class Student extends Model
 {
     public $banner;
     public $fist_name;

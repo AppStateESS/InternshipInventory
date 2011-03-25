@@ -39,24 +39,69 @@ class Internship extends Model
      */
     public static function addInternship()
     {
+        PHPWS_Core::initModClass('intern', 'Student.php');
+        PHPWS_Core::initModClass('intern', 'Agency.php');
+        PHPWS_Core::initModClass('intern', 'Department.php');
+        PHPWS_Core::initModClass('intern', 'FacultySupervisor.php');
+
+        /////////////////////////////
+        // TODO: Requirement checks//
+        /////////////////////////////
+
         // Create Student.
+        $student = new Student();
+        $student->first_name = $_REQUEST['student_first_name'];
+        $student->middle_name = $_REQUEST['student_middle_name'];
+        $student->last_name = $_REQUEST['student_last_name'];
+        $student->banner = $_REQUEST['banner'];
+        $student->phone = $_REQUEST['student_phone'];
+        $student->email = $_REQUEST['student_email'];
+        $student->grad_prog = $_REQUEST['grad_prog'];
+        $student->ugrad_major = $_REQUEST['ugrad_major'];
+        $student->graduated = isset($_REQUEST['graduated']);
+        $studentId = $student->save();
+
+        // Create agency
+        $agency = new Agency();
+        $agency->name = $_REQUEST['agency_name'];
+        $agency->address = $_REQUEST['agency_address'];
+        $agency->phone = $_REQUEST['agency_phone'];
+        $agency->supervisor_first_name = $_REQUEST['agency_sup_first_name'];
+        $agency->supervisor_last_name = $_REQUEST['agency_sup_last_name'];
+        $agency->supervisor_phone = $_REQUEST['agency_sup_phone'];
+        $agency->supervisor_email = $_REQUEST['agency_sup_email'];
+        $agency->supervisor_fax = $_REQUEST['agency_sup_fax'];
+        $agency->supervisor_address = $_REQUEST['agency_sup_address'];
+        $agencyId = $agency->save();
+
+        // Get department
+        $dept = new Department($_REQUEST['department']);
+
+        // Create Faculty supervisor
+        $faculty = new FacultySupervisor();
+        $faculty->first_name = $_REQUEST['supervisor_first_name'];
+        $faculty->last_name = $_REQUEST['supervisor_last_name'];
+        $faculty->email = $_REQUEST['supervisor_email'];
+        $faculty->phone = $_REQUEST['supervisor_phone'];
+        $faculty->department_id = $dept->id;
+        $facultyId = $faculty->save();
         
         $i = new Internship();
         $i->term = $_REQUEST['term'];
-        $i->student_id = $_REQUEST['student_id'];
-        $i->agency_id = $_REQUEST['agency_id'];
-        $i->faculty_supervisor_id = $_REQUEST['faculty_supervisor_id'];
-        $i->department_id = $_REQUEST['department_id'];
+        $i->student_id = $studentId;
+        $i->agency_id = $agencyId;
+        $i->faculty_supervisor_id = $facultyId;
+        $i->department_id = $dept->id;
         $i->start_date = $_REQUEST['start_date'];
         $i->end_date = $_REQUEST['end_date'];
         $i->credits = $_REQUEST['credits'];
         $i->avg_hours_week = $_REQUEST['avg_hours_week'];
-        $i->domestic = $_REQUEST['domestic'];
-        $i->international = $_REQUEST['international'];
-        $i->paid = $_REQUEST['paid'];
-        $i->stipend = $_REQUEST['stipend'];
-        $i->unpaid = $_REQUEST['unpaid'];
-        $i->save();
+        $i->domestic = isset($_REQUEST['domestic']);
+        $i->international = isset($_REQUEST['international']);
+        $i->paid = isset($_REQUEST['paid']);
+        $i->stipend = isset($_REQUEST['stipend']);
+        $i->unpaid = isset($_REQUEST['unpaid']);
+        //$i->save();
         test($i);
     }
 }

@@ -51,14 +51,6 @@
     </tr>
     <tr>
       <td>
-        {STUDENT_PHONE_LABEL}
-      </td>
-      <td>
-        {STUDENT_PHONE}
-      </td>
-    </tr>
-    <tr>
-      <td>
         {STUDENT_EMAIL_LABEL}
       </td>
       <td>
@@ -97,50 +89,42 @@
     <h3>Faculty</h3>
     <table width="50px" class="sub-form" id="faculty-info">
       <tr>
-      <td>
-        {SUPERVISOR_FIRST_NAME_LABEL}
-      </td>
-      <td>
-        {SUPERVISOR_FIRST_NAME}
-      </td>
+        <td>
+          {SUPERVISOR_FIRST_NAME_LABEL}
+        </td>
+        <td>
+          {SUPERVISOR_FIRST_NAME}
+        </td>
       </tr>
       <tr>
-      <td>
-        {SUPERVISOR_MIDDLE_NAME_LABEL}
-      </td>
-      <td>
-        {SUPERVISOR_MIDDLE_NAME}
-      </td>
+        <td>
+          {SUPERVISOR_LAST_NAME_LABEL}
+        </td>
+        <td>
+          {SUPERVISOR_LAST_NAME}
+        </td>
       </tr>
       <tr>
-      <td>
-        {SUPERVISOR_LAST_NAME_LABEL}
-      </td>
-      <td>
-        {SUPERVISOR_LAST_NAME}
-      </td>
+        <td>
+          {SUPERVISOR_EMAIL_LABEL}
+        </td>
+        <td>
+          {SUPERVISOR_EMAIL}
+        </td>
       </tr>
       <tr>
-      <td>
-        {SUPERVISOR_EMAIL_LABEL}
-      </td>
-      <td>
-        {SUPERVISOR_EMAIL}
-      </td>
+        <td>
+          {SUPERVISOR_PHONE_LABEL}
+        </td>
+        <td>
+          {SUPERVISOR_PHONE}
+        </td>
       </tr>
       <tr>
-      <td>
-        {SUPERVISOR_PHONE_LABEL}
-      </td>
-      <td>
-        {SUPERVISOR_PHONE}
-      </td>
-      </tr>
-      <tr>
-      <td colspan=2>
-        {DEPARTMENT_LABEL}<br/ >
-          {DEPARTMENT}
-      </td>
+        <td colspan=2>
+          {DEPARTMENT_LABEL}<br/ >
+            {DEPARTMENT}
+        </td>
       </tr>
     </table>
   </td>
@@ -310,6 +294,7 @@
   <!-- End internship details -->
   </tr>
   </table>
+  {SUBMIT}
 {END_FORM}
 </div>
 
