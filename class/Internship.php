@@ -35,6 +35,42 @@ class Internship extends Model
     }
 
     /**
+     * Get the Student object associated with this Internship.
+     */
+    public function getStudent()
+    {
+        PHPWS_Core::initModClass('intern', 'Student.php');
+        return new Student($this->student_id);
+    }
+
+    /**
+     * Get the Agency object associated with this internship.
+     */
+    public function getAgency()
+    {
+        PHPWS_Core::initModClass('intern', 'Agency.php');
+        return new Agency($this->agency_id);
+    }
+
+    /**
+     * Get the Faculty Supervisor object associated with this internship.
+     */
+    public function getFacultySupervisor()
+    {
+        PHPWS_Core::initModClass('intern', 'FacultySupervisor.php');
+        return new FacultySupervisor($this->faculty_supervisor_id);
+    }
+
+    /**
+     * Get the Department object associated with this internship.
+     */
+    public function getDepartment()
+    {
+        PHPWS_Core::initModClass('intern', 'Department.php');
+        return new Department($this->department_id);
+    }
+
+    /**
      * Create a new internship. Save to DB.
      */
     public static function addInternship()
@@ -47,7 +83,7 @@ class Internship extends Model
         /////////////////////////////
         // TODO: Requirement checks//
         /////////////////////////////
-
+        PHPWS_DB::begin();
         // Create Student.
         $student = new Student();
         $student->first_name = $_REQUEST['student_first_name'];
@@ -59,9 +95,14 @@ class Internship extends Model
         $student->grad_prog = $_REQUEST['grad_prog'];
         $student->ugrad_major = $_REQUEST['ugrad_major'];
         $student->graduated = isset($_REQUEST['graduated']);
-        $studentId = $student->save();
+        try{
+            $studentId = $student->save();
+        }catch(Exception $e){
+            PHPWS_DB::rollback();
+            return NQ::simple('intern', INTERN_ERROR, $e->getMessage());
+        }
 
-        // Create agency
+        // Create/Save agency
         $agency = new Agency();
         $agency->name = $_REQUEST['agency_name'];
         $agency->address = $_REQUEST['agency_address'];
@@ -72,28 +113,36 @@ class Internship extends Model
         $agency->supervisor_email = $_REQUEST['agency_sup_email'];
         $agency->supervisor_fax = $_REQUEST['agency_sup_fax'];
         $agency->supervisor_address = $_REQUEST['agency_sup_address'];
-        $agencyId = $agency->save();
+        try{
+            $agencyId = $agency->save();
+        }catch(Exception $e){
+            PHPWS_DB::rollback();
+            return NQ::simple('intern', INTERN_ERROR, $e->getMessage());
+        }
 
-        // Get department
-        $dept = new Department($_REQUEST['department']);
-
-        // Create Faculty supervisor
+        // Create/Save Faculty supervisor
         $faculty = new FacultySupervisor();
         $faculty->first_name = $_REQUEST['supervisor_first_name'];
         $faculty->last_name = $_REQUEST['supervisor_last_name'];
         $faculty->email = $_REQUEST['supervisor_email'];
         $faculty->phone = $_REQUEST['supervisor_phone'];
-        $faculty->department_id = $dept->id;
-        $facultyId = $faculty->save();
-        
+        $faculty->department_id = $_REQUEST['department'];
+        try{
+            $facultyId = $faculty->save();
+        }catch(Exception $e){
+            PHPWS_DB::rollback();
+            return NQ::simple('intern', INTERN_ERROR, $e->getMessage());
+        }
+
+        // Create/Save internship.
         $i = new Internship();
         $i->term = $_REQUEST['term'];
         $i->student_id = $studentId;
         $i->agency_id = $agencyId;
         $i->faculty_supervisor_id = $facultyId;
-        $i->department_id = $dept->id;
-        $i->start_date = $_REQUEST['start_date'];
-        $i->end_date = $_REQUEST['end_date'];
+        $i->department_id = $_REQUEST['department'];
+        $i->start_date = strtotime($_REQUEST['start_date']);
+        $i->end_date = strtotime($_REQUEST['end_date']);
         $i->credits = $_REQUEST['credits'];
         $i->avg_hours_week = $_REQUEST['avg_hours_week'];
         $i->domestic = isset($_REQUEST['domestic']);
@@ -101,8 +150,15 @@ class Internship extends Model
         $i->paid = isset($_REQUEST['paid']);
         $i->stipend = isset($_REQUEST['stipend']);
         $i->unpaid = isset($_REQUEST['unpaid']);
-        //$i->save();
-        test($i);
+        try{
+            $i->save();
+        }catch(Exception $e){
+            PHPWS_DB::rollback();
+            return NQ::simple('intern', INTERN_ERROR, $e->getMessage());
+        }
+        
+        PHPWS_DB::commit();
+        NQ::simple('intern', INTERN_SUCCESS, 'Added internship for '.$student->getFullName());
     }
 }
 

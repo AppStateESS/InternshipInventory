@@ -12,7 +12,7 @@ PHPWS_Core::initModClass('intern', 'Model.php');
 class Student extends Model
 {
     public $banner;
-    public $fist_name;
+    public $first_name;
     public $middle_name;
     public $last_name;
     public $phone;
@@ -29,7 +29,10 @@ class Student extends Model
         return new PHPWS_DB('intern_student');
     }
 
-
+    public function getFullName()
+    {
+        return "$this->first_name $this->middle_name $this->last_name";
+    }
 }
 
 ?>
