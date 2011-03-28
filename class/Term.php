@@ -17,6 +17,7 @@ class Term extends Model
     public static function getTermsAssoc()
     {
         $db = self::getDb();
+        $db->addOrder('term');
         $terms = $db->getObjects('Term');
         $readables = array();
 
@@ -40,13 +41,12 @@ class Term extends Model
         switch($semester){
             case '1':
                 return "Spring $year";
-                break;
             case '2':
-                return "Summer $year";
-                break;
+                return "Summer 1 $year";
             case '3':
+                return "Summer 2 $year";
+            case '4':
                 return "Fall $year";
-                break;
             default:
                 // Whaattt??
                 NQ::simple('intern', INTERN_WARNING, 'Term error: '.$t);

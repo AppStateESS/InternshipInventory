@@ -129,15 +129,20 @@ INSERT INTO intern_department VALUES (39, 'University College');
 -- End departments
 
 -- Add some terms!
-INSERT INTO intern_term VALUES (1, 20111);
-INSERT INTO intern_term VALUES (2, 20112);
-INSERT INTO intern_term VALUES (3, 20113);
-INSERT INTO intern_term VALUES (4, 20121);
-INSERT INTO intern_term VALUES (5, 20122);
-INSERT INTO intern_term VALUES (6, 20123);
-INSERT INTO intern_term VALUES (7, 20131);
-INSERT INTO intern_term VALUES (8, 20132);
-INSERT INTO intern_term VALUES (9, 20133);
+INSERT INTO intern_term VALUES  (1, 20111);
+INSERT INTO intern_term VALUES  (2, 20112);
+INSERT INTO intern_term VALUES  (3, 20113);
+INSERT INTO intern_term VALUES  (4, 20114);
+
+INSERT INTO intern_term VALUES  (5, 20121);
+INSERT INTO intern_term VALUES  (6, 20122);
+INSERT INTO intern_term VALUES  (7, 20123);
+INSERT INTO intern_term VALUES  (8, 20124);
+
+INSERT INTO intern_term VALUES  (9, 20131);
+INSERT INTO intern_term VALUES (10, 20132);
+INSERT INTO intern_term VALUES (11, 20133);
+INSERT INTO intern_term VALUES (12, 20134);
 -- End terms
 
 -- Create and update sequences

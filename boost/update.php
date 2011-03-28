@@ -4,7 +4,7 @@
    * @author Micah Carter <mcarter at tux dot appstate dot edu>
    **/
 
-function sysinventory_update(&$content, $currentVersion)
+function intern_update(&$content, $currentVersion)
 {
     switch ($currentVersion) {
         case version_compare($currentVersion, '0.0.2', '<'):
@@ -16,14 +16,14 @@ function sysinventory_update(&$content, $currentVersion)
         case version_compare($currentVersion, '0.0.3', '<'):
             $db = new PHPWS_DB;
             $result = $db->importFile(PHPWS_SOURCE_DIR.
-                                      'mod/sysinventory/boost/updates/update_0_0_3.sql');
+                                      'mod/intern/boost/updates/update_0_0_3.sql');
             if(PEAR::isError($result)){
                 return $result;
             }
         case version_compare($currentVersion, '0.0.4', '<'):
             $db = new PHPWS_DB;
             $result = $db->importFile(PHPWS_SOURCE_DIR.
-                                      'mod/sysinventory/boost/updates/update_0_0_4.sql');
+                                      'mod/intern/boost/updates/update_0_0_4.sql');
             if(PEAR::isError($result)){
                 return $result;
             }
@@ -31,14 +31,21 @@ function sysinventory_update(&$content, $currentVersion)
         case version_compare($currentVersion, '0.0.6', '<'):
             $db = new PHPWS_DB;
             $result = $db->importFile(PHPWS_SOURCE_DIR.
-                                      'mod/sysinventory/boost/updates/update_0_0_6.sql');
+                                      'mod/intern/boost/updates/update_0_0_6.sql');
             if(PEAR::isError($result)){
                 return $result;
             }
         case version_compare($currentVersion, '0.0.7', '<'):
             $db = new PHPWS_DB;
             $result = $db->importFile(PHPWS_SOURCE_DIR.
-                                      'mod/sysinventory/boost/updates/update_0_0_7.sql');
+                                      'mod/intern/boost/updates/update_0_0_7.sql');
+            if(PEAR::isError($result)){
+                return $result;
+            }
+        case version_compare($currentVersion, '0.0.8', '<'):
+            $db = new PHPWS_DB;
+            $result = $db->importFile(PHPWS_SOURCE_DIR.
+                                      'mod/intern/boost/updates/update_0_0_8.sql');
             if(PEAR::isError($result)){
                 return $result;
             }
