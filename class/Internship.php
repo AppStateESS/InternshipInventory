@@ -71,6 +71,45 @@ class Internship extends Model
     }
 
     /**
+     * Row tags for DBPager
+     */
+    public function getRowTags()
+    {
+        PHPWS_Core::initModClass('intern', 'Term.php');
+
+        $tags = array();
+    
+        // Get objects associated with this internship.
+        $s = $this->getStudent();
+        $a = $this->getAgency();
+        $f = $this->getFacultySupervisor();
+        $d = $this->getDepartment();
+
+        // Student info.
+        $tags['STUDENT_NAME'] = $s->getFullName();
+        $tags['STUDENT_BANNER'] = $s->banner;
+        $tags['GRAD_UGRAD'] = isset($s->graduated) ? 'Graduate' : 'Undergraduate';
+        
+        // Agency info.
+        $tags['AGENCY_NAME'] = $a->name;
+
+        // Dept. info
+        $tags['DEPT_NAME'] = $d->name;
+        
+        // Faculty info.
+        $tags['FACULTY_NAME'] = $f->getFullName();
+
+        // Internship info.
+        $tags['START_DATE'] = $this->start_date;
+        $tags['END_DATE'] = $this->end_date;
+        $tags['TERM'] = Term::rawToRead($this->term);
+        $tags['ID'] = $this->id;
+
+        // TODO: Finish off fields.
+        return $tags;
+    }
+
+    /**
      * Create a new internship. Save to DB.
      */
     public static function addInternship()

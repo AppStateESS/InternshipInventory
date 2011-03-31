@@ -23,7 +23,7 @@ class Term extends Model
 
         foreach($terms as $t){
             // Ex. array(20111 => "Spring 2011");
-            $readables[$t->term] = self::rawToRead($t);
+            $readables[$t->term] = self::rawToRead($t->term);
         }
 
         return $readables;
@@ -33,18 +33,17 @@ class Term extends Model
      * Converts the database entry of Term into human
      * readable form. (Ex: 20111 => 'Spring 2011')
      */
-    private static function rawToRead(Term $t)
+    public static function rawToRead($t)
     {
-        $t = "$t->term";
         $semester = $t[strlen($t)-1];// Get last char
         $year = substr($t, 0, strlen($t)-1);
         switch($semester){
             case '1':
                 return "Spring $year";
             case '2':
-                return "Summer 1 $year";
+                return "1<sup>st</sup> Summer $year";
             case '3':
-                return "Summer 2 $year";
+                return "2<sup>nd</sup> Summer $year";
             case '4':
                 return "Fall $year";
             default:

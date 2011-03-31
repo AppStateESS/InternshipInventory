@@ -23,6 +23,10 @@ class FacultySupervisor extends Model
     public function getDb(){
         return new PHPWS_DB('intern_faculty_supervisor');
     }
+
+    public function getFullName(){
+        return "$this->first_name $this->last_name";
+    }
 }
 
 ?>

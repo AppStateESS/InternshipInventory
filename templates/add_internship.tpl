@@ -4,6 +4,7 @@
         $("#internship_end_date").datepicker();
     });
 </script>
+
 <div>{HOME_LINK}</div>
 <h1>Add Internship</h1><br />
 <div>

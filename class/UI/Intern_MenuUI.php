@@ -13,8 +13,8 @@ class Intern_MenuUI implements UI{
 
         $tags = array();
         $tags['TITLE']                  = "Options";
-        $tags['SEARCH_LINK']            = PHPWS_Text::secureLink('Search Systems','sysinventory', array('action' => 'build_query'));
-        $tags['ADD_SYSTEM_LINK']        = PHPWS_Text::secureLink('Add a System','sysinventory', array('action' => 'edit_system'));
+        $tags['SEARCH_LINK']            = PHPWS_Text::secureLink('Search Internships','intern', array('action' => 'search'));
+        $tags['ADD_INTERNSHIP_LINK']        = PHPWS_Text::secureLink('Add Internship','intern', array('action' => 'edit_internship'));
         $tags['EDIT_LOCATIONS_LINK']    = PHPWS_Text::secureLink('Edit Locations','sysinventory',array('action' => 'edit_locations'));
 
         // Deity Stuff
@@ -22,9 +22,8 @@ class Intern_MenuUI implements UI{
             $tags['DEITY']                     = 'Admin Options';
             $tags['EDIT_DEPARTMENTS_LINK']     = PHPWS_Text::secureLink('Edit Departments','intern',array('action' => 'edit_departments'));
             $tags['EDIT_ADMINS_LINK']          = PHPWS_Text::secureLink('Edit Administrators','sysinventory',array('action' => 'edit_admins'));
-            $tags['EDIT_DEFAULT_LINK']         = PHPWS_Text::secureLink('Edit Default Systems','sysinventory',array('action'=>'edit_default'));
-            $tags['GRAND_TOTAL_LABEL']         = _('Total Number of Systems in Database: ');
-            $db = new PHPWS_DB('sysinventory_system');
+            $tags['GRAND_TOTAL_LABEL']         = _('Total Internships in Database: ');
+            $db = new PHPWS_DB('intern_internship');
             $gt = $db->select('count');
             $tags['GRAND_TOTAL']               = $gt;
         }

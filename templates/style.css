@@ -35,6 +35,11 @@
     background: #E3E3E3;
 }
 
+.empty-message {
+    font-weight: bold; 
+    text-align: center; 
+    font-style: italic;
+}
 /** Notification styles **/
 .nq-container {
     padding: 5px;

@@ -58,13 +58,13 @@ switch ($req) {
         PHPWS_Core::initModClass('intern','Sysinventory_System.php');
         echo Sysinventory_System::deleteSystem($_REQUEST['systemid']);
         exit;
+    case 'search':
+        PHPWS_Core::initModClass('intern', 'UI/Intern_SearchUI.php');
+        $content = Intern_SearchUI::display();
+        break;
     case 'report':
         PHPWS_Core::initModClass('intern', 'UI/Sysinventory_ReportUI.php');
         Sysinventory_ReportUI::display();
-        break;
-    case 'build_query':
-        PHPWS_Core::initModClass('intern','UI/Sysinventory_QueryUI.php');
-        Sysinventory_QueryUI::showQueryBuilder();
         break;
     case 'edit_locations':
         if (isset($_REQUEST['newloc']) && !empty($_REQUEST['description'])) {
