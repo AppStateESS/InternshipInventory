@@ -6,6 +6,16 @@
 PHPWS_Core::initModClass('intern', 'UI/UI.php');
 class InternshipUI implements UI
 {
+    public static $requiredFields = array('student_first_name', 'student_last_name', 
+                                          'banner','student_phone','student_email',
+                                          'supervisor_first_name', 'supervisor_last_name', 
+                                          'supervisor_email','supervisor_phone',
+                                          'department', 'agency_name', 'agency_address', 
+                                          'agency_phone', 'agency_sup_first_name',
+                                          'agency_sup_last_name', 'agency_sup_phone',
+                                          'agency_sup_email', 'agency_sup_fax',
+                                          'term', 'start_date', 'end_date');
+
     public static function display()
     {
         PHPWS_Core::initModClass('intern', 'Internship.php');
@@ -23,6 +33,24 @@ class InternshipUI implements UI
             }catch(Exception $e){
                 NQ::simple('intern', INTERN_ERROR, $e->getMessage());
             }
+        }
+        // If 'missing' is set then we have been redirected 
+        // back to the form because the user didn't type in something and
+        // somehow got past the javascript.
+        if(isset($_REQUEST['missing'])){
+            $missing = explode(' ', $_REQUEST['missing']);
+            // Intersect with the required fields array so we're not json encoding
+            // any funny stuff.
+            $missing = array_intersect(self::$requiredFields, $missing);
+            javascript('/modules/intern/missing', array('MISSING' => json_encode($missing)));
+            // Set classes on field we are missing. Do this in PHP cuz the user might 
+            // have JS disabled...don't know why they would but just in case.
+            foreach($missing as $m){
+                $form->setClass($m, 'missing');
+            }
+            
+            // Plug old values back into form fields. 
+            $form->plugIn($_GET);
         }
 
         $form->mergeTemplate($tpl);
@@ -44,10 +72,6 @@ class InternshipUI implements UI
         $form = new PHPWS_Form('internship');
         $form->setAction('index.php?module=intern&action=add_internship');
         $form->addSubmit('submit', 'Save');
-        
-        // Add form fields.
-        $form->addSelect('term', Term::getTermsAssoc());
-        $form->setLabel('term', 'Select Term');
         
         /**
          * Student fields
@@ -80,8 +104,6 @@ class InternshipUI implements UI
          */
         $form->addText('supervisor_first_name');
         $form->setLabel('supervisor_first_name', 'First Name');
-        $form->addText('supervisor_middle_name');
-        $form->setLabel('supervisor_middle_name', 'Middle Name/Initial');
         $form->addText('supervisor_last_name');
         $form->setLabel('supervisor_last_name', 'Last Name');
         $form->addText('supervisor_email');
@@ -117,6 +139,8 @@ class InternshipUI implements UI
         /**
          * Internship details.
          */
+        $form->addSelect('term', Term::getTermsAssoc());
+        $form->setLabel('term', 'Select Term');
         $form->addText('start_date');
         $form->setLabel('start_date', 'Start Date');
         $form->addText('end_date');
@@ -136,6 +160,11 @@ class InternshipUI implements UI
         $form->addCheck('stipend');
         $form->setLabel('stipend', 'Stipend?');
 
+        // Label required fields
+        foreach(self::$requiredFields as $field){
+            $form->setRequired($field);
+        }
+
         javascript('/jquery/');
         javascript('/jquery_ui/');
 
@@ -143,7 +172,7 @@ class InternshipUI implements UI
     }
 
     /**
-     * Load up the passed form's fields with the internship's information.
+     * Load up a form's fields with the internship's information.
      */
     private static function plugInternship(PHPWS_Form $form, Internship $i)
     {

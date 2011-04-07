@@ -70,15 +70,21 @@ class Intern_SearchUI implements UI
         $pager = self::getPager($lastName, $banner, $deptName, $term);
         $pager->addPageTags($searchForm->getTemplate());
 
+        // javascript...
+
         return $pager->get();
     }
-    
+
+    /**
+     * Get the DBPager object. Search strings can be passed in too.
+     */
     public static function getPager($lastName=null, $banner=null, $deptName=null, $term=null){
         $pager = new DBPager('intern_internship', 'Internship');
         $pager->setModule('intern');
         $pager->joinResult('student_id', 'intern_student', 'id', 'last_name');
         $pager->joinResult('student_id', 'intern_student', 'id', 'banner');
         $pager->joinResult('department_id', 'intern_department', 'id', 'name', 'department_name');
+
         // Search...
         if(!is_null($lastName))
             $pager->addWhere('intern_student.last_name', "%$lastName%", 'ILIKE');

@@ -9,7 +9,6 @@
 <h1>Add Internship</h1><br />
 <div>
   {START_FORM}
-  {TERM_LABEL} {TERM}
   <table id="internship-form" cellspacing=20>
     <tr>
   <!-- Student info section -->
@@ -223,7 +222,11 @@
   <!-- Internship details -->
   <td> 
     <h3>Internship Details</h3>
-    <table width="50px" class="sub-form" id="agency-info">
+    <table class="sub-form" id="agency-info">
+      <tr>
+        <td>{TERM_LABEL}</td>
+        <td>{TERM}</td>
+      </tr>
       <tr>
         <td>
           {START_DATE_LABEL}

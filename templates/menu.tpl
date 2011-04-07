@@ -8,9 +8,6 @@
 <tr>
     <td align="right">{ADD_INTERNSHIP_LINK}</td><td>- Add a new internship to the database</td>
 </tr>
-<tr>
-    <td align="right">{EDIT_LOCATIONS_LINK}</td><td>- Edit the list of possible locations for a system</td>
-</tr>
 </table>
 
 <hr width="60%" />

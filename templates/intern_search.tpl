@@ -1,12 +1,20 @@
 <div>{HOME_LINK}</div>
 <h1>Internship Search</h1>
 {START_FORM}
-{LASTNAME_LABEL}{LASTNAME}<br />
-{BANNER_LABEL}{BANNER}<br />
-{DEPTNAME_LABEL}{DEPTNAME}<br />
-{TERM_LABEL}{TERM}<br />
-{SUBMIT}
+<table>
+  <tr>
+    <td>{LASTNAME_LABEL}{LASTNAME}</td>
+    <td>{BANNER_LABEL}{BANNER}</td>
+  </tr>
+  <tr>
+    <td>{TERM_LABEL}{TERM}</td>
+    <td>{DEPTNAME_LABEL}{DEPTNAME}</td>
 
+  </tr>
+  <tr>
+    <td>{SUBMIT}</td>
+  </tr>
+</table>
 {END_FORM}
 <table id="search-results">
 <tr id="header-row">
@@ -14,7 +22,7 @@
     Student {LAST_NAME_SORT}
   </th>
   <th>
-    Banner {BANNER_SORT}
+    Banner
   </th>
   <th>
     Dept. {DEPARTMENT_NAME_SORT}

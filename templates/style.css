@@ -40,6 +40,18 @@
     text-align: center; 
     font-style: italic;
 }
+
+.missing {
+    border: 2px solid #FF5D5D;
+}
+
+/* Overriding default formatting of asterisk 
+   for required fields in Form class */
+.required-input {
+    font-size: 16pt;
+    position: relative;
+    top: 5px;
+}
 /** Notification styles **/
 .nq-container {
     padding: 5px;

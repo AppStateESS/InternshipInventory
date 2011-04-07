@@ -119,9 +119,21 @@ class Internship extends Model
         PHPWS_Core::initModClass('intern', 'Department.php');
         PHPWS_Core::initModClass('intern', 'FacultySupervisor.php');
 
-        /////////////////////////////
-        // TODO: Requirement checks//
-        /////////////////////////////
+        // Required fields check
+        $missing = self::checkRequest();
+        if(!is_null($missing)){
+            // checkRequest returned some missing fields.
+            $url = 'index.php?module=intern&action=edit_internship';
+            $url .= '&missing='.implode('+', $missing);
+            // Throw in values fields the user typed in
+            foreach($_POST as $key=>$val){
+                $url .= "&$key=$val";
+            }
+            NQ::simple('intern', INTERN_ERROR, 'Please fill in highlighted fields.');
+            NQ::close();
+            return PHPWS_Core::reroute($url);
+        }
+
         PHPWS_DB::begin();
         // Create Student.
         $student = new Student();
@@ -193,11 +205,30 @@ class Internship extends Model
             $i->save();
         }catch(Exception $e){
             PHPWS_DB::rollback();
-            return NQ::simple('intern', INTERN_ERROR, $e->getMessage());
+            NQ::simple('intern', INTERN_ERROR, $e->getMessage());
+            NQ::close();
+            return PHPWS_Core::goBack();
         }
         
         PHPWS_DB::commit();
         NQ::simple('intern', INTERN_SUCCESS, 'Added internship for '.$student->getFullName());
+    }
+
+    /**
+     * Check that required fields are in the REQUEST.
+     */
+    private static function checkRequest()
+    {
+        PHPWS_Core::initModClass('intern', 'UI/InternshipUI.php');
+        $vals = null;
+
+        foreach(InternshipUI::$requiredFields as $field){
+            if(!isset($_REQUEST[$field]) || $_REQUEST[$field] == '' ){
+                $vals[] = $field;
+            }
+        }
+
+        return $vals;
     }
 }
 
