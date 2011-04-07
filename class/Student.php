@@ -29,9 +29,27 @@ class Student extends Model
         return new PHPWS_DB('intern_student');
     }
 
+    /**
+     * Get the concatenated first name, middle name/initial, and last name.
+     */
     public function getFullName()
     {
         return "$this->first_name $this->middle_name $this->last_name";
+    }
+
+    /**
+     * Get a Student object by their banner id.
+     */
+    public static function getStudentByBanner($bannerId){
+        $db = self::getDb();
+        $db->addWhere('banner', $bannerId);
+        $student = new Student();
+
+        if(!$db->loadObject($student)){
+            return null;
+        }else {
+            return $student;
+        }
     }
 }
 

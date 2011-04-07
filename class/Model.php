@@ -73,7 +73,7 @@ abstract class Model
             }
         }
 
-        return $result;
+        return $this->id;
     }
 
     /**

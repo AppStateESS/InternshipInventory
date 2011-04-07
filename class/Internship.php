@@ -135,8 +135,12 @@ class Internship extends Model
         }
 
         PHPWS_DB::begin();
-        // Create Student.
-        $student = new Student();
+        // Check if this student exists already.
+        // The main identifier for a student is their Banner ID.
+        $student = Student::getStudentByBanner($_REQUEST['banner']);
+        if(is_null($student)){
+            $student = new Student();
+        }
         $student->first_name = $_REQUEST['student_first_name'];
         $student->middle_name = $_REQUEST['student_middle_name'];
         $student->last_name = $_REQUEST['student_last_name'];
@@ -194,8 +198,8 @@ class Internship extends Model
         $i->department_id = $_REQUEST['department'];
         $i->start_date = strtotime($_REQUEST['start_date']);
         $i->end_date = strtotime($_REQUEST['end_date']);
-        $i->credits = $_REQUEST['credits'];
-        $i->avg_hours_week = $_REQUEST['avg_hours_week'];
+        $i->credits = $_REQUEST['credits'] == '' ? NULL : $_REQUEST['credits'];
+        $i->avg_hours_week = $_REQUEST['avg_hours_week'] == '' ? NULL : $_REQUEST['avg_hours_week'];
         $i->domestic = isset($_REQUEST['domestic']);
         $i->international = isset($_REQUEST['international']);
         $i->paid = isset($_REQUEST['paid']);

@@ -44,13 +44,13 @@ CREATE TABLE intern_faculty_supervisor (
        PRIMARY KEY(id)              
 );
 
+-- Term format YYYY# (e.g. 20111 is Spring 2011, 20113 is Fall 2011)
 CREATE TABLE intern_term (
        id INT NOT NULL,
        term INT NOT NULL UNIQUE, 
        PRIMARY KEY (id)
 );
 
--- Term format YYYY# (e.g. 20111 is Spring 2011, 20113 is Fall 2011)
 CREATE TABLE intern_internship (
        id INT NOT NULL,
        term INT NOT NULL REFERENCES intern_term(term),
@@ -60,8 +60,8 @@ CREATE TABLE intern_internship (
        department_id INT NOT NULL REFERENCES intern_department(id),
        start_date INT NOT NULL,
        end_date INT NOT NULL,
-       credits INT NOT NULL,    
-       avg_hours_week INT NOT NULL,
+       credits INT ,
+       avg_hours_week INT ,
        domestic SMALLINT NOT NULL, 
        internatinoal SMALLINT NOT NULL,
        paid SMALLINT NOT NULL,    
