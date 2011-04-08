@@ -167,8 +167,6 @@ class InternshipUI implements UI
 
         javascript('/jquery/');
         javascript('/jquery_ui/');
-        $numOnly = array('banner');
-        javascript('/modules/intern/formUtil/', array('NUM_ONLY' => json_encode($numOnly)));
 
         return $form;
     }
