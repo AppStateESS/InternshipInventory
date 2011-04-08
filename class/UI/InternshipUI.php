@@ -167,6 +167,8 @@ class InternshipUI implements UI
 
         javascript('/jquery/');
         javascript('/jquery_ui/');
+        $numOnly = array('banner');
+        javascript('/modules/intern/formUtil/', array('NUM_ONLY' => json_encode($numOnly)));
 
         return $form;
     }
@@ -184,6 +186,7 @@ class InternshipUI implements UI
         $d = $i->getDepartment();
 
         // Student
+        $form->addHidden('student_id', $s->id);
         $vals['student_first_name'] = $s->first_name;
         $vals['student_middle_name'] = $s->middle_name;
         $vals['student_last_name'] = $s->last_name;
@@ -195,6 +198,7 @@ class InternshipUI implements UI
         $vals['graduated'] = $s->graduated;
 
         // Agency
+        $form->addHidden('agency_id', $a->id);
         $vals['agency_name'] = $a->name;
         $vals['agency_address'] = $a->address;
         $vals['agency_phone'] = $a->phone;
@@ -206,12 +210,14 @@ class InternshipUI implements UI
         $vals['agency_sup_address'] = $a->supervisor_address;
 
         // Faculty supervisor
+        $form->addHidden('supervisor_id', $f->id);
         $vals['supervisor_first_name'] = $f->first_name;
         $vals['supervisor_last_name'] = $f->last_name;
         $vals['supervisor_email'] = $f->email;
         $vals['supervisor_phone'] = $f->phone;
 
         // Internship
+        $form->addHidden('internship_id', $i->id);
         $vals['start_date'] = date('m/d/Y', $i->start_date);
         $vals['end_date'] = date('m/d/Y', $i->end_date);
         $vals['credits'] = $i->credits;

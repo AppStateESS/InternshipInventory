@@ -135,12 +135,19 @@ class Internship extends Model
         }
 
         PHPWS_DB::begin();
-        // Check if this student exists already.
-        // The main identifier for a student is their Banner ID.
-        $student = Student::getStudentByBanner($_REQUEST['banner']);
-        if(is_null($student)){
-            $student = new Student();
+        $student = new Student();
+        if(isset($_REQUEST['student_id'])){
+            // User is attempting to edit an internship.
+            try{
+                $student = new Student($_REQUEST['student_id']);
+            }catch(Exception $e){
+                PHPWS_DB::rollback();
+                NQ::simple('intern', INTERN_ERROR, 'Invalid Student ID.');
+                NQ::close();
+                return PHPWS_Core::goBack();
+            }
         }
+
         $student->first_name = $_REQUEST['student_first_name'];
         $student->middle_name = $_REQUEST['student_middle_name'];
         $student->last_name = $_REQUEST['student_last_name'];
@@ -159,6 +166,17 @@ class Internship extends Model
 
         // Create/Save agency
         $agency = new Agency();
+        if(isset($_REQUEST['agency_id'])){
+            // User is editing internship
+            try{
+                $agency = new Agency($_REQUEST['agency_id']);
+            }catch(Exception $e){
+                PHPWS_DB::rollback();
+                NQ::simple('intern', INTERN_ERROR, 'Invalid Agency ID.');
+                NQ::close();
+                return PHPWS_Core::goBack();
+            }
+        }
         $agency->name = $_REQUEST['agency_name'];
         $agency->address = $_REQUEST['agency_address'];
         $agency->phone = $_REQUEST['agency_phone'];
@@ -177,6 +195,17 @@ class Internship extends Model
 
         // Create/Save Faculty supervisor
         $faculty = new FacultySupervisor();
+        if(isset($_REQUEST['supervisor_id'])){
+            // User is editing internship
+            try{
+                $faculty = new FacultySupervisor($_REQUEST['supervisor_id']);
+            }catch(Exception $e){
+                PHPWS_DB::rollback();
+                NQ::simple('intern', INTERN_ERROR, 'Invalid Faculty Supervisor ID.');
+                NQ::close();
+                return PHPWS_Core::goBack();
+            }
+        }
         $faculty->first_name = $_REQUEST['supervisor_first_name'];
         $faculty->last_name = $_REQUEST['supervisor_last_name'];
         $faculty->email = $_REQUEST['supervisor_email'];
@@ -191,6 +220,17 @@ class Internship extends Model
 
         // Create/Save internship.
         $i = new Internship();
+        if(isset($_REQUEST['internship_id'])){
+            // User is editing internship
+            try{
+                $i = new Internship($_REQUEST['internship_id']);
+            }catch(Exception $e){
+                PHPWS_DB::rollback();
+                NQ::simple('intern', INTERN_ERROR, 'Invalid Internship ID.');
+                NQ::close();
+                return PHPWS_Core::goBack();
+            }
+        }
         $i->term = $_REQUEST['term'];
         $i->student_id = $studentId;
         $i->agency_id = $agencyId;
@@ -215,7 +255,16 @@ class Internship extends Model
         }
         
         PHPWS_DB::commit();
-        NQ::simple('intern', INTERN_SUCCESS, 'Added internship for '.$student->getFullName());
+        if(isset($_REQUEST['student_id'])){
+            // Show message if user edited internship
+            NQ::simple('intern', INTERN_SUCCESS, 'Saved internship for '.$student->getFullName());
+            NQ::close();
+            return PHPWS_Core::reroute('index.php?module=intern&action=edit_internship&id='.$i->id);
+        }else{
+            NQ::simple('intern', INTERN_SUCCESS, 'Added internship for '.$student->getFullName());
+            NQ::close();
+            return PHPWS_Core::reroute('index.php?module=intern&action=edit_internship&id='.$i->id);
+        }
     }
 
     /**
