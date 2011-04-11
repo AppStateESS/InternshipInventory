@@ -93,7 +93,7 @@ class InternshipUI implements UI
         $form->addSelect('ugrad_major', $majors);
         $form->setLabel('ugrad_major', 'Undergraduate Major');
         // TODO: DB table for grad programs
-        $gradProgs = array('none'=>'None', 'accounting' => 'accounting', 'something' => 'something');
+        $gradProgs = array('none'=>'None', 'Accounting' => 'Accounting', 'Something' => 'Something');
         $form->addSelect('grad_prog', $gradProgs);
         $form->setLabel('grad_prog', 'Graduate Program');
         $form->addCheck('graduated');

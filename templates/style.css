@@ -45,6 +45,11 @@
     border: 2px solid #FF5D5D;
 }
 
+.internship-details th {
+    background: none;
+    border-bottom: 3px dotted #E3E3E3;
+}
+
 /* Overriding default formatting of asterisk 
    for required fields in Form class */
 .required-input {

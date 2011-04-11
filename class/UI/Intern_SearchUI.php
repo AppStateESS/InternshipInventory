@@ -71,6 +71,8 @@ class Intern_SearchUI implements UI
         $pager->addPageTags($searchForm->getTemplate());
 
         // javascript...
+        javascript('/jquery/');
+        javascript('/modules/intern/hider');
 
         return $pager->get();
     }

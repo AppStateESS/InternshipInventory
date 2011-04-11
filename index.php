@@ -51,8 +51,12 @@ switch ($req) {
         break;
     case 'add_internship':
         PHPWS_Core::initModClass('intern', 'Internship.php');
-        PHPWS_Core::initModClass('intern', 'UI/InternshipUI.php');
         Internship::addInternship();// NOTIFY
+        break;
+    case 'internship_details':
+        PHPWS_Core::initModClass('intern', 'UI/InternshipDetailsUI.php');
+        echo InternshipDetailsUI::display();
+        exit;
         break;
     case 'delete_system':
         PHPWS_Core::initModClass('intern','Sysinventory_System.php');
