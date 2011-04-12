@@ -40,50 +40,72 @@ var Semaphore = function(count){
     }
 }
 
-
+/**
+ * A Hider is created for each row in the search results. 
+ * If the row is clicked then show the details of the
+ * internship.  Details are loaded when the Hider is constucted.
+ */
 var Hider = function(id, semaphore){
     this.id = id;
+    this.select = "#"+this.id;
+    this.dSelect = this.select+"-details";
     this.semaphore = semaphore;
     this.detailHTML = null;
+    this.open = false;
     var me = this;
 
-    $("#"+this.id).mouseenter(function(){
-        // Show gray background when mouse if over row
-        $("#"+me.id).css('background', '#E3E3E3');
-        $("#"+me.id).css('cursor', 'pointer');
-    });
-
-    $("#"+this.id).mouseleave(function(){
-        // Show white background when mouse if over row
-        $("#"+me.id).css('background', '#FFFFFF');
-    });
-    
-    $("#"+this.id).click(function(){
-        me.semaphore.steal(me);
-        me.show();
-    });
-
-    // Show the details for this internship.
+    // Show the details for this internship
+    // and keep the row highlighted.
     this.show = function(){
-        $("#"+this.id+"+div").slideDown('fast');
+        $(this.dSelect).slideDown('fast');
+        $(this.select).css('background', '#F2F2F2');
+        this.open = true;
     }
     
-    // Hide the details for this internship.
+    // Hide the details for this internship
+    // and remove the highlighting.
     this.hide = function(){
-        $("#"+this.id+"+div").slideUp('fast');
+        $(this.select).css('background', '#FFFFFF');
+        $(this.dSelect).slideUp('fast');
+        this.open = false;
     }
 
-    // Add content div, load it up, and hide it.
-    $("#"+this.id).after("<div colspan='5'></div>");
-    $("#"+this.id+"+div").css('margin-bottom', '10px');
+    $(this.select).mouseenter(function(){
+        // Show gray background when mouse if over row
+        $(me.select).css('background', '#F2F2F2');
+        $(me.select).css('cursor', 'pointer');
+    });
+
+    $(this.select).mouseleave(function(){
+        // If this hider is opened then keep it highlighted.
+        if(!me.open){
+            // Show white background when mouse if over row
+            $(me.select).css('background', '#FFFFFF');
+        }
+    });
+    
+    $(this.select).click(function(){
+        // If this row is the open one and is clicked 
+        // again then close it and release the semaphore.
+        if(me.semaphore.owner == me){
+            me.hide();
+            me.semaphore.release();
+            return;
+        }else{
+            // Someone else is open...
+            me.semaphore.steal(me);
+            me.show();
+        }
+    });
+
+    // Hide content div and load it with data.
     this.hide();
     $.get('index.php', {'module' : 'intern', 'action' : 'internship_details', 'id' : me.id },
           function(data){
               if(!data){
                   console.log("Error fetching internship details for "+$("#"+me.id+">td:first-child").text().trim()+".");
               }else{
-                  $("#"+me.id+"+div").html(data);
+                  $(me.dSelect).html(data);
               }
           });
-
 }

@@ -52,6 +52,11 @@
     {TERM}
   </td>
 </tr>
+<tr>
+  <td colspan="5">
+    <div id="{ID}-details"></div>
+  </td>     
+</tr>
 <!-- END listrows -->
 <!-- BEGIN empty_table -->
 <tr>

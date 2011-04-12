@@ -45,9 +45,17 @@
     border: 2px solid #FF5D5D;
 }
 
+.internship-details {
+    padding-bottom: 10px;
+}
+
 .internship-details th {
     background: none;
     border-bottom: 3px dotted #E3E3E3;
+}
+
+#search-results {
+    width: 100%;
 }
 
 /* Overriding default formatting of asterisk 

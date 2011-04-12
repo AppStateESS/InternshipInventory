@@ -4,20 +4,12 @@
     <th colspan="8">Student</th>
   </tr>
   <tr>
-    <td>Banner:</td><td> {banner}</td>
-    <td>Name:</td><td> {first_name} {middle_name} {last_name}</td>
-  </tr>
-  <tr>
     <td>Email:</td><td><a href="mailto:{email}">{email}</a></td>
     <td>Phone:</td><td> {phone} </td>
   </tr>
   <tr>
-    <td>Graduated: </td><td> {graduated} </td>
     <td>Graduate Program:</td><td> {grad_prog} </td>
-  </tr>
-  <tr>
     <td>Undergraduate Major: </td><td> {ugrad_major} </td>
-    <td>Graduated: </td><td> {graduated} </td>
   </tr>
   <!-- END student -->
 
