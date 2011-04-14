@@ -105,6 +105,8 @@ class Internship extends Model
         $tags['TERM'] = Term::rawToRead($this->term);
         $tags['ID'] = $this->id;
 
+        $tags['EDIT'] = PHPWS_Text::moduleLink('Edit', 'intern', array('action' => 'edit_internship', 'id' => $this->id));
+
         // TODO: Finish off fields.
         return $tags;
     }

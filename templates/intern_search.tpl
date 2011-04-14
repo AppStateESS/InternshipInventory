@@ -33,6 +33,9 @@
   <th>
     Term {TERM_SORT}
   </th>
+  <th>
+    Action
+  </th>
 </tr>
 <!-- BEGIN listrows -->
 <tr class="result-row" id="{ID}">
@@ -50,6 +53,9 @@
   </td>
   <td>
     {TERM}
+  </td>
+  <td class="action">
+    {EDIT}
   </td>
 </tr>
 <tr>

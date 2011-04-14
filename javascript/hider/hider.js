@@ -1,55 +1,12 @@
-/*
- * Semaphore
- *
- *   Control access to a resource.  Only allow a limited number of
- * users to acquire a resource at a given time.
- *
- * @author Daniel West <dwest at tux dot appstate dot edu>
- * @package hms
- * @subpackage javascript
- */
-var Semaphore = function(count){
-    this.count = count;
-    this.owner;
-
-    this.acquire = function(owner){
-        if(this.count > 0){
-            this.count--;
-            this.owner = owner;
-            return true;
-        }
-        return false;
-    }
-
-    this.steal = function(theif){
-        // Just try to steal it, not from anyone
-        // in particular
-        result = this.acquire(theif);
-        if(!result){
-            this.owner.hide()
-            this.release();
-            this.acquire(theif);
-            return true;
-        }
-    }
-
-    this.release = function(){
-        this.count++;
-        this.owner = null;
-        return true;
-    }
-}
-
 /**
  * A Hider is created for each row in the search results. 
  * If the row is clicked then show the details of the
  * internship.  Details are loaded when the Hider is constucted.
  */
-var Hider = function(id, semaphore){
+var Hider = function(id){
     this.id = id;
     this.select = "#"+this.id;
     this.dSelect = this.select+"-details";
-    this.semaphore = semaphore;
     this.detailHTML = null;
     this.open = false;
     var me = this;
@@ -84,16 +41,12 @@ var Hider = function(id, semaphore){
         }
     });
     
+    // Show details if row is clicked...ignore if the 'Edit' link is clicked.
     $(this.select).click(function(){
-        // If this row is the open one and is clicked 
-        // again then close it and release the semaphore.
-        if(me.semaphore.owner == me){
+        // If row is open and is clicked then close it.
+        if(me.open){
             me.hide();
-            me.semaphore.release();
-            return;
         }else{
-            // Someone else is open...
-            me.semaphore.steal(me);
             me.show();
         }
     });
