@@ -90,7 +90,7 @@ class Intern_SearchUI implements UI
         // Search...
         if(!is_null($lastName))
             $pager->addWhere('intern_student.last_name', "%$lastName%", 'ILIKE');
-        if(!is_null($banner))
+        if(!is_null($banner) && !empty($banner))
             $pager->addWhere('intern_student.banner', "%$banner%", 'ILIKE');
         if(!is_null($deptName) && $deptName != '')
             $pager->addWhere('intern_department.name', "%$deptName%");
