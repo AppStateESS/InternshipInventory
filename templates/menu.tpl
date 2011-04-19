@@ -3,7 +3,7 @@
 <center>
 <table border=0 cellspacing=0 cellpadding=10>
 <tr>
-    <td align="right"><strong>{SEARCH_LINK}</strong></td><td>- Build a query to search for systems</td>
+    <td align="right"><strong>{SEARCH_LINK}</strong></td><td>- Search internships in database.</td>
 </tr>
 <tr>
     <td align="right">{ADD_INTERNSHIP_LINK}</td><td>- Add a new internship to the database</td>

@@ -47,3 +47,11 @@
   </tr>
   <!-- END faculty -->
 </table>
+
+<h4>Documents</h4>
+<ul class="document-list">
+  <!-- BEGIN docs -->
+  <li>{DOWNLOAD}{DELETE}</li>
+  <!-- END docs -->
+  <li>{UPLOAD_DOC}</li>
+</ul>

@@ -21,7 +21,8 @@ class InternshipUI implements UI
         PHPWS_Core::initModClass('intern', 'Internship.php');
 
         $tpl = array();
-        $tpl['HOME_LINK'] = PHPWS_Text::moduleLink('Back to Menu', 'intern');
+        $tpl['HOME_LINK'] = PHPWS_Text::moduleLink('Menu', 'intern');
+        $tpl['SEARCH_LINK'] = PHPWS_Text::moduleLink('Search', 'intern', array('action' => 'search'));
 
         // TODO: PERMISSIONS
         $form = self::getInternshipForm();

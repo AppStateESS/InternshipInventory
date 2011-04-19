@@ -46,12 +46,15 @@
 }
 
 .internship-details {
-    padding-bottom: 10px;
+    padding-bottom: 30px;
 }
 
 .internship-details th {
     background: none;
     border-bottom: 3px dotted #E3E3E3;
+}
+
+.document-list {
 }
 
 #search-results {

@@ -15,7 +15,7 @@ var Hider = function(id){
     // and keep the row highlighted.
     this.show = function(){
         $(this.dSelect).slideDown('fast');
-        $(this.select).css('background', '#F2F2F2');
+        $(this.select).css('background', '#E2E2E2');
         this.open = true;
     }
     
@@ -29,7 +29,7 @@ var Hider = function(id){
 
     $(this.select).mouseenter(function(){
         // Show gray background when mouse if over row
-        $(me.select).css('background', '#F2F2F2');
+        $(me.select).css('background', '#E2E2E2');
         $(me.select).css('cursor', 'pointer');
     });
 

@@ -21,7 +21,6 @@ $browser = $_SERVER['HTTP_USER_AGENT'];
 $ie7 = "/MSIE [789]/";
 $ie_fail = "/MSIE/";
 
-PHPWS_Core::initModClass('intern', 'Intern_Util.php');
 PHPWS_Core::initModClass('intern', 'UI/Intern_NotifyUI.php');
 
 // Check that user has compat. browser
@@ -130,21 +129,23 @@ switch ($req) {
         readfile($path.$filename);
         exit;
     case 'upload_document_form':
-        PHPWS_Core::initModClass('intern', 'Sysinventory_Document_Manager.php');
-        $docManager = new Sysinventory_Document_Manager();
+        PHPWS_Core::initModClass('intern', 'Intern_Document_Manager.php');
+        $docManager = new Intern_Document_Manager();
         $docManager->edit();
         break;
     case 'post_document_upload':
-        PHPWS_Core::initModClass('intern', 'Sysinventory_Document_Manager.php');
-        $docManager = new Sysinventory_Document_Manager();
+        PHPWS_Core::initModClass('intern', 'Intern_Document_Manager.php');
+        $docManager = new Intern_Document_Manager();
         $docManager->postDocumentUpload();
         break;
     case 'delete_document':
-        PHPWS_Core::initModClass('intern', 'Sysinventory_Document.php');
-        $doc = new Sysinventory_Document($_REQUEST['doc_id']);
+        PHPWS_Core::initModClass('intern', 'Intern_Document.php');
+        $doc = new Intern_Document($_REQUEST['doc_id']);
         $doc->delete();
-        NQ::simple('intern', SYSI_SUCCESS, 'Document deleted.');
-        Sysinventory_Util::reroute('index.php?module=sysinventory&action=report&redir=1');
+        NQ::simple('intern', INTERN_SUCCESS, 'Document deleted.');
+        NQ::close();
+        // reroute back to search page and automatically open the row that the document was deleted from.
+        PHPWS_Core::reroute('index.php?module=intern&action=search&o='.$doc->internship_id);
         break;
     default:
         PHPWS_Core::initModClass('intern','Intern_Menu.php');

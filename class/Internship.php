@@ -71,6 +71,17 @@ class Internship extends Model
     }
 
     /**
+     * Get Document objects associated with this internship.
+     */
+    public function getDocuments()
+    {
+        PHPWS_Core::initModClass('intern', 'Intern_Document.php');
+        $db = Intern_Document::getDB();
+        $db->addWhere('internship_id', $this->id);
+        return $db->getObjects('Intern_Document');
+    }
+
+    /**
      * Row tags for DBPager
      */
     public function getRowTags()

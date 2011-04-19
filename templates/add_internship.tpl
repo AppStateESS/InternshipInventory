@@ -5,7 +5,7 @@
     });
 </script>
 
-<div>{HOME_LINK}</div>
+<div>{HOME_LINK} | {SEARCH_LINK}</div>
 <h1>Add Internship</h1><br />
 <div>
   {START_FORM}

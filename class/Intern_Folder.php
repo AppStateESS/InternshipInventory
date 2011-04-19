@@ -27,7 +27,7 @@ class Intern_Folder extends Folder
         $link->setSalted();
         $vars['address'] = $link->getAddress();
         $vars['title'] = & $label;
-
+        
         $vars['label']   = $label;
         $vars['type']    = 'button';
 

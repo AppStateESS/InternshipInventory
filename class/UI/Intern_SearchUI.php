@@ -20,7 +20,8 @@ class Intern_SearchUI implements UI
         PHPWS_Core::initModClass('intern', 'Department.php');
 
         $tpl = array();
-        $tpl['HOME_LINK'] = PHPWS_Text::moduleLink('Back to Menu', 'intern');
+        $tpl['HOME_LINK'] = PHPWS_Text::moduleLink('Menu', 'intern');
+        $tpl['ADD_LINK'] = PHPWS_Text::moduleLink('Add Internship', 'intern', array('action' => 'edit_internship'));
 
         // Set up search fields
         $searchForm = new PHPWS_Form('search');
@@ -70,9 +71,16 @@ class Intern_SearchUI implements UI
         $pager = self::getPager($lastName, $banner, $deptName, $term);
         $pager->addPageTags($searchForm->getTemplate());
 
+        // Automatically open the row with the matching ID.
+        $o = -1;
+        if(isset($_REQUEST['o'])){
+            $o = $_REQUEST['o'];
+        }
         // javascript...
         javascript('/jquery/');
-        javascript('/modules/intern/hider');
+        javascript('/modules/intern/hider', array('OPEN' => $o));
+        javascript('open_window');
+        javascript('confirm');
 
         return $pager->get();
     }
