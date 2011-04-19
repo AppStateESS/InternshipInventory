@@ -47,6 +47,8 @@
 
 .internship-details {
     padding-bottom: 30px;
+    float: left;
+    padding-top: 16px;
 }
 
 .internship-details th {
@@ -54,7 +56,12 @@
     border-bottom: 3px dotted #E3E3E3;
 }
 
+.document-list h4{
+    background: none;
+    border-bottom: 3px dotted #E3E3E3;
+}
 .document-list {
+    float: left;
 }
 
 #search-results {

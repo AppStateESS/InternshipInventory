@@ -160,7 +160,7 @@ class Intern_Document_Manager extends FC_Document_Manager
             }else if(PHPWS_Error::logIfError($result)){
                 NQ::simple('intern', INTERN_ERROR, $result->toString());
             }
-            
+            NQ::close();
             if (!isset($_POST['im'])) {
                 javascript('close_refresh');
             } else {

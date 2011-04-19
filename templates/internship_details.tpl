@@ -1,7 +1,7 @@
 <table class="internship-details">
   <!-- BEGIN student -->
   <tr>
-    <th colspan="8">Student</th>
+    <th colspan="4">Student</th>
   </tr>
   <tr>
     <td>Email:</td><td><a href="mailto:{email}">{email}</a></td>
@@ -12,10 +12,9 @@
     <td>Undergraduate Major: </td><td> {ugrad_major} </td>
   </tr>
   <!-- END student -->
-
   <!-- BEGIN agency -->
   <tr>
-    <th colspan="8">Agency</th>
+    <th colspan="6">Agency</th>
   </tr>
   <tr>
     <td>Name:</td><td>{name}</td>
@@ -23,7 +22,7 @@
     <td>Phone:</td><td>{phone}</td>
   </tr>
   <tr>
-    <th colspan="8">Agency Supervisor</th>
+    <th colspan="6">Agency Supervisor</th>
   </tr>
   <tr>
     <td>Name:</td><td>{supervisor_first_name}{supervisor_last_name}</td>
@@ -38,7 +37,7 @@
 
   <!-- BEGIN faculty -->
   <tr>
-    <th colspan="8">Faculty Supervisor</th>
+    <th colspan="6">Faculty Supervisor</th>
   </tr>
   <tr>
     <td>Name:</td><td>{first_name} {last_name}</td>
@@ -48,8 +47,9 @@
   <!-- END faculty -->
 </table>
 
-<h4>Documents</h4>
+
 <ul class="document-list">
+  <h4>Documents</h4>
   <!-- BEGIN docs -->
   <li>{DOWNLOAD}{DELETE}</li>
   <!-- END docs -->
