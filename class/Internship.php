@@ -80,6 +80,26 @@ class Internship extends Model
         $db->addWhere('internship_id', $this->id);
         return $db->getObjects('Intern_Document');
     }
+    
+    /**
+     * Get formatted dates.
+     */
+    public function getStartDate($formatted=false)
+    {
+        if($formatted){
+            return date('F j, Y', $this->start_date);
+        }else{
+            return $this->start_date;
+        }
+    }
+    public function getEndDate($formatted=false)
+    {
+        if($formatted){
+            return date('F j, Y', $this->end_date);
+        }else{
+            return $this->end_date;
+        }
+    }
 
     /**
      * Row tags for DBPager

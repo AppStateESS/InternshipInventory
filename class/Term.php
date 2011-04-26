@@ -31,9 +31,10 @@ class Term extends Model
 
     /**
      * Converts the database entry of Term into human
+     * If $super is true then <sup> tags will be used in 1st and 2nd.
      * readable form. (Ex: 20111 => 'Spring 2011')
      */
-    public static function rawToRead($t)
+    public static function rawToRead($t, $super=true)
     {
         $semester = $t[strlen($t)-1];// Get last char
         $year = substr($t, 0, strlen($t)-1);
@@ -41,9 +42,15 @@ class Term extends Model
             case '1':
                 return "Spring $year";
             case '2':
-                return "1<sup>st</sup> Summer $year";
+                if($super)
+                    return "1<sup>st</sup> Summer $year";
+                else 
+                    return "1st Summer $year";
             case '3':
-                return "2<sup>nd</sup> Summer $year";
+                if($super)
+                    return "2<sup>nd</sup> Summer $year";
+                else
+                    return "2nd Summer $year";
             case '4':
                 return "Fall $year";
             default:
