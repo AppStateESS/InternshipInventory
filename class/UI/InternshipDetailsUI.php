@@ -30,6 +30,11 @@ class InternshipDetailsUI implements UI
         $d = $i->getDepartment();
         $docs = $i->getDocuments();
 
+        $tpl['internship'][] = array('internship' => $i->internship==1 ? 'Yes' : 'No',
+                                     'service_learning' => $i->service_learn==1 ? 'Yes' : 'No',
+                                     'independent_study' => $i->independent_study==1 ? 'Yes' : 'No',
+                                     'research_assist' => $i->research_assist==1 ? 'Yes' : 'No',
+                                     'other_type' => $i->other_type);
         $tpl['student'][] = get_object_vars($s);
         $tpl['agency'][] = get_object_vars($a);
         $tpl['faculty'][] = get_object_vars($f);

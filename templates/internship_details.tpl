@@ -12,6 +12,20 @@
     <td>Undergraduate Major: </td><td> {ugrad_major} </td>
   </tr>
   <!-- END student -->
+  <!-- BEGIN internship -->
+  <tr>
+    <th colspan="4">Internship Type</th>
+  </tr>
+  <tr>
+    <td>Default Internship: </td><td>{internship}</td>
+    <td>Service Learning: </td><td>{service_learning}</td>
+    <td>Independent Study: </td><td>{independent_study}</td>
+  </tr>
+  <tr>
+    <td>Research Assistant: </td><td>{research_assist}</td>
+    <td>Other type: </td><td>{other_type}</td>
+  </tr>
+  <!-- END internship -->
   <!-- BEGIN agency -->
   <tr>
     <th colspan="6">Agency</th>

@@ -73,10 +73,7 @@
     </tr>
     <tr>
       <td>
-        {GRADUATED_LABEL}
-      </td>
-      <td>
-        {GRADUATED}
+        {GRADUATED}{GRADUATED_LABEL}
       </td>
     </tr>
     <tr>
@@ -261,44 +258,55 @@
       </tr>
       <tr>
         <td>
-          {DOMESTIC_LABEL}
-        </td>
-        <td>
-          {DOMESTIC}
+          {DOMESTIC}{DOMESTIC_LABEL}
         </td>
       </tr>
       <tr>
         <td>
-          {INTERNAT_LABEL}
-        </td>
-        <td>
-          {INTERNAT}
+          {INTERNAT}{INTERNAT_LABEL}
         </td>
       </tr>
       <tr>
         <td>
-          {PAID_LABEL}
-        </td>
-        <td>
-          {PAID}
+          {PAID}{PAID_LABEL}
         </td>
       </tr>
       <tr>
         <td>
-          {STIPEND_LABEL}
-        </td>
-        <td>
-          {STIPEND}
+          {STIPEND}{STIPEND_LABEL}
         </td>
       </tr>
       <tr>
         <td>
-          {UNPAID_LABEL}
-        </td>
-        <td>
-          {UNPAID}
+          {UNPAID}{UNPAID_LABEL}
         </td>
       </tr>
+      <tr>
+        <td>
+          {INTERNSHIP_DEFAULT_TYPE}{INTERNSHIP_DEFAULT_TYPE_LABEL}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {SERVICE_LEARNING_TYPE}{SERVICE_LEARNING_TYPE_LABEL}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {INDEPENDENT_STUDY_TYPE}{INDEPENDENT_STUDY_TYPE_LABEL}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {RESEARCH_ASSIST_TYPE}{RESEARCH_ASSIST_TYPE_LABEL}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {OTHER_TYPE_LABEL}{OTHER_TYPE}
+        </td>
+      </tr>
+
     </table>
   </td>
   <!-- End internship details -->

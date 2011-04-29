@@ -56,6 +56,20 @@ function intern_update(&$content, $currentVersion)
             if(PEAR::isError($result)){
                 return $result;
             }
+        case version_compare($currentVersion, '0.0.10', '<'):
+            $db = new PHPWS_DB;
+            $result = $db->importFile(PHPWS_SOURCE_DIR.
+                                      'mod/intern/boost/updates/update_0_0_10.sql');
+            if(PEAR::isError($result)){
+                return $result;
+            }
+        case version_compare($currentVersion, '0.0.11', '<'):
+            $db = new PHPWS_DB;
+            $result = $db->importFile(PHPWS_SOURCE_DIR.
+                                      'mod/intern/boost/updates/update_0_0_11.sql');
+            if(PEAR::isError($result)){
+                return $result;
+            }
     }
     return TRUE;
 }

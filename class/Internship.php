@@ -26,6 +26,11 @@ class Internship extends Model
     public $paid;
     public $stipend;
     public $unpaid;
+    public $internship;
+    public $service_learn;
+    public $independent_study;
+    public $research_assist;
+    public $other_type;
     
     /**
      * @Override Model::getDb
@@ -57,6 +62,11 @@ class Internship extends Model
         $i['Paid']       = $this->paid==1 ? 'Yes' : 'No';
         $i['Stipend']    = $this->stipend==1 ? 'Yes' : 'No';
         $i['Unpaid']     = $this->unpaid==1 ? 'Yes' : 'No';
+        $i['Internship'] = $this->internship==1 ? 'Yes' : 'No';
+        $i['Service Learning']   = $this->service_learn==1 ? 'Yes' : 'No';
+        $i['Independent Study']  = $this->independent_study==1 ? 'Yes' : 'No';
+        $i['Research Assistant'] = $this->research_assist==1 ? 'Yes' : 'No';
+        $i['Other Type']         = $this->other_type;
         // Merge data from other objects.
         $i = array_merge($s->getCSV(), $i );
         $i = array_merge($i, $a->getCSV());
@@ -253,6 +263,11 @@ class Internship extends Model
         $student->banner = $_REQUEST['banner'];
         $student->phone = $_REQUEST['student_phone'];
         $student->email = $_REQUEST['student_email'];
+        $student->internship = isset($_REQUEST['internship_default_type']);
+        $student->service_learn = isset($_REQUEST['service_learning_type']);
+        $studnet->independent_study = isset($_REQUEST['independent_study_type']);
+        $student->research_assist   = isset($_REQUEST['research_assistant_type']);
+        $studnet->other_type = empty($_REQUEST['other_type']) ? null : $_REQUEST['other_type'];
         $student->grad_prog = $_REQUEST['grad_prog'];
         $student->ugrad_major = $_REQUEST['ugrad_major'];
         $student->graduated = isset($_REQUEST['graduated']);
@@ -330,6 +345,7 @@ class Internship extends Model
                 return PHPWS_Core::goBack();
             }
         }
+
         $i->term = $_REQUEST['term'];
         $i->student_id = $studentId;
         $i->agency_id = $agencyId;
@@ -340,10 +356,16 @@ class Internship extends Model
         $i->credits = $_REQUEST['credits'] == '' ? NULL : $_REQUEST['credits'];
         $i->avg_hours_week = $_REQUEST['avg_hours_week'] == '' ? NULL : $_REQUEST['avg_hours_week'];
         $i->domestic = isset($_REQUEST['domestic']);
-        $i->international = isset($_REQUEST['international']);
+        $i->international = isset($_REQUEST['internat']);
         $i->paid = isset($_REQUEST['paid']);
         $i->stipend = isset($_REQUEST['stipend']);
         $i->unpaid = isset($_REQUEST['unpaid']);
+        $i->internship = isset($_REQUEST['internship_default_type']);
+        $i->service_learn = isset($_REQUEST['service_learning_type']);
+        $i->independent_study = isset($_REQUEST['independent_study_type']);
+        $i->research_assist = isset($_REQUEST['research_assist_type']);
+        $i->other_type = $_REQUEST['other_type'];
+
         try{
             $i->save();
         }catch(Exception $e){

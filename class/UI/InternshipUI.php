@@ -98,7 +98,7 @@ class InternshipUI implements UI
         $form->addSelect('grad_prog', $gradProgs);
         $form->setLabel('grad_prog', 'Graduate Program');
         $form->addCheck('graduated');
-        $form->setLabel('graduated', 'Graduated?');
+        $form->setLabel('graduated', 'Graduated');
 
         /**
          * Faculty supervisor info.
@@ -151,15 +151,25 @@ class InternshipUI implements UI
         $form->addText('avg_hours_week');
         $form->setLabel('avg_hours_week', 'Average Hours per Week');
         $form->addCheck('domestic');
-        $form->setLabel('domestic', 'Domestic?');
+        $form->setLabel('domestic', 'Domestic');
         $form->addCheck('internat');
-        $form->setLabel('internat', 'International?');
+        $form->setLabel('internat', 'International');
         $form->addCheck('paid');
-        $form->setLabel('paid', 'Paid?');
-        $form->addCheck('unpaid', 'Paid?');
-        $form->setLabel('unpaid', 'Unpaid?');
+        $form->setLabel('paid', 'Paid');
+        $form->addCheck('unpaid');
+        $form->setLabel('unpaid', 'Unpaid');
         $form->addCheck('stipend');
-        $form->setLabel('stipend', 'Stipend?');
+        $form->setLabel('stipend', 'Stipend');
+        $form->addCheck('internship_default_type');
+        $form->setLabel('internship_default_type', 'Internship');
+        $form->addCheck('service_learning_type');
+        $form->setLabel('service_learning_type', 'Service Learning');
+        $form->addCheck('independent_study_type');
+        $form->setLabel('independent_study_type', 'Independent Study');
+        $form->addCheck('research_assist_type');
+        $form->setLabel('research_assist_type', 'Research Assistant');
+        $form->addText('other_type');
+        $form->setLabel('other_type', 'Other');
 
         // Label required fields
         foreach(self::$requiredFields as $field){
@@ -221,17 +231,22 @@ class InternshipUI implements UI
         $vals['end_date'] = date('m/d/Y', $i->end_date);
         $vals['credits'] = $i->credits;
         $vals['avg_hours_week'] = $i->avg_hours_week;
+        $vals['other_type'] = $i->other_type;
 
         // Department
         $vals['department'] = $i->department_id;
 
         // Other internship details
         $form->setMatch('domestic', $i->domestic);
-        $form->setMatch('international', $i->international);
+        $form->setMatch('internat', $i->international);
         $form->setMatch('paid', $i->paid);
         $form->setMatch('unpaid', $i->unpaid);
         $form->setMatch('stipend', $i->stipend);
         $form->setMatch('term', $i->term);
+        $form->setMatch('internship_default_type', $i->internship);
+        $form->setMatch('service_learning_type', $i->service_learn);
+        $form->setMatch('independent_study_type', $i->independent_study);
+        $form->setMatch('research_assist_type', $i->research_assist);
         // Plug 
         $form->plugIn($vals);
     }
