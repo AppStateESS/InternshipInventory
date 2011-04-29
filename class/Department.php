@@ -21,6 +21,11 @@ class Department extends Model
         return new PHPWS_DB('intern_department');
     }
 
+    public function getCSV()
+    {
+        return array('Department' => $this->name);
+    }
+
     /**
      * Row tags for DBPager
      */

@@ -12,7 +12,7 @@
 
   </tr>
   <tr>
-    <td>{SUBMIT}</td>
+    <td>{SUBMIT}<button style="border: 1px solid black;" id="export-csv" type="button">Export to CSV</button></td>
   </tr>
 </table>
 {END_FORM}

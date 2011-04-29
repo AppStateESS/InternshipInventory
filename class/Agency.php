@@ -26,6 +26,26 @@ class Agency extends Model
     public function getDb(){
         return new PHPWS_DB('intern_agency');
     }
+
+    /**
+     * @Override Model::getCSV
+     */
+    public function getCSV()
+    {
+        $csv = array();
+
+        $csv['Agency Name']              = $this->name;
+        $csv['Agency Address']           = $this->address;
+        $csv['Agency Phone']             = $this->phone;
+        $csv['Agency Super. First Name'] = $this->supervisor_first_name;
+        $csv['Agency Super. Last Name']  = $this->supervisor_last_name;
+        $csv['Agency Super. Phone']      = $this->supervisor_phone;
+        $csv['Agency Super. Email']      = $this->supervisor_email;
+        $csv['Agency Super. Fax']        = $this->supervisor_fax;
+        $csv['Agency Super. Address']    = $this->supervisor_address;
+        
+        return $csv;
+    }
 }
 
 ?>

@@ -35,6 +35,38 @@ class Internship extends Model
     }
 
     /**
+     * @Override Model::getCSV
+     * Get a CSV formatted for for this internship.
+     */
+    public function getCSV()
+    {
+        PHPWS_Core::initModClass('intern', 'Term.php');
+
+        $i = array();
+        $s = $this->getStudent();
+        $a = $this->getAgency();
+        $f = $this->getFacultySupervisor();
+        $d = $this->getDepartment();
+        $i['Start Date'] = $this->getStartDate(true);
+        $i['End Date']   = $this->getEndDate(true);
+        $i['Term']       = Term::rawToRead($this->term, false);
+        $i['Credits']    = $this->credits;
+        $i['Average Hours Per Week'] = $this->avg_hours_week;
+        $i['Domestic']   = $this->domestic==1 ? 'Yes' : 'No';
+        $i['International'] = $this->international==1 ? 'Yes' : 'No';
+        $i['Paid']       = $this->paid==1 ? 'Yes' : 'No';
+        $i['Stipend']    = $this->stipend==1 ? 'Yes' : 'No';
+        $i['Unpaid']     = $this->unpaid==1 ? 'Yes' : 'No';
+        // Merge data from other objects.
+        $i = array_merge($s->getCSV(), $i );
+        $i = array_merge($i, $a->getCSV());
+        $i = array_merge($i, $f->getCSV());
+        $i = array_merge($i, $d->getCSV());
+        
+        return $i;
+    }
+
+    /**
      * Get the Student object associated with this Internship.
      */
     public function getStudent()
@@ -140,6 +172,40 @@ class Internship extends Model
 
         // TODO: Finish off fields.
         return $tags;
+    }
+
+    /**
+     * Create a CSV file with rows for each internship with
+     * ID in $internships.
+     * @return filename
+     */
+    public static function getCSVFile($internships)
+    {
+        if(sizeof($internships) < 1){
+            return null;
+        }
+
+        // Create a temporary file for CSV.
+        $tmpName = tempnam('/tmp', 'php');
+        $handle = fopen($tmpName, 'w');
+
+        // Get the first internship manually so we can fetch the header names.
+        $i = new Internship($internships[0]);
+        $line = $i->getCSV();
+        $headers = array_keys($line);
+        fputcsv($handle, $headers); // Write header first.
+        fputcsv($handle, $line); // Write first data line.
+
+        // Continue writing the rest of lines.
+        for($index = 1; $index < sizeof($internships); $index++){
+            $i = new Internship($internships[$index]);
+            $line = $i->getCSV();
+            fputcsv($handle, $line);
+        }
+
+        fclose($handle);
+        
+        return $tmpName;
     }
 
     /**

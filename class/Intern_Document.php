@@ -22,6 +22,14 @@ class Intern_Document extends Model
         return new PHPWS_DB('intern_document');
     }
 
+    /**
+     * @Override Model::getCSV
+     */
+    public function getCSV()
+    {
+        return array();
+    }
+
     public function __construct($id = NULL)
     {
         if(is_null($id)) return;

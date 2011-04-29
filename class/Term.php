@@ -13,6 +13,11 @@ class Term extends Model
         return new PHPWS_DB('intern_term');
     }
 
+    public function getCSV()
+    {
+        return array('Term' => Term::rawToRead($this->term, false));
+    }
+
     // TODO: Order by...something?
     public static function getTermsAssoc()
     {

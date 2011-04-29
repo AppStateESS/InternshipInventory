@@ -30,6 +30,26 @@ class Student extends Model
     }
 
     /**
+     * @Override Model::getCSV
+     */
+    public function getCSV()
+    {
+        $csv = array();
+        
+        $csv['Banner'] = $this->banner;
+        $csv['Student First Name'] = $this->first_name;
+        $csv['Student Middle Name'] = $this->middle_name;
+        $csv['Student Last Name']  = $this->last_name;
+        $csv['Student Phone'] = $this->phone;
+        $csv['Student Email'] = $this->email;
+        $csv['Graduate Program'] = $this->grad_prog;
+        $csv['Undergraduate Major'] = $this->ugrad_major;
+        $csv['Graduated'] = $this->graduated==1 ? 'Yes' : 'No';
+        
+        return $csv;
+    }
+
+    /**
      * Get the concatenated first name, middle name/initial, and last name.
      */
     public function getFullName()
