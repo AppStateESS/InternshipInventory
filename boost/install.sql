@@ -84,10 +84,10 @@ CREATE TABLE intern_document (
 );
 
 
-
 CREATE TABLE intern_admin (
     id INT NOT NULL,
     username VARCHAR NOT NULL,
+    department_id INT NOT NULL REFERENCES intern_department(id),
     PRIMARY KEY (id)
 );
 

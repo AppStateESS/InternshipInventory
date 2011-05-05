@@ -97,40 +97,24 @@ switch ($req) {
         }
         $content = Department::showDepartments($todo,$thing);
         break;
-    case 'addDep':
-        Sysinventory_Department::AddDepartment($_REQUEST['description']);
-        break;
     case 'edit_admins':
-        if (isset($_REQUEST['newadmin'])) {
-            PHPWS_Core::initModClass('intern','Sysinventory_Admin.php');
-            Sysinventory_Admin::newAdmin($_REQUEST['department_id'],$_REQUEST['username']);
-        }else if (isset($_REQUEST['deladmin'])) {
-            PHPWS_Core::initModClass('intern','Sysinventory_Admin.php');
-            Sysinventory_Admin::delAdmin($_REQUEST['id']);
+        PHPWS_Core::initModClass('intern', 'UI/Intern_AdminUI.php');
+        PHPWS_Core::initModClass('intern', 'Intern_Admin.php');
+        PHPWS_Core::initModClass('intern', 'Department.php');
+        
+        if(isset($_REQUEST['add'])){
+            // Add user in REQUEST to administrator list for the department in REQUEST.
+            Intern_Admin::add($_REQUEST['username'], $_REQUEST['department_id']);
+        }else if(isset($_REQUEST['del'])){
+            // Delete the user in REQUEST from department in REQUEST.
+            Intern_Admin::del($_REQUEST['username'], $_REQUEST['department_id']);
         }
-        PHPWS_Core::initModClass('intern','UI/Sysinventory_AdminUI.php');
-        Sysinventory_AdminUI::showAdmins();
-        break;
-    case 'edit_default':
-        if (isset($_REQUEST['newdefault']) && isset($_REQUEST['name']) && isset($_REQUEST['model'])) {
-            PHPWS_Core::initModClass('intern','Sysinventory_Default.php');
-            Sysinventory_Default::newDefault();
-        }else if (isset($_REQUEST['deldefault']) && isset($_REQUEST['id'])) {
-            PHPWS_Core::initModClass('intern','Sysinventory_Default.php');
-            Sysinventory_Default::delDefault($_REQUEST['id']);
-        }
-        PHPWS_Core::initModClass('intern','UI/Sysinventory_DefaultUI.php');
-        Sysinventory_DefaultUI::showDefaults();
+        Intern_AdminUI::display();
         break;
     case 'pdf':
         PHPWS_Core::initModClass('intern', 'Internship.php');
         $i = new Internship($_REQUEST['id']);
         $i->getPDF();
-        // $filename = $_SESSION['filename'];
-        // $path = '/tmp/';
-        // header('Content-type: application/pdf');
-        // header('Content-Disposition: attachment; filename="'.$filename.'"');
-        // readfile($path.$filename);
         exit;
     case 'csv':
         PHPWS_Core::initModClass('intern', 'Internship.php');

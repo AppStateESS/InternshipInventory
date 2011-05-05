@@ -224,7 +224,7 @@ class Internship extends Model
         $this->toggle($pdf);
         $pdf->cell(18, 5, 'Name:', 'LT');
         $this->toggle($pdf, false);
-        $pdf->cell(172,  5, $s->getFullName(), 'RT');
+        $pdf->cell(172,  5, $f->getFullName(), 'RT');
         $pdf->ln();
 
         $this->toggle($pdf);

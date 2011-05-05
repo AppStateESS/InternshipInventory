@@ -20,7 +20,7 @@ class Intern_MenuUI implements UI{
         if(Current_User::isDeity()){
             $tags['DEITY']                     = 'Admin Options';
             $tags['EDIT_DEPARTMENTS_LINK']     = PHPWS_Text::secureLink('Edit Departments','intern',array('action' => 'edit_departments'));
-            $tags['EDIT_ADMINS_LINK']          = PHPWS_Text::secureLink('<del>Edit Administrators</del>','sysinventory',array('action' => 'edit_admins'));
+            $tags['EDIT_ADMINS_LINK']          = PHPWS_Text::secureLink('<del>Edit Administrators</del>','intern',array('action' => 'edit_admins'));
             $tags['GRAND_TOTAL_LABEL']         = _('Total Internships in Database: ');
             $db = new PHPWS_DB('intern_internship');
             $gt = $db->select('count');
