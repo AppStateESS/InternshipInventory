@@ -11,7 +11,8 @@ if (!defined('PHPWS_SOURCE_DIR')) {
 
 // Check some permissions
 if (!Current_User::allow('intern')) {
-    return;
+    // Take them to login page.
+    PHPWS_Core::reroute('/admin');
 }
 
 $error =  NULL;
@@ -122,11 +123,14 @@ switch ($req) {
         Sysinventory_DefaultUI::showDefaults();
         break;
     case 'pdf':
-        $filename = $_SESSION['filename'];
-        $path = '/tmp/';
-        header('Content-type: application/pdf');
-        header('Content-Disposition: attachment; filename="'.$filename.'"');
-        readfile($path.$filename);
+        PHPWS_Core::initModClass('intern', 'Internship.php');
+        $i = new Internship($_REQUEST['id']);
+        $i->getPDF();
+        // $filename = $_SESSION['filename'];
+        // $path = '/tmp/';
+        // header('Content-type: application/pdf');
+        // header('Content-Disposition: attachment; filename="'.$filename.'"');
+        // readfile($path.$filename);
         exit;
     case 'csv':
         PHPWS_Core::initModClass('intern', 'Internship.php');

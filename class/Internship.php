@@ -26,6 +26,7 @@ class Internship extends Model
     public $paid;
     public $stipend;
     public $unpaid;
+    public $notes;
     public $internship;
     public $service_learn;
     public $independent_study;
@@ -74,6 +75,275 @@ class Internship extends Model
         $i = array_merge($i, $d->getCSV());
         
         return $i;
+    }
+
+    /**
+     * Generate a PDF Report for this internship.
+     * Filename is returned.
+     */
+    public function getPDF()
+    {
+        require_once('fpdf.php');
+        PHPWS_Core::initModClass('intern', 'Term.php');
+
+
+        $pdf = new FPDF('P', 'mm', 'A4');
+        $s = $this->getStudent();
+        $a = $this->getAgency();
+        $d = $this->getDepartment();
+        $f = $this->getFacultySupervisor();
+
+        $pdf->addPage();
+
+        /* Student name/banner */
+        $pdf->setFont('Arial', 'BI', '16');
+        $pdf->setLineWidth(.8);
+        $pdf->multiCell(0, 10, $s->getFullName().' -- '.$s->banner. ' -- '.$a->name, 'B');
+        $pdf->ln(2);
+
+        $pdf->setDrawColor(150);
+        $pdf->setLineWidth(0);
+        /* 
+         * Internship information
+         */
+        $pdf->cell(0, 12, 'Internship Details');
+        $pdf->ln();
+
+        $this->toggle($pdf);
+        $pdf->cell(15, 5, 'Term:', 'LT');
+        $this->toggle($pdf, false);
+        $pdf->cell(175, 5, Term::rawToRead($this->term, false), 'RT');
+        $pdf->ln();
+        $this->toggle($pdf);
+        $types = $this->getReadableTypes();
+        // If the width of the string of types is greater than 139 (found by trial/error)
+        // then we need to correct the header's alignment and left border.
+        if($pdf->getStringWidth($types) > 139){
+            $pdf->cell(15, 10, 'Type:', 'LT');
+        }else{
+            $pdf->cell(15, 5, 'Type:', 'LT');
+        }
+        $this->toggle($pdf, false);
+        $pdf->multiCell(175, 5, $types, 'RT');
+        $this->toggle($pdf);
+        $pdf->cell(20, 5, 'Start Date:', 'LT');
+        $this->toggle($pdf, false);
+        $pdf->cell(75, 5, $this->getStartDate(true), 'RT');
+        $this->toggle($pdf);
+        $pdf->cell(20, 5, 'End Date:', 'LT');
+        $this->toggle($pdf, false);
+        $pdf->cell(75, 5, $this->getEndDate(true), 'RT');
+        $pdf->ln();
+        
+        /* Department */
+        $this->toggle($pdf);
+        $pdf->cell(25, 5, 'Department:', 'LT');
+        $this->toggle($pdf, false);
+        $pdf->cell(165, 5, $d->name, 'RT');
+        $pdf->ln();
+
+        /* Hours */
+        $this->toggle($pdf);
+        $pdf->cell(25, 5, 'Credit Hours:', 'LT');
+        $this->toggle($pdf, false);
+        $pdf->cell(70, 5, $this->credits, 'RT');
+        $this->toggle($pdf);
+        $pdf->cell(32, 5, 'Avg. Hours/Week:', 'LT');
+        $this->toggle($pdf, false);
+        $pdf->cell(63, 5, $this->avg_hours_week, 'RT');
+        $pdf->ln();
+        
+        /* Location */
+        $this->toggle($pdf);
+        $pdf->cell(20, 5, 'Domestic:', 'LT');
+        $this->toggle($pdf, false);
+        $pdf->cell(75, 5, $this->domestic==1?'Yes':'No', 'RT');
+        $this->toggle($pdf);
+        $pdf->cell(25, 5, 'International:', 'LT');
+        $this->toggle($pdf, false);
+        $pdf->cell(70, 5, $this->international==1?'Yes':'No', 'RT');
+        $pdf->ln();
+
+        /* Payment */
+        $this->toggle($pdf);
+        $pdf->cell(12, 5, 'Paid:', 'LTB');
+        $this->toggle($pdf, false);
+        $pdf->cell(83, 5, $this->paid==1 && $this->unpaid==0?'Yes':'No', 'RTB');// TODO: Verify logic for paid/unpaid.
+        $this->toggle($pdf);
+        $pdf->cell(30, 5, 'Stipend Based:', 'LTB');
+        $this->toggle($pdf, false);
+        $pdf->cell(65, 5, $this->stipend==1?'Yes':'No', 'RTB');
+        $pdf->ln();
+        
+        
+        /*
+         * Student information.
+         */
+        $pdf->setFont('Arial', 'BI', '16');
+        $pdf->cell(0, 12, 'Student');
+        $pdf->ln();
+        
+        $this->toggle($pdf);
+        $pdf->cell(15, 5, 'Name:', 'LT');
+        $this->toggle($pdf, false);
+        $pdf->cell(175, 5, $s->getFullName(), 'RT');
+        $pdf->ln();
+        
+        $this->toggle($pdf);
+        $pdf->cell(18, 5, 'Banner:', 'LT');
+        $this->toggle($pdf, false);
+        $pdf->cell(77, 5, $s->banner, 'RT');
+        $this->toggle($pdf);
+        $pdf->cell(15, 5, 'Email:', 'LT');
+        $this->toggle($pdf, false);
+        $pdf->cell(80, 5, $s->email, 'RT');
+        $pdf->ln();
+
+        $this->toggle($pdf);
+        $pdf->cell(15, 5, 'Major:', 'LT');
+        $this->toggle($pdf, false);
+        $pdf->cell(175, 5, $s->ugrad_major, 'RT');
+        $pdf->ln();
+        $this->toggle($pdf);
+        $pdf->cell(22, 5, 'Graduated:', 'LT');
+        $this->toggle($pdf, false);
+        $pdf->cell(168, 5, $s->graduated==1?'Yes':'No', 'RT');
+        $pdf->ln();
+        $this->toggle($pdf);
+        $pdf->cell(35, 5, 'Graduate Program:', 'LTB');
+        $this->toggle($pdf, false);
+        $pdf->cell(155, 5, $s->grad_prog, 'RTB');
+        $pdf->ln();
+
+        /**
+         * Faculty supervisor information.
+         */
+        $pdf->setFont('Arial', 'BI', '16');
+        $pdf->cell(0, 12, 'Faculty Supervisor');
+        $pdf->ln();
+        $this->toggle($pdf);
+        $pdf->cell(18, 5, 'Name:', 'LT');
+        $this->toggle($pdf, false);
+        $pdf->cell(172,  5, $s->getFullName(), 'RT');
+        $pdf->ln();
+
+        $this->toggle($pdf);
+        $pdf->cell(18, 5, 'Phone:', 'LTB');
+        $this->toggle($pdf, false);
+        $pdf->cell(77, 5, $f->phone, 'RTB');
+        $this->toggle($pdf);
+        $pdf->cell(15, 5, 'Email:', 'LTB');
+        $this->toggle($pdf, false);
+        $pdf->cell(80, 5, $f->email, 'RTB');
+        $pdf->ln();
+
+        /**
+         * Agency information.
+         */
+        $pdf->setFont('Arial', 'BI', '16');
+        $pdf->cell(0, 12, 'Agency');
+        $pdf->ln();
+
+        $this->toggle($pdf);
+        $pdf->cell(18, 5, 'Name:', 'LT');
+        $this->toggle($pdf, false);
+        $pdf->cell(172, 5, $a->name, 'RT');
+        $pdf->ln();
+
+        $this->toggle($pdf);
+        $pdf->cell(20, 5, 'Address:', 'LT');
+        $this->toggle($pdf, false);
+        $pdf->cell(170, 5, $a->address, 'RT');
+        $pdf->ln();
+
+        $this->toggle($pdf);
+        $pdf->cell(18, 5, 'Phone:', 'LTB');
+        $this->toggle($pdf, false);
+        $pdf->cell(172, 5, $a->phone, 'RTB');
+        $pdf->ln();
+
+        /** 
+         * Agency supervisor info.
+         */
+        $pdf->setFont('Arial', 'BI', '16');
+        $pdf->cell(0, 12, 'Agency Supervisor');
+        $pdf->ln();
+        
+        $this->toggle($pdf);
+        $pdf->cell(15, 5, 'Name:', 'LT');
+        $this->toggle($pdf, false);
+        $pdf->cell(175, 5, $a->getSupervisorFullName(), 'RT');
+        $pdf->ln();
+
+        $this->toggle($pdf);
+        $pdf->cell(20, 5, 'Address:', 'LT');
+        $this->toggle($pdf, false);
+        $pdf->cell(170, 5, $a->supervisor_address, 'RT');
+        $pdf->ln();
+
+        $this->toggle($pdf);
+        $pdf->cell(18, 5, 'Email:', 'LT');
+        $this->toggle($pdf, false);
+        $pdf->cell(172, 5, $a->supervisor_email, 'RT');
+        $pdf->ln();
+        
+        $this->toggle($pdf);
+        $pdf->cell(18, 5, 'Phone:', 'LTB');
+        $this->toggle($pdf, false);
+        $pdf->cell(77, 5, $a->supervisor_phone, 'RTB');
+        $this->toggle($pdf);
+        $pdf->cell(12, 5, 'Fax:', 'LTB');
+        $this->toggle($pdf, false);
+        $pdf->cell(83, 5, $a->supervisor_fax, 'RTB');
+        $pdf->ln();
+
+        /* Notes */
+        $pdf->setFont('Arial', 'BI', '16');
+        $pdf->cell(0, 12, 'Notes');
+        $pdf->ln();
+        $this->toggle($pdf, false);
+        $pdf->multiCell(0, 5, $this->notes, 1);
+        $pdf->ln();
+
+        
+        $pdf->output();
+    }
+
+    private function toggle($pdf, $header=true){
+        if($header){
+            // Set header font.
+            $pdf->setFont('Arial', 'B', '10');
+        }else{
+            // Set data font.
+            $pdf->setFont('Courier', '', '10');
+        }
+    }
+
+    /**
+     * Get a comma separated list of the types for
+     * this internship.
+     */
+    public function getReadableTypes()
+    {
+        $types = array();
+        
+        if($this->internship == 1){
+            $types[] = 'Internship';
+        }
+        if($this->service_learn == 1){
+            $types[] = 'Service Learning';
+        }
+        if($this->independent_study == 1){
+            $types[] = 'Independent Study';
+        }
+        if($this->research_assist == 1){
+            $types[] = 'Research Assistant';
+        }
+        if($this->other_type != '' && $this->other_type != null){
+            $types[] = $this->other_type;
+        }
+        
+        return implode(', ', $types);
     }
 
     /**

@@ -46,6 +46,11 @@ class Agency extends Model
         
         return $csv;
     }
+
+    public function getSupervisorFullName()
+    {
+        return $this->supervisor_first_name.' '.$this->supervisor_last_name;
+    }
 }
 
 ?>
