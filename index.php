@@ -98,18 +98,18 @@ switch ($req) {
         $content = Department::showDepartments($todo,$thing);
         break;
     case 'edit_admins':
-        PHPWS_Core::initModClass('intern', 'UI/Intern_AdminUI.php');
-        PHPWS_Core::initModClass('intern', 'Intern_Admin.php');
+        PHPWS_Core::initModClass('intern', 'UI/AdminUI.php');
+        PHPWS_Core::initModClass('intern', 'Admin.php');
         PHPWS_Core::initModClass('intern', 'Department.php');
         
         if(isset($_REQUEST['add'])){
             // Add user in REQUEST to administrator list for the department in REQUEST.
-            Intern_Admin::add($_REQUEST['username'], $_REQUEST['department_id']);
+            Admin::add($_REQUEST['username'], $_REQUEST['department_id']);
         }else if(isset($_REQUEST['del'])){
             // Delete the user in REQUEST from department in REQUEST.
-            Intern_Admin::del($_REQUEST['username'], $_REQUEST['department_id']);
+            Admin::del($_REQUEST['username'], $_REQUEST['department_id']);
         }
-        Intern_AdminUI::display();
+        $content = AdminUI::display();
         break;
     case 'pdf':
         PHPWS_Core::initModClass('intern', 'Internship.php');

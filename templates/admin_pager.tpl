@@ -13,7 +13,7 @@
 <!-- BEGIN listrows -->
 <tr {TOGGLE}>
     <td>{USERNAME}</td>
-    <td>{NAME}</td>
+    <td>{DEPARTMENT}</td>
     <td>{DELETE}</td>
 </tr>
 <!-- END listrows -->

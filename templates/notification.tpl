@@ -1,3 +1,11 @@
+<script type="text/javascript">
+  $(document).ready(function(){
+      if($(".notification").text() !== ""){
+          $(".notification").hide();
+          $(".notification").slideDown();
+      }
+  });
+</script>
 <div class="nq-container">
 <!-- BEGIN NOTIFICATIONS -->
 <!-- BEGIN ERROR -->

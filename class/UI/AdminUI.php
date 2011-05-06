@@ -4,7 +4,7 @@
  * @author Micah Carter <mcarter at tux dot appstate dot edu>
 **/
 
-class Intern_AdminUI implements UI {
+class AdminUI implements UI {
 
     // Show a list of admins and a form to add a new one.
     public static function display() {
@@ -21,7 +21,7 @@ class Intern_AdminUI implements UI {
         $tpl['HOME_LINK']        = PHPWS_Text::moduleLink('Back to menu','intern');
 
         // create the list of admins
-        $adminList = Intern_Admin::getAdminPager();
+        $adminList = Admin::getAdminPager();
 
         // get the list of departments
         PHPWS_Core::initModClass('intern','Department.php');
@@ -43,10 +43,7 @@ class Intern_AdminUI implements UI {
 
         $form->mergeTemplate($tpl);
 
-        $template = PHPWS_Template::process($form->getTemplate(),'sysinventory','edit_admin.tpl');
-
-        Layout::addStyle('sysinventory','style.css');
-        Layout::add($template);
+        return PHPWS_Template::process($form->getTemplate(),'sysinventory','edit_admin.tpl');
 
     }
 }
