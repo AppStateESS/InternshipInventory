@@ -1,5 +1,5 @@
+<div id="logout-link">{LOGOUT}</div>
 <div class="page-title">{TITLE}</div><br /><br />
-<center><span style="color:red;">{ERROR_MSG}</span></center>
 <center>
 <table border=0 cellspacing=0 cellpadding=10>
 <tr>

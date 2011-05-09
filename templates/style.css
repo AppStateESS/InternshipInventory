@@ -68,6 +68,10 @@
     width: 100%;
 }
 
+#logout-link {
+    float: right;
+}
+
 /* Overriding default formatting of asterisk 
    for required fields in Form class */
 .required-input {
