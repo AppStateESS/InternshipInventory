@@ -10,10 +10,9 @@ if (!defined('PHPWS_SOURCE_DIR')) {
 }
 
 // Check some permissions
-if (!Current_User::allow('intern')) {
-    // Take them to login page.
+if(!Current_User::isLogged()){
     PHPWS_Core::reroute('/admin');
-}
+ }
 
 $error =  NULL;
 
