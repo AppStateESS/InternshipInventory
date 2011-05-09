@@ -25,25 +25,40 @@ class Intern_SearchUI implements UI
 
         // Set up search fields
         $searchForm = new PHPWS_Form('search');
-        $searchForm->addText('lastName');
-        $searchForm->setLabel('lastName', 'Student');
+        $searchForm->addText('name');
+        $searchForm->setLabel('name', "Student's Name");
         $searchForm->addText('banner');
         $searchForm->setLabel('banner', 'Banner ID');
         $terms = Term::getTermsAssoc();
+
         // Add a null term. User doesn't have to search by term.
-        $terms = array_merge( array(null => 'N/A'), $terms);
+        /* This is a ghetto version of array_unshift(). Problem is that array_unshift re-indexes
+         * the array that is passed. The indexes in our array is the ID of the associated department
+         * name. so there. 
+         */ 
+        $terms[0] = 'N/A';
+        ksort($terms);
         $searchForm->addSelect('term', $terms);
-        $searchForm->setLabel('term', 'Select Term');
+        $searchForm->setLabel('term', 'Term');
+
+        // Deity can search for any department. Other users are restricted.
+        if(Current_User::isDeity()){
+            $depts = Department::getDepartmentsAssoc();
+        }else{
+            $depts = Department::getDepartmentsAssocForUsername(Current_User::getUsername());
+        }
         // Add a null department. User doesn't have to search by department.
-        $depts = Department::getDepartmentsAssoc();
-        $depts= array_merge( array(null => 'N/A'), $depts);
-        $searchForm->addSelect('deptName', $depts);
+        /* See long comment a few lines up. */
+        $depts[0] = 'N/A';
+        ksort($depts);
+
+        $searchForm->addMultiple('deptName', $depts);
         $searchForm->setLabel('deptName', 'Department');
         $searchForm->setAction('index.php?module=intern&action=search');
         $searchForm->addSubmit('submit', 'Search');
         $searchForm->mergeTemplate($tpl);
 
-        $lastName = null;
+        $name = null;
         $banner = null;
         $deptName = null;
         $term = null;
@@ -51,9 +66,9 @@ class Intern_SearchUI implements UI
         // Check for search items in request.
         // If a search item is set then fill in the text field 
         // or select with the value they searched for.
-        if(isset($_REQUEST['lastName'])){
-            $lastName = $_REQUEST['lastName'];
-            $searchForm->setValue('lastName', $lastName);
+        if(isset($_REQUEST['name'])){
+            $name = $_REQUEST['name'];
+            $searchForm->setValue('name', $name);
         }
         if(isset($_REQUEST['banner'])){
             $banner = $_REQUEST['banner'];
@@ -61,6 +76,8 @@ class Intern_SearchUI implements UI
         }
         if(isset($_REQUEST['deptName'])){
             $deptName = $_REQUEST['deptName'];
+            if(isset($deptName[0]) && $deptName[0] == '0')
+                unset($deptName[0]);
             $searchForm->setMatch('deptName', $deptName);
         }
         if(isset($_REQUEST['term'])){
@@ -68,7 +85,7 @@ class Intern_SearchUI implements UI
             $searchForm->setMatch('term', $term);
         }
         
-        $pager = self::getPager($lastName, $banner, $deptName, $term);
+        $pager = self::getPager($name, $banner, $deptName, $term);
         $pager->addPageTags($searchForm->getTemplate());
 
         // Automatically open the row with the matching ID.
@@ -89,26 +106,29 @@ class Intern_SearchUI implements UI
     /**
      * Get the DBPager object. Search strings can be passed in too.
      */
-    public static function getPager($lastName=null, $banner=null, $deptName=null, $term=null){
+    public static function getPager($name=null, $banner=null, $deptId=null, $term=null){
         $pager = new DBPager('intern_internship', 'Internship');
         $pager->setModule('intern');
-        $pager->joinResult('student_id', 'intern_student', 'id', 'last_name');
-        $pager->joinResult('student_id', 'intern_student', 'id', 'banner');
-        $pager->joinResult('department_id', 'intern_department', 'id', 'name', 'department_name');
+        
+        $pager->db->addWhere('intern_internship.student_id', 'intern_student.id');
+        $pager->db->addColumn('intern_internship.*');
 
-        // Search...
-        if(!is_null($lastName))
-            $pager->addWhere('intern_student.last_name', "%$lastName%", 'ILIKE');
-        if(!is_null($banner) && !empty($banner))
+        if($name != null && $name != ''){
+            $pager->addWhere('intern_student.last_name', "%$name%", 'ILIKE');
+        }
+        if($banner != null && $banner != ''){
             $pager->addWhere('intern_student.banner', "%$banner%", 'ILIKE');
-        if(!is_null($deptName) && $deptName != '')
-            $pager->addWhere('intern_department.name', "%$deptName%");
-        if(!is_null($term) && $term != '')
-            $pager->addWhere('term', "%$term%", 'ILIKE');
-            
+        }
+        if($deptId != null && sizeof($deptId) > 0)
+            $pager->addWhere('department_id', $deptId);
+        if($term != null && $term != '0'){
+            $pager->addWhere('term', $term);
+        }
+        
         $pager->setTemplate('intern_search.tpl');
         $pager->addRowTags('getRowTags');
         $pager->setEmptyMessage('No Results');
+        $pager->setReportRow('getCSV');
 
         return $pager;
     }

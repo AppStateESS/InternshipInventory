@@ -3,7 +3,7 @@
 {START_FORM}
 <table>
   <tr>
-    <td>{LASTNAME_LABEL}{LASTNAME}</td>
+    <td>{NAME_LABEL}{NAME}</td>
     <td>{BANNER_LABEL}{BANNER}</td>
   </tr>
   <tr>
@@ -12,26 +12,26 @@
 
   </tr>
   <tr>
-    <td>{SUBMIT}<button style="border: 1px solid black;" id="export-csv" type="button">Export to CSV</button></td>
+    <td>{SUBMIT}<button style="border: 1px solid black;" id="export-csv" type="button">{CSV_REPORT}</button></td>
   </tr>
 </table>
 {END_FORM}
 <table id="search-results">
 <tr id="header-row">
   <th>
-    Student {LAST_NAME_SORT}
+    Student's Name
   </th>
   <th>
     Banner
   </th>
   <th>
-    Dept. {DEPARTMENT_NAME_SORT}
+    Dept.
   </th>
   <th>
     Grad./Undergrad.
   </th>
   <th>
-    Term {TERM_SORT}
+    Term
   </th>
   <th>
     Action
