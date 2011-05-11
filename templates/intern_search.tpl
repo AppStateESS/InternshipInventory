@@ -12,7 +12,7 @@
     <td>{DEPT}</td>
   </tr>
   <tr>
-    <td>{SUBMIT}<button style="border: 1px solid black;" id="export-csv" type="button">{CSV_REPORT}</button></td>
+    <td>{SUBMIT}<span id="csv-export"></span></td>
   </tr>
 </table>
 {END_FORM}

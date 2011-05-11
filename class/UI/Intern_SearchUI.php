@@ -96,7 +96,18 @@ class Intern_SearchUI implements UI
         javascript('open_window');
         javascript('confirm');
 
-        return $pager->get();
+        $result = $pager->get();
+
+        // Build up link for export rows to CSV.
+        $ids = array();
+        foreach($pager->display_rows as $i){
+            $ids[] = $i->id;
+        }
+        // lol hacks
+        javascript('/modules/intern/csv', 
+                   array('link' => PHPWS_Text::moduleLink('Download CSV', 'intern', array('action' => 'csv', 'ids' => $ids))));
+
+        return $result;
     }
 
     /**
@@ -126,7 +137,6 @@ class Intern_SearchUI implements UI
         $pager->setTemplate('intern_search.tpl');
         $pager->addRowTags('getRowTags');
         $pager->setEmptyMessage('No Results');
-        $pager->setReportRow('getCSV');
 
         return $pager;
     }
