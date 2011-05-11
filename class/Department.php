@@ -37,16 +37,29 @@ class Department extends Model
         return $tags;
     }
 
+    /**
+     * Return an associative array {id => dept. name} for all the 
+     * departments in database.
+     */
     public static function getDepartmentsAssoc()
     {
         $db = self::getDb();
-        $depts = $db->getObjects('Department');
-        $deptsAssoc = array();
-        foreach($depts as $dept)
-        {
-            $deptsAssoc[$dept->id] = $dept->name;
-        }
-        return $deptsAssoc;
+        $depts = $db->select('assoc');
+        return $depts;
+    }
+
+    /**
+     * Return an associative array {id => dept. name} for all the departments
+     * that the user with $username is allowed to see.
+     */
+    public static function getDepartmentsAssocForUsername($username)
+    {
+        $db = self::getDb();
+        $db->addColumn('id');
+        $db->addColumn('name');
+        $db->addJoin('LEFT', 'intern_department', 'intern_admin', 'id', 'department_id');
+        $db->addWhere('intern_admin.username', $username);
+        return $db->select('assoc');
     }
     
     /**

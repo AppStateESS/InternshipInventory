@@ -1,21 +1,23 @@
 <div>{HOME_LINK} | {ADD_LINK}</div>
 <h1>Internship Search</h1>
 {START_FORM}
-<table>
+<table id="term-dept">
+  <tr><td><span class="search-header">{NAME_LABEL}</span>{NAME}</td></tr>
   <tr>
-    <td>{NAME_LABEL}{NAME}</td>
-    <td>{BANNER_LABEL}{BANNER}</td>
+    <td><span class="search-header">{TERM_SELECT_LABEL}</span></td>
+    <td><span class="search-header">{DEPT_LABEL}</span></td>
   </tr>
   <tr>
-    <td>{TERM_LABEL}{TERM}</td>
-    <td>{DEPTNAME_LABEL}{DEPTNAME}</td>
-
+    <td>{TERM_SELECT}</td>
+    <td>{DEPT}</td>
   </tr>
   <tr>
     <td>{SUBMIT}<button style="border: 1px solid black;" id="export-csv" type="button">{CSV_REPORT}</button></td>
   </tr>
 </table>
 {END_FORM}
+</div>
+
 <table id="search-results">
 <tr id="header-row">
   <th>

@@ -27,6 +27,12 @@ class Admin extends Model
      */
     public function getCSV(){}
 
+    public static function currentAllowed($dept)
+    {
+        PHPWS_Core::initModClass('users', 'Current_User.php');
+        return self::allowed(Current_User::getUsername(), $dept);
+    }
+
     public static function allowed($username, $dept)
     {
         if($dept instanceof Department){
@@ -72,9 +78,20 @@ class Admin extends Model
         $db = new PHPWS_DB('users');
         $db->addWhere('username', $username);
         $db->addColumn('id', $count=true);
+
         if(sizeof($db->select()) == 0){
             // No user exists with that name.
             return NQ::simple('intern', INTERN_ERROR, "No user exists with the name <i>$username</i>. Please choose a valid username.");
+        }
+
+        // Deity users automatically see every department. No need to add them to table.
+        $db->reset();
+        $db->addWhere('username', $username);
+        $db->addWhere('deity', true);
+        $db->addColumn('id', $count=true);
+        if(sizeof($db->select()) >= 1){
+            // Is a deity.
+            return NQ::simple('intern', INTERN_WARNING, "<i>$username</i> can view all internships in all departments.");
         }
 
         PHPWS_Core::initModClass('intern', 'Department.php');

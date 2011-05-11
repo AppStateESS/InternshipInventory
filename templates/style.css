@@ -72,6 +72,11 @@
     float: right;
 }
 
+.search-header {
+    font-weight: bold;
+    font-size: 10pt;
+}
+
 /* Overriding default formatting of asterisk 
    for required fields in Form class */
 .required-input {
