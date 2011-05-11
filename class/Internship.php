@@ -500,7 +500,7 @@ class Internship extends Model
 
         // Required fields check
         $missing = self::checkRequest();
-        if(!is_null($missing)){
+        if(!is_null($missing) && !empty($missing)){
             // checkRequest returned some missing fields.
             $url = 'index.php?module=intern&action=edit_internship';
             $url .= '&missing='.implode('+', $missing);
