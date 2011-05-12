@@ -98,14 +98,16 @@ class Intern_SearchUI implements UI
 
         $result = $pager->get();
 
-        // Build up link for export rows to CSV.
-        $ids = array();
-        foreach($pager->display_rows as $i){
-            $ids[] = $i->id;
+        if(!is_null($pager->display_rows)){
+            // Build up link for export rows to CSV.
+            $ids = array();
+            foreach($pager->display_rows as $i){
+                $ids[] = $i->id;
+            }
+            // lol hacks
+            javascript('/modules/intern/csv', 
+                       array('link' => PHPWS_Text::moduleLink('Download CSV', 'intern', array('action' => 'csv', 'ids' => $ids))));
         }
-        // lol hacks
-        javascript('/modules/intern/csv', 
-                   array('link' => PHPWS_Text::moduleLink('Download CSV', 'intern', array('action' => 'csv', 'ids' => $ids))));
 
         return $result;
     }
@@ -118,10 +120,11 @@ class Intern_SearchUI implements UI
         $pager = new DBPager('intern_internship', 'Internship');
         $pager->setModule('intern');
         
-        $pager->db->addWhere('intern_internship.student_id', 'intern_student.id');
-        $pager->db->addWhere('intern_internship.department_id', 'intern_department.id');
-        $pager->db->addColumn('intern_internship.*');
+        $pager->db->addJoin('LEFT', 'intern_internship', 'intern_student', 'student_id', 'id');
+        $pager->db->addJoin('LEFT', 'intern_internship', 'intern_admin', 'department_id', 'department_id');
+        $pager->addWhere('intern_admin.username', Current_User::getUsername());
 
+        // Search by department, term, and name/banner.
         if(!is_null($deptId) && $deptId != '')
             $pager->addWhere('department_id', $deptId);
         if(!is_null($term) && $term != ''){
