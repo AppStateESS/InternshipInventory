@@ -122,7 +122,8 @@ class Intern_SearchUI implements UI
         
         $pager->db->addJoin('LEFT', 'intern_internship', 'intern_student', 'student_id', 'id');
         $pager->db->addJoin('LEFT', 'intern_internship', 'intern_admin', 'department_id', 'department_id');
-        $pager->addWhere('intern_admin.username', Current_User::getUsername());
+        if(!Current_User::isDeity())
+            $pager->addWhere('intern_admin.username', Current_User::getUsername());
 
         // Search by department, term, and name/banner.
         if(!is_null($deptId) && $deptId != '')
