@@ -9,12 +9,12 @@
 <h1>Add Internship</h1><br />
 <div>
   {START_FORM}
-  <table id="internship-form" cellspacing=20>
+  <table id="internship-form" cellspacing=10>
     <tr>
   <!-- Student info section -->
   <td>
   <table width="100px" class="sub-form" id="student-info">
-    <h3>Student</h3>
+    <h3 class="info-header">Student</h3>
     <tr>
       <td>
         {STUDENT_FIRST_NAME_LABEL}
@@ -89,7 +89,7 @@
   <!-- End student info section -->
   <!-- Faculty info -->
   <td>
-    <h3>Faculty</h3>
+    <h3 class="info-header">Faculty</h3>
     <table width="50px" class="sub-form" id="faculty-info">
       <tr>
         <td>
@@ -136,7 +136,7 @@
   <tr>
   <!-- Agency info -->
   <td>
-    <h3>Agency</h3>
+    <h3 class="info-header">Agency</h3>
     <table width="50px" class="sub-form" id="agency-info">
       <tr>
         <td>
@@ -218,7 +218,7 @@
   <!-- End agency info -->
   <!-- Internship details -->
   <td> 
-    <h3>Internship Details</h3>
+    <h3 class="info-header">Internship Details</h3>
     <table class="sub-form" id="agency-info">
       <tr>
         <td>{TERM_LABEL}</td>

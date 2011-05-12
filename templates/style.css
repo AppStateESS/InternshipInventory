@@ -32,7 +32,14 @@
 }
 
 #internship-form .sub-form {
-    background: #E3E3E3;
+    border: 1px solid #C0C0C0;
+    border-top: 24px solid #E3E3E3;
+}
+
+.info-header {
+    position: relative;
+    top: 35px;
+    left: 5px;
 }
 
 .empty-message {
@@ -53,15 +60,22 @@
 
 .internship-details th {
     background: none;
-    border-bottom: 3px dotted #E3E3E3;
+    border-bottom: 3px dotted #C0C0C0;
+}
+
+.detail-header {
+    font-size: 12pt;
+    padding-top: 10px;
+    color: #555555;
 }
 
 .document-list h4{
+    margin-left: -20px;
     background: none;
-    border-bottom: 3px dotted #E3E3E3;
+    border-bottom: 3px dotted #C0C0C0;
 }
 .document-list {
-    float: left;
+    margin-left: -20px;
 }
 
 #search-results {

@@ -44,6 +44,7 @@ class Department extends Model
     public static function getDepartmentsAssoc()
     {
         $db = self::getDb();
+        $db->addOrder('name');
         $depts = $db->select('assoc');
         return $depts;
     }
@@ -55,6 +56,7 @@ class Department extends Model
     public static function getDepartmentsAssocForUsername($username)
     {
         $db = self::getDb();
+        $db->addOrder('name');
         $db->addColumn('id');
         $db->addColumn('name');
         $db->addJoin('LEFT', 'intern_department', 'intern_admin', 'id', 'department_id');

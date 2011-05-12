@@ -1,71 +1,115 @@
 <table class="internship-details">
   <!-- BEGIN student -->
   <tr>
-    <th colspan="4">Student</th>
+    <th colspan="4" class="detail-header">Student</th>
   </tr>
   <tr>
-    <td>Email:</td><td><a href="mailto:{email}">{email}</a></td>
-    <td>Phone:</td><td> {phone} </td>
+    <td>
+      <b>Email:</b> <a href="mailto:{email}">{email}</a>
+    </td>
+    <td>
+      <b>Phone:</b> {phone} 
+    </td>
   </tr>
   <tr>
-    <td>Graduate Program:</td><td> {grad_prog} </td>
-    <td>Undergraduate Major: </td><td> {ugrad_major} </td>
+    <td>
+      <b>Graduate Program:</b> {grad_prog}
+    </td>
+    <td>
+      <b>Undergraduate Major:</b> {ugrad_major}
+    </td>
   </tr>
   <!-- END student -->
   <!-- BEGIN internship -->
   <tr>
-    <th colspan="4">Internship Type</th>
+    <th colspan="6" class="detail-header">Internship Type</th>
   </tr>
   <tr>
-    <td>Default Internship: </td><td>{internship}</td>
-    <td>Service Learning: </td><td>{service_learning}</td>
-    <td>Independent Study: </td><td>{independent_study}</td>
+    <td>
+      <b>Default Internship:</b> {internship}
+    </td>
+    <td>
+      <b>Service Learning:</b> {service_learning}
+    </td>
+    <td>
+      <b>Independent Study:</b> {independent_study}
+    </td>
   </tr>
   <tr>
-    <td>Research Assistant: </td><td>{research_assist}</td>
-    <td>Other type: </td><td>{other_type}</td>
+    <td>
+      <b>Research Assistant:</b> {research_assist}
+    </td>
+    <td>
+      <b>Other type:</b> {other_type}
+    </td>
   </tr>
   <!-- END internship -->
   <!-- BEGIN agency -->
   <tr>
-    <th colspan="6">Agency</th>
+    <th colspan="6" class="detail-header">Agency</th>
   </tr>
   <tr>
-    <td>Name:</td><td>{name}</td>
-    <td>Address:</td><td>{address}</td>
-    <td>Phone:</td><td>{phone}</td>
+    <td>
+      <b>Name:</b> {name}
+    </td>
+    <td>
+      <b>Address:</b> {address}
+    </td>
+    <td>
+      <b>Phone:</b> {phone}
+    </td>
   </tr>
   <tr>
-    <th colspan="6">Agency Supervisor</th>
+    <th colspan="6" class="detail-header">Agency Supervisor</th>
   </tr>
   <tr>
-    <td>Name:</td><td>{supervisor_first_name}{supervisor_last_name}</td>
-    <td>Phone:</td><td>{supervisor_phone}</td>
-    <td>Email:</td><td><a href="mailto:{supervisor_email}">{supervisor_email}</td>
+    <td>
+      <b>Name:</b> {supervisor_first_name}{supervisor_last_name}
+    </td>
+    <td>
+      <b>Phone:</b> {supervisor_phone}
+    </td>
+    <td>
+      <b>Email:</b> <a href="mailto:{supervisor_email}">{supervisor_email}</a>
+    </td>
   </tr>
   <tr>
-    <td>Fax:</td><td>{supervisor_fax}</td>
-    <td>Address:</td><td>{supervisor_address}</td>
+    <td>
+      <b>Fax:</b> {supervisor_fax}
+    </td>
+    <td>
+      <b>Address:</b> {supervisor_address}
+    </td>
   </tr>
   <!-- END agency -->
 
   <!-- BEGIN faculty -->
   <tr>
-    <th colspan="6">Faculty Supervisor</th>
+    <th colspan="6" class="detail-header">Faculty Supervisor</th>
   </tr>
   <tr>
-    <td>Name:</td><td>{first_name} {last_name}</td>
-    <td>Phone:</td><td>{phone}</td>
-    <td>Email:</td><td><a href="mailto:{email}">{email}</a></td>
+    <td>
+      <b>Name:</b> {first_name} {last_name}
+    </td>
+    <td>
+      <b>Phone:</b> {phone}
+    </td>
+    <td>
+      <b>Email:</b> <a href="mailto:{email}">{email}</a>
+    </td>
   </tr>
   <!-- END faculty -->
+  <tr>
+    <td>
+      <ul class="document-list">
+        <h4 class="detail-header">Documents</h4>
+        <!-- BEGIN docs -->
+        <li>{DOWNLOAD}{DELETE}</li>
+        <!-- END docs -->
+        <li>{UPLOAD_DOC}</li>
+      </ul>
+    </td>
+  </tr>
 </table>
 
 
-<ul class="document-list">
-  <h4>Documents</h4>
-  <!-- BEGIN docs -->
-  <li>{DOWNLOAD}{DELETE}</li>
-  <!-- END docs -->
-  <li>{UPLOAD_DOC}</li>
-</ul>

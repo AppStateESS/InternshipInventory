@@ -26,14 +26,6 @@ class Intern_SearchUI implements UI
         // Set up search fields
         $searchForm = new PHPWS_Form();
         $terms = Term::getTermsAssoc();
-
-        // Add a null term. User doesn't have to search by term.
-        /* This is a ghetto version of array_unshift(). Problem is that array_unshift re-indexes
-         * the array that is passed. The indexes in our array is the ID of the associated department
-         * name. so there. 
-         */ 
-        $terms[0] = 'N/A';
-        ksort($terms);
         $searchForm->addMultiple('term_select', $terms);
         $searchForm->setLabel('term_select', 'Term');
 
@@ -43,10 +35,6 @@ class Intern_SearchUI implements UI
         }else{
             $depts = Department::getDepartmentsAssocForUsername(Current_User::getUsername());
         }
-        // Add a null department. User doesn't have to search by department.
-        /* See long comment a few lines up. */
-        $depts[0] = 'N/A';
-        ksort($depts);
 
         $searchForm->addMultiple('dept', $depts);
         $searchForm->setLabel('dept', 'Department');
