@@ -67,6 +67,8 @@ class Intern_SearchUI implements UI
             $dept = preg_grep('/[^0]/', $dept);
             if(empty($dept))
                 $dept = null;
+            else
+                $searchForm->setMatch('dept', $dept);
             
         }
         if(isset($_REQUEST['term_select'])){
@@ -75,9 +77,12 @@ class Intern_SearchUI implements UI
             $term = preg_grep('/[^0]/', $term);
             if(empty($term))
                 $term = null;
+            else
+                $searchForm->setMatch('term_select', $term);
         }
         if(isset($_REQUEST['name'])){
             $name = $_REQUEST['name'];
+            $searchForm->setValue('name', $name);
         }
 
         $pager = self::getPager($name, $dept, $term);
