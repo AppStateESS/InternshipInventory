@@ -98,6 +98,7 @@ class Intern_SearchUI implements UI
         // javascript...
         javascript('/jquery/');
         javascript('/modules/intern/hider', array('OPEN' => $o));
+        javascript('/modules/intern/resetSearch');
         javascript('open_window');
         javascript('confirm');
 

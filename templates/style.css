@@ -72,6 +72,13 @@
     float: right;
 }
 
+#reset-search {
+    float: right;
+    font-weight: bold;
+    font-size: 10pt;
+    cursor: pointer;
+}
+
 #name-term-dept-search {
     border: 1px solid #C0C0C0;
     border-left: 10px solid #C0C0C0;
