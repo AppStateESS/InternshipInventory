@@ -20,13 +20,14 @@ class Intern_MenuUI implements UI{
 
         // Deity Stuff
         if(Current_User::isDeity()){
-            $tags['DEITY']                     = 'Admin Options';
-            $tags['EDIT_DEPARTMENTS_LINK']     = PHPWS_Text::secureLink('Edit Departments','intern',array('action' => 'edit_departments'));
-            $tags['EDIT_ADMINS_LINK']          = PHPWS_Text::secureLink('Edit Administrators','intern',array('action' => 'edit_admins'));
-            $tags['GRAND_TOTAL_LABEL']         = _('Total Internships in Database: ');
-            $db = new PHPWS_DB('intern_internship');
-            $gt = $db->select('count');
-            $tags['GRAND_TOTAL']               = $gt;
+            $tags['DEITY']                 = 'Admin Options';
+            $tags['EDIT_MAJORS_LINK']      = PHPWS_Text::secureLink('Edit Majors','intern',array('action' => 'edit_majors'));
+            $tags['EDIT_DEPARTMENTS_LINK'] = PHPWS_Text::secureLink('Edit Departments','intern',array('action' => 'edit_departments'));
+            $tags['EDIT_ADMINS_LINK']      = PHPWS_Text::secureLink('Edit Administrators','intern',array('action' => 'edit_admins'));
+            $tags['GRAND_TOTAL_LABEL']     = _('Total Internships in Database: ');
+            $db                            = new PHPWS_DB('intern_internship');
+            $gt                            = $db->select('count');
+            $tags['GRAND_TOTAL']           = $gt;
         }
 
         return PHPWS_Template::process($tags,'intern','menu.tpl');

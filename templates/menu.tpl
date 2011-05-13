@@ -15,6 +15,7 @@
 
 <!-- BEGIN deity_section -->
 <h2>{DEITY}</h2>
+{EDIT_MAJORS_LINK}<br />
 {EDIT_DEPARTMENTS_LINK}<br />
 {EDIT_ADMINS_LINK}<br />
 <hr width="75%">

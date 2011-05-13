@@ -18,7 +18,6 @@ class Term extends Model
         return array('Term' => Term::rawToRead($this->term, false));
     }
 
-    // TODO: Order by...something?
     public static function getTermsAssoc()
     {
         $db = self::getDb();

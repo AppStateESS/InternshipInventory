@@ -21,6 +21,9 @@ class Department extends Model
         return new PHPWS_DB('intern_department');
     }
 
+    /**
+     * @Override Model::getCSV
+     */
     public function getCSV()
     {
         return array('Department' => $this->name);
@@ -89,6 +92,13 @@ class Department extends Model
      */
     public static function addDepartment($name)
     {
+        $db = self::getDb();
+        $db->addWhere('name', $name);
+        $db->addColumn('id', null, null, true);// Count
+        if($db->select() > 0){
+            NQ::simple('intern', INTERN_WARNING, "Department with name <i>$name</i> already exists.");
+            return;
+        }
         // Create the new Department Obj.
         $dept = new Department();
         $dept->name = $name;
@@ -96,7 +106,7 @@ class Department extends Model
         try{
             $dept->save();
         }catch(Exception $e){
-            NQ::simple('intern', INTERN_ERROR, "Error adding department <i>$name</i>. <br/>".$e->getMessage());
+            NQ::simple('intern', INTERN_ERROR, "Error adding department <i>$name</i>.<br/>".$e->getMessage());
             return;
         }
 

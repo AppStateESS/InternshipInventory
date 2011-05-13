@@ -57,28 +57,9 @@ switch ($req) {
         echo InternshipDetailsUI::display();
         exit;
         break;
-    case 'delete_system':
-        PHPWS_Core::initModClass('intern','Sysinventory_System.php');
-        echo Sysinventory_System::deleteSystem($_REQUEST['systemid']);
-        exit;
     case 'search':
         PHPWS_Core::initModClass('intern', 'UI/Intern_SearchUI.php');
         $content = Intern_SearchUI::display();
-        break;
-    case 'report':
-        PHPWS_Core::initModClass('intern', 'UI/Sysinventory_ReportUI.php');
-        Sysinventory_ReportUI::display();
-        break;
-    case 'edit_locations':
-        if (isset($_REQUEST['newloc']) && !empty($_REQUEST['description'])) {
-            PHPWS_Core::initModClass('intern','Sysinventory_Location.php');
-            Sysinventory_Location::newLoc($_REQUEST['description']);
-        }else if (isset($_REQUEST['delloc']) && !empty($_REQUEST['id'])) {
-            PHPWS_Core::initModClass('intern','Sysinventory_Location.php');
-            Sysinventory_Location::delLoc($_REQUEST['id']);
-        }
-        PHPWS_Core::initModClass('intern','UI/Sysinventory_LocationUI.php');
-        Sysinventory_LocationUI::showLocations();
         break;
     case 'edit_departments':
         PHPWS_Core::initModClass('intern','Department.php');
@@ -95,6 +76,27 @@ switch ($req) {
             $thing = NULL;
         }
         $content = Department::showDepartments($todo,$thing);
+        break;
+    case 'edit_majors':
+        PHPWS_Core::initModClass('intern', 'Major.php');
+        PHPWS_Core::initModClass('intern', 'UI/MajorUI.php');
+        if(isset($_REQUEST['add'])){
+            // Add major with the name passed in REQUEST.
+            if(isset($_REQUEST['name'])){
+                Major::add($_REQUEST['name']);
+            }else{
+                NQ::simple('intern', INTERN_ERROR, "Major must have name.");
+            }
+        }
+        else if(isset($_REQUEST['del'])){
+            // Delete major with same ID passed in REQUEST.
+            if(isset($_REQUEST['id'])){
+                Major::del($_REQUEST['id']);
+            }else{
+                NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot delete major.");
+            }
+        }
+        $content = MajorUI::display();
         break;
     case 'edit_admins':
         PHPWS_Core::initModClass('intern', 'UI/AdminUI.php');
