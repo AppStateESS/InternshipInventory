@@ -6,10 +6,11 @@
 </script>
 
 <div>{HOME_LINK} | {SEARCH_LINK}</div>
-<h1>Add Internship</h1><br />
+<h1>Add Internship</h1>
+{PDF}
 <div>
   {START_FORM}
-  <table id="internship-form" cellspacing=10>
+  <table id="internship-form">
     <tr>
   <!-- Student info section -->
   <td>
@@ -64,16 +65,15 @@
       </td>
     </tr>
     <tr>
-      <td>
-        {UGRAD_MAJOR_LABEL}
-      </td>
-      <td>
+      <td colspan=2>
+        {UGRAD_MAJOR_LABEL}<br />
         {UGRAD_MAJOR}
       </td>
     </tr>
     <tr>
-      <td>
-        {GRADUATED}{GRADUATED_LABEL}
+      <td colspan=2>
+        {GRADUATED}<br />
+        {GRADUATED_LABEL}
       </td>
     </tr>
     <tr>
@@ -134,88 +134,7 @@
   <!-- End faculty info -->
   </tr>
   <tr>
-  <!-- Agency info -->
-  <td>
-    <h3 class="info-header">Agency</h3>
-    <table width="50px" class="sub-form" id="agency-info">
-      <tr>
-        <td>
-          {AGENCY_NAME_LABEL}
-        </td>
-        <td>
-          {AGENCY_NAME}
-        </td>
-      </tr>
-      <tr>
-        <td>
-          {AGENCY_ADDRESS_LABEL}
-        </td>
-        <td>
-          {AGENCY_ADDRESS}
-        </td>
-      </tr>
-      <tr>
-        <td>
-          {AGENCY_PHONE_LABEL}
-        </td>
-        <td>
-          {AGENCY_PHONE}
-        </td>
-      </tr>
-      <tr>
-        <td colspan=2><h4>Supervisor Info</h4></td>
-      </tr>
-      <tr>
-        <td>
-          {AGENCY_SUP_FIRST_NAME_LABEL}
-        </td>
-        <td>
-          {AGENCY_SUP_FIRST_NAME}
-        </td>
-      </tr>
-      <tr>
-        <td>
-          {AGENCY_SUP_LAST_NAME_LABEL}
-        </td>
-        <td>
-          {AGENCY_SUP_LAST_NAME}
-        </td>
-      </tr>
-      <tr>
-        <td>
-          {AGENCY_SUP_PHONE_LABEL}
-        </td>
-        <td>
-          {AGENCY_SUP_PHONE}
-        </td>
-      </tr>
-      <tr>
-        <td>
-          {AGENCY_SUP_EMAIL_LABEL}
-        </td>
-        <td>
-          {AGENCY_SUP_EMAIL}
-        </td>
-      </tr>
-      <tr>
-        <td>
-          {AGENCY_SUP_FAX_LABEL}
-        </td>
-        <td>
-          {AGENCY_SUP_FAX}
-        </td>
-      </tr>
-      <tr>
-        <td>
-          {AGENCY_SUP_ADDRESS_LABEL}
-        </td>
-        <td>
-          {AGENCY_SUP_ADDRESS}
-        </td>
-      </tr>
-    </table>
-  </td>
-  <!-- End agency info -->
+
   <!-- Internship details -->
   <td> 
     <h3 class="info-header">Internship Details</h3>
@@ -310,8 +229,91 @@
     </table>
   </td>
   <!-- End internship details -->
+  <!-- Agency info -->
+  <td>
+    <h3 class="info-header">Agency</h3>
+    <table width="50px" class="sub-form" id="agency-info">
+      <tr>
+        <td>
+          {AGENCY_NAME_LABEL}
+        </td>
+        <td>
+          {AGENCY_NAME}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {AGENCY_ADDRESS_LABEL}
+        </td>
+        <td>
+          {AGENCY_ADDRESS}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {AGENCY_PHONE_LABEL}
+        </td>
+        <td>
+          {AGENCY_PHONE}
+        </td>
+      </tr>
+      <tr>
+        <td colspan=2><h4>Supervisor Info</h4></td>
+      </tr>
+      <tr>
+        <td>
+          {AGENCY_SUP_FIRST_NAME_LABEL}
+        </td>
+        <td>
+          {AGENCY_SUP_FIRST_NAME}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {AGENCY_SUP_LAST_NAME_LABEL}
+        </td>
+        <td>
+          {AGENCY_SUP_LAST_NAME}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {AGENCY_SUP_PHONE_LABEL}
+        </td>
+        <td>
+          {AGENCY_SUP_PHONE}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {AGENCY_SUP_EMAIL_LABEL}
+        </td>
+        <td>
+          {AGENCY_SUP_EMAIL}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {AGENCY_SUP_FAX_LABEL}
+        </td>
+        <td>
+          {AGENCY_SUP_FAX}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {AGENCY_SUP_ADDRESS_LABEL}
+        </td>
+        <td>
+          {AGENCY_SUP_ADDRESS}
+        </td>
+      </tr>
+    </table>
+  </td>
+  <!-- End agency info -->
   </tr>
   </table>
+  <b>{NOTES_LABEL}</b><br />{NOTES}<br />
   {SUBMIT}
 {END_FORM}
 </div>

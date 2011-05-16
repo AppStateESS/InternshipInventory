@@ -18,7 +18,7 @@
     <td>{DEPT}</td>
   </tr>
   <tr>
-    <td>{SUBMIT}<span id="csv-export"></span></td>
+    <td colspan="2">{SUBMIT} <span id="csv-export"></span></td>
   </tr>
 </table>
 {END_FORM}
@@ -63,7 +63,7 @@
     {TERM}
   </td>
   <td class="action">
-    {EDIT}
+    {EDIT} | {PDF}
   </td>
 </tr>
 <tr>

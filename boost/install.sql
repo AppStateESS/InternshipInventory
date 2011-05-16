@@ -8,7 +8,7 @@ CREATE TABLE intern_student (
        last_name VARCHAR NOT NULL,
        phone VARCHAR NOT NULL,
        email VARCHAR NOT NULL,
-       ugrad_major VARCHAR,
+       ugrad_major INT REFERENCES intern_major(id),
        grad_prog VARCHAR, 
        graduated INT NOT NULL,
        PRIMARY KEY(id)

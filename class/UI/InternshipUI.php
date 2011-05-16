@@ -30,6 +30,7 @@ class InternshipUI implements UI
         if(isset($_REQUEST['id'])){
             try{
                 $internship = new Internship($_REQUEST['id']);
+                $tpl['PDF'] = PHPWS_Text::moduleLink('Download PDF Report', 'intern', array('action' => 'pdf', 'id' => $internship->id));
                 self::plugInternship($form, $internship);
             }catch(Exception $e){
                 NQ::simple('intern', INTERN_ERROR, $e->getMessage());
@@ -69,6 +70,7 @@ class InternshipUI implements UI
     {
         PHPWS_Core::initModClass('intern', 'Term.php');
         PHPWS_Core::initModClass('intern', 'Department.php');
+        PHPWS_Core::initModClass('intern', 'Major.php');
 
         $form = new PHPWS_Form('internship');
         $form->setAction('index.php?module=intern&action=add_internship');
@@ -89,8 +91,7 @@ class InternshipUI implements UI
         $form->setLabel('student_phone', 'Phone');
         $form->addText('student_email');
         $form->setLabel('student_email', 'Email');
-        // TODO: DB table for majors
-        $majors = array('none'=> 'None', 'comp sci' => 'comp sci', 'art' => 'art', 'math' => 'math');
+        $majors = Major::getMajorsAssoc();
         $form->addSelect('ugrad_major', $majors);
         $form->setLabel('ugrad_major', 'Undergraduate Major');
         // TODO: DB table for grad programs
@@ -175,6 +176,9 @@ class InternshipUI implements UI
         $form->setLabel('research_assist_type', 'Research Assistant');
         $form->addText('other_type');
         $form->setLabel('other_type', 'Other');
+        
+        $form->addTextArea('notes');
+        $form->setLabel('notes', 'Notes');
 
         // Label required fields
         foreach(self::$requiredFields as $field){
@@ -237,6 +241,7 @@ class InternshipUI implements UI
         $vals['credits'] = $i->credits;
         $vals['avg_hours_week'] = $i->avg_hours_week;
         $vals['other_type'] = $i->other_type;
+        $vals['notes'] = $i->notes;
 
         // Department
         $vals['department'] = $i->department_id;
@@ -252,6 +257,7 @@ class InternshipUI implements UI
         $form->setMatch('service_learning_type', $i->service_learn);
         $form->setMatch('independent_study_type', $i->independent_study);
         $form->setMatch('research_assist_type', $i->research_assist);
+
         // Plug 
         $form->plugIn($vals);
     }

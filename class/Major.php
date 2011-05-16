@@ -27,7 +27,7 @@ class Major extends Model
      */
     public function getCSV()
     {
-        return array('Undergraduate Major' => $name);
+        return array('Undergraduate Major' => $this->name);
     }
 
     public function getName()
@@ -53,7 +53,11 @@ class Major extends Model
     {
         $db = self::getDb();
         $db->addOrder('name');
-        return $db->select('assoc');
+        $majors = $db->select('assoc');
+        // Horrible, horrible hacks.
+        $majors = array_reverse($majors, true); // preserve keys.
+        $majors[-1] = 'None';
+        return array_reverse($majors, true);
     }
     
     /**

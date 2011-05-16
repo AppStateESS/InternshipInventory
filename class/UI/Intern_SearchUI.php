@@ -42,7 +42,7 @@ class Intern_SearchUI implements UI
         $searchForm->addText('name');
         $searchForm->setLabel('name', "Name or Banner ID");
         $searchForm->setAction('index.php?module=intern&action=search');
-        $searchForm->addSubmit('submit', 'Submit');
+        $searchForm->addSubmit('submit', 'Search');
         $searchForm->mergeTemplate($tpl);
 
         $dept = null;

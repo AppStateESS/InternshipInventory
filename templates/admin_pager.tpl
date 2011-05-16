@@ -1,4 +1,4 @@
-<table width="100%" border=0 cellspacing=3 cellpadding=3>
+<table id="admin-pager" border=0 cellspacing=3 cellpadding=3>
 <tr>
     <th>USERNAME</th>
     <th>DEPARTMENT</th>

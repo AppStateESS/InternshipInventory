@@ -36,6 +36,15 @@
     margin-left: auto;
 }
 
+#admin-pager {
+    margin-right: auto;
+    margin-left: auto;
+}
+
+#internship-form {
+    margin-top: -36px;
+}
+
 #internship-form .sub-form {
     border: 1px solid #C0C0C0;
     border-top: 24px solid #E3E3E3;
