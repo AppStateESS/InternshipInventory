@@ -8,11 +8,11 @@
    *
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
-
 PHPWS_Core::initModClass('intern', 'Model.php');
 class Major extends Model
 {
     public $name;
+    public $hidden;
 
     /**
      * @Override Model::getDb
@@ -33,6 +33,10 @@ class Major extends Model
     public function getName()
     {
         return $this->name;
+    }
+    public function isHidden()
+    {
+        return $this->hidden == 1;
     }
     
     /**
