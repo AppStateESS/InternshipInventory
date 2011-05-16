@@ -13,10 +13,10 @@ class Intern_MenuUI implements UI{
 
         $tags = array();
         $tags['TITLE']               = "Options";
-        $tags['SEARCH_LINK']         = PHPWS_Text::secureLink('Search Internships','intern', array('action' => 'search'));
-        $tags['ADD_INTERNSHIP_LINK'] = PHPWS_Text::secureLink('Add Internship','intern', array('action' => 'edit_internship'));
         $auth = Current_User::getAuthorization();
         $tags['LOGOUT'] = "<a href='$auth->logout_link'>Logout</a>";
+
+        javascript('/modules/intern/menu');
 
         // Deity Stuff
         if(Current_User::isDeity()){
