@@ -309,7 +309,7 @@ class Internship extends Model
         $studnet->independent_study = isset($_REQUEST['independent_study_type']);
         $student->research_assist   = isset($_REQUEST['research_assistant_type']);
         $studnet->other_type = empty($_REQUEST['other_type']) ? null : $_REQUEST['other_type'];
-        $student->grad_prog = $_REQUEST['grad_prog'];
+        $student->grad_prog = $_REQUEST['grad_prog'] == -1 ? null : $_REQUEST['grad_prog'];
         $student->ugrad_major = $_REQUEST['ugrad_major'] == -1 ? null : $_REQUEST['ugrad_major'];
         $student->graduated = isset($_REQUEST['graduated']);
         try{
@@ -463,6 +463,7 @@ class Internship extends Model
         $d = $this->getDepartment();
         $f = $this->getFacultySupervisor();
         $m = $s->getUgradMajor();
+        $g = $s->getGradProgram();
 
         $pdf->addPage();
 
@@ -587,7 +588,11 @@ class Internship extends Model
         $this->toggle($pdf);
         $pdf->cell(35, 5, 'Graduate Program:', 'LTB');
         $this->toggle($pdf, false);
-        $pdf->cell(155, 5, $s->grad_prog, 'RTB');
+        if(!is_null($g)){
+            $pdf->cell(155, 5, $g->getName(), 'RTB');
+        }else{
+            $pdf->cell(155, 5, 'N/A', 'RTB');
+        }
         $pdf->ln();
 
         /**

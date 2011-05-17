@@ -38,6 +38,7 @@ class Student extends Model
 
         $csv = array();
         $major = $this->getUgradMajor();
+        $prog  = $this->getGradProgram();
         
         $csv['Banner'] = $this->banner;
         $csv['Student First Name'] = $this->first_name;
@@ -45,20 +46,37 @@ class Student extends Model
         $csv['Student Last Name']  = $this->last_name;
         $csv['Student Phone'] = $this->phone;
         $csv['Student Email'] = $this->email;
-        $csv['Graduate Program'] = $this->grad_prog;
         $csv['Graduated'] = $this->graduated==1 ? 'Yes' : 'No';
         
         if($major != null)
             $csv = array_merge($csv, $major->getCSV());
+        if($prog != null)
+            $csv = array_merge($csv, $prog->getCSV());
         
         return $csv;
     }
 
+    /**
+     * Get a Major object for the major of this student.
+     */
     public function getUgradMajor()
     {
         PHPWS_Core::initModClass('intern', 'Major.php');
         if(!is_null($this->ugrad_major) && $this->ugrad_major != 0){
             return new Major($this->ugrad_major);
+        }else{
+            return null;
+        }
+    }
+
+    /**
+     * Get a GradProgram object for the graduate program of this student.
+     */
+    public function getGradProgram()
+    {
+        PHPWS_Core::initModClass('intern', 'GradProgram.php');
+        if(!is_null($this->grad_prog) && $this->grad_prog != 0){
+            return new GradProgram($this->grad_prog);
         }else{
             return null;
         }

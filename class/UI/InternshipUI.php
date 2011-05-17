@@ -71,6 +71,7 @@ class InternshipUI implements UI
         PHPWS_Core::initModClass('intern', 'Term.php');
         PHPWS_Core::initModClass('intern', 'Department.php');
         PHPWS_Core::initModClass('intern', 'Major.php');
+        PHPWS_Core::initModClass('intern', 'GradProgram.php');
 
         $form = new PHPWS_Form('internship');
         $form->setAction('index.php?module=intern&action=add_internship');
@@ -94,9 +95,8 @@ class InternshipUI implements UI
         $majors = Major::getMajorsAssoc();
         $form->addSelect('ugrad_major', $majors);
         $form->setLabel('ugrad_major', 'Undergraduate Major');
-        // TODO: DB table for grad programs
-        $gradProgs = array('none'=>'None', 'Accounting' => 'Accounting', 'Something' => 'Something');
-        $form->addSelect('grad_prog', $gradProgs);
+        $progs = GradProgram::getGradProgsAssoc();
+        $form->addSelect('grad_prog', $progs);
         $form->setLabel('grad_prog', 'Graduate Program');
         $form->addCheck('graduated');
         $form->setLabel('graduated', 'Graduated');
@@ -213,6 +213,7 @@ class InternshipUI implements UI
         $vals['student_email'] = $s->email;
         $vals['grad_prog'] = $s->grad_prog;
         $vals['ugrad_major'] = $s->ugrad_major;
+        $vals['grad_prog'] = $s->grad_prog;
         $vals['graduated'] = $s->graduated;
 
         // Agency

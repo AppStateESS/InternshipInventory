@@ -57,8 +57,11 @@ class Major extends Model
     {
         $db = self::getDb();
         $db->addOrder('name');
+        $db->addColumn('id');
+        $db->addColumn('name');
+        $db->addWhere('hidden', 0);
         $majors = $db->select('assoc');
-        // Horrible, horrible hacks.
+        // Horrible, horrible hacks. Need to add a null selection.
         $majors = array_reverse($majors, true); // preserve keys.
         $majors[-1] = 'None';
         return array_reverse($majors, true);
@@ -100,7 +103,7 @@ class Major extends Model
 
         if($m->id == 0){
             // Major wasn't loaded correctly
-            NQ::simple('intern', INTERN_ERROR, "Error occurred while loading major from database.");
+            NQ::simple('intern', INTERN_ERROR, "Error occurred while loading information for major from database.");
             return;
         }
 
@@ -110,7 +113,7 @@ class Major extends Model
             // Try to delete major.
             if(!$m->delete()){
                 // Something bad happend. This should have been caught in the check above...
-                NQ::simple('intern', INTERN_SUCCESS, "Error occurred deleting major from database.");
+                NQ::simple('intern', INTERN_SUCCESS, "Error occurred removing major from database.");
                 return;
             }
         }catch(Exception $e){

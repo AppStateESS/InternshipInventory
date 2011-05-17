@@ -81,7 +81,7 @@ switch ($req) {
         PHPWS_Core::initModClass('intern', 'Major.php');
         PHPWS_Core::initModClass('intern', 'UI/MajorUI.php');
         if(isset($_REQUEST['add'])){
-            // Add major with the name passed in REQUEST.
+            /* Add major with the name passed in REQUEST. */
             if(isset($_REQUEST['name'])){
                 Major::add($_REQUEST['name']);
             }else{
@@ -96,6 +96,7 @@ switch ($req) {
                 NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot delete major.");
             }
         }
+
         $content = MajorUI::display();
         break;
     case 'edit_admins':
