@@ -94,14 +94,14 @@ CREATE TABLE intern_admin (
 CREATE TABLE intern_major (
        id INT NOT NULL,
        name VARCHAR NOT NULL UNIQUE,
-       hidden SMALLINT DEFAULT 0,
+       hidden SMALLINT NULL DEFAULT 0,
        PRIMARY KEY(id)
 );
 -- Defaults to not hidden.
 CREATE TABLE intern_grad_prog (
        id INT NOT NULL,
        name VARCHAR NOT NULL UNIQUE,
-       hidden SMALLINT DEFAULT 0,
+       hidden SMALLINT NULL DEFAULT 0,
        PRIMARY KEY(id)
 );
 

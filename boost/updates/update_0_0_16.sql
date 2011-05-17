@@ -2,7 +2,7 @@
 CREATE TABLE intern_grad_prog (
        id INT NOT NULL,
        name VARCHAR NOT NULL UNIQUE,
-       hidden SMALLINT DEFAULT 0,
+       hidden SMALLINT DEFAULT NULL,
        PRIMARY KEY(id)
 );
 

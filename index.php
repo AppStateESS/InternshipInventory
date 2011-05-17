@@ -77,6 +77,33 @@ switch ($req) {
         }
         $content = Department::showDepartments($todo,$thing);
         break;
+    case 'edit_grad':
+        PHPWS_Core::initModClass('intern', 'GradProgram.php');
+        PHPWS_Core::initModClass('intern', 'UI/GradProgramUI.php');
+        if(isset($_REQUEST['add'])){
+            /* Add grad program with the name in REQUEST */
+            if(isset($_REQUEST['name'])){
+                GradProgram::add($_REQUEST['name']);
+            }else{
+                NQ::simple('intern', INTERN_ERROR, "Grad Program must have name.");
+            }
+        }else if(isset($_REQUEST['hide'])){
+            /* Hide program with ID passed in REQUEST. */
+            if(isset($_REQUEST['id'])){
+                GradProgram::hide($_REQUEST['id']);
+            }else{
+                NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot hide graduate program.");
+            }
+        }else if(isset($_REQUEST['del'])){
+            /* Delete program with same ID passed in REQUEST. */
+            if(isset($_REQUEST['id'])){
+                GradProgram::del($_REQUEST['id']);
+            }else{
+                NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot delete graduate program.");
+            }
+        }
+        $content = GradProgramUI::display();
+        break;
     case 'edit_majors':
         PHPWS_Core::initModClass('intern', 'Major.php');
         PHPWS_Core::initModClass('intern', 'UI/MajorUI.php');

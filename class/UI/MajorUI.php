@@ -14,7 +14,7 @@ class MajorUI implements UI
         $tpl['HOMELINK'] = PHPWS_Text::moduleLink('Back to Menu','intern');
         $tpl['PAGER'] = MajorUI::doPager();
         
-        /* Form for adding new department */
+        /* Form for adding new major */
         $form = &new PHPWS_Form('add_major');
         $form->addText('name');
         $form->setLabel('name', 'Major Title');
