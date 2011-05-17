@@ -105,7 +105,9 @@ function intern_update(&$content, $currentVersion)
             if(PEAR::isError($result)){
                 return $result;
             }
-
+        case version_compare($currentVersion, '0.0.17', '<'):
+            PHPWS_Core::initModClass('users', 'Permission.php');
+            Users_Permission::registerPermissions('intern', $content);
     }
     return TRUE;
 }

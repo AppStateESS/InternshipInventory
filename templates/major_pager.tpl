@@ -1,7 +1,7 @@
 <table id="major-pager">
 <tr>
-    <th>Name:</th>
-    <th>OPTION</th>
+    <th>Name</th>
+    <th>Option</th>
 </tr>
 <!-- BEGIN empty_table -->
 <tr>
@@ -11,9 +11,8 @@
 
 <!-- BEGIN listrows -->
 <tr>
-    <!-- <td>{ID}</td> -->
     <td>{NAME}</td>
-    <td>{DELETE}</td>
+    <td>{EDIT}{HIDE}{DELETE}</td>
 </tr>
 <!-- END listrows -->
 </table>

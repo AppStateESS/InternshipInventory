@@ -80,6 +80,7 @@ switch ($req) {
     case 'edit_majors':
         PHPWS_Core::initModClass('intern', 'Major.php');
         PHPWS_Core::initModClass('intern', 'UI/MajorUI.php');
+
         if(isset($_REQUEST['add'])){
             /* Add major with the name passed in REQUEST. */
             if(isset($_REQUEST['name'])){
@@ -87,9 +88,15 @@ switch ($req) {
             }else{
                 NQ::simple('intern', INTERN_ERROR, "Major must have name.");
             }
-        }
-        else if(isset($_REQUEST['del'])){
-            // Delete major with same ID passed in REQUEST.
+        }else if(isset($_REQUEST['hide'])){
+            /* Hide major with ID passed in REQUEST. */
+            if(isset($_REQUEST['id'])){
+                Major::hide($_REQUEST['id']);
+            }else{
+                NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot hide major.");
+            }
+        }else if(isset($_REQUEST['del'])){
+            /* Delete major with same ID passed in REQUEST. */
             if(isset($_REQUEST['id'])){
                 Major::del($_REQUEST['id']);
             }else{
@@ -154,8 +161,13 @@ switch ($req) {
         break;
 }
 // Show notifications, UI, and some styleee.
-Intern_NotifyUI::display();
-if(isset($content))
+if(isset($content)){
+    if($content === false){
+        NQ::close();
+        PHPWS_Core::reroute('index.php?module=intern');
+    }
+    Intern_NotifyUI::display();
     Layout::add($content);
+ }
 Layout::addStyle('intern', 'style.css');
 ?>

@@ -18,7 +18,15 @@ class Intern_MenuUI implements UI{
 
         javascript('/modules/intern/menu');
 
-        // Deity Stuff
+        if(Current_User::allow('intern', 'edit_major')){
+            $tags['DEITY']                 = 'Admin Options';
+            $tags['EDIT_MAJORS_LINK']      = PHPWS_Text::secureLink('Edit Majors','intern',array('action' => 'edit_majors'));
+        }
+        if(Current_User::allow('intern', 'edit_grad_prog')){
+            $tags['DEITY']                 = 'Admin Options';
+            $tags['EDIT_GRAD_LINK']      = PHPWS_Text::secureLink('Edit Graduate Programs','intern',array('action' => 'edit_grad_progs'));
+        }
+
         if(Current_User::isDeity()){
             $tags['DEITY']                 = 'Admin Options';
             $tags['EDIT_MAJORS_LINK']      = PHPWS_Text::secureLink('Edit Majors','intern',array('action' => 'edit_majors'));

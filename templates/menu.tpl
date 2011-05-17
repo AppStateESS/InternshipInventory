@@ -4,13 +4,14 @@
   <span class="intern-button" id="search">Search Internships</span>
   <span class="intern-button" id="add">Add Internship</span>
 
-  <!-- BEGIN deity_section -->
+<!-- BEGIN admin_section -->
   <hr width="60%" />
   <h2>{DEITY}</h2>
   {EDIT_MAJORS_LINK}<br />
+  {EDIT_GRAD_LINK}<br />
   {EDIT_DEPARTMENTS_LINK}<br />
   {EDIT_ADMINS_LINK}<br />
   <hr width="75%">
   {GRAND_TOTAL_LABEL}{GRAND_TOTAL}<br />
-  <!-- END deity_section -->
+<!-- END admin_section -->
 </div>

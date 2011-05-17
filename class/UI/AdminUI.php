@@ -11,8 +11,7 @@ class AdminUI implements UI {
         // permissions...
         if(!Current_User::isDeity()) {
             NQ::simple('intern', INTERN_ERROR, 'You cannot edit administrators.');
-            NQ::close();
-            PHPWS_Core::reroute('index.php?module=intern');
+            return false;
         }
 
         // set up some stuff for the page template

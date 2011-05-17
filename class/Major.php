@@ -46,7 +46,17 @@ class Major extends Model
     {
         $tags = array();
         $tags['NAME'] = $this->name;
-        $tags['DELETE'] = PHPWS_Text::moduleLink('Delete','intern',array('action'=>'edit_majors','del'=>TRUE,'id'=>$this->getID()));
+        // TODO: Make all these JQuery. Make edit/hide functional.
+        if(Current_User::allow('intern', 'edit_major')){
+            $tags['EDIT'] = 'Edit | ';
+            $tags['HIDE'] = 'Hide';
+        }
+        if(Current_User::allow('intern', 'delete_major')){
+            $div = null;
+            if(isset($tags['HIDE']))
+                $div = ' | ';
+            $tags['DELETE'] = $div.PHPWS_Text::moduleLink('Delete','intern',array('action'=>'edit_majors','del'=>TRUE,'id'=>$this->getID()));
+        }
         return $tags;
     }
 
@@ -92,6 +102,30 @@ class Major extends Model
 
         /* Major was successfully added. */
         NQ::simple('intern', INTERN_SUCCESS, "<i>$name</i> added as undergraduate major.");
+    }
+
+    /**
+     * Hide a major.
+     */
+    public static function hide($id)
+    {
+        $m = new Major($id);
+        
+        if($m->id == 0 || !is_numeric($m->id)){
+            // Major wasn't loaded correctly
+            NQ::simple('intern', INTERN_ERROR, "Error occurred while loading information for major from database.");
+            return;
+        }
+
+        // Set the major's hidden flag in DB.
+        $m->hidden = 1;
+
+        try{
+            $m->save();
+            NQ::simple('intern', INTERN_SUCCESS, "Major <i>$m->name</i> is now hidden.");
+        }catch(Exception $e){
+            return NQ::simple('intern', INTERN_ERROR, $e->getMessage());
+        }
     }
 
     /**

@@ -46,7 +46,14 @@ class GradProgram extends Model
     {
         $tags = array();
         $tags['NAME'] = $this->name;
-        $tags['DELETE'] = PHPWS_Text::moduleLink('Delete','intern',array('action'=>'edit_grad','del'=>TRUE,'id'=>$this->getID()));
+        // TODO: Make all these JQuery. Make edit/hide functional.
+        if(Current_User::allow('intern', 'edit_grad_prog')){
+            $tags['EDIT'] = 'Edit pic';
+            $tags['HIDE'] = 'Hide link';
+        }
+        if(Current_User::allow('intern', 'delete_grad_prog')){
+            $tags['DELETE'] = PHPWS_Text::moduleLink('Delete','intern',array('action'=>'edit_grad','del'=>TRUE,'id'=>$this->getID()));
+        }
         return $tags;
     }
 
