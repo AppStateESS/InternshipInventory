@@ -27,6 +27,11 @@
     font-weight: bold;
 }
 
+.hidden-major-prog {
+    font-style: italic;
+    color: #888888;
+}
+
 .toggle1 {
     background-color:#FFFFFF;
 }

@@ -45,11 +45,19 @@ class GradProgram extends Model
     public function getRowTags()
     {
         $tags = array();
-        $tags['NAME'] = $this->name;
+        if($this->isHidden()){
+            $tags['NAME'] = "<span class='hidden-major-prog'>$this->name</span>";
+        }else{
+            $tags['NAME'] = $this->name;
+        }
         // TODO: Make all these JQuery. Make edit/hide functional.
         if(Current_User::allow('intern', 'edit_grad_prog')){
             $tags['EDIT'] = 'Edit | ';
-            $tags['HIDE'] = 'Hide';
+            if($this->isHidden()){
+                $tags['HIDE'] = PHPWS_Text::moduleLink('Show', 'intern', array('action' => 'edit_grad', 'hide' => false, 'id'=>$this->getId()));
+            }else{
+                $tags['HIDE'] = PHPWS_Text::moduleLink('Hide', 'intern', array('action' => 'edit_grad', 'hide' => true, 'id'=>$this->getId()));
+            }
         }
         if(Current_User::allow('intern', 'delete_grad_prog')){
             $div = null;
@@ -107,7 +115,7 @@ class GradProgram extends Model
     /**
      * Hide a program.
      */
-    public static function hide($id)
+    public static function hide($id, $hide=true)
     {
         $prog = new GradProgram($id);
         
@@ -118,11 +126,15 @@ class GradProgram extends Model
         }
 
         // Set the program's hidden flag in DB.
-        $prog->hidden = 1;
+        if($hide){
+            $prog->hidden = 1;
+        }else{
+            $prog->hidden = 0;
+        }
 
         try{
             $prog->save();
-            NQ::simple('intern', INTERN_SUCCESS, "Graduate program <i>$m->name</i> is now hidden.");
+            NQ::simple('intern', INTERN_SUCCESS, "Graduate program <i>$prog->name</i> is now hidden.");
         }catch(Exception $e){
             return NQ::simple('intern', INTERN_ERROR, $e->getMessage());
         }

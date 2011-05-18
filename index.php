@@ -88,9 +88,9 @@ switch ($req) {
                 NQ::simple('intern', INTERN_ERROR, "Grad Program must have name.");
             }
         }else if(isset($_REQUEST['hide'])){
-            /* Hide program with ID passed in REQUEST. */
+            /* Hide/Show program with ID passed in REQUEST. */
             if(isset($_REQUEST['id'])){
-                GradProgram::hide($_REQUEST['id']);
+                GradProgram::hide($_REQUEST['id'], $_REQUEST['hide'] == 1);
             }else{
                 NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot hide graduate program.");
             }
@@ -118,7 +118,7 @@ switch ($req) {
         }else if(isset($_REQUEST['hide'])){
             /* Hide major with ID passed in REQUEST. */
             if(isset($_REQUEST['id'])){
-                Major::hide($_REQUEST['id']);
+                Major::hide($_REQUEST['id'], $_REQUEST['hide'] == 1);
             }else{
                 NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot hide major.");
             }

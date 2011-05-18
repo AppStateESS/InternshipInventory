@@ -45,11 +45,19 @@ class Major extends Model
     public function getRowTags()
     {
         $tags = array();
-        $tags['NAME'] = $this->name;
+        if($this->isHidden()){
+            $tags['NAME'] = "<span class='hidden-major-prog'>$this->name</span>";
+        }else{
+            $tags['NAME'] = $this->name;
+        }
         // TODO: Make all these JQuery. Make edit/hide functional.
         if(Current_User::allow('intern', 'edit_major')){
             $tags['EDIT'] = 'Edit | ';
-            $tags['HIDE'] = 'Hide';
+            if($this->isHidden()){
+                $tags['HIDE'] = PHPWS_Text::moduleLink('Show', 'intern', array('action' => 'edit_majors', 'hide' => false, 'id'=>$this->getId()));
+            }else{
+                $tags['HIDE'] = PHPWS_Text::moduleLink('Hide', 'intern', array('action' => 'edit_majors', 'hide' => true, 'id'=>$this->getId()));
+            }
         }
         if(Current_User::allow('intern', 'delete_major')){
             $div = null;
@@ -107,7 +115,7 @@ class Major extends Model
     /**
      * Hide a major.
      */
-    public static function hide($id)
+    public static function hide($id, $hide=true)
     {
         $m = new Major($id);
         
@@ -117,12 +125,17 @@ class Major extends Model
             return;
         }
 
-        // Set the major's hidden flag in DB.
-        $m->hidden = 1;
-
         try{
-            $m->save();
-            NQ::simple('intern', INTERN_SUCCESS, "Major <i>$m->name</i> is now hidden.");
+            // Set the program's hidden flag in DB.
+            if($hide){
+                $m->hidden = 1;
+                $m->save();
+                return NQ::simple('intern', INTERN_SUCCESS, "Major <i>$m->name</i> is now hidden.");
+            }else{
+                $m->hidden = 0;
+                $m->save();
+                return NQ::simple('intern', INTERN_SUCCESS, "Major <i>$m->name</i> is now visible.");
+            }
         }catch(Exception $e){
             return NQ::simple('intern', INTERN_ERROR, $e->getMessage());
         }
