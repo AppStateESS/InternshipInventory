@@ -24,17 +24,17 @@ class InternshipUI implements UI
         $tpl['HOME_LINK'] = PHPWS_Text::moduleLink('Menu', 'intern');
         $tpl['SEARCH_LINK'] = PHPWS_Text::moduleLink('Search', 'intern', array('action' => 'search'));
 
-        // TODO: PERMISSIONS
-        $form = self::getInternshipForm();
-
         if(isset($_REQUEST['id'])){
             try{
                 $internship = new Internship($_REQUEST['id']);
+                $form = self::getInternshipForm($internship);
                 $tpl['PDF'] = PHPWS_Text::moduleLink('Download PDF Report', 'intern', array('action' => 'pdf', 'id' => $internship->id));
                 self::plugInternship($form, $internship);
             }catch(Exception $e){
                 NQ::simple('intern', INTERN_ERROR, $e->getMessage());
             }
+        }else{
+            $form = self::getInternshipForm();
         }
         // If 'missing' is set then we have been redirected 
         // back to the form because the user didn't type in something and
@@ -74,9 +74,11 @@ class InternshipUI implements UI
         PHPWS_Core::initModClass('intern', 'GradProgram.php');
 
         $form = new PHPWS_Form('internship');
+        if(!is_null($i))
+            $s = $i->getStudent();
         $form->setAction('index.php?module=intern&action=add_internship');
         $form->addSubmit('submit', 'Save');
-        
+
         /**
          * Student fields
          */
@@ -92,10 +94,16 @@ class InternshipUI implements UI
         $form->setLabel('student_phone', 'Phone');
         $form->addText('student_email');
         $form->setLabel('student_email', 'Email');
-        $majors = Major::getMajorsAssoc();
+        if(!is_null($i))
+            $majors = Major::getMajorsAssoc($s->ugrad_major);
+        else
+            $majors = Major::getMajorsAssoc();
         $form->addSelect('ugrad_major', $majors);
         $form->setLabel('ugrad_major', 'Undergraduate Major');
-        $progs = GradProgram::getGradProgsAssoc();
+        if(!is_null($i))
+            $progs = GradProgram::getGradProgsAssoc($s->grad_prog);
+        else
+            $progs = GradProgram::getGradProgsAssoc();
         $form->addSelect('grad_prog', $progs);
         $form->setLabel('grad_prog', 'Graduate Program');
         $form->addCheck('graduated');
@@ -213,7 +221,6 @@ class InternshipUI implements UI
         $vals['student_email'] = $s->email;
         $vals['grad_prog'] = $s->grad_prog;
         $vals['ugrad_major'] = $s->ugrad_major;
-        $vals['grad_prog'] = $s->grad_prog;
         $vals['graduated'] = $s->graduated;
 
         // Agency
@@ -258,7 +265,7 @@ class InternshipUI implements UI
         $form->setMatch('service_learning_type', $i->service_learn);
         $form->setMatch('independent_study_type', $i->independent_study);
         $form->setMatch('research_assist_type', $i->research_assist);
-
+  
         // Plug 
         $form->plugIn($vals);
     }

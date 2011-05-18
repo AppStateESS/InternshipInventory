@@ -69,15 +69,20 @@ class Major extends Model
     }
 
     /**
-     * Return an associative array {id => Major name } for all majors in DB.
+     * Return an associative array {id => Major name } for all majors in DB
+     * that aren't hidden. Always show the major with id $except.
      */
-    public static function getMajorsAssoc()
+    public static function getMajorsAssoc($except=null)
     {
         $db = self::getDb();
         $db->addOrder('name');
         $db->addColumn('id');
         $db->addColumn('name');
-        $db->addWhere('hidden', 0);
+        $db->addWhere('hidden', 0, '=', 'OR');
+
+        if(!is_null($except)){
+            $db->addWhere('id', $except, '=', 'OR');
+        }
         $majors = $db->select('assoc');
         // Horrible, horrible hacks. Need to add a null selection.
         $majors = array_reverse($majors, true); // preserve keys.
@@ -90,6 +95,10 @@ class Major extends Model
      */
     public static function add($name)
     {
+        $name = trim($name);
+        if($name == ''){
+            return NQ::simple('intern', INTERN_WARNING, 'No name given for new major. No major was added.');
+        }
         /* Search DB for major with matching name. */
         $db = self::getDb();
         $db->addWhere('name', $name);
@@ -117,6 +126,11 @@ class Major extends Model
      */
     public static function hide($id, $hide=true)
     {
+        // Permission check
+        if(!Current_User::allow('intern', 'edit_major')){
+            return NQ::simple('intern', INTERN_ERROR, 'You do not have permission to hide majors.');
+        }
+
         $m = new Major($id);
         
         if($m->id == 0 || !is_numeric($m->id)){
@@ -163,13 +177,51 @@ class Major extends Model
                 NQ::simple('intern', INTERN_SUCCESS, "Error occurred removing major from database.");
                 return;
             }
+            // Major deleted successfully.
+            NQ::simple('intern', INTERN_SUCCESS, "Deleted major <i>$name</i>");
         }catch(Exception $e){
+            if($e->getCode() == DB_ERROR_CONSTRAINT){
+                // TODO: Implement force delete.
+                NQ::simple('intern', INTERN_ERROR, "One or more students have $name as their major. Cannot delete");
+                return;
+            }
+
             NQ::simple('intern', INTERN_ERROR, $e->getMessage());
             return;
         }
+    }
 
-        // Major deleted successfully.
-        NQ::simple('intern', INTERN_SUCCESS, "Deleted major <i>$name</i>");
+    /**
+     * Rename the Major with ID $id to $newName.
+     */
+    public static function rename($id, $newName)
+    {
+        /* Permission check */
+        if(!Current_User::allow('intern', 'edit_major')){
+            return NQ::simple('intern', INTERN_ERROR, 'You do not have permission to rename a major.');
+        }
+        
+        /* Must be valid name */
+        $newName = trim($newName);
+        if($newName == ''){
+            return NQ::simple('intern', INTERN_WARNING, 'No name was given. No majors were changed.');
+        }
+        
+        $m = new Major($id);
+        
+        if($m->id == 0){
+            // Major wasn't loaded correctly
+            NQ::simple('intern', INTERN_ERROR, "Error occurred while loading information for major from database.");
+            return;
+        }
+        $old = $m->name;
+        try{
+            $m->name = $newName;
+            $m->save();
+            return NQ::simple('intern', INTERN_SUCCESS, "<i>$old</i> renamed to <i>$newName</i>");
+        }catch(Exception $e){
+            return NQ::simple('intern', INTERN_ERROR, $e->getMessage());
+        }
     }
 }
 

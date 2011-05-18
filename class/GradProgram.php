@@ -70,14 +70,19 @@ class GradProgram extends Model
 
     /**
      * Return an associative array {id => Grad. Prog. name } for all grad programs in DB.
+     * Return an associative array {id => Grad. Prog. name } for all programs in DB
+     * that aren't hidden. Always show the program with id $except.
      */
-    public static function getGradProgsAssoc()
+    public static function getGradProgsAssoc($except=null)
     {
         $db = self::getDb();
         $db->addOrder('name');
         $db->addColumn('id');
         $db->addColumn('name');
-        $db->addWhere('hidden', 0);
+        $db->addWhere('hidden', 0, '=', 'OR');
+        if(!is_null($except)){
+            $db->addWhere('id', $except, '=', 'OR');
+        }
         $progs = $db->select('assoc');
         // Horrible, horrible hacks. Need to add a null selection.
         $progs = array_reverse($progs, true); // preserve keys.
@@ -90,6 +95,11 @@ class GradProgram extends Model
      */
     public static function add($name)
     {
+        $name = trim($name);
+        if($name == ''){
+            return NQ::simple('intern', INTERN_ERROR, 'No name given for new graduate program. No graduate program added.');
+        }
+
         /* Search DB for program with matching name. */
         $db = self::getDb();
         $db->addWhere('name', $name);
@@ -117,6 +127,10 @@ class GradProgram extends Model
      */
     public static function hide($id, $hide=true)
     {
+        /* Permission check */
+        if(!Current_User::allow('intern', 'edit_grad_prog')){
+            return NQ::simple('intern', INTERN_ERROR, 'You do not have permission to hide graduate programs.');
+        }
         $prog = new GradProgram($id);
         
         if($prog->id == 0 || !is_numeric($prog->id)){
@@ -163,12 +177,50 @@ class GradProgram extends Model
                 return;
             }
         }catch(Exception $e){
+            if($e->getCode() == DB_ERROR_CONSTRAINT){
+                // TODO: Implement force delete.
+                NQ::simple('intern', INTERN_ERROR, "One or more students have $name as their graduate program. Cannot delete");
+                return;
+            }
             NQ::simple('intern', INTERN_ERROR, $e->getMessage());
             return;
         }
 
         // Program deleted successfully.
         NQ::simple('intern', INTERN_SUCCESS, "Deleted graduate program <i>$name</i>");
+    }
+
+    /**
+     * Rename the program with ID $id to $newName.
+     */
+    public static function rename($id, $newName)
+    {
+        /* Permission check */
+        if(!Current_User::allow('intern', 'edit_grad_prog')){
+            return NQ::simple('intern', INTERN_ERROR, 'You do not have permission to rename a graduate program.');
+        }
+        
+        /* Must be valid name */
+        $newName = trim($newName);
+        if($newName == ''){
+            return NQ::simple('intern', INTERN_WARNING, 'No name was given. No grad programs were changed.');
+        }
+        
+        $prog = new GradProgram($id);
+        
+        if($prog->id == 0){
+            /* Program wasn't loaded correctly */
+            NQ::simple('intern', INTERN_ERROR, "Error occurred while loading information for grad program from database.");
+            return;
+        }
+        $old = $prog->name;
+        try{
+            $prog->name = $newName;
+            $prog->save();
+            return NQ::simple('intern', INTERN_SUCCESS, "<i>$old</i> renamed to <i>$newName</i>");
+        }catch(Exception $e){
+            return NQ::simple('intern', INTERN_ERROR, $e->getMessage());
+        }
     }
 }
 

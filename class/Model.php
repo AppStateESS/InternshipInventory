@@ -92,7 +92,7 @@ abstract class Model
         $result = $db->delete();
         
         if(PHPWS_Error::logIfError($result)){
-            throw new Exception($result->toString());
+            throw new Exception($result->getMessage(), $result->getCode());
         }
 
         return true;

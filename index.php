@@ -87,6 +87,13 @@ switch ($req) {
             }else{
                 NQ::simple('intern', INTERN_ERROR, "Grad Program must have name.");
             }
+        }else if(isset($_REQUEST['rename'])){
+            /* Rename program with ID to new name that was passed in REQUEST */
+            if(isset($_REQUEST['id'])){
+                GradProgram::rename($_REQUEST['id'], $_REQUEST['rename']);
+            }else{
+                NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot rename graduate program.");
+            }
         }else if(isset($_REQUEST['hide'])){
             /* Hide/Show program with ID passed in REQUEST. */
             if(isset($_REQUEST['id'])){
@@ -115,12 +122,19 @@ switch ($req) {
             }else{
                 NQ::simple('intern', INTERN_ERROR, "Major must have name.");
             }
+        }else if(isset($_REQUEST['rename'])){
+            /* Rename major with ID to new name that was passed in REQUEST */
+            if(isset($_REQUEST['id'])){
+                Major::rename($_REQUEST['id'], $_REQUEST['rename']);
+            }else{
+                NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot hide major.");
+            }
         }else if(isset($_REQUEST['hide'])){
             /* Hide major with ID passed in REQUEST. */
             if(isset($_REQUEST['id'])){
                 Major::hide($_REQUEST['id'], $_REQUEST['hide'] == 1);
             }else{
-                NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot hide major.");
+                NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot rename major.");
             }
         }else if(isset($_REQUEST['del'])){
             /* Delete major with same ID passed in REQUEST. */
