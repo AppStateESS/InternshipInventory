@@ -211,6 +211,12 @@ class Major extends Model
         
         if($m->id == 0){
             // Major wasn't loaded correctly
+            if(isset($_REQUEST['ajax'])){
+                NQ::simple('intern', INTERN_ERROR, "Error occurred while loading information for major from database.");
+                NQ::close();
+                echo true;
+                exit;
+            }
             NQ::simple('intern', INTERN_ERROR, "Error occurred while loading information for major from database.");
             return;
         }

@@ -13,6 +13,9 @@ class GradProgramUI implements UI
 
         $tpl['HOMELINK'] = PHPWS_Text::moduleLink('Back to Menu','intern');
         $tpl['PAGER'] = self::doPager();
+
+        javascript('/jquery/');
+        javascript('/modules/intern/editMajor', array('TYPE' => 'grad'));
         
         /* Form for adding new grad program */
         $form = &new PHPWS_Form('add_prog');

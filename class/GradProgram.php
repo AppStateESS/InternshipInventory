@@ -46,13 +46,13 @@ class GradProgram extends Model
     {
         $tags = array();
         if($this->isHidden()){
-            $tags['NAME'] = "<span class='hidden-major-prog'>$this->name</span>";
+            $tags['NAME'] = "<span id='$this->id' class='$this->id major-prog hidden-major-prog'>$this->name</span>";
         }else{
-            $tags['NAME'] = $this->name;
+            $tags['NAME'] = "<span id='$this->id' class='$this->id major-prog'>$this->name</span>";
         }
-        // TODO: Make all these JQuery. Make edit/hide functional.
+        // TODO: Make all these JQuery.
         if(Current_User::allow('intern', 'edit_grad_prog')){
-            $tags['EDIT'] = 'Edit | ';
+            $tags['EDIT'] = "<span id='edit-$this->id' class='$this->id edit-major-prog'>Edit</span> | ";
             if($this->isHidden()){
                 $tags['HIDE'] = PHPWS_Text::moduleLink('Show', 'intern', array('action' => 'edit_grad', 'hide' => false, 'id'=>$this->getId()));
             }else{
@@ -210,6 +210,12 @@ class GradProgram extends Model
         
         if($prog->id == 0){
             /* Program wasn't loaded correctly */
+            if(isset($_REQUEST['ajax'])){
+                NQ::simple('intern', INTERN_ERROR, "Error occurred while loading information for grad program from database.");
+                NQ::close();
+                echo true;
+                exit;
+            }
             NQ::simple('intern', INTERN_ERROR, "Error occurred while loading information for grad program from database.");
             return;
         }
@@ -217,8 +223,20 @@ class GradProgram extends Model
         try{
             $prog->name = $newName;
             $prog->save();
+            if(isset($_REQUEST['ajax'])){
+                NQ::simple('intern', INTERN_SUCCESS, "<i>$old</i> renamed to <i>$newName</i>");
+                NQ::close();
+                echo true;
+                exit;
+            }
             return NQ::simple('intern', INTERN_SUCCESS, "<i>$old</i> renamed to <i>$newName</i>");
         }catch(Exception $e){
+            if(isset($_REQUEST['ajax'])){
+                NQ::simple('intern', INTERN_ERROR, $e->getMessage());
+                NQ::close();
+                echo false;
+                exit;
+            }
             return NQ::simple('intern', INTERN_ERROR, $e->getMessage());
         }
     }
