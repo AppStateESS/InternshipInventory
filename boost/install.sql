@@ -24,6 +24,9 @@ CREATE TABLE intern_agency (
        id INT NOT NULL,
        name VARCHAR NOT NULL,  
        address VARCHAR NOT NULL,
+       city VARCHAR NOT NULL DEFAULT '',
+       state VARCHAR NOT NULL DEFAULT 'XX',
+       zip INT NOT NULL DEFAULT 00000,
        phone VARCHAR NOT NULL,
        supervisor_first_name VARCHAR NOT NULL,
        supervisor_last_name VARCHAR NOT NULL,
@@ -31,6 +34,9 @@ CREATE TABLE intern_agency (
        supervisor_email VARCHAR NOT NULL,
        supervisor_fax VARCHAR NOT NULL,
        supervisor_address VARCHAR NOT NULL,
+       supervisor_city VARCHAR NOT NULL DEFAULT '',
+       supervisor_state VARCHAR NOT NULL DEFAULT 'XX',
+       supervisor_zip INT NOT NULL DEFAULT 00000,
        PRIMARY KEY(id)
 );
 
