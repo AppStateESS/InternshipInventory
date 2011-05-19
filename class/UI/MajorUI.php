@@ -13,6 +13,9 @@ class MajorUI implements UI
 
         $tpl['HOMELINK'] = PHPWS_Text::moduleLink('Back to Menu','intern');
         $tpl['PAGER'] = MajorUI::doPager();
+
+        javascript('/jquery/');
+        javascript('/modules/intern/editMajor', array('TYPE' => 'majors'));
         
         /* Form for adding new major */
         $form = &new PHPWS_Form('add_major');

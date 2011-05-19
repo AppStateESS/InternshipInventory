@@ -46,13 +46,13 @@ class Major extends Model
     {
         $tags = array();
         if($this->isHidden()){
-            $tags['NAME'] = "<span class='hidden-major-prog'>$this->name</span>";
+            $tags['NAME'] = "<span id='$this->id' class='$this->id major-prog hidden-major-prog'>$this->name</span>";
         }else{
-            $tags['NAME'] = $this->name;
+            $tags['NAME'] = "<span id='$this->id' class='$this->id major-prog'>$this->name</span>";
         }
-        // TODO: Make all these JQuery. Make edit/hide functional.
+        // TODO: Make all these JQuery.
         if(Current_User::allow('intern', 'edit_major')){
-            $tags['EDIT'] = 'Edit | ';
+            $tags['EDIT'] = "<span id='edit-$this->id' class='$this->id edit-major-prog'>Edit</span> | ";
             if($this->isHidden()){
                 $tags['HIDE'] = PHPWS_Text::moduleLink('Show', 'intern', array('action' => 'edit_majors', 'hide' => false, 'id'=>$this->getId()));
             }else{
@@ -218,8 +218,20 @@ class Major extends Model
         try{
             $m->name = $newName;
             $m->save();
+            if(isset($_REQUEST['ajax'])){
+                NQ::simple('intern', INTERN_SUCCESS, "<i>$old</i> renamed to <i>$newName</i>");
+                NQ::close();
+                echo true;
+                exit;
+            }
             return NQ::simple('intern', INTERN_SUCCESS, "<i>$old</i> renamed to <i>$newName</i>");
         }catch(Exception $e){
+            if(isset($_REQUEST['ajax'])){
+                NQ::simple('intern', INTERN_ERROR, $e->getMessage());
+                NQ::close();
+                echo false;
+                exit;
+            }
             return NQ::simple('intern', INTERN_ERROR, $e->getMessage());
         }
     }
