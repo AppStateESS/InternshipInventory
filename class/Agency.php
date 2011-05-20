@@ -25,6 +25,7 @@ class Agency extends Model
     public $supervisor_city;
     public $supervisor_state;
     public $supervisor_zip;
+    public $address_same_flag;
 
     /**
      * @Override Model::getDb

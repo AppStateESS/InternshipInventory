@@ -37,6 +37,7 @@ CREATE TABLE intern_agency (
        supervisor_city VARCHAR NOT NULL DEFAULT '',
        supervisor_state VARCHAR NOT NULL DEFAULT 'XX',
        supervisor_zip INT NOT NULL DEFAULT 00000,
+       address_same_flag BOOLEAN NOT NULL DEFAULT TRUE,
        PRIMARY KEY(id)
 );
 

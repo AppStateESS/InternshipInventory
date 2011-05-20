@@ -1,0 +1,1 @@
+ALTER TABLE intern_agency ADD address_same_flag BOOLEAN NOT NULL DEFAULT TRUE;

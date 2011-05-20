@@ -3,11 +3,10 @@
         /* When magic check-box is CHECKED copy the contents
          * of the agency's address info into the supervisor's
          * address info and update when changes are made.
-         * When the box is UN-CHECKED clear info from supervisor's
-         * address info.
+         * When the box is UN-CHECKED remove handlers.
          */
-        $("input:checkbox[name='copy-address']").click(function(){
-            if($(this).attr('checked')){
+        function doIt(item){
+            if($(item).attr('checked')){
                 /* Copy values from agency */
                 $("input:text[name='agency_sup_address']").val($("input:text[name='agency_address']").val());
                 $("input:text[name='agency_sup_city']").val($("input:text[name='agency_city']").val());
@@ -28,17 +27,19 @@
                 });
 
             }else{
-                /* Clear fields */
-                $("input:text[name='agency_sup_address']").val('');
-                $("input:text[name='agency_sup_city']").val('');
-                $("input:text[name='agency_sup_zip']").val('');
-                $("select[name='agency_sup_state']").val('AL');// Reset to first in list.
                 /* Remove handlers */
                 $("input:text[name='agency_address']").unbind('keyup');
                 $("input:text[name='agency_city']").unbind('keyup');
                 $("input:text[name='agency_zip']").unbind('keyup');
                 $("select[name='agency_state']").unbind('change');
             }
+        }
+        $("input:checkbox[name='copy_address']").click(function(){
+            doIt(this);
         });
+        /* If checkbox is set already then go ahead and copy the address to make sure. */
+        if($("input:checkbox[name='copy_address']").attr('checked')){
+            doIt("input:checkbox[name='copy_address']");
+        }
     });
 </script>

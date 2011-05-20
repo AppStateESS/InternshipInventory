@@ -332,15 +332,23 @@ class Internship extends Model
                 return PHPWS_Core::goBack();
             }
         }
-        $agency->name = $_REQUEST['agency_name'];
+        $agency->name    = $_REQUEST['agency_name'];
         $agency->address = $_REQUEST['agency_address'];
-        $agency->phone = $_REQUEST['agency_phone'];
+        $agency->city    = $_REQUEST['agency_city'];
+        $agency->state   = $_REQUEST['agency_state'];
+        $agency->zip     = $_REQUEST['agency_zip'];
+        $agency->phone   = $_REQUEST['agency_phone'];
         $agency->supervisor_first_name = $_REQUEST['agency_sup_first_name'];
-        $agency->supervisor_last_name = $_REQUEST['agency_sup_last_name'];
+        $agency->supervisor_last_name  = $_REQUEST['agency_sup_last_name'];
         $agency->supervisor_phone = $_REQUEST['agency_sup_phone'];
         $agency->supervisor_email = $_REQUEST['agency_sup_email'];
-        $agency->supervisor_fax = $_REQUEST['agency_sup_fax'];
+        $agency->supervisor_fax   = $_REQUEST['agency_sup_fax'];
         $agency->supervisor_address = $_REQUEST['agency_sup_address'];
+        $agency->supervisor_city    = $_REQUEST['agency_sup_city'];
+        $agency->supervisor_state   = $_REQUEST['agency_sup_state'];
+        $agency->supervisor_zip     = $_REQUEST['agency_sup_zip'];
+        $agency->address_same_flag  = isset($_REQUEST['copy_address']) ? 't' : 'f';
+
         try{
             $agencyId = $agency->save();
         }catch(Exception $e){

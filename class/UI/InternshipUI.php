@@ -156,6 +156,8 @@ class InternshipUI implements UI
         $form->setLabel('agency_sup_phone', 'Phone');
         $form->addText('agency_sup_email');
         $form->setLabel('agency_sup_email', 'Email');
+        $form->addCheck('copy_address');
+        $form->setLabel('copy_address', "Supervisor's address is same as agency's");
         $form->addText('agency_sup_address');
         $form->setLabel('agency_sup_address', 'Address');
         $form->addText('agency_sup_city');
@@ -257,6 +259,7 @@ class InternshipUI implements UI
         $vals['agency_sup_city'] = $a->supervisor_city;
         $vals['agency_sup_state'] = $a->supervisor_state;
         $vals['agency_sup_zip'] = $a->supervisor_zip;
+        $vals['copy_address'] = $a->address_same_flag == 't';
 
         // Faculty supervisor
         $form->addHidden('supervisor_id', $f->id);

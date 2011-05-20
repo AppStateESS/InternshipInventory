@@ -326,7 +326,7 @@
       </tr>
       <tr>
         <td colspan="2">
-          <input type="checkbox" name="copy-address"/><b><label for="copy-address">Supervisor's address is same as agency's</label></b>
+          {COPY_ADDRESS}{COPY_ADDRESS_LABEL}
         </td>
       </tr>
       <tr>
