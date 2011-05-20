@@ -243,6 +243,14 @@
       </tr>
       <tr>
         <td>
+          {AGENCY_PHONE_LABEL}
+        </td>
+        <td>
+          {AGENCY_PHONE}
+        </td>
+      </tr>
+      <tr>
+        <td>
           {AGENCY_ADDRESS_LABEL}
         </td>
         <td>
@@ -251,10 +259,26 @@
       </tr>
       <tr>
         <td>
-          {AGENCY_PHONE_LABEL}
+          {AGENCY_CITY_LABEL}
         </td>
         <td>
-          {AGENCY_PHONE}
+          {AGENCY_CITY}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {AGENCY_STATE_LABEL}
+        </td>
+        <td>
+          {AGENCY_STATE}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {AGENCY_ZIP_LABEL}
+        </td>
+        <td>
+          {AGENCY_ZIP}
         </td>
       </tr>
       <tr>
@@ -301,11 +325,40 @@
         </td>
       </tr>
       <tr>
+        <td colspan="2">
+          <input type="checkbox" name="copy-address"/><b><label for="copy-address">Supervisor's address is same as agency's</label></b>
+        </td>
+      </tr>
+      <tr>
         <td>
           {AGENCY_SUP_ADDRESS_LABEL}
         </td>
         <td>
           {AGENCY_SUP_ADDRESS}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {AGENCY_SUP_CITY_LABEL}
+        </td>
+        <td>
+          {AGENCY_SUP_CITY}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {AGENCY_SUP_STATE_LABEL}
+        </td>
+        <td>
+          {AGENCY_SUP_STATE}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {AGENCY_SUP_ZIP_LABEL}
+        </td>
+        <td>
+          {AGENCY_SUP_ZIP}
         </td>
       </tr>
     </table>

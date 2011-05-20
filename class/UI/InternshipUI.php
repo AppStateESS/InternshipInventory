@@ -11,10 +11,14 @@ class InternshipUI implements UI
                                           'supervisor_first_name', 'supervisor_last_name', 
                                           'supervisor_email','supervisor_phone',
                                           'department', 'agency_name', 'agency_address', 
+                                          'agency_city', 'agency_state', 'agency_zip',
                                           'agency_phone', 'agency_sup_first_name',
                                           'agency_sup_last_name', 'agency_sup_phone',
                                           'agency_sup_email', 'agency_sup_fax',
+                                          'agency_sup_address', 'agency_sup_city',
+                                          'agency_sup_state', 'agency_sup_zip',
                                           'term', 'start_date', 'end_date');
+ 
 
     public static function display()
     {
@@ -136,6 +140,12 @@ class InternshipUI implements UI
         $form->setLabel('agency_name', 'Name');
         $form->addText('agency_address');
         $form->setLabel('agency_address', 'Address');
+        $form->addText('agency_city');
+        $form->setLabel('agency_city', 'City');
+        $form->addSelect('agency_state', self::$state_list);
+        $form->setLabel('agency_state', 'State');
+        $form->addText('agency_zip');
+        $form->setLabel('agency_zip', 'Zip Code');
         $form->addText('agency_phone');
         $form->setLabel('agency_phone', 'Phone');
         $form->addText('agency_sup_first_name');
@@ -148,6 +158,12 @@ class InternshipUI implements UI
         $form->setLabel('agency_sup_email', 'Email');
         $form->addText('agency_sup_address');
         $form->setLabel('agency_sup_address', 'Address');
+        $form->addText('agency_sup_city');
+        $form->setLabel('agency_sup_city', 'City');
+        $form->addSelect('agency_sup_state', self::$state_list);
+        $form->setLabel('agency_sup_state', 'State');
+        $form->addText('agency_sup_zip');
+        $form->setLabel('agency_sup_zip', 'Zip Code');
         $form->addText('agency_sup_fax');
         $form->setLabel('agency_sup_fax', 'Fax');
 
@@ -195,6 +211,7 @@ class InternshipUI implements UI
 
         javascript('/jquery/');
         javascript('/jquery_ui/');
+        javascript('/modules/intern/copyAddress');
 
         return $form;
     }
@@ -227,6 +244,9 @@ class InternshipUI implements UI
         $form->addHidden('agency_id', $a->id);
         $vals['agency_name'] = $a->name;
         $vals['agency_address'] = $a->address;
+        $vals['agency_city'] = $a->city;
+        $vals['agency_state'] = $a->state;
+        $vals['agency_zip'] = $a->zip;
         $vals['agency_phone'] = $a->phone;
         $vals['agency_sup_first_name'] = $a->supervisor_first_name;
         $vals['agency_sup_last_name'] = $a->supervisor_last_name;
@@ -234,6 +254,9 @@ class InternshipUI implements UI
         $vals['agency_sup_email'] = $a->supervisor_email;
         $vals['agency_sup_fax'] = $a->supervisor_fax;
         $vals['agency_sup_address'] = $a->supervisor_address;
+        $vals['agency_sup_city'] = $a->supervisor_city;
+        $vals['agency_sup_state'] = $a->supervisor_state;
+        $vals['agency_sup_zip'] = $a->supervisor_zip;
 
         // Faculty supervisor
         $form->addHidden('supervisor_id', $f->id);
@@ -269,6 +292,58 @@ class InternshipUI implements UI
         // Plug 
         $form->plugIn($vals);
     }
+    /* http://www.bytemycode.com/snippets/snippet/454/ */
+    public static $state_list = array('AL'=>"Alabama",
+                                      'AK'=>"Alaska",  
+                                      'AZ'=>"Arizona",  
+                                      'AR'=>"Arkansas",  
+                                      'CA'=>"California",  
+                                      'CO'=>"Colorado",  
+                                      'CT'=>"Connecticut",  
+                                      'DE'=>"Delaware",  
+                                      'DC'=>"District Of Columbia",  
+                                      'FL'=>"Florida",  
+                                      'GA'=>"Georgia",  
+                                      'HI'=>"Hawaii",  
+                                      'ID'=>"Idaho",  
+                                      'IL'=>"Illinois",  
+                                      'IN'=>"Indiana",  
+                                      'IA'=>"Iowa",  
+                                      'KS'=>"Kansas",  
+                                      'KY'=>"Kentucky",  
+                                      'LA'=>"Louisiana",  
+                                      'ME'=>"Maine",  
+                                      'MD'=>"Maryland",  
+                                      'MA'=>"Massachusetts",  
+                                      'MI'=>"Michigan",  
+                                      'MN'=>"Minnesota",  
+                                      'MS'=>"Mississippi",  
+                                      'MO'=>"Missouri",  
+                                      'MT'=>"Montana",
+                                      'NE'=>"Nebraska",
+                                      'NV'=>"Nevada",
+                                      'NH'=>"New Hampshire",
+                                      'NJ'=>"New Jersey",
+                                      'NM'=>"New Mexico",
+                                      'NY'=>"New York",
+                                      'NC'=>"North Carolina",
+                                      'ND'=>"North Dakota",
+                                      'OH'=>"Ohio",  
+                                      'OK'=>"Oklahoma",  
+                                      'OR'=>"Oregon",  
+                                      'PA'=>"Pennsylvania",  
+                                      'RI'=>"Rhode Island",  
+                                      'SC'=>"South Carolina",  
+                                      'SD'=>"South Dakota",
+                                      'TN'=>"Tennessee",  
+                                      'TX'=>"Texas",  
+                                      'UT'=>"Utah",  
+                                      'VT'=>"Vermont",  
+                                      'VA'=>"Virginia",  
+                                      'WA'=>"Washington",  
+                                      'WV'=>"West Virginia",  
+                                      'WI'=>"Wisconsin",  
+                                      'WY'=>"Wyoming");
 }
 
 ?>
