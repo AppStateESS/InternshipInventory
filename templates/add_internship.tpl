@@ -176,56 +176,42 @@
         </td>
       </tr>
       <tr>
-        <td>
-          {DOMESTIC}{DOMESTIC_LABEL}
+        <td colspan="2">
+          <fieldset>
+            <legend>
+              <b>Location</b>
+            </legend>
+            {LOCATION_1}{LOCATION_1_LABEL}
+            {LOCATION_2}{LOCATION_2_LABEL}
+          </fieldset>
         </td>
       </tr>
       <tr>
-        <td>
-          {INTERNAT}{INTERNAT_LABEL}
+        <td colspan="2">
+          <fieldset>
+            <legend>
+              <b>Payment</b>
+            </legend>
+            {PAYMENT_1}{PAYMENT_1_LABEL}<br/>
+            {PAYMENT_2}{PAYMENT_2_LABEL}<br/>
+            <span style="padding-left: 15px;">{STIPEND}{STIPEND_LABEL}</span>
+          </fieldset>
         </td>
       </tr>
       <tr>
-        <td>
-          {PAID}{PAID_LABEL}
+        <td colspan="2">
+          <fieldset>
+            <legend>
+              <b>Type</b>
+            </legend>
+            {INTERNSHIP_DEFAULT_TYPE}{INTERNSHIP_DEFAULT_TYPE_LABEL}<br/>  
+            {SERVICE_LEARNING_TYPE}{SERVICE_LEARNING_TYPE_LABEL}<br/>
+            {INDEPENDENT_STUDY_TYPE}{INDEPENDENT_STUDY_TYPE_LABEL}<br/>
+            {RESEARCH_ASSIST_TYPE}{RESEARCH_ASSIST_TYPE_LABEL}<br/>
+            {CHECK_OTHER_TYPE}{OTHER_TYPE_LABEL}{OTHER_TYPE}<br/>
+          </fieldset>
         </td>
       </tr>
-      <tr>
-        <td>
-          {STIPEND}{STIPEND_LABEL}
-        </td>
-      </tr>
-      <tr>
-        <td>
-          {UNPAID}{UNPAID_LABEL}
-        </td>
-      </tr>
-      <tr>
-        <td>
-          {INTERNSHIP_DEFAULT_TYPE}{INTERNSHIP_DEFAULT_TYPE_LABEL}
-        </td>
-      </tr>
-      <tr>
-        <td>
-          {SERVICE_LEARNING_TYPE}{SERVICE_LEARNING_TYPE_LABEL}
-        </td>
-      </tr>
-      <tr>
-        <td>
-          {INDEPENDENT_STUDY_TYPE}{INDEPENDENT_STUDY_TYPE_LABEL}
-        </td>
-      </tr>
-      <tr>
-        <td>
-          {RESEARCH_ASSIST_TYPE}{RESEARCH_ASSIST_TYPE_LABEL}
-        </td>
-      </tr>
-      <tr>
-        <td>
-          {OTHER_TYPE_LABEL}{OTHER_TYPE}
-        </td>
-      </tr>
-
     </table>
   </td>
   <!-- End internship details -->

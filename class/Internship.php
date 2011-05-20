@@ -404,16 +404,16 @@ class Internship extends Model
         $i->end_date = strtotime($_REQUEST['end_date']);
         $i->credits = $_REQUEST['credits'] == '' ? NULL : $_REQUEST['credits'];
         $i->avg_hours_week = $_REQUEST['avg_hours_week'] == '' ? NULL : $_REQUEST['avg_hours_week'];
-        $i->domestic = isset($_REQUEST['domestic']);
-        $i->international = isset($_REQUEST['internat']);
-        $i->paid = isset($_REQUEST['paid']);
-        $i->stipend = isset($_REQUEST['stipend']);
-        $i->unpaid = isset($_REQUEST['unpaid']);
+        $i->domestic = $_REQUEST['location'] == 'domestic';
+        $i->international = $_REQUEST['location'] == 'internat';
+        $i->paid = $_REQUEST['payment'] == 'paid';
+        $i->stipend = isset($_REQUEST['stipend']) && $i->paid;
+        $i->unpaid = $_REQUEST['payment'] == 'unpaid';
         $i->internship = isset($_REQUEST['internship_default_type']);
         $i->service_learn = isset($_REQUEST['service_learning_type']);
         $i->independent_study = isset($_REQUEST['independent_study_type']);
         $i->research_assist = isset($_REQUEST['research_assist_type']);
-        $i->other_type = $_REQUEST['other_type'];
+        $i->other_type =  isset($_REQUEST['check_other_type']) ? $_REQUEST['other_type'] : null;
         $i->notes = $_REQUEST['notes'];
 
         try{

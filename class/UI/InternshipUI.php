@@ -182,14 +182,10 @@ class InternshipUI implements UI
         $form->setLabel('credits', 'Credits');
         $form->addText('avg_hours_week');
         $form->setLabel('avg_hours_week', 'Average Hours per Week');
-        $form->addCheck('domestic');
-        $form->setLabel('domestic', 'Domestic');
-        $form->addCheck('internat');
-        $form->setLabel('internat', 'International');
-        $form->addCheck('paid');
-        $form->setLabel('paid', 'Paid');
-        $form->addCheck('unpaid');
-        $form->setLabel('unpaid', 'Unpaid');
+        $loc = array('domestic' => 'Domestic', 'internat' => 'International');
+        $form->addRadioAssoc('location', $loc);
+        $pay = array('unpaid' => 'Unpaid', 'paid' => 'Paid');
+        $form->addRadioAssoc('payment', $pay);
         $form->addCheck('stipend');
         $form->setLabel('stipend', 'Stipend');
         $form->addCheck('internship_default_type');
@@ -200,8 +196,9 @@ class InternshipUI implements UI
         $form->setLabel('independent_study_type', 'Independent Study');
         $form->addCheck('research_assist_type');
         $form->setLabel('research_assist_type', 'Research Assistant');
+        $form->addCheck('check_other_type');
         $form->addText('other_type');
-        $form->setLabel('other_type', 'Other');
+        $form->setLabel('other_type', 'Other Type');
         
         $form->addTextArea('notes');
         $form->setLabel('notes', 'Notes');
@@ -214,6 +211,7 @@ class InternshipUI implements UI
         javascript('/jquery/');
         javascript('/jquery_ui/');
         javascript('/modules/intern/copyAddress');
+        javascript('/modules/intern/formGoodies');
 
         return $form;
     }
@@ -281,16 +279,25 @@ class InternshipUI implements UI
         $vals['department'] = $i->department_id;
 
         // Other internship details
-        $form->setMatch('domestic', $i->domestic);
-        $form->setMatch('internat', $i->international);
-        $form->setMatch('paid', $i->paid);
-        $form->setMatch('unpaid', $i->unpaid);
-        $form->setMatch('stipend', $i->stipend);
+        if($i->domestic){
+            $form->setMatch('location', 'domestic');
+        }else{
+            $form->setMatch('location', 'internat');
+        }
+        if($i->paid){
+            $form->setMatch('payment', 'paid');
+            $form->setMatch('stipend', $i->stipend);
+        }else{
+            $form->setMatch('payment', 'unpaid');
+        }
         $form->setMatch('term', $i->term);
         $form->setMatch('internship_default_type', $i->internship);
         $form->setMatch('service_learning_type', $i->service_learn);
         $form->setMatch('independent_study_type', $i->independent_study);
         $form->setMatch('research_assist_type', $i->research_assist);
+        if($i->other_type != '' && !is_null($i->other_type)){
+            $form->setMatch('check_other_type', true);
+        }
   
         // Plug 
         $form->plugIn($vals);
