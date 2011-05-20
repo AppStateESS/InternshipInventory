@@ -219,7 +219,7 @@ class Internship extends Model
         $tags['ID'] = $this->id;
 
         $tags['EDIT'] = PHPWS_Text::moduleLink('Edit', 'intern', array('action' => 'edit_internship', 'id' => $this->id));
-        $tags['PDF'] = PHPWS_Text::moduleLink('PDF', 'intern', array('action' => 'pdf', 'id' => $this->id));
+        $tags['PDF'] = PHPWS_Text::moduleLink('Summary Report', 'intern', array('action' => 'pdf', 'id' => $this->id));
 
         // TODO: Finish off fields.
         return $tags;

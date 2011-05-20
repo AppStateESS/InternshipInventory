@@ -100,7 +100,7 @@ class Intern_SearchUI implements UI
             }
             // lol hacks
             javascript('/modules/intern/csv', 
-                       array('link' => PHPWS_Text::moduleLink('Download CSV', 'intern', array('action' => 'csv', 'ids' => $ids))));
+                       array('link' => PHPWS_Text::moduleLink('Download Spreadsheet', 'intern', array('action' => 'csv', 'ids' => $ids))));
         }
 
         return $result;
