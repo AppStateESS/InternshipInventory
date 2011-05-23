@@ -58,8 +58,12 @@ switch ($req) {
         exit;
         break;
     case 'search':
-        PHPWS_Core::initModClass('intern', 'UI/Intern_SearchUI.php');
-        $content = Intern_SearchUI::display();
+        PHPWS_Core::initModClass('intern', 'UI/SearchUI.php');
+        $content = SearchUI::display();
+        break;
+    case 'results':
+        PHPWS_Core::initModClass('intern', 'UI/ResultsUI.php');
+        $content = ResultsUI::display();
         break;
     case 'edit_departments':
         PHPWS_Core::initModClass('intern','Department.php');

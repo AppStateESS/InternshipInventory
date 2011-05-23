@@ -90,7 +90,7 @@ class Student extends Model
         $name = $this->first_name;
         // Middle name is not required. If no middle name as input then
         // this will not show the extra space for padding between middle and last name.
-        $name .= isset($this->middle_name) ? $this->middle_name.' ' : null;
+        $name .= isset($this->middle_name) ? ' '.$this->middle_name.' ' : null;
         $name .= $this->last_name;
         return $name;
     }
