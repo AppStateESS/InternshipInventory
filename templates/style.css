@@ -3,6 +3,13 @@
     font-weight:bold;
 }
 
+#link-list {
+    float: right;
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 10pt;
+}
+
 #menu {
     margin-left: auto;
     margin-right: auto;
