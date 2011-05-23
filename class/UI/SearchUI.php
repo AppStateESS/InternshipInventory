@@ -17,10 +17,6 @@ class SearchUI implements UI
         PHPWS_Core::initModClass('intern', 'Term.php');
         PHPWS_Core::initModClass('intern', 'Department.php');
 
-        $tpl = array();
-        $tpl['HOME_LINK'] = PHPWS_Text::moduleLink('Menu', 'intern');
-        $tpl['ADD_LINK'] = PHPWS_Text::moduleLink('Add Internship', 'intern', array('action' => 'edit_internship'));
-
         // Set up search fields
         $searchForm = new PHPWS_Form();
         $terms = Term::getTermsAssoc();
@@ -41,8 +37,6 @@ class SearchUI implements UI
         $searchForm->setLabel('name', "Name or Banner ID");
         $searchForm->setAction('index.php?module=intern&action=results');
         $searchForm->addSubmit('submit', 'Search');
-        $searchForm->mergeTemplate($tpl);
-
 
         // Javascript...
         javascript('/jquery/');

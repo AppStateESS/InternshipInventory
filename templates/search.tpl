@@ -1,4 +1,3 @@
-<div>{HOME_LINK} | {ADD_LINK}</div>
 <h1>Internship Search</h1>
 {START_FORM}
 <table id="name-term-dept-search">

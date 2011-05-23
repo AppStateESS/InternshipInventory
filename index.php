@@ -205,13 +205,19 @@ switch ($req) {
         Intern_Menu::showMenu();
         break;
 }
-// Show notifications, UI, and some styleee.
+
+
+/** 
+ * Plug content into TopUI. Show notifications. Add Style.
+ */
+PHPWS_Core::initModClass('intern', 'UI/TopUI.php');
 if(isset($content)){
     if($content === false){
         NQ::close();
         PHPWS_Core::reroute('index.php?module=intern');
     }
     Intern_NotifyUI::display();
+    $content = TopUI::plug($content);
     Layout::add($content);
  }
 Layout::addStyle('intern', 'style.css');
