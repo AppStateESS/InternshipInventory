@@ -1,7 +1,7 @@
 <?php
 
   /**
-   * Simplest class ever.
+   * Term...
    */
 PHPWS_Core::initModClass('intern', 'Model.php');
 class Term extends Model
@@ -18,6 +18,10 @@ class Term extends Model
         return array('Term' => Term::rawToRead($this->term, false));
     }
 
+    /**
+     * Get an associative array of every term
+     * in the database. Looks like: { raw_term => readable_string }
+     */
     public static function getTermsAssoc()
     {
         $db = self::getDb();
@@ -62,6 +66,126 @@ class Term extends Model
                 NQ::simple('intern', INTERN_WARNING, 'Term error: '.$t);
                 return "$year";
         }
+    }
+    
+    /**
+     * Figure out if it is time to add new terms to the database.
+     * Get lastest term. If it is NOT at least 3 ahead of NOW
+     * it's time to add new terms 
+     */
+    public static function isTimeToUpdate()
+    {
+        /* Get latest from DB */
+        $term = new Term();
+        $db = self::getDb();
+        $db->addOrder('term desc');
+        $result = $db->select();
+        
+        /* Just log if it's an error. User can resume their work.*/
+        if(PHPWS_Error::logIfError($result))
+            return null;// Be quiet.
+        /* 
+         * If there aren't at least three elements in the result return true.
+         * This will cause terms to be inserted.
+         */
+        if(sizeof($result) < 3)
+            return true;
+        
+        /* 
+         * If the CURRENT date/term is greater than the third to newest term/date
+         * in database then we need to create a new one. This will keep the intern
+         * module ahead by two terms. That may have been confusing but that's just
+         * how it works.
+         */
+        $now = time();
+        $currentTerm = self::timeToTerm($now);
+        $thirdLatest = $result[2];// Third element.
+
+        /* Check current vs third to latest. */
+        return $currentTerm >= $thirdLatest['term'];
+    }
+
+    /**
+     * Update term in database.
+     * The DB needs to be kept two terms ahead 
+     * of the current term. 
+     */
+    public static function doTermUpdate()
+    {
+        /* Keep inserting next term until there are currentTerm+3 in DB */
+        while(self::isTimeToUpdate()){
+            /* Insert new term adjacent to latest one in DB. */
+            $db = self::getDb();
+            $db->addOrder('term desc');
+            $result = $db->select('row');// Get first row (Max).
+
+            /* Just log if it's an error. User can resume their work.*/
+            if(PHPWS_Error::logIfError($result))
+                return null;// Be quiet.
+            
+            if(sizeof($result) == 0){
+                /* If there is nothing in database insert the current Term! */
+                $term = new Term();
+                $term->term = self::timeToTerm(time());
+                $term->save();
+            }else{
+                $termStr = strval($result['term']);
+                $year = substr($termStr, 0, 4);
+                $semester = substr($termStr, 4, 1);
+
+                /* Increment semester. This just flips back around to 1 if semester is 4. */
+                $semester = (intval($semester)%4)+1;
+
+                /* If new semester is '1' then it's a new year also! */
+                if($semester == 1){
+                    //Increment year.
+                    $year = intval($year)+1;
+                }
+
+                /* Create new term and save it */
+                $term = new Term();
+                $term->term = $year.$semester;
+                $term->save();
+            }
+        }
+    }
+
+    /**
+     * Given the time $time figure out what
+     * term it that time falls into.
+     *
+     * These ranges for terms are GUESSES.
+     * TODO: Might need to add some config
+     * view so admins can change them up. 
+     *
+     * Ex. April 9th, 2011 is in 20101 term.
+     * @param $time - unix time
+     * @return Integer value of term. (Ex. 20101)
+     */
+    private static function timeToTerm($time)
+    {
+        $time = getdate($time);
+        $term = $time['year'];
+        $m = $time['mon'];
+
+        /* Spring: Jan 1 -- April 30 */
+        if($m >= 1 && $m <= 4){
+            $term .= '1';
+        }
+        /* Summer 1: May 1 -- June 31 */
+        else if($m >= 5 && $m <= 6){
+            $term .= '2';
+        }
+        /* Summer 2: July 1 -- Aug 31 */
+        else if($m >= 7 && $m <= 8){
+            $term .= '3';
+        }
+        /* Fall:  Sept 1 -- Dec 31 */
+        else if($m >= 9 || $m <= 12){
+            $term .= '4';            
+        }
+
+        return intval($term);
     }
 }
 

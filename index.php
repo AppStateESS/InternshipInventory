@@ -22,6 +22,12 @@ $ie7 = "/MSIE [789]/";
 $ie_fail = "/MSIE/";
 
 PHPWS_Core::initModClass('intern', 'UI/Intern_NotifyUI.php');
+PHPWS_Core::initModClass('intern', 'Term.php');
+
+/* Check if it is time to insert more terms into DB */
+if(Term::isTimeToUpdate()){
+    Term::doTermUpdate();
+ }
 
 // Check that user has compat. browser
 if (preg_match($ie7,$browser)) {

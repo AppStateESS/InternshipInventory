@@ -1,5 +1,20 @@
 BEGIN;
 
+-- Defaults to not hidden.
+CREATE TABLE intern_major (
+       id INT NOT NULL,
+       name VARCHAR NOT NULL UNIQUE,
+       hidden SMALLINT NULL DEFAULT 0,
+       PRIMARY KEY(id)
+);
+-- Defaults to not hidden.
+CREATE TABLE intern_grad_prog (
+       id INT NOT NULL,
+       name VARCHAR NOT NULL UNIQUE,
+       hidden SMALLINT NULL DEFAULT 0,
+       PRIMARY KEY(id)
+);
+
 CREATE TABLE intern_student (
        id INT NOT NULL,
        banner INT NOT NULL UNIQUE,
@@ -97,21 +112,6 @@ CREATE TABLE intern_admin (
     PRIMARY KEY (id)
 );
 
--- Defaults to not hidden.
-CREATE TABLE intern_major (
-       id INT NOT NULL,
-       name VARCHAR NOT NULL UNIQUE,
-       hidden SMALLINT NULL DEFAULT 0,
-       PRIMARY KEY(id)
-);
--- Defaults to not hidden.
-CREATE TABLE intern_grad_prog (
-       id INT NOT NULL,
-       name VARCHAR NOT NULL UNIQUE,
-       hidden SMALLINT NULL DEFAULT 0,
-       PRIMARY KEY(id)
-);
-
 -- Add Departments
 INSERT INTO intern_department VALUES  (1, 'Accounting');
 INSERT INTO intern_department VALUES  (2, 'Anthropology');
@@ -153,23 +153,6 @@ INSERT INTO intern_department VALUES (37, 'Technology');
 INSERT INTO intern_department VALUES (38, 'Theatre and Dance');
 INSERT INTO intern_department VALUES (39, 'University College');
 -- End departments
-
--- Add some terms!
-INSERT INTO intern_term VALUES  (1, 20111);
-INSERT INTO intern_term VALUES  (2, 20112);
-INSERT INTO intern_term VALUES  (3, 20113);
-INSERT INTO intern_term VALUES  (4, 20114);
-
-INSERT INTO intern_term VALUES  (5, 20121);
-INSERT INTO intern_term VALUES  (6, 20122);
-INSERT INTO intern_term VALUES  (7, 20123);
-INSERT INTO intern_term VALUES  (8, 20124);
-
-INSERT INTO intern_term VALUES  (9, 20131);
-INSERT INTO intern_term VALUES (10, 20132);
-INSERT INTO intern_term VALUES (11, 20133);
-INSERT INTO intern_term VALUES (12, 20134);
--- End terms
 
 -- Add undergraduate majors
 INSERT INTO intern_major VALUES (1, 'Accounting');
@@ -334,9 +317,6 @@ INSERT INTO intern_grad_prog VALUES (59, 'Women’s Studies');
 -- Create and update sequences
 CREATE SEQUENCE intern_department_seq;
 SELECT SETVAL('intern_department_seq', MAX(id)) FROM intern_department;
-
-CREATE SEQUENCE intern_term_seq;
-SELECT SETVAL('intern_term_seq', MAX(id)) FROM intern_term;
 
 CREATE SEQUENCE intern_major_seq;
 SELECT SETVAL('intern_major_seq', MAX(id)) FROM intern_major;
