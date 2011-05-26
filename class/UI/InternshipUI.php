@@ -30,7 +30,7 @@ class InternshipUI implements UI
             try{
                 $internship = new Internship($_REQUEST['id']);
                 $form = self::getInternshipForm($internship);
-                $tpl['PDF'] = PHPWS_Text::moduleLink('Download PDF Report', 'intern', array('action' => 'pdf', 'id' => $internship->id));
+                $tpl['PDF'] = PHPWS_Text::moduleLink('Download Summary Report', 'intern', array('action' => 'pdf', 'id' => $internship->id));
                 self::plugInternship($form, $internship);
             }catch(Exception $e){
                 NQ::simple('intern', INTERN_ERROR, $e->getMessage());

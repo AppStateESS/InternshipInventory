@@ -1,24 +1,32 @@
 <h1>Internship Search</h1>
 {START_FORM}
-<table id="name-term-dept-search">
+
+<table>
   <tr>
-    <td colspan=2>
-      <span class="search-header">{NAME_LABEL}</span>
-      {NAME}
-      <a title="Reset search fields" id="reset-search">[reset]</a>
-    </td>
+    <td class="search-header">{NAME_LABEL}</td>
+    <td>{NAME}</td>
   </tr>
+
   <tr>
-    <td><span class="search-header">{TERM_SELECT_LABEL}</span></td>
-    <td><span class="search-header">{DEPT_LABEL}</span></td>
-  </tr>
-  <tr>
+    <td class="search-header">{TERM_SELECT_LABEL}</td>
     <td>{TERM_SELECT}</td>
+  </tr>
+
+  <tr>
+    <td class="search-header">{DEPT_LABEL}</td>
     <td>{DEPT}</td>
   </tr>
+
   <tr>
-    <td colspan="2">{SUBMIT}</td>
+    <td class="search-header">{MAJOR_SELECT_LABEL}</td>
+    <td>{MAJOR_SELECT}</td>
   </tr>
+
+  <tr>
+    <td colspan="2">{SUBMIT}<a title="Reset search fields" id="reset-search">[reset]</a></td>
+  </tr>
+
+</table>
 </table>
 {END_FORM}
 </div>

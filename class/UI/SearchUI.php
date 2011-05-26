@@ -20,7 +20,7 @@ class SearchUI implements UI
         // Set up search fields
         $searchForm = new PHPWS_Form();
         $terms = Term::getTermsAssoc();
-        $searchForm->addMultiple('term_select', $terms);
+        $searchForm->addSelect('term_select', $terms);
         $searchForm->setLabel('term_select', 'Term');
 
         // Deity can search for any department. Other users are restricted.
@@ -30,7 +30,7 @@ class SearchUI implements UI
             $depts = Department::getDepartmentsAssocForUsername(Current_User::getUsername());
         }
 
-        $searchForm->addMultiple('dept', $depts);
+        $searchForm->addSelect('dept', $depts);
         $searchForm->setLabel('dept', 'Department');
 
         $searchForm->addText('name');

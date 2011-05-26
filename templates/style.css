@@ -142,7 +142,6 @@
 }
 
 #reset-search {
-    float: right;
     font-weight: bold;
     font-size: 10pt;
     cursor: pointer;
@@ -157,6 +156,7 @@
 }
 
 .search-header {
+    text-align: right;
     font-weight: bold;
     font-size: 10pt;
 }

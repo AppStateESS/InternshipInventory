@@ -25,7 +25,7 @@ class Term extends Model
     public static function getTermsAssoc()
     {
         $db = self::getDb();
-        $db->addOrder('term');
+        $db->addOrder('term desc');
         $terms = $db->getObjects('Term');
         $readables = array();
 
@@ -34,7 +34,9 @@ class Term extends Model
             $readables[$t->term] = self::rawToRead($t->term);
         }
 
-        return $readables;
+        $readables = array_reverse($readables, true); // preserve keys.
+        $readables[-1] = 'None';
+        return array_reverse($readables, true);
     }
 
     /**

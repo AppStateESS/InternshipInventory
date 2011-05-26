@@ -7,6 +7,7 @@ CREATE TABLE intern_major (
        hidden SMALLINT NULL DEFAULT 0,
        PRIMARY KEY(id)
 );
+
 -- Defaults to not hidden.
 CREATE TABLE intern_grad_prog (
        id INT NOT NULL,
@@ -23,8 +24,8 @@ CREATE TABLE intern_student (
        last_name VARCHAR NOT NULL,
        phone VARCHAR NOT NULL,
        email VARCHAR NOT NULL,
-       ugrad_major INT REFERENCES intern_major(id),
-       grad_prog INT REFERENCES intern_grad_prog(id), 
+       ugrad_major INT NULL REFERENCES intern_major(id),
+       grad_prog INT NULL REFERENCES intern_grad_prog(id), 
        graduated INT NOT NULL,
        PRIMARY KEY(id)
 );
@@ -87,8 +88,8 @@ CREATE TABLE intern_internship (
        independent_study SMALLINT NOT NULL,
        research_assist SMALLINT NOT NULL,
        other_type TEXT,
-       credits INT ,
-       avg_hours_week INT ,
+       credits INT NULL,
+       avg_hours_week INT NULL,
        domestic SMALLINT NOT NULL, 
        international SMALLINT NOT NULL,
        paid SMALLINT NOT NULL,    
@@ -323,5 +324,13 @@ SELECT SETVAL('intern_major_seq', MAX(id)) FROM intern_major;
 
 CREATE SEQUENCE intern_grad_prog_seq;
 SELECT SETVAL('intern_grad_prog_seq', MAX(id)) FROM intern_grad_prog;
+
+CREATE SEQUENCE intern_student_seq;
+CREATE SEQUENCE intern_agency_seq;
+CREATE SEQUENCE intern_faculty_supervisor_seq;
+CREATE SEQUENCE intern_term_seq;
+CREATE SEQUENCE intern_internship_seq;
+CREATE SEQUENCE intern_document_seq;
+CREATE SEQUENCE intern_admin_seq;
 
 COMMIT;

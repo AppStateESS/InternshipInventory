@@ -49,7 +49,9 @@ class Department extends Model
         $db = self::getDb();
         $db->addOrder('name');
         $depts = $db->select('assoc');
-        return $depts;
+        $depts = array_reverse($depts, true); // preserve keys.
+        $depts[-1] = 'None';
+        return array_reverse($depts, true);
     }
 
     /**

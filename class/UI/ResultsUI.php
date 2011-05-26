@@ -26,17 +26,9 @@ class ResultsUI implements UI
          */
         if(isset($_REQUEST['dept'])){
             $dept = $_REQUEST['dept'];
-            /* Remove ID zero from dept search string */
-            $dept = preg_grep('/[^0]/', $dept);
-            if(empty($dept))
-                $dept = null;
         }
         if(isset($_REQUEST['term_select'])){
             $term = $_REQUEST['term_select'];
-            /* Remove ID zero from term search string */
-            $term = preg_grep('/[^0]/', $term);
-            if(empty($term))
-                $term = null;
         }
         if(isset($_REQUEST['name'])){
             $name = $_REQUEST['name'];
@@ -86,9 +78,9 @@ class ResultsUI implements UI
             $pager->addWhere('intern_admin.username', Current_User::getUsername());
 
         // Search by department, term, and name/banner.
-        if(!is_null($deptId) && $deptId != '')
+        if(!is_null($deptId) && $deptId != -1)
             $pager->addWhere('department_id', $deptId);
-        if(!is_null($term) && $term != ''){
+        if(!is_null($term) && $term != -1){
             $pager->addWhere('term', $term);
         }
         if(!is_null($name) && $name != ''){
