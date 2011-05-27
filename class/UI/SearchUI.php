@@ -18,6 +18,7 @@ class SearchUI implements UI
         PHPWS_Core::initModClass('intern', 'Department.php');
         PHPWS_Core::initModClass('intern', 'Major.php');
         PHPWS_Core::initModClass('intern', 'GradProgram.php');
+        PHPWS_Core::initModClass('intern', 'Internship.php');
 
         // Set up search fields
         $searchForm = new PHPWS_Form();
@@ -43,7 +44,11 @@ class SearchUI implements UI
         $grad = GradProgram::getGradProgsAssoc();
         $searchForm->addSelect('grad', $grad);
         $searchForm->setLabel('grad', 'Graduate Program');
-
+        
+        // Internship types.
+        $types = Internship::getTypesAssoc();
+        $searchForm->addCheckAssoc('type', $types);
+        
         $searchForm->addText('name');
         $searchForm->setLabel('name', "Name or Banner ID");
         $searchForm->setAction('index.php?module=intern&action=results');

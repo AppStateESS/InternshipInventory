@@ -22,6 +22,7 @@ class ResultsUI implements UI
         $name  = null;
         $major = null;
         $grad  = null;
+        $type  = null;
 
         /**
          * Check if any search fields are set.
@@ -36,6 +37,8 @@ class ResultsUI implements UI
             $major = $_REQUEST['major'];
         if(isset($_REQUEST['grad']))
             $grad = $_REQUEST['grad'];
+        if(isset($_REQUEST['type']))
+            $type = $_REQUEST['type'];
 
         /* Automatically open the row with the matching ID. */
         $o = -1;
@@ -44,7 +47,7 @@ class ResultsUI implements UI
         }
 
         /* Get Pager */
-        $pager = self::getPager($name, $dept, $term, $major, $grad);
+        $pager = self::getPager($name, $dept, $term, $major, $grad, $type);
         $result = $pager->get();
 
         /* Javascript */
@@ -70,7 +73,7 @@ class ResultsUI implements UI
     /**
      * Get the DBPager object. Search strings can be passed in too.
      */
-    private static function getPager($name=null, $deptId=null, $term=null, $major=null, $grad=null)
+    private static function getPager($name=null, $deptId=null, $term=null, $major=null, $grad=null, $type=null)
     {
         $pager = new DBPager('intern_internship', 'Internship');
         $pager->setModule('intern');
@@ -80,7 +83,7 @@ class ResultsUI implements UI
         if(!Current_User::isDeity())
             $pager->addWhere('intern_admin.username', Current_User::getUsername());
 
-        // Search by department, term, and name/banner.
+        /* Add Where clauses for each seach field */
         if(!is_null($deptId) && $deptId != -1)
             $pager->addWhere('department_id', $deptId);
         if(!is_null($term) && $term != -1){
@@ -97,6 +100,33 @@ class ResultsUI implements UI
         }
         if(!is_null($grad) && $grad != -1){
             $pager->addWhere('intern_student.grad_prog', $grad);
+        }
+        if(!is_null($type)){
+            foreach($type as $t){
+                switch($t){
+                    case 'internship':
+                        $pager->addWhere('internship', 1);
+                        break;
+                    case 'service_learn':
+                        $pager->addWhere('service_learn', 1);
+                        break;
+                    case 'independent_study':
+                        $pager->addWhere('independent_study', 1);
+                        break;
+                    case 'research_assistant':
+                        $pager->addWhere('research_assist', 1);
+                        break;
+                    case 'student_teaching':
+                        $pager->addWhere('student_teaching', 1);
+                        break;
+                    case 'clinical_practica':
+                        $pager->addWhere('clinical_practica', 1);
+                        break;
+                    case 'special_topics':
+                        $pager->addWhere('special_topics', 1);
+                        break;
+                }
+            }
         }
 
         $pager->setTemplate('results.tpl');

@@ -87,6 +87,9 @@ CREATE TABLE intern_internship (
        service_learn SMALLINT NOT NULL,
        independent_study SMALLINT NOT NULL,
        research_assist SMALLINT NOT NULL,
+       student_teaching SMALLINT NOT NULL,
+       clinical_practica SMALLINT NOT NULL,
+       special_topic SMALLINT NOT NULL,
        other_type TEXT,
        credits INT NULL,
        avg_hours_week INT NULL,
@@ -158,12 +161,12 @@ INSERT INTO intern_department VALUES (39, 'University College');
 -- Add undergraduate majors
 INSERT INTO intern_major VALUES (1, 'Accounting');
 INSERT INTO intern_major VALUES (2, 'Actuarial Sciences');
-INSERT INTO intern_major VALUES (3, 'Anthropology – Applied');
-INSERT INTO intern_major VALUES (4, 'Anthropology – Archeology');
-INSERT INTO intern_major VALUES (5, 'Anthropology – Biological');
-INSERT INTO intern_major VALUES (6, 'Anthropology – General');
-INSERT INTO intern_major VALUES (7, 'Anthropology – Multidisciplinary');
-INSERT INTO intern_major VALUES (8, 'Anthropology – Sustainable Development');
+INSERT INTO intern_major VALUES (3, 'Anthropology - Applied');
+INSERT INTO intern_major VALUES (4, 'Anthropology - Archeology');
+INSERT INTO intern_major VALUES (5, 'Anthropology - Biological');
+INSERT INTO intern_major VALUES (6, 'Anthropology - General');
+INSERT INTO intern_major VALUES (7, 'Anthropology - Multidisciplinary');
+INSERT INTO intern_major VALUES (8, 'Anthropology - Sustainable Development');
 INSERT INTO intern_major VALUES (9, 'Appalachian Studies');
 INSERT INTO intern_major VALUES (10, 'Apparel & Textiles');
 INSERT INTO intern_major VALUES (11, 'Appropriate Technology');
@@ -172,21 +175,21 @@ INSERT INTO intern_major VALUES (13, 'Art Education K-12');
 INSERT INTO intern_major VALUES (14, 'Art Managemen');
 INSERT INTO intern_major VALUES (15, 'Athletic Training');
 INSERT INTO intern_major VALUES (16, 'Biology');
-INSERT INTO intern_major VALUES (17, 'Biology – Cell/Molecular');
-INSERT INTO intern_major VALUES (18, 'Biology – Ecology, Evolution and Environmental');
-INSERT INTO intern_major VALUES (19, 'Biology – Secondary Education');
+INSERT INTO intern_major VALUES (17, 'Biology - Cell/Molecular');
+INSERT INTO intern_major VALUES (18, 'Biology - Ecology, Evolution and Environmental');
+INSERT INTO intern_major VALUES (19, 'Biology - Secondary Education');
 INSERT INTO intern_major VALUES (20, 'Building Science');
 INSERT INTO intern_major VALUES (21, 'Business Education');
 INSERT INTO intern_major VALUES (22, 'Chemistry');
 INSERT INTO intern_major VALUES (23, 'Chemistry Secondary Education');
 INSERT INTO intern_major VALUES (24, 'Child Development');
-INSERT INTO intern_major VALUES (25, 'Child Development – Birth – K');
+INSERT INTO intern_major VALUES (25, 'Child Development - Birth - K');
 INSERT INTO intern_major VALUES (26, 'Communication Disorders');
 INSERT INTO intern_major VALUES (27, 'Communication Studies');
-INSERT INTO intern_major VALUES (28, 'Communication – Advertising');
-INSERT INTO intern_major VALUES (29, 'Communication – Electronic Media, Broadcasting');
-INSERT INTO intern_major VALUES (30, 'Communication – Journalism');
-INSERT INTO intern_major VALUES (31, 'Communication – Public Relations');
+INSERT INTO intern_major VALUES (28, 'Communication - Advertising');
+INSERT INTO intern_major VALUES (29, 'Communication - Electronic Media, Broadcasting');
+INSERT INTO intern_major VALUES (30, 'Communication - Journalism');
+INSERT INTO intern_major VALUES (31, 'Communication - Public Relations');
 INSERT INTO intern_major VALUES (32, 'Community and Regional Planning');
 INSERT INTO intern_major VALUES (33, 'Computer Information Systems');
 INSERT INTO intern_major VALUES (34, 'Computer Science');
@@ -198,10 +201,10 @@ INSERT INTO intern_major VALUES (39, 'English');
 INSERT INTO intern_major VALUES (40, 'English, Secondary Education');
 INSERT INTO intern_major VALUES (41, 'Environmental Science');
 INSERT INTO intern_major VALUES (42, 'Exercise Science');
-INSERT INTO intern_major VALUES (43, 'Family and Consumer Sciences – Secondary Education');
+INSERT INTO intern_major VALUES (43, 'Family and Consumer Sciences - Secondary Education');
 INSERT INTO intern_major VALUES (44, 'Finance and Banking');
 INSERT INTO intern_major VALUES (45, 'French and Francophone Studies');
-INSERT INTO intern_major VALUES (46, 'French and Francophone Studies – Education');
+INSERT INTO intern_major VALUES (46, 'French and Francophone Studies - Education');
 INSERT INTO intern_major VALUES (47, 'Geography');
 INSERT INTO intern_major VALUES (48, 'Geology');
 INSERT INTO intern_major VALUES (49, 'Geology, Secondary Education');
@@ -209,19 +212,19 @@ INSERT INTO intern_major VALUES (50, 'Global Studies');
 INSERT INTO intern_major VALUES (51, 'Graphic Design');
 INSERT INTO intern_major VALUES (52, 'Graphic Arts and Imaging Technology');
 INSERT INTO intern_major VALUES (53, 'Health Care Management');
-INSERT INTO intern_major VALUES (54, 'Health Education – Secondary Education');
+INSERT INTO intern_major VALUES (54, 'Health Education - Secondary Education');
 INSERT INTO intern_major VALUES (55, 'Health Promotion');
 INSERT INTO intern_major VALUES (56, 'History');
-INSERT INTO intern_major VALUES (57, 'History – Social Studies Education');
+INSERT INTO intern_major VALUES (57, 'History - Social Studies Education');
 INSERT INTO intern_major VALUES (58, 'Hospitality and Tourism Management');
 INSERT INTO intern_major VALUES (59, 'Industrial Design');
-INSERT INTO intern_major VALUES (60, 'Interdisciplinary Studies Program – IDS');
+INSERT INTO intern_major VALUES (60, 'Interdisciplinary Studies Program - IDS');
 INSERT INTO intern_major VALUES (61, 'Interior Design');
 INSERT INTO intern_major VALUES (62, 'International Business');
 INSERT INTO intern_major VALUES (63, 'Management');
 INSERT INTO intern_major VALUES (64, 'Marketing');
 INSERT INTO intern_major VALUES (65, 'Mathematics');
-INSERT INTO intern_major VALUES (66, 'Mathematics – Secondary Education');
+INSERT INTO intern_major VALUES (66, 'Mathematics - Secondary Education');
 INSERT INTO intern_major VALUES (67, 'Middle Grades Education');
 INSERT INTO intern_major VALUES (68, 'Music Education');
 INSERT INTO intern_major VALUES (69, 'Music Industry Studies');
@@ -233,7 +236,7 @@ INSERT INTO intern_major VALUES (74, 'Nutrition and Foods: Food Systems Manageme
 INSERT INTO intern_major VALUES (75, 'Philosophy');
 INSERT INTO intern_major VALUES (76, 'Physical Education Teacher Education K-12');
 INSERT INTO intern_major VALUES (77, 'Physics');
-INSERT INTO intern_major VALUES (78, 'Physics – Secondary Education');
+INSERT INTO intern_major VALUES (78, 'Physics - Secondary Education');
 INSERT INTO intern_major VALUES (79, 'Political Science');
 INSERT INTO intern_major VALUES (80, 'Psychology');
 INSERT INTO intern_major VALUES (81, 'Recreation Management');
@@ -246,11 +249,11 @@ INSERT INTO intern_major VALUES (87, 'Spanish Education');
 INSERT INTO intern_major VALUES (88, 'Statistics');
 INSERT INTO intern_major VALUES (89, 'Studio Art');
 INSERT INTO intern_major VALUES (90, 'Sustainable Development');
-INSERT INTO intern_major VALUES (91, 'Teaching Theatre Arts – K-12');
+INSERT INTO intern_major VALUES (91, 'Teaching Theatre Arts - K-12');
 INSERT INTO intern_major VALUES (92, 'Technical Photography');
 INSERT INTO intern_major VALUES (93, 'Technical Education');
 INSERT INTO intern_major VALUES (94, 'Theatre Arts');
-INSERT INTO intern_major VALUES (95, 'Women’s Studies');
+INSERT INTO intern_major VALUES (95, 'Women''s Studies');
 -- End majors
 
 -- Add Graduate Programs
@@ -258,7 +261,7 @@ INSERT INTO intern_grad_prog VALUES (1, 'Accounting');
 INSERT INTO intern_grad_prog VALUES (2, 'Appalachian Studies');
 INSERT INTO intern_grad_prog VALUES (3, 'Biology');
 INSERT INTO intern_grad_prog VALUES (4, 'Business Administration');
-INSERT INTO intern_grad_prog VALUES (5, 'Child Development – Birth through K');
+INSERT INTO intern_grad_prog VALUES (5, 'Child Development - Birth through K');
 INSERT INTO intern_grad_prog VALUES (6, 'Clinical Mental Health Counseling');
 INSERT INTO intern_grad_prog VALUES (7, 'Addictions Counseling');
 INSERT INTO intern_grad_prog VALUES (8, 'Expressive Arts Therapy');
@@ -268,14 +271,14 @@ INSERT INTO intern_grad_prog VALUES (11, 'Criminal Justice');
 INSERT INTO intern_grad_prog VALUES (12, 'Curriculum Specialist');
 INSERT INTO intern_grad_prog VALUES (13, 'Educational Leadership');
 INSERT INTO intern_grad_prog VALUES (14, 'Educational Media');
-INSERT INTO intern_grad_prog VALUES (15, 'Education Media – Web-based Distance Learning');
+INSERT INTO intern_grad_prog VALUES (15, 'Education Media - Web-based Distance Learning');
 INSERT INTO intern_grad_prog VALUES (16, 'Media Literacy');
 INSERT INTO intern_grad_prog VALUES (17, 'Elementary Education');
 INSERT INTO intern_grad_prog VALUES (18, 'English');
 INSERT INTO intern_grad_prog VALUES (19, 'English Education');
 INSERT INTO intern_grad_prog VALUES (20, 'Rhetoric and Composition');
 INSERT INTO intern_grad_prog VALUES (21, 'Exercise Science');
-INSERT INTO intern_grad_prog VALUES (22, 'Family & Consumer Sciences – Education');
+INSERT INTO intern_grad_prog VALUES (22, 'Family & Consumer Sciences - Education');
 INSERT INTO intern_grad_prog VALUES (23, 'Geography');
 INSERT INTO intern_grad_prog VALUES (24, 'GIS Science');
 INSERT INTO intern_grad_prog VALUES (25, 'Planning');
@@ -312,7 +315,7 @@ INSERT INTO intern_grad_prog VALUES (55, 'Sociology');
 INSERT INTO intern_grad_prog VALUES (56, 'Special Education');
 INSERT INTO intern_grad_prog VALUES (57, 'Speech Language Pathology');
 INSERT INTO intern_grad_prog VALUES (58, 'Technology');
-INSERT INTO intern_grad_prog VALUES (59, 'Women’s Studies');
+INSERT INTO intern_grad_prog VALUES (59, 'Women''s Studies');
 -- End Grad. Programs
 
 -- Create and update sequences

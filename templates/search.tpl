@@ -26,6 +26,19 @@
     <td class="search-header">{GRAD_LABEL}</td>
     <td>{GRAD}</td>
   </tr>
+  
+  <tr>
+    <td class="search-header">Internship Type</td>
+    <td>
+      {TYPE_1}{TYPE_1_LABEL}<br/>
+      {TYPE_2}{TYPE_2_LABEL}<br/>
+      {TYPE_3}{TYPE_3_LABEL}<br/>
+      {TYPE_4}{TYPE_4_LABEL}<br/>
+      {TYPE_5}{TYPE_5_LABEL}<br/>
+      {TYPE_6}{TYPE_6_LABEL}<br/>
+      {TYPE_7}{TYPE_7_LABEL}<br/>
+    </td>
+  </tr>
 
   <tr>
     <td colspan="2">{SUBMIT} <input type="button" title="Reset search fields" name="reset" value="Clear Fields"/></td>

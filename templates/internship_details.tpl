@@ -20,27 +20,14 @@
     </td>
   </tr>
   <!-- END student -->
+
   <!-- BEGIN internship -->
   <tr>
-    <th colspan="6" class="detail-header">Internship Type</th>
+    <th colspan="6" class="detail-header">Internship Type[s]</th>
   </tr>
   <tr>
-    <td>
-      <b>Default Internship:</b> {internship}
-    </td>
-    <td>
-      <b>Service Learning:</b> {service_learning}
-    </td>
-    <td>
-      <b>Independent Study:</b> {independent_study}
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>Research Assistant:</b> {research_assist}
-    </td>
-    <td>
-      <b>Other type:</b> {other_type}
+    <td colspan="2">
+      {internship}
     </td>
   </tr>
   <!-- END internship -->

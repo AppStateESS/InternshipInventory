@@ -31,8 +31,11 @@ class Internship extends Model
     public $service_learn;
     public $independent_study;
     public $research_assist;
+    public $student_teaching;
+    public $clinical_practica;
+    public $special_topics;
     public $other_type;
-    
+
     /**
      * @Override Model::getDb
      */
@@ -108,6 +111,15 @@ class Internship extends Model
         }
         if($this->research_assist == 1){
             $types[] = 'Research Assistant';
+        }
+        if($this->student_teaching == 1){
+            $types[] = 'Student Teaching';
+        }
+        if($this->clinical_practica == 1){
+            $types[] = 'Clinical Practica';
+        }
+        if($this->special_topics == 1){
+            $types[] = 'Special Topics';
         }
         if($this->other_type != '' && $this->other_type != null){
             $types[] = $this->other_type;
@@ -223,6 +235,20 @@ class Internship extends Model
 
         // TODO: Finish off fields.
         return $tags;
+    }
+
+    /**
+     * Get internship types in an associative array.
+     */
+    public static function getTypesAssoc()
+    {
+        return array('internship' => 'Internship',
+                     'service_learn' => 'Service Learning',
+                     'independent_study' => 'Independent Study',
+                     'research_assistant' => 'Research Assistant',
+                     'student_teaching' => 'Student Teaching',
+                     'clinical_practica' => 'Clinical Practica In Health Fields',
+                     'special_topics' => 'Special Topics');
     }
 
     /**
