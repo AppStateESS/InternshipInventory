@@ -23,6 +23,7 @@ class ResultsUI implements UI
         $major = null;
         $grad  = null;
         $type  = null;
+        $loc   = null;
 
         /**
          * Check if any search fields are set.
@@ -39,6 +40,8 @@ class ResultsUI implements UI
             $grad = $_REQUEST['grad'];
         if(isset($_REQUEST['type']))
             $type = $_REQUEST['type'];
+        if(isset($_REQUEST['loc']))
+            $loc = $_REQUEST['loc'];
 
         /* Automatically open the row with the matching ID. */
         $o = -1;
@@ -47,7 +50,7 @@ class ResultsUI implements UI
         }
 
         /* Get Pager */
-        $pager = self::getPager($name, $dept, $term, $major, $grad, $type);
+        $pager = self::getPager($name, $dept, $term, $major, $grad, $type, $loc);
         $result = $pager->get();
 
         /* Javascript */
@@ -73,7 +76,9 @@ class ResultsUI implements UI
     /**
      * Get the DBPager object. Search strings can be passed in too.
      */
-    private static function getPager($name=null, $deptId=null, $term=null, $major=null, $grad=null, $type=null)
+    private static function getPager($name=null, $deptId=null, $term=null,
+                                     $major=null, $grad=null, $type=null,
+                                     $loc=null)
     {
         $pager = new DBPager('intern_internship', 'Internship');
         $pager->setModule('intern');
@@ -127,6 +132,12 @@ class ResultsUI implements UI
                         break;
                 }
             }
+        }// End type
+        if(!is_null($loc)){
+            if($loc == 'domestic')
+                $pager->addWhere('domestic', 1);
+            else if($loc == 'internat')
+                $pager->addWhere('international', 1);
         }
 
         $pager->setTemplate('results.tpl');

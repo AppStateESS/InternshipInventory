@@ -39,7 +39,13 @@
       {TYPE_7}{TYPE_7_LABEL}<br/>
     </td>
   </tr>
-
+  <tr>
+    <td class="search-header">Location</td>
+    <td>
+      {LOC_1}{LOC_1_LABEL}<br/>
+      {LOC_2}{LOC_2_LABEL}<br/>
+    </td>
+  </tr>
   <tr>
     <td colspan="2">{SUBMIT} <input type="button" title="Reset search fields" name="reset" value="Clear Fields"/></td>
   </tr>
