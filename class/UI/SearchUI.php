@@ -16,6 +16,8 @@ class SearchUI implements UI
     {
         PHPWS_Core::initModClass('intern', 'Term.php');
         PHPWS_Core::initModClass('intern', 'Department.php');
+        PHPWS_Core::initModClass('intern', 'Major.php');
+        PHPWS_Core::initModClass('intern', 'GradProgram.php');
 
         // Set up search fields
         $searchForm = new PHPWS_Form();
@@ -29,9 +31,18 @@ class SearchUI implements UI
         }else{
             $depts = Department::getDepartmentsAssocForUsername(Current_User::getUsername());
         }
-
         $searchForm->addSelect('dept', $depts);
         $searchForm->setLabel('dept', 'Department');
+        
+        // Major
+        $majors = Major::getMajorsAssoc();
+        $searchForm->addSelect('major', $majors);
+        $searchForm->setLabel('major', 'Major');
+        
+        // Grad. Program
+        $grad = GradProgram::getGradProgsAssoc();
+        $searchForm->addSelect('grad', $grad);
+        $searchForm->setLabel('grad', 'Graduate Program');
 
         $searchForm->addText('name');
         $searchForm->setLabel('name', "Name or Banner ID");

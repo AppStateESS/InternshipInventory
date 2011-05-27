@@ -16,7 +16,7 @@
       <b>Graduate Program:</b> {grad_prog}
     </td>
     <td>
-      <b>Undergraduate Major:</b> {ugrad_major}
+      <b>Undergraduate Major:</b> {major}
     </td>
   </tr>
   <!-- END student -->

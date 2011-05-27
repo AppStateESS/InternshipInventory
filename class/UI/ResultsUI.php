@@ -17,22 +17,25 @@ class ResultsUI implements UI
         PHPWS_Core::initCoreClass('DBPager.php');
         PHPWS_Core::initModClass('intern', 'Internship.php');
 
-        $dept = null;
-        $term = null;
-        $name = null;
+        $dept  = null;
+        $term  = null;
+        $name  = null;
+        $major = null;
+        $grad  = null;
 
         /**
          * Check if any search fields are set.
          */
-        if(isset($_REQUEST['dept'])){
+        if(isset($_REQUEST['dept']))
             $dept = $_REQUEST['dept'];
-        }
-        if(isset($_REQUEST['term_select'])){
+        if(isset($_REQUEST['term_select']))
             $term = $_REQUEST['term_select'];
-        }
-        if(isset($_REQUEST['name'])){
+        if(isset($_REQUEST['name']))
             $name = $_REQUEST['name'];
-        }
+        if(isset($_REQUEST['major']))
+            $major = $_REQUEST['major'];
+        if(isset($_REQUEST['grad']))
+            $grad = $_REQUEST['grad'];
 
         /* Automatically open the row with the matching ID. */
         $o = -1;
@@ -41,7 +44,7 @@ class ResultsUI implements UI
         }
 
         /* Get Pager */
-        $pager = self::getPager($name, $dept, $term);
+        $pager = self::getPager($name, $dept, $term, $major, $grad);
         $result = $pager->get();
 
         /* Javascript */
@@ -67,7 +70,7 @@ class ResultsUI implements UI
     /**
      * Get the DBPager object. Search strings can be passed in too.
      */
-    private static function getPager($name=null, $deptId=null, $term=null)
+    private static function getPager($name=null, $deptId=null, $term=null, $major=null, $grad=null)
     {
         $pager = new DBPager('intern_internship', 'Internship');
         $pager->setModule('intern');
@@ -89,7 +92,13 @@ class ResultsUI implements UI
             $pager->addWhere('intern_student.last_name', "%$name%", 'ILIKE', 'OR', 'namez');
             $pager->addWhere('intern_student.banner', "%$name%", 'ILIKE', 'OR', 'namez');
         }
-            
+        if(!is_null($major) && $major != -1){
+            $pager->addWhere('intern_student.ugrad_major', $major);
+        }
+        if(!is_null($grad) && $grad != -1){
+            $pager->addWhere('intern_student.grad_prog', $grad);
+        }
+
         $pager->setTemplate('results.tpl');
         $pager->addRowTags('getRowTags');
         $pager->setEmptyMessage('No Results');

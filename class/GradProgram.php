@@ -69,9 +69,10 @@ class GradProgram extends Model
     }
 
     /**
-     * Return an associative array {id => Grad. Prog. name } for all grad programs in DB.
      * Return an associative array {id => Grad. Prog. name } for all programs in DB
-     * that aren't hidden. Always show the program with id $except.
+     * that aren't hidden. Always show the program with id $except. The parameter 
+     * is used when viewing an internship that has a program that was hidden.
+     * This will cause the program to still be shown in the drop down list.
      */
     public static function getGradProgsAssoc($except=null)
     {

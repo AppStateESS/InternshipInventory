@@ -25,6 +25,8 @@ class InternshipDetailsUI implements UI
         // Load internship.
         $i = new Internship($_REQUEST['id']);
         $s = $i->getStudent();
+        $m = $s->getUgradMajor();
+        $g = $s->getGradProgram();
         $a = $i->getAgency();
         $f = $i->getFacultySupervisor();
         $d = $i->getDepartment();
@@ -36,6 +38,8 @@ class InternshipDetailsUI implements UI
                                      'research_assist' => $i->research_assist==1 ? 'Yes' : 'No',
                                      'other_type' => $i->other_type);
         $tpl['student'][] = get_object_vars($s);
+        $tpl['student'][0]['major'] = $m->getName();
+        $tpl['student'][0]['grad_prog'] = $g->getName();
         $tpl['agency'][] = get_object_vars($a);
         $tpl['faculty'][] = get_object_vars($f);
         $tpl['department'][] = get_object_vars($d);
