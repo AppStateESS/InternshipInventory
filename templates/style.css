@@ -155,6 +155,11 @@
     font-size: 10pt;
 }
 
+.disabled-button {
+    color: silver;
+    border: 1px solid silver;
+}
+
 /* Overriding default formatting of asterisk 
    for required fields in Form class */
 .required-input {

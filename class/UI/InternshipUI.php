@@ -23,6 +23,8 @@ class InternshipUI implements UI
     public static function display()
     {
         PHPWS_Core::initModClass('intern', 'Internship.php');
+        PHPWS_Core::initModClass('intern', 'Intern_Document.php');
+        PHPWS_Core::initModClass('intern', 'Intern_Folder.php');
 
         $tpl = array();
 
@@ -32,28 +34,45 @@ class InternshipUI implements UI
                 $form = self::getInternshipForm($internship);
                 $tpl['PDF'] = PHPWS_Text::moduleLink('Download Summary Report', 'intern', array('action' => 'pdf', 'id' => $internship->id));
                 self::plugInternship($form, $internship);
+                /* Plug in document list */
+                $docs = $internship->getDocuments();
+                if(!is_null($docs)){
+                    foreach($docs as $doc){
+                        $tpl['docs'][] = array('DOWNLOAD' => $doc->getDownloadLink('blah'),
+                                               'DELETE'   => $doc->getDeleteLink());
+                    }
+                }
+                $folder = new Intern_Folder(Intern_Document::getFolderId());
+                $tpl['UPLOAD_DOC'] = $folder->documentUpload($internship->id);
             }catch(Exception $e){
                 NQ::simple('intern', INTERN_ERROR, $e->getMessage());
             }
         }else{
+            /* Show form with empty fields. */
             $form = self::getInternshipForm();
+            // Show a disabled button in document list if we are adding an internship.
+            $tpl['UPLOAD_DOC'] = "<input title='Disabled' type='button' disabled='disabled' class='disabled-button' value='Add Document'/>";
         }
-        // If 'missing' is set then we have been redirected 
-        // back to the form because the user didn't type in something and
-        // somehow got past the javascript.
+        /*
+         * If 'missing' is set then we have been redirected 
+         * back to the form because the user didn't type in something and
+         * somehow got past the javascript.
+         */
         if(isset($_REQUEST['missing'])){
             $missing = explode(' ', $_REQUEST['missing']);
-            // Intersect with the required fields array so we're not json encoding
-            // any funny stuff.
+            /* Intersect with the required fields array so we're not json encoding any funny stuff. */
+            
             $missing = array_intersect(self::$requiredFields, $missing);
             javascript('/modules/intern/missing', array('MISSING' => json_encode($missing)));
-            // Set classes on field we are missing. Do this in PHP cuz the user might 
-            // have JS disabled...don't know why they would but just in case.
+            /*
+             * Set classes on field we are missing. Do this in PHP cuz the user might 
+             * have JS disabled...don't know why they would but just in case.
+             */
             foreach($missing as $m){
                 $form->setClass($m, 'missing');
             }
             
-            // Plug old values back into form fields. 
+            /* Plug old values back into form fields. */
             $form->plugIn($_GET);
         }
 
@@ -182,18 +201,27 @@ class InternshipUI implements UI
         $form->setLabel('avg_hours_week', 'Average Hours per Week');
         $loc = array('domestic' => 'Domestic', 'internat' => 'International');
         $form->addRadioAssoc('location', $loc);
+        $form->setMatch('location', 'domestic');// Default to domestic
         $pay = array('unpaid' => 'Unpaid', 'paid' => 'Paid');
         $form->addRadioAssoc('payment', $pay);
+        $form->setMatch('payment', 'unpaid');// Default to unpaid
         $form->addCheck('stipend');
         $form->setLabel('stipend', 'Stipend');
         $form->addCheck('internship_default_type');
         $form->setLabel('internship_default_type', 'Internship');
+        $form->setMatch('internship_default_type', true);// Internship is checked by default
         $form->addCheck('service_learning_type');
         $form->setLabel('service_learning_type', 'Service Learning');
         $form->addCheck('independent_study_type');
         $form->setLabel('independent_study_type', 'Independent Study');
         $form->addCheck('research_assist_type');
         $form->setLabel('research_assist_type', 'Research Assistant');
+        $form->addCheck('student_teaching_type');
+        $form->setLabel('student_teaching_type', 'Student Teaching');
+        $form->addCheck('clinical_practica_type');
+        $form->setLabel('clinical_practica_type', 'Clinical Practica');
+        $form->addCheck('special_topics_type');
+        $form->setLabel('special_topics_type', 'Special Topics');
         $form->addCheck('check_other_type');
         $form->addText('other_type');
         $form->setLabel('other_type', 'Other Type');
@@ -219,12 +247,14 @@ class InternshipUI implements UI
      */
     private static function plugInternship(PHPWS_Form $form, Internship $i)
     {
+
         $vals = array();
 
         $s = $i->getStudent();
         $a = $i->getAgency();
         $f = $i->getFacultySupervisor();
         $d = $i->getDepartment();
+
 
         // Student
         $form->addHidden('student_id', $s->id);
@@ -264,6 +294,7 @@ class InternshipUI implements UI
         $vals['supervisor_email'] = $f->email;
         $vals['supervisor_phone'] = $f->phone;
 
+
         // Internship
         $form->addHidden('internship_id', $i->id);
         $vals['start_date'] = date('m/d/Y', $i->start_date);
@@ -293,6 +324,9 @@ class InternshipUI implements UI
         $form->setMatch('service_learning_type', $i->service_learn);
         $form->setMatch('independent_study_type', $i->independent_study);
         $form->setMatch('research_assist_type', $i->research_assist);
+        $form->setMatch('student_teaching_type', $i->student_teaching);
+        $form->setMatch('clinical_practica_type', $i->clinical_practica);
+        $form->setMatch('special_topics_type', $i->special_topics);
         if($i->other_type != '' && !is_null($i->other_type)){
             $form->setMatch('check_other_type', true);
         }

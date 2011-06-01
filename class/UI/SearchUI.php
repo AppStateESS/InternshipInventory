@@ -22,6 +22,8 @@ class SearchUI implements UI
 
         // Set up search fields
         $searchForm = new PHPWS_Form();
+        $searchForm->setMethod('get');
+        $searchForm->addHidden('action', 'results');
         $terms = Term::getTermsAssoc();
         $searchForm->addSelect('term_select', $terms);
         $searchForm->setLabel('term_select', 'Term');
@@ -56,7 +58,6 @@ class SearchUI implements UI
         
         $searchForm->addText('name');
         $searchForm->setLabel('name', "Name or Banner ID");
-        $searchForm->setAction('index.php?module=intern&action=results');
         $searchForm->addSubmit('submit', 'Search');
 
         // Javascript...

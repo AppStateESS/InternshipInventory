@@ -70,6 +70,9 @@ class Internship extends Model
         $i['Service Learning']   = $this->service_learn==1 ? 'Yes' : 'No';
         $i['Independent Study']  = $this->independent_study==1 ? 'Yes' : 'No';
         $i['Research Assistant'] = $this->research_assist==1 ? 'Yes' : 'No';
+        $i['Student Teaching']   = $this->student_teaching==1 ? 'Yes' : 'No';
+        $i['Clinical Practica']  = $this->clinical_practica==1 ? 'Yes' : 'No';
+        $i['Special Topics']     = $this->special_topics==1 ? 'Yes' : 'No';
         $i['Other Type']         = $this->other_type;
         $i['Notes']              = $this->notes;
         // Merge data from other objects.
@@ -334,10 +337,13 @@ class Internship extends Model
         $student->service_learn = isset($_REQUEST['service_learning_type']);
         $studnet->independent_study = isset($_REQUEST['independent_study_type']);
         $student->research_assist   = isset($_REQUEST['research_assistant_type']);
-        $studnet->other_type = empty($_REQUEST['other_type']) ? null : $_REQUEST['other_type'];
-        $student->grad_prog = $_REQUEST['grad_prog'] == -1 ? null : $_REQUEST['grad_prog'];
+        $student->student_teaching  = isset($_REQUEST['student_teaching_type']);
+        $student->clinical_practica = isset($_REQUEST['clinical_practica_type']);
+        $student->special_topics    = isset($_REQUEST['special_topics_type']);
+        $studnet->other_type  = empty($_REQUEST['other_type']) ? null : $_REQUEST['other_type'];
+        $student->grad_prog   = $_REQUEST['grad_prog'] == -1 ? null : $_REQUEST['grad_prog'];
         $student->ugrad_major = $_REQUEST['ugrad_major'] == -1 ? null : $_REQUEST['ugrad_major'];
-        $student->graduated = isset($_REQUEST['graduated']);
+        $student->graduated   = isset($_REQUEST['graduated']);
         try{
             $studentId = $student->save();
         }catch(Exception $e){
@@ -439,6 +445,9 @@ class Internship extends Model
         $i->service_learn = isset($_REQUEST['service_learning_type']);
         $i->independent_study = isset($_REQUEST['independent_study_type']);
         $i->research_assist = isset($_REQUEST['research_assist_type']);
+        $i->student_teaching = isset($_REQUEST['student_teaching_type']);
+        $i->clinical_practica = isset($_REQUEST['clinical_practica_type']);
+        $i->special_topics = isset($_REQUEST['special_topics_type']);
         $i->other_type =  isset($_REQUEST['check_other_type']) ? $_REQUEST['other_type'] : null;
         $i->notes = $_REQUEST['notes'];
 
@@ -473,9 +482,16 @@ class Internship extends Model
         $vals = null;
 
         foreach(InternshipUI::$requiredFields as $field){
+            /* If not set or is empty (For text fields) */
             if(!isset($_REQUEST[$field]) || $_REQUEST[$field] == '' ){
                 $vals[] = $field;
             }
+        }
+
+        /* Required select boxes should not equal -1 */
+        if(!isset($_REQUEST['department']) ||
+           $_REQUEST['department'] == -1){
+            $vals[] = 'department';
         }
 
         return $vals;

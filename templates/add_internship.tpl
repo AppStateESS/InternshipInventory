@@ -129,11 +129,26 @@
         </td>
       </tr>
     </table>
+    <!-- start document list -->
+    <h3 class="info-header">Documents</h3>
+    <table class="sub-form">
+      <tr>
+        <td>
+          <ul>
+            <!-- BEGIN docs -->
+            <li>{DOWNLOAD}{DELETE}</li>
+            <!-- END docs -->
+            <li>{UPLOAD_DOC}</li>
+          </ul>
+        </td>
+      </tr>
+    </table>
+    <!-- end document list -->
   </td>
   <!-- End faculty info -->
   </tr>
-  <tr>
 
+  <tr>
   <!-- Internship details -->
   <td> 
     <h3 class="info-header">Internship Details</h3>
@@ -207,6 +222,9 @@
             {SERVICE_LEARNING_TYPE}{SERVICE_LEARNING_TYPE_LABEL}<br/>
             {INDEPENDENT_STUDY_TYPE}{INDEPENDENT_STUDY_TYPE_LABEL}<br/>
             {RESEARCH_ASSIST_TYPE}{RESEARCH_ASSIST_TYPE_LABEL}<br/>
+            {STUDENT_TEACHING_TYPE}{STUDENT_TEACHING_TYPE_LABEL}<br/>
+            {CLINICAL_PRACTICA_TYPE}{CLINICAL_PRACTICA_TYPE_LABEL}<br/>
+            {SPECIAL_TOPICS_TYPE}{SPECIAL_TOPICS_TYPE_LABEL}<br/>
             {CHECK_OTHER_TYPE}{OTHER_TYPE_LABEL}{OTHER_TYPE}<br/>
           </fieldset>
         </td>

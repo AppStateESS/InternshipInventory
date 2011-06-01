@@ -34,8 +34,10 @@ class InternshipDetailsUI implements UI
 
         $tpl['internship'] = $i->getReadableTypes();
         $tpl['student'][] = get_object_vars($s);
-        $tpl['student'][0]['major'] = $m->getName();
-        $tpl['student'][0]['grad_prog'] = $g->getName();
+        if(!is_null($m))
+            $tpl['student'][0]['major'] = $m->getName();
+        if(!is_null($g))
+            $tpl['student'][0]['grad_prog'] = $g->getName();
         $tpl['agency'][] = get_object_vars($a);
         $tpl['faculty'][] = get_object_vars($f);
         $tpl['department'][] = get_object_vars($d);

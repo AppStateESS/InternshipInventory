@@ -47,7 +47,6 @@ if(!isset($_REQUEST['action'])){
     $req = $_REQUEST['action'];
 }
 
-
 // Show requested page.
 switch ($req) {
     case 'edit_internship':
@@ -200,8 +199,7 @@ switch ($req) {
         $doc->delete();
         NQ::simple('intern', INTERN_SUCCESS, 'Document deleted.');
         NQ::close();
-        // reroute back to search page and automatically open the row that the document was deleted from.
-        PHPWS_Core::reroute('index.php?module=intern&action=search&o='.$doc->internship_id);
+        PHPWS_Core::goBack();
         break;
     default:
         PHPWS_Core::initModClass('intern','Intern_Menu.php');
@@ -211,7 +209,6 @@ switch ($req) {
         Intern_Menu::showMenu();
         break;
 }
-
 
 /** 
  * Plug content into TopUI. Show notifications. Add Style.
