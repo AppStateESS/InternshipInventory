@@ -53,3 +53,8 @@
 </tr>
 <!-- END empty_table -->
 </table>
+<div align="center">
+  <b>{PAGE_LABEL}</b><br />
+  {PAGES}<br />
+  {LIMITS}
+</div>
