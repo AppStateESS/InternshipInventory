@@ -1,5 +1,5 @@
-function Row(nameSelect, id, type){
-    this.type = type;
+function Row(nameSelect, id, editAction){
+    this.editAction = editAction;
     this.select = nameSelect;
     this.editMode = false;
     this.id = id;
@@ -13,11 +13,11 @@ function Row(nameSelect, id, type){
          * Save was clicked. Send new name to server.
          * Set <span>'s text to new name;
          */
-        $.get('index.php', {'module':'intern', 'action':'edit_'+this.type,
+        $.get('index.php', {'module':'intern', 'action':this.editAction,
                             'rename':$(this.edit).val(), 'id':this.id, 'ajax':true},
               function(data){
                   /* Reload page so NQ is shown and pager is re-ordered. */
-                  window.location = 'index.php?module=intern&action=edit_'+me.type;
+                  window.location = 'index.php?module=intern&action='+me.editAction;
               });
         $(this.saveLink).slideUp('fast');
         $(this.edit).slideUp('fast', function(){

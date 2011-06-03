@@ -23,6 +23,9 @@ $ie_fail = "/MSIE/";
 
 PHPWS_Core::initModClass('intern', 'UI/Intern_NotifyUI.php');
 PHPWS_Core::initModClass('intern', 'Term.php');
+PHPWS_Core::initModClass('intern', 'Major.php');
+PHPWS_Core::initModClass('intern', 'GradProgram.php');
+PHPWS_Core::initModClass('intern', 'Department.php');
 
 /* Check if it is time to insert more terms into DB */
 if(Term::isTimeToUpdate()){
@@ -70,23 +73,45 @@ switch ($req) {
         PHPWS_Core::initModClass('intern', 'UI/ResultsUI.php');
         $content = ResultsUI::display();
         break;
-    case 'edit_departments':
+    case DEPT_EDIT:
+        PHPWS_Core::initModClass('intern','UI/DepartmentUI.php');
         PHPWS_Core::initModClass('intern','Department.php');
-        if (isset($_REQUEST['addDep']) && !empty($_REQUEST['description'])) {
-            $todo = 'addDep';
-            $thing = $_REQUEST['description'];
+        if (isset($_REQUEST['add'])) {
+            /* Add department with the name in REQUEST */
+            if(isset($_REQUEST['name'])){
+                Department::add($_REQUEST['name']);
+            }else{
+                NQ::simple('intern', INTERN_ERROR, "Department must have name.");
+            }
+        }else if (isset($_REQUEST['rename'])){
+            /* Rename dept with ID to new name that was passed in REQUEST */
+            if(isset($_REQUEST['id'])){
+                $d = new Department($_REQUEST['id']);
+                $d->rename($_REQUEST['rename']);
+            }else{
+                NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot rename department.");
+            }
+
+        }else if(isset($_REQUEST['hide'])){
+            /* Hide/Show department with ID passed in REQUEST. */
+            if(isset($_REQUEST['id'])){
+                $d = new Department($_REQUEST['id']);
+                $d->hide($_REQUEST['hide'] == 1);
+            }else{
+                NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot hide department.");
+            }
+        }else if(isset($_REQUEST['del'])){
+            /* Delete department with same ID passed in REQUEST. */
+            if(isset($_REQUEST['id'])){
+                $d = new Department($_REQUEST['id']);
+                $d->del();
+            }else{
+                NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot delete department.");
+            }
         }
-        else if (isset($_REQUEST['delDep'])) {
-            $todo = 'delDep';
-            $thing = $_REQUEST['id'];
-        }
-        else{
-            $todo = NULL;
-            $thing = NULL;
-        }
-        $content = Department::showDepartments($todo,$thing);
+        $content = DepartmentUI::display();
         break;
-    case 'edit_grad':
+    case GRAD_PROG_EDIT:
         PHPWS_Core::initModClass('intern', 'GradProgram.php');
         PHPWS_Core::initModClass('intern', 'UI/GradProgramUI.php');
         if(isset($_REQUEST['add'])){
@@ -99,29 +124,31 @@ switch ($req) {
         }else if(isset($_REQUEST['rename'])){
             /* Rename program with ID to new name that was passed in REQUEST */
             if(isset($_REQUEST['id'])){
-                GradProgram::rename($_REQUEST['id'], $_REQUEST['rename']);
+                $g = new GradProgram($_REQUEST['id']);
+                $g->rename($_REQUEST['rename']);
             }else{
                 NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot rename graduate program.");
             }
         }else if(isset($_REQUEST['hide'])){
             /* Hide/Show program with ID passed in REQUEST. */
             if(isset($_REQUEST['id'])){
-                GradProgram::hide($_REQUEST['id'], $_REQUEST['hide'] == 1);
+                $g = new GradProgram($_REQUEST['id']);
+                $g->hide($_REQUEST['hide'] == 1);
             }else{
                 NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot hide graduate program.");
             }
         }else if(isset($_REQUEST['del'])){
             /* Delete program with same ID passed in REQUEST. */
             if(isset($_REQUEST['id'])){
-                GradProgram::del($_REQUEST['id']);
+                $g = new GradProgram($_REQUEST['id']);
+                $g->del();
             }else{
                 NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot delete graduate program.");
             }
         }
         $content = GradProgramUI::display();
         break;
-    case 'edit_majors':
-        PHPWS_Core::initModClass('intern', 'Major.php');
+    case MAJOR_EDIT:
         PHPWS_Core::initModClass('intern', 'UI/MajorUI.php');
 
         if(isset($_REQUEST['add'])){
@@ -134,21 +161,24 @@ switch ($req) {
         }else if(isset($_REQUEST['rename'])){
             /* Rename major with ID to new name that was passed in REQUEST */
             if(isset($_REQUEST['id'])){
-                Major::rename($_REQUEST['id'], $_REQUEST['rename']);
+                $m = new Major($_REQUEST['id']);
+                $m->rename($_REQUEST['rename']);
             }else{
-                NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot hide major.");
+                NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot rename major.");
             }
         }else if(isset($_REQUEST['hide'])){
             /* Hide major with ID passed in REQUEST. */
             if(isset($_REQUEST['id'])){
-                Major::hide($_REQUEST['id'], $_REQUEST['hide'] == 1);
+                $m = new Major($_REQUEST['id']);
+                $m->hide($_REQUEST['hide'] == 1);
             }else{
-                NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot rename major.");
+                NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot hide major.");
             }
         }else if(isset($_REQUEST['del'])){
             /* Delete major with same ID passed in REQUEST. */
             if(isset($_REQUEST['id'])){
-                Major::del($_REQUEST['id']);
+                $m = new Major($_REQUEST['id']);
+                $m->del();
             }else{
                 NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot delete major.");
             }

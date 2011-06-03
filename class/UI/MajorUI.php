@@ -15,14 +15,14 @@ class MajorUI implements UI
         $tpl['PAGER'] = MajorUI::doPager();
 
         javascript('/jquery/');
-        javascript('/modules/intern/editMajor', array('TYPE' => 'majors'));
+        javascript('/modules/intern/editMajor', array('EDIT_ACTION' => Major::getEditAction()));
         
         /* Form for adding new major */
         $form = &new PHPWS_Form('add_major');
         $form->addText('name');
         $form->setLabel('name', 'Major Title');
         $form->addSubmit('submit','Add Major');
-        $form->setAction('index.php?module=intern&action=edit_majors');
+        $form->setAction('index.php?module=intern&action='.MAJOR_EDIT);
         $form->addHidden('add',TRUE);
 
         $form->mergeTemplate($tpl);

@@ -8,11 +8,12 @@
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
 
-PHPWS_Core::initModClass('intern', 'Model.php');
-
-class Department extends Model
+PHPWS_Core::initModClass('intern', 'Editable.php');
+define('DEPT_EDIT', 'edit_dept');
+class Department extends Editable
 {
     public $name;
+    public $hidden;
 
     /**
      * @Override Model::getDb
@@ -30,13 +31,48 @@ class Department extends Model
     }
 
     /**
+     * @Override Editable::getEditAction
+     */
+    public static function getEditAction()
+    {
+        return DEPT_EDIT;
+    }
+
+    /**
+     * @Override Editable::getEditPermission
+     */
+    public static function getEditPermission()
+    {
+        return 'edit_dept';
+    }
+
+    /**
      * Row tags for DBPager
      */
     public function getRowTags()
     {
         $tags = array();
-        $tags['NAME'] = $this->name;
-        $tags['DELETE'] = PHPWS_Text::moduleLink('Delete','intern',array('action'=>'edit_departments','delDep'=>TRUE,'id'=>$this->getID()));
+        if($this->isHidden()){
+            $tags['NAME'] = "<span id='$this->id' class='$this->id major-prog hidden-major-prog'>$this->name</span>";
+        }else{
+            $tags['NAME'] = "<span id='$this->id' class='$this->id major-prog'>$this->name</span>";
+        }
+
+        if(Current_User::allow('intern', 'edit_dept')){
+            $tags['EDIT'] = "<span id='edit-$this->id' class='$this->id edit-major-prog'>Edit</span> | ";
+            if($this->isHidden()){
+                $tags['HIDE'] = PHPWS_Text::moduleLink('Show', 'intern', array('action' => DEPT_EDIT, 'hide' => false, 'id'=>$this->getId()));
+            }else{
+                $tags['HIDE'] = PHPWS_Text::moduleLink('Hide', 'intern', array('action' => DEPT_EDIT, 'hide' => true, 'id'=>$this->getId()));
+            }
+        }
+        if(Current_User::allow('intern', 'delete_dept')){
+            $div = null;
+            if(isset($tags['HIDE']))
+                $div = ' | ';
+            $tags['DELETE'] = $div.PHPWS_Text::moduleLink('Delete','intern',array('action'=> DEPT_EDIT,'del'=>TRUE,'id'=>$this->getID()));
+        }
+
         return $tags;
     }
 
@@ -70,39 +106,25 @@ class Department extends Model
     }
     
     /**
-     * Show the appropriate department UI based on $todo.
-     */
-    public static function showDepartments($todo, $department)
-    {
-        PHPWS_Core::initModClass('intern', 'UI/DepartmentUI.php');
-        
-        $disp = new DepartmentUI();
-
-        // Do appropriate action.
-        if($todo == 'addDep' && isset($department)){
-            self::addDepartment($department);
-        }
-        else if($todo == 'delDep' && isset($department)){
-            self::delDepartment($department);
-        }
-
-        return $disp->display();
-    }
-
-    /**
      * Add a department to database with the passed name.
      */
-    public static function addDepartment($name)
+    public static function add($name)
     {
+        $name = trim($name);
+        if($name == ''){
+            return NQ::simple('intern', INTERN_WARNING, 'No name given for new major. No major was added.');
+        }
+
         $db = self::getDb();
         $db->addWhere('name', $name);
-        $db->addColumn('id', null, null, true);// Count
-        if($db->select() > 0){
-            NQ::simple('intern', INTERN_WARNING, "Department with name <i>$name</i> already exists.");
+        if($db->select('count') > 0){
+            NQ::simple('intern', INTERN_WARNING, "Department <i>$name</i> already exists.");
             return;
         }
+
         // Create the new Department Obj.
         $dept = new Department();
+
         $dept->name = $name;
 
         try{
@@ -150,6 +172,10 @@ class Department extends Model
     public function getName()
     {
         return $this->name;
+    }
+    public function isHidden()
+    {
+        return $this->hidden == 1;
     }
 }
 

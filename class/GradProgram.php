@@ -8,8 +8,10 @@
    *
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
-PHPWS_Core::initModClass('intern', 'Model.php');
-class GradProgram extends Model
+
+PHPWS_Core::initModClass('intern', 'Editable.php');
+define('GRAD_PROG_EDIT', 'edit_grad');
+class GradProgram extends Editable
 {
     public $name;
     public $hidden;
@@ -28,6 +30,22 @@ class GradProgram extends Model
     public function getCSV()
     {
         return array('Graduate Program' => $this->name);
+    }
+
+    /**
+     * @Override Editable::getEditAction
+     */
+    public static function getEditAction()
+    {
+        return GRAD_PROG_EDIT;
+    }
+
+    /**
+     * @Override Editable::getEditPermission
+     */
+    public static function getEditPermission()
+    {
+        return 'edit_grad_prog';
     }
 
     public function getName()
@@ -121,125 +139,6 @@ class GradProgram extends Model
 
         /* Program was successfully added. */
         NQ::simple('intern', INTERN_SUCCESS, "<i>$name</i> added as graduate program.");
-    }
-
-    /**
-     * Hide a program.
-     */
-    public static function hide($id, $hide=true)
-    {
-        /* Permission check */
-        if(!Current_User::allow('intern', 'edit_grad_prog')){
-            return NQ::simple('intern', INTERN_ERROR, 'You do not have permission to hide graduate programs.');
-        }
-        $prog = new GradProgram($id);
-        
-        if($prog->id == 0 || !is_numeric($prog->id)){
-            // Program wasn't loaded correctly
-            NQ::simple('intern', INTERN_ERROR, "Error occurred while loading information for graduate program from database.");
-            return;
-        }
-
-        // Set the program's hidden flag in DB.
-        if($hide){
-            $prog->hidden = 1;
-        }else{
-            $prog->hidden = 0;
-        }
-
-        try{
-            $prog->save();
-            NQ::simple('intern', INTERN_SUCCESS, "Graduate program <i>$prog->name</i> is now hidden.");
-        }catch(Exception $e){
-            return NQ::simple('intern', INTERN_ERROR, $e->getMessage());
-        }
-    }
-
-    /**
-     * Delete a program from database by ID.
-     */
-    public static function del($id)
-    {
-        $prog = new GradProgram($id);
-
-        if($prog->id == 0){
-            // Program wasn't loaded correctly
-            NQ::simple('intern', INTERN_ERROR, "Error occurred while loading information for graduate program from database.");
-            return;
-        }
-
-        $name = $prog->getName();
-        
-        try{
-            // Try to delete program.
-            if(!$prog->delete()){
-                // Something bad happend. This should have been caught in the check above...
-                NQ::simple('intern', INTERN_SUCCESS, "Error occurred removing graduate program from database.");
-                return;
-            }
-        }catch(Exception $e){
-            if($e->getCode() == DB_ERROR_CONSTRAINT){
-                // TODO: Implement force delete.
-                NQ::simple('intern', INTERN_ERROR, "One or more students have $name as their graduate program. Cannot delete");
-                return;
-            }
-            NQ::simple('intern', INTERN_ERROR, $e->getMessage());
-            return;
-        }
-
-        // Program deleted successfully.
-        NQ::simple('intern', INTERN_SUCCESS, "Deleted graduate program <i>$name</i>");
-    }
-
-    /**
-     * Rename the program with ID $id to $newName.
-     */
-    public static function rename($id, $newName)
-    {
-        /* Permission check */
-        if(!Current_User::allow('intern', 'edit_grad_prog')){
-            return NQ::simple('intern', INTERN_ERROR, 'You do not have permission to rename a graduate program.');
-        }
-        
-        /* Must be valid name */
-        $newName = trim($newName);
-        if($newName == ''){
-            return NQ::simple('intern', INTERN_WARNING, 'No name was given. No grad programs were changed.');
-        }
-        
-        $prog = new GradProgram($id);
-        
-        if($prog->id == 0){
-            /* Program wasn't loaded correctly */
-            if(isset($_REQUEST['ajax'])){
-                NQ::simple('intern', INTERN_ERROR, "Error occurred while loading information for grad program from database.");
-                NQ::close();
-                echo true;
-                exit;
-            }
-            NQ::simple('intern', INTERN_ERROR, "Error occurred while loading information for grad program from database.");
-            return;
-        }
-        $old = $prog->name;
-        try{
-            $prog->name = $newName;
-            $prog->save();
-            if(isset($_REQUEST['ajax'])){
-                NQ::simple('intern', INTERN_SUCCESS, "<i>$old</i> renamed to <i>$newName</i>");
-                NQ::close();
-                echo true;
-                exit;
-            }
-            return NQ::simple('intern', INTERN_SUCCESS, "<i>$old</i> renamed to <i>$newName</i>");
-        }catch(Exception $e){
-            if(isset($_REQUEST['ajax'])){
-                NQ::simple('intern', INTERN_ERROR, $e->getMessage());
-                NQ::close();
-                echo false;
-                exit;
-            }
-            return NQ::simple('intern', INTERN_ERROR, $e->getMessage());
-        }
     }
 }
 

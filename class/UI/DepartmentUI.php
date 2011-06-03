@@ -1,15 +1,10 @@
 <?php
-/**
- * User interface for viewing departments.
- *
- * @author Robert Bost <bostrt at tux dot appstate dot edu>
- **/
 
-PHPWS_Core::initModClass('intern', 'UI/UI.php');
-class DepartmentUI implements UI{
-
-    public static function display() {
-        
+class DepartmentUI implements UI
+{
+    public static function display()
+    {
+        /** TODO: Should check edit_dept and delete_dept **/
         // Check permissions.  Non-deities should never see this page
         // unless they're trying to be sneaky, since the link to it would
         // be hidden.
@@ -17,23 +12,26 @@ class DepartmentUI implements UI{
             NQ::simple('intern', INTERN_ERROR, "Uh Uh Uh! You didn't say the magic word!");
             return ;
         }
+        javascript('/jquery/');
+        javascript('/modules/intern/editMajor', array('EDIT_ACTION' => Department::getEditAction()));
 
         // Set extra page tags
         $tpl['HOMELINK'] = PHPWS_Text::moduleLink('Back to Menu','intern');
         
         // Form for adding new department
         $form = &new PHPWS_Form('add_department');
-        $form->addText('description');
-        $form->setLabel('description','Description');
+        $form->addText('name');
+        $form->setLabel('name','Department Name');
         $form->addSubmit('submit','Add Department');
-        $form->setAction('index.php?module=intern&action=edit_departments');
-        $form->addHidden('addDep',TRUE);
+        $form->setAction('index.php?module=intern&action='.DEPT_EDIT);
+        $form->addHidden('add',TRUE);
 
         $tpl['PAGER'] = DepartmentUI::doPager();
         $form->mergeTemplate($tpl);
         return PHPWS_Template::process($form->getTemplate(), 'intern', 'edit_department.tpl');
+
     }
-    
+
     public static function doPager() 
     {
         PHPWS_Core::initCoreClass('DBPager.php');
@@ -49,4 +47,5 @@ class DepartmentUI implements UI{
         return $pager->get();
     }
 }
+
 ?>

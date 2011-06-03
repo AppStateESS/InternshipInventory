@@ -12,7 +12,7 @@
             var id = classes[0];
             var nameSelect = ".major-prog#"+id;
 
-            new Row(nameSelect, id, "{TYPE}");
+            new Row(nameSelect, id, "{EDIT_ACTION}");
         });
     });
 </script>

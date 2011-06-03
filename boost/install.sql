@@ -33,6 +33,7 @@ CREATE TABLE intern_student (
 CREATE TABLE intern_department (
        id INT NOT NULL,
        name VARCHAR NOT NULL UNIQUE,
+       hidden SMALLINT NULL DEFAULT 0,
        PRIMARY KEY(id)
 );
 
