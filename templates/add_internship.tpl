@@ -9,6 +9,7 @@
 {PDF}
 <div>
   {START_FORM}
+  {SUBMIT}
   <table id="internship-form">
     <tr>
   <!-- Student info section -->
