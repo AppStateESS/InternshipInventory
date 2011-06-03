@@ -48,6 +48,14 @@ class GradProgram extends Editable
         return 'edit_grad_prog';
     }
 
+    /**
+     * @Override Editable::getDeletePermission
+     */
+    public static function getDeletePermission()
+    {
+        return 'delete_grad_prog';
+    }
+
     public function getName()
     {
         return $this->name;
@@ -57,35 +65,6 @@ class GradProgram extends Editable
         return $this->hidden == 1;
     }
     
-    /**
-     * Row tags for DBPager
-     */
-    public function getRowTags()
-    {
-        $tags = array();
-        if($this->isHidden()){
-            $tags['NAME'] = "<span id='$this->id' class='$this->id major-prog hidden-major-prog'>$this->name</span>";
-        }else{
-            $tags['NAME'] = "<span id='$this->id' class='$this->id major-prog'>$this->name</span>";
-        }
-        // TODO: Make all these JQuery.
-        if(Current_User::allow('intern', 'edit_grad_prog')){
-            $tags['EDIT'] = "<span id='edit-$this->id' class='$this->id edit-major-prog'>Edit</span> | ";
-            if($this->isHidden()){
-                $tags['HIDE'] = PHPWS_Text::moduleLink('Show', 'intern', array('action' => 'edit_grad', 'hide' => false, 'id'=>$this->getId()));
-            }else{
-                $tags['HIDE'] = PHPWS_Text::moduleLink('Hide', 'intern', array('action' => 'edit_grad', 'hide' => true, 'id'=>$this->getId()));
-            }
-        }
-        if(Current_User::allow('intern', 'delete_grad_prog')){
-            $div = null;
-            if(isset($tags['HIDE']))
-                $div = ' | ';
-            $tags['DELETE'] = $div.PHPWS_Text::moduleLink('Delete','intern',array('action'=>'edit_grad','del'=>TRUE,'id'=>$this->getID()));
-        }
-        return $tags;
-    }
-
     /**
      * Return an associative array {id => Grad. Prog. name } for all programs in DB
      * that aren't hidden. Always show the program with id $except. The parameter 

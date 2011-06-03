@@ -47,33 +47,11 @@ class Department extends Editable
     }
 
     /**
-     * Row tags for DBPager
+     * @Override Editable::getDeletePermission
      */
-    public function getRowTags()
+    public static function getDeletePermission()
     {
-        $tags = array();
-        if($this->isHidden()){
-            $tags['NAME'] = "<span id='$this->id' class='$this->id major-prog hidden-major-prog'>$this->name</span>";
-        }else{
-            $tags['NAME'] = "<span id='$this->id' class='$this->id major-prog'>$this->name</span>";
-        }
-
-        if(Current_User::allow('intern', 'edit_dept')){
-            $tags['EDIT'] = "<span id='edit-$this->id' class='$this->id edit-major-prog'>Edit</span> | ";
-            if($this->isHidden()){
-                $tags['HIDE'] = PHPWS_Text::moduleLink('Show', 'intern', array('action' => DEPT_EDIT, 'hide' => false, 'id'=>$this->getId()));
-            }else{
-                $tags['HIDE'] = PHPWS_Text::moduleLink('Hide', 'intern', array('action' => DEPT_EDIT, 'hide' => true, 'id'=>$this->getId()));
-            }
-        }
-        if(Current_User::allow('intern', 'delete_dept')){
-            $div = null;
-            if(isset($tags['HIDE']))
-                $div = ' | ';
-            $tags['DELETE'] = $div.PHPWS_Text::moduleLink('Delete','intern',array('action'=> DEPT_EDIT,'del'=>TRUE,'id'=>$this->getID()));
-        }
-
-        return $tags;
+        return 'delete_dept';
     }
 
     /**
@@ -84,7 +62,12 @@ class Department extends Editable
     {
         $db = self::getDb();
         $db->addOrder('name');
+        $db->addColumn('id');
+        $db->addColumn('name');
+        $db->addWhere('hidden', 0, '=', 'OR');
+
         $depts = $db->select('assoc');
+        // Horrible, horrible hacks. Need to add a null selection.
         $depts = array_reverse($depts, true); // preserve keys.
         $depts[-1] = 'None';
         return array_reverse($depts, true);

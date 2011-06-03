@@ -12,7 +12,7 @@
 <!-- BEGIN listrows -->
 <tr>
     <td>{NAME}</td>
-    <td>{EDIT}{HIDE}{DELETE}</td>
+    <td>{EDIT}{HIDE}<span id="delete-{ID}">{DELETE}</td>
 </tr>
 <!-- END listrows -->
 </table>

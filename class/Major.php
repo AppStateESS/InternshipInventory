@@ -49,6 +49,14 @@ class Major extends Editable
         return 'edit_major';
     }
 
+    /**
+     * @Override Editable::getDeletePermission
+     */
+    public static function getDeletePermission()
+    {
+        return 'delete_major';
+    }
+
     public function getName()
     {
         return $this->name;
@@ -58,35 +66,6 @@ class Major extends Editable
         return $this->hidden == 1;
     }
     
-    /**
-     * Row tags for DBPager
-     */
-    public function getRowTags()
-    {
-        $tags = array();
-        if($this->isHidden()){
-            $tags['NAME'] = "<span id='$this->id' class='$this->id major-prog hidden-major-prog'>$this->name</span>";
-        }else{
-            $tags['NAME'] = "<span id='$this->id' class='$this->id major-prog'>$this->name</span>";
-        }
-        // TODO: Make all these JQuery.
-        if(Current_User::allow('intern', 'edit_major')){
-            $tags['EDIT'] = "<span id='edit-$this->id' class='$this->id edit-major-prog'>Edit</span> | ";
-            if($this->isHidden()){
-                $tags['HIDE'] = PHPWS_Text::moduleLink('Show', 'intern', array('action' => MAJOR_EDIT, 'hide' => false, 'id'=>$this->getId()));
-            }else{
-                $tags['HIDE'] = PHPWS_Text::moduleLink('Hide', 'intern', array('action' => MAJOR_EDIT, 'hide' => true, 'id'=>$this->getId()));
-            }
-        }
-        if(Current_User::allow('intern', 'delete_major')){
-            $div = null;
-            if(isset($tags['HIDE']))
-                $div = ' | ';
-            $tags['DELETE'] = $div.PHPWS_Text::moduleLink('Delete','intern',array('action'=> MAJOR_EDIT,'del'=>TRUE,'id'=>$this->getID()));
-        }
-        return $tags;
-    }
-
     /**
      * Return an associative array {id => Major name } for all majors in DB
      * that aren't hidden. Always show the major with id $except.

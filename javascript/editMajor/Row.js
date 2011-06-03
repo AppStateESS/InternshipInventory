@@ -80,4 +80,13 @@ function Row(nameSelect, id, editAction){
     $(this.saveLink).click(function(){
         me.save();
     });
+
+    /* Confirm click for delete */
+    $("#delete-"+this.id).click(function(){
+        if(window.confirm("Are you sure you want to delete "+$("#"+me.id).text()+"?")){
+            return true;
+        }else{
+            return false;
+        }
+    });
 }

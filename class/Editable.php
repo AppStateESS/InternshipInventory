@@ -26,7 +26,10 @@ abstract class Editable extends Model
      */
     abstract static function getEditPermission();
 
-    /** TODO: need abstract method for getDeletePermission **/
+    /**
+     * Get the name of the permission needed to delete the item.
+     */
+    abstract static function getDeletePermission();
 
     /**
      * Rename the Editable item with ID $id to $newName.
@@ -150,6 +153,37 @@ abstract class Editable extends Model
             NQ::simple('intern', INTERN_ERROR, $e->getMessage());
             return;
         }
+    }
+
+    /**
+     * Row tags for DBPager.
+     */
+    public function getRowTags()
+    {
+        $tags = array();
+        $tags['ID'] = $this->id;
+        if($this->isHidden()){
+            $tags['NAME'] = "<span id='$this->id' class='$this->id major-prog hidden-major-prog'>$this->name</span>";
+        }else{
+            $tags['NAME'] = "<span id='$this->id' class='$this->id major-prog'>$this->name</span>";
+        }
+
+        if(Current_User::allow('intern', $this->getEditPermission())){
+            $tags['EDIT'] = "<span id='edit-$this->id' class='$this->id edit-major-prog'>Edit</span> | ";
+            if($this->isHidden()){
+                $tags['HIDE'] = PHPWS_Text::moduleLink('Show', 'intern', array('action' => $this->getEditAction(), 'hide' => false, 'id'=>$this->getId()));
+            }else{
+                $tags['HIDE'] = PHPWS_Text::moduleLink('Hide', 'intern', array('action' => $this->getEditAction(), 'hide' => true, 'id'=>$this->getId()));
+            }
+        }
+        if(Current_User::allow('intern', $this->getDeletePermission())){
+            $div = null;
+            if(isset($tags['HIDE']))
+                $div = ' | ';
+            $tags['DELETE'] = $div.PHPWS_Text::moduleLink('Delete','intern',array('action'=> $this->getEditAction(),'del'=>TRUE,'id'=>$this->getID()));
+        }
+
+        return $tags;
     }
 }
 
