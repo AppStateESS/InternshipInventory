@@ -314,41 +314,47 @@ class Internship extends Model
         }
 
         PHPWS_DB::begin();
-        $student = new Student();
-        if(isset($_REQUEST['student_id'])){
-            // User is attempting to edit an internship.
+        /* See if this student exists already */
+        $student = Student::getStudentByBanner($_REQUEST['banner']);
+        if(is_null($student)){
+            $student = new Student();
+            if(isset($_REQUEST['student_id'])){
+                // User is attempting to edit an internship.
+                try{
+                    $student = new Student($_REQUEST['student_id']);
+                }catch(Exception $e){
+                    PHPWS_DB::rollback();
+                    NQ::simple('intern', INTERN_ERROR, 'Invalid Student ID.');
+                    NQ::close();
+                    return PHPWS_Core::goBack();
+                }
+            }
+
+            $student->first_name = $_REQUEST['student_first_name'];
+            $student->middle_name = $_REQUEST['student_middle_name'];
+            $student->last_name = $_REQUEST['student_last_name'];
+            $student->banner = $_REQUEST['banner'];
+            $student->phone = $_REQUEST['student_phone'];
+            $student->email = $_REQUEST['student_email'];
+            $student->internship = isset($_REQUEST['internship_default_type']);
+            $student->service_learn = isset($_REQUEST['service_learning_type']);
+            $studnet->independent_study = isset($_REQUEST['independent_study_type']);
+            $student->research_assist   = isset($_REQUEST['research_assistant_type']);
+            $student->student_teaching  = isset($_REQUEST['student_teaching_type']);
+            $student->clinical_practica = isset($_REQUEST['clinical_practica_type']);
+            $student->special_topics    = isset($_REQUEST['special_topics_type']);
+            $studnet->other_type  = empty($_REQUEST['other_type']) ? null : $_REQUEST['other_type'];
+            $student->grad_prog   = $_REQUEST['grad_prog'] == -1 ? null : $_REQUEST['grad_prog'];
+            $student->ugrad_major = $_REQUEST['ugrad_major'] == -1 ? null : $_REQUEST['ugrad_major'];
+            $student->graduated   = isset($_REQUEST['graduated']);
             try{
-                $student = new Student($_REQUEST['student_id']);
+                $studentId = $student->save();
             }catch(Exception $e){
                 PHPWS_DB::rollback();
-                NQ::simple('intern', INTERN_ERROR, 'Invalid Student ID.');
-                NQ::close();
-                return PHPWS_Core::goBack();
+                return NQ::simple('intern', INTERN_ERROR, $e->getMessage());
             }
-        }
-
-        $student->first_name = $_REQUEST['student_first_name'];
-        $student->middle_name = $_REQUEST['student_middle_name'];
-        $student->last_name = $_REQUEST['student_last_name'];
-        $student->banner = $_REQUEST['banner'];
-        $student->phone = $_REQUEST['student_phone'];
-        $student->email = $_REQUEST['student_email'];
-        $student->internship = isset($_REQUEST['internship_default_type']);
-        $student->service_learn = isset($_REQUEST['service_learning_type']);
-        $studnet->independent_study = isset($_REQUEST['independent_study_type']);
-        $student->research_assist   = isset($_REQUEST['research_assistant_type']);
-        $student->student_teaching  = isset($_REQUEST['student_teaching_type']);
-        $student->clinical_practica = isset($_REQUEST['clinical_practica_type']);
-        $student->special_topics    = isset($_REQUEST['special_topics_type']);
-        $studnet->other_type  = empty($_REQUEST['other_type']) ? null : $_REQUEST['other_type'];
-        $student->grad_prog   = $_REQUEST['grad_prog'] == -1 ? null : $_REQUEST['grad_prog'];
-        $student->ugrad_major = $_REQUEST['ugrad_major'] == -1 ? null : $_REQUEST['ugrad_major'];
-        $student->graduated   = isset($_REQUEST['graduated']);
-        try{
-            $studentId = $student->save();
-        }catch(Exception $e){
-            PHPWS_DB::rollback();
-            return NQ::simple('intern', INTERN_ERROR, $e->getMessage());
+        }else{
+            $studentId = $student->id;
         }
 
         // Create/Save agency
@@ -492,6 +498,10 @@ class Internship extends Model
         if(!isset($_REQUEST['department']) ||
            $_REQUEST['department'] == -1){
             $vals[] = 'department';
+        }
+        if(!isset($_REQUEST['term']) ||
+           $_REQUEST['term'] == -1){
+            $vals[] = 'term';
         }
 
         return $vals;

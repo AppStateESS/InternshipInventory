@@ -43,12 +43,6 @@ class ResultsUI implements UI
         if(isset($_REQUEST['loc']))
             $loc = $_REQUEST['loc'];
 
-        /* Automatically open the row with the matching ID. */
-        $o = -1;
-        if(isset($_REQUEST['o'])){
-            $o = $_REQUEST['o'];
-        }
-
         /* Get Pager */
         $pager = self::getPager($name, $dept, $term, $major, $grad, $type, $loc);
         $result = $pager->get();
@@ -57,7 +51,7 @@ class ResultsUI implements UI
         javascript('/jquery/');
         javascript('open_window');
         javascript('confirm');
-        javascript('/modules/intern/hider', array('OPEN' => $o));
+        javascript('/modules/intern/hider');
 
         if(!is_null($pager->display_rows)){
             /* Build up the link for exporting rows to CSV. */

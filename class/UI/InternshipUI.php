@@ -115,13 +115,13 @@ class InternshipUI implements UI
         $form->setLabel('student_phone', 'Phone');
         $form->addText('student_email');
         $form->setLabel('student_email', 'Email');
-        if(!is_null($i))
+        if(isset($s))
             $majors = Major::getMajorsAssoc($s->ugrad_major);
         else
             $majors = Major::getMajorsAssoc();
         $form->addSelect('ugrad_major', $majors);
         $form->setLabel('ugrad_major', 'Undergraduate Major');
-        if(!is_null($i))
+        if(isset($s))
             $progs = GradProgram::getGradProgsAssoc($s->grad_prog);
         else
             $progs = GradProgram::getGradProgsAssoc();

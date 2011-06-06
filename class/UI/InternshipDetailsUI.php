@@ -43,7 +43,7 @@ class InternshipDetailsUI implements UI
         $tpl['department'][] = get_object_vars($d);
         if(!is_null($docs)){
             foreach($docs as $doc){
-                $tpl['docs'][] = array('DOWNLOAD' => $doc->getDownloadLink('blah'),
+                $tpl['docs'][] = array('DOWNLOAD' => $doc->getDownloadLink(),
                                        'DELETE'   => $doc->getDeleteLink());
             }
         }

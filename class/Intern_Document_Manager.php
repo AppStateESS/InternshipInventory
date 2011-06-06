@@ -154,9 +154,9 @@ class Intern_Document_Manager extends FC_Document_Manager
             // Choose the proper notification text...
             if(isset($_REQUEST['document_id']) && 
                $_REQUEST['document_id'] && $result){
-                NQ::simple('intern', INTERN_SUCCESS, "File updated.");
+                NQ::simple('intern', INTERN_SUCCESS, "File saved.");
             }else if($result){
-                NQ::simple('intern', INTERN_SUCCESS, "File uploaded.");
+                NQ::simple('intern', INTERN_SUCCESS, "File added.");
             }else if(PHPWS_Error::logIfError($result)){
                 NQ::simple('intern', INTERN_ERROR, $result->toString());
             }

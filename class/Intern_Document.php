@@ -82,7 +82,7 @@ class Intern_Document extends Model
     /**
      * Get the link to download this document.
      */
-    public function getDownloadLink($text=NULL)
+    public function getDownloadLink()
     {
         PHPWS_Core::initModClass('filecabinet', 'Document.php');
         $doc = new PHPWS_Document($this->document_fc_id);
