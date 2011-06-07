@@ -71,9 +71,19 @@ class InternshipUI implements UI
             foreach($missing as $m){
                 $form->setClass($m, 'missing');
             }
-            
+
             /* Plug old values back into form fields. */
             $form->plugIn($_GET);
+
+            /* Re-add hidden fields with object ID's */
+            $i = new Internship($_GET['internship_id']);
+            $s = $i->getStudent();
+            $a = $i->getAgency();
+            $f = $i->getFacultySupervisor();
+            $form->addHidden('student_id', $s->id);
+            $form->addHidden('agency_id', $a->id);
+            $form->addHidden('supervisor_id', $f->id);
+            $form->addHidden('internship_id', $i->id);
         }
 
         $form->mergeTemplate($tpl);
@@ -142,9 +152,15 @@ class InternshipUI implements UI
         $form->addText('supervisor_phone');
         $form->setLabel('supervisor_phone', 'Phone');
         if(Current_User::isDeity()){
-            $depts = Department::getDepartmentsAssoc($i->department_id);
+            if(!is_null($i))
+                $depts = Department::getDepartmentsAssoc($i->department_id);
+            else 
+                $depts = Department::getDepartmentsAssoc();
         }else{
-            $depts = Department::getDepartmentsAssocForUsername(Current_User::getUsername(), $i->department_id);
+            if(!is_null($i))
+                $depts = Department::getDepartmentsAssocForUsername(Current_User::getUsername(), $i->department_id);
+            else
+                $depts = Department::getDepartmentsAssocForUsername(Current_User::getUsername());
         }
         $form->addSelect('department', $depts);
         $form->setLabel('department', 'Department');
