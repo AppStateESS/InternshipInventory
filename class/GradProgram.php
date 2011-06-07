@@ -56,10 +56,39 @@ class GradProgram extends Editable
         return 'delete_grad_prog';
     }
 
+    /**
+     * @Override Editable::forceDelete
+     */
+    public function forceDelete()
+    {
+        PHPWS_Core::initModClass('intern', 'Student.php');
+        if($this->id == 0)
+            return;
+        $db = Student::getDb();
+        $db->addWhere('grad_prog', $this->id);
+        $studs = $db->getObjects('Student');
+        
+        // Set each grad_prog to NULL
+        foreach($studs as $stud){
+            $stud->grad_prog = null;
+            $stud->save();
+        }
+
+        // Finally, delete this.
+        try{
+            $this->delete();
+            NQ::simple('intern', INTERN_SUCCESS, "<i>$this->name</i> deleted.");
+        }catch(Exception $e){
+            NQ::simple('intern', INTERN_ERROR, $e->getMessage());
+            return;
+        }
+    }
+
     public function getName()
     {
         return $this->name;
     }
+
     public function isHidden()
     {
         return $this->hidden == 1;
@@ -84,7 +113,7 @@ class GradProgram extends Editable
         $progs = $db->select('assoc');
         // Horrible, horrible hacks. Need to add a null selection.
         $progs = array_reverse($progs, true); // preserve keys.
-        $progs[-1] = 'None';
+        $progs[-1] = 'Select Grad Program';
         return array_reverse($progs, true);
     }
     

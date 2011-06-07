@@ -57,6 +57,34 @@ class Major extends Editable
         return 'delete_major';
     }
 
+    /**
+     * @Override Editable::forceDelete
+     */
+    public function forceDelete()
+    {
+        PHPWS_Core::initModClass('intern', 'Student.php');
+        if($this->id == 0)
+            return;
+        $db = Student::getDb();
+        $db->addWhere('ugrad_major', $this->id);
+        $studs = $db->getObjects('Student');
+        
+        // Set each ugrad_major to NULL
+        foreach($studs as $stud){
+            $stud->ugrad_major = null;
+            $stud->save();
+        }
+
+        // Finally, delete this.
+        try{
+            $this->delete();
+            NQ::simple('intern', INTERN_SUCCESS, "<i>$this->name</i> deleted.");
+        }catch(Exception $e){
+            NQ::simple('intern', INTERN_ERROR, $e->getMessage());
+            return;
+        }
+    }
+
     public function getName()
     {
         return $this->name;
@@ -86,7 +114,7 @@ class Major extends Editable
         $majors = $db->select('assoc');
         // Horrible, horrible hacks. Need to add a null selection.
         $majors = array_reverse($majors, true); // preserve keys.
-        $majors[-1] = 'None';
+        $majors[-1] = 'Select Major';
         return array_reverse($majors, true);
     }
     

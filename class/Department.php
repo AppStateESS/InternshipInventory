@@ -55,6 +55,15 @@ class Department extends Editable
     }
 
     /**
+     * @Override Editable::forceDelete
+     */
+    public function forceDelete()
+    {
+        /* This isn't called because it's not supported right now. Maybe later though....? */
+        return NQ::simple('intern', INTERN_WARNING, 'Sorry, cannot forcefully delete a department.');
+    }
+
+    /**
      * Return an associative array {id => dept. name} for all the 
      * departments in database.
      * @param $except - Always show the department with this ID. Used for internships
@@ -73,7 +82,7 @@ class Department extends Editable
         $depts = $db->select('assoc');
         // Horrible, horrible hacks. Need to add a null selection.
         $depts = array_reverse($depts, true); // preserve keys.
-        $depts[-1] = 'None';
+        $depts[-1] = 'Select Department';
         return array_reverse($depts, true);
     }
 
@@ -98,7 +107,7 @@ class Department extends Editable
         $depts = $db->select('assoc');
         // Horrible, horrible hacks. Need to add a null selection.
         $depts = array_reverse($depts, true); // preserve keys.
-        $depts[-1] = 'None';
+        $depts[-1] = 'Select Department';
         return array_reverse($depts, true);
     }
     
