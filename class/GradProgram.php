@@ -67,9 +67,9 @@ class GradProgram extends Editable
     
     /**
      * Return an associative array {id => Grad. Prog. name } for all programs in DB
-     * that aren't hidden. Always show the program with id $except. The parameter 
-     * is used when viewing an internship that has a program that was hidden.
-     * This will cause the program to still be shown in the drop down list.
+     * that aren't hidden. 
+     * @param $except - Always show the major with this ID. Used for students
+     *                  with a hidden major. We still want to see it in the select box.
      */
     public static function getGradProgsAssoc($except=null)
     {

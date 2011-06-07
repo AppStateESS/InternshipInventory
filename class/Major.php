@@ -68,7 +68,9 @@ class Major extends Editable
     
     /**
      * Return an associative array {id => Major name } for all majors in DB
-     * that aren't hidden. Always show the major with id $except.
+     * that aren't hidden.
+     * @param $except - Always show the major with this ID. Used for students
+     *                  with a hidden major. We still want to see it in the select box. 
      */
     public static function getMajorsAssoc($except=null)
     {

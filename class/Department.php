@@ -57,14 +57,18 @@ class Department extends Editable
     /**
      * Return an associative array {id => dept. name} for all the 
      * departments in database.
+     * @param $except - Always show the department with this ID. Used for internships
+     *                  with a hidden department. We still want to see it in  the select box.
      */
-    public static function getDepartmentsAssoc()
+    public static function getDepartmentsAssoc($except=null)
     {
         $db = self::getDb();
         $db->addOrder('name');
         $db->addColumn('id');
         $db->addColumn('name');
         $db->addWhere('hidden', 0, '=', 'OR');
+        if(!is_null($except))
+            $db->addWhere('id', $except, '=', 'OR');
 
         $depts = $db->select('assoc');
         // Horrible, horrible hacks. Need to add a null selection.
@@ -76,16 +80,26 @@ class Department extends Editable
     /**
      * Return an associative array {id => dept. name} for all the departments
      * that the user with $username is allowed to see.
+     * @param $except - Always show the department with this ID. Used for internships
+     *                  with a hidden department. We still want to see it in the select box. 
      */
-    public static function getDepartmentsAssocForUsername($username)
+    public static function getDepartmentsAssocForUsername($username, $except=null)
     {
         $db = self::getDb();
         $db->addOrder('name');
         $db->addColumn('id');
         $db->addColumn('name');
+        $db->addWhere('hidden', 0, '=', 'OR');
+        if(!is_null($except))
+            $db->addWhere('id', $except, '=', 'OR');
+
         $db->addJoin('LEFT', 'intern_department', 'intern_admin', 'id', 'department_id');
         $db->addWhere('intern_admin.username', $username);
-        return $db->select('assoc');
+        $depts = $db->select('assoc');
+        // Horrible, horrible hacks. Need to add a null selection.
+        $depts = array_reverse($depts, true); // preserve keys.
+        $depts[-1] = 'None';
+        return array_reverse($depts, true);
     }
     
     /**

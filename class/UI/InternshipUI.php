@@ -141,11 +141,10 @@ class InternshipUI implements UI
         $form->setLabel('supervisor_email', 'Email');
         $form->addText('supervisor_phone');
         $form->setLabel('supervisor_phone', 'Phone');
-        // Deitys can view all departments.
         if(Current_User::isDeity()){
-            $depts = Department::getDepartmentsAssoc();
+            $depts = Department::getDepartmentsAssoc($i->department_id);
         }else{
-            $depts = Department::getDepartmentsAssocForUsername(Current_User::getUsername());
+            $depts = Department::getDepartmentsAssocForUsername(Current_User::getUsername(), $i->department_id);
         }
         $form->addSelect('department', $depts);
         $form->setLabel('department', 'Department');
