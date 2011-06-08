@@ -55,6 +55,43 @@ class Department extends Editable
     }
 
     /**
+     * @Override Editable::del
+     *
+     * Do not show the 'Force Delete?' link if this delete fails.
+     */
+    public function del()
+    {
+        if(!Current_User::allow('intern', $this->getDeletePermission())){
+            return NQ::simple('intern', INTERN_ERROR, 'You do not have permission to delete departments.');
+        }
+
+        if($this->id == 0){
+            // Item wasn't loaded correctly
+            NQ::simple('intern', INTERN_ERROR, "Error occurred while loading information from database.");
+            return;
+        }
+
+        $name = $this->getName();
+        
+        try{
+            // Try to delete item
+            if(!$this->delete()){
+                // Something bad happend. This should have been caught in the check above...
+                NQ::simple('intern', INTERN_SUCCESS, "Error occurred removing <i>$name</i> from database.");
+                return;
+            }
+            // Item deleted successfully.
+            NQ::simple('intern', INTERN_SUCCESS, "Deleted <i>$name</i>");
+        }catch(Exception $e){
+            if($e->getCode() == DB_ERROR_CONSTRAINT){
+                return NQ::simple('intern', INTERN_ERROR, "One or more internship has <i>$this->name</i> as their department. Sorry, cannot delete.");
+            }else{
+                return NQ::simple('intern', INTERN_ERROR, $e->getMessage());
+            }
+        }
+    }
+
+    /**
      * @Override Editable::forceDelete
      */
     public function forceDelete()
@@ -98,12 +135,13 @@ class Department extends Editable
         $db->addOrder('name');
         $db->addColumn('id');
         $db->addColumn('name');
-        $db->addWhere('hidden', 0, '=', 'OR');
+        $db->addWhere('hidden', 0, '=', 'OR', 'grp');
         if(!is_null($except))
-            $db->addWhere('id', $except, '=', 'OR');
+            $db->addWhere('id', $except, '=', 'OR', 'grp');
 
         $db->addJoin('LEFT', 'intern_department', 'intern_admin', 'id', 'department_id');
         $db->addWhere('intern_admin.username', $username);
+
         $depts = $db->select('assoc');
         // Horrible, horrible hacks. Need to add a null selection.
         $depts = array_reverse($depts, true); // preserve keys.

@@ -62,6 +62,10 @@ class Major extends Editable
      */
     public function forceDelete()
     {
+        if(!Current_User::allow('intern', $this->getDeletePermission())){
+            return NQ::simple('intern', INTERN_ERROR, 'You do not have permission to delete majors.');
+        }
+
         PHPWS_Core::initModClass('intern', 'Student.php');
         if($this->id == 0)
             return;

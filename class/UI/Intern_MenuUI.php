@@ -25,11 +25,11 @@ class Intern_MenuUI implements UI{
         }
         if(Current_User::allow('intern', 'edit_grad_prog')){
             $tags['DEITY']                 = 'Admin Options';
-            $tags['EDIT_GRAD_LINK']      = PHPWS_Text::secureLink('Edit Graduate Programs','intern',array('action' => 'edit_grad'));
+            $tags['EDIT_GRAD_LINK']      = PHPWS_Text::secureLink('Edit Graduate Programs','intern',array('action' => GRAD_PROG_EDIT));
         }
         if(Current_User::allow('intern', 'edit_dept')){
             $tags['DEITY']                 = 'Admin Options';
-            $tags['EDIT_DEPARTMENTS_LINK']      = PHPWS_Text::secureLink('Edit Graduate Programs','intern',array('action' => 'edit_dept'));
+            $tags['EDIT_DEPARTMENTS_LINK']      = PHPWS_Text::secureLink('Edit Departments','intern',array('action' => DEPT_EDIT));
         }
 
         if(Current_User::isDeity()){

@@ -4,11 +4,8 @@ class DepartmentUI implements UI
 {
     public static function display()
     {
-        /** TODO: Should check edit_dept and delete_dept **/
-        // Check permissions.  Non-deities should never see this page
-        // unless they're trying to be sneaky, since the link to it would
-        // be hidden.
-        if(!Current_User::isDeity()){
+        /* Permission check */
+        if(!Current_User::allow('intern', Department::getEditPermission())){
             NQ::simple('intern', INTERN_ERROR, "Uh Uh Uh! You didn't say the magic word!");
             return ;
         }

@@ -130,7 +130,9 @@ abstract class Editable extends Model
      */
     public function del()
     {
-        /** TODO: Permission check **/
+        if(!Current_User::allow('intern', $this->getDeletePermission())){
+            return NQ::simple('intern', INTERN_ERROR, 'You do not have permission to delete that.');
+        }
 
         if($this->id == 0){
             // Item wasn't loaded correctly
