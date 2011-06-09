@@ -51,7 +51,7 @@
   </tr>
   <tr>
     <td>
-      <b>Name:</b> {supervisor_first_name}{supervisor_last_name}
+      <b>Name:</b> {supervisor_first_name} {supervisor_last_name}
     </td>
     <td>
       <b>Phone:</b> {supervisor_phone}

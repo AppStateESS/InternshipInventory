@@ -12,6 +12,7 @@
                 $("input:text[name='agency_sup_city']").val($("input:text[name='agency_city']").val());
                 $("select[name='agency_sup_state']").val($("select[name='agency_state']").val());
                 $("input:text[name='agency_sup_zip']").val($("input:text[name='agency_zip']").val());
+                $("input:text[name='agency_sup_country']").val($("input:text[name='agency_country']").val());
                 /* Setup handlers */
                 $("input:text[name='agency_address']").keyup(function(){
                     $("input:text[name='agency_sup_address']").val($("input:text[name='agency_address']").val());
@@ -25,12 +26,16 @@
                 $("input:text[name='agency_zip']").keyup(function(){
                     $("input:text[name='agency_sup_zip']").val($("input:text[name='agency_zip']").val());
                 });
+                $("input:text[name='agency_country']").keyup(function(){
+                    $("input:text[name='agency_sup_country']").val($("input:text[name='agency_country']").val());
+                });
 
             }else{
                 /* Remove handlers */
                 $("input:text[name='agency_address']").unbind('keyup');
                 $("input:text[name='agency_city']").unbind('keyup');
                 $("input:text[name='agency_zip']").unbind('keyup');
+                $("input:text[name='agency_country']").unbind('keyup');
                 $("select[name='agency_state']").unbind('change');
             }
         }

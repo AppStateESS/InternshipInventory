@@ -1,0 +1,6 @@
+ALTER TABLE intern_agency ALTER COLUMN state DROP NOT NULL;
+ALTER TABLE intern_agency ALTER COLUMN state SET DEFAULT NULL;
+ALTER TABLE intern_agency ALTER COLUMN zip DROP NOT NULL;
+ALTER TABLE intern_agency ALTER COLUMN zip SET DEFAULT NULL;
+ALTER TABLE intern_agency ADD COLUMN country VARCHAR NOT NULL DEFAULT 'United States';
+ALTER TABLE intern_agency ADD COLUMN supervisor_country VARCHAR NOT NULL DEFAULT 'United States';

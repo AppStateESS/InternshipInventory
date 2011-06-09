@@ -15,6 +15,7 @@ class Agency extends Model
     public $city;
     public $state;
     public $zip;
+    public $country;
     public $phone;
     public $supervisor_first_name;
     public $supervisor_last_name;
@@ -25,6 +26,7 @@ class Agency extends Model
     public $supervisor_city;
     public $supervisor_state;
     public $supervisor_zip;
+    public $supervisor_country;
     public $address_same_flag;
 
     /**
@@ -47,6 +49,7 @@ class Agency extends Model
         $csv['Agency State']             = $this->state;
         $csv['Agency Zip Code']          = $this->zip;
         $csv['Agency Phone']             = $this->phone;
+        $csv['Agency Country']           = $this->country;
         $csv['Agency Super. First Name'] = $this->supervisor_first_name;
         $csv['Agency Super. Last Name']  = $this->supervisor_last_name;
         $csv['Agency Super. Phone']      = $this->supervisor_phone;
@@ -56,7 +59,7 @@ class Agency extends Model
         $csv['Agency Super. City']       = $this->supervisor_city;
         $csv['Agency Super. State']      = $this->supervisor_state;
         $csv['Agency Super. Zip Code']   = $this->supervisor_zip;
-
+        $csv['Agency Super. Country']    = $this->supervisor_country;
         
         return $csv;
     }

@@ -286,6 +286,14 @@
         </td>
       </tr>
       <tr>
+        <td>
+          {AGENCY_COUNTRY_LABEL}
+        </td>
+        <td>
+          {AGENCY_COUNTRY}
+        </td>
+      </tr>
+      <tr>
         <td colspan=2><h4>Supervisor Info</h4></td>
       </tr>
       <tr>
@@ -363,6 +371,14 @@
         </td>
         <td>
           {AGENCY_SUP_ZIP}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          {AGENCY_SUP_COUNTRY_LABEL}
+        </td>
+        <td>
+          {AGENCY_SUP_COUNTRY}
         </td>
       </tr>
     </table>

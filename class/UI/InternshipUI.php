@@ -17,7 +17,8 @@ class InternshipUI implements UI
                                           'agency_sup_email', 'agency_sup_fax',
                                           'agency_sup_address', 'agency_sup_city',
                                           'agency_sup_state', 'agency_sup_zip',
-                                          'term', 'start_date', 'end_date');
+                                          'term', 'start_date', 'end_date', 'agency_country',
+                                          'agency_sup_country');
  
 
     public static function display()
@@ -75,15 +76,18 @@ class InternshipUI implements UI
             /* Plug old values back into form fields. */
             $form->plugIn($_GET);
 
-            /* Re-add hidden fields with object ID's */
-            $i = new Internship($_GET['internship_id']);
-            $s = $i->getStudent();
-            $a = $i->getAgency();
-            $f = $i->getFacultySupervisor();
-            $form->addHidden('student_id', $s->id);
-            $form->addHidden('agency_id', $a->id);
-            $form->addHidden('supervisor_id', $f->id);
-            $form->addHidden('internship_id', $i->id);
+            // If internship is being edited... 
+            if(isset($_REQUEST['internship_id'])){
+                /* Re-add hidden fields with object ID's */
+                $i = new Internship($_GET['internship_id']);
+                $s = $i->getStudent();
+                $a = $i->getAgency();
+                $f = $i->getFacultySupervisor();
+                $form->addHidden('student_id', $s->id);
+                $form->addHidden('agency_id', $a->id);
+                $form->addHidden('supervisor_id', $f->id);
+                $form->addHidden('internship_id', $i->id);
+            }
         }
 
         $form->mergeTemplate($tpl);
@@ -178,6 +182,8 @@ class InternshipUI implements UI
         $form->setLabel('agency_state', 'State');
         $form->addText('agency_zip');
         $form->setLabel('agency_zip', 'Zip Code');
+        $form->addText('agency_country');
+        $form->setLabel('agency_country', 'Country');
         $form->addText('agency_phone');
         $form->setLabel('agency_phone', 'Phone');
         $form->addText('agency_sup_first_name');
@@ -198,6 +204,8 @@ class InternshipUI implements UI
         $form->setLabel('agency_sup_state', 'State');
         $form->addText('agency_sup_zip');
         $form->setLabel('agency_sup_zip', 'Zip Code');
+        $form->addText('agency_sup_country');
+        $form->setLabel('agency_sup_country', 'Country');
         $form->addText('agency_sup_fax');
         $form->setLabel('agency_sup_fax', 'Fax');
 
@@ -290,6 +298,7 @@ class InternshipUI implements UI
         $vals['agency_city'] = $a->city;
         $vals['agency_state'] = $a->state;
         $vals['agency_zip'] = $a->zip;
+        $vals['agency_country'] = $a->country;
         $vals['agency_phone'] = $a->phone;
         $vals['agency_sup_first_name'] = $a->supervisor_first_name;
         $vals['agency_sup_last_name'] = $a->supervisor_last_name;
@@ -300,6 +309,7 @@ class InternshipUI implements UI
         $vals['agency_sup_city'] = $a->supervisor_city;
         $vals['agency_sup_state'] = $a->supervisor_state;
         $vals['agency_sup_zip'] = $a->supervisor_zip;
+        $vals['agency_sup_country'] = $a->supervisor_country;
         $vals['copy_address'] = $a->address_same_flag == 't';
 
         // Faculty supervisor
@@ -350,7 +360,8 @@ class InternshipUI implements UI
         $form->plugIn($vals);
     }
     /* http://www.bytemycode.com/snippets/snippet/454/ */
-    public static $state_list = array('AL'=>"Alabama",
+    public static $state_list = array(-1  => 'Select State',
+                                      'AL'=>"Alabama",
                                       'AK'=>"Alaska",  
                                       'AZ'=>"Arizona",  
                                       'AR'=>"Arkansas",  

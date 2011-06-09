@@ -363,8 +363,9 @@ class Internship extends Model
         $agency->name    = $_REQUEST['agency_name'];
         $agency->address = $_REQUEST['agency_address'];
         $agency->city    = $_REQUEST['agency_city'];
-        $agency->state   = $_REQUEST['agency_state'];
+        $agency->state   = $_REQUEST['agency_state'] == -1 ? null : $_REQUEST['agency_state'];
         $agency->zip     = $_REQUEST['agency_zip'];
+        $agency->country = $_REQUEST['agency_country'];
         $agency->phone   = $_REQUEST['agency_phone'];
         $agency->supervisor_first_name = $_REQUEST['agency_sup_first_name'];
         $agency->supervisor_last_name  = $_REQUEST['agency_sup_last_name'];
@@ -375,6 +376,7 @@ class Internship extends Model
         $agency->supervisor_city    = $_REQUEST['agency_sup_city'];
         $agency->supervisor_state   = $_REQUEST['agency_sup_state'];
         $agency->supervisor_zip     = $_REQUEST['agency_sup_zip'];
+        $agency->supervisor_country = $_REQUEST['agency_sup_country'];
         $agency->address_same_flag  = isset($_REQUEST['copy_address']) ? 't' : 'f';
 
         try{
@@ -492,6 +494,10 @@ class Internship extends Model
         if(!isset($_REQUEST['term']) ||
            $_REQUEST['term'] == -1){
             $vals[] = 'term';
+        }
+        if(!isset($_REQUEST['agency_state']) ||
+           $_REQUEST['agency_state'] == -1){
+            $vals[] = 'agency_state';
         }
 
         return $vals;
