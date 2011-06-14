@@ -199,6 +199,18 @@ class Internship extends Model
     }
 
     /**
+     * Is this internship domestic?
+     */
+    public function isDomestic()
+    {
+        if($this->domestic == 1){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    /**
      * Row tags for DBPager
      */
     public function getRowTags()

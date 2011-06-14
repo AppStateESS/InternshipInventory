@@ -32,15 +32,27 @@ class InternshipDetailsUI implements UI
         $d = $i->getDepartment();
         $docs = $i->getDocuments();
 
+        // Get vars from objects directly.
         $tpl['internship'] = $i->getReadableTypes();
         $tpl['student'][] = get_object_vars($s);
+        // Plug in major and/or grad program name
         if(!is_null($m))
             $tpl['student'][0]['major'] = $m->getName();
         if(!is_null($g))
             $tpl['student'][0]['grad_prog'] = $g->getName();
         $tpl['agency'][] = get_object_vars($a);
+        // Plug in formatted address
+        if($i->isDomestic()){
+            $tpl['agency'][0]['address'] = $a->getDomesticAddress();
+            $tpl['agency'][0]['supervisor_address'] = $a->getSuperDomesticAddress();
+        }else{
+            $tpl['agency'][0]['address'] = $a->getInternationalAddress();
+            $tpl['agency'][0]['supervisor_address'] = $a->getSuperInternationalAddress();
+        }
         $tpl['faculty'][] = get_object_vars($f);
         $tpl['department'][] = get_object_vars($d);
+        
+        // Loop document for internship.
         if(!is_null($docs)){
             foreach($docs as $doc){
                 $tpl['docs'][] = array('DOWNLOAD' => $doc->getDownloadLink(),
@@ -48,6 +60,7 @@ class InternshipDetailsUI implements UI
             }
         }
 
+        // Show the upload document link.
         $folder = new Intern_Folder(Intern_Document::getFolderId());
         $tpl['UPLOAD_DOC'] = $folder->documentUpload($i->id);
 

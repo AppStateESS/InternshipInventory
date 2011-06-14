@@ -40,10 +40,12 @@
       <b>Name:</b> {name}
     </td>
     <td>
-      <b>Address:</b> {address}
-    </td>
-    <td>
       <b>Phone:</b> {phone}
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>Address:</b> {address}      
     </td>
   </tr>
   <tr>
