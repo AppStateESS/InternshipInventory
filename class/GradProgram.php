@@ -33,6 +33,13 @@ class GradProgram extends Editable
     }
 
     /**
+     * Get an empty CSV to fill in fields.
+     */
+    public static function getEmptyCSV(){
+        return array('Graduate Program' => '');
+    }
+
+    /**
      * @Override Editable::getEditAction
      */
     public static function getEditAction()

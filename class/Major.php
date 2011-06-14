@@ -34,6 +34,13 @@ class Major extends Editable
     }
 
     /**
+     * Get an empty CSV to fill in fields.
+     */
+    public static function getEmptyCSV(){
+        return array('Undergraduate Major' => '');
+    }
+
+    /**
      * @Override Editable::getEditAction
      */
     public static function getEditAction()

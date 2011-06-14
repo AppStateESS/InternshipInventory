@@ -50,8 +50,12 @@ class Student extends Model
         
         if($major != null)
             $csv = array_merge($csv, $major->getCSV());
+        else
+            $csv = array_merge($csv, Major::getEmptyCSV());
         if($prog != null)
             $csv = array_merge($csv, $prog->getCSV());
+        else
+            $csv = array_merge($csv, GradProgram::getEmptyCSV());
         
         return $csv;
     }
