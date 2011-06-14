@@ -13,9 +13,8 @@ class InternshipUI implements UI
                                           'department', 'agency_name', 'agency_address', 
                                           'agency_city', 'agency_phone', 'agency_sup_first_name',
                                           'agency_sup_last_name', 'agency_sup_phone',
-                                          'agency_sup_email', 'agency_sup_fax',
-                                          'agency_sup_address', 'agency_sup_city',
-                                          'term', 'start_date', 'end_date');
+                                          'agency_sup_email','agency_sup_address',
+                                          'agency_sup_city','term', 'start_date', 'end_date');
  
 
     public static function display()
