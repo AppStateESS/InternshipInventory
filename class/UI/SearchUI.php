@@ -19,6 +19,7 @@ class SearchUI implements UI
         PHPWS_Core::initModClass('intern', 'Major.php');
         PHPWS_Core::initModClass('intern', 'GradProgram.php');
         PHPWS_Core::initModClass('intern', 'Internship.php');
+        PHPWS_Core::initModClass('intern', 'Agency.php');
 
         // Set up search fields
         $searchForm = new PHPWS_Form();
@@ -58,8 +59,8 @@ class SearchUI implements UI
         $loc = array('domestic' => 'Domestic',
                      'internat' => 'International');
         $searchForm->addRadioAssoc('loc',$loc);
-        $searchForm->addText('state');
-        $searchForm->setLabel('state', 'State/Province/Territory');
+        $searchForm->addSelect('state', Agency::$UNITED_STATES);
+        $searchForm->setLabel('state', 'State');
 
         $searchForm->addSubmit('submit', 'Search');
 

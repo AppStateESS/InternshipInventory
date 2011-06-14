@@ -131,7 +131,7 @@ class ResultsUI implements UI
                 }
             }
         }// End type
-        if(!is_null($state) && $state != ''){
+        if(!is_null($state) && $state != '-1'){
             $pager->addWhere('intern_agency.state', "%$state%", 'ILIKE');
         }
         if(!is_null($loc)){

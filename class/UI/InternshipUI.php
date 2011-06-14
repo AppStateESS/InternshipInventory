@@ -22,6 +22,7 @@ class InternshipUI implements UI
         PHPWS_Core::initModClass('intern', 'Internship.php');
         PHPWS_Core::initModClass('intern', 'Intern_Document.php');
         PHPWS_Core::initModClass('intern', 'Intern_Folder.php');
+        PHPWS_Core::initModClass('intern', 'Agency.php');
 
         $tpl = array();
 
@@ -169,7 +170,7 @@ class InternshipUI implements UI
         $form->setLabel('agency_address', 'Address');
         $form->addText('agency_city');
         $form->setLabel('agency_city', 'City');
-        $form->addSelect('agency_state', self::$state_list);
+        $form->addSelect('agency_state', Agency::$UNITED_STATES);
         $form->setLabel('agency_state', 'State');
         $form->addText('agency_zip');
         $form->setLabel('agency_zip', 'Zip Code');
@@ -191,7 +192,7 @@ class InternshipUI implements UI
         $form->setLabel('agency_sup_address', 'Address');
         $form->addText('agency_sup_city');
         $form->setLabel('agency_sup_city', 'City');
-        $form->addSelect('agency_sup_state', self::$state_list);
+        $form->addSelect('agency_sup_state', Agency::$UNITED_STATES);
         $form->setLabel('agency_sup_state', 'State');
         $form->addText('agency_sup_zip');
         $form->setLabel('agency_sup_zip', 'Zip Code');
@@ -349,59 +350,6 @@ class InternshipUI implements UI
         // Plug 
         $form->plugIn($vals);
     }
-    /* http://www.bytemycode.com/snippets/snippet/454/ */
-    public static $state_list = array(-1  => 'Select State',
-                                      'AL'=>"Alabama",
-                                      'AK'=>"Alaska",  
-                                      'AZ'=>"Arizona",  
-                                      'AR'=>"Arkansas",  
-                                      'CA'=>"California",  
-                                      'CO'=>"Colorado",  
-                                      'CT'=>"Connecticut",  
-                                      'DE'=>"Delaware",  
-                                      'DC'=>"District Of Columbia",  
-                                      'FL'=>"Florida",  
-                                      'GA'=>"Georgia",  
-                                      'HI'=>"Hawaii",  
-                                      'ID'=>"Idaho",  
-                                      'IL'=>"Illinois",  
-                                      'IN'=>"Indiana",  
-                                      'IA'=>"Iowa",  
-                                      'KS'=>"Kansas",  
-                                      'KY'=>"Kentucky",  
-                                      'LA'=>"Louisiana",  
-                                      'ME'=>"Maine",  
-                                      'MD'=>"Maryland",  
-                                      'MA'=>"Massachusetts",  
-                                      'MI'=>"Michigan",  
-                                      'MN'=>"Minnesota",  
-                                      'MS'=>"Mississippi",  
-                                      'MO'=>"Missouri",  
-                                      'MT'=>"Montana",
-                                      'NE'=>"Nebraska",
-                                      'NV'=>"Nevada",
-                                      'NH'=>"New Hampshire",
-                                      'NJ'=>"New Jersey",
-                                      'NM'=>"New Mexico",
-                                      'NY'=>"New York",
-                                      'NC'=>"North Carolina",
-                                      'ND'=>"North Dakota",
-                                      'OH'=>"Ohio",  
-                                      'OK'=>"Oklahoma",  
-                                      'OR'=>"Oregon",  
-                                      'PA'=>"Pennsylvania",  
-                                      'RI'=>"Rhode Island",  
-                                      'SC'=>"South Carolina",  
-                                      'SD'=>"South Dakota",
-                                      'TN'=>"Tennessee",  
-                                      'TX'=>"Texas",  
-                                      'UT'=>"Utah",  
-                                      'VT'=>"Vermont",  
-                                      'VA'=>"Virginia",  
-                                      'WA'=>"Washington",  
-                                      'WV'=>"West Virginia",  
-                                      'WI'=>"Wisconsin",  
-                                      'WY'=>"Wyoming");
 }
 
 ?>
