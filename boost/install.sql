@@ -26,7 +26,6 @@ CREATE TABLE intern_student (
        email VARCHAR NOT NULL,
        ugrad_major INT NULL REFERENCES intern_major(id),
        grad_prog INT NULL REFERENCES intern_grad_prog(id), 
-       graduated INT NOT NULL,
        PRIMARY KEY(id)
 );
 -- Below table is loaded with departments after CREATE TABLE statements.

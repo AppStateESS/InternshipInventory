@@ -11,9 +11,6 @@
     Dept.
   </th>
   <th>
-    Grad./Undergrad.
-  </th>
-  <th>
     Term
   </th>
   <th>
@@ -30,9 +27,6 @@
   </td>
   <td>
     {DEPT_NAME}
-  </td>
-  <td>
-    {GRAD_UGRAD}
   </td>
   <td>
     {TERM}

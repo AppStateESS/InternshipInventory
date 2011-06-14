@@ -19,7 +19,6 @@ class Student extends Model
     public $email;
     public $grad_prog;
     public $ugrad_major;
-    public $graduated;
 
     /**
      * @Override Model::getDb
@@ -46,7 +45,6 @@ class Student extends Model
         $csv['Student Last Name']  = $this->last_name;
         $csv['Student Phone'] = $this->phone;
         $csv['Student Email'] = $this->email;
-        $csv['Graduated'] = $this->graduated==1 ? 'Yes' : 'No';
         
         if($major != null)
             $csv = array_merge($csv, $major->getCSV());

@@ -135,8 +135,6 @@ class InternshipUI implements UI
             $progs = GradProgram::getGradProgsAssoc();
         $form->addSelect('grad_prog', $progs);
         $form->setLabel('grad_prog', 'Graduate Program');
-        $form->addCheck('graduated');
-        $form->setLabel('graduated', 'Graduated');
 
         /**
          * Faculty supervisor info.
@@ -283,7 +281,6 @@ class InternshipUI implements UI
         $vals['student_email'] = $s->email;
         $vals['grad_prog'] = $s->grad_prog;
         $vals['ugrad_major'] = $s->ugrad_major;
-        $vals['graduated'] = $s->graduated;
 
         // Agency
         $form->addHidden('agency_id', $a->id);

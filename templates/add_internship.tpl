@@ -71,12 +71,6 @@
       </td>
     </tr>
     <tr>
-      <td colspan=2>
-        {GRADUATED}<br />
-        {GRADUATED_LABEL}
-      </td>
-    </tr>
-    <tr>
       <td>
         {GRAD_PROG_LABEL}
       </td>

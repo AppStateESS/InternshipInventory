@@ -228,7 +228,6 @@ class Internship extends Model
         // Student info.
         $tags['STUDENT_NAME'] = $s->getFullName();
         $tags['STUDENT_BANNER'] = $s->banner;
-        $tags['GRAD_UGRAD'] = isset($s->graduated) ? 'Graduate' : 'Undergraduate';
         
         // Agency info.
         $tags['AGENCY_NAME'] = $a->name;
@@ -351,7 +350,7 @@ class Internship extends Model
         $student->email = $_REQUEST['student_email'];
         $student->grad_prog   = $_REQUEST['grad_prog'] == -1 ? null : $_REQUEST['grad_prog'];
         $student->ugrad_major = $_REQUEST['ugrad_major'] == -1 ? null : $_REQUEST['ugrad_major'];
-        $student->graduated   = isset($_REQUEST['graduated']);
+
         try{
             $studentId = $student->save();
         }catch(Exception $e){
@@ -690,11 +689,6 @@ class Internship extends Model
         }else{
             $pdf->cell(175, 5, 'N/A', 'RT');
         }
-        $pdf->ln();
-        $this->toggle($pdf);
-        $pdf->cell(22, 5, 'Graduated:', 'LT');
-        $this->toggle($pdf, false);
-        $pdf->cell(168, 5, $s->graduated==1?'Yes':'No', 'RT');
         $pdf->ln();
         $this->toggle($pdf);
         $pdf->cell(35, 5, 'Graduate Program:', 'LTB');
