@@ -24,6 +24,9 @@ class SearchUI implements UI
         $searchForm = new PHPWS_Form();
         $searchForm->setMethod('get');
         $searchForm->addHidden('action', 'results');
+
+        $searchForm->addText('name');
+        $searchForm->setLabel('name', "Name or Banner ID");
         $terms = Term::getTermsAssoc();
         $searchForm->addSelect('term_select', $terms);
         $searchForm->setLabel('term_select', 'Term');
@@ -55,9 +58,9 @@ class SearchUI implements UI
         $loc = array('domestic' => 'Domestic',
                      'internat' => 'International');
         $searchForm->addRadioAssoc('loc',$loc);
-        
-        $searchForm->addText('name');
-        $searchForm->setLabel('name', "Name or Banner ID");
+        $searchForm->addText('state');
+        $searchForm->setLabel('state', 'State/Province/Territory');
+
         $searchForm->addSubmit('submit', 'Search');
 
         // Javascript...

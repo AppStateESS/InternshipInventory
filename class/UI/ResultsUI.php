@@ -24,6 +24,7 @@ class ResultsUI implements UI
         $grad  = null;
         $type  = null;
         $loc   = null;
+        $state = null;
 
         /**
          * Check if any search fields are set.
@@ -42,9 +43,11 @@ class ResultsUI implements UI
             $type = $_REQUEST['type'];
         if(isset($_REQUEST['loc']))
             $loc = $_REQUEST['loc'];
+        if(isset($_REQUEST['state']))
+            $state = $_REQUEST['state'];
 
         /* Get Pager */
-        $pager = self::getPager($name, $dept, $term, $major, $grad, $type, $loc);
+        $pager = self::getPager($name, $dept, $term, $major, $grad, $type, $loc, $state);
         $result = $pager->get();
 
         /* Javascript */
@@ -72,13 +75,14 @@ class ResultsUI implements UI
      */
     private static function getPager($name=null, $deptId=null, $term=null,
                                      $major=null, $grad=null, $type=null,
-                                     $loc=null)
+                                     $loc=null, $state=null)
     {
         $pager = new DBPager('intern_internship', 'Internship');
         $pager->setModule('intern');
         
         $pager->db->addJoin('LEFT', 'intern_internship', 'intern_student', 'student_id', 'id');
         $pager->db->addJoin('LEFT', 'intern_internship', 'intern_admin', 'department_id', 'department_id');
+        $pager->db->addJoin('LEFT', 'intern_internship', 'intern_agency', 'agency_id', 'id');
         if(!Current_User::isDeity())
             $pager->addWhere('intern_admin.username', Current_User::getUsername());
 
@@ -127,6 +131,9 @@ class ResultsUI implements UI
                 }
             }
         }// End type
+        if(!is_null($state) && $state != ''){
+            $pager->addWhere('intern_agency.state', "%$state%", 'ILIKE');
+        }
         if(!is_null($loc)){
             if($loc == 'domestic')
                 $pager->addWhere('domestic', 1);

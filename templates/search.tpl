@@ -47,9 +47,12 @@
     </td>
   </tr>
   <tr>
+    <td class="search-header">{STATE_LABEL}</td>
+    <td>{STATE}</td>
+  </tr>
+  <tr>
     <td colspan="2">{SUBMIT} <input type="button" title="Reset search fields" name="reset" value="Clear Fields"/></td>
   </tr>
-
 </table>
 </table>
 {END_FORM}
