@@ -11,14 +11,11 @@ class InternshipUI implements UI
                                           'supervisor_first_name', 'supervisor_last_name', 
                                           'supervisor_email','supervisor_phone',
                                           'department', 'agency_name', 'agency_address', 
-                                          'agency_city', 'agency_state', 'agency_zip',
-                                          'agency_phone', 'agency_sup_first_name',
+                                          'agency_city', 'agency_phone', 'agency_sup_first_name',
                                           'agency_sup_last_name', 'agency_sup_phone',
                                           'agency_sup_email', 'agency_sup_fax',
                                           'agency_sup_address', 'agency_sup_city',
-                                          'agency_sup_state', 'agency_sup_zip',
-                                          'term', 'start_date', 'end_date', 'agency_country',
-                                          'agency_sup_country');
+                                          'term', 'start_date', 'end_date');
  
 
     public static function display()
@@ -61,13 +58,10 @@ class InternshipUI implements UI
          */
         if(isset($_REQUEST['missing'])){
             $missing = explode(' ', $_REQUEST['missing']);
-            /* Intersect with the required fields array so we're not json encoding any funny stuff. */
-            
-            $missing = array_intersect(self::$requiredFields, $missing);
-            javascript('/modules/intern/missing', array('MISSING' => json_encode($missing)));
+
+            javascript('/modules/intern/missing');
             /*
-             * Set classes on field we are missing. Do this in PHP cuz the user might 
-             * have JS disabled...don't know why they would but just in case.
+             * Set classes on field we are missing. 
              */
             foreach($missing as $m){
                 $form->setClass($m, 'missing');

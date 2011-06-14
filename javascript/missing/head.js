@@ -1,6 +1,5 @@
 <script type="text/javascript">
 $(document).ready(function(){
-    var missing = {MISSING};
     // Toggle missing class if user types stuff into field
     $(".missing").keyup(function(){
         doSomething(this)

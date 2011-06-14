@@ -363,9 +363,26 @@ class Internship extends Model
         $agency->name    = $_REQUEST['agency_name'];
         $agency->address = $_REQUEST['agency_address'];
         $agency->city    = $_REQUEST['agency_city'];
-        $agency->state   = $_REQUEST['agency_state'] == -1 ? null : $_REQUEST['agency_state'];
-        $agency->zip     = $_REQUEST['agency_zip'];
-        $agency->country = $_REQUEST['agency_country'];
+
+        if($_REQUEST['location'] == 'internat'){
+            /* Location is INTERNATIONAL. Country is required. State/Zip are not. */
+            $agency->country = $_REQUEST['agency_country'];
+            $agency->state   = null;
+            $agency->zip = null;
+
+            $agency->supervisor_country = $_REQUEST['agency_sup_country'];
+            $agency->supervisor_state = null;
+            $agency->supervisor_zip = null;
+        }else{
+            /* Location is DOMESTIC. State and zip are needed. Country is U.S.*/
+            $agency->country = 'United States';
+            $agency->state   = $_REQUEST['agency_state'] == -1 ? null : $_REQUEST['agency_state'];
+            $agency->zip     = $_REQUEST['agency_zip'];
+
+            $agency->supervisor_country = 'United States';
+            $agency->supervisor_state = $_REQUEST['agency_sup_state'] == -1 ? null : $_REQUEST['agency_sup_state'];
+            $agency->supervisor_zip = $_REQUEST['agency_sup_zip'];
+        }
         $agency->phone   = $_REQUEST['agency_phone'];
         $agency->supervisor_first_name = $_REQUEST['agency_sup_first_name'];
         $agency->supervisor_last_name  = $_REQUEST['agency_sup_last_name'];
@@ -374,9 +391,6 @@ class Internship extends Model
         $agency->supervisor_fax   = $_REQUEST['agency_sup_fax'];
         $agency->supervisor_address = $_REQUEST['agency_sup_address'];
         $agency->supervisor_city    = $_REQUEST['agency_sup_city'];
-        $agency->supervisor_state   = $_REQUEST['agency_sup_state'];
-        $agency->supervisor_zip     = $_REQUEST['agency_sup_zip'];
-        $agency->supervisor_country = $_REQUEST['agency_sup_country'];
         $agency->address_same_flag  = isset($_REQUEST['copy_address']) ? 't' : 'f';
 
         try{
@@ -495,9 +509,38 @@ class Internship extends Model
            $_REQUEST['term'] == -1){
             $vals[] = 'term';
         }
-        if(!isset($_REQUEST['agency_state']) ||
-           $_REQUEST['agency_state'] == -1){
-            $vals[] = 'agency_state';
+
+        /**
+         * Funky stuff here for location. 
+         * If location is DOMESTIC then State and Zip are required.
+         * If location is INTERNATIONAL then state and zip are not required
+         * and are set to null though Country is required.
+         */
+
+        if($_REQUEST['location'] == 'internat'){
+            if(!isset($_REQUEST['agency_country']) || $_REQUEST['agency_country'] == '')
+                // Add country to missing for Agency.
+                $vals[] = 'agency_country';
+            if(!isset($_REQUEST['agency_sup_country']) || $_REQUEST['agency_sup_country'] == '')
+                // Add country to missing for Agency Supervisor.
+                $vals[] = 'agency_sup_country';
+        }else if($_REQUEST['location'] == 'domestic'){
+            if(!isset($_REQUEST['agency_state']) || $_REQUEST['agency_state'] == -1){
+                // Add state to missing
+                $vals[] = 'agency_state';
+            }
+            if(!isset($_REQUEST['agency_zip']) || $_REQUEST['agency_zip'] == ''){
+                // Add zip to missing
+                $vals[] = 'agency_zip';
+            }
+            if(!isset($_REQUEST['agency_sup_state']) || $_REQUEST['agency_sup_state'] == -1){
+                // Add state to missing (supervisor)
+                $vals[] = 'agency_sup_state';
+            }
+            if(!isset($_REQUEST['agency_sup_zip']) || $_REQUEST['agency_sup_zip'] == ''){
+                // Add zip to missing (supervisor)
+                $vals[] = 'agency_sup_zip';
+            }
         }
 
         return $vals;

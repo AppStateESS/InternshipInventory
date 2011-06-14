@@ -21,7 +21,7 @@
                     $("input:text[name='agency_sup_city']").val($("input:text[name='agency_city']").val());
                 });
                 $("select[name='agency_state']").change(function(){
-                    $("select[name='agency_sup_state']").val($("select[name='agency_state']").val());
+                    $("select[name='agency_sup_state']").val($("select[name='agency_state']").val()).change();
                 });
                 $("input:text[name='agency_zip']").keyup(function(){
                     $("input:text[name='agency_sup_zip']").val($("input:text[name='agency_zip']").val());

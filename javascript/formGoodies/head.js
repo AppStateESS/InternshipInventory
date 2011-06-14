@@ -36,5 +36,66 @@
         }else{
             $("input:text[name='other_type']").attr('disabled', true);
         }
+
+        /*
+         * If domestic is selected show the state and zip code inputs for agency.
+         */
+        var domesticClick = function(){
+            // Make sure state and zip are required.
+            $("#internship_agency_zip,#internship_agency_state,"+
+               "#internship_agency_sup_zip,#internship_agency_sup_state").addClass('input-required');
+
+            // Show zip and state.
+            $("#internship_agency_zip,#internship_agency_state,"+
+               "#internship_agency_sup_zip,#internship_agency_sup_state").show();
+            $("#internship_agency_zip,#internship_agency_state,"+
+              "#internship_agency_sup_zip,#internship_agency_sup_state").parent().siblings().show();
+
+            // Remove requirement class from country (agency and supervisor)
+            $("#internship_agency_country,#internship_agency_sup_country").removeClass('input-required');
+            // Hide countrys
+            $("#internship_agency_country,#internship_agency_sup_country").hide();
+            // Hide labels too.
+            $("#internship_agency_country,#internship_agency_sup_country").parent().siblings().hide();
+        };
+
+        /**
+         * If internat is selected: show country, hide state and zip. Add required flag to country.
+         */
+        var internatClick = function(){
+            // Remove required class from zip/state.
+            $("#internship_agency_zip,#internship_agency_state,"+
+               "#internship_agency_sup_zip,#internship_agency_sup_state").removeClass('input-required');
+
+            // Hide zip and state.
+            $("#internship_agency_zip,#internship_agency_state,"+
+               "#internship_agency_sup_zip,#internship_agency_sup_state").hide();
+            $("#internship_agency_zip,#internship_agency_state,"+
+               "#internship_agency_sup_zip,#internship_agency_sup_state").parent().siblings().hide();
+
+            // Add requirement class from country (agency and supervisor)
+            $("#internship_agency_country,#internship_agency_sup_country").addClass('input-required');
+            // Show countrys
+            $("#internship_agency_country,#internship_agency_sup_country").show();
+            // Show labels too.
+            $("#internship_agency_country,#internship_agency_sup_country").parent().siblings().show();
+        };
+
+        /* Attach above function to click event */
+        $("input:radio[name=location][value=domestic]").click(function(){ domesticClick(); });
+
+        /* Attach above function to click event */
+        $("input:radio[name=location][value=internat]").click(function(){ internatClick(); });
+        
+        // If domestic is checked initially then do setup...
+        if($("input:radio[name=location][value=domestic]").attr('checked')){
+            domesticClick();
+        }
+
+        // If internat is checked initially then do setup...
+        if($("input:radio[name=location][value=internat]").attr('checked')){
+            internatClick();
+        }
+
     });
 </script>
