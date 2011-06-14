@@ -732,7 +732,10 @@ class Internship extends Model
         $this->toggle($pdf);
         $pdf->cell(20, 5, 'Address:', 'LT');
         $this->toggle($pdf, false);
-        $pdf->cell(170, 5, $a->address, 'RT');
+        if($this->domestic == 1)
+            $pdf->cell(170, 5, $a->getDomesticAddress(), 'RT');
+        else
+            $pdf->cell(170, 5, $a->getInternationalAddress(), 'RT');
         $pdf->ln();
 
         $this->toggle($pdf);
@@ -757,7 +760,10 @@ class Internship extends Model
         $this->toggle($pdf);
         $pdf->cell(20, 5, 'Address:', 'LT');
         $this->toggle($pdf, false);
-        $pdf->cell(170, 5, $a->supervisor_address, 'RT');
+        if($this->domestic == 1)
+            $pdf->cell(170, 5, $a->getSuperDomesticAddress(), 'RT');
+        else
+            $pdf->cell(170, 5, $a->getSuperInternationalAddress(), 'RT');
         $pdf->ln();
 
         $this->toggle($pdf);

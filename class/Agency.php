@@ -64,9 +64,50 @@ class Agency extends Model
         return $csv;
     }
 
+    /*
+     * Get full name of supervisor with space in between names.
+     */
     public function getSupervisorFullName()
     {
         return $this->supervisor_first_name.' '.$this->supervisor_last_name;
+    }
+
+    /**
+     * Get the domestic looking address of agency.
+     */
+    public function getDomesticAddress()
+    {
+        return "$this->address, $this->city, $this->state $this->zip";
+    }
+
+    /**
+     * Get an international looking address of agency.
+     */
+    public function getInternationalAddress()
+    {
+        return "$this->address, $this->city, $this->country";
+    }
+
+    /**
+     * Get the domestic looking address of agency.
+     */
+    public function getSuperDomesticAddress()
+    {
+        if($this->address_same_flag == 1)
+            return $this->getDomesticAddress();
+        else
+            return "$this->supervisor_address, $this->supervisor_city, $this->supervisor_state $this->supervisor_zip";
+    }
+
+    /**
+     * Get the international looking address of agency.
+     */
+    public function getSuperInternationalAddress()
+    {
+        if($this->address_same_flag == 1)
+            return $this->getInternationalAddress();
+        else
+            return "$this->supervisor_address, $this->supervisor_city, $this->supervisor_country";
     }
 }
 
