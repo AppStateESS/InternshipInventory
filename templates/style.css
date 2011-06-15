@@ -3,6 +3,11 @@
     font-weight:bold;
 }
 
+.sub-page-title {
+    font-size: 12pt;
+    font-weight: bold;
+}
+
 #link-list {
     float: right;
     margin-bottom: 10px;
@@ -19,6 +24,16 @@
 .menu-list {
     display: inline-block;
     text-align: left;
+}
+
+.deity-list {
+    display: inline-block;
+    text-align: left;
+}
+
+.menu-list li {
+    font-weight: bold;
+    font-size: 12pt;
 }
 
 .edit-major-prog {

@@ -13,7 +13,6 @@ class Intern_MenuUI implements UI{
         if(isset($_SESSION['query'])) unset($_SESSION['query']);
 
         $tags = array();
-        $tags['TITLE']  = "Welcome to the Internship Inventory<br /><br />You may:";
         $tags['SEARCH'] = PHPWS_Text::moduleLink('Search for an Internship', 'intern', array('action' => 'search'));
         $tags['ADD']    = PHPWS_Text::moduleLink('Add an Internship', 'intern', array('action' => 'edit_internship'));
         $auth = Current_User::getAuthorization();

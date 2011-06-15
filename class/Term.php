@@ -35,7 +35,7 @@ class Term extends Model
         }
 
         $readables = array_reverse($readables, true); // preserve keys.
-        $readables[-1] = 'None';
+        $readables[-1] = 'All';
         return array_reverse($readables, true);
     }
 
