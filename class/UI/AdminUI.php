@@ -42,7 +42,7 @@ class AdminUI implements UI {
 
         $form->mergeTemplate($tpl);
 
-        return PHPWS_Template::process($form->getTemplate(),'sysinventory','edit_admin.tpl');
+        return PHPWS_Template::process($form->getTemplate(), 'intern','edit_admin.tpl');
 
     }
 }
