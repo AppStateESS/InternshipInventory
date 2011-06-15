@@ -24,6 +24,7 @@ class SearchUI implements UI
         // Set up search fields
         $searchForm = new PHPWS_Form();
         $searchForm->setMethod('get');
+        $searchForm->addHidden('module', 'intern');
         $searchForm->addHidden('action', 'results');
 
         $searchForm->addText('name');
