@@ -86,7 +86,7 @@ class Intern_Document extends Model
     {
         PHPWS_Core::initModClass('filecabinet', 'Document.php');
         $doc = new PHPWS_Document($this->document_fc_id);
-        return $doc->getViewLink('download');
+        return PHPWS_Text::moduleLink($doc->title, 'filecabinet', array('id' => $doc->id));
     }
 
     /**
