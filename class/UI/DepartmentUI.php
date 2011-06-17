@@ -10,7 +10,7 @@ class DepartmentUI implements UI
             return ;
         }
         javascript('/jquery/');
-        javascript('/modules/intern/editMajor', array('EDIT_ACTION' => Department::getEditAction()));
+        javascript('/intern/editMajor', array('EDIT_ACTION' => Department::getEditAction()));
 
         // Set extra page tags
         $tpl['HOMELINK'] = PHPWS_Text::moduleLink('Back to Menu','intern');

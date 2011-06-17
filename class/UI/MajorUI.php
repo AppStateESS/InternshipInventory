@@ -15,7 +15,7 @@ class MajorUI implements UI
         $tpl['PAGER'] = MajorUI::doPager();
 
         javascript('/jquery/');
-        javascript('/modules/intern/editMajor', array('EDIT_ACTION' => Major::getEditAction()));
+        javascript('/intern/editMajor', array('EDIT_ACTION' => Major::getEditAction()));
         
         /* Form for adding new major */
         $form = &new PHPWS_Form('add_major');

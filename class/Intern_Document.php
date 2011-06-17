@@ -126,7 +126,7 @@ class Intern_Document extends Model
         $jsVars = array();
         $jsVars['QUESTION'] = 'Are you sure you want to delete this document?';
         $jsVars['ADDRESS']  = $link->getAddress();
-        $jsVars['LINK']     = '<img src="images/mod/filecabinet/delete.png" title="Delete" />';
+        $jsVars['LINK']     = '<img src="images/icons/default/trash.png" id="delete-document-icon" title="Delete" />';
         return javascript('confirm', $jsVars);
     }
 

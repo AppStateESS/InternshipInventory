@@ -67,7 +67,7 @@ class SearchUI implements UI
 
         // Javascript...
         javascript('/jquery/');
-        javascript('/modules/intern/resetSearch');
+        javascript('/intern/resetSearch');
 
         return PHPWS_Template::process($searchForm->getTemplate(), 'intern', 'search.tpl');
     }

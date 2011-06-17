@@ -59,7 +59,7 @@ class InternshipUI implements UI
         if(isset($_REQUEST['missing'])){
             $missing = explode(' ', $_REQUEST['missing']);
 
-            javascript('/modules/intern/missing');
+            javascript('/intern/missing');
             /*
              * Set classes on field we are missing. 
              */
@@ -251,8 +251,8 @@ class InternshipUI implements UI
 
         javascript('/jquery/');
         javascript('/jquery_ui/');
-        javascript('/modules/intern/copyAddress');
-        javascript('/modules/intern/formGoodies');
+        javascript('/intern/copyAddress');
+        javascript('/intern/formGoodies');
 
         return $form;
     }

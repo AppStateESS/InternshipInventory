@@ -54,7 +54,7 @@ class ResultsUI implements UI
         javascript('/jquery/');
         javascript('open_window');
         javascript('confirm');
-        javascript('/modules/intern/hider');
+        javascript('/intern/hider');
 
         if(!is_null($pager->display_rows)){
             /* Build up the link for exporting rows to CSV. */
@@ -63,7 +63,7 @@ class ResultsUI implements UI
                 $ids[] = $i->id;
             }
             /* Add link to page. */
-            javascript('/modules/intern/csv', 
+            javascript('/intern/csv', 
                        array('link' => PHPWS_Text::moduleLink('Download Spreadsheet', 'intern', array('action' => 'csv', 'ids' => $ids))));
         }
 

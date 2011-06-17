@@ -164,7 +164,7 @@ class Intern_Document_Manager extends FC_Document_Manager
             if (!isset($_POST['im'])) {
                 javascript('close_refresh');
             } else {
-                javascript('modules/filecabinet/refresh_manager', array('document_id'=>$this->document->id));
+                javascript('/filecabinet/refresh_manager', array('document_id'=>$this->document->id));
             }
             
         } else {

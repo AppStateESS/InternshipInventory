@@ -21,6 +21,10 @@
     text-align: center;
 }
 
+#delete-document-icon {
+    padding-left: 10px;
+}
+
 .menu-list {
     display: inline-block;
     text-align: left;
@@ -85,18 +89,26 @@
 }
 
 #internship-form {
-    margin-top: -36px;
+    width: 100%;
 }
 
 #internship-form .sub-form {
     border: 1px solid #C0C0C0;
     border-top: 24px solid #E3E3E3;
+    width: 100%;
+}
+
+#internship-form .sub-form-cell {
+    width: 50%;
+    padding-right: 10px;
 }
 
 .info-header {
     position: relative;
-    top: 35px;
+    top: 21px;
     left: 5px;
+    font-size: 14pt;
+    font-weight: bold;
 }
 
 .empty-message {

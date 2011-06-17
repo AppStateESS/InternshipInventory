@@ -13,9 +13,9 @@
   <table id="internship-form">
     <tr>
   <!-- Student info section -->
-  <td>
-  <table width="100px" class="sub-form" id="student-info">
-    <h3 class="info-header">Student</h3>
+  <td class="sub-form-cell">
+    <div class="info-header">Student</div>
+  <table class="sub-form" id="student-info">
     <tr>
       <td>
         {STUDENT_FIRST_NAME_LABEL}
@@ -82,9 +82,9 @@
   </td>
   <!-- End student info section -->
   <!-- Faculty info -->
-  <td>
-    <h3 class="info-header">Faculty</h3>
-    <table width="50px" class="sub-form" id="faculty-info">
+  <td class="sub-form-cell">
+    <span class="info-header">Faculty</span>
+    <table class="sub-form" id="faculty-info">
       <tr>
         <td>
           {SUPERVISOR_FIRST_NAME_LABEL}
@@ -125,7 +125,7 @@
       </tr>
     </table>
     <!-- start document list -->
-    <h3 class="info-header">Documents</h3>
+    <span class="info-header">Documents</span>
     <table class="sub-form">
       <tr>
         <td>
@@ -145,8 +145,8 @@
 
   <tr>
   <!-- Internship details -->
-  <td> 
-    <h3 class="info-header">Internship Details</h3>
+  <td class="sub-form-cell"> 
+    <span class="info-header">Internship Details</span>
     <table class="sub-form" id="agency-info">
       <tr>
         <td>{TERM_LABEL}</td>
@@ -228,9 +228,9 @@
   </td>
   <!-- End internship details -->
   <!-- Agency info -->
-  <td>
-    <h3 class="info-header">Agency</h3>
-    <table width="50px" class="sub-form" id="agency-info">
+  <td class="sub-form-cell">
+    <span class="info-header">Agency</span>
+    <table class="sub-form" id="agency-info">
       <tr>
         <td>
           {AGENCY_NAME_LABEL}
