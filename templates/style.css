@@ -1,11 +1,15 @@
 .page-title {
-    font-size:16pt;
+    font-size:20pt;
     font-weight:bold;
+    padding-top: 10px;
+    margin-bottom: -10px;
 }
 
 .sub-page-title {
-    font-size: 12pt;
+    font-size: 14pt;
     font-weight: bold;
+    padding-bottom: 20px;
+    padding-top: 20px;
 }
 
 #link-list {
@@ -18,7 +22,7 @@
 #menu {
     margin-left: auto;
     margin-right: auto;
-    text-align: center;
+    text-align: left;
 }
 
 #delete-document-icon {
@@ -30,14 +34,45 @@
     text-align: left;
 }
 
-.deity-list {
+#deity-list {
     display: inline-block;
     text-align: left;
 }
 
+#everyone-list {
+    list-style-type: none;
+    list-style-image: none;
+}
+
+#everyone-list li {
+    margin-left: -15px;
+}
+
 .menu-list li {
     font-weight: bold;
-    font-size: 12pt;
+    font-size: 10pt;
+}
+
+#main-menu-icon {
+    float: right;
+    position: relative;
+    margin-top: 50px;
+    right: 250px;
+    padding-bottom: 50px;
+}
+
+.menu-icon {
+    vertical-align: middle;
+    width: 40px;
+    height: 40px;
+    padding-right: 10px;
+}
+
+#intern-totals {
+    font-weight: bold;
+    padding-top: 30px;
+    font-size: 10pt;
+    margin-bottom: -10px;
 }
 
 .edit-major-prog {

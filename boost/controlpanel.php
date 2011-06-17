@@ -27,7 +27,7 @@ $link[] = array(
         'restricted'    => true,
         'url'           => 'index.php?module=intern',
         'description'   => 'Manage Intern Inventory',
-        'image'         => 'skeleton.png',
+        'image'         => 'freedo_Glossy_Globe_small.png',
         'tab'           => 'content'
         );
 

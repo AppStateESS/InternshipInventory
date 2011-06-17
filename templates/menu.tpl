@@ -1,22 +1,22 @@
 <div id="logout-link">{LOGOUT}</div>
 <div class="page-title">Welcome to the Internship Inventory</div>
 <br />
-<div class="sub-page-title">You may:</div>
+<img id="main-menu-icon" src="mod/intern/img/freedo_Glossy_Globe.png"/>
 <div id="menu">
-  <ul class="menu-list">
-    <li>{SEARCH}</li>
-    <li>{ADD}</li>
+  <div class="sub-page-title">You May:</div>
+  <ul class="menu-list" id="everyone-list">
+    <li><img class="menu-icon" src="mod/intern/img/edit-find.png"/>{SEARCH}</li>
+    <li><img class="menu-icon" src="mod/intern/img/contact-new.png"/>{ADD}</li>
   </ul>
-<!-- BEGIN admin_section -->
-  <hr width="60%" />
-  <ul class="deity-list">
-    <h2>{DEITY}</h2>
-    <!-- BEGIN majors --><li>{EDIT_MAJORS_LINK}</li><!-- END majors -->
-    <!-- BEGIN grad --><li>{EDIT_GRAD_LINK}</li><!-- END grad -->
-    <!-- BEGIN depts --><li>{EDIT_DEPARTMENTS_LINK}</li><!-- END depts -->
-    <!-- BEGIN admins --><li>{EDIT_ADMINS_LINK}</li><!-- END admins -->
+  <br />
+  <!-- BEGIN admin_section -->
+  <div class="sub-page-title">Admin Options:</div>
+  <ul class="menu-list" id="diety-list">
+      <!-- BEGIN majors --><li>{EDIT_MAJORS_LINK}</li><!-- END majors -->
+      <!-- BEGIN grad --><li>{EDIT_GRAD_LINK}</li><!-- END grad -->
+      <!-- BEGIN depts --><li>{EDIT_DEPARTMENTS_LINK}</li><!-- END depts -->
+      <!-- BEGIN admins --><li>{EDIT_ADMINS_LINK}</li><!-- END admins -->
   </ul>
-<hr width="60%">
-{GRAND_TOTAL_LABEL}{GRAND_TOTAL}<br />
-<!-- END admin_section -->
+    <!-- END admin_section -->
 </div>
+<div id="intern-totals">{GRAND_TOTAL_LABEL}{GRAND_TOTAL}</div>
