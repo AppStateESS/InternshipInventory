@@ -5,7 +5,7 @@
     });
 </script>
 
-<h1>Add Internship</h1>
+<h1>Add Internship<img id="results-icon" class="menu-icon" src="mod/intern/img/contact-new.png"/></h1>
 {PDF}
 <div>
   {START_FORM}
