@@ -16,7 +16,7 @@ class TopUI implements UI
         if(Current_User::isLogged()){
             /* Okay to show the menu */
             $tpl['HOME_LINK']    = PHPWS_Text::moduleLink('Menu', 'intern');
-            $tpl['ADD_LINK']     = PHPWS_Text::moduleLink('Add Internship', 'intern', array('action' => 'edit_internship'));
+            $tpl['ADD_LINK']     = PHPWS_Text::moduleLink('Add Student', 'intern', array('action' => 'edit_internship'));
             $tpl['SEARCH_LINK']  = PHPWS_Text::moduleLink('Search', 'intern', array('action' => 'search'));
             $auth = Current_User::getAuthorization();
             $tpl['LOGOUT'] = "<a href='$auth->logout_link'>Logout</a>";
