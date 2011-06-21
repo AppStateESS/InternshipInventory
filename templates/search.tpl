@@ -1,4 +1,4 @@
-<h1>Internship Search</h1>
+<h1>Internship Search<img id="search-icon" class="menu-icon" src="mod/intern/img/edit-find.png"/></h1>
 {START_FORM}
 
 <table>

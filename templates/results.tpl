@@ -1,3 +1,4 @@
+<h1>Search Results<img id="results-icon" class="menu-icon" src="mod/intern/img/contact-new.png"/></h1>
 <span id="csv-export">{CSV_LINK}</span>
 <table id="search-results">
 <tr id="header-row">

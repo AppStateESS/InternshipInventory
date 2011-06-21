@@ -61,6 +61,14 @@
     padding-bottom: 50px;
 }
 
+#results-icon {
+    padding-left: 10px;
+}
+
+#search-icon {
+    padding-left: 10px;
+}
+
 .menu-icon {
     vertical-align: middle;
     width: 40px;
@@ -180,6 +188,10 @@
 }
 .document-list {
     margin-left: -20px;
+}
+
+#internship_notes {
+    width: 100%;
 }
 
 #search-results {
