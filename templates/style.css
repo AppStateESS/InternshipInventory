@@ -19,6 +19,13 @@
     font-size: 10pt;
 }
 
+#logout-link {
+    float: right;
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 10pt;
+}
+
 #menu {
     margin-left: auto;
     margin-right: auto;
@@ -47,6 +54,7 @@
 #everyone-list li {
     margin-left: -15px;
     font-size: 12pt;
+    margin-bottom: 10px;
 }
 
 .menu-list li {
@@ -195,10 +203,6 @@
 
 #search-results {
     width: 100%;
-}
-
-#logout-link {
-    float: right;
 }
 
 #name-term-dept-search {

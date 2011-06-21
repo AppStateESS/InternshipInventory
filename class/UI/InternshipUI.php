@@ -11,6 +11,8 @@ class InternshipUI implements UI
                                           'supervisor_first_name', 'supervisor_last_name', 
                                           'supervisor_email','supervisor_phone',
                                           'department', 'agency_name', 'agency_address', 
+                                          'agency_state', 'agency_sup_state',
+                                          'agency_zip', 'agency_sup_zip',
                                           'agency_city', 'agency_phone', 'agency_sup_first_name',
                                           'agency_sup_last_name', 'agency_sup_phone',
                                           'agency_sup_email','agency_sup_address',
@@ -27,8 +29,14 @@ class InternshipUI implements UI
         $tpl = array();
 
         if(isset($_REQUEST['id'])){
+            /* Attempting to edit internship */
             try{
                 $internship = new Internship($_REQUEST['id']);
+                if($internship->id == 0){
+                    /* Intership failed to load */
+                    NQ::simple('intern', INTERN_ERROR, 'Failed to get internship.');
+                    return false;
+                }
                 $form = self::getInternshipForm($internship);
                 $tpl['PDF'] = PHPWS_Text::moduleLink('Download Summary Report', 'intern', array('action' => 'pdf', 'id' => $internship->id));
                 self::plugInternship($form, $internship);
@@ -42,14 +50,17 @@ class InternshipUI implements UI
                 }
                 $folder = new Intern_Folder(Intern_Document::getFolderId());
                 $tpl['UPLOAD_DOC'] = $folder->documentUpload($internship->id);
+                $tpl['TITLE'] = 'Edit Student';
             }catch(Exception $e){
                 NQ::simple('intern', INTERN_ERROR, $e->getMessage());
+                return false;
             }
         }else{
             /* Show form with empty fields. */
             $form = self::getInternshipForm();
             // Show a disabled button in document list if we are adding an internship.
             $tpl['UPLOAD_DOC'] = "<input type='button' disabled='disabled' class='disabled-button' title='Must save internship first.' value='Add Document'/>";
+            $tpl['TITLE'] = 'Add Student';
         }
         /*
          * If 'missing' is set then we have been redirected 
@@ -103,8 +114,10 @@ class InternshipUI implements UI
         PHPWS_Core::initModClass('intern', 'GradProgram.php');
 
         $form = new PHPWS_Form('internship');
-        if(!is_null($i))
+        if(!is_null($i)){
             $s = $i->getStudent();
+            $a = $i->getAgency();
+        }
         $form->setAction('index.php?module=intern&action=add_internship');
         $form->addSubmit('submit', 'Save');
 
@@ -172,6 +185,15 @@ class InternshipUI implements UI
         $form->setLabel('agency_city', 'City');
         $form->addSelect('agency_state', Agency::$UNITED_STATES);
         $form->setLabel('agency_state', 'State');
+        if(!is_null($i)){
+            if(!$i->isDomestic()){
+                /* 
+                 * International. Need to add the location as extra 
+                 * to the form element. Hackz
+                 */
+                $form->setExtra('agency_state', "where='$a->state'");
+            }
+        }
         $form->addText('agency_zip');
         $form->setLabel('agency_zip', 'Zip Code');
         $form->addText('agency_country');
@@ -194,6 +216,15 @@ class InternshipUI implements UI
         $form->setLabel('agency_sup_city', 'City');
         $form->addSelect('agency_sup_state', Agency::$UNITED_STATES);
         $form->setLabel('agency_sup_state', 'State');
+        if(!is_null($i)){
+            if(!$i->isDomestic()){
+                /* 
+                 * International. Need to add the location as extra 
+                 * to the form element. Hackz
+                 */
+                $form->setExtra('agency_sup_state', "where='$a->state'");
+            }
+        }
         $form->addText('agency_sup_zip');
         $form->setLabel('agency_sup_zip', 'Zip Code');
         $form->addText('agency_sup_country');
@@ -251,7 +282,6 @@ class InternshipUI implements UI
 
         javascript('/jquery/');
         javascript('/jquery_ui/');
-        javascript('/intern/copyAddress');
         javascript('/intern/formGoodies');
 
         return $form;

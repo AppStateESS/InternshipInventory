@@ -54,6 +54,7 @@ CREATE TABLE intern_agency (
        supervisor_city VARCHAR NOT NULL DEFAULT '',
        supervisor_state VARCHAR NOT NULL DEFAULT 'XX',
        supervisor_zip INT NOT NULL DEFAULT 00000,
+       supervisor_country VARCHAR NOT NULL DEFAULT 'United States',
        address_same_flag BOOLEAN NOT NULL DEFAULT TRUE,
        PRIMARY KEY(id)
 );
@@ -90,7 +91,7 @@ CREATE TABLE intern_internship (
        research_assist SMALLINT NOT NULL,
        student_teaching SMALLINT NOT NULL,
        clinical_practica SMALLINT NOT NULL,
-       special_topic SMALLINT NOT NULL,
+       special_topics SMALLINT NOT NULL,
        other_type TEXT,
        credits INT NULL,
        avg_hours_week INT NULL,

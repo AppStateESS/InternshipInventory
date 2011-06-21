@@ -374,27 +374,23 @@ class Internship extends Model
         $agency->name    = $_REQUEST['agency_name'];
         $agency->address = $_REQUEST['agency_address'];
         $agency->city    = $_REQUEST['agency_city'];
+        $agency->zip     = $_REQUEST['agency_zip'];
+        $agency->phone   = $_REQUEST['agency_phone'];
 
         if($_REQUEST['location'] == 'internat'){
-            /* Location is INTERNATIONAL. Country is required. State/Zip are not. */
+            /* Location is INTERNATIONAL. Country is required. Province was typed in. */
+            $agency->state   = $_REQUEST['agency_state'];
             $agency->country = $_REQUEST['agency_country'];
-            $agency->state   = null;
-            $agency->zip = null;
-
+            $agency->supervisor_state   = $_REQUEST['agency_state'];
             $agency->supervisor_country = $_REQUEST['agency_sup_country'];
-            $agency->supervisor_state = null;
-            $agency->supervisor_zip = null;
         }else{
-            /* Location is DOMESTIC. State and zip are needed. Country is U.S.*/
-            $agency->country = 'United States';
+            /* Location is DOMESTIC. Country is U.S. State was chosen from drop down */
             $agency->state   = $_REQUEST['agency_state'] == -1 ? null : $_REQUEST['agency_state'];
-            $agency->zip     = $_REQUEST['agency_zip'];
-
+            $agency->country = 'United States';
+            $agency->supervisor_state   = $_REQUEST['agency_state'] == -1 ? null : $_REQUEST['agency_state'];
             $agency->supervisor_country = 'United States';
-            $agency->supervisor_state = $_REQUEST['agency_sup_state'] == -1 ? null : $_REQUEST['agency_sup_state'];
-            $agency->supervisor_zip = $_REQUEST['agency_sup_zip'];
         }
-        $agency->phone   = $_REQUEST['agency_phone'];
+
         $agency->supervisor_first_name = $_REQUEST['agency_sup_first_name'];
         $agency->supervisor_last_name  = $_REQUEST['agency_sup_last_name'];
         $agency->supervisor_phone = $_REQUEST['agency_sup_phone'];
@@ -402,6 +398,7 @@ class Internship extends Model
         $agency->supervisor_fax   = $_REQUEST['agency_sup_fax'];
         $agency->supervisor_address = $_REQUEST['agency_sup_address'];
         $agency->supervisor_city    = $_REQUEST['agency_sup_city'];
+        $agency->supervisor_zip     = $_REQUEST['agency_sup_zip'];
         $agency->address_same_flag  = isset($_REQUEST['copy_address']) ? 't' : 'f';
 
         try{
