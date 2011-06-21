@@ -380,7 +380,7 @@
   <!-- End agency info -->
   </tr>
   </table>
-  <b>{NOTES_LABEL}</b><br />{NOTES}<br />
+  <h2>{NOTES_LABEL}</h2><div>{NOTES}</div>
   {SUBMIT}
 {END_FORM}
 </div>
