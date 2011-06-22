@@ -48,7 +48,9 @@ class ResultsUI implements UI
 
         /* Get Pager */
         $pager = self::getPager($name, $dept, $term, $major, $grad, $type, $loc, $state);
-        $result = $pager->get();
+        /* Get all results first. For use with CSV Exporting. Then we the limit again. Sorry */
+        $pager->limit = null;
+        $csvResult = $pager->get();
 
         /* Javascript */
         javascript('/jquery/');
@@ -67,6 +69,12 @@ class ResultsUI implements UI
                        array('link' => PHPWS_Text::moduleLink('Download Spreadsheet', 'intern', array('action' => 'csv', 'ids' => $ids))));
         }
 
+        if(isset($_GET['limit'])){
+            $pager->limit = $_GET['limit'];
+            $pager->display_rows = null;
+        }
+
+        $result = $pager->get();
         return $result;
     }
 
