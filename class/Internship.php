@@ -454,6 +454,13 @@ class Internship extends Model
         $i->department_id = $_REQUEST['department'];
         $i->start_date = strtotime($_REQUEST['start_date']);
         $i->end_date = strtotime($_REQUEST['end_date']);
+        // Check dates
+        if($i->start_date > $i->end_date){
+            PHPWS_DB::rollback();
+            NQ::simple('intern', INTERN_WARNING, 'Start date needs to be before end date.');
+            NQ::close();
+            return PHPWS_Core::goBack();
+        }
         $i->credits = $_REQUEST['credits'] == '' ? NULL : $_REQUEST['credits'];
         $i->avg_hours_week = $_REQUEST['avg_hours_week'] == '' ? NULL : $_REQUEST['avg_hours_week'];
         $i->domestic = $_REQUEST['location'] == 'domestic';
