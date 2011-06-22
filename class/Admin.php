@@ -68,12 +68,59 @@ class Admin extends Model
                      'DEPARTMENT' => $d->name,
                      'DELETE' => $link);
     }
+    
+    /**
+     * Grant user access to search and manage all departments.
+     */
+    public static function addAll($username)
+    {
+        // First check that the username passed in is a registered user.
+        $db = new PHPWS_DB('users');
+        $db->addWhere('username', $username);
+        $db->addColumn('id', $count=true);
+
+        if(sizeof($db->select()) == 0){
+            // No user exists with that name.
+            return NQ::simple('intern', INTERN_ERROR, "No user exists with the name <i>$username</i>. Please choose a valid username.");
+        }
+        
+        // Deity users automatically see every department. No need to add them to table.
+        $db->reset();
+        $db->addWhere('username', $username);
+        $db->addWhere('deity', true);
+        $db->addColumn('id', $count=true);
+        if(sizeof($db->select()) >= 1){
+            // Is a deity.
+            return NQ::simple('intern', INTERN_WARNING, "<i>$username</i> can view all internships in all departments.");
+        }
+
+        /* Get list of department ids to reference */
+        PHPWS_Core::initModClass('intern', 'Department.php');
+        $db = Department::getDB();
+        $db->addColumn('id');
+        $ids = $db->select('col');
+
+        /* Create and save many Admin objects. */
+        foreach($ids as $id){
+            if(!self::allowed($username, $id)){
+                $ia = new Admin();
+                $ia->username = $username;
+                $ia->department_id = $id;
+                $ia->save();
+            }
+        }
+
+        return NQ::simple('intern', INTERN_SUCCESS, "<i>$username</i> can now view all internships.");
+    }
 
     /**
      * Grant user access to search and manage Department.
      */
     public static function add($username, $departmentId)
     {
+        if(empty($username)){
+            return NQ::simple('intern', INTERN_WARNING, 'No username entered.');
+        }
         // First check that the username passed in is a registered user.
         $db = new PHPWS_DB('users');
         $db->addWhere('username', $username);

@@ -32,11 +32,15 @@ class AdminUI implements UI {
         $form->setLabel('department_id','Department');
         $form->addText('username');
         $form->setLabel('username','Username');
+        $form->addCheck('all');
+        $form->setLabel('all', 'All Departments');
         $form->addSubmit('submit','Create Admin');
         $form->setAction('index.php?module=intern&action=edit_admins');
         $form->addHidden('add', 1);
 
         // TODO: Add Javascript autocomplete for usernames.
+        javascript('/jquery');
+        javascript('/intern/admin');
 
         $tpl['PAGER'] = $adminList;
 
