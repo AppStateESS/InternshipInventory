@@ -107,6 +107,8 @@ function otherStuff(){
 
         // Add requirement class from country (agency and supervisor)
         $("#internship_agency_country,#internship_agency_sup_country").addClass('input-required');
+        // Add the 'required-input' red star.
+        $("#internship_agency_country-label,#internship_agency_sup_country-label").append('<span class="required-input">*</span>');
         // Show countrys
         $("#internship_agency_country,#internship_agency_sup_country").fadeIn('fast');
         // Show labels too.
