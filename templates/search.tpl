@@ -55,6 +55,10 @@
     <td>{STATE}</td>
   </tr>
   <tr>
+    <td class="search-header">{PROV_LABEL}</td>
+    <td>{PROV}</td>
+  </tr>
+  <tr>
     <td colspan="2">{SUBMIT} <input type="button" title="Reset search fields" name="reset" value="Clear Fields"/></td>
   </tr>
 </table>

@@ -22,16 +22,16 @@ class SearchUI implements UI
         PHPWS_Core::initModClass('intern', 'Agency.php');
 
         // Set up search fields
-        $searchForm = new PHPWS_Form();
-        $searchForm->setMethod('get');
-        $searchForm->addHidden('module', 'intern');
-        $searchForm->addHidden('action', 'results');
+        $form = new PHPWS_Form();
+        $form->setMethod('get');
+        $form->addHidden('module', 'intern');
+        $form->addHidden('action', 'results');
 
-        $searchForm->addText('name');
-        $searchForm->setLabel('name', "Name or Banner ID");
+        $form->addText('name');
+        $form->setLabel('name', "Name or Banner ID");
         $terms = Term::getTermsAssoc();
-        $searchForm->addSelect('term_select', $terms);
-        $searchForm->setLabel('term_select', 'Term');
+        $form->addSelect('term_select', $terms);
+        $form->setLabel('term_select', 'Term');
 
         // Deity can search for any department. Other users are restricted.
         if(Current_User::isDeity()){
@@ -39,39 +39,45 @@ class SearchUI implements UI
         }else{
             $depts = Department::getDepartmentsAssocForUsername(Current_User::getUsername());
         }
-        $searchForm->addSelect('dept', $depts);
-        $searchForm->setLabel('dept', 'Department');
+        $form->addSelect('dept', $depts);
+        $form->setLabel('dept', 'Department');
         
         // Major
         $majors = Major::getMajorsAssoc();
-        $searchForm->addSelect('major', $majors);
-        $searchForm->setLabel('major', 'Major');
+        $form->addSelect('major', $majors);
+        $form->setLabel('major', 'Major');
         
         // Grad. Program
         $grad = GradProgram::getGradProgsAssoc();
-        $searchForm->addSelect('grad', $grad);
-        $searchForm->setLabel('grad', 'Graduate Program');
+        $form->addSelect('grad', $grad);
+        $form->setLabel('grad', 'Graduate Program');
         
         // Internship types.
         $types = Internship::getTypesAssoc();
-        $searchForm->addCheckAssoc('type', $types);
-        $searchForm->addText('other_type');
-        $searchForm->setLabel('other_type', 'Other Internship Type:');
+        $form->addCheckAssoc('type', $types);
+        $form->addText('other_type');
+        $form->setLabel('other_type', 'Other Internship Type:');
 
         // Location
         $loc = array('domestic' => 'Domestic',
                      'internat' => 'International');
-        $searchForm->addRadioAssoc('loc',$loc);
-        $searchForm->addSelect('state', Agency::$UNITED_STATES);
-        $searchForm->setLabel('state', 'State');
+        $form->addRadioAssoc('loc',$loc);
+        /* State search */
+        $form->addSelect('state', Agency::$UNITED_STATES);
+        $form->setLabel('state', 'State');
+        /* Province search */
+        $form->addText('prov');
 
-        $searchForm->addSubmit('submit', 'Search');
+        $form->setLabel('prov', 'Provine/Territory');
+        
+
+        $form->addSubmit('submit', 'Search');
 
         // Javascript...
         javascript('/jquery/');
         javascript('/intern/resetSearch');
 
-        return PHPWS_Template::process($searchForm->getTemplate(), 'intern', 'search.tpl');
+        return PHPWS_Template::process($form->getTemplate(), 'intern', 'search.tpl');
     }
 
 }

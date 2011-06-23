@@ -44,7 +44,7 @@
     </td>
   </tr>
   <tr>
-    <td>
+    <td colspan="3">
       <b>Address:</b> {address}      
     </td>
   </tr>
@@ -63,11 +63,13 @@
     </td>
   </tr>
   <tr>
+    <td colspan="3">
+      <b>Address:</b> {supervisor_address}
+    </td>
+  </tr>
+  <tr>
     <td>
       <b>Fax:</b> {supervisor_fax}
-    </td>
-    <td>
-      <b>Address:</b> {supervisor_address}
     </td>
   </tr>
   <!-- END agency -->

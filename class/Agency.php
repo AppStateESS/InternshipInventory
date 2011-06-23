@@ -85,7 +85,7 @@ class Agency extends Model
      */
     public function getInternationalAddress()
     {
-        return "$this->address, $this->city, $this->country $this->zip";
+        return "$this->address, $this->city, $this->state, $this->country $this->zip";
     }
 
     /**
@@ -107,7 +107,7 @@ class Agency extends Model
         if($this->address_same_flag == 1)
             return $this->getInternationalAddress();
         else
-            return "$this->supervisor_address, $this->supervisor_city, $this->supervisor_country $this->supervisor_zip";
+            return "$this->supervisor_address, $this->supervisor_city,  $this->state, $this->supervisor_country $this->supervisor_zip";
     }
 
     /* http://www.bytemycode.com/snippets/snippet/454/ */
