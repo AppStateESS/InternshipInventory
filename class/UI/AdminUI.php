@@ -39,6 +39,7 @@ class AdminUI implements UI {
 
         // TODO: Add Javascript autocomplete for usernames.
         javascript('/jquery');
+        javascript('/jquery_ui');
         javascript('/intern/admin');
 
         $tpl['PAGER'] = $adminList;

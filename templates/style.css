@@ -228,6 +228,10 @@
     border: 1px solid silver;
 }
 
+.ui-autocomplete {
+    width: 100px;
+}
+
 /* Overriding default formatting of asterisk 
    for required fields in Form class */
 .required-input {

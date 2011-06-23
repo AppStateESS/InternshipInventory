@@ -74,6 +74,10 @@ class Admin extends Model
      */
     public static function addAll($username)
     {
+        if(empty($username)){
+            return NQ::simple('intern', INTERN_WARNING, 'No username entered.');
+        }
+
         // First check that the username passed in is a registered user.
         $db = new PHPWS_DB('users');
         $db->addWhere('username', $username);
@@ -183,6 +187,15 @@ class Admin extends Model
         $pager->addRowTags('rowTags');
         
         return $pager->get();
+    }
+
+    public static function searchUsers($string)
+    {
+        $db = new PHPWS_DB('users');
+        $db->addWhere('username', "%$string%", 'ILIKE');
+        $db->addColumn('username');
+
+        return $db->select('col');
     }
 }
 

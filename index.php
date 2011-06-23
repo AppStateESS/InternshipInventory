@@ -219,6 +219,10 @@ switch ($req) {
         }else if(isset($_REQUEST['del'])){
             // Delete the user in REQUEST from department in REQUEST.
             Admin::del($_REQUEST['username'], $_REQUEST['department_id']);
+        }else if(isset($_REQUEST['user_complete'])){
+            $users = Admin::searchUsers($_REQUEST['term']);
+            echo json_encode($users);
+            exit();
         }
         $content = AdminUI::display();
         break;
