@@ -125,6 +125,9 @@ class Admin extends Model
         if(empty($username)){
             return NQ::simple('intern', INTERN_WARNING, 'No username entered.');
         }
+        if($departmentId == -1){
+            return NQ::simple('intern', INTERN_WARNING, 'No department selected.');
+        }
         // First check that the username passed in is a registered user.
         $db = new PHPWS_DB('users');
         $db->addWhere('username', $username);
@@ -144,7 +147,7 @@ class Admin extends Model
             // Is a deity.
             return NQ::simple('intern', INTERN_WARNING, "<i>$username</i> can view all internships in all departments.");
         }
-
+        
         PHPWS_Core::initModClass('intern', 'Department.php');
         $d = new Department($departmentId);
 
