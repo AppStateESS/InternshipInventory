@@ -6,7 +6,7 @@
 </script>
 
 <h1>{TITLE}<img id="results-icon" class="menu-icon" src="mod/intern/img/contact-new.png"/></h1>
-{PDF}
+<div id="pdf-download">{PDF}</div>
 <div>
   {START_FORM}
   {SUBMIT}
