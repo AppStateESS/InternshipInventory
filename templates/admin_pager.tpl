@@ -1,8 +1,8 @@
 <table id="admin-pager" border=0 cellspacing=3 cellpadding=3>
 <tr>
-    <th>USERNAME</th>
-    <th>DEPARTMENT</th>
-    <th>OPTION</th>
+    <th>Username</th>
+    <th>Department</th>
+    <th>Option</th>
 </tr>
 <!-- BEGIN empty_table -->
 <tr>

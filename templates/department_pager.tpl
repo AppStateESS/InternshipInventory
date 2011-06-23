@@ -1,6 +1,6 @@
 <table id="department-pager">
 <tr>
-    <th>Name:</th>
+    <th>Name</th>
     <th>Option</th>
 </tr>
 <!-- BEGIN empty_table -->

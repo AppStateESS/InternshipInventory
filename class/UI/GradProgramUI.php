@@ -11,7 +11,6 @@ class GradProgramUI implements UI
             return false;
         }
 
-        $tpl['HOMELINK'] = PHPWS_Text::moduleLink('Back to Menu','intern');
         $tpl['PAGER'] = self::doPager();
 
         javascript('/jquery/');

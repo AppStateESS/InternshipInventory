@@ -17,7 +17,6 @@ class AdminUI implements UI {
         // set up some stuff for the page template
         $tpl                     = array();
         $tpl['PAGE_TITLE']       = 'Edit Administrators';
-        $tpl['HOME_LINK']        = PHPWS_Text::moduleLink('Back to menu','intern');
 
         // create the list of admins
         $adminList = Admin::getAdminPager();

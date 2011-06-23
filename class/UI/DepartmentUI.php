@@ -11,9 +11,6 @@ class DepartmentUI implements UI
         }
         javascript('/jquery/');
         javascript('/intern/editMajor', array('EDIT_ACTION' => Department::getEditAction()));
-
-        // Set extra page tags
-        $tpl['HOMELINK'] = PHPWS_Text::moduleLink('Back to Menu','intern');
         
         // Form for adding new department
         $form = &new PHPWS_Form('add_department');

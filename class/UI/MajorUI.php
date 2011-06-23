@@ -11,7 +11,6 @@ class MajorUI implements UI
             return false;
         }
 
-        $tpl['HOMELINK'] = PHPWS_Text::moduleLink('Back to Menu','intern');
         $tpl['PAGER'] = MajorUI::doPager();
 
         javascript('/jquery/');
