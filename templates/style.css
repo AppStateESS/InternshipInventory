@@ -94,12 +94,12 @@
     margin-bottom: -10px;
 }
 
-.edit-major-prog {
+.edit-prog {
     color: #0A759B;
     cursor: pointer;
 }
 
-.hidden-major-prog {
+.hidden-prog {
     font-style: italic;
     color: #888888;
 }

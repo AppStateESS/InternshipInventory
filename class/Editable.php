@@ -171,13 +171,13 @@ abstract class Editable extends Model
         $tags = array();
         $tags['ID'] = $this->id;
         if($this->isHidden()){
-            $tags['NAME'] = "<span id='$this->id' class='$this->id major-prog hidden-major-prog'>$this->name</span>";
+            $tags['NAME'] = "<span id='$this->id' class='$this->id prog hidden-prog'>$this->name</span>";
         }else{
-            $tags['NAME'] = "<span id='$this->id' class='$this->id major-prog'>$this->name</span>";
+            $tags['NAME'] = "<span id='$this->id' class='$this->id prog'>$this->name</span>";
         }
 
         if(Current_User::allow('intern', $this->getEditPermission())){
-            $tags['EDIT'] = "<span id='edit-$this->id' class='$this->id edit-major-prog'>Edit</span> | ";
+            $tags['EDIT'] = "<span id='edit-$this->id' class='$this->id edit-prog'>Edit</span> | ";
             if($this->isHidden()){
                 $tags['HIDE'] = PHPWS_Text::moduleLink('Show', 'intern', array('action' => $this->getEditAction(), 'hide' => false, 'id'=>$this->getId()));
             }else{
