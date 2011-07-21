@@ -1,4 +1,4 @@
-<script type="text/javascript" src="mod/intern/javascript/hider/hider.js"></script>
+<script type="text/javascript" src="{source_http}mod/intern/javascript/hider/hider.js"></script>
 <script type="text/javascript">
     $(document).ready(function(){
         $(".result-row").each(function(){

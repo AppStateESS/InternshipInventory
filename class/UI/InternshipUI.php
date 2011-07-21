@@ -1,23 +1,27 @@
 <?php
 
-  /**
-   * This class holds the form for adding/editing an internship.
-   */
+/**
+ * This class holds the form for adding/editing an internship.
+ */
 PHPWS_Core::initModClass('intern', 'UI/UI.php');
-class InternshipUI implements UI
-{
-    public static $requiredFields = array('student_first_name', 'student_last_name', 
-                                          'banner','student_phone','student_email',
-                                          'supervisor_first_name', 'supervisor_last_name', 
-                                          'supervisor_email','supervisor_phone',
-                                          'department', 'agency_name', 'agency_address', 
-                                          'agency_state', 'agency_sup_state',
-                                          'agency_zip', 'agency_sup_zip',
-                                          'agency_city', 'agency_phone', 'agency_sup_first_name',
-                                          'agency_sup_last_name', 'agency_sup_phone',
-                                          'agency_sup_email','agency_sup_address',
-                                          'agency_sup_city','term', 'start_date', 'end_date');
- 
+
+class InternshipUI implements UI {
+
+    /**
+     * @editor Matt Mcnaney
+     * The following fields were removed on 7/21/2011
+     * 'supervisor_first_name', 'supervisor_last_name', 'supervisor_email',
+     * 'supervisor_phone', 'department'
+     */
+    public static $requiredFields = array('student_first_name', 'student_last_name',
+        'banner', 'student_phone', 'student_email',
+        'agency_name', 'agency_address',
+        'agency_state', 'agency_sup_state',
+        'agency_zip', 'agency_sup_zip',
+        'agency_city', 'agency_phone', 'agency_sup_first_name',
+        'agency_sup_last_name', 'agency_sup_phone',
+        'agency_sup_email', 'agency_sup_address',
+        'agency_sup_city', 'term', 'start_date', 'end_date');
 
     public static function display()
     {
@@ -28,11 +32,11 @@ class InternshipUI implements UI
 
         $tpl = array();
 
-        if(isset($_REQUEST['id'])){
+        if (isset($_REQUEST['id'])) {
             /* Attempting to edit internship */
-            try{
+            try {
                 $internship = new Internship($_REQUEST['id']);
-                if($internship->id == 0){
+                if ($internship->id == 0) {
                     /* Intership failed to load */
                     NQ::simple('intern', INTERN_ERROR, 'Failed to get internship.');
                     return false;
@@ -42,20 +46,20 @@ class InternshipUI implements UI
                 self::plugInternship($form, $internship);
                 /* Plug in document list */
                 $docs = $internship->getDocuments();
-                if(!is_null($docs)){
-                    foreach($docs as $doc){
+                if (!is_null($docs)) {
+                    foreach ($docs as $doc) {
                         $tpl['docs'][] = array('DOWNLOAD' => $doc->getDownloadLink('blah'),
-                                               'DELETE'   => $doc->getDeleteLink());
+                            'DELETE' => $doc->getDeleteLink());
                     }
                 }
                 $folder = new Intern_Folder(Intern_Document::getFolderId());
                 $tpl['UPLOAD_DOC'] = $folder->documentUpload($internship->id);
                 $tpl['TITLE'] = 'Edit Student';
-            }catch(Exception $e){
+            } catch (Exception $e) {
                 NQ::simple('intern', INTERN_ERROR, $e->getMessage());
                 return false;
             }
-        }else{
+        } else {
             /* Show form with empty fields. */
             $form = self::getInternshipForm();
             // Show a disabled button in document list if we are adding an internship.
@@ -67,14 +71,14 @@ class InternshipUI implements UI
          * back to the form because the user didn't type in something and
          * somehow got past the javascript.
          */
-        if(isset($_REQUEST['missing'])){
+        if (isset($_REQUEST['missing'])) {
             $missing = explode(' ', $_REQUEST['missing']);
 
             javascriptMod('intern', 'missing');
             /*
              * Set classes on field we are missing. 
              */
-            foreach($missing as $m){
+            foreach ($missing as $m) {
                 $form->setClass($m, 'missing');
             }
 
@@ -82,7 +86,7 @@ class InternshipUI implements UI
             $form->plugIn($_GET);
 
             // If internship is being edited... 
-            if(isset($_REQUEST['internship_id'])){
+            if (isset($_REQUEST['internship_id'])) {
                 /* Re-add hidden fields with object ID's */
                 $i = new Internship($_GET['internship_id']);
                 $s = $i->getStudent();
@@ -99,7 +103,7 @@ class InternshipUI implements UI
         Layout::addPageTitle('Add Internship');
         return PHPWS_Template::process($form->getTemplate(), 'intern', 'add_internship.tpl');
     }
-    
+
     /**
      * Build the form for adding/editing an internship.
      *
@@ -114,7 +118,7 @@ class InternshipUI implements UI
         PHPWS_Core::initModClass('intern', 'GradProgram.php');
 
         $form = new PHPWS_Form('internship');
-        if(!is_null($i)){
+        if (!is_null($i)) {
             $s = $i->getStudent();
             $a = $i->getAgency();
         }
@@ -131,18 +135,18 @@ class InternshipUI implements UI
         $form->addText('student_last_name');
         $form->setLabel('student_last_name', 'Last Name');
         $form->addText('banner');
-        $form->setLabel('banner', 'Banner ID');// Digits only
+        $form->setLabel('banner', 'Banner ID'); // Digits only
         $form->addText('student_phone');
         $form->setLabel('student_phone', 'Phone');
         $form->addText('student_email');
         $form->setLabel('student_email', 'Email');
-        if(isset($s))
+        if (isset($s))
             $majors = Major::getMajorsAssoc($s->ugrad_major);
         else
             $majors = Major::getMajorsAssoc();
         $form->addSelect('ugrad_major', $majors);
         $form->setLabel('ugrad_major', 'Undergraduate Major');
-        if(isset($s))
+        if (isset($s))
             $progs = GradProgram::getGradProgsAssoc($s->grad_prog);
         else
             $progs = GradProgram::getGradProgsAssoc();
@@ -160,13 +164,13 @@ class InternshipUI implements UI
         $form->setLabel('supervisor_email', 'Email');
         $form->addText('supervisor_phone');
         $form->setLabel('supervisor_phone', 'Phone');
-        if(Current_User::isDeity()){
-            if(!is_null($i))
+        if (Current_User::isDeity()) {
+            if (!is_null($i))
                 $depts = Department::getDepartmentsAssoc($i->department_id);
-            else 
+            else
                 $depts = Department::getDepartmentsAssoc();
-        }else{
-            if(!is_null($i))
+        }else {
+            if (!is_null($i))
                 $depts = Department::getDepartmentsAssocForUsername(Current_User::getUsername(), $i->department_id);
             else
                 $depts = Department::getDepartmentsAssocForUsername(Current_User::getUsername());
@@ -185,9 +189,9 @@ class InternshipUI implements UI
         $form->setLabel('agency_city', 'City');
         $form->addSelect('agency_state', Agency::$UNITED_STATES);
         $form->setLabel('agency_state', 'State');
-        if(!is_null($i)){
-            if(!$i->isDomestic()){
-                /* 
+        if (!is_null($i)) {
+            if (!$i->isDomestic()) {
+                /*
                  * International. Need to add the location as extra 
                  * to the form element. Hackz
                  */
@@ -216,9 +220,9 @@ class InternshipUI implements UI
         $form->setLabel('agency_sup_city', 'City');
         $form->addSelect('agency_sup_state', Agency::$UNITED_STATES);
         $form->setLabel('agency_sup_state', 'State');
-        if(!is_null($i)){
-            if(!$i->isDomestic()){
-                /* 
+        if (!is_null($i)) {
+            if (!$i->isDomestic()) {
+                /*
                  * International. Need to add the location as extra 
                  * to the form element. Hackz
                  */
@@ -247,15 +251,15 @@ class InternshipUI implements UI
         $form->setLabel('avg_hours_week', 'Average Hours per Week');
         $loc = array('domestic' => 'Domestic', 'internat' => 'International');
         $form->addRadioAssoc('location', $loc);
-        $form->setMatch('location', 'domestic');// Default to domestic
+        $form->setMatch('location', 'domestic'); // Default to domestic
         $pay = array('unpaid' => 'Unpaid', 'paid' => 'Paid');
         $form->addRadioAssoc('payment', $pay);
-        $form->setMatch('payment', 'unpaid');// Default to unpaid
+        $form->setMatch('payment', 'unpaid'); // Default to unpaid
         $form->addCheck('stipend');
         $form->setLabel('stipend', 'Stipend');
         $form->addCheck('internship_default_type');
         $form->setLabel('internship_default_type', 'Internship');
-        $form->setMatch('internship_default_type', true);// Internship is checked by default
+        $form->setMatch('internship_default_type', true); // Internship is checked by default
         $form->addCheck('service_learning_type');
         $form->setLabel('service_learning_type', 'Service Learning');
         $form->addCheck('independent_study_type');
@@ -271,12 +275,12 @@ class InternshipUI implements UI
         $form->addCheck('check_other_type');
         $form->addText('other_type');
         $form->setLabel('other_type', 'Other Type');
-        
+
         $form->addTextArea('notes');
         $form->setLabel('notes', 'Notes');
 
         // Label required fields
-        foreach(self::$requiredFields as $field){
+        foreach (self::$requiredFields as $field) {
             $form->setRequired($field);
         }
 
@@ -354,15 +358,15 @@ class InternshipUI implements UI
         $vals['department'] = $i->department_id;
 
         // Other internship details
-        if($i->domestic){
+        if ($i->domestic) {
             $form->setMatch('location', 'domestic');
-        }else{
+        } else {
             $form->setMatch('location', 'internat');
         }
-        if($i->paid){
+        if ($i->paid) {
             $form->setMatch('payment', 'paid');
             $form->setMatch('stipend', $i->stipend);
-        }else{
+        } else {
             $form->setMatch('payment', 'unpaid');
         }
         $form->setMatch('term', $i->term);
@@ -373,13 +377,14 @@ class InternshipUI implements UI
         $form->setMatch('student_teaching_type', $i->student_teaching);
         $form->setMatch('clinical_practica_type', $i->clinical_practica);
         $form->setMatch('special_topics_type', $i->special_topics);
-        if($i->other_type != '' && !is_null($i->other_type)){
+        if ($i->other_type != '' && !is_null($i->other_type)) {
             $form->setMatch('check_other_type', true);
         }
-  
+
         // Plug 
         $form->plugIn($vals);
     }
+
 }
 
 ?>

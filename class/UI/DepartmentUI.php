@@ -13,7 +13,7 @@ class DepartmentUI implements UI
         javascriptMod('intern', 'editMajor', array('EDIT_ACTION' => Department::getEditAction()));
         
         // Form for adding new department
-        $form = &new PHPWS_Form('add_department');
+        $form = new PHPWS_Form('add_department');
         $form->addText('name');
         $form->setLabel('name','Department Name');
         $form->addSubmit('submit','Add Department');

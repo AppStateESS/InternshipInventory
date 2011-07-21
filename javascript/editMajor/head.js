@@ -1,5 +1,6 @@
-<script type="text/javascript" src="javascript/modules/intern/editMajor/Row.js"></script>
+<script type="text/javascript" src="{source_http}mod/intern/javascript/editMajor/Row.js"></script>
 <script type="text/javascript">
+//lolwut
     $(document).ready(function(){
         /* Act like a link */
         $(".edit-major-prog").hover(function(){ $(this).css('text-decoration', 'underline'); },

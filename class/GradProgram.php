@@ -21,7 +21,8 @@ class GradProgram extends Editable
      */
     public function getDb()
     {
-        return new PHPWS_DB('intern_grad_prog');
+        $db = new PHPWS_DB('intern_grad_prog');
+        return $db;
     }
 
     /**
