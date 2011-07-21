@@ -38,9 +38,9 @@ class AdminUI implements UI {
         $form->addHidden('add', 1);
 
         // TODO: Add Javascript autocomplete for usernames.
-        javascript('/jquery');
-        javascript('/jquery_ui');
-        javascript('/intern/admin');
+        javascript('jquery');
+        javascript('jquery_ui');
+        javascriptMod('intern', 'admin');
 
         $tpl['PAGER'] = $adminList;
 

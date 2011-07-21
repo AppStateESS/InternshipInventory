@@ -14,7 +14,7 @@ class GradProgramUI implements UI
         $tpl['PAGER'] = self::doPager();
 
         javascript('/jquery/');
-        javascript('/intern/editMajor', array('EDIT_ACTION' => GradProgram::getEditAction()));
+        javascriptMod('intern', 'editMajor', array('EDIT_ACTION' => GradProgram::getEditAction()));
         
         /* Form for adding new grad program */
         $form = &new PHPWS_Form('add_prog');

@@ -70,7 +70,7 @@ class InternshipUI implements UI
         if(isset($_REQUEST['missing'])){
             $missing = explode(' ', $_REQUEST['missing']);
 
-            javascript('/intern/missing');
+            javascriptMod('intern', 'missing');
             /*
              * Set classes on field we are missing. 
              */

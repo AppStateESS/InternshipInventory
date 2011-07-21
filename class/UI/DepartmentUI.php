@@ -10,7 +10,7 @@ class DepartmentUI implements UI
             return ;
         }
         javascript('/jquery/');
-        javascript('/intern/editMajor', array('EDIT_ACTION' => Department::getEditAction()));
+        javascriptMod('intern', 'editMajor', array('EDIT_ACTION' => Department::getEditAction()));
         
         // Form for adding new department
         $form = &new PHPWS_Form('add_department');
