@@ -30,6 +30,10 @@ class Intern_MenuUI implements UI{
             $tags['DEITY']                 = 'Admin Options';
             $tags['EDIT_DEPARTMENTS_LINK']      = PHPWS_Text::secureLink('Edit Departments','intern',array('action' => DEPT_EDIT));
         }
+        if(Current_User::allow('intern', 'edit_states')){
+            $tags['DEITY']                 = 'Admin Options';
+            $tags['EDIT_STATES_LINK']      = PHPWS_Text::secureLink('Edit States','intern',array('action' => STATE_EDIT));
+        }
 
         if(Current_User::isDeity()){
             $tags['DEITY']                 = 'Admin Options';

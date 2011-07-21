@@ -8,7 +8,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     include '../../config/core/404.html';
     exit();
 }
-
+define('STATE_EDIT', 'edit_states');
 // Check some permissions
 if(!Current_User::isLogged()){
     PHPWS_Core::reroute('/admin');
@@ -24,6 +24,7 @@ $ie_fail = "/MSIE/";
 PHPWS_Core::initModClass('intern', 'UI/Intern_NotifyUI.php');
 PHPWS_Core::initModClass('intern', 'Term.php');
 PHPWS_Core::initModClass('intern', 'Major.php');
+PHPWS_Core::initModClass('intern', 'State.php');
 PHPWS_Core::initModClass('intern', 'GradProgram.php');
 PHPWS_Core::initModClass('intern', 'Department.php');
 
@@ -204,6 +205,50 @@ switch ($req) {
         }
         $content = MajorUI::display();
         break;
+        case STATE_EDIT:
+            PHPWS_Core::initModClass('intern', 'UI/StateUI.php');
+            if(isset($_REQUEST['add'])){
+            /* Add state with the name passed in REQUEST. */
+            if(isset($_REQUEST['name'])){
+                State::add($_REQUEST['name']);
+            }else{
+                NQ::simple('intern', INTERN_ERROR, "State must have name.");
+            }
+        }else if(isset($_REQUEST['rename'])){
+            /* Rename state with ID to new name that was passed in REQUEST */
+            if(isset($_REQUEST['id'])){
+                $s = new State($_REQUEST['id']);
+                $s->rename($_REQUEST['rename']);
+            }else{
+                NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot rename state.");
+            }
+        }else if(isset($_REQUEST['hide'])){
+            /* Hide state with ID passed in REQUEST. */
+            if(isset($_REQUEST['id'])){
+                $s = new State($_REQUEST['id']);
+                $s->hide($_REQUEST['hide'] == 1);
+            }else{
+                NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot hide state.");
+            }
+        }else if(isset($_REQUEST['del'])){
+            /* Delete state with same ID passed in REQUEST. */
+            if(isset($_REQUEST['id'])){
+                $s = new State($_REQUEST['id']);
+                $s->del();
+            }else{
+                NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot delete state.");
+            }
+        }else if(isset($_REQUEST['fDel'])){
+            /* Forcefully delete a state */
+            if(isset($_REQUEST['id'])){
+                $s = new State($_REQUEST['id']);
+                $s->forceDelete();
+            }else{
+                NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot delete state.");
+            }
+        }
+        $content = StateUI::display();
+            break;
     case 'edit_admins':
         PHPWS_Core::initModClass('intern', 'UI/AdminUI.php');
         PHPWS_Core::initModClass('intern', 'Admin.php');

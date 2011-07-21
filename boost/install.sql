@@ -36,6 +36,13 @@ CREATE TABLE intern_department (
        PRIMARY KEY(id)
 );
 
+CREATE TABLE intern_state (
+       id INT NOT NULL,
+       name VARCHAR NOT NULL UNIQUE,
+       hidden SMALLINT NULL DEFAULT 0,
+       PRIMARY KEY(id)
+);
+
 CREATE TABLE intern_agency (
        id INT NOT NULL,
        name VARCHAR NOT NULL,  

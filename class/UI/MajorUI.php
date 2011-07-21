@@ -17,7 +17,7 @@ class MajorUI implements UI
         javascriptMod('intern', 'editMajor', array('EDIT_ACTION' => Major::getEditAction()));
         
         /* Form for adding new major */
-        $form = &new PHPWS_Form('add_major');
+        $form = new PHPWS_Form('add_major');
         $form->addText('name');
         $form->setLabel('name', 'Major Title');
         $form->addSubmit('submit','Add Major');
