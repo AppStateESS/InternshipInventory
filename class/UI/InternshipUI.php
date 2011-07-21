@@ -280,9 +280,9 @@ class InternshipUI implements UI
             $form->setRequired($field);
         }
 
-        javascript('/jquery/');
-        javascript('/jquery_ui/');
-        javascript('/intern/formGoodies');
+        javascript('jquery');
+        javascript('jquery_ui');
+        javascriptMod('intern', 'formGoodies');
 
         return $form;
     }
