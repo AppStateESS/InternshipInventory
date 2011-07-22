@@ -11,17 +11,14 @@ class InternshipUI implements UI {
      * @editor Matt Mcnaney
      * The following fields were removed on 7/21/2011
      * 'supervisor_first_name', 'supervisor_last_name', 'supervisor_email',
-     * 'supervisor_phone', 'department'
+     * 'supervisor_phone', 'department', 'term', 'start_date', 'end_date',
+     * 'agency_sup_phone','agency_address','agency_zip', 'agency_sup_zip',
+     * 'agency_phone',  'agency_city', 'agency_sup_state', 'agency_sup_first_name',
+     * 'agency_sup_last_name', 'agency_sup_email', 'agency_sup_address',
+     * 'agency_sup_city'
      */
     public static $requiredFields = array('student_first_name', 'student_last_name',
-        'banner', 'student_phone', 'student_email',
-        'agency_name', 'agency_address',
-        'agency_state', 'agency_sup_state',
-        'agency_zip', 'agency_sup_zip',
-        'agency_city', 'agency_phone', 'agency_sup_first_name',
-        'agency_sup_last_name', 'agency_sup_phone',
-        'agency_sup_email', 'agency_sup_address',
-        'agency_sup_city', 'term', 'start_date', 'end_date');
+        'banner', 'student_phone', 'student_email', 'agency_name', 'agency_state');
 
     public static function display()
     {
@@ -181,13 +178,26 @@ class InternshipUI implements UI {
         /**
          * Agency supervisor info.
          */
+        $db = new PHPWS_DB('intern_state');
+        $db->addWhere('active', 1);
+        $db->addColumn('abbr');
+        $db->addColumn('full_name');
+        $db->setIndexBy('abbr');
+        // get backwards because we flip it
+        $db->addOrder('full_name desc');
+        $states = $db->select('col');
+        if (empty($states)) {
+            exit(sprintf('Please go under admin options and <a href="index.php?module=intern&action=edit_states&authkey=%s">add allowed states.</a>', Current_User::getAuthKey()));
+        }
+        $states[-1] = 'Select a state';
+        $states = array_reverse($states, true);
         $form->addText('agency_name');
         $form->setLabel('agency_name', 'Name');
         $form->addText('agency_address');
         $form->setLabel('agency_address', 'Address');
         $form->addText('agency_city');
         $form->setLabel('agency_city', 'City');
-        $form->addSelect('agency_state', Agency::$UNITED_STATES);
+        $form->addSelect('agency_state', $states);
         $form->setLabel('agency_state', 'State');
         if (!is_null($i)) {
             if (!$i->isDomestic()) {
@@ -218,7 +228,7 @@ class InternshipUI implements UI {
         $form->setLabel('agency_sup_address', 'Address');
         $form->addText('agency_sup_city');
         $form->setLabel('agency_sup_city', 'City');
-        $form->addSelect('agency_sup_state', Agency::$UNITED_STATES);
+        $form->addSelect('agency_sup_state', $states);
         $form->setLabel('agency_sup_state', 'State');
         if (!is_null($i)) {
             if (!$i->isDomestic()) {

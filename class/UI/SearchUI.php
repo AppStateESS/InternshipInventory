@@ -63,7 +63,20 @@ class SearchUI implements UI
                      'internat' => 'International');
         $form->addRadioAssoc('loc',$loc);
         /* State search */
-        $form->addSelect('state', Agency::$UNITED_STATES);
+        $db = new PHPWS_DB('intern_state');
+        $db->addWhere('active', 1);
+        $db->addColumn('abbr');
+        $db->addColumn('full_name');
+        $db->setIndexBy('abbr');
+        // get backwards because we flip it
+        $db->addOrder('full_name desc');
+        $states = $db->select('col');
+        if (empty($states)) {
+            exit(sprintf('Please go under admin options and <a href="index.php?module=intern&action=edit_states&authkey=%s">add allowed states.</a>', Current_User::getAuthKey()));
+        }
+        $states[-1] = 'Select state';
+        $states = array_reverse($states, true);
+        $form->addSelect('state', $states);
         $form->setLabel('state', 'State');
         /* Province search */
         $form->addText('prov');
@@ -74,7 +87,7 @@ class SearchUI implements UI
         $form->addSubmit('submit', 'Search');
 
         // Javascript...
-        javascript('/jquery/');
+        javascript('jquery');
         javascriptMod('intern', 'resetSearch');
 
         return PHPWS_Template::process($form->getTemplate(), 'intern', 'search.tpl');
