@@ -35,7 +35,11 @@ class Internship extends Model
     public $clinical_practica;
     public $special_topics;
     public $other_type;
-
+    public $loc_address;
+    public $loc_city;
+    public $loc_country;
+    public $loc_state;
+    public $loc_zip;
     /**
      * @Override Model::getDb
      */

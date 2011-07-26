@@ -285,6 +285,21 @@ class InternshipUI implements UI {
         $form->addCheck('check_other_type');
         $form->addText('other_type');
         $form->setLabel('other_type', 'Other Type');
+        
+        /**
+         * Internship location
+         */
+        $form->addText('loc_address');
+        $form->setLabel('loc_address', 'Address');
+        $form->addText('loc_city');
+        $form->setLabel('loc_city', 'City');
+        $form->addText('loc_country');
+        $form->setLabel('loc_country', 'Country');
+        $form->addSelect('loc_state', $states);
+        $form->setLabel('loc_state', 'State');
+        $form->addText('loc_zip');
+        $form->setLabel('loc_zip', 'Zip');
+        
 
         $form->addTextArea('notes');
         $form->setLabel('notes', 'Notes');

@@ -148,7 +148,18 @@
   <td class="sub-form-cell"> 
     <span class="info-header">Internship Details</span>
     <table class="sub-form" id="agency-info">
+    <tr><td colspan="2">
+    <fieldset>
+            <legend>
+              <b>Location</b>
+            </legend>
+            {LOCATION_1}{LOCATION_1_LABEL}
+            {LOCATION_2}{LOCATION_2_LABEL}
+    </fieldset>
+        </td>
+      </tr>
       <tr>
+
         <td>{TERM_LABEL}</td>
         <td>{TERM}</td>
       </tr>
@@ -184,16 +195,26 @@
           {AVG_HOURS_WEEK}
         </td>
       </tr>
+      <tr><td colspan="2"><h3>Student Location during Internship</h3></td></tr>
       <tr>
-        <td colspan="2">
-          <fieldset>
-            <legend>
-              <b>Location</b>
-            </legend>
-            {LOCATION_1}{LOCATION_1_LABEL}
-            {LOCATION_2}{LOCATION_2_LABEL}
-          </fieldset>
-        </td>
+        <td>{LOC_ADDRESS_LABEL}</td>
+        <td>{LOC_ADDRESS}</td>
+      </tr>
+      <tr>
+        <td>{LOC_CITY_LABEL}</td>
+        <td>{LOC_CITY}</td>
+      </tr>
+      <tr>
+        <td>{LOC_STATE_LABEL}</td>
+        <td>{LOC_STATE}</td>
+      </tr>
+      <tr>
+        <td>{LOC_ZIP_LABEL}</td>
+        <td>{LOC_ZIP}</td>
+      </tr>
+      <tr>
+        <td>{LOC_COUNTRY_LABEL}</td>
+        <td>{LOC_COUNTRY}</td>
       </tr>
       <tr>
         <td colspan="2">
@@ -231,6 +252,7 @@
   <td class="sub-form-cell">
     <span class="info-header">Agency</span>
     <table class="sub-form" id="agency-info">
+      
       <tr>
         <td>
           {AGENCY_NAME_LABEL}
