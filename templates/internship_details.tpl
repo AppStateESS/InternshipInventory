@@ -1,10 +1,10 @@
-<table class="internship-details">
+<table class="internship-details" border="0" cellpadding="4" width="100%">
   <!-- BEGIN student -->
   <tr>
-    <th colspan="4" class="detail-header">Student</th>
+    <th colspan="2" class="detail-header">Student</th>
   </tr>
   <tr>
-    <td>
+    <td width="50%">
       <b>Email:</b> <a href="mailto:{email}">{email}</a>
     </td>
     <td>
@@ -23,7 +23,7 @@
 
   <!-- BEGIN internship -->
   <tr>
-    <th colspan="6" class="detail-header">Internship Type[s]</th>
+    <th colspan="2" class="detail-header">Internship Type[s]</th>
   </tr>
   <tr>
     <td colspan="2">
@@ -33,7 +33,7 @@
   <!-- END internship -->
   <!-- BEGIN agency -->
   <tr>
-    <th colspan="6" class="detail-header">Agency</th>
+    <th colspan="2" class="detail-header">Agency</th>
   </tr>
   <tr>
     <td>
@@ -44,12 +44,13 @@
     </td>
   </tr>
   <tr>
-    <td colspan="3">
+    <td colspan="2">
       <b>Address:</b> {address}      
     </td>
   </tr>
+<!-- BEGIN agen-super -->
   <tr>
-    <th colspan="6" class="detail-header">Agency Supervisor</th>
+    <th colspan="2" class="detail-header">Agency Supervisor</th>
   </tr>
   <tr>
     <td>
@@ -58,25 +59,27 @@
     <td>
       <b>Phone:</b> {supervisor_phone}
     </td>
+  </tr>
+  <tr>
+    <td>
+      <b>Address:</b> {supervisor_address}
     <td>
       <b>Email:</b> <a href="mailto:{supervisor_email}">{supervisor_email}</a>
     </td>
-  </tr>
-  <tr>
-    <td colspan="3">
-      <b>Address:</b> {supervisor_address}
     </td>
   </tr>
+<!-- BEGIN super-fax -->
   <tr>
     <td>
       <b>Fax:</b> {supervisor_fax}
     </td>
   </tr>
+<!-- END super-fax -->
+<!-- END agen-super -->
   <!-- END agency -->
-
   <!-- BEGIN faculty -->
   <tr>
-    <th colspan="6" class="detail-header">Faculty Supervisor</th>
+    <th colspan="2" class="detail-header">Faculty Supervisor</th>
   </tr>
   <tr>
     <td>
@@ -85,13 +88,15 @@
     <td>
       <b>Phone:</b> {phone}
     </td>
-    <td>
+</tr>
+<tr>
+    <td colspan="2">
       <b>Email:</b> <a href="mailto:{email}">{email}</a>
     </td>
   </tr>
   <!-- END faculty -->
   <tr>
-    <td>
+    <td colspan="2">
       <ul class="document-list">
         <h4 class="detail-header">Documents</h4>
         <!-- BEGIN docs -->

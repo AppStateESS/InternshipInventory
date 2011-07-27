@@ -11,14 +11,15 @@ class InternshipUI implements UI {
      * @editor Matt Mcnaney
      * The following fields were removed on 7/21/2011
      * 'supervisor_first_name', 'supervisor_last_name', 'supervisor_email',
-     * 'supervisor_phone', 'department', 'term', 'start_date', 'end_date',
+     * 'supervisor_phone', 'start_date', 'end_date',
      * 'agency_sup_phone','agency_address','agency_zip', 'agency_sup_zip',
      * 'agency_phone',  'agency_city', 'agency_sup_state', 'agency_sup_first_name',
      * 'agency_sup_last_name', 'agency_sup_email', 'agency_sup_address',
-     * 'agency_sup_city'
+     * 'agency_sup_city', 'department'
      */
     public static $requiredFields = array('student_first_name', 'student_last_name',
-        'banner', 'student_phone', 'student_email', 'agency_name', 'agency_state');
+        'banner', 'student_phone', 'student_email', 'agency_name', 'agency_state',
+        'ugrad_major', 'term');
 
     public static function display()
     {
@@ -372,12 +373,18 @@ class InternshipUI implements UI {
 
         // Internship
         $form->addHidden('internship_id', $i->id);
-        $vals['start_date'] = date('m/d/Y', $i->start_date);
-        $vals['end_date'] = date('m/d/Y', $i->end_date);
+        $vals['start_date'] = $i->start_date ? date('m/d/Y', $i->start_date) : null;
+        $vals['end_date'] = $i->end_date ? date('m/d/Y', $i->end_date) : null;
         $vals['credits'] = $i->credits;
         $vals['avg_hours_week'] = $i->avg_hours_week;
         $vals['other_type'] = $i->other_type;
         $vals['notes'] = $i->notes;
+        $vals['loc_address'] = $i->loc_address;
+        $vals['loc_city'] = $i->loc_city;
+        $vals['loc_country'] = $i->loc_country;
+        $vals['loc_state'] = $i->loc_state;
+        $vals['loc_zip'] = $i->loc_zip;
+        
 
         // Department
         $vals['department'] = $i->department_id;

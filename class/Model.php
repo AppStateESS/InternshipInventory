@@ -1,21 +1,21 @@
 <?php
 
-  /**
-   * Model
-   *
-   * This is the basic model for actors for an internship.
-   * Model handles loading/saving the object from the database.
-   *
-   * @author Robert Bost <bostrt at tux dot appstate dot edu>
-   */
+/**
+ * Model
+ *
+ * This is the basic model for actors for an internship.
+ * Model handles loading/saving the object from the database.
+ *
+ * @author Robert Bost <bostrt at tux dot appstate dot edu>
+ */
+abstract class Model {
 
-abstract class Model 
-{
     public $id;
 
-    /** Get a PHPWS_DB Object. **/
+    /** Get a PHPWS_DB Object. * */
     abstract function getDb();
-    /** Get an array that's ready to turn into CSV. **/
+
+    /** Get an array that's ready to turn into CSV. * */
     abstract function getCSV();
 
     /**
@@ -23,12 +23,12 @@ abstract class Model
      */
     public function __construct($id=0)
     {
-        if(!is_null($id) && is_numeric($id)){
-            $this->id = $id;
-            
+        if ((int) $id > 0) {
+            $this->id = (int) $id;
+
             $result = $this->load();
 
-            if(!$result){
+            if (!$result) {
                 $this->id = 0;
             }
         } else {
@@ -36,26 +36,27 @@ abstract class Model
         }
     }
 
-    public function getId(){
+    public function getId()
+    {
         return $this->id;
     }
 
     /**
      * Load the model from the database with matching $this->id.
-     */ 
+     */
     public function load()
     {
-        if(is_null($this->id) || !is_numeric($this->id))
+        if (is_null($this->id) || !is_numeric($this->id))
             return false;
 
         $db = $this->getDb();
         $db->addWhere('id', $this->id);
         $result = $db->loadObject($this);
 
-        if(PHPWS_Error::logIfError($result)){
+        if (PHPWS_Error::logIfError($result)) {
             throw new Exception($result->toString());
         }
-        
+
         return $result;
     }
 
@@ -66,9 +67,13 @@ abstract class Model
     public function save()
     {
         $db = $this->getDb();
-        $result = $db->saveObject($this);
+        try {
+            $result = $db->saveObject($this);
+        } catch (Exception $e) {
+            exit($e->getMessage());
+        }
 
-        if(PHPWS_Error::logIfError($result)){
+        if (PHPWS_Error::logIfError($result)) {
             throw new Exception($result->toString());
         }
 
@@ -80,19 +85,20 @@ abstract class Model
      */
     public function delete()
     {
-        if(is_null($this->id) || !is_numeric($this->id))
+        if (is_null($this->id) || !is_numeric($this->id))
             return false;
 
         $db = $this->getDb();
         $db->addWhere('id', $this->id);
         $result = $db->delete();
-        
-        if(PHPWS_Error::logIfError($result)){
+
+        if (PHPWS_Error::logIfError($result)) {
             throw new Exception($result->getMessage(), $result->getCode());
         }
 
         return true;
     }
+
 }
 
 ?>

@@ -35,7 +35,7 @@ if (Term::isTimeToUpdate()) {
 
 // Check that user has compat. browser
 if (preg_match($ie7, $browser)) {
-    $error = 'It is STRONGLY reccommended that you use Mozilla Firefox to access the Intern Inventory';
+    $error = 'It is STRONGLY recommended that you use Mozilla Firefox to access the Intern Inventory';
 } else if (preg_match($ie_fail, $browser)) {
     NQ::simple('intern', INTERN_ERROR, 'Intern Inventory is not compatible with your browser. Please use Mozilla Firefox or another secure browser to access the database.');
     // @hack

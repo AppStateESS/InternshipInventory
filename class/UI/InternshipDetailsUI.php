@@ -63,7 +63,6 @@ class InternshipDetailsUI implements UI
         // Show the upload document link.
         $folder = new Intern_Folder(Intern_Document::getFolderId());
         $tpl['UPLOAD_DOC'] = $folder->documentUpload($i->id);
-
         return PHPWS_Template::process($tpl, 'intern', 'internship_details.tpl');
     }
 }
