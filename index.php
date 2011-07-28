@@ -287,6 +287,19 @@ switch ($req) {
         NQ::close();
         PHPWS_Core::goBack();
         break;
+    
+    case 'unapprove':
+        if (!Current_User::isDeity()) {
+            Current_User::disallow();
+        }
+        PHPWS_Core::initModClass('intern', 'Internship.php');
+        $internship = new Internship((int)$_GET['id']);
+        $internship->approved = 0;
+        $internship->approved_by = null;
+        $internship->approved_on = 0;
+        $internship->save();
+        PHPWS_Core::goBack();
+        break;
     default:
         PHPWS_Core::initModClass('intern', 'Intern_Menu.php');
         // @hack

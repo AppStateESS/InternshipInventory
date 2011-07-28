@@ -126,6 +126,18 @@ class InternshipUI implements UI {
         /**
          * Student fields
          */
+        if (!$i->approved) {
+            $form->addCheckbox('approved');
+            $form->setLabel('approved', 'Internship approved by Dean');
+        } else {
+            $approved_on = "Approved by {$i->approved_by} on " . date('g:ia, M j, Y', $i->approved_on);
+            if (Current_User::isDeity()) {
+                $approved_on .= ' <a href="index.php?module=intern&action=unapprove&id='
+                . $i->id  . '&authkey=' . Current_User::getAuthKey() . '">Unapprove</a>';
+            }
+            $form->addTplTag('APPROVED_BY_ON', $approved_on);
+            
+        }
         $form->addText('student_first_name');
         $form->setLabel('student_first_name', 'First Name');
         $form->addText('student_middle_name');
@@ -286,7 +298,7 @@ class InternshipUI implements UI {
         $form->addCheck('check_other_type');
         $form->addText('other_type');
         $form->setLabel('other_type', 'Other Type');
-        
+
         /**
          * Internship location
          */
@@ -300,7 +312,20 @@ class InternshipUI implements UI {
         $form->setLabel('loc_state', 'State');
         $form->addText('loc_zip');
         $form->setLabel('loc_zip', 'Zip');
-        
+
+
+        $form->addText('course_subj');
+        $form->setLabel('course_subj', 'Subject');
+
+        $form->addText('course_no');
+        $form->setLabel('course_no', 'Number');
+
+        $form->addText('course_sect');
+        $form->setLabel('course_sect', 'Section');
+
+        $form->addText('course_title');
+        $form->setLabel('course_title', 'Title');
+
 
         $form->addTextArea('notes');
         $form->setLabel('notes', 'Notes');
@@ -384,7 +409,12 @@ class InternshipUI implements UI {
         $vals['loc_country'] = $i->loc_country;
         $vals['loc_state'] = $i->loc_state;
         $vals['loc_zip'] = $i->loc_zip;
-        
+
+        $vals['course_subj'] = $i->course_subj;
+        $vals['course_no'] = $i->course_no;
+        $vals['course_sect'] = $i->course_sect;
+        $vals['course_title'] = $i->course_title;
+
 
         // Department
         $vals['department'] = $i->department_id;

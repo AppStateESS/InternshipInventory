@@ -10,6 +10,7 @@
 <div>
   {START_FORM}
   {SUBMIT}
+  <p style="float : right">{APPROVED} {APPROVED_LABEL} {APPROVED_BY_ON}</p>
   <table id="internship-form">
     <tr>
   <!-- Student info section -->
@@ -159,7 +160,6 @@
         </td>
       </tr>
       <tr>
-
         <td>{TERM_LABEL}</td>
         <td>{TERM}</td>
       </tr>
@@ -195,6 +195,11 @@
           {AVG_HOURS_WEEK}
         </td>
       </tr>
+      <tr><td colspan="2"><h3>Course Information</h3></td></tr>
+      <tr><td>{COURSE_SUBJ_LABEL}</td><td>{COURSE_SUBJ}</td></tr>
+      <tr><td>{COURSE_NO_LABEL}</td><td>{COURSE_NO}</td></tr>
+      <tr><td>{COURSE_SECT_LABEL}</td><td>{COURSE_SECT}</td></tr>
+      <tr><td>{COURSE_TITLE_LABEL}</td><td>{COURSE_TITLE}</td></tr>
       <tr><td colspan="2"><h3>Student Location during Internship</h3></td></tr>
       <tr>
         <td>{LOC_ADDRESS_LABEL}</td>
@@ -216,6 +221,7 @@
         <td>{LOC_COUNTRY_LABEL}</td>
         <td>{LOC_COUNTRY}</td>
       </tr>
+
       <tr>
         <td colspan="2">
           <fieldset>

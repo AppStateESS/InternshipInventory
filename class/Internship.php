@@ -14,6 +14,21 @@ class Internship extends Model {
     public $term;
     public $student_id;
     public $agency_id;
+    /**
+     * If true, internship was approved by the Dean
+     * @var boolean
+     */
+    public $approved = false;
+    /**
+     * username of person who approved it
+     * @var string
+     */
+    public $approved_by = null;
+    /**
+     * Timestamp of approval
+     * @var integer
+     */
+    public $approved_on = 0;
     public $faculty_supervisor_id;
     public $department_id;
     public $start_date = 0;
@@ -39,6 +54,10 @@ class Internship extends Model {
     public $loc_country;
     public $loc_state;
     public $loc_zip;
+    public $course_subj;
+    public $course_no;
+    public $course_sect;
+    public $course_title;
 
     /**
      * @Override Model::getDb
@@ -78,12 +97,19 @@ class Internship extends Model {
         $i['Student Teaching'] = $this->student_teaching == 1 ? 'Yes' : 'No';
         $i['Clinical Practica'] = $this->clinical_practica == 1 ? 'Yes' : 'No';
         $i['Special Topics'] = $this->special_topics == 1 ? 'Yes' : 'No';
+        $i['Approved by Dean'] = $this->approved == 1 ? 'Yes' : 'No';
+        $i['Approver'] = $this->approved_by;
+        $i['Approval Date'] = $this->approved_on;
         $i['Other Type'] = $this->other_type;
         $i['Notes'] = $this->notes;
         $i['Location Address'] = $this->loc_address;
         $i['Location State'] = $this->loc_state;
         $i['Location City'] = $this->loc_city;
         $i['Location Zip'] = $this->loc_zip;
+        $i['Course Subject'] = $this->course_subj;
+        $i['Course Number'] = $this->course_no;
+        $i['Course Section'] = $this->course_sect;
+        $i['Course Title'] = $this->course_title;
         // Merge data from other objects.
         $i = array_merge($s->getCSV(), $i);
         $i = array_merge($i, $a->getCSV());
@@ -93,16 +119,18 @@ class Internship extends Model {
         return $i;
     }
 
-    private function toggle($pdf, $header=true)
-    {
-        if ($header) {
-            // Set header font.
-            $pdf->setFont('Arial', 'B', '10');
-        } else {
-            // Set data font.
-            $pdf->setFont('Courier', '', '10');
-        }
-    }
+    /*
+      private function toggle($pdf, $header=true)
+      {
+      if ($header) {
+      // Set header font.
+      $pdf->setFont('Arial', 'B', '10');
+      } else {
+      // Set data font.
+      $pdf->setFont('Courier', '', '10');
+      }
+      }
+     */
 
     /**
      * Get a comma separated list of the types for
@@ -497,6 +525,15 @@ class Internship extends Model {
         $i->loc_country = strip_tags($_POST['loc_country']);
         $i->loc_state = strip_tags($_POST['loc_state']);
         $i->loc_zip = strip_tags($_POST['loc_zip']);
+        $i->course_subj = strip_tags($_POST['course_subj']);
+        $i->course_no = strip_tags($_POST['course_no']);
+        $i->course_sect = strip_tags($_POST['course_sect']);
+        $i->course_title = strip_tags($_POST['course_title']);
+        if (isset($_POST['approved'])) {
+            $i->approved = 1;
+            $i->approved_by = Current_User::getUsername();
+            $i->approved_on = time();
+        }
 
         try {
             $i->save();
@@ -601,11 +638,11 @@ class Internship extends Model {
      */
     public function getPDF()
     {
-        require_once('fpdf.php');
+        require_once(PHPWS_SOURCE_DIR . 'mod/intern/pdf/fpdf.php');
+        require_once(PHPWS_SOURCE_DIR . 'mod/intern/pdf/fpdi.php');
         PHPWS_Core::initModClass('intern', 'Term.php');
 
-
-        $pdf = new FPDF('P', 'mm', 'A4');
+        $pdf = new FPDI('P', 'mm', 'Letter');
         $s = $this->getStudent();
         $a = $this->getAgency();
         $d = $this->getDepartment();
@@ -613,229 +650,181 @@ class Internship extends Model {
         $m = $s->getUgradMajor();
         $g = $s->getGradProgram();
 
+
+        $pagecount = $pdf->setSourceFile(PHPWS_SOURCE_DIR . 'mod/intern/pdf/Internflat.pdf');
+        $tplidx = $pdf->importPage(1);
         $pdf->addPage();
+        $pdf->useTemplate($tplidx);
 
-        /* Student name/banner */
-        $pdf->setFont('Arial', 'BI', '16');
-        $pdf->setLineWidth(.8);
-        $pdf->multiCell(0, 10, $s->getFullName() . ' -- ' . $s->banner . ' -- ' . $a->name, 'B');
-        $pdf->ln(2);
-
-        $pdf->setDrawColor(150);
-        $pdf->setLineWidth(0);
         /*
          * Internship information
          */
-        $pdf->cell(0, 12, 'Internship Details');
-        $pdf->ln();
 
-        $this->toggle($pdf);
-        $pdf->cell(15, 5, 'Term:', 'LT');
-        $this->toggle($pdf, false);
-        $pdf->cell(175, 5, Term::rawToRead($this->term, false), 'RT');
-        $pdf->ln();
-        $this->toggle($pdf);
-        $types = $this->getReadableTypes();
-        // If the width of the string of types is greater than 139 (found by trial/error)
-        // then we need to correct the header's alignment and left border.
-        if ($pdf->getStringWidth($types) > 139) {
-            $pdf->cell(15, 10, 'Type:', 'LT');
-        } else {
-            $pdf->cell(15, 5, 'Type:', 'LT');
-        }
-        $this->toggle($pdf, false);
-        $pdf->multiCell(175, 5, $types, 'RT');
-        $this->toggle($pdf);
-        $pdf->cell(20, 5, 'Start Date:', 'LT');
-        $this->toggle($pdf, false);
-        $pdf->cell(75, 5, $this->getStartDate(true), 'RT');
-        $this->toggle($pdf);
-        $pdf->cell(20, 5, 'End Date:', 'LT');
-        $this->toggle($pdf, false);
-        $pdf->cell(75, 5, $this->getEndDate(true), 'RT');
-        $pdf->ln();
-
+        $pdf->setXY(121, 25);
+        $pdf->setFont('Times', null, 10);
+        $pdf->cell(60, 5, Term::rawToRead($this->term, false));
+//        $types = $this->getReadableTypes();
+//        // If the width of the string of types is greater than 139 (found by trial/error)
+//        // then we need to correct the header's alignment and left border.
+//        if ($pdf->getStringWidth($types) > 139) {
+//            $pdf->cell(15, 10, 'Type:', 1);
+//        } else {
+//            $pdf->cell(15, 5, 'Type:', 1);
+//        }
+//        $pdf->multiCell(175, 5, $types, 1);
         /* Department */
-        $this->toggle($pdf);
-        $pdf->cell(25, 5, 'Department:', 'LT');
-        $this->toggle($pdf, false);
-        $pdf->cell(165, 5, $d->name, 'RT');
-        $pdf->ln();
+        $pdf->setFont('Times', null, 8);
+        $pdf->setXY(176, 20);
+        $pdf->MultiCell(31, 3, $d->name);
+
+        $pdf->setFont('Times', null, 10);
+        $pdf->setXY(144, 30);
+        $pdf->cell(25, 5, $this->getStartDate(true));
+        $pdf->setXY(175, 30);
+        $pdf->cell(25, 5, $this->getEndDate(true));
+
+        $pdf->setFont('Times', null, 8);
+        $pdf->setXY(149, 35);
+        $course_info = $this->course_subj . '/' . $this->course_no . '/' . $this->course_sect;
+        $pdf->cell(59, 5, $course_info);
+
+
+        $pdf->setXY(132, 39);
+        /*
+          if (!is_null($m)) {
+          $major = $m->getName();
+          } else {
+          $major = 'N/A';
+          }
+          $pdf->cell(73, 5, $major);
+         */
+
+        $pdf->setFont('Times', null, 10);
+        $pdf->cell(73, 6, $this->course_title);
 
         /* Hours */
-        $this->toggle($pdf);
-        $pdf->cell(25, 5, 'Credit Hours:', 'LT');
-        $this->toggle($pdf, false);
-        $pdf->cell(70, 5, $this->credits, 'RT');
-        $this->toggle($pdf);
-        $pdf->cell(32, 5, 'Avg. Hours/Week:', 'LT');
-        $this->toggle($pdf, false);
-        $pdf->cell(63, 5, $this->avg_hours_week, 'RT');
-        $pdf->ln();
+        $pdf->setXY(185, 44);
+        $pdf->cell(12, 5, $this->credits);
+        $pdf->setXY(140, 44);
+        $pdf->cell(12, 5, $this->avg_hours_week);
 
         /* Location */
-        $this->toggle($pdf);
-        $pdf->cell(20, 5, 'Domestic:', 'LT');
-        $this->toggle($pdf, false);
-        $pdf->cell(75, 5, $this->domestic == 1 ? 'Yes' : 'No', 'RT');
-        $this->toggle($pdf);
-        $pdf->cell(25, 5, 'International:', 'LT');
-        $this->toggle($pdf, false);
-        $pdf->cell(70, 5, $this->international == 1 ? 'Yes' : 'No', 'RT');
-        $pdf->ln();
+        $pdf->setXY(78, 53);
+        $pdf->cell(12, 5, $this->domestic == 1 ? 'Yes' : 'No');
+        $pdf->setXY(65, 58);
+        $pdf->cell(12, 5, $this->international == 1 ? 'Yes' : 'No');
+
+
+        if ($this->loc_city) {
+            $loc[] = $this->loc_city;
+        }
+
+        if ($this->loc_state) {
+            $loc[] = $this->loc_state;
+        }
+
+        if (isset($loc)) {
+            $pdf->setXY(137, 53);
+            $pdf->cell(52, 5, implode(', ', $loc));
+        }
+
+        $pdf->setXY(137, 58);
+        $pdf->cell(52, 5, $this->getLocCountry());
 
         /* Payment */
-        $this->toggle($pdf);
-        $pdf->cell(12, 5, 'Paid:', 'LTB');
-        $this->toggle($pdf, false);
-        $pdf->cell(83, 5, $this->paid == 1 && $this->unpaid == 0 ? 'Yes' : 'No', 'RTB'); // TODO: Verify logic for paid/unpaid.
-        $this->toggle($pdf);
-        $pdf->cell(30, 5, 'Stipend Based:', 'LTB');
-        $this->toggle($pdf, false);
-        $pdf->cell(65, 5, $this->stipend == 1 ? 'Yes' : 'No', 'RTB');
-        $pdf->ln();
-
-
-        /*
+//        $pdf->cell(12, 5, 'Paid:', 'LTB');
+//        $pdf->cell(83, 5, $this->paid == 1 && $this->unpaid == 0 ? 'Yes' : 'No', 'RTB'); // TODO: Verify logic for paid/unpaid.
+//        $pdf->cell(30, 5, 'Stipend Based:', 'LTB');
+//        $pdf->cell(65, 5, $this->stipend == 1 ? 'Yes' : 'No', 'RTB');
+//
+//
+        /**
          * Student information.
          */
-        $pdf->setFont('Arial', 'BI', '16');
-        $pdf->cell(0, 12, 'Student');
-        $pdf->ln();
+        $pdf->setXY(39, 73);
+        $pdf->cell(55, 5, $s->getFullName());
 
-        $this->toggle($pdf);
-        $pdf->cell(15, 5, 'Name:', 'LT');
-        $this->toggle($pdf, false);
-        $pdf->cell(175, 5, $s->getFullName(), 'RT');
-        $pdf->ln();
+        $pdf->setXY(114, 73);
+        $pdf->cell(42, 5, $s->banner);
 
-        $this->toggle($pdf);
-        $pdf->cell(18, 5, 'Banner:', 'LT');
-        $this->toggle($pdf, false);
-        $pdf->cell(77, 5, $s->banner, 'RT');
-        $this->toggle($pdf);
-        $pdf->cell(15, 5, 'Email:', 'LT');
-        $this->toggle($pdf, false);
-        $pdf->cell(80, 5, $s->email, 'RT');
-        $pdf->ln();
+        $pdf->setXY(39, 85);
+        $pdf->cell(54, 5, $s->email);
 
-        $this->toggle($pdf);
-        $pdf->cell(15, 5, 'Major:', 'LT');
-        $this->toggle($pdf, false);
-        if (!is_null($m)) {
-            $pdf->cell(175, 5, $m->getName(), 'RT');
-        } else {
-            $pdf->cell(175, 5, 'N/A', 'RT');
-        }
-        $pdf->ln();
-        $this->toggle($pdf);
-        $pdf->cell(35, 5, 'Graduate Program:', 'LTB');
-        $this->toggle($pdf, false);
-        if (!is_null($g)) {
-            $pdf->cell(155, 5, $g->getName(), 'RTB');
-        } else {
-            $pdf->cell(155, 5, 'N/A', 'RTB');
-        }
-        $pdf->ln();
-
+//        $pdf->cell(35, 5, 'Graduate Program:', 'LTB');
+//        if (!is_null($g)) {
+//            $pdf->cell(155, 5, $g->getName(), 'RTB');
+//        } else {
+//            $pdf->cell(155, 5, 'N/A', 'RTB');
+//        }
+//
         /**
          * Faculty supervisor information.
          */
-        $pdf->setFont('Arial', 'BI', '16');
-        $pdf->cell(0, 12, 'Faculty Supervisor');
-        $pdf->ln();
-        $this->toggle($pdf);
-        $pdf->cell(18, 5, 'Name:', 'LT');
-        $this->toggle($pdf, false);
-        $pdf->cell(172, 5, $f->getFullName(), 'RT');
-        $pdf->ln();
+        $pdf->setXY(24, 109);
+        $pdf->cell(81, 5, $f->getFullName());
 
-        $this->toggle($pdf);
-        $pdf->cell(18, 5, 'Phone:', 'LTB');
-        $this->toggle($pdf, false);
-        $pdf->cell(77, 5, $f->phone, 'RTB');
-        $this->toggle($pdf);
-        $pdf->cell(15, 5, 'Email:', 'LTB');
-        $this->toggle($pdf, false);
-        $pdf->cell(80, 5, $f->email, 'RTB');
-        $pdf->ln();
+        $pdf->setXY(25, 130);
+        $pdf->cell(77, 5, $f->phone);
+
+        $pdf->setXY(25, 145);
+        $pdf->cell(77, 5, $f->email);
 
         /**
          * Agency information.
          */
-        $pdf->setFont('Arial', 'BI', '16');
-        $pdf->cell(0, 12, 'Agency');
-        $pdf->ln();
+        $pdf->setXY(133, 108);
+        $pdf->cell(71, 5, $a->name);
 
-        $this->toggle($pdf);
-        $pdf->cell(18, 5, 'Name:', 'LT');
-        $this->toggle($pdf, false);
-        $pdf->cell(172, 5, $a->name, 'RT');
-        $pdf->ln();
-
-        $this->toggle($pdf);
-        $pdf->cell(20, 5, 'Address:', 'LT');
-        $this->toggle($pdf, false);
-        if ($this->domestic == 1)
-            $pdf->cell(170, 5, $a->getDomesticAddress(), 'RT');
-        else
-            $pdf->cell(170, 5, $a->getInternationalAddress(), 'RT');
-        $pdf->ln();
-
-        $this->toggle($pdf);
-        $pdf->cell(18, 5, 'Phone:', 'LTB');
-        $this->toggle($pdf, false);
-        $pdf->cell(172, 5, $a->phone, 'RTB');
-        $pdf->ln();
-
+        $pdf->setXY(125, 114);
+        if ($this->domestic == 1) {
+            $agency_address = $a->getDomesticAddress();
+        } else {
+            $agency_address = $a->getInternationalAddress();
+        }
+        $pdf->cell(77, 5, $agency_address);
+//
+//        $pdf->cell(18, 5, 'Phone:', 'LTB');
+//        $pdf->cell(172, 5, $a->phone, 'RTB');
+//
         /**
          * Agency supervisor info.
          */
-        $pdf->setFont('Arial', 'BI', '16');
-        $pdf->cell(0, 12, 'Agency Supervisor');
-        $pdf->ln();
+        $pdf->setXY(110, 131);
+        $pdf->cell(75, 5, $a->getSupervisorFullName());
 
-        $this->toggle($pdf);
-        $pdf->cell(15, 5, 'Name:', 'LT');
-        $this->toggle($pdf, false);
-        $pdf->cell(175, 5, $a->getSupervisorFullName(), 'RT');
-        $pdf->ln();
+        if ($this->domestic == 1) {
+            $s_agency_address = $a->getSuperDomesticAddress();
+        } else {
+            $s_agency_address = $a->getSuperInternationalAddress();
+        }
 
-        $this->toggle($pdf);
-        $pdf->cell(20, 5, 'Address:', 'LT');
-        $this->toggle($pdf, false);
-        if ($this->domestic == 1)
-            $pdf->cell(170, 5, $a->getSuperDomesticAddress(), 'RT');
-        else
-            $pdf->cell(170, 5, $a->getSuperInternationalAddress(), 'RT');
-        $pdf->ln();
+        $pdf->setXY(124, 137);
+        $pdf->cell(78, 5, $s_agency_address);
 
-        $this->toggle($pdf);
-        $pdf->cell(18, 5, 'Email:', 'LT');
-        $this->toggle($pdf, false);
-        $pdf->cell(172, 5, $a->supervisor_email, 'RT');
-        $pdf->ln();
+        $pdf->setXY(122, 149);
+        $pdf->cell(72, 5, $a->supervisor_email);
 
-        $this->toggle($pdf);
-        $pdf->cell(18, 5, 'Phone:', 'LTB');
-        $this->toggle($pdf, false);
-        $pdf->cell(77, 5, $a->supervisor_phone, 'RTB');
-        $this->toggle($pdf);
-        $pdf->cell(12, 5, 'Fax:', 'LTB');
-        $this->toggle($pdf, false);
-        $pdf->cell(83, 5, $a->supervisor_fax, 'RTB');
-        $pdf->ln();
+        $pdf->setXY(122, 144);
+        $pdf->cell(33, 5, $a->supervisor_phone);
+
+        $pdf->setXY(163, 144);
+        $pdf->cell(40, 5, $a->supervisor_fax);
 
         /* Notes */
-        $pdf->setFont('Arial', 'BI', '16');
-        $pdf->cell(0, 12, 'Notes');
-        $pdf->ln();
-        $this->toggle($pdf, false);
-        $pdf->multiCell(0, 5, $this->notes, 1);
-        $pdf->ln();
+        //$pdf->multiCell(0, 5, $this->notes, 1);
 
+        $tplidx = $pdf->importPage(2);
+        $pdf->addPage();
+        $pdf->useTemplate($tplidx);
 
         $pdf->output();
+    }
+
+    public function getLocCountry()
+    {
+        if (!$this->loc_country) {
+            return 'United States';
+        }
     }
 
 }
