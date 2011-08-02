@@ -504,8 +504,10 @@ class Internship extends Model {
             NQ::close();
             return PHPWS_Core::goBack();
         }
-        $i->credits = $_REQUEST['credits'] == '' ? NULL : $_REQUEST['credits'];
-        $i->avg_hours_week = $_REQUEST['avg_hours_week'] == '' ? NULL : $_REQUEST['avg_hours_week'];
+        $credits = (int)$_REQUEST['credits'];
+        $i->credits = $credits ? $credits : NULL;
+        $avg_hours_week = (int)$_REQUEST['avg_hours_week'];
+        $i->avg_hours_week = $avg_hours_week ? $avg_hours_week : NULL;
         $i->domestic = $_REQUEST['location'] == 'domestic';
         $i->international = $_REQUEST['location'] == 'internat';
         $i->paid = $_REQUEST['payment'] == 'paid';
