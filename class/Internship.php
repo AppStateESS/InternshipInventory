@@ -594,6 +594,10 @@ class Internship extends Model {
             $vals[] = 'term';
         }
 
+        if ($_REQUEST['loc_state'] == -1) {
+            $vals[] = 'loc_state';
+        }
+
         /**
          * Funky stuff here for location. 
          * If location is DOMESTIC then State and Zip are required.

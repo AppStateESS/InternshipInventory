@@ -19,7 +19,7 @@ class InternshipUI implements UI {
      */
     public static $requiredFields = array('student_first_name', 'student_last_name',
         'banner', 'student_phone', 'student_email', 'agency_name', 'agency_state',
-        'ugrad_major', 'term');
+        'ugrad_major', 'term', 'loc_state');
 
     public static function display()
     {

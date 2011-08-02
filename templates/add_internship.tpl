@@ -159,6 +159,28 @@
     </fieldset>
         </td>
       </tr>
+      <tr><td colspan="2"><h3>Student Location during Internship</h3></td></tr>
+      <tr>
+        <td>{LOC_ADDRESS_LABEL}</td>
+        <td>{LOC_ADDRESS}</td>
+      </tr>
+      <tr>
+        <td>{LOC_CITY_LABEL}</td>
+        <td>{LOC_CITY}</td>
+      </tr>
+      <tr>
+        <td>{LOC_STATE_LABEL}</td>
+        <td>{LOC_STATE}</td>
+      </tr>
+      <tr>
+        <td>{LOC_ZIP_LABEL}</td>
+        <td>{LOC_ZIP}</td>
+      </tr>
+      <tr>
+        <td>{LOC_COUNTRY_LABEL}</td>
+        <td>{LOC_COUNTRY}</td>
+      </tr>
+<tr><td colspan="2"><h3>Term Information</h3></td></tr>
       <tr>
         <td>{TERM_LABEL}</td>
         <td>{TERM}</td>
@@ -200,27 +222,6 @@
       <tr><td>{COURSE_NO_LABEL}</td><td>{COURSE_NO}</td></tr>
       <tr><td>{COURSE_SECT_LABEL}</td><td>{COURSE_SECT}</td></tr>
       <tr><td>{COURSE_TITLE_LABEL}</td><td>{COURSE_TITLE}</td></tr>
-      <tr><td colspan="2"><h3>Student Location during Internship</h3></td></tr>
-      <tr>
-        <td>{LOC_ADDRESS_LABEL}</td>
-        <td>{LOC_ADDRESS}</td>
-      </tr>
-      <tr>
-        <td>{LOC_CITY_LABEL}</td>
-        <td>{LOC_CITY}</td>
-      </tr>
-      <tr>
-        <td>{LOC_STATE_LABEL}</td>
-        <td>{LOC_STATE}</td>
-      </tr>
-      <tr>
-        <td>{LOC_ZIP_LABEL}</td>
-        <td>{LOC_ZIP}</td>
-      </tr>
-      <tr>
-        <td>{LOC_COUNTRY_LABEL}</td>
-        <td>{LOC_COUNTRY}</td>
-      </tr>
 
       <tr>
         <td colspan="2">
