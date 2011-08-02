@@ -10,8 +10,9 @@
  * @author Robert Bost <bostrt at tux dot appstate dot edu>
  */
 PHPWS_Core::initModClass('filecabinet', 'Document_Manager.php');
-class Intern_Document_Manager extends FC_Document_Manager
-{
+
+class Intern_Document_Manager extends FC_Document_Manager {
+
     /**
      * @Override FC_Document_Manager::edit()
      *
@@ -29,7 +30,7 @@ class Intern_Document_Manager extends FC_Document_Manager
         // If the folder ID is zero then it was not found
         // when Intern_Folder::documentUpload() was called.
         // Create one and load it.
-        if($this->folder->id == 0){
+        if ($this->folder->id == 0) {
             PHPWS_Core::initModClass('intern', 'Intern_Folder.php');
             PHPWS_Core::requireInc('filecabinet', 'defines.php');
             $folder = new Intern_Folder();
@@ -45,10 +46,10 @@ class Intern_Document_Manager extends FC_Document_Manager
         PHPWS_Core::initCoreClass('File.php');
 
         $form = new PHPWS_FORM;
-        $form->addHidden('module',    'intern');
-        $form->addHidden('internship',     $_REQUEST['internship']);
-        $form->addHidden('action',    'post_document_upload');
-        $form->addHidden('ms',        $this->max_size);
+        $form->addHidden('module', 'intern');
+        $form->addHidden('internship', $_REQUEST['internship']);
+        $form->addHidden('action', 'post_document_upload');
+        $form->addHidden('ms', $this->max_size);
         $form->addHidden('folder_id', $this->folder->id);
 
         $form->addFile('file_name');
@@ -84,8 +85,8 @@ class Intern_Document_Manager extends FC_Document_Manager
 
         if ($this->document->id) {
             $template['CURRENT_DOCUMENT_LABEL'] = dgettext('filecabinet', 'Current document');
-            $template['CURRENT_DOCUMENT_ICON']  = $this->document->getIconView();
-            $template['CURRENT_DOCUMENT_FILE']  = $this->document->file_name;
+            $template['CURRENT_DOCUMENT_ICON'] = $this->document->getIconView();
+            $template['CURRENT_DOCUMENT_FILE'] = $this->document->file_name;
         }
         $template['MAX_SIZE_LABEL'] = dgettext('filecabinet', 'Maximum file size');
 
@@ -93,7 +94,7 @@ class Intern_Document_Manager extends FC_Document_Manager
 
         $sys_size = $sys_size * 1000000;
 
-        if((int)$sys_size < (int)$this->max_size) {
+        if ((int) $sys_size < (int) $this->max_size) {
             $template['MAX_SIZE'] = sprintf(dgettext('filecabinet', '%d bytes (system wide)'), $sys_size);
         } else {
             $template['MAX_SIZE'] = sprintf(dgettext('filecabinet', '%d bytes'), $this->max_size);
@@ -102,8 +103,8 @@ class Intern_Document_Manager extends FC_Document_Manager
         if ($this->document->_errors) {
             $template['ERROR'] = $this->document->printErrors();
         }
-
-        Layout::add(PHPWS_Template::process($template, 'filecabinet', 'document_edit.tpl'));
+        return PHPWS_Template::process($template, 'filecabinet', 'document_edit.tpl');
+//        Layout::add(PHPWS_Template::process($template, 'filecabinet', 'document_edit.tpl'));
     }
 
     /**
@@ -138,11 +139,11 @@ class Intern_Document_Manager extends FC_Document_Manager
             FC_File_Assoc::updateTag(FC_DOCUMENT, $this->document->id, $this->document->getTag());
 
             $this->document->moveToFolder();
-            
+
             // If the document's id is set in the request
             // then we are updating a file. Not need to insert 
             // it into database.
-            if(!isset($_REQUEST['document_id'])){
+            if (!isset($_REQUEST['document_id'])) {
                 // Save Intern_Document in database.
                 PHPWS_Core::initModClass('intern', 'Intern_Document.php');
                 $doc = new Intern_Document();
@@ -152,24 +153,25 @@ class Intern_Document_Manager extends FC_Document_Manager
             }
 
             // Choose the proper notification text...
-            if(isset($_REQUEST['document_id']) && 
-               $_REQUEST['document_id'] && $result){
+            if (isset($_REQUEST['document_id']) &&
+                    $_REQUEST['document_id'] && $result) {
                 NQ::simple('intern', INTERN_SUCCESS, "File saved.");
-            }else if($result){
+            } else if ($result) {
                 NQ::simple('intern', INTERN_SUCCESS, "File added.");
-            }else if(PHPWS_Error::logIfError($result)){
+            } else if (PHPWS_Error::logIfError($result)) {
                 NQ::simple('intern', INTERN_ERROR, $result->toString());
             }
             NQ::close();
             if (!isset($_POST['im'])) {
                 javascript('close_refresh');
             } else {
-                javascript('/filecabinet/refresh_manager', array('document_id'=>$this->document->id));
+                javascript('/filecabinet/refresh_manager', array('document_id' => $this->document->id));
             }
-            
         } else {
             return $this->edit();
         }
     }
+
 }
+
 ?>

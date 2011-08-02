@@ -272,7 +272,8 @@ switch ($req) {
     case 'upload_document_form':
         PHPWS_Core::initModClass('intern', 'Intern_Document_Manager.php');
         $docManager = new Intern_Document_Manager();
-        $docManager->edit();
+        echo $docManager->edit();
+        exit();
         break;
     case 'post_document_upload':
         PHPWS_Core::initModClass('intern', 'Intern_Document_Manager.php');

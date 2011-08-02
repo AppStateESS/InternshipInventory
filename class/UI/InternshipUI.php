@@ -119,6 +119,9 @@ class InternshipUI implements UI {
         if (!is_null($i)) {
             $s = $i->getStudent();
             $a = $i->getAgency();
+        } else {
+            $i = new Internship;
+            $a = new Agency;
         }
         $form->setAction('index.php?module=intern&action=add_internship');
         $form->addSubmit('submit', 'Save');
@@ -283,21 +286,21 @@ class InternshipUI implements UI {
         $form->addCheck('internship_default_type');
         $form->setLabel('internship_default_type', 'Internship');
         $form->setMatch('internship_default_type', true); // Internship is checked by default
-        $form->addCheck('service_learning_type');
-        $form->setLabel('service_learning_type', 'Service Learning');
-        $form->addCheck('independent_study_type');
-        $form->setLabel('independent_study_type', 'Independent Study');
-        $form->addCheck('research_assist_type');
-        $form->setLabel('research_assist_type', 'Research Assistant');
+//        $form->addCheck('service_learning_type');
+//        $form->setLabel('service_learning_type', 'Service Learning');
+//        $form->addCheck('independent_study_type');
+//        $form->setLabel('independent_study_type', 'Independent Study');
+//        $form->addCheck('research_assist_type');
+//        $form->setLabel('research_assist_type', 'Research Assistant');
         $form->addCheck('student_teaching_type');
         $form->setLabel('student_teaching_type', 'Student Teaching');
         $form->addCheck('clinical_practica_type');
         $form->setLabel('clinical_practica_type', 'Clinical Practica');
-        $form->addCheck('special_topics_type');
-        $form->setLabel('special_topics_type', 'Special Topics');
-        $form->addCheck('check_other_type');
-        $form->addText('other_type');
-        $form->setLabel('other_type', 'Other Type');
+//        $form->addCheck('special_topics_type');
+//        $form->setLabel('special_topics_type', 'Special Topics');
+//        $form->addCheck('check_other_type');
+//        $form->addText('other_type');
+//        $form->setLabel('other_type', 'Other Type');
 
         /**
          * Internship location
