@@ -289,7 +289,7 @@ class Internship extends Model {
         $tags['ID'] = $this->id;
 
         $tags['EDIT'] = PHPWS_Text::moduleLink('Edit', 'intern', array('action' => 'edit_internship', 'id' => $this->id));
-        $tags['PDF'] = PHPWS_Text::moduleLink('Summary Report', 'intern', array('action' => 'pdf', 'id' => $this->id));
+        $tags['PDF'] = PHPWS_Text::moduleLink('Generate Contract', 'intern', array('action' => 'pdf', 'id' => $this->id));
 
         // TODO: Finish off fields.
         return $tags;
@@ -523,7 +523,11 @@ class Internship extends Model {
         $i->loc_address = strip_tags($_POST['loc_address']);
         $i->loc_city = strip_tags($_POST['loc_city']);
         $i->loc_country = strip_tags($_POST['loc_country']);
-        $i->loc_state = strip_tags($_POST['loc_state']);
+        if ($_POST['loc_state'] != '-1') {
+            $i->loc_state = strip_tags($_POST['loc_state']);
+        } else {
+            $i->loc_state = null;
+        }
         $i->loc_zip = strip_tags($_POST['loc_zip']);
         $i->course_subj = strip_tags($_POST['course_subj']);
         $i->course_no = strip_tags($_POST['course_no']);
@@ -719,7 +723,7 @@ class Internship extends Model {
             $loc[] = $this->loc_city;
         }
 
-        if ($this->loc_state) {
+        if (!empty($this->loc_state) && $this->loc_state != '-1') {
             $loc[] = $this->loc_state;
         }
 
