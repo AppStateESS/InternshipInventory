@@ -9,6 +9,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
 }
 define('STATE_EDIT', 'edit_states');
+
 // Check some permissions
 if (!Current_User::isLogged()) {
     PHPWS_Core::reroute('/admin');

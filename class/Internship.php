@@ -14,16 +14,19 @@ class Internship extends Model {
     public $term;
     public $student_id;
     public $agency_id;
+
     /**
      * If true, internship was approved by the Dean
      * @var boolean
      */
     public $approved = false;
+
     /**
      * username of person who approved it
      * @var string
      */
     public $approved_by = null;
+
     /**
      * Timestamp of approval
      * @var integer
@@ -300,13 +303,19 @@ class Internship extends Model {
      */
     public static function getTypesAssoc()
     {
+        /**
+          return array('internship' => 'Internship',
+          'service_learn' => 'Service Learning',
+          'independent_study' => 'Independent Study',
+          'research_assistant' => 'Research Assistant',
+          'student_teaching' => 'Student Teaching',
+          'clinical_practica' => 'Clinical Practica In Health Fields',
+          'special_topics' => 'Special Topics');
+         *
+         */
         return array('internship' => 'Internship',
-            'service_learn' => 'Service Learning',
-            'independent_study' => 'Independent Study',
-            'research_assistant' => 'Research Assistant',
             'student_teaching' => 'Student Teaching',
-            'clinical_practica' => 'Clinical Practica In Health Fields',
-            'special_topics' => 'Special Topics');
+            'clinical_practica' => 'Clinical Practica In Health Fields');
     }
 
     /**
@@ -504,9 +513,9 @@ class Internship extends Model {
             NQ::close();
             return PHPWS_Core::goBack();
         }
-        $credits = (int)$_REQUEST['credits'];
+        $credits = (int) $_REQUEST['credits'];
         $i->credits = $credits ? $credits : NULL;
-        $avg_hours_week = (int)$_REQUEST['avg_hours_week'];
+        $avg_hours_week = (int) $_REQUEST['avg_hours_week'];
         $i->avg_hours_week = $avg_hours_week ? $avg_hours_week : NULL;
         $i->domestic = $_REQUEST['location'] == 'domestic';
         $i->international = $_REQUEST['location'] == 'internat';
@@ -539,6 +548,7 @@ class Internship extends Model {
             $i->approved = 1;
             $i->approved_by = Current_User::getUsername();
             $i->approved_on = time();
+            Internship::emailApproval($student, $i, $agency);
         }
 
         try {
@@ -563,6 +573,53 @@ class Internship extends Model {
         }
     }
 
+    public static function emailApproval($s, $i, $a)
+    {
+        require_once (PHPWS_SOURCE_DIR . 'mod/intern/conf/email_address.php');
+        if (!INTERNSHIP_EMAIL) {
+            return;
+        }
+        $approved_on = date('g:ia m/d/Y', $i->approved_on);
+        $message = <<<EOF
+Student
+--------
+Name: $s->first_name $s->middle_name $s->last_name
+Email: <a href="mailto:$s->email">$s->email</a>
+Phone: $s->phone
+Major: $s->ugrad_major
+
+Agency
+--------
+Name: $a->name
+State/Province: $a->state
+Country: $a->country
+
+Internship
+-----------
+Location: $i->loc_state
+Term: $i->term
+
+
+Approved by: $i->approved_by
+Approved on: $approved_on
+EOF;
+        echo '<pre>';
+        echo $message;
+        echo '</pre>';
+        exit();
+        $mail = new PHPWS_Mail;
+        $mail->addSendTo(INTERNSHIP_ADMIN_EMAIL_TO);
+        $mail->setSubject('Internship approved');
+        $mail->setFrom(INTERNSHIP_ADMIN_EMAIL_FROM);
+        $mail->setReplyTo(INTERNSHIP_ADMIN_EMAIL_FROM);
+        $mail->setMessageBody(implode("\n", $message));
+        $result = $mail->send();
+        if (!PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            $this->message = 'Service could not send email at this time. Please try again later.';
+        }
+    }
+
     /**
      * Check that required fields are in the REQUEST.
      */
@@ -579,16 +636,16 @@ class Internship extends Model {
         }
 
         /* Required select boxes should not equal -1 */
-        /**
-         * Updated 7/26/2011
-         * department is no longer required
-         */
-        /*
-          if(!isset($_REQUEST['department']) ||
-          $_REQUEST['department'] == -1){
-          $vals[] = 'department';
-          }
-         */
+
+        if (!isset($_REQUEST['department']) ||
+                $_REQUEST['department'] == -1) {
+            $vals[] = 'department';
+        }
+        if (!isset($_REQUEST['ugrad_major']) ||
+                $_REQUEST['ugrad_major'] == -1) {
+            $vals[] = 'ugrad_major';
+        }
+
         if (!isset($_REQUEST['term']) ||
                 $_REQUEST['term'] == -1) {
             $vals[] = 'term';
@@ -598,8 +655,9 @@ class Internship extends Model {
             $vals[] = 'loc_state';
         }
 
+
         /**
-         * Funky stuff here for location. 
+         * Funky stuff here for location.
          * If location is DOMESTIC then State and Zip are required.
          * If location is INTERNATIONAL then state and zip are not required
          * and are set to null though Country is required.
@@ -617,8 +675,9 @@ class Internship extends Model {
           $vals[] = 'agency_sup_country';
           }else
          */
-
-        if ($_REQUEST['location'] == 'domestic') {
+        if (!isset($_REQUEST['location'])) {
+            $vals[] = 'location';
+        } elseif ($_REQUEST['location'] == 'domestic') {
             if (!isset($_REQUEST['agency_state']) || $_REQUEST['agency_state'] == -1) {
                 // Add state to missing
                 $vals[] = 'agency_state';
@@ -835,6 +894,7 @@ class Internship extends Model {
         if (!$this->loc_country) {
             return 'United States';
         }
+        return $this->loc_country;
     }
 
 }

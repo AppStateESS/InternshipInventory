@@ -3,9 +3,9 @@
   /**
    * SearchUI
    *
-   * Search/Sort by student names and banners, department name, 
+   * Search/Sort by student names and banners, department name,
    * grad/undergrad, and term.
-   * 
+   *
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
 
@@ -41,17 +41,17 @@ class SearchUI implements UI
         }
         $form->addSelect('dept', $depts);
         $form->setLabel('dept', 'Department');
-        
+
         // Major
         $majors = Major::getMajorsAssoc();
         $form->addSelect('major', $majors);
         $form->setLabel('major', 'Major');
-        
+
         // Grad. Program
         $grad = GradProgram::getGradProgsAssoc();
         $form->addSelect('grad', $grad);
         $form->setLabel('grad', 'Graduate Program');
-        
+
         // Internship types.
         $types = Internship::getTypesAssoc();
         $form->addCheckAssoc('type', $types);
@@ -81,8 +81,8 @@ class SearchUI implements UI
         /* Province search */
         $form->addText('prov');
 
-        $form->setLabel('prov', 'Provine/Territory');
-        
+        $form->setLabel('prov', 'Province/Territory');
+
 
         $form->addSubmit('submit', 'Search');
 

@@ -15,11 +15,11 @@ class InternshipUI implements UI {
      * 'agency_sup_phone','agency_address','agency_zip', 'agency_sup_zip',
      * 'agency_phone',  'agency_city', 'agency_sup_state', 'agency_sup_first_name',
      * 'agency_sup_last_name', 'agency_sup_email', 'agency_sup_address',
-     * 'agency_sup_city', 'department'
+     * 'agency_sup_city',
      */
     public static $requiredFields = array('student_first_name', 'student_last_name',
         'banner', 'student_phone', 'student_email', 'agency_name', 'agency_state',
-        'ugrad_major', 'term', 'loc_state');
+        'ugrad_major', 'term', 'loc_state', 'department');
 
     public static function display()
     {
@@ -65,7 +65,7 @@ class InternshipUI implements UI {
             $tpl['TITLE'] = 'Add Student';
         }
         /*
-         * If 'missing' is set then we have been redirected 
+         * If 'missing' is set then we have been redirected
          * back to the form because the user didn't type in something and
          * somehow got past the javascript.
          */
@@ -74,16 +74,20 @@ class InternshipUI implements UI {
 
             javascriptMod('intern', 'missing');
             /*
-             * Set classes on field we are missing. 
+             * Set classes on field we are missing.
              */
             foreach ($missing as $m) {
-                $form->setClass($m, 'missing');
+                if ($m == 'location') {
+                    $form->addTplTag('LOC_HIGHLIGHT', ' style="background-color : #FF5D5D"');
+                } else {
+                    $form->setClass($m, 'missing');
+                }
             }
 
             /* Plug old values back into form fields. */
             $form->plugIn($_GET);
 
-            // If internship is being edited... 
+            // If internship is being edited...
             if (isset($_REQUEST['internship_id'])) {
                 /* Re-add hidden fields with object ID's */
                 $i = new Internship($_GET['internship_id']);
@@ -136,10 +140,9 @@ class InternshipUI implements UI {
             $approved_on = "Approved by {$i->approved_by} on " . date('g:ia, M j, Y', $i->approved_on);
             if (Current_User::isDeity()) {
                 $approved_on .= ' <a href="index.php?module=intern&action=unapprove&id='
-                . $i->id  . '&authkey=' . Current_User::getAuthKey() . '">Unapprove</a>';
+                        . $i->id . '&authkey=' . Current_User::getAuthKey() . '">Unapprove</a>';
             }
             $form->addTplTag('APPROVED_BY_ON', $approved_on);
-            
         }
         $form->addText('student_first_name');
         $form->setLabel('student_first_name', 'First Name');
@@ -218,7 +221,7 @@ class InternshipUI implements UI {
         if (!is_null($i)) {
             if (!$i->isDomestic()) {
                 /*
-                 * International. Need to add the location as extra 
+                 * International. Need to add the location as extra
                  * to the form element. Hackz
                  */
                 $form->setExtra('agency_state', "where='$a->state'");
@@ -249,7 +252,7 @@ class InternshipUI implements UI {
         if (!is_null($i)) {
             if (!$i->isDomestic()) {
                 /*
-                 * International. Need to add the location as extra 
+                 * International. Need to add the location as extra
                  * to the form element. Hackz
                  */
                 $form->setExtra('agency_sup_state', "where='$a->state'");
@@ -277,7 +280,8 @@ class InternshipUI implements UI {
         $form->setLabel('avg_hours_week', 'Average Hours per Week');
         $loc = array('domestic' => 'Domestic', 'internat' => 'International');
         $form->addRadioAssoc('location', $loc);
-        $form->setMatch('location', 'domestic'); // Default to domestic
+        //$form->setMatch('location', 'domestic'); // Default to domestic
+        $form->setRequired('location');
         $pay = array('unpaid' => 'Unpaid', 'paid' => 'Paid');
         $form->addRadioAssoc('payment', $pay);
         $form->setMatch('payment', 'unpaid'); // Default to unpaid
@@ -446,7 +450,7 @@ class InternshipUI implements UI {
             $form->setMatch('check_other_type', true);
         }
 
-        // Plug 
+        // Plug
         $form->plugIn($vals);
     }
 

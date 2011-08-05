@@ -166,8 +166,8 @@
 }
 
 .empty-message {
-    font-weight: bold; 
-    text-align: center; 
+    font-weight: bold;
+    text-align: center;
     font-style: italic;
 }
 
@@ -232,7 +232,7 @@
     width: 100px;
 }
 
-/* Overriding default formatting of asterisk 
+/* Overriding default formatting of asterisk
    for required fields in Form class */
 .required-input {
     font-size: 16pt;

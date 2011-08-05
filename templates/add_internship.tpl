@@ -66,16 +66,14 @@
       </td>
     </tr>
     <tr>
-      <td colspan=2>
+      <td colspan="2">
         {UGRAD_MAJOR_LABEL}<br />
         {UGRAD_MAJOR}
       </td>
     </tr>
     <tr>
-      <td>
-        {GRAD_PROG_LABEL}
-      </td>
-      <td>
+      <td colspan="2">
+        {GRAD_PROG_LABEL}<br />
         {GRAD_PROG}
       </td>
     </tr>
@@ -146,11 +144,11 @@
 
   <tr>
   <!-- Internship details -->
-  <td class="sub-form-cell"> 
+  <td class="sub-form-cell">
     <span class="info-header">Internship Details</span>
     <table class="sub-form" id="agency-info">
     <tr><td colspan="2">
-    <fieldset>
+    <fieldset{LOC_HIGHLIGHT}>
             <legend>
               <b>Location</b>
             </legend>
@@ -241,7 +239,7 @@
             <legend>
               <b>Type</b>
             </legend>
-            {INTERNSHIP_DEFAULT_TYPE}{INTERNSHIP_DEFAULT_TYPE_LABEL}<br/>  
+            {INTERNSHIP_DEFAULT_TYPE}{INTERNSHIP_DEFAULT_TYPE_LABEL}<br/>
             <!-- {SERVICE_LEARNING_TYPE}{SERVICE_LEARNING_TYPE_LABEL}<br/>
             {INDEPENDENT_STUDY_TYPE}{INDEPENDENT_STUDY_TYPE_LABEL}<br/>
             {RESEARCH_ASSIST_TYPE}{RESEARCH_ASSIST_TYPE_LABEL}<br/> -->
@@ -259,7 +257,7 @@
   <td class="sub-form-cell">
     <span class="info-header">Agency</span>
     <table class="sub-form" id="agency-info">
-      
+
       <tr>
         <td>
           {AGENCY_NAME_LABEL}
