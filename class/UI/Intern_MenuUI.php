@@ -18,6 +18,10 @@ class Intern_MenuUI implements UI{
         $auth = Current_User::getAuthorization();
         $tags['LOGOUT'] = "<a href='$auth->logout_link'>Logout</a>";
 
+        if(Current_User::allow('intern')){
+            $tags['DEITY'] = 'Admin Options';
+            $tags['EXAMPLE_LINK']      = PHPWS_Text::secureLink('Example form','intern',array('action' => 'example_form'));
+        }
         if(Current_User::allow('intern', 'edit_major')){
             $tags['DEITY']                 = 'Admin Options';
             $tags['EDIT_MAJORS_LINK']      = PHPWS_Text::secureLink('Edit Majors','intern',array('action' => MAJOR_EDIT));

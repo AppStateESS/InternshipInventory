@@ -53,6 +53,12 @@ if (!isset($_REQUEST['action'])) {
 
 // Show requested page.
 switch ($req) {
+    case 'example_form':
+        header('Content-type: application/pdf');
+        readfile(PHPWS_SOURCE_DIR . 'mod/intern/pdf/Internship_Example.pdf');
+        exit();
+        break;
+
     case 'edit_internship':
         PHPWS_Core::initModClass('intern', 'UI/InternshipUI.php');
         $content = InternshipUI::display();
@@ -215,7 +221,7 @@ switch ($req) {
             $state = new State($_GET['abbr']);
             $state->setActive(true);
             $state->save();
-            exit();   
+            exit();
             break;
         case 'remove_state':
             if (!Current_User::allow('intern', 'edit_state')) {
@@ -225,7 +231,7 @@ switch ($req) {
             $state = new State($_GET['abbr']);
             $state->setActive(false);
             $state->save();
-            exit();   
+            exit();
             break;
     case STATE_EDIT:
             if (!Current_User::allow('intern', 'edit_state')) {
@@ -240,7 +246,7 @@ switch ($req) {
         PHPWS_Core::initModClass('intern', 'Department.php');
         if (isset($_REQUEST['add'])) {
             if (isset($_REQUEST['all'])) {
-                // Add user in REQUEST to all departments                
+                // Add user in REQUEST to all departments
                 Admin::addAll($_REQUEST['username']);
             } else {
                 // Add user in REQUEST to administrator list for the department in REQUEST.
@@ -288,7 +294,7 @@ switch ($req) {
         NQ::close();
         PHPWS_Core::goBack();
         break;
-    
+
     case 'unapprove':
         if (!Current_User::isDeity()) {
             Current_User::disallow();

@@ -12,6 +12,7 @@
   <!-- BEGIN admin_section -->
   <div class="sub-page-title">Admin Options:</div>
   <ul class="menu-list" id="diety-list">
+      <li>{EXAMPLE_LINK}</li>
       <!-- BEGIN majors --><li>{EDIT_MAJORS_LINK}</li><!-- END majors -->
       <!-- BEGIN grad --><li>{EDIT_GRAD_LINK}</li><!-- END grad -->
       <!-- BEGIN depts --><li>{EDIT_DEPARTMENTS_LINK}</li><!-- END depts -->
