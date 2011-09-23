@@ -5,8 +5,8 @@
 <div id="menu">
   <div class="sub-page-title">You May:</div>
   <ul class="menu-list" id="everyone-list">
-    <li>{SEARCH}</li>
     <li>{ADD}</li>
+    <li>{SEARCH}</li>
   </ul>
   <br />
   <!-- BEGIN admin_section -->

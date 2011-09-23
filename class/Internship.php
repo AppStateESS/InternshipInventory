@@ -227,7 +227,7 @@ class Internship extends Model {
             return null;
         }
         if ($formatted) {
-            return date('F j, Y', $this->start_date);
+            return date('j M, Y', $this->start_date);
         } else {
             return $this->start_date;
         }
@@ -239,7 +239,7 @@ class Internship extends Model {
             return null;
         }
         if ($formatted) {
-            return date('F j, Y', $this->end_date);
+            return date('j M, Y', $this->end_date);
         } else {
             return $this->end_date;
         }
@@ -742,8 +742,8 @@ EOF;
 //        }
 //        $pdf->multiCell(175, 5, $types, 1);
         /* Department */
-        $pdf->setFont('Times', null, 8);
-        $pdf->setXY(176, 20);
+        $pdf->setFont('Times', null, 10);
+        $pdf->setXY(176, 26);
         $pdf->MultiCell(31, 3, $d->name);
 
         $pdf->setFont('Times', null, 10);

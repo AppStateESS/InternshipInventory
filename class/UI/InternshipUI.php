@@ -137,7 +137,7 @@ class InternshipUI implements UI {
             $form->addCheckbox('approved');
             $form->setLabel('approved', 'Internship approved by Dean');
         } else {
-            $approved_on = "Approved by {$i->approved_by} on " . date('g:ia, M j, Y', $i->approved_on);
+            $approved_on = "Approved by Dean({$i->approved_by}); Sent to Registrar's Office on " . date('g:ia, M j, Y', $i->approved_on);
             if (Current_User::isDeity()) {
                 $approved_on .= ' <a href="index.php?module=intern&action=unapprove&id='
                         . $i->id . '&authkey=' . Current_User::getAuthKey() . '">Unapprove</a>';
@@ -155,7 +155,7 @@ class InternshipUI implements UI {
         $form->addText('student_phone');
         $form->setLabel('student_phone', 'Phone');
         $form->addText('student_email');
-        $form->setLabel('student_email', 'Email');
+        $form->setLabel('student_email', 'ASU Email');
         if (isset($s))
             $majors = Major::getMajorsAssoc($s->ugrad_major);
         else

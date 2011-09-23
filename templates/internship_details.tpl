@@ -5,7 +5,7 @@
   </tr>
   <tr>
     <td width="50%">
-      <b>Email:</b> <a href="mailto:{email}">{email}</a>
+      <b>ASU Email:</b> <a href="mailto:{email}">{email}</a>
     </td>
     <td>
       <b>Phone:</b> {phone} 

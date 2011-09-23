@@ -1,4 +1,5 @@
 <h1>Search Results<img id="search-icon" class="menu-icon" src="mod/intern/img/intern_search_results_icon.png"/></h1>
+<span>{BACK_LINK}</span><br /><br />
 <span id="csv-export">{CSV_LINK}</span>
 <table id="search-results">
 <tr id="header-row">

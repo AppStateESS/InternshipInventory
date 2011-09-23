@@ -166,6 +166,11 @@ class ResultsUI implements UI
         $pager->addRowTags('getRowTags');
         $pager->setEmptyMessage('No Results');
 
+        $pageTags = array();
+        $pageTags['BACK_LINK'] = PHPWS_Text::moduleLink('&laquo; Back to Search', 'intern', array('action' => 'search'));
+
+        $pager->addPageTags($pageTags);
+
         return $pager;
     }
 }
