@@ -82,9 +82,16 @@
     padding-left: 10px;
 }
 
-.menu-icon {
-    vertical-align: middle;
-    padding-right: 10px;
+.search-icon {
+    background: url('../img/edit-find.png') no-repeat 8px 50%;
+    padding-left: 60px;
+    line-height: 50px;
+}
+
+.add-icon {
+    background: url('../img/contact-new.png') no-repeat 8px 50%;
+    padding-left: 60px;
+    line-height: 50px;
 }
 
 #intern-totals {
