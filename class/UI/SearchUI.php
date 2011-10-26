@@ -72,7 +72,9 @@ class SearchUI implements UI
         $db->addOrder('full_name desc');
         $states = $db->select('col');
         if (empty($states)) {
-            exit(sprintf('Please go under admin options and <a href="index.php?module=intern&action=edit_states&authkey=%s">add allowed states.</a>', Current_User::getAuthKey()));
+        	NQ::simple('intern', INTERN_ERROR, 'The list of allowed US states for internship locations has not been configured. Please use the administrative options to <a href="index.php?module=intern&action=edit_states">add allowed states.</a>');
+        	NQ::close();
+        	PHPWS_Core::goBack();
         }
         $states[-1] = 'Select state';
         $states = array_reverse($states, true);
