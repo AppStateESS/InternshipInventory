@@ -225,7 +225,7 @@
         <td colspan="2">
           <fieldset>
             <legend>
-              <b>Payment</b>
+              <b>Compensation</b>
             </legend>
             {PAYMENT_1}{PAYMENT_1_LABEL}<br/>
             {PAYMENT_2}{PAYMENT_2_LABEL}<br/>
