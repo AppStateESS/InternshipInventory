@@ -277,7 +277,7 @@ class InternshipUI implements UI {
         $form->addText('end_date');
         $form->setLabel('end_date', 'End Date');
         $form->addText('credits');
-        $form->setLabel('credits', 'Credits');
+        $form->setLabel('credits', 'Credit Hours');
         $form->addText('avg_hours_week');
         $form->setLabel('avg_hours_week', 'Average Hours per Week');
         $loc = array('domestic' => 'Domestic', 'internat' => 'International');
