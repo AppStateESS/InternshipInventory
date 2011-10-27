@@ -1,18 +1,15 @@
 <div id="logout-link">{LOGOUT}</div>
-<div class="page-title">Welcome to the Internship Inventory</div>
-<br />
 <img id="main-menu-icon" src="mod/intern/img/freedo_Glossy_Globe.png"/>
 <div id="menu">
-  <div class="sub-page-title">You May:</div>
   <ul class="menu-list" id="everyone-list">
     <li>{ADD}</li>
     <li>{SEARCH}</li>
   </ul>
   <br />
+  {EXAMPLE_LINK}
   <!-- BEGIN admin_section -->
   <div class="sub-page-title">Admin Options:</div>
   <ul class="menu-list" id="diety-list">
-      <li>{EXAMPLE_LINK}</li>
       <!-- BEGIN majors --><li>{EDIT_MAJORS_LINK}</li><!-- END majors -->
       <!-- BEGIN grad --><li>{EDIT_GRAD_LINK}</li><!-- END grad -->
       <!-- BEGIN depts --><li>{EDIT_DEPARTMENTS_LINK}</li><!-- END depts -->
