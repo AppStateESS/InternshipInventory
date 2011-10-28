@@ -144,4 +144,32 @@ function otherStuff(){
         internatClick();
     }
 
+    /* Undergraduate Level and Major handling */
+    
+    var ugradClick = function()
+    {
+    	$("#grad_drop").hide();
+    	$("#ugrad_drop").show();
+    };
+    
+    var gradClick = function()
+    {
+    	$("#ugrad_drop").hide();
+    	$("#grad_drop").show();
+    };
+    
+    // Bind event handler for radio button change
+    $("#internship_student_level_ugrad").click(function(){ugradClick();});
+    $("#internship_student_level_grad").click(function(){gradClick();});
+    
+    // Set initial state for student level radio button
+    if($("#internship_student_level_ugrad").attr('checked')){
+    	ugradClick();
+    }else if($("#internship_student_level_grad").attr('checked')){
+    	gradClick();
+    }else{
+    	// Nothing is checked, hide both
+    	$("#ugrad_drop").hide();
+    	$("#grad_drop").hide();
+    }
 };

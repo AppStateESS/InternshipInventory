@@ -17,6 +17,7 @@ class Student extends Model
     public $last_name;
     public $phone;
     public $email;
+    public $level;
     public $grad_prog;
     public $ugrad_major;
 

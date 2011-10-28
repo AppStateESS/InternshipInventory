@@ -1,5 +1,6 @@
 <script type="text/javascript">
     $(document).ready(function(){
+    	// Setup date pickers
         $("#internship_start_date").datepicker();
         $("#internship_end_date").datepicker();
     });
@@ -67,14 +68,20 @@
     </tr>
     <tr>
       <td colspan="2">
-        {UGRAD_MAJOR_LABEL}<br />
-        {UGRAD_MAJOR}
-      </td>
-    </tr>
-    <tr>
-      <td colspan="2">
-        {GRAD_PROG_LABEL}<br />
-        {GRAD_PROG}
+      	<fieldset>
+      	  <legend>Major</legend>
+      	  {STUDENT_LEVEL_1}{STUDENT_LEVEL_1_LABEL}
+      	  {STUDENT_LEVEL_2}{STUDENT_LEVEL_2_LABEL}
+      	  <br />
+      	  <span id="ugrad_drop">
+      	    {UGRAD_MAJOR_LABEL}<br />
+            {UGRAD_MAJOR}
+          </span>
+          <span id="grad_drop">
+            {GRAD_PROG_LABEL}<br />
+            {GRAD_PROG}
+          </span>
+      	</fieldset>
       </td>
     </tr>
   </table>

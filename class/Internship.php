@@ -123,17 +123,17 @@ class Internship extends Model {
     }
 
     /*
-      private function toggle($pdf, $header=true)
-      {
-      if ($header) {
-      // Set header font.
-      $pdf->setFont('Arial', 'B', '10');
-      } else {
-      // Set data font.
-      $pdf->setFont('Courier', '', '10');
-      }
-      }
-     */
+     private function toggle($pdf, $header=true)
+    {
+    if ($header) {
+    // Set header font.
+    $pdf->setFont('Arial', 'B', '10');
+    } else {
+    // Set data font.
+    $pdf->setFont('Courier', '', '10');
+    }
+    }
+    */
 
     /**
      * Get a comma separated list of the types for
@@ -304,13 +304,13 @@ class Internship extends Model {
     public static function getTypesAssoc()
     {
         /**
-          return array('internship' => 'Internship',
-          'service_learn' => 'Service Learning',
-          'independent_study' => 'Independent Study',
-          'research_assistant' => 'Research Assistant',
-          'student_teaching' => 'Student Teaching',
-          'clinical_practica' => 'Clinical Practica In Health Fields',
-          'special_topics' => 'Special Topics');
+         return array('internship' => 'Internship',
+         'service_learn' => 'Service Learning',
+         'independent_study' => 'Independent Study',
+         'research_assistant' => 'Research Assistant',
+         'student_teaching' => 'Student Teaching',
+         'clinical_practica' => 'Clinical Practica In Health Fields',
+         'special_topics' => 'Special Topics');
          *
          */
         return array('internship' => 'Internship',
@@ -400,6 +400,7 @@ class Internship extends Model {
         $student->banner = $_REQUEST['banner'];
         $student->phone = $_REQUEST['student_phone'];
         $student->email = $_REQUEST['student_email'];
+        $student->level = $_REQUEST['student_level'];
         $student->grad_prog = $_REQUEST['grad_prog'] == -1 ? null : $_REQUEST['grad_prog'];
         $student->ugrad_major = $_REQUEST['ugrad_major'] == -1 ? null : $_REQUEST['ugrad_major'];
 
@@ -573,53 +574,6 @@ class Internship extends Model {
         }
     }
 
-    public static function emailApproval($s, $i, $a)
-    {
-        require_once (PHPWS_SOURCE_DIR . 'mod/intern/conf/email_address.php');
-        if (!INTERNSHIP_EMAIL) {
-            return;
-        }
-        $approved_on = date('g:ia m/d/Y', $i->approved_on);
-        $message = <<<EOF
-Student
---------
-Name: $s->first_name $s->middle_name $s->last_name
-Email: <a href="mailto:$s->email">$s->email</a>
-Phone: $s->phone
-Major: $s->ugrad_major
-
-Agency
---------
-Name: $a->name
-State/Province: $a->state
-Country: $a->country
-
-Internship
------------
-Location: $i->loc_state
-Term: $i->term
-
-
-Approved by: $i->approved_by
-Approved on: $approved_on
-EOF;
-        echo '<pre>';
-        echo $message;
-        echo '</pre>';
-        exit();
-        $mail = new PHPWS_Mail;
-        $mail->addSendTo(INTERNSHIP_ADMIN_EMAIL_TO);
-        $mail->setSubject('Internship approved');
-        $mail->setFrom(INTERNSHIP_ADMIN_EMAIL_FROM);
-        $mail->setReplyTo(INTERNSHIP_ADMIN_EMAIL_FROM);
-        $mail->setMessageBody(implode("\n", $message));
-        $result = $mail->send();
-        if (!PEAR::isError($result)) {
-            PHPWS_Error::log($result);
-            $this->message = 'Service could not send email at this time. Please try again later.';
-        }
-    }
-
     /**
      * Check that required fields are in the REQUEST.
      */
@@ -638,16 +592,22 @@ EOF;
         /* Required select boxes should not equal -1 */
 
         if (!isset($_REQUEST['department']) ||
-                $_REQUEST['department'] == -1) {
+        $_REQUEST['department'] == -1) {
             $vals[] = 'department';
         }
-        if (!isset($_REQUEST['ugrad_major']) ||
-                $_REQUEST['ugrad_major'] == -1) {
+
+        if(isset($_REQUEST['student_level']) && $_REQUEST['student_level'] == 'ugrad' &&
+        (!isset($_REQUEST['ugrad_major']) || $_REQUEST['ugrad_major'] == -1)){
             $vals[] = 'ugrad_major';
         }
 
+        if(isset($_REQUEST['student_level']) && $_REQUEST['student_level'] == 'grad' &&
+        (!isset($_REQUEST['grad_prog']) || $_REQUEST['grad_prog'] == -1)){
+            $vals[] = 'grad_prog';
+        }
+
         if (!isset($_REQUEST['term']) ||
-                $_REQUEST['term'] == -1) {
+        $_REQUEST['term'] == -1) {
             $vals[] = 'term';
         }
 
@@ -665,16 +625,6 @@ EOF;
         /**
          * Updated 7/26/2011 - several requirements loosened
          */
-        /*
-          if($_REQUEST['location'] == 'internat'){
-          if(!isset($_REQUEST['agency_country']) || $_REQUEST['agency_country'] == '')
-          // Add country to missing for Agency.
-          $vals[] = 'agency_country';
-          if(!isset($_REQUEST['agency_sup_country']) || $_REQUEST['agency_sup_country'] == '')
-          // Add country to missing for Agency Supervisor.
-          $vals[] = 'agency_sup_country';
-          }else
-         */
         if (!isset($_REQUEST['location'])) {
             $vals[] = 'location';
         } elseif ($_REQUEST['location'] == 'domestic') {
@@ -682,20 +632,6 @@ EOF;
                 // Add state to missing
                 $vals[] = 'agency_state';
             }
-            /*
-              if(!isset($_REQUEST['agency_zip']) || $_REQUEST['agency_zip'] == ''){
-              // Add zip to missing
-              $vals[] = 'agency_zip';
-              }
-              if (!isset($_REQUEST['agency_sup_state']) || $_REQUEST['agency_sup_state'] == -1) {
-              // Add state to missing (supervisor)
-              $vals[] = 'agency_sup_state';
-              }
-              if (!isset($_REQUEST['agency_sup_zip']) || $_REQUEST['agency_sup_zip'] == '') {
-              // Add zip to missing (supervisor)
-              $vals[] = 'agency_sup_zip';
-              }
-             */
         }
 
         return $vals;
@@ -727,166 +663,213 @@ EOF;
 
         /*
          * Internship information
-         */
+        */
 
         $pdf->setXY(121, 25);
         $pdf->setFont('Times', null, 10);
         $pdf->cell(60, 5, Term::rawToRead($this->term, false));
-//        $types = $this->getReadableTypes();
-//        // If the width of the string of types is greater than 139 (found by trial/error)
-//        // then we need to correct the header's alignment and left border.
-//        if ($pdf->getStringWidth($types) > 139) {
-//            $pdf->cell(15, 10, 'Type:', 1);
-//        } else {
-//            $pdf->cell(15, 5, 'Type:', 1);
-//        }
-//        $pdf->multiCell(175, 5, $types, 1);
-        /* Department */
-        $pdf->setFont('Times', null, 10);
-        $pdf->setXY(176, 26);
-        $pdf->MultiCell(31, 3, $d->name);
+        //        $types = $this->getReadableTypes();
+        //        // If the width of the string of types is greater than 139 (found by trial/error)
+        //        // then we need to correct the header's alignment and left border.
+        //        if ($pdf->getStringWidth($types) > 139) {
+        //            $pdf->cell(15, 10, 'Type:', 1);
+            //        } else {
+            //            $pdf->cell(15, 5, 'Type:', 1);
+                //        }
+                //        $pdf->multiCell(175, 5, $types, 1);
+                /* Department */
+                $pdf->setFont('Times', null, 10);
+                $pdf->setXY(176, 26);
+                $pdf->MultiCell(31, 3, $d->name);
 
-        $pdf->setFont('Times', null, 10);
-        $pdf->setXY(144, 30);
-        $pdf->cell(25, 5, $this->getStartDate(true));
-        $pdf->setXY(175, 30);
-        $pdf->cell(25, 5, $this->getEndDate(true));
+                $pdf->setFont('Times', null, 10);
+                $pdf->setXY(144, 30);
+                $pdf->cell(25, 5, $this->getStartDate(true));
+                $pdf->setXY(175, 30);
+                $pdf->cell(25, 5, $this->getEndDate(true));
 
-        $pdf->setFont('Times', null, 8);
-        $pdf->setXY(149, 35);
-        $course_info = $this->course_subj . '/' . $this->course_no . '/' . $this->course_sect;
-        $pdf->cell(59, 5, $course_info);
-
-
-        $pdf->setXY(132, 39);
-        /*
-          if (!is_null($m)) {
-          $major = $m->getName();
-          } else {
-          $major = 'N/A';
-          }
-          $pdf->cell(73, 5, $major);
-         */
-
-        $pdf->setFont('Times', null, 10);
-        $pdf->cell(73, 6, $this->course_title);
-
-        /* Hours */
-        $pdf->setXY(185, 44);
-        $pdf->cell(12, 5, $this->credits);
-        $pdf->setXY(140, 44);
-        $pdf->cell(12, 5, $this->avg_hours_week);
-
-        /* Location */
-        $pdf->setXY(78, 53);
-        $pdf->cell(12, 5, $this->domestic == 1 ? 'Yes' : 'No');
-        $pdf->setXY(65, 58);
-        $pdf->cell(12, 5, $this->international == 1 ? 'Yes' : 'No');
+                $pdf->setFont('Times', null, 8);
+                $pdf->setXY(149, 35);
+                $course_info = $this->course_subj . '/' . $this->course_no . '/' . $this->course_sect;
+                $pdf->cell(59, 5, $course_info);
 
 
-        if ($this->loc_city) {
-            $loc[] = $this->loc_city;
+                $pdf->setXY(132, 39);
+                /*
+                 if (!is_null($m)) {
+                $major = $m->getName();
+                } else {
+                $major = 'N/A';
+                }
+                $pdf->cell(73, 5, $major);
+                */
+
+                $pdf->setFont('Times', null, 10);
+                $pdf->cell(73, 6, $this->course_title);
+
+                /* Hours */
+                $pdf->setXY(185, 44);
+                $pdf->cell(12, 5, $this->credits);
+                $pdf->setXY(140, 44);
+                $pdf->cell(12, 5, $this->avg_hours_week);
+
+                /* Location */
+                $pdf->setXY(78, 53);
+                $pdf->cell(12, 5, $this->domestic == 1 ? 'Yes' : 'No');
+                $pdf->setXY(65, 58);
+                $pdf->cell(12, 5, $this->international == 1 ? 'Yes' : 'No');
+
+
+                if ($this->loc_city) {
+                    $loc[] = $this->loc_city;
+                }
+
+                if (!empty($this->loc_state) && $this->loc_state != '-1') {
+                    $loc[] = $this->loc_state;
+                }
+
+                if (isset($loc)) {
+                    $pdf->setXY(137, 53);
+                    $pdf->cell(52, 5, implode(', ', $loc));
+                }
+
+                $pdf->setXY(137, 58);
+                $pdf->cell(52, 5, $this->getLocCountry());
+
+                /* Payment */
+                //        $pdf->cell(12, 5, 'Paid:', 'LTB');
+                //        $pdf->cell(83, 5, $this->paid == 1 && $this->unpaid == 0 ? 'Yes' : 'No', 'RTB'); // TODO: Verify logic for paid/unpaid.
+                //        $pdf->cell(30, 5, 'Stipend Based:', 'LTB');
+                //        $pdf->cell(65, 5, $this->stipend == 1 ? 'Yes' : 'No', 'RTB');
+                //
+                //
+                /**
+                * Student information.
+                */
+                $pdf->setXY(39, 73);
+                $pdf->cell(55, 5, $s->getFullName());
+
+                $pdf->setXY(114, 73);
+                $pdf->cell(42, 5, $s->banner);
+
+                $pdf->setXY(39, 85);
+                $pdf->cell(54, 5, $s->email);
+
+                //        $pdf->cell(35, 5, 'Graduate Program:', 'LTB');
+                //        if (!is_null($g)) {
+                //            $pdf->cell(155, 5, $g->getName(), 'RTB');
+                    //        } else {
+                    //            $pdf->cell(155, 5, 'N/A', 'RTB');
+                        //        }
+                        //
+                /**
+                * Faculty supervisor information.
+                */
+                $pdf->setXY(24, 109);
+                $pdf->cell(81, 5, $f->getFullName());
+
+                $pdf->setXY(25, 130);
+                $pdf->cell(77, 5, $f->phone);
+
+                $pdf->setXY(25, 145);
+                $pdf->cell(77, 5, $f->email);
+
+                /**
+                 * Agency information.
+                 */
+                $pdf->setXY(133, 108);
+                $pdf->cell(71, 5, $a->name);
+
+                $pdf->setXY(125, 114);
+                if ($this->domestic == 1) {
+                    $agency_address = $a->getDomesticAddress();
+                } else {
+                    $agency_address = $a->getInternationalAddress();
+                }
+                $pdf->cell(77, 5, $agency_address);
+                //
+                //        $pdf->cell(18, 5, 'Phone:', 'LTB');
+                //        $pdf->cell(172, 5, $a->phone, 'RTB');
+                //
+                /**
+                * Agency supervisor info.
+                */
+                $pdf->setXY(110, 131);
+                $pdf->cell(75, 5, $a->getSupervisorFullName());
+
+                if ($this->domestic == 1) {
+                    $s_agency_address = $a->getSuperDomesticAddress();
+                } else {
+                    $s_agency_address = $a->getSuperInternationalAddress();
+                }
+
+                $pdf->setXY(124, 137);
+                $pdf->cell(78, 5, $s_agency_address);
+
+                $pdf->setXY(122, 149);
+                $pdf->cell(72, 5, $a->supervisor_email);
+
+                $pdf->setXY(122, 144);
+                $pdf->cell(33, 5, $a->supervisor_phone);
+
+                $pdf->setXY(163, 144);
+                $pdf->cell(40, 5, $a->supervisor_fax);
+
+                /* Notes */
+                //$pdf->multiCell(0, 5, $this->notes, 1);
+
+                $tplidx = $pdf->importPage(2);
+                $pdf->addPage();
+                $pdf->useTemplate($tplidx);
+
+                $pdf->output();
+    }
+
+    public static function emailApproval($s, $i, $a)
+    {
+        require_once (PHPWS_SOURCE_DIR . 'mod/intern/conf/email_address.php');
+        if (!INTERNSHIP_EMAIL) {
+            return;
         }
-
-        if (!empty($this->loc_state) && $this->loc_state != '-1') {
-            $loc[] = $this->loc_state;
+        $approved_on = date('g:ia m/d/Y', $i->approved_on);
+        $message = <<<EOF
+    Student
+    --------
+    Name: $s->first_name $s->middle_name $s->last_name
+    Email: <a href="mailto:$s->email">$s->email</a>
+    Phone: $s->phone
+    Major: $s->ugrad_major
+    
+    Agency
+    --------
+    Name: $a->name
+    State/Province: $a->state
+    Country: $a->country
+    
+    Internship
+    -----------
+    Location: $i->loc_state
+    Term: $i->term
+    
+    
+    Approved by: $i->approved_by
+    Approved on: $approved_on
+EOF;
+        echo '<pre>';
+        echo $message;
+        echo '</pre>';
+        exit();
+        $mail = new PHPWS_Mail;
+        $mail->addSendTo(INTERNSHIP_ADMIN_EMAIL_TO);
+        $mail->setSubject('Internship approved');
+        $mail->setFrom(INTERNSHIP_ADMIN_EMAIL_FROM);
+        $mail->setReplyTo(INTERNSHIP_ADMIN_EMAIL_FROM);
+        $mail->setMessageBody(implode("\n", $message));
+        $result = $mail->send();
+        if (!PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            $this->message = 'Service could not send email at this time. Please try again later.';
         }
-
-        if (isset($loc)) {
-            $pdf->setXY(137, 53);
-            $pdf->cell(52, 5, implode(', ', $loc));
-        }
-
-        $pdf->setXY(137, 58);
-        $pdf->cell(52, 5, $this->getLocCountry());
-
-        /* Payment */
-//        $pdf->cell(12, 5, 'Paid:', 'LTB');
-//        $pdf->cell(83, 5, $this->paid == 1 && $this->unpaid == 0 ? 'Yes' : 'No', 'RTB'); // TODO: Verify logic for paid/unpaid.
-//        $pdf->cell(30, 5, 'Stipend Based:', 'LTB');
-//        $pdf->cell(65, 5, $this->stipend == 1 ? 'Yes' : 'No', 'RTB');
-//
-//
-        /**
-         * Student information.
-         */
-        $pdf->setXY(39, 73);
-        $pdf->cell(55, 5, $s->getFullName());
-
-        $pdf->setXY(114, 73);
-        $pdf->cell(42, 5, $s->banner);
-
-        $pdf->setXY(39, 85);
-        $pdf->cell(54, 5, $s->email);
-
-//        $pdf->cell(35, 5, 'Graduate Program:', 'LTB');
-//        if (!is_null($g)) {
-//            $pdf->cell(155, 5, $g->getName(), 'RTB');
-//        } else {
-//            $pdf->cell(155, 5, 'N/A', 'RTB');
-//        }
-//
-        /**
-         * Faculty supervisor information.
-         */
-        $pdf->setXY(24, 109);
-        $pdf->cell(81, 5, $f->getFullName());
-
-        $pdf->setXY(25, 130);
-        $pdf->cell(77, 5, $f->phone);
-
-        $pdf->setXY(25, 145);
-        $pdf->cell(77, 5, $f->email);
-
-        /**
-         * Agency information.
-         */
-        $pdf->setXY(133, 108);
-        $pdf->cell(71, 5, $a->name);
-
-        $pdf->setXY(125, 114);
-        if ($this->domestic == 1) {
-            $agency_address = $a->getDomesticAddress();
-        } else {
-            $agency_address = $a->getInternationalAddress();
-        }
-        $pdf->cell(77, 5, $agency_address);
-//
-//        $pdf->cell(18, 5, 'Phone:', 'LTB');
-//        $pdf->cell(172, 5, $a->phone, 'RTB');
-//
-        /**
-         * Agency supervisor info.
-         */
-        $pdf->setXY(110, 131);
-        $pdf->cell(75, 5, $a->getSupervisorFullName());
-
-        if ($this->domestic == 1) {
-            $s_agency_address = $a->getSuperDomesticAddress();
-        } else {
-            $s_agency_address = $a->getSuperInternationalAddress();
-        }
-
-        $pdf->setXY(124, 137);
-        $pdf->cell(78, 5, $s_agency_address);
-
-        $pdf->setXY(122, 149);
-        $pdf->cell(72, 5, $a->supervisor_email);
-
-        $pdf->setXY(122, 144);
-        $pdf->cell(33, 5, $a->supervisor_phone);
-
-        $pdf->setXY(163, 144);
-        $pdf->cell(40, 5, $a->supervisor_fax);
-
-        /* Notes */
-        //$pdf->multiCell(0, 5, $this->notes, 1);
-
-        $tplidx = $pdf->importPage(2);
-        $pdf->addPage();
-        $pdf->useTemplate($tplidx);
-
-        $pdf->output();
     }
 
     public function getLocCountry()

@@ -18,8 +18,7 @@ class InternshipUI implements UI {
      * 'agency_sup_city',
      */
     public static $requiredFields = array('student_first_name', 'student_last_name',
-        'banner', 'student_phone', 'student_email', 'agency_name', 'agency_state',
-        'ugrad_major', 'term', 'loc_state', 'department');
+        'banner', 'student_phone', 'student_email', 'agency_name', 'agency_state', 'term', 'loc_state', 'department');
 
     public static function display()
     {
@@ -156,16 +155,30 @@ class InternshipUI implements UI {
         $form->setLabel('student_phone', 'Phone');
         $form->addText('student_email');
         $form->setLabel('student_email', 'ASU Email');
-        if (isset($s))
+        
+        // Student level radio button
+        $levels = array('ugrad' => 'Undergraduate', 'grad' => 'Graduate');
+        $form->addRadioAssoc('student_level', $levels);
+        $form->setMatch('student_level', 'ugrad');
+        $form->setRequired('student_level');
+        
+        // Undergrad major drop down
+        if (isset($s)){
             $majors = Major::getMajorsAssoc($s->ugrad_major);
-        else
+        }else{
             $majors = Major::getMajorsAssoc();
+        }
+        
         $form->addSelect('ugrad_major', $majors);
         $form->setLabel('ugrad_major', 'Undergraduate Major');
-        if (isset($s))
+        
+        // Graduate major drop down
+        if (isset($s)){
             $progs = GradProgram::getGradProgsAssoc($s->grad_prog);
-        else
+        }else{
             $progs = GradProgram::getGradProgsAssoc();
+        }
+        
         $form->addSelect('grad_prog', $progs);
         $form->setLabel('grad_prog', 'Graduate Program');
 
@@ -280,15 +293,18 @@ class InternshipUI implements UI {
         $form->setLabel('credits', 'Credit Hours');
         $form->addText('avg_hours_week');
         $form->setLabel('avg_hours_week', 'Average Hours per Week');
+        
         $loc = array('domestic' => 'Domestic', 'internat' => 'International');
         $form->addRadioAssoc('location', $loc);
         //$form->setMatch('location', 'domestic'); // Default to domestic
         $form->setRequired('location');
+        
         $pay = array('unpaid' => 'Unpaid', 'paid' => 'Paid');
         $form->addRadioAssoc('payment', $pay);
         $form->setMatch('payment', 'unpaid'); // Default to unpaid
         $form->addCheck('stipend');
         $form->setLabel('stipend', 'Stipend');
+        
         $form->addCheck('internship_default_type');
         $form->setLabel('internship_default_type', 'Internship');
         $form->setMatch('internship_default_type', true); // Internship is checked by default
@@ -347,7 +363,7 @@ class InternshipUI implements UI {
         javascript('jquery');
         javascript('jquery_ui');
         javascriptMod('intern', 'formGoodies');
-
+        
         return $form;
     }
 
@@ -373,6 +389,7 @@ class InternshipUI implements UI {
         $vals['banner'] = $s->banner;
         $vals['student_phone'] = $s->phone;
         $vals['student_email'] = $s->email;
+        $vals['student_level'] = $s->level;
         $vals['grad_prog'] = $s->grad_prog;
         $vals['ugrad_major'] = $s->ugrad_major;
 
