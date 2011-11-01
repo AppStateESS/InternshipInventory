@@ -656,7 +656,7 @@ class Internship extends Model {
         $g = $s->getGradProgram();
 
 
-        $pagecount = $pdf->setSourceFile(PHPWS_SOURCE_DIR . 'mod/intern/pdf/Internflat.pdf');
+        $pagecount = $pdf->setSourceFile(PHPWS_SOURCE_DIR . 'mod/intern/pdf/contract-flat.pdf');
         $tplidx = $pdf->importPage(1);
         $pdf->addPage();
         $pdf->useTemplate($tplidx);
@@ -665,164 +665,177 @@ class Internship extends Model {
          * Internship information
         */
 
-        $pdf->setXY(121, 25);
         $pdf->setFont('Times', null, 10);
+        
+        // Term
+        $pdf->setXY(128, 39);
         $pdf->cell(60, 5, Term::rawToRead($this->term, false));
+        
+        
         //        $types = $this->getReadableTypes();
         //        // If the width of the string of types is greater than 139 (found by trial/error)
         //        // then we need to correct the header's alignment and left border.
         //        if ($pdf->getStringWidth($types) > 139) {
         //            $pdf->cell(15, 10, 'Type:', 1);
-            //        } else {
-            //            $pdf->cell(15, 5, 'Type:', 1);
-                //        }
-                //        $pdf->multiCell(175, 5, $types, 1);
-                /* Department */
-                $pdf->setFont('Times', null, 10);
-                $pdf->setXY(176, 26);
-                $pdf->MultiCell(31, 3, $d->name);
+        //        } else {
+        //            $pdf->cell(15, 5, 'Type:', 1);
+        //        }
+        //        $pdf->multiCell(175, 5, $types, 1);
+        
+        /* Department */
+        //$pdf->setFont('Times', null, 10);
+        $pdf->setXY(171, 40);
+        $pdf->MultiCell(31, 3, $d->name);
 
-                $pdf->setFont('Times', null, 10);
-                $pdf->setXY(144, 30);
-                $pdf->cell(25, 5, $this->getStartDate(true));
-                $pdf->setXY(175, 30);
-                $pdf->cell(25, 5, $this->getEndDate(true));
+        // Start/end dates
+        //$pdf->setFont('Times', null, 10);
+        $pdf->setXY(50, 93);
+        $pdf->cell(25, 5, $this->getStartDate(true));
+        $pdf->setXY(93, 93);
+        $pdf->cell(25, 5, $this->getEndDate(true));
 
-                $pdf->setFont('Times', null, 8);
-                $pdf->setXY(149, 35);
-                $course_info = $this->course_subj . '/' . $this->course_no . '/' . $this->course_sect;
-                $pdf->cell(59, 5, $course_info);
-
-
-                $pdf->setXY(132, 39);
-                /*
-                 if (!is_null($m)) {
-                $major = $m->getName();
-                } else {
-                $major = 'N/A';
-                }
-                $pdf->cell(73, 5, $major);
-                */
-
-                $pdf->setFont('Times', null, 10);
-                $pdf->cell(73, 6, $this->course_title);
-
-                /* Hours */
-                $pdf->setXY(185, 44);
-                $pdf->cell(12, 5, $this->credits);
-                $pdf->setXY(140, 44);
-                $pdf->cell(12, 5, $this->avg_hours_week);
-
-                /* Location */
-                $pdf->setXY(78, 53);
-                $pdf->cell(12, 5, $this->domestic == 1 ? 'Yes' : 'No');
-                $pdf->setXY(65, 58);
-                $pdf->cell(12, 5, $this->international == 1 ? 'Yes' : 'No');
+        //$pdf->setFont('Times', null, 8);
+        $pdf->setXY(132, 44);
+        $course_info = $this->course_subj . ' ' . $this->course_no;
+        $pdf->cell(59, 5, $course_info);
+        
+        $pdf->setXY(178, 44);
+        $pdf->cell(25, 5, $this->course_sect);
 
 
-                if ($this->loc_city) {
-                    $loc[] = $this->loc_city;
-                }
+        $pdf->setXY(132, 39);
+        /*
+         if (!is_null($m)) {
+        $major = $m->getName();
+        } else {
+        $major = 'N/A';
+        }
+        $pdf->cell(73, 5, $major);
+        */
 
-                if (!empty($this->loc_state) && $this->loc_state != '-1') {
-                    $loc[] = $this->loc_state;
-                }
+        //$pdf->setFont('Times', null, 10);
+        $pdf->setXY(140, 48);
+        $pdf->cell(73, 6, $this->course_title);
 
-                if (isset($loc)) {
-                    $pdf->setXY(137, 53);
-                    $pdf->cell(52, 5, implode(', ', $loc));
-                }
+        /* Hours */
+        $pdf->setXY(193, 93);
+        $pdf->cell(12, 5, $this->credits); // Credit hours
+        $pdf->setXY(157, 93);
+        $pdf->cell(12, 5, $this->avg_hours_week); // hours per week
 
-                $pdf->setXY(137, 58);
-                $pdf->cell(52, 5, $this->getLocCountry());
+        /* Location */
+        $pdf->setXY(78, 53);
+        //$pdf->cell(12, 5, $this->domestic == 1 ? 'Yes' : 'No');
+        $pdf->setXY(65, 58);
+        //$pdf->cell(12, 5, $this->international == 1 ? 'Yes' : 'No');
 
-                /* Payment */
-                //        $pdf->cell(12, 5, 'Paid:', 'LTB');
-                //        $pdf->cell(83, 5, $this->paid == 1 && $this->unpaid == 0 ? 'Yes' : 'No', 'RTB'); // TODO: Verify logic for paid/unpaid.
-                //        $pdf->cell(30, 5, 'Stipend Based:', 'LTB');
-                //        $pdf->cell(65, 5, $this->stipend == 1 ? 'Yes' : 'No', 'RTB');
-                //
-                //
-                /**
-                * Student information.
-                */
-                $pdf->setXY(39, 73);
-                $pdf->cell(55, 5, $s->getFullName());
 
-                $pdf->setXY(114, 73);
-                $pdf->cell(42, 5, $s->banner);
+        if ($this->loc_city) {
+            $loc[] = $this->loc_city;
+        }
 
-                $pdf->setXY(39, 85);
-                $pdf->cell(54, 5, $s->email);
+        if (!empty($this->loc_state) && $this->loc_state != '-1') {
+            $loc[] = $this->loc_state;
+        }
 
-                //        $pdf->cell(35, 5, 'Graduate Program:', 'LTB');
-                //        if (!is_null($g)) {
-                //            $pdf->cell(155, 5, $g->getName(), 'RTB');
-                    //        } else {
-                    //            $pdf->cell(155, 5, 'N/A', 'RTB');
-                        //        }
-                        //
-                /**
-                * Faculty supervisor information.
-                */
-                $pdf->setXY(24, 109);
-                $pdf->cell(81, 5, $f->getFullName());
+        if (isset($loc)) {
+            $pdf->setXY(137, 53);
+            //$pdf->cell(52, 5, implode(', ', $loc));
+        }
 
-                $pdf->setXY(25, 130);
-                $pdf->cell(77, 5, $f->phone);
+        $pdf->setXY(137, 58);
+        //$pdf->cell(52, 5, $this->getLocCountry());
 
-                $pdf->setXY(25, 145);
-                $pdf->cell(77, 5, $f->email);
+        /* Payment */
+        //        $pdf->cell(12, 5, 'Paid:', 'LTB');
+        //        $pdf->cell(83, 5, $this->paid == 1 && $this->unpaid == 0 ? 'Yes' : 'No', 'RTB'); // TODO: Verify logic for paid/unpaid.
+        //        $pdf->cell(30, 5, 'Stipend Based:', 'LTB');
+        //        $pdf->cell(65, 5, $this->stipend == 1 ? 'Yes' : 'No', 'RTB');
+        //
+        //
+        /**
+        * Student information.
+        */
+        $pdf->setXY(40, 77);
+        $pdf->cell(55, 5, $s->getFullName());
 
-                /**
-                 * Agency information.
-                 */
-                $pdf->setXY(133, 108);
-                $pdf->cell(71, 5, $a->name);
+        $pdf->setXY(32, 83);
+        $pdf->cell(42, 5, $s->banner);
 
-                $pdf->setXY(125, 114);
-                if ($this->domestic == 1) {
-                    $agency_address = $a->getDomesticAddress();
-                } else {
-                    $agency_address = $a->getInternationalAddress();
-                }
-                $pdf->cell(77, 5, $agency_address);
-                //
-                //        $pdf->cell(18, 5, 'Phone:', 'LTB');
-                //        $pdf->cell(172, 5, $a->phone, 'RTB');
-                //
-                /**
-                * Agency supervisor info.
-                */
-                $pdf->setXY(110, 131);
-                $pdf->cell(75, 5, $a->getSupervisorFullName());
+        $pdf->setXY(41, 88);
+        $pdf->cell(54, 5, $s->email . '@appstate.edu');
+        
+        $pdf->setXY(113, 88);
+        $pdf->cell(54, 5, $s->phone);
 
-                if ($this->domestic == 1) {
-                    $s_agency_address = $a->getSuperDomesticAddress();
-                } else {
-                    $s_agency_address = $a->getSuperInternationalAddress();
-                }
+        //        $pdf->cell(35, 5, 'Graduate Program:', 'LTB');
+        //        if (!is_null($g)) {
+        //            $pdf->cell(155, 5, $g->getName(), 'RTB');
+        //        } else {
+        //            $pdf->cell(155, 5, 'N/A', 'RTB');
+        //        }
+        //
+        /**
+        * Faculty supervisor information.
+        */
+        $pdf->setXY(26, 109);
+        $pdf->cell(81, 5, $f->getFullName());
 
-                $pdf->setXY(124, 137);
-                $pdf->cell(78, 5, $s_agency_address);
+        $pdf->setXY(26, 131);
+        $pdf->cell(77, 5, $f->phone);
 
-                $pdf->setXY(122, 149);
-                $pdf->cell(72, 5, $a->supervisor_email);
+        $pdf->setXY(26, 145);
+        $pdf->cell(77, 5, $f->email);
 
-                $pdf->setXY(122, 144);
-                $pdf->cell(33, 5, $a->supervisor_phone);
+        /**
+         * Agency information.
+         */
+        $pdf->setXY(133, 108);
+        $pdf->cell(71, 5, $a->name);
 
-                $pdf->setXY(163, 144);
-                $pdf->cell(40, 5, $a->supervisor_fax);
+        $pdf->setXY(125, 114);
+        if ($this->domestic == 1) {
+            $agency_address = $a->getDomesticAddress();
+        } else {
+            $agency_address = $a->getInternationalAddress();
+        }
+        $pdf->cell(77, 5, $agency_address);
+        //
+        //        $pdf->cell(18, 5, 'Phone:', 'LTB');
+        //        $pdf->cell(172, 5, $a->phone, 'RTB');
+        //
+        /**
+        * Agency supervisor info.
+        */
+        $pdf->setXY(110, 129);
+        $pdf->cell(75, 5, $a->getSupervisorFullName());
 
-                /* Notes */
-                //$pdf->multiCell(0, 5, $this->notes, 1);
+        if ($this->domestic == 1) {
+            $s_agency_address = $a->getSuperDomesticAddress();
+        } else {
+            $s_agency_address = $a->getSuperInternationalAddress();
+        }
 
-                $tplidx = $pdf->importPage(2);
-                $pdf->addPage();
-                $pdf->useTemplate($tplidx);
+        $pdf->setXY(124, 134);
+        $pdf->cell(78, 5, $s_agency_address);
 
-                $pdf->output();
+        $pdf->setXY(122, 144);
+        $pdf->cell(72, 5, $a->supervisor_email);
+
+        $pdf->setXY(122, 139);
+        $pdf->cell(33, 5, $a->supervisor_phone);
+
+        $pdf->setXY(163, 139);
+        $pdf->cell(40, 5, $a->supervisor_fax);
+
+        /* Notes */
+        //$pdf->multiCell(0, 5, $this->notes, 1);
+
+        $tplidx = $pdf->importPage(2);
+        $pdf->addPage();
+        $pdf->useTemplate($tplidx);
+
+        $pdf->output();
     }
 
     public static function emailApproval($s, $i, $a)
