@@ -6,7 +6,7 @@
     });
 </script>
 
-<h1>{TITLE}<img id="results-icon" class="menu-icon" src="mod/intern/img/contact-new.png"/></h1>
+<h1 class="add-icon">{TITLE}</h1>
 <div id="pdf-download">{PDF}</div>
 <div>
   {START_FORM}
@@ -154,7 +154,8 @@
   <td class="sub-form-cell">
     <span class="info-header">Internship Details</span>
     <table class="sub-form" id="agency-info">
-    <tr><td colspan="2">
+      <tr><td colspan="2"><h3>Location of Internship</h3></td></tr>
+      <tr><td colspan="2">
     <fieldset{LOC_HIGHLIGHT}>
             <legend>
               <b>Location</b>
@@ -164,7 +165,6 @@
     </fieldset>
         </td>
       </tr>
-      <tr><td colspan="2"><h3>Student Location during Internship</h3></td></tr>
       <tr>
         <td>{LOC_ADDRESS_LABEL}</td>
         <td>{LOC_ADDRESS}</td>
