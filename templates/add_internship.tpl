@@ -63,7 +63,7 @@
         {STUDENT_EMAIL_LABEL}
       </td>
       <td>
-        {STUDENT_EMAIL}
+        {STUDENT_EMAIL}@appstate.edu
       </td>
     </tr>
     <tr>
@@ -74,11 +74,11 @@
       	  {STUDENT_LEVEL_2}{STUDENT_LEVEL_2_LABEL}
       	  <br />
       	  <span id="ugrad_drop">
-      	    {UGRAD_MAJOR_LABEL}<br />
+      	    {UGRAD_MAJOR_LABEL}<span class="required-input">*</span><br />
             {UGRAD_MAJOR}
           </span>
           <span id="grad_drop">
-            {GRAD_PROG_LABEL}<br />
+            {GRAD_PROG_LABEL}<span class="required-input">*</span><br />
             {GRAD_PROG}
           </span>
       	</fieldset>
@@ -112,7 +112,7 @@
           {SUPERVISOR_EMAIL_LABEL}
         </td>
         <td>
-          {SUPERVISOR_EMAIL}
+          {SUPERVISOR_EMAIL}@appstate.edu
         </td>
       </tr>
       <tr>
