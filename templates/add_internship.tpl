@@ -67,6 +67,9 @@
       </td>
     </tr>
     <tr>
+      <td>{STUDENT_GPA_LABEL}</td>
+      <td>{STUDENT_GPA}</td>
+    <tr>
       <td colspan="2">
       	<fieldset>
       	  <legend>Major</legend>

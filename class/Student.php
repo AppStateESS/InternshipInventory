@@ -20,6 +20,7 @@ class Student extends Model
     public $level;
     public $grad_prog;
     public $ugrad_major;
+    public $gpa;
 
     /**
      * @Override Model::getDb

@@ -155,6 +155,9 @@ class InternshipUI implements UI {
         $form->setLabel('student_phone', 'Phone');
         $form->addText('student_email');
         $form->setLabel('student_email', 'ASU Email');
+        $form->addText('student_gpa');
+        $form->setLabel('student_gpa', 'GPA');
+        $form->setRequired('student_gpa');
         
         // Student level radio button
         $levels = array('ugrad' => 'Undergraduate', 'grad' => 'Graduate');
@@ -394,6 +397,7 @@ class InternshipUI implements UI {
         $vals['student_level'] = $s->level;
         $vals['grad_prog'] = $s->grad_prog;
         $vals['ugrad_major'] = $s->ugrad_major;
+        $vals['student_gpa'] = $s->gpa;
 
         // Agency
         $form->addHidden('agency_id', $a->id);
