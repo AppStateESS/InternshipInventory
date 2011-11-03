@@ -1,3 +1,4 @@
+/*
 .page-title {
     font-size:20pt;
     font-weight:bold;
@@ -11,6 +12,7 @@
     padding-bottom: 20px;
     padding-top: 20px;
 }
+*/
 
 #link-list {
     float: right;
@@ -27,9 +29,72 @@
 }
 
 #menu {
-    margin-left: auto;
-    margin-right: auto;
-    text-align: left;
+	margin:auto;
+	width: 520px;
+}
+
+.menu-button {
+    float:left;
+    width:220px;
+    height:100px;
+    
+    font: 24px "Lucida Grande","Lucida Sans",tahoma,geneva,sans-serif;
+    
+    margin-left:30px;
+    
+    border:1px solid #d6d6d6;
+    border-radius:15px;
+    -moz-border-radius:15px;
+
+    background-image: linear-gradient(bottom, #FFFFFF 0%, #E6E6E6 69%, #FCFCFC 100%);
+    
+    background-image: -o-linear-gradient(bottom, #FFFFFF 0%, #E6E6E6 69%, #FCFCFC 100%);
+    background-image: -moz-linear-gradient(bottom, #FFFFFF 0%, #E6E6E6 69%, #FCFCFC 100%);
+    background-image: -webkit-linear-gradient(bottom, #FFFFFF 0%, #E6E6E6 69%, #FCFCFC 100%);
+    background-image: -ms-linear-gradient(bottom, #FFFFFF 0%, #E6E6E6 69%, #FCFCFC 100%);
+    
+    box-shadow: 1px 1px 1px #F0F0F0;
+    -moz-box-shadow: 1px 1px 1px #F0F0F0;
+}
+
+.menu-button h3 {
+	margin:0px;
+	padding-top:20px;
+	padding-bottom:20px;
+	display:block;
+	/*text-align:center;*/
+}
+
+.menu-button a:hover{
+	text-decoration:none;
+}
+
+.add {
+	background: url('../img/contact-new.png') no-repeat 8px 50%;
+    padding-left: 65px;
+}
+
+.search {
+	background: url('../img/edit-find.png') no-repeat 8px 50%;
+    padding-left: 65px;
+}
+
+.admin-menu-box {
+	background: #fbfbfb;
+	border:1px solid #d6d6d6;
+    border-radius:15px;
+    -moz-border-radius:15px;
+    width:200px;
+    padding-left:15px;
+}
+
+/*
+#search-button {
+	float:left;
+}*/
+
+.clearfix {
+	clear:both;
 }
 
 #delete-document-icon {
@@ -40,15 +105,6 @@
     padding-bottom: 10px;
 }
 
-.menu-list {
-    display: inline-block;
-    text-align: left;
-}
-
-#deity-list {
-    display: inline-block;
-    text-align: left;
-}
 
 #everyone-list {
     list-style-type: none;
@@ -61,25 +117,12 @@
     margin-bottom: 10px;
 }
 
-.menu-list li {
-    font-weight: bold;
-    font-size: 10pt;
-}
-
 #main-menu-icon {
     float: right;
     position: relative;
     margin-top: 50px;
     right: 250px;
     padding-bottom: 50px;
-}
-
-#results-icon {
-    padding-left: 10px;
-}
-
-#search-icon {
-    padding-left: 10px;
 }
 
 .search-icon {
@@ -95,7 +138,7 @@
 }
 
 #intern-totals {
-    font-weight: bold;
+    /*font-weight: bold;*/
     padding-top: 30px;
     font-size: 10pt;
     margin-bottom: -10px;

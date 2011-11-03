@@ -13,8 +13,8 @@ class Intern_MenuUI implements UI{
         if(isset($_SESSION['query'])) unset($_SESSION['query']);
 
         $tags = array();
-        $tags['SEARCH'] = PHPWS_Text::moduleLink('<h3 class="search-icon">Search Inventory</h3>', 'intern', array('action' => 'search'));
-        $tags['ADD']    = PHPWS_Text::moduleLink('<h3 class="add-icon">Add Student</h3>', 'intern', array('action' => 'edit_internship'));
+        $tags['SEARCH'] = PHPWS_Text::moduleLink('<h3 class="search">Search Inventory</h3>', 'intern', array('action' => 'search'));
+        $tags['ADD']    = PHPWS_Text::moduleLink('<h3 class="add">Add Student</h3>', 'intern', array('action' => 'edit_internship'));
         $auth = Current_User::getAuthorization();
         $tags['LOGOUT'] = "<a href='$auth->logout_link'>Logout</a>";
 
