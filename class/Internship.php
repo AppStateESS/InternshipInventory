@@ -769,6 +769,9 @@ class Internship extends Model {
         
         $pdf->setXY(113, 88);
         $pdf->cell(54, 5, $s->phone);
+        
+        $pdf->setXY(173,77);
+        $pdf->cell(54,5, $s->gpa);
 
         //        $pdf->cell(35, 5, 'Graduate Program:', 'LTB');
         //        if (!is_null($g)) {
