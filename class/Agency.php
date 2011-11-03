@@ -18,6 +18,7 @@ class Agency extends Model {
     public $phone;
     public $supervisor_first_name;
     public $supervisor_last_name;
+    public $supervisor_title;
     public $supervisor_phone;
     public $supervisor_email;
     public $supervisor_fax;

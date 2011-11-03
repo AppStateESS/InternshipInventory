@@ -325,57 +325,35 @@
         <td colspan=2><h4>Supervisor Info</h4></td>
       </tr>
       <tr>
-        <td>
-          {AGENCY_SUP_FIRST_NAME_LABEL}
-        </td>
-        <td>
-          {AGENCY_SUP_FIRST_NAME}
-        </td>
+        <td>{AGENCY_SUP_FIRST_NAME_LABEL}</td>
+        <td>{AGENCY_SUP_FIRST_NAME}</td>
       </tr>
       <tr>
-        <td>
-          {AGENCY_SUP_LAST_NAME_LABEL}
-        </td>
-        <td>
-          {AGENCY_SUP_LAST_NAME}
-        </td>
+        <td>{AGENCY_SUP_LAST_NAME_LABEL}</td>
+        <td>{AGENCY_SUP_LAST_NAME}</td>
       </tr>
       <tr>
-        <td>
-          {AGENCY_SUP_PHONE_LABEL}
-        </td>
-        <td>
-          {AGENCY_SUP_PHONE}
-        </td>
+        <td>{AGENCY_SUP_TITLE_LABEL}</td>
+        <td>{AGENCY_SUP_TITLE}</td>
       </tr>
       <tr>
-        <td>
-          {AGENCY_SUP_EMAIL_LABEL}
-        </td>
-        <td>
-          {AGENCY_SUP_EMAIL}
-        </td>
+        <td>{AGENCY_SUP_PHONE_LABEL}</td>
+        <td>{AGENCY_SUP_PHONE}</td>
       </tr>
       <tr>
-        <td>
-          {AGENCY_SUP_FAX_LABEL}
-        </td>
-        <td>
-          {AGENCY_SUP_FAX}
-        </td>
+        <td>{AGENCY_SUP_EMAIL_LABEL}</td>
+        <td>{AGENCY_SUP_EMAIL}</td>
       </tr>
       <tr>
-        <td colspan="2">
-          {COPY_ADDRESS}{COPY_ADDRESS_LABEL}
-        </td>
+        <td>{AGENCY_SUP_FAX_LABEL}</td>
+        <td>{AGENCY_SUP_FAX}</td>
       </tr>
       <tr>
-        <td>
-          {AGENCY_SUP_ADDRESS_LABEL}
-        </td>
-        <td>
-          {AGENCY_SUP_ADDRESS}
-        </td>
+        <td colspan="2">{COPY_ADDRESS}{COPY_ADDRESS_LABEL}</td>
+      </tr>
+      <tr>
+        <td>{AGENCY_SUP_ADDRESS_LABEL}</td>
+        <td>{AGENCY_SUP_ADDRESS}</td>
       </tr>
       <tr>
         <td>

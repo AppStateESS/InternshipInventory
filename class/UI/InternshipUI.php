@@ -252,6 +252,8 @@ class InternshipUI implements UI {
         $form->setLabel('agency_sup_first_name', 'First Name');
         $form->addText('agency_sup_last_name');
         $form->setLabel('agency_sup_last_name', 'Last Name');
+        $form->addText('agency_sup_title');
+        $form->setLabel('agency_sup_title', 'Title');
         $form->addText('agency_sup_phone');
         $form->setLabel('agency_sup_phone', 'Phone');
         $form->addText('agency_sup_email');
@@ -404,6 +406,7 @@ class InternshipUI implements UI {
         $vals['agency_phone'] = $a->phone;
         $vals['agency_sup_first_name'] = $a->supervisor_first_name;
         $vals['agency_sup_last_name'] = $a->supervisor_last_name;
+        $vals['agency_sup_title'] = $a->supervisor_title;
         $vals['agency_sup_phone'] = $a->supervisor_phone;
         $vals['agency_sup_email'] = $a->supervisor_email;
         $vals['agency_sup_fax'] = $a->supervisor_fax;

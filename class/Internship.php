@@ -446,6 +446,7 @@ class Internship extends Model {
 
         $agency->supervisor_first_name = $_REQUEST['agency_sup_first_name'];
         $agency->supervisor_last_name = $_REQUEST['agency_sup_last_name'];
+        $agency->supervisor_title = $_REQUEST['agency_sup_title'];
         $agency->supervisor_phone = $_REQUEST['agency_sup_phone'];
         $agency->supervisor_email = $_REQUEST['agency_sup_email'];
         $agency->supervisor_fax = $_REQUEST['agency_sup_fax'];
@@ -808,7 +809,7 @@ class Internship extends Model {
         * Agency supervisor info.
         */
         $pdf->setXY(110, 129);
-        $pdf->cell(75, 5, $a->getSupervisorFullName());
+        $pdf->cell(75, 5, $a->getSupervisorFullName() .  ', ' . $a->supervisor_title);
 
         if ($this->domestic == 1) {
             $s_agency_address = $a->getSuperDomesticAddress();
