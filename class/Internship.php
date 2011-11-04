@@ -665,12 +665,12 @@ class Internship extends Model {
         $pdf->addPage();
         $pdf->useTemplate($tplidx);
 
+        $pdf->setFont('Times', null, 10);
+
         /*
          * Internship information
         */
 
-        $pdf->setFont('Times', null, 10);
-        
         //        $types = $this->getReadableTypes();
         //        // If the width of the string of types is greater than 139 (found by trial/error)
         //        // then we need to correct the header's alignment and left border.
@@ -689,24 +689,23 @@ class Internship extends Model {
         //$pdf->setFont('Times', null, 10);
         $pdf->setXY(171, 40);
         $pdf->MultiCell(31, 3, $d->name);
-        
+
         // Subject and Course #
         //$pdf->setFont('Times', null, 8);
         $pdf->setXY(132, 44);
         $course_info = $this->course_subj . ' ' . $this->course_no;
         $pdf->cell(59, 5, $course_info);
-        
+
         // Section #
         $pdf->setXY(178, 44);
         $pdf->cell(25, 5, $this->course_sect);
 
-
-        $pdf->setXY(132, 39);
         /*
-         if (!is_null($m)) {
-        $major = $m->getName();
+        $pdf->setXY(132, 39);
+        if (!is_null($m)) {
+        	$major = $m->getName();
         } else {
-        $major = 'N/A';
+        	$major = 'N/A';
         }
         $pdf->cell(73, 5, $major);
         */
@@ -716,54 +715,52 @@ class Internship extends Model {
         $pdf->cell(73, 6, $this->course_title);
 
         /* Location */
-        $pdf->setXY(78, 53);
-        //$pdf->cell(12, 5, $this->domestic == 1 ? 'Yes' : 'No');
-        $pdf->setXY(65, 58);
-        //$pdf->cell(12, 5, $this->international == 1 ? 'Yes' : 'No');
+        if($this->domestic == 1){
+            $pdf->setXY(85, 62);
+            $pdf->cell(12, 5, 'X');
+        }
+        if($this->international == 1){
+            $pdf->setXY(156, 62);
+            $pdf->cell(12, 5, 'X');
+        }
 
         /**
-        * Student information.
-        */
+         * Student information.
+         */
         $pdf->setXY(40, 77);
         $pdf->cell(55, 5, $s->getFullName());
 
         $pdf->setXY(173,77);
         $pdf->cell(54,5, $s->gpa);
-        
+
         $pdf->setXY(32, 83);
         $pdf->cell(42, 5, $s->banner);
 
         $pdf->setXY(41, 88);
         $pdf->cell(54, 5, $s->email . '@appstate.edu');
-        
+
         $pdf->setXY(113, 88);
         $pdf->cell(54, 5, $s->phone);
-        
-        
+
+
         /* Payment */
         if($this->paid == 1){
             $pdf->setXY(160, 88);
             $pdf->cell(10,5, 'X');
         }
-        
+
         if($this->unpaid == 1){
             $pdf->setXY(190, 88);
             $pdf->cell(10,5,'X');
         }
-        //$pdf->setXY(160, 88);
-        //$pdf->cell(80, 5, $this->paid == 1 && $this->unpaid == 0 ? 'Yes' : 'No'); // TODO: Verify logic for paid/unpaid.
-        /*
-        $pdf->cell(30, 5, 'Stipend Based:', 'LTB');
-        $pdf->cell(65, 5, $this->stipend == 1 ? 'Yes' : 'No', 'RTB');
-        */
-        
+
         /* Start/end dates */
         //$pdf->setFont('Times', null, 10);
         $pdf->setXY(50, 93);
         $pdf->cell(25, 5, $this->getStartDate(true));
         $pdf->setXY(93, 93);
         $pdf->cell(25, 5, $this->getEndDate(true));
-        
+
         /* Hours */
         $pdf->setXY(193, 93);
         $pdf->cell(12, 5, $this->credits); // Credit hours
@@ -795,17 +792,27 @@ class Internship extends Model {
         $pdf->setXY(133, 108);
         $pdf->cell(71, 5, $a->name);
 
-        $pdf->setXY(125, 114);
         if ($this->domestic == 1) {
             $agency_address = $a->getDomesticAddress();
         } else {
             $agency_address = $a->getInternationalAddress();
         }
-        $pdf->cell(77, 5, $agency_address);
-        //
-        //        $pdf->cell(18, 5, 'Phone:', 'LTB');
-        //        $pdf->cell(172, 5, $a->phone, 'RTB');
-        //
+        
+        if(strlen($agency_address) < 50){
+            // If it's short enough, just write it
+            $pdf->setXY(125, 114);
+            $pdf->cell(77, 5, $agency_address);
+        }else{
+            // Too long, need to use two lines
+            $agencyLine1 = substr($agency_address, 0, 49); // get first 50 chars
+            $agencyLine2 = substr($agency_address, 50); // get the rest, hope it fits
+
+            $pdf->setXY(125, 114);
+            $pdf->cell(77, 5, $agencyLine1);
+            $pdf->setXY(110, 118);
+            $pdf->cell(77, 5, $agencyLine2);
+        }
+
         /**
         * Agency supervisor info.
         */
@@ -834,29 +841,28 @@ class Internship extends Model {
         if(!empty($this->loc_address)){
             $loc[] = $this->loc_address;
         }
-        
+
         if (!empty($this->loc_city)) {
             $loc[] = $this->loc_city;
         }
-        
+
         if (!empty($this->loc_state) && $this->loc_state != '-1') {
             $loc[] = $this->loc_state;
         }
-        
+
         if(!empty($this->loc_zip)){
             $loc[] = $this->loc_zip;
         }
 
-        // TODO country here?
-        
+        if($this->international == 1){
+            $loc[] = $this->getLocCountry();
+        }
+
         if (isset($loc)) {
             $pdf->setXY(110, 154);
             $pdf->cell(52, 5, implode(', ', $loc));
         }
-        
-        //$pdf->setXY(137, 58);
-        //$pdf->cell(52, 5, $this->getLocCountry());
-        
+
         /* Notes */
         //$pdf->multiCell(0, 5, $this->notes, 1);
 
