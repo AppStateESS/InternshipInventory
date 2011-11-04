@@ -671,11 +671,6 @@ class Internship extends Model {
 
         $pdf->setFont('Times', null, 10);
         
-        // Term
-        $pdf->setXY(128, 39);
-        $pdf->cell(60, 5, Term::rawToRead($this->term, false));
-        
-        
         //        $types = $this->getReadableTypes();
         //        // If the width of the string of types is greater than 139 (found by trial/error)
         //        // then we need to correct the header's alignment and left border.
@@ -685,24 +680,23 @@ class Internship extends Model {
         //            $pdf->cell(15, 5, 'Type:', 1);
         //        }
         //        $pdf->multiCell(175, 5, $types, 1);
-        
+
+        // Term
+        $pdf->setXY(128, 39);
+        $pdf->cell(60, 5, Term::rawToRead($this->term, false));
+
         /* Department */
         //$pdf->setFont('Times', null, 10);
         $pdf->setXY(171, 40);
         $pdf->MultiCell(31, 3, $d->name);
-
-        // Start/end dates
-        //$pdf->setFont('Times', null, 10);
-        $pdf->setXY(50, 93);
-        $pdf->cell(25, 5, $this->getStartDate(true));
-        $pdf->setXY(93, 93);
-        $pdf->cell(25, 5, $this->getEndDate(true));
-
+        
+        // Subject and Course #
         //$pdf->setFont('Times', null, 8);
         $pdf->setXY(132, 44);
         $course_info = $this->course_subj . ' ' . $this->course_no;
         $pdf->cell(59, 5, $course_info);
         
+        // Section #
         $pdf->setXY(178, 44);
         $pdf->cell(25, 5, $this->course_sect);
 
@@ -721,34 +715,24 @@ class Internship extends Model {
         $pdf->setXY(140, 48);
         $pdf->cell(73, 6, $this->course_title);
 
-        /* Hours */
-        $pdf->setXY(193, 93);
-        $pdf->cell(12, 5, $this->credits); // Credit hours
-        $pdf->setXY(157, 93);
-        $pdf->cell(12, 5, $this->avg_hours_week); // hours per week
-
         /* Location */
         $pdf->setXY(78, 53);
         //$pdf->cell(12, 5, $this->domestic == 1 ? 'Yes' : 'No');
         $pdf->setXY(65, 58);
         //$pdf->cell(12, 5, $this->international == 1 ? 'Yes' : 'No');
-
-
-        if ($this->loc_city) {
-            $loc[] = $this->loc_city;
-        }
-
-        if (!empty($this->loc_state) && $this->loc_state != '-1') {
-            $loc[] = $this->loc_state;
-        }
-
-        if (isset($loc)) {
-            $pdf->setXY(137, 53);
-            //$pdf->cell(52, 5, implode(', ', $loc));
-        }
-
-        $pdf->setXY(137, 58);
-        //$pdf->cell(52, 5, $this->getLocCountry());
+        
+        // Start/end dates
+        //$pdf->setFont('Times', null, 10);
+        $pdf->setXY(50, 93);
+        $pdf->cell(25, 5, $this->getStartDate(true));
+        $pdf->setXY(93, 93);
+        $pdf->cell(25, 5, $this->getEndDate(true));
+        
+        /* Hours */
+        $pdf->setXY(193, 93);
+        $pdf->cell(12, 5, $this->credits); // Credit hours
+        $pdf->setXY(157, 93);
+        $pdf->cell(12, 5, $this->avg_hours_week); // hours per week
 
         /* Payment */
         //        $pdf->cell(12, 5, 'Paid:', 'LTB');
@@ -835,6 +819,33 @@ class Internship extends Model {
         $pdf->setXY(163, 139);
         $pdf->cell(40, 5, $a->supervisor_fax);
 
+        /* Internship Location */
+        if(!empty($this->loc_address)){
+            $loc[] = $this->loc_address;
+        }
+        
+        if (!empty($this->loc_city)) {
+            $loc[] = $this->loc_city;
+        }
+        
+        if (!empty($this->loc_state) && $this->loc_state != '-1') {
+            $loc[] = $this->loc_state;
+        }
+        
+        if(!empty($this->loc_zip)){
+            $loc[] = $this->loc_zip;
+        }
+
+        // TODO country here?
+        
+        if (isset($loc)) {
+            $pdf->setXY(110, 154);
+            $pdf->cell(52, 5, implode(', ', $loc));
+        }
+        
+        //$pdf->setXY(137, 58);
+        //$pdf->cell(52, 5, $this->getLocCountry());
+        
         /* Notes */
         //$pdf->multiCell(0, 5, $this->notes, 1);
 
