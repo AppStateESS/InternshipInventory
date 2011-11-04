@@ -310,6 +310,9 @@ class InternshipUI implements UI {
         $form->addCheck('stipend');
         $form->setLabel('stipend', 'Stipend');
         
+        $form->addText('pay_rate');
+        $form->setLabel('pay_rate', 'Pay Rate');
+        
         $form->addCheck('internship_default_type');
         $form->setLabel('internship_default_type', 'Internship');
         $form->setMatch('internship_default_type', true); // Internship is checked by default
@@ -464,6 +467,9 @@ class InternshipUI implements UI {
         } else {
             $form->setMatch('payment', 'unpaid');
         }
+        
+        $vals['pay_rate'] = $i->pay_rate;
+        
         $form->setMatch('term', $i->term);
         $form->setMatch('internship_default_type', $i->internship);
         $form->setMatch('service_learning_type', $i->service_learn);

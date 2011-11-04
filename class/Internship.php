@@ -41,8 +41,9 @@ class Internship extends Model {
     public $domestic;
     public $international;
     public $paid;
-    public $stipend;
     public $unpaid;
+    public $stipend;
+    public $pay_rate;
     public $notes;
     public $internship = 0;
     public $service_learn = 0;
@@ -525,6 +526,7 @@ class Internship extends Model {
         $i->paid = $_REQUEST['payment'] == 'paid';
         $i->stipend = isset($_REQUEST['stipend']) && $i->paid;
         $i->unpaid = $_REQUEST['payment'] == 'unpaid';
+        $i->pay_rate = $_REQUEST['pay_rate'];
         $i->internship = isset($_REQUEST['internship_default_type']);
         //$i->service_learn = isset($_REQUEST['service_learning_type']);
         //$i->independent_study = isset($_REQUEST['independent_study_type']);

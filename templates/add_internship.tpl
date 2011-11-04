@@ -194,36 +194,20 @@
         <td>{TERM}</td>
       </tr>
       <tr>
-        <td>
-          {START_DATE_LABEL}
-        </td>
-        <td>
-          <span id="start-date">{START_DATE}</span>
-        </td>
+        <td>{START_DATE_LABEL}</td>
+        <td><span id="start-date">{START_DATE}</span></td>
       </tr>
       <tr>
-        <td>
-          {END_DATE_LABEL}
-        </td>
-        <td>
-          <span id="end-date">{END_DATE}</span>
-        </td>
+        <td>{END_DATE_LABEL}</td>
+        <td><span id="end-date">{END_DATE}</span></td>
       </tr>
       <tr>
-        <td>
-          {CREDITS_LABEL}
-        </td>
-        <td>
-          {CREDITS}
-        </td>
+        <td>{CREDITS_LABEL}</td>
+        <td>{CREDITS}</td>
       </tr>
       <tr>
-        <td>
-          {AVG_HOURS_WEEK_LABEL}
-        </td>
-        <td>
-          {AVG_HOURS_WEEK}
-        </td>
+        <td>{AVG_HOURS_WEEK_LABEL}</td>
+        <td>{AVG_HOURS_WEEK}</td>
       </tr>
       <tr><td colspan="2"><h3>Course Information</h3></td></tr>
       <tr><td>{COURSE_SUBJ_LABEL}</td><td>{COURSE_SUBJ}</td></tr>
@@ -239,7 +223,8 @@
             </legend>
             {PAYMENT_1}{PAYMENT_1_LABEL}<br/>
             {PAYMENT_2}{PAYMENT_2_LABEL}<br/>
-            <span style="padding-left: 15px;">{STIPEND}{STIPEND_LABEL}</span>
+            <span style="padding-left: 15px;">{STIPEND}{STIPEND_LABEL}</span><br />
+            <span style="padding-left: 15px;">{PAY_RATE_LABEL}{PAY_RATE}</span>
           </fieldset>
         </td>
       </tr>
