@@ -27,6 +27,7 @@ class ResultsUI implements UI
         $state = null;
         $prov  = null;
         $other = null;
+        $approved = null;
 
         /**
          * Check if any search fields are set.
