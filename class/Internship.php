@@ -720,8 +720,44 @@ class Internship extends Model {
         //$pdf->cell(12, 5, $this->domestic == 1 ? 'Yes' : 'No');
         $pdf->setXY(65, 58);
         //$pdf->cell(12, 5, $this->international == 1 ? 'Yes' : 'No');
+
+        /**
+        * Student information.
+        */
+        $pdf->setXY(40, 77);
+        $pdf->cell(55, 5, $s->getFullName());
+
+        $pdf->setXY(173,77);
+        $pdf->cell(54,5, $s->gpa);
         
-        // Start/end dates
+        $pdf->setXY(32, 83);
+        $pdf->cell(42, 5, $s->banner);
+
+        $pdf->setXY(41, 88);
+        $pdf->cell(54, 5, $s->email . '@appstate.edu');
+        
+        $pdf->setXY(113, 88);
+        $pdf->cell(54, 5, $s->phone);
+        
+        
+        /* Payment */
+        if($this->paid == 1){
+            $pdf->setXY(160, 88);
+            $pdf->cell(10,5, 'X');
+        }
+        
+        if($this->unpaid == 1){
+            $pdf->setXY(190, 88);
+            $pdf->cell(10,5,'X');
+        }
+        //$pdf->setXY(160, 88);
+        //$pdf->cell(80, 5, $this->paid == 1 && $this->unpaid == 0 ? 'Yes' : 'No'); // TODO: Verify logic for paid/unpaid.
+        /*
+        $pdf->cell(30, 5, 'Stipend Based:', 'LTB');
+        $pdf->cell(65, 5, $this->stipend == 1 ? 'Yes' : 'No', 'RTB');
+        */
+        
+        /* Start/end dates */
         //$pdf->setFont('Times', null, 10);
         $pdf->setXY(50, 93);
         $pdf->cell(25, 5, $this->getStartDate(true));
@@ -733,31 +769,6 @@ class Internship extends Model {
         $pdf->cell(12, 5, $this->credits); // Credit hours
         $pdf->setXY(157, 93);
         $pdf->cell(12, 5, $this->avg_hours_week); // hours per week
-
-        /* Payment */
-        //        $pdf->cell(12, 5, 'Paid:', 'LTB');
-        //        $pdf->cell(83, 5, $this->paid == 1 && $this->unpaid == 0 ? 'Yes' : 'No', 'RTB'); // TODO: Verify logic for paid/unpaid.
-        //        $pdf->cell(30, 5, 'Stipend Based:', 'LTB');
-        //        $pdf->cell(65, 5, $this->stipend == 1 ? 'Yes' : 'No', 'RTB');
-        //
-        //
-        /**
-        * Student information.
-        */
-        $pdf->setXY(40, 77);
-        $pdf->cell(55, 5, $s->getFullName());
-
-        $pdf->setXY(32, 83);
-        $pdf->cell(42, 5, $s->banner);
-
-        $pdf->setXY(41, 88);
-        $pdf->cell(54, 5, $s->email . '@appstate.edu');
-        
-        $pdf->setXY(113, 88);
-        $pdf->cell(54, 5, $s->phone);
-        
-        $pdf->setXY(173,77);
-        $pdf->cell(54,5, $s->gpa);
 
         //        $pdf->cell(35, 5, 'Graduate Program:', 'LTB');
         //        if (!is_null($g)) {
