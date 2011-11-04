@@ -1,4 +1,4 @@
-<h1>Search Inventory<img id="search-icon" class="menu-icon" src="mod/intern/img/edit-find.png"/></h1>
+<h1 class="search-icon">Search Inventory</h1>
 {START_FORM}
 
 <table>
@@ -58,6 +58,14 @@
   <tr>
     <td class="search-header">{PROV_LABEL}</td>
     <td>{PROV}</td>
+  </tr>
+  <tr>
+    <td class="search-header">Approval</td>
+    <td>
+      {APPROVED_1}{APPROVED_1_LABEL}<br />
+      {APPROVED_2}{APPROVED_2_LABEL}
+    </td>
+    
   </tr>
   <tr>
     <td colspan="2">{SUBMIT} <input type="button" title="Reset search fields" name="reset" value="Clear Fields"/></td>

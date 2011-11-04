@@ -51,9 +51,11 @@ class ResultsUI implements UI
             $prov = $_REQUEST['prov'];
         if(isset($_REQUEST['other_type']))
             $other_type = $_REQUEST['other_type'];
+        if(isset($_REQUEST['approved']))
+            $approved = $_REQUEST['approved'];
         
         /* Get Pager */
-        $pager = self::getPager($name, $dept, $term, $major, $grad, $type, $loc, $state, $other_type, $prov);
+        $pager = self::getPager($name, $dept, $term, $major, $grad, $type, $loc, $state, $other_type, $prov, $approved);
         /* Get all results first. For use with CSV Exporting. Then we the limit again. Sorry */
         $pager->limit = null;
         $csvResult = $pager->get();
@@ -90,7 +92,7 @@ class ResultsUI implements UI
     private static function getPager($name=null, $deptId=null, $term=null,
                                      $major=null, $grad=null, $type=null,
                                      $loc=null, $state=null, $other_type=null,
-                                     $prov=null)
+                                     $prov=null, $approved=null)
     {
         $pager = new DBPager('intern_internship', 'Internship');
         $pager->setModule('intern');
@@ -162,6 +164,17 @@ class ResultsUI implements UI
                 $pager->addWhere('international', 1);
         }
 
+        if(!is_null($approved)){
+            switch($approved){
+                case 'approved':
+                    $pager->addWhere('intern_internship.approved', 1);
+                    break;
+                case 'nonapproved':
+                    $pager->addWhere('intern_internship.approved', 0);
+                    break;
+            }
+        }
+        
         $pager->setTemplate('results.tpl');
         $pager->addRowTags('getRowTags');
         $pager->setEmptyMessage('No Results');

@@ -85,6 +85,8 @@ class SearchUI implements UI
 
         $form->setLabel('prov', 'Province/Territory');
 
+        $approval = array('approved'=>'Only approved', 'nonapproved'=>'Only non-approved');
+        $form->addRadioAssoc('approved', $approval);
 
         $form->addSubmit('submit', 'Search');
 
