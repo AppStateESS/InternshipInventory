@@ -7,6 +7,7 @@
   <th>Student's Name</th>
   <th>Banner</th>
   <th>Dept.</th>
+  <th>Faculty</th>
   <th>Term</th>
   <th>Action</th>
 </tr>
@@ -16,6 +17,7 @@
   <td>{STUDENT_NAME}</td>
   <td>{STUDENT_BANNER}</td>
   <td>{DEPT_NAME}</td>
+  <td>{FACULTY_NAME}</td>
   <td>{TERM}</td>
   <td class="action">
     {EDIT} | {PDF}
