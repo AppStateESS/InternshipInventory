@@ -28,15 +28,14 @@ class Term extends Model
         $db->addOrder('term desc');
         $terms = $db->getObjects('Term');
         $readables = array();
-
+        $readables[-1] = 'All';
+        
         foreach($terms as $t){
             // Ex. array(20111 => "Spring 2011");
             $readables[$t->term] = self::rawToRead($t->term);
         }
 
-        $readables = array_reverse($readables, true); // preserve keys.
-        $readables[-1] = 'All';
-        return array_reverse($readables, true);
+        return $readables;
     }
 
     /**
@@ -62,6 +61,8 @@ class Term extends Model
                 else
                     return "2nd Summer $year";
             case '4':
+                    return "10-week Summer $year";
+            case '5':
                 return "Fall $year";
             default:
                 // Whaattt??
@@ -72,7 +73,7 @@ class Term extends Model
     
     /**
      * Figure out if it is time to add new terms to the database.
-     * Get lastest term. If it is NOT at least 3 ahead of NOW
+     * Get lastest term. If it is NOT at least 4 ahead of NOW
      * it's time to add new terms 
      */
     public static function isTimeToUpdate()
@@ -90,7 +91,7 @@ class Term extends Model
          * If there aren't at least three elements in the result return true.
          * This will cause terms to be inserted.
          */
-        if(sizeof($result) < 3)
+        if(sizeof($result) < 4)
             return true;
         
         /* 
@@ -99,8 +100,7 @@ class Term extends Model
          * module ahead by two terms. That may have been confusing but that's just
          * how it works.
          */
-        $now = time();
-        $currentTerm = self::timeToTerm($now);
+        $currentTerm = self::timeToTerm(time());
         $thirdLatest = $result[2];// Third element.
 
         /* Check current vs third to latest. */
@@ -136,7 +136,7 @@ class Term extends Model
                 $semester = substr($termStr, 4, 1);
 
                 /* Increment semester. This just flips back around to 1 if semester is 4. */
-                $semester = (intval($semester)%4)+1;
+                $semester = (intval($semester)%5)+1;
 
                 /* If new semester is '1' then it's a new year also! */
                 if($semester == 1){
@@ -182,9 +182,13 @@ class Term extends Model
         else if($m >= 7 && $m <= 8){
             $term .= '3';
         }
+        /* Summer 10-week: July 1 -- Aug 31 */
+        else if($m >= 7 && $m <= 8){
+            $term .= '4';
+        }
         /* Fall:  Sept 1 -- Dec 31 */
         else if($m >= 9 || $m <= 12){
-            $term .= '4';            
+            $term .= '5';            
         }
 
         return intval($term);
