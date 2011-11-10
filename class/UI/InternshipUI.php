@@ -288,7 +288,9 @@ class InternshipUI implements UI {
         /**
          * Internship details.
          */
-        $form->addSelect('term', Term::getTermsAssoc());
+        $terms = Term::getTermsAssoc();
+        $terms[-1] = 'Select Term';
+        $form->addSelect('term', $terms);
         $form->setLabel('term', 'Select Term');
         $form->addText('start_date');
         $form->setLabel('start_date', 'Start Date');
