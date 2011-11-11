@@ -45,58 +45,57 @@ CREATE TABLE intern_state (
        PRIMARY KEY(abbr)
 );
 
-insert into intern_state (abbr, full_name, active) values
-('AL', 'Alabama', 0),
-('AK', 'Alaska', 0),
-('AZ', 'Arizona', 0),
-('AR', 'Arkansas', 0),
-('CA', 'California', 0),
-('CO', 'Colorado', 0),
-('CT', 'Connecticut', 0),
-('DE', 'Delaware', 0),
-('DC', 'District Of Columbia', 0),
-('FL', 'Florida', 0),
-('GA', 'Georgia', 0),
-('HI', 'Hawaii', 0),
-('ID', 'Idaho', 0),
-('IL', 'Illinois', 0),
-('IN', 'Indiana', 0),
-('IA', 'Iowa', 0),
-('KS', 'Kansas', 0),
-('KY', 'Kentucky', 0),
-('LA', 'Louisiana', 0),
-('ME', 'Maine', 0),
-('MD', 'Maryland', 0),
-('MA', 'Massachusetts', 0),
-('MI', 'Michigan', 0),
-('MN', 'Minnesota', 0),
-('MS', 'Mississippi', 0),
-('MO', 'Missouri', 0),
-('MT', 'Montana', 0),
-('NE', 'Nebraska', 0),
-('NV', 'Nevada', 0),
-('NH', 'New Hampshire', 0),
-('NJ', 'New Jersey', 0),
-('NM', 'New Mexico', 0),
-('NY', 'New York', 0),
-('NC', 'North Carolina', 0),
-('ND', 'North Dakota', 0),
-('OH', 'Ohio', 0),
-('OK', 'Oklahoma', 0),
-('OR', 'Oregon', 0),
-('PA', 'Pennsylvania', 0),
-('RI', 'Rhode Island', 0),
-('SC', 'South Carolina', 0),
-('SD', 'South Dakota', 0),
-('TN', 'Tennessee', 0),
-('TX', 'Texas', 0),
-('UT', 'Utah', 0),
-('VT', 'Vermont', 0),
-('VA', 'Virginia', 0),
-('WA', 'Washington', 0),
-('WV', 'West Virginia', 0),
-('WI', 'Wisconsin', 0),
-('WY', 'Wyoming', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('AL', 'Alabama', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('AK', 'Alaska', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('AZ', 'Arizona', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('AR', 'Arkansas', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('CA', 'California', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('CO', 'Colorado', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('CT', 'Connecticut', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('DE', 'Delaware', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('DC', 'District Of Columbia', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('FL', 'Florida', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('GA', 'Georgia', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('HI', 'Hawaii', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('ID', 'Idaho', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('IL', 'Illinois', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('IN', 'Indiana', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('IA', 'Iowa', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('KS', 'Kansas', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('KY', 'Kentucky', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('LA', 'Louisiana', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('ME', 'Maine', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('MD', 'Maryland', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('MA', 'Massachusetts', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('MI', 'Michigan', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('MN', 'Minnesota', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('MS', 'Mississippi', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('MO', 'Missouri', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('MT', 'Montana', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('NE', 'Nebraska', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('NV', 'Nevada', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('NH', 'New Hampshire', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('NJ', 'New Jersey', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('NM', 'New Mexico', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('NY', 'New York', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('NC', 'North Carolina', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('ND', 'North Dakota', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('OH', 'Ohio', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('OK', 'Oklahoma', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('OR', 'Oregon', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('PA', 'Pennsylvania', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('RI', 'Rhode Island', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('SC', 'South Carolina', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('SD', 'South Dakota', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('TN', 'Tennessee', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('TX', 'Texas', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('UT', 'Utah', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('VT', 'Vermont', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('VA', 'Virginia', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('WA', 'Washington', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('WV', 'West Virginia', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('WI', 'Wisconsin', 0);
+INSERT INTO intern_state (abbr, full_name, active) VALUES ('WY', 'Wyoming', 0);
 
 
 
