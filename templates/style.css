@@ -197,14 +197,23 @@
     margin-left: auto;
 }
 
+/******************************************
+ * Styles for the add/edit internshp form *
+ *****************************************/
+ 
 #internship-form {
     width: 100%;
 }
 
 #internship-form .sub-form {
-    border: 1px solid #C0C0C0;
-    border-top: 24px solid #E3E3E3;
+    border: 1px solid #D6D6D6;
+    border-top: 30px solid #E3E3E3;
     width: 100%;
+    padding:5px;
+    border-radius:10px;
+    -moz-border-radius:10px;
+    box-shadow: 1px 1px 1px #F0F0F0;
+    -moz-box-shadow: 1px 1px 1px #F0F0F0;
 }
 
 #internship-form .sub-form-cell {
@@ -214,10 +223,85 @@
 
 .info-header {
     position: relative;
-    top: 21px;
-    left: 5px;
+    top: 27px;
+    left: 7px;
     font-size: 14pt;
     font-weight: bold;
+}
+
+#internship-form fieldset {
+	border: 1px solid #D6D6D6;
+	border-radius: 5px;
+}
+
+.internship-status-box {
+	float: right;
+	border: 1px solid #D6D6D6;
+	border-radius:10px;
+    -moz-border-radius:10px;
+    box-shadow: 1px 1px 1px #F0F0F0;
+    -moz-box-shadow: 1px 1px 1px #F0F0F0;
+}
+
+.status-box-header {
+	border-top-left-radius:10px;
+	border-top-right-radius:10px;
+	-moz-border-radius-topleft:10px;
+	-moz-border-radius-topright:10px;
+	background: #E3E3E3;
+	font-size: 14pt;
+    font-weight: bold;
+    padding: 5px;
+}
+
+.status-box-content {
+	padding:4px;
+}
+
+/************************************/
+
+a.button {
+	height:20px;
+    padding-left:10px;
+    padding-right:10px;
+    
+    font-size:1.3em;    
+    color:#222;
+    text-decoration:none;
+    
+    border:1px solid #AAA;
+    border-radius:10px;
+    
+    box-shadow: 2px 2px 1px #F0F0F0;
+    -moz-box-shadow: 1px 1px 1px #F0F0F0;
+
+    background: #e3e3e3;
+    background: -moz-linear-gradient(top, #ffffff 35%, #dddddd 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(35%,#ffffff), color-stop(100%,#dddddd)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #ffffff 35%,#dddddd 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #ffffff 35%,#dddddd 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #ffffff 35%,#dddddd 100%); /* IE10+ */
+    background: linear-gradient(top, #ffffff 35%,#dddddd 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#dddddd',GradientType=0 ); /* IE6-9 */
+}
+
+a.button:hover {
+	text-decoration:none;
+}
+
+a.button:active {
+
+	box-shadow: none;
+    -moz-box-shadow: none;
+	
+	background: #cdcdcd; /* Old browsers */
+    background: -moz-linear-gradient(top, #cdcdcd 0%, #ececec 80%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#cdcdcd), color-stop(80%,#ececec)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #cdcdcd 0%,#ececec 80%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #cdcdcd 0%,#ececec 80%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #cdcdcd 0%,#ececec 80%); /* IE10+ */
+    background: linear-gradient(top, #cdcdcd 0%,#ececec 80%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cdcdcd', endColorstr='#ececec',GradientType=0 ); /* IE6-9 */
 }
 
 .empty-message {
