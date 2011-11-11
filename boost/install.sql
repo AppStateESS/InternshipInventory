@@ -22,6 +22,8 @@ CREATE TABLE intern_student (
        first_name VARCHAR NOT NULL,
        middle_name VARCHAR,
        last_name VARCHAR NOT NULL,
+       gpa VARCHAR NULL,
+       level VARCHAR NOT NULL,
        phone VARCHAR NOT NULL,
        email VARCHAR NOT NULL,
        ugrad_major INT NULL REFERENCES intern_major(id),
@@ -109,6 +111,7 @@ CREATE TABLE intern_agency (
        phone VARCHAR NOT NULL,
        supervisor_first_name VARCHAR NULL,
        supervisor_last_name VARCHAR NULL,
+       supervisor_title VARCHAR NULL,
        supervisor_phone VARCHAR NULL,
        supervisor_email VARCHAR NULL,
        supervisor_fax VARCHAR NULL,
@@ -174,6 +177,7 @@ CREATE TABLE intern_internship (
        paid SMALLINT NOT NULL,    
        stipend SMALLINT NOT NULL, 
        unpaid SMALLINT NOT NULL,
+       pay_rate VARCHAR NULL,
        notes TEXT,
        PRIMARY KEY(id)
 );
