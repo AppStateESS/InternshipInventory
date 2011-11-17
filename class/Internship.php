@@ -750,6 +750,10 @@ class Internship extends Model {
 
         $pdf->setXY(113, 88);
         $pdf->cell(54, 5, $s->phone);
+        
+        /* Student Address */
+        $pdf->setXY(105, 83);
+        $pdf->cell(54, 5, $s->address . ', ' . $s->city . ', ' . $s->state . ' ' . $s->zip);
 
 
         /* Payment */
@@ -872,13 +876,24 @@ class Internship extends Model {
             $pdf->cell(52, 5, implode(', ', $loc));
         }
 
-        /* Notes */
-        //$pdf->multiCell(0, 5, $this->notes, 1);
-
+        /**********
+         * Page 2 *       
+         **********/
         $tplidx = $pdf->importPage(2);
         $pdf->addPage();
         $pdf->useTemplate($tplidx);
 
+        /* Emergency Contact Info */
+        $pdf->setXY(60, 252);
+        $pdf->cell(52, 5, $s->emergency_contact_name);
+        
+        $pdf->setXY(134, 252);
+        $pdf->cell(52, 5, $s->emergency_contact_relation);
+        
+        $pdf->setXY(175, 252);
+        $pdf->cell(52, 5, $s->emergency_contact_phone);
+        
+        
         $pdf->output();
     }
 
