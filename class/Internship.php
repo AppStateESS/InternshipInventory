@@ -451,7 +451,7 @@ class Internship extends Model {
             /* Location is DOMESTIC. Country is U.S. State was chosen from drop down */
             $agency->state = $_REQUEST['agency_state'] == -1 ? null : $_REQUEST['agency_state'];
             $agency->country = 'United States';
-            $agency->supervisor_state = $_REQUEST['agency_state'] == -1 ? null : $_REQUEST['agency_state'];
+            $agency->supervisor_state = $_REQUEST['agency_sup_state'] == -1 ? null : $_REQUEST['agency_sup_state'];
             $agency->supervisor_country = 'United States';
         }
 

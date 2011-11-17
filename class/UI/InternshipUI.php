@@ -18,7 +18,7 @@ class InternshipUI implements UI {
      * 'agency_sup_city',
      */
     public static $requiredFields = array('student_first_name', 'student_last_name',
-        'banner', 'student_phone', 'student_email', 'agency_name', 'agency_state', 'term', 'loc_state', 'department');
+        'banner', 'student_phone', 'student_email', 'agency_name', 'term', 'loc_state', 'department');
 
     public static function display()
     {
@@ -240,30 +240,15 @@ class InternshipUI implements UI {
         $form->setLabel('department', 'Department');
 
         /**
-         * Agency supervisor info.
+         * Agency info
          */
-        $db = new PHPWS_DB('intern_state');
-        $db->addWhere('active', 1);
-        $db->addColumn('abbr');
-        $db->addColumn('full_name');
-        $db->setIndexBy('abbr');
-        // get backwards because we flip it
-        $db->addOrder('full_name desc');
-        $states = $db->select('col');
-        if (empty($states)) {
-        	NQ::simple('intern', INTERN_ERROR, 'The list of allowed US states for internship locations has not been configured. Please use the administrative options to <a href="index.php?module=intern&action=edit_states">add allowed states.</a>');
-        	NQ::close();
-        	PHPWS_Core::goBack();
-        }
-        $states[-1] = 'Select a state';
-        $states = array_reverse($states, true);
         $form->addText('agency_name');
         $form->setLabel('agency_name', 'Name');
         $form->addText('agency_address');
         $form->setLabel('agency_address', 'Address');
         $form->addText('agency_city');
         $form->setLabel('agency_city', 'City');
-        $form->addSelect('agency_state', $states);
+        $form->addSelect('agency_state', State::$UNITED_STATES);
         $form->setLabel('agency_state', 'State');
         if (!is_null($i)) {
             if (!$i->isDomestic()) {
@@ -280,6 +265,10 @@ class InternshipUI implements UI {
         $form->setLabel('agency_country', 'Country');
         $form->addText('agency_phone');
         $form->setLabel('agency_phone', 'Phone');
+        
+        /**
+        * Agency supervisor info
+        */
         $form->addText('agency_sup_first_name');
         $form->setLabel('agency_sup_first_name', 'First Name');
         $form->addText('agency_sup_last_name');
@@ -296,7 +285,7 @@ class InternshipUI implements UI {
         $form->setLabel('agency_sup_address', 'Address');
         $form->addText('agency_sup_city');
         $form->setLabel('agency_sup_city', 'City');
-        $form->addSelect('agency_sup_state', $states);
+        $form->addSelect('agency_sup_state', State::$UNITED_STATES);
         $form->setLabel('agency_sup_state', 'State');
         if (!is_null($i)) {
             if (!$i->isDomestic()) {
@@ -372,7 +361,7 @@ class InternshipUI implements UI {
         $form->setLabel('loc_city', 'City');
         $form->addText('loc_country');
         $form->setLabel('loc_country', 'Country');
-        $form->addSelect('loc_state', $states);
+        $form->addSelect('loc_state', State::getAllowedStates());
         $form->setLabel('loc_state', 'State');
         $form->addText('loc_zip');
         $form->setLabel('loc_zip', 'Zip');
