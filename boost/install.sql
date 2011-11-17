@@ -27,7 +27,14 @@ CREATE TABLE intern_student (
        phone VARCHAR NOT NULL,
        email VARCHAR NOT NULL,
        ugrad_major INT NULL REFERENCES intern_major(id),
-       grad_prog INT NULL REFERENCES intern_grad_prog(id), 
+       grad_prog INT NULL REFERENCES intern_grad_prog(id),
+       address varchar(256),
+       city varchar(256),
+       state varchar(2),
+       zip varchar(5),
+       emergency_contact_name varchar(256),
+       emergency_contact_relation varchar(256),
+       emergency_contact_phone varchar(20),
        PRIMARY KEY(id)
 );
 -- Below table is loaded with departments after CREATE TABLE statements.

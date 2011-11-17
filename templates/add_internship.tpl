@@ -39,12 +39,28 @@
           <td>{BANNER}</td>
         </tr>
         <tr>
-          <td>{STUDENT_PHONE_LABEL}</td>
-          <td>{STUDENT_PHONE}</td>
-        </tr>
-        <tr>
           <td>{STUDENT_EMAIL_LABEL}</td>
           <td>{STUDENT_EMAIL}@appstate.edu</td>
+        </tr>
+        <tr>
+          <td>{STUDENT_ADDRESS_LABEL}</td>
+          <td>{STUDENT_ADDRESS}</td>
+        </tr>
+        <tr>
+          <td>{STUDENT_CITY_LABEL}</td>
+          <td>{STUDENT_CITY}</td>
+        </tr>
+        <tr>
+          <td>{STUDENT_STATE_LABEL}</td>
+          <td>{STUDENT_STATE}</td>
+        </tr>
+        <tr>
+          <td>{STUDENT_ZIP_LABEL}</td>
+          <td>{STUDENT_ZIP}</td>
+        </tr>
+        <tr>
+          <td>{STUDENT_PHONE_LABEL}</td>
+          <td>{STUDENT_PHONE}</td>
         </tr>
         <tr>
           <td>{STUDENT_GPA_LABEL}</td>
@@ -59,6 +75,16 @@
                 class="required-input">*</span><br /> {UGRAD_MAJOR} </span> <span
                 id="grad_drop"> {GRAD_PROG_LABEL}<span
                 class="required-input">*</span><br /> {GRAD_PROG} </span>
+            </fieldset>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <fieldset class="align-form">
+              <legend>Emergency Contact</legend>
+              {EMERGENCY_CONTACT_NAME_LABEL}{EMERGENCY_CONTACT_NAME}<br />
+              {EMERGENCY_CONTACT_RELATION_LABEL}{EMERGENCY_CONTACT_RELATION}<br />
+              {EMERGENCY_CONTACT_PHONE_LABEL}{EMERGENCY_CONTACT_PHONE}<br />
             </fieldset>
           </td>
         </tr>
@@ -95,8 +121,8 @@
               <!-- BEGIN docs -->
               <li>{DOWNLOAD}{DELETE}</li>
               <!-- END docs -->
-              <li>{UPLOAD_DOC}</li>
-            </ul>
+              </ul>
+              {UPLOAD_DOC}
           </td>
         </tr>
       </table> <!-- end document list -->

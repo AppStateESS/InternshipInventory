@@ -405,6 +405,15 @@ class Internship extends Model {
         $student->grad_prog = $_REQUEST['grad_prog'] == -1 ? null : $_REQUEST['grad_prog'];
         $student->ugrad_major = $_REQUEST['ugrad_major'] == -1 ? null : $_REQUEST['ugrad_major'];
         $student->gpa = $_REQUEST['student_gpa'];
+        
+        $student->address = $_REQUEST['student_address'];
+        $student->city = $_REQUEST['student_city'];
+        $student->state = $_REQUEST['student_state'];
+        $student->zip = $_REQUEST['student_zip'];
+        
+        $student->emergency_contact_name = $_REQUEST['emergency_contact_name'];
+        $student->emergency_contact_relation = $_REQUEST['emergency_contact_relation'];
+        $student->emergency_contact_phone = $_REQUEST['emergency_contact_phone'];
 
         try {
             $studentId = $student->save();

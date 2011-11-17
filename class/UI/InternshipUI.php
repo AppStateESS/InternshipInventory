@@ -118,6 +118,7 @@ class InternshipUI implements UI {
         PHPWS_Core::initModClass('intern', 'Department.php');
         PHPWS_Core::initModClass('intern', 'Major.php');
         PHPWS_Core::initModClass('intern', 'GradProgram.php');
+        PHPWS_Core::initModClass('intern', 'State.php');
 
         $form = new PHPWS_Form('internship');
         if (!is_null($i)) {
@@ -130,9 +131,7 @@ class InternshipUI implements UI {
         $form->setAction('index.php?module=intern&action=add_internship');
         $form->addSubmit('submit', 'Save');
 
-        /**
-         * Student fields
-         */
+        
         if (!$i->approved) {
             $form->addCheckbox('approved');
             $form->setLabel('approved', 'Internship approved by Dean');
@@ -144,6 +143,10 @@ class InternshipUI implements UI {
             }
             $form->addTplTag('APPROVED_BY_ON', $approved_on);
         }
+        
+        /**
+        * Student fields
+        */
         $form->addText('student_first_name');
         $form->setLabel('student_first_name', 'First Name');
         $form->addText('student_middle_name');
@@ -156,6 +159,31 @@ class InternshipUI implements UI {
         $form->setLabel('student_phone', 'Phone');
         $form->addText('student_email');
         $form->setLabel('student_email', 'ASU Email');
+        
+        /* Student Address */
+        $form->addText('student_address');
+        $form->setLabel('student_address','Address');
+        $form->addText('student_city');
+        $form->setLabel('student_city','City');
+        $form->addDropBox('student_state', State::$UNITED_STATES);
+        $form->setLabel('student_state','State');
+        $form->addText('student_zip');
+        $form->setLabel('student_zip','Zip Code');
+        
+        /* Emergency Contact */
+        $form->addText('emergency_contact_name');
+        $form->setClass('emergency_contact_name', 'form-text');
+        $form->setLabel('emergency_contact_name', 'Name');
+        
+        $form->addText('emergency_contact_relation');
+        $form->setClass('emergency_contact_relation', 'form-text');
+        $form->setLabel('emergency_contact_relation', 'Relationship');
+        
+        $form->addText('emergency_contact_phone');
+        $form->setClass('emergency_contact_phone', 'form-text');
+        $form->setLabel('emergency_contact_phone', 'Phone');
+        
+        // GPA
         $form->addText('student_gpa');
         $form->setLabel('student_gpa', 'GPA');
         $form->setRequired('student_gpa');
@@ -391,7 +419,6 @@ class InternshipUI implements UI {
         $f = $i->getFacultySupervisor();
         $d = $i->getDepartment();
 
-
         // Student
         $form->addHidden('student_id', $s->id);
         $vals['student_first_name'] = $s->first_name;
@@ -404,7 +431,18 @@ class InternshipUI implements UI {
         $vals['grad_prog'] = $s->grad_prog;
         $vals['ugrad_major'] = $s->ugrad_major;
         $vals['student_gpa'] = $s->gpa;
-
+        
+        // Student address
+        $vals['student_address'] = $s->address;
+        $vals['student_city'] = $s->city;
+        $vals['student_state'] = $s->state;
+        $vals['student_zip'] = $s->zip;
+        
+        // Emergency contact
+        $vals['emergency_contact_name'] = $s->emergency_contact_name;
+        $vals['emergency_contact_relation'] = $s->emergency_contact_relation;
+        $vals['emergency_contact_phone'] = $s->emergency_contact_phone;
+        
         // Agency
         $form->addHidden('agency_id', $a->id);
         $vals['agency_name'] = $a->name;

@@ -22,6 +22,15 @@ class Student extends Model
     public $ugrad_major;
     public $gpa;
 
+    public $address;
+    public $city;
+    public $state;
+    public $zip;
+    
+    public $emergency_contact_name;
+    public $emergency_contact_relation;
+    public $emergency_contact_phone;
+    
     /**
      * @Override Model::getDb
      */

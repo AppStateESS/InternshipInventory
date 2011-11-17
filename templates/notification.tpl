@@ -1,32 +1,27 @@
 <script type="text/javascript">
-  $(document).ready(function(){
-      if($(".notification").text() !== ""){
-          $(".notification").hide();
-          $(".notification").slideDown();
-      }
-  });
+	$(document).ready(function() {
+		if ($(".nq").text() !== "") {
+			$(".nq-container").hide();
+			$(".nq-container").slideDown();
+		}
+	});
 </script>
-<div class="nq-container">
-<!-- BEGIN NOTIFICATIONS -->
-<!-- BEGIN ERROR -->
-<div class="notification nq-error">
-  {ERROR}
-</div>
-<!-- END ERROR -->
-<!-- BEGIN WARNING -->
-<div class="notification nq-warning">
-  {WARNING}
-</div>
-<!-- END WARNING -->
-<!-- BEGIN SUCCESS -->
-<div class="notification nq-success">
-  {SUCCESS}
-</div>
-<!-- END SUCCESS -->
-<!-- BEGIN UNKNOWN -->
-<div class="notification nq-unknown">
-  {UNKNOWN}
-</div>
-<!-- END UNKNOWN -->
-<!-- END NOTIFICATIONS -->
+<div class="nq-container">  
+    <!-- BEGIN NOTIFICATIONS -->
+    <div class="notification">
+    <!-- BEGIN ERROR -->
+    <p class="nq error">{ERROR}</p>
+    <!-- END ERROR -->
+    <!-- BEGIN WARNING -->
+    <p class="nq warning">{WARNING}</p>
+    <!-- END WARNING -->
+    <!-- BEGIN SUCCESS -->
+    <p class="nq success">{SUCCESS}</p>
+    <!-- END SUCCESS -->
+
+    <!-- BEGIN UNKNOWN -->
+    <p class="nq unknown">{UNKNOWN}</p>
+    <!-- END UNKNOWN -->
+    </div>
+    <!-- END NOTIFICATIONS -->
 </div>
