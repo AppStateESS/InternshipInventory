@@ -1,0 +1,497 @@
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svnroot/repos/rrze-icon-set/!svn/ver/410/trunk/tango/32x32/actions
+END
+switch-course.png
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svnroot/repos/rrze-icon-set/!svn/ver/54/trunk/tango/32x32/actions/switch-course.png
+END
+left-red.png
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svnroot/repos/rrze-icon-set/!svn/ver/377/trunk/tango/32x32/actions/left-red.png
+END
+observe.png
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svnroot/repos/rrze-icon-set/!svn/ver/374/trunk/tango/32x32/actions/observe.png
+END
+sort-neutral-red.png
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svnroot/repos/rrze-icon-set/!svn/ver/44/trunk/tango/32x32/actions/sort-neutral-red.png
+END
+go-bottom.png
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svnroot/repos/rrze-icon-set/!svn/ver/306/trunk/tango/32x32/actions/go-bottom.png
+END
+remove-participant.png
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svnroot/repos/rrze-icon-set/!svn/ver/409/trunk/tango/32x32/actions/remove-participant.png
+END
+transfer-right_left.png
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svnroot/repos/rrze-icon-set/!svn/ver/55/trunk/tango/32x32/actions/transfer-right_left.png
+END
+dial-in.png
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svnroot/repos/rrze-icon-set/!svn/ver/45/trunk/tango/32x32/actions/dial-in.png
+END
+right-grey.png
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svnroot/repos/rrze-icon-set/!svn/ver/52/trunk/tango/32x32/actions/right-grey.png
+END
+dynamic-blue-right.png
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svnroot/repos/rrze-icon-set/!svn/ver/44/trunk/tango/32x32/actions/dynamic-blue-right.png
+END
+right-red.png
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svnroot/repos/rrze-icon-set/!svn/ver/377/trunk/tango/32x32/actions/right-red.png
+END
+monitoring.png
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svnroot/repos/rrze-icon-set/!svn/ver/46/trunk/tango/32x32/actions/monitoring.png
+END
+refuse.png
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svnroot/repos/rrze-icon-set/!svn/ver/52/trunk/tango/32x32/actions/refuse.png
+END
+sort-down-green.png
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svnroot/repos/rrze-icon-set/!svn/ver/54/trunk/tango/32x32/actions/sort-down-green.png
+END
+left.png
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svnroot/repos/rrze-icon-set/!svn/ver/46/trunk/tango/32x32/actions/left.png
+END
+sort-neutral-green.png
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svnroot/repos/rrze-icon-set/!svn/ver/54/trunk/tango/32x32/actions/sort-neutral-green.png
+END
+transfer-up_down.png
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svnroot/repos/rrze-icon-set/!svn/ver/55/trunk/tango/32x32/actions/transfer-up_down.png
+END
+left-grey.png
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svnroot/repos/rrze-icon-set/!svn/ver/46/trunk/tango/32x32/actions/left-grey.png
+END
+sort-neutral.png
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svnroot/repos/rrze-icon-set/!svn/ver/94/trunk/tango/32x32/actions/sort-neutral.png
+END
+back-to-ou.png
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svnroot/repos/rrze-icon-set/!svn/ver/45/trunk/tango/32x32/actions/back-to-ou.png
+END
+dynamic-blue-left.png
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svnroot/repos/rrze-icon-set/!svn/ver/106/trunk/tango/32x32/actions/dynamic-blue-left.png
+END
+switch-course-grey.png
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svnroot/repos/rrze-icon-set/!svn/ver/55/trunk/tango/32x32/actions/switch-course-grey.png
+END
+delete-all-participants.png
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svnroot/repos/rrze-icon-set/!svn/ver/56/trunk/tango/32x32/actions/delete-all-participants.png
+END
+send-email-group.png
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svnroot/repos/rrze-icon-set/!svn/ver/53/trunk/tango/32x32/actions/send-email-group.png
+END
+send-email-user-other.png
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svnroot/repos/rrze-icon-set/!svn/ver/332/trunk/tango/32x32/actions/send-email-user-other.png
+END
+move-participant-to-waiting-red.png
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svnroot/repos/rrze-icon-set/!svn/ver/49/trunk/tango/32x32/actions/move-participant-to-waiting-red.png
+END
+workflow.png
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svnroot/repos/rrze-icon-set/!svn/ver/55/trunk/tango/32x32/actions/workflow.png
+END
+right.png
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svnroot/repos/rrze-icon-set/!svn/ver/52/trunk/tango/32x32/actions/right.png
+END
+load-settings.png
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svnroot/repos/rrze-icon-set/!svn/ver/213/trunk/tango/32x32/actions/load-settings.png
+END
+move-participant-to-waiting-red-grey.png
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svnroot/repos/rrze-icon-set/!svn/ver/121/trunk/tango/32x32/actions/move-participant-to-waiting-red-grey.png
+END
+down-red.png
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svnroot/repos/rrze-icon-set/!svn/ver/377/trunk/tango/32x32/actions/down-red.png
+END
+show.png
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svnroot/repos/rrze-icon-set/!svn/ver/336/trunk/tango/32x32/actions/show.png
+END
+action-undo.png
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svnroot/repos/rrze-icon-set/!svn/ver/410/trunk/tango/32x32/actions/action-undo.png
+END
+sort-up-red.png
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svnroot/repos/rrze-icon-set/!svn/ver/44/trunk/tango/32x32/actions/sort-up-red.png
+END
+log-in.png
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svnroot/repos/rrze-icon-set/!svn/ver/44/trunk/tango/32x32/actions/log-in.png
+END
+manage-settings.png
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svnroot/repos/rrze-icon-set/!svn/ver/213/trunk/tango/32x32/actions/manage-settings.png
+END
+switch-course-book.png
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svnroot/repos/rrze-icon-set/!svn/ver/202/trunk/tango/32x32/actions/switch-course-book.png
+END
+up-grey.png
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svnroot/repos/rrze-icon-set/!svn/ver/55/trunk/tango/32x32/actions/up-grey.png
+END
+dynamic-blue-up.png
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svnroot/repos/rrze-icon-set/!svn/ver/44/trunk/tango/32x32/actions/dynamic-blue-up.png
+END
+move-waiting-up-grey.png
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svnroot/repos/rrze-icon-set/!svn/ver/51/trunk/tango/32x32/actions/move-waiting-up-grey.png
+END
+quote.png
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svnroot/repos/rrze-icon-set/!svn/ver/375/trunk/tango/32x32/actions/quote.png
+END
+arrange-boxes.png
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svnroot/repos/rrze-icon-set/!svn/ver/327/trunk/tango/32x32/actions/arrange-boxes.png
+END
+transfer-down_up.png
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svnroot/repos/rrze-icon-set/!svn/ver/55/trunk/tango/32x32/actions/transfer-down_up.png
+END
+document-new_list.png
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svnroot/repos/rrze-icon-set/!svn/ver/409/trunk/tango/32x32/actions/document-new_list.png
+END
+sort-down-red.png
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svnroot/repos/rrze-icon-set/!svn/ver/44/trunk/tango/32x32/actions/sort-down-red.png
+END
+add-participant.png
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svnroot/repos/rrze-icon-set/!svn/ver/44/trunk/tango/32x32/actions/add-participant.png
+END
+sort-up-green.png
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svnroot/repos/rrze-icon-set/!svn/ver/54/trunk/tango/32x32/actions/sort-up-green.png
+END
+download.png
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svnroot/repos/rrze-icon-set/!svn/ver/224/trunk/tango/32x32/actions/download.png
+END
+down.png
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svnroot/repos/rrze-icon-set/!svn/ver/281/trunk/tango/32x32/actions/down.png
+END
+hide.png
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svnroot/repos/rrze-icon-set/!svn/ver/336/trunk/tango/32x32/actions/hide.png
+END
+sort-up.png
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svnroot/repos/rrze-icon-set/!svn/ver/44/trunk/tango/32x32/actions/sort-up.png
+END
+view.png
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svnroot/repos/rrze-icon-set/!svn/ver/351/trunk/tango/32x32/actions/view.png
+END
+move-waiting-down.png
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svnroot/repos/rrze-icon-set/!svn/ver/49/trunk/tango/32x32/actions/move-waiting-down.png
+END
+send-email.png
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svnroot/repos/rrze-icon-set/!svn/ver/53/trunk/tango/32x32/actions/send-email.png
+END
+dynamic-blue-down.png
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svnroot/repos/rrze-icon-set/!svn/ver/44/trunk/tango/32x32/actions/dynamic-blue-down.png
+END
+filter.png
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svnroot/repos/rrze-icon-set/!svn/ver/213/trunk/tango/32x32/actions/filter.png
+END
+log-out.png
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svnroot/repos/rrze-icon-set/!svn/ver/44/trunk/tango/32x32/actions/log-out.png
+END
+move-waiting-to-participant-green-arrow.png
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svnroot/repos/rrze-icon-set/!svn/ver/202/trunk/tango/32x32/actions/move-waiting-to-participant-green-arrow.png
+END
+add.png
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svnroot/repos/rrze-icon-set/!svn/ver/372/trunk/tango/32x32/actions/add.png
+END
+zoom-in.png
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svnroot/repos/rrze-icon-set/!svn/ver/377/trunk/tango/32x32/actions/zoom-in.png
+END
+zoom-out.png
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svnroot/repos/rrze-icon-set/!svn/ver/377/trunk/tango/32x32/actions/zoom-out.png
+END
+send-email-user.png
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svnroot/repos/rrze-icon-set/!svn/ver/336/trunk/tango/32x32/actions/send-email-user.png
+END
+switch-course-book-grey.png
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svnroot/repos/rrze-icon-set/!svn/ver/202/trunk/tango/32x32/actions/switch-course-book-grey.png
+END
+sort-down.png
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svnroot/repos/rrze-icon-set/!svn/ver/54/trunk/tango/32x32/actions/sort-down.png
+END
+print.png
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svnroot/repos/rrze-icon-set/!svn/ver/167/trunk/tango/32x32/actions/print.png
+END
+up-red.png
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svnroot/repos/rrze-icon-set/!svn/ver/377/trunk/tango/32x32/actions/up-red.png
+END
+email-not-available.png
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svnroot/repos/rrze-icon-set/!svn/ver/169/trunk/tango/32x32/actions/email-not-available.png
+END
+run.png
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svnroot/repos/rrze-icon-set/!svn/ver/213/trunk/tango/32x32/actions/run.png
+END
+go-top.png
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svnroot/repos/rrze-icon-set/!svn/ver/306/trunk/tango/32x32/actions/go-top.png
+END
+observe-grey.png
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svnroot/repos/rrze-icon-set/!svn/ver/374/trunk/tango/32x32/actions/observe-grey.png
+END
+transfer-left_right.png
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svnroot/repos/rrze-icon-set/!svn/ver/55/trunk/tango/32x32/actions/transfer-left_right.png
+END
+down-grey.png
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svnroot/repos/rrze-icon-set/!svn/ver/281/trunk/tango/32x32/actions/down-grey.png
+END
+document-settings.png
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svnroot/repos/rrze-icon-set/!svn/ver/410/trunk/tango/32x32/actions/document-settings.png
+END
+split-affiliation.png
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svnroot/repos/rrze-icon-set/!svn/ver/330/trunk/tango/32x32/actions/split-affiliation.png
+END
+move-waiting-down-grey.png
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svnroot/repos/rrze-icon-set/!svn/ver/49/trunk/tango/32x32/actions/move-waiting-down-grey.png
+END
+list-all-participants.png
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svnroot/repos/rrze-icon-set/!svn/ver/46/trunk/tango/32x32/actions/list-all-participants.png
+END
+merge-affiliation.png
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svnroot/repos/rrze-icon-set/!svn/ver/330/trunk/tango/32x32/actions/merge-affiliation.png
+END
+approval.png
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svnroot/repos/rrze-icon-set/!svn/ver/45/trunk/tango/32x32/actions/approval.png
+END
+up.png
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svnroot/repos/rrze-icon-set/!svn/ver/55/trunk/tango/32x32/actions/up.png
+END
+upload.png
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svnroot/repos/rrze-icon-set/!svn/ver/337/trunk/tango/32x32/actions/upload.png
+END
+move-waiting-up.png
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svnroot/repos/rrze-icon-set/!svn/ver/51/trunk/tango/32x32/actions/move-waiting-up.png
+END
+data-transfer.png
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svnroot/repos/rrze-icon-set/!svn/ver/186/trunk/tango/32x32/actions/data-transfer.png
+END
