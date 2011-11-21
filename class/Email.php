@@ -93,6 +93,51 @@ class Email {
     
         fclose($fd);
     }
+    
+    /**
+     * Sends an email to the registrar notifying them to register
+     * the student for the appropriate internship course.
+     *  
+     * @param Student $s
+     * @param Internship $i
+     * @param Agency $a
+     */
+    public static function sendRegistrarEmail($s, $i, $a)
+    {
+        $tpl = array();
+        $tpl['NAME'] = "$s->first_name $s->middle_name $s->last_name";
+        $tpl['BANNER'] = $s->banner;
+        $tpl['USER'] = $s->email;
+        $tpl['PHONE'] = $s->phone;
+        
+        $tpl['TERM'] = Term::rawToRead($i->term);
+        $tpl['SUBJECT'] = $i->course_subj;
+        $tpl['COURSE_NUM'] = $i->course_no;
+        
+        if(isset($i->course_sect)){
+            $tpl['SECTION'] = $i->course_sect;
+        }else{
+            $tpl['SECTION'] = '(not provided)';
+        }
+        
+        if(isset($i->course_title)){
+            $tpl['COURSE_TITLE'] = $i->course_title;
+        }
+        
+        if($i->international){
+            $tpl['COUNTRY'] = $i->loc_country;
+        }else{
+            $tpl['STATE'] = $i->loc_state;
+        }
+        
+        $tpl['APPROVED_BY'] = $i->approved_by;
+        $tpl['APPROVED_ON'] = date('g:ia m/d/Y', $i->approved_on);
+        
+        $to = REGISTRAR_EMAIL_ADDRESS;
+        $subject = 'Internship Approved - Ready for Registration';
+        
+        Email::sendTemplateMessage($to, $subject, 'email/RegistrarEmail.tpl', $tpl);
+    }
 
 }
 

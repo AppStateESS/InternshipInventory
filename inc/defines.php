@@ -16,4 +16,5 @@ define('DOMAIN_NAME', 'tux.appstate.edu'); // domain name to send email from
 define('FROM_ADDRESS', EMAIL_ADDRESS . '@' . DOMAIN_NAME); // fully qualified "from" address
 define('TO_DOMAIN', '@'. DOMAIN_NAME); // Default domain to send email to, beginning with '@'
 
+define('REGISTRAR_EMAIL_ADDRESS', 'infoserv@appstate.edu');
 ?>

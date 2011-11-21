@@ -8,6 +8,7 @@
  * @author Robert Bost <bostrt at tux dot appstate dot edu>
  */
 PHPWS_Core::initModClass('intern', 'Model.php');
+PHPWS_Core::initModClass('intern', 'Email.php');
 
 class Internship extends Model {
 
@@ -562,7 +563,7 @@ class Internship extends Model {
             $i->approved = 1;
             $i->approved_by = Current_User::getUsername();
             $i->approved_on = time();
-            Internship::emailApproval($student, $i, $agency);
+            Email::sendRegistrarEmail($student, $i, $agency);
         }
 
         try {
@@ -895,53 +896,6 @@ class Internship extends Model {
         
         
         $pdf->output();
-    }
-
-    public static function emailApproval($s, $i, $a)
-    {
-        require_once (PHPWS_SOURCE_DIR . 'mod/intern/conf/email_address.php');
-        if (!INTERNSHIP_EMAIL) {
-            throw new InternException('Internship email address is not configured.'); 
-        }
-        $approved_on = date('g:ia m/d/Y', $i->approved_on);
-        $message = <<<EOF
-    Student
-    --------
-    Name: $s->first_name $s->middle_name $s->last_name
-    Email: <a href="mailto:$s->email">$s->email</a>
-    Phone: $s->phone
-    Major: $s->ugrad_major
-    
-    Agency
-    --------
-    Name: $a->name
-    State/Province: $a->state
-    Country: $a->country
-    
-    Internship
-    -----------
-    Location: $i->loc_state
-    Term: $i->term
-    
-    
-    Approved by: $i->approved_by
-    Approved on: $approved_on
-EOF;
-        echo '<pre>';
-        echo $message;
-        echo '</pre>';
-        exit();
-        $mail = new PHPWS_Mail;
-        $mail->addSendTo(INTERNSHIP_ADMIN_EMAIL_TO);
-        $mail->setSubject('Internship approved');
-        $mail->setFrom(INTERNSHIP_ADMIN_EMAIL_FROM);
-        $mail->setReplyTo(INTERNSHIP_ADMIN_EMAIL_FROM);
-        $mail->setMessageBody(implode("\n", $message));
-        $result = $mail->send();
-        if (!PEAR::isError($result)) {
-            PHPWS_Error::log($result);
-            $this->message = 'Service could not send email at this time. Please try again later.';
-        }
     }
 
     public function getLocCountry()
