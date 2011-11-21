@@ -372,7 +372,7 @@ class Internship extends Model {
             foreach ($_POST as $key => $val) {
                 $url .= "&$key=$val";
             }
-            NQ::simple('intern', INTERN_ERROR, 'Please fill in highlighted fields.');
+            NQ::simple('intern', INTERN_ERROR, 'Please fill in the highlighted fields.');
             NQ::close();
             return PHPWS_Core::reroute($url);
         }
@@ -901,7 +901,7 @@ class Internship extends Model {
     {
         require_once (PHPWS_SOURCE_DIR . 'mod/intern/conf/email_address.php');
         if (!INTERNSHIP_EMAIL) {
-            return;
+            throw new InternException('Internship email address is not configured.'); 
         }
         $approved_on = date('g:ia m/d/Y', $i->approved_on);
         $message = <<<EOF

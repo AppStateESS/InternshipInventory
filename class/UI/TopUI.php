@@ -11,10 +11,11 @@ class TopUI implements UI
 {
     public static function display(){}
    
-    public static function plug($content)
+    public static function plug($content, $notifications)
     {
         if(Current_User::isLogged()){
             /* Okay to show the menu */
+            $tpl['NOTIFICATIONS'] = $notifications;
             $tpl['HOME_LINK']    = PHPWS_Text::moduleLink('Menu', 'intern');
             $tpl['ADD_LINK']     = PHPWS_Text::moduleLink('Add Student', 'intern', array('action' => 'edit_internship'));
             $tpl['SEARCH_LINK']  = PHPWS_Text::moduleLink('Search', 'intern', array('action' => 'search'));

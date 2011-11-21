@@ -9,7 +9,7 @@ class Intern_Menu {
     function showMenu() {
         PHPWS_Core::initModClass('intern','UI/Intern_MenuUI.php');
         $disp = new Intern_MenuUI();
-        Layout::add($disp->display());
+        return $disp->display();
     }
 }
 ?>

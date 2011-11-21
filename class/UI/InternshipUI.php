@@ -118,7 +118,6 @@ class InternshipUI implements UI {
         PHPWS_Core::initModClass('intern', 'Department.php');
         PHPWS_Core::initModClass('intern', 'Major.php');
         PHPWS_Core::initModClass('intern', 'GradProgram.php');
-        PHPWS_Core::initModClass('intern', 'State.php');
 
         $form = new PHPWS_Form('internship');
         if (!is_null($i)) {
