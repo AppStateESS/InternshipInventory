@@ -18,7 +18,7 @@ class InternshipUI implements UI {
      * 'agency_sup_city',
      */
     public static $requiredFields = array('student_first_name', 'student_last_name',
-        'banner', 'student_phone', 'student_email', 'agency_name', 'term', 'loc_state', 'department');
+        'banner', 'student_phone', 'student_email', 'agency_name', 'term', 'department');
 
     public static function display()
     {
@@ -318,10 +318,29 @@ class InternshipUI implements UI {
         $form->addText('avg_hours_week');
         $form->setLabel('avg_hours_week', 'Average Hours per Week');
         
+        /**
+        * Internship location
+        */
         $loc = array('domestic' => 'Domestic', 'internat' => 'International');
         $form->addRadioAssoc('location', $loc);
         //$form->setMatch('location', 'domestic'); // Default to domestic
         $form->setRequired('location');
+        
+        // Domestic fields
+        $form->addText('loc_address');
+        $form->setLabel('loc_address', 'Address');
+        $form->addText('loc_city');
+        $form->setLabel('loc_city', 'City');
+        $form->addSelect('loc_state', State::getAllowedStates());
+        $form->setLabel('loc_state', 'State');
+        $form->addText('loc_zip');
+        $form->setLabel('loc_zip', 'Zip');
+
+        // Itn'l location fields
+        $form->addText('loc_province');
+        $form->setLabel('loc_province', 'Province/Territory');
+        $form->addText('loc_country');
+        $form->setLabel('loc_country', 'Country');
         
         $pay = array('unpaid' => 'Unpaid', 'paid' => 'Paid');
         $form->addRadioAssoc('payment', $pay);
@@ -350,21 +369,6 @@ class InternshipUI implements UI {
 //        $form->addCheck('check_other_type');
 //        $form->addText('other_type');
 //        $form->setLabel('other_type', 'Other Type');
-
-        /**
-         * Internship location
-         */
-        $form->addText('loc_address');
-        $form->setLabel('loc_address', 'Address');
-        $form->addText('loc_city');
-        $form->setLabel('loc_city', 'City');
-        $form->addText('loc_country');
-        $form->setLabel('loc_country', 'Country');
-        $form->addSelect('loc_state', State::getAllowedStates());
-        $form->setLabel('loc_state', 'State');
-        $form->addText('loc_zip');
-        $form->setLabel('loc_zip', 'Zip');
-
 
         $form->addText('course_subj');
         $form->setLabel('course_subj', 'Subject');
@@ -399,7 +403,6 @@ class InternshipUI implements UI {
      */
     private static function plugInternship(PHPWS_Form $form, Internship $i)
     {
-
         $vals = array();
 
         $s = $i->getStudent();
@@ -471,9 +474,10 @@ class InternshipUI implements UI {
         $vals['notes'] = $i->notes;
         $vals['loc_address'] = $i->loc_address;
         $vals['loc_city'] = $i->loc_city;
-        $vals['loc_country'] = $i->loc_country;
         $vals['loc_state'] = $i->loc_state;
         $vals['loc_zip'] = $i->loc_zip;
+        $vals['loc_province'] = $i->loc_province;
+        $vals['loc_country'] = $i->loc_country;
 
         $vals['course_subj'] = $i->course_subj;
         $vals['course_no'] = $i->course_no;

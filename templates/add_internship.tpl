@@ -16,6 +16,7 @@
     {APPROVED}{APPROVED_LABEL}{APPROVED_BY_ON}
   </div>
 </div>
+<div class="clearfix"></div>
 
 <table id="internship-form">
   <tr>
@@ -156,7 +157,7 @@
           <td>{LOC_CITY}</td>
         </tr>
         <tr>
-          <td>{LOC_STATE_LABEL}</td>
+          <td>{LOC_STATE_LABEL}<span class="required-input">*</span></td>
           <td>{LOC_STATE}</td>
         </tr>
         <tr>
@@ -164,7 +165,11 @@
           <td>{LOC_ZIP}</td>
         </tr>
         <tr>
-          <td>{LOC_COUNTRY_LABEL}</td>
+            <td>{LOC_PROVINCE_LABEL}</td>
+            <td>{LOC_PROVINCE}</td>
+        </tr>
+        <tr>
+          <td>{LOC_COUNTRY_LABEL}<span class="required-input">*</span></td>
           <td>{LOC_COUNTRY}</td>
         </tr>
         <tr>

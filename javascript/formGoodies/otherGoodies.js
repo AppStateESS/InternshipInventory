@@ -64,22 +64,42 @@ function otherStuff(){
      * If domestic is clicked then change labels appropriately.
      */
     var domesticClick = function(){
+    	/**** Internship Location ****/
+    	// Show the state dropdown, add require field class
+        $("#internship_loc_state").parent().parent().fadeIn('fast');
+        $("#internship_loc_state").addClass('input-required');
+        
+        // Hide the province and country fields
+        $("#internship_loc_province").parent().parent().fadeOut('fast');
+        $("#internship_loc_country").parent().parent().fadeOut('fast');
+        
+        // Remove required class to country (internship location)
+        $("#internship_loc_country").removeClass('input-required');
+        
+        
+        /****** Other Fields ***********/
+        
         // Change province/territory label to say state.
-        $("#internship_agency_state-label,#internship_agency_sup_state-label,#internship_loc_state-label").text("State");
+        $("#internship_agency_state-label,#internship_agency_sup_state-label").text("State");
         // Swap out province textbox for state drop down
         $("#internship_agency_state").parent().html(stateSelect);
         $("#internship_agency_sup_state").parent().html(supStateSelect);
-        $("#internship_loc_state").parent().html(locStateSelect);
+        //$("#internship_loc_state").parent().html(locStateSelect);
 
         // Change postal code label to say zip.
         $("#internship_agency_zip-label,#internship_agency_sup_zip-label,#internship_loc_zip-label").text("Zip Code");
 
         // Remove requirement class from country (agency and supervisor)
-        $("#internship_agency_country,#internship_agency_sup_country,#internship_loc_country").removeClass('input-required');
+        $("#internship_loc_country").removeClass('input-required');
+        
         // Hide country
-        $("#internship_agency_country,#internship_agency_sup_country,#internship_loc_country").fadeOut('fast');
+        $("#internship_agency_country,#internship_agency_sup_country").fadeOut('fast');
         // Hide labels too.
-        $("#internship_agency_country,#internship_agency_sup_country,#internship_loc_country").parent().siblings().fadeOut('fast');
+        $("#internship_agency_country,#internship_agency_sup_country").parent().siblings().fadeOut('fast');
+        
+        // Make the state field required again
+        //$("#internship_loc_state").addClass('input-required');
+        //$("#internship_loc_state-label").append('<span class="required-input">*</span>');
         
         // Re-add handlers for copying state info. <mod/intern/javascript/copyAddress>
         sameAddressState($("input:checkbox[name='copy_address']").attr('checked'));
@@ -89,34 +109,47 @@ function otherStuff(){
      * If internat is selected: show country. Add required flag to country.
      */
     var internatClick = function(){
-        // Change state to stay province/territory.
-        $("#internship_agency_state-label,#internship_loc_state-label,#internship_agency_sup_state-label").text("Province/Territory");
-
+    	
+    	/**** Internship Location ****/
+        // Hide state dropdown, remove required field class
+        $("#internship_loc_state").removeClass('input-required');
+        $("#internship_loc_state").parent().parent().fadeOut('fast');
+        
+        // Show the province and country fields
+        $("#internship_loc_province").parent().parent().fadeIn('fast');
+        $("#internship_loc_country").parent().parent().fadeIn('fast');
+        
+        // Add required class to country (internship location)
+        $("#internship_loc_country").addClass('input-required');
+        
+        // Change the zip code label to 'postal code'
+        $("#internship_loc_zip-label").text("Postal Code");
+        
+        /********** Other Fields *******************/
+        
+        // Change state to say province/territory.
+    	$("#internship_agency_state-label,#internship_agency_sup_state-label").text("Province/Territory");
+    	
         // Create elements if they don't exist
         if(territory == undefined || supTerritory == undefined){
             territory = $("<input type='text' name='agency_state' id='internship_agency_state'>");
             supTerritory = $("<input type='text' name='agency_sup_state' id='internship_agency_sup_state'>");
-            locTerritory = $("<input type='text' name='loc_state' id='internship_loc_state'>");
             $(territory).val($("#internship_agency_state").attr("where"));
             $(supTerritory).val($("#internship_agency_sup_state").attr("where"));
-            $(locTerritory).val($("#internship_loc_state").attr("where"));
         }
+        
         // Swap state drop down for a text box
         $("#internship_agency_state").parent().html(territory);
         $("#internship_agency_sup_state").parent().html(supTerritory);
-        $("#internship_loc_state").parent().html(locTerritory);
 
         // Change zip code to say postal code
-        $("#internship_agency_zip-label,#internship_agency_sup_zip-label,#internship_loc_zip-label").text("Postal Code");
+        $("#internship_agency_zip-label,#internship_agency_sup_zip-label").text("Postal Code");
 
-        // Add requirement class from country (agency and supervisor)
-        $("#internship_agency_country,#internship_agency_sup_country,#internship_loc_country").addClass('input-required');
-        // Add the 'required-input' red star.
-        $("#internship_agency_country-label,#internship_agency_sup_country-label").append('<span class="required-input">*</span>');
-        // Show countrys
-        $("#internship_agency_country,#internship_agency_sup_country,#internship_loc_country").fadeIn('fast');
+        //$("#internship_loc_country-label").append('<span class="required-input">*</span>');
+        // Show countries
+        $("#internship_agency_country,#internship_agency_sup_country").fadeIn('fast');
         // Show labels too.
-        $("#internship_agency_country,#internship_agency_sup_country,#internship_loc_country").parent().siblings().fadeIn('fast');
+        $("#internship_agency_country,#internship_agency_sup_country").parent().siblings().fadeIn('fast');
         sameAddressState($("input:checkbox[name='copy_address']").attr('checked'));
     };
 

@@ -56,9 +56,10 @@ class Internship extends Model {
     public $other_type;
     public $loc_address;
     public $loc_city;
-    public $loc_country;
     public $loc_state;
     public $loc_zip;
+    public $loc_province;
+    public $loc_country;
     public $course_subj;
     public $course_no;
     public $course_sect;
@@ -546,15 +547,18 @@ class Internship extends Model {
         //$i->special_topics = isset($_REQUEST['special_topics_type']);
         //$i->other_type = isset($_REQUEST['check_other_type']) ? $_REQUEST['other_type'] : null;
         $i->notes = $_REQUEST['notes'];
+        
         $i->loc_address = strip_tags($_POST['loc_address']);
         $i->loc_city = strip_tags($_POST['loc_city']);
-        $i->loc_country = strip_tags($_POST['loc_country']);
         if ($_POST['loc_state'] != '-1') {
             $i->loc_state = strip_tags($_POST['loc_state']);
         } else {
             $i->loc_state = null;
         }
         $i->loc_zip = strip_tags($_POST['loc_zip']);
+        $i->loc_province = $_POST['loc_province'];
+        $i->loc_country = strip_tags($_POST['loc_country']);
+        
         $i->course_subj = strip_tags($_POST['course_subj']);
         $i->course_no = strip_tags($_POST['course_no']);
         $i->course_sect = strip_tags($_POST['course_sect']);
@@ -625,10 +629,24 @@ class Internship extends Model {
             $vals[] = 'term';
         }
 
-        if ($_REQUEST['loc_state'] == -1) {
-            $vals[] = 'loc_state';
+        // Make sure a location (domestic vs. intl) is set
+        if(!isset($_REQUEST['location'])){
+            // If not, make the user select it
+            $vals[] = 'location';
+        }else{
+            // If so, check the state/country appropriately
+            if($_REQUEST['location'] == 'domestic'){
+                // Check internshp state
+                if ($_REQUEST['loc_state'] == -1) {
+                    $vals[] = 'loc_state';
+                }
+            }else{
+                if(!isset($_REQUEST['loc_country'])){
+                    $vals[] = 'loc_country';
+                }
+            }
         }
-
+        
 
         /**
          * Funky stuff here for location.
@@ -642,10 +660,6 @@ class Internship extends Model {
         if (!isset($_REQUEST['location'])) {
             $vals[] = 'location';
         } elseif ($_REQUEST['location'] == 'domestic') {
-            if (!isset($_REQUEST['agency_state']) || $_REQUEST['agency_state'] == -1) {
-                // Add state to missing
-                $vals[] = 'agency_state';
-            }
         }
 
         return $vals;
