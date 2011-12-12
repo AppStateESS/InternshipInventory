@@ -111,6 +111,7 @@
       <table class="sub-form">
         <tr>
           <td>
+          Current Status: <strong>{WORKFLOW_STATE}</strong>
             <div class="status-box-content">
           <fieldset>
             <legend>Action</legend>

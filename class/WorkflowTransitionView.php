@@ -14,7 +14,7 @@ class WorkflowTransitionView {
 
     public function show()
     {
-        $currStateName = $this->state->getFriendlyName();
+        $this->form->addTplTag('WORKFLOW_STATE', $this->state->getFriendlyName());
         
         $transitions = $this->state->getTransitions();
         
