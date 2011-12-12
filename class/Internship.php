@@ -12,40 +12,39 @@ PHPWS_Core::initModClass('intern', 'Email.php');
 
 class Internship extends Model {
 
-    public $term;
     public $student_id;
     public $agency_id;
-
-    /**
-     * If true, internship was approved by the Dean
-     * @var boolean
-     */
-    public $approved = false;
-
-    /**
-     * username of person who approved it
-     * @var string
-     */
-    public $approved_by = null;
-
-    /**
-     * Timestamp of approval
-     * @var integer
-     */
-    public $approved_on = 0;
     public $faculty_supervisor_id;
     public $department_id;
+    
+    public $state;
+    
+    public $domestic;
+    public $international;
+    
+    public $loc_address;
+    public $loc_city;
+    public $loc_state;
+    public $loc_zip;
+    public $loc_province;
+    public $loc_country;
+    
+    public $term;
     public $start_date = 0;
     public $end_date = 0;
     public $credits;
     public $avg_hours_week;
-    public $domestic;
-    public $international;
+    
+    public $course_subj;
+    public $course_no;
+    public $course_sect;
+    public $course_title;
+    
     public $paid;
     public $unpaid;
     public $stipend;
     public $pay_rate;
-    public $notes;
+    
     public $internship = 0;
     public $service_learn = 0;
     public $independent_study = 0;
@@ -54,17 +53,9 @@ class Internship extends Model {
     public $clinical_practica = 0;
     public $special_topics = 0;
     public $other_type;
-    public $loc_address;
-    public $loc_city;
-    public $loc_state;
-    public $loc_zip;
-    public $loc_province;
-    public $loc_country;
-    public $course_subj;
-    public $course_no;
-    public $course_sect;
-    public $course_title;
-
+    
+    public $notes;
+    
     /**
      * @Override Model::getDb
      */
@@ -103,9 +94,6 @@ class Internship extends Model {
         $i['Student Teaching'] = $this->student_teaching == 1 ? 'Yes' : 'No';
         $i['Clinical Practica'] = $this->clinical_practica == 1 ? 'Yes' : 'No';
         $i['Special Topics'] = $this->special_topics == 1 ? 'Yes' : 'No';
-        $i['Approved by Dean'] = $this->approved == 1 ? 'Yes' : 'No';
-        $i['Approver'] = $this->approved_by;
-        $i['Approval Date'] = $this->approved_on;
         $i['Other Type'] = $this->other_type;
         $i['Notes'] = $this->notes;
         $i['Location Address'] = $this->loc_address;
@@ -260,6 +248,15 @@ class Internship extends Model {
         }
     }
 
+    public function getStateName()
+    {
+        return $this->state;
+    }
+    
+    public function setState(WorkflowState $state){
+        $this->state = $state->getName();
+    }
+    
     /**
      * Row tags for DBPager
      */
@@ -563,12 +560,6 @@ class Internship extends Model {
         $i->course_no = strip_tags($_POST['course_no']);
         $i->course_sect = strip_tags($_POST['course_sect']);
         $i->course_title = strip_tags($_POST['course_title']);
-        if (isset($_POST['approved'])) {
-            $i->approved = 1;
-            $i->approved_by = Current_User::getUsername();
-            $i->approved_on = time();
-            Email::sendRegistrarEmail($student, $i, $agency);
-        }
 
         try {
             $i->save();
@@ -578,6 +569,15 @@ class Internship extends Model {
             NQ::close();
             return PHPWS_Core::goBack();
         }
+        
+        /***************************
+        * State/Workflow Handling *
+        ***************************/
+        PHPWS_Core::initModClass('intern', 'WorkflowController.php');
+        PHPWS_Core::initModClass('intern', 'WorkflowTransitionFactory.php');
+        $workflow = new WorkflowController($i);
+        $t = WorkflowTransitionFactory::getTransitionByName($_POST['workflow_action']);
+        $workflow->doTransition($t);
 
         PHPWS_DB::commit();
         if (isset($_REQUEST['student_id'])) {

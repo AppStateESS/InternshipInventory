@@ -50,7 +50,7 @@ class InternshipInventory {
                 break;
             case 'add_internship':
                 PHPWS_Core::initModClass('intern', 'Internship.php');
-                Internship::addInternship(); // NOTIFY
+                Internship::addInternship();
                 break;
             case 'internship_details':
                 PHPWS_Core::initModClass('intern', 'UI/InternshipDetailsUI.php');

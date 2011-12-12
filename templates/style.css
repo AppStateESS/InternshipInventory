@@ -226,7 +226,7 @@
     font-weight: bold;
 }
 
-#internship-form fieldset {
+fieldset {
 	border: 1px solid #D6D6D6;
 	border-radius: 5px;
 }

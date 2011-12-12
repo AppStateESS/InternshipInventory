@@ -10,13 +10,6 @@
 <div id="pdf-download">{PDF}</div>
 
 {START_FORM} {SUBMIT}
-<div class="internship-status-box">
-  <div class="status-box-header">Status</div>
-  <div class="status-box-content">
-    {APPROVED}{APPROVED_LABEL}{APPROVED_BY_ON}
-  </div>
-</div>
-<div class="clearfix"></div>
 
 <table id="internship-form">
   <tr>
@@ -70,14 +63,14 @@
           <td colspan="2">
             <fieldset>
               <legend>Major</legend>
-              {STUDENT_LEVEL_1}{STUDENT_LEVEL_1_LABEL}
-              {STUDENT_LEVEL_2}{STUDENT_LEVEL_2_LABEL} <br /> <span
-                id="ugrad_drop"> {UGRAD_MAJOR_LABEL}<span
+              <!-- BEGIN student_level_repeat -->
+              {STUDENT_LEVEL}{STUDENT_LEVEL_LABEL}
+              <!--  END student_level_repeat -->
+              <br /> <span id="ugrad_drop"> {UGRAD_MAJOR_LABEL}<span
                 class="required-input">*</span><br /> {UGRAD_MAJOR} </span> <span
                 id="grad_drop"> {GRAD_PROG_LABEL}<span
                 class="required-input">*</span><br /> {GRAD_PROG} </span>
-            </fieldset>
-          </td>
+            </fieldset></td>
         </tr>
         <tr>
           <td colspan="2">
@@ -86,11 +79,9 @@
               {EMERGENCY_CONTACT_NAME_LABEL}{EMERGENCY_CONTACT_NAME}<br />
               {EMERGENCY_CONTACT_RELATION_LABEL}{EMERGENCY_CONTACT_RELATION}<br />
               {EMERGENCY_CONTACT_PHONE_LABEL}{EMERGENCY_CONTACT_PHONE}<br />
-            </fieldset>
-          </td>
+            </fieldset></td>
         </tr>
-      </table>
-    </td>
+      </table></td>
     <!-- End student info section -->
     <!-- Faculty info -->
     <td class="sub-form-cell"><span class="info-header">Faculty</span>
@@ -114,7 +105,26 @@
         <tr>
           <td colspan=2>{DEPARTMENT_LABEL}<br/ > {DEPARTMENT}</td>
         </tr>
-      </table> <!-- start document list --> <span class="info-header">Documents</span>
+      </table>
+
+      <span class="info-header">Status</span>
+      <table class="sub-form">
+        <tr>
+          <td>
+            <div class="status-box-content">
+          <fieldset>
+            <legend>Action</legend>
+            <!-- BEGIN workflow_action_repeat -->
+            {WORKFLOW_ACTION}{WORKFLOW_ACTION_LABEL}<br />
+            <!-- END workflow_action_repeat -->
+          </fieldset>
+            </div>
+          </td>
+        </tr>
+      </table>
+
+      <!-- start document list -->
+      <span class="info-header">Documents</span>
       <table class="sub-form">
         <tr>
           <td>
@@ -122,12 +132,9 @@
               <!-- BEGIN docs -->
               <li>{DOWNLOAD}{DELETE}</li>
               <!-- END docs -->
-              </ul>
-              {UPLOAD_DOC}
-          </td>
+            </ul> {UPLOAD_DOC}</td>
         </tr>
-      </table> <!-- end document list -->
-    </td>
+      </table> <!-- end document list --></td>
     <!-- End faculty info -->
   </tr>
 
@@ -137,16 +144,17 @@
         Details</span>
       <table class="sub-form" id="agency-info">
         <tr>
-          <td colspan="2"><h3>Location of Internship</h3></td>
+          <td colspan="2"><h3>Location of Internship</h3>
+          </td>
         </tr>
         <tr>
           <td colspan="2">
             <fieldset{LOC_HIGHLIGHT}>
               <legend>Location</legend>
-              {LOCATION_1}{LOCATION_1_LABEL}
-              {LOCATION_2}{LOCATION_2_LABEL}
-            </fieldset>
-          </td>
+              <!-- BEGIN location_repeat -->
+              {LOCATION}{LOCATION_LABEL}
+              <!-- END location_repeat -->
+            </fieldset></td>
         </tr>
         <tr>
           <td>{LOC_ADDRESS_LABEL}</td>
@@ -157,7 +165,8 @@
           <td>{LOC_CITY}</td>
         </tr>
         <tr>
-          <td>{LOC_STATE_LABEL}<span class="required-input">*</span></td>
+          <td>{LOC_STATE_LABEL}<span class="required-input">*</span>
+          </td>
           <td>{LOC_STATE}</td>
         </tr>
         <tr>
@@ -165,15 +174,17 @@
           <td>{LOC_ZIP}</td>
         </tr>
         <tr>
-            <td>{LOC_PROVINCE_LABEL}</td>
-            <td>{LOC_PROVINCE}</td>
+          <td>{LOC_PROVINCE_LABEL}</td>
+          <td>{LOC_PROVINCE}</td>
         </tr>
         <tr>
-          <td>{LOC_COUNTRY_LABEL}<span class="required-input">*</span></td>
+          <td>{LOC_COUNTRY_LABEL}<span class="required-input">*</span>
+          </td>
           <td>{LOC_COUNTRY}</td>
         </tr>
         <tr>
-          <td colspan="2"><h3>Term Information</h3></td>
+          <td colspan="2"><h3>Term Information</h3>
+          </td>
         </tr>
         <tr>
           <td>{TERM_LABEL}</td>
@@ -181,11 +192,13 @@
         </tr>
         <tr>
           <td>{START_DATE_LABEL}</td>
-          <td><span id="start-date">{START_DATE}</span></td>
+          <td><span id="start-date">{START_DATE}</span>
+          </td>
         </tr>
         <tr>
           <td>{END_DATE_LABEL}</td>
-          <td><span id="end-date">{END_DATE}</span></td>
+          <td><span id="end-date">{END_DATE}</span>
+          </td>
         </tr>
         <tr>
           <td>{CREDITS_LABEL}</td>
@@ -196,7 +209,8 @@
           <td>{AVG_HOURS_WEEK}</td>
         </tr>
         <tr>
-          <td colspan="2"><h3>Course Information</h3></td>
+          <td colspan="2"><h3>Course Information</h3>
+          </td>
         </tr>
         <tr>
           <td>{COURSE_SUBJ_LABEL}</td>
@@ -219,12 +233,12 @@
           <td colspan="2">
             <fieldset>
               <legend>Compensation</legend>
-              {PAYMENT_1}{PAYMENT_1_LABEL}<br />
-              {PAYMENT_2}{PAYMENT_2_LABEL}<br /> <span
-                style="padding-left: 15px;">{STIPEND}{STIPEND_LABEL}</span><br />
+              <!-- BEGIN payment_repeat -->
+              {PAYMENT}{PAYMENT_LABEL}<br />
+              <!-- END payment_repeat -->
+              <span style="padding-left: 15px;">{STIPEND}{STIPEND_LABEL}</span><br />
               <span style="padding-left: 15px;">{PAY_RATE_LABEL}{PAY_RATE}</span>
-            </fieldset>
-          </td>
+            </fieldset></td>
         </tr>
         <tr>
           <td colspan="2">
@@ -238,11 +252,9 @@
               {CLINICAL_PRACTICA_TYPE}{CLINICAL_PRACTICA_TYPE_LABEL}<br />
               <!-- {SPECIAL_TOPICS_TYPE}{SPECIAL_TOPICS_TYPE_LABEL}<br/>
             {CHECK_OTHER_TYPE}{OTHER_TYPE_LABEL}{OTHER_TYPE}<br/> -->
-            </fieldset>
-          </td>
+            </fieldset></td>
         </tr>
-      </table>
-    </td>
+      </table></td>
     <!-- End internship details -->
     <!-- Agency info -->
     <td class="sub-form-cell"><span class="info-header">Agency
@@ -278,7 +290,8 @@
           <td>{AGENCY_COUNTRY}</td>
         </tr>
         <tr>
-          <td colspan=2><h3>Supervisor Info</h3></td>
+          <td colspan=2><h3>Supervisor Info</h3>
+          </td>
         </tr>
         <tr>
           <td>{AGENCY_SUP_FIRST_NAME_LABEL}</td>
@@ -327,8 +340,7 @@
           <td>{AGENCY_SUP_COUNTRY_LABEL}</td>
           <td>{AGENCY_SUP_COUNTRY}</td>
         </tr>
-      </table>
-    </td>
+      </table></td>
     <!-- End agency info -->
   </tr>
   <tr>
@@ -337,8 +349,7 @@
         <tr>
           <td>{NOTES}</td>
         </tr>
-      </table>
-    </td>
+      </table></td>
   </tr>
 </table>
 <br />

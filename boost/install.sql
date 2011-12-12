@@ -149,14 +149,12 @@ CREATE TABLE intern_term (
 
 CREATE TABLE intern_internship (
        id INT NOT NULL,
+       state varchar(128) NOT NULL,
        term INT NOT NULL REFERENCES intern_term(term),
        student_id INT NOT NULL REFERENCES intern_student(id),
        agency_id INT NOT NULL REFERENCES intern_agency(id),
        faculty_supervisor_id INT NOT NULL REFERENCES intern_faculty_supervisor(id),
        department_id INT NOT NULL,
-       approved smallint not null default 0,
-       approved_by varchar(20) null,
-       approved_on int not null default 0,
        start_date INT NOT NULL default 0,
        end_date INT NOT NULL default 0,
        internship SMALLINT NOT NULL,
