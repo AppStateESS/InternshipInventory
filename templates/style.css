@@ -226,7 +226,7 @@
     font-weight: bold;
 }
 
-#internship-form fieldset {
+fieldset {
 	border: 1px solid #D6D6D6;
 	border-radius: 5px;
 }
@@ -286,6 +286,7 @@ a.button {
     
     border:1px solid #AAA;
     border-radius:10px;
+    -moz-border-radius:10px;
     
     box-shadow: 2px 2px 1px #F0F0F0;
     -moz-box-shadow: 1px 1px 1px #F0F0F0;
@@ -339,6 +340,7 @@ input[type="button"]{
     
     border:1px solid #AAA;
     border-radius:10px;
+    -moz-border-radius:10px;
     
     box-shadow: 2px 2px 1px #F0F0F0;
     -moz-box-shadow: 1px 1px 1px #F0F0F0;

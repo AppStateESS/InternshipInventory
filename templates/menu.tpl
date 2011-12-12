@@ -1,5 +1,4 @@
-<div id="logout-link">{LOGOUT}</div>
-
+<div class="clearfix"></div>
 <div id="menu">
     <div class="menu-button">
         {ADD}

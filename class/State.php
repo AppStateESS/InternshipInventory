@@ -29,8 +29,28 @@ class State {
         $this->active = (bool)$active;
     }
 
-    /* http://www.bytemycode.com/snippets/snippet/454/ */
+    public static function getAllowedStates()
+    {
+        $db = new PHPWS_DB('intern_state');
+        $db->addWhere('active', 1);
+        $db->addColumn('abbr');
+        $db->addColumn('full_name');
+        $db->setIndexBy('abbr');
+        // get backwards because we flip it
+        $db->addOrder('full_name desc');
+        $states = $db->select('col');
+        if (empty($states)) {
+            NQ::simple('intern', INTERN_ERROR, 'The list of allowed US states for internship locations has not been configured. Please use the administrative options to <a href="index.php?module=intern&action=edit_states">add allowed states.</a>');
+            NQ::close();
+            PHPWS_Core::goBack();
+        }
+        $states[-1] = 'Select a state';
+        $states = array_reverse($states, true);
+        
+        return $states;
+    }
     
+    /* http://www.bytemycode.com/snippets/snippet/454/ */    
     public static $UNITED_STATES = array(-1 => 'Select State',
             'AL' => "Alabama",
             'AK' => "Alaska",

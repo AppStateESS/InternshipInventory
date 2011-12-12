@@ -8,43 +8,43 @@
  * @author Robert Bost <bostrt at tux dot appstate dot edu>
  */
 PHPWS_Core::initModClass('intern', 'Model.php');
+PHPWS_Core::initModClass('intern', 'Email.php');
 
 class Internship extends Model {
 
-    public $term;
     public $student_id;
     public $agency_id;
-
-    /**
-     * If true, internship was approved by the Dean
-     * @var boolean
-     */
-    public $approved = false;
-
-    /**
-     * username of person who approved it
-     * @var string
-     */
-    public $approved_by = null;
-
-    /**
-     * Timestamp of approval
-     * @var integer
-     */
-    public $approved_on = 0;
     public $faculty_supervisor_id;
     public $department_id;
+    
+    public $state;
+    
+    public $domestic;
+    public $international;
+    
+    public $loc_address;
+    public $loc_city;
+    public $loc_state;
+    public $loc_zip;
+    public $loc_province;
+    public $loc_country;
+    
+    public $term;
     public $start_date = 0;
     public $end_date = 0;
     public $credits;
     public $avg_hours_week;
-    public $domestic;
-    public $international;
+    
+    public $course_subj;
+    public $course_no;
+    public $course_sect;
+    public $course_title;
+    
     public $paid;
     public $unpaid;
     public $stipend;
     public $pay_rate;
-    public $notes;
+    
     public $internship = 0;
     public $service_learn = 0;
     public $independent_study = 0;
@@ -53,16 +53,9 @@ class Internship extends Model {
     public $clinical_practica = 0;
     public $special_topics = 0;
     public $other_type;
-    public $loc_address;
-    public $loc_city;
-    public $loc_country;
-    public $loc_state;
-    public $loc_zip;
-    public $course_subj;
-    public $course_no;
-    public $course_sect;
-    public $course_title;
-
+    
+    public $notes;
+    
     /**
      * @Override Model::getDb
      */
@@ -101,9 +94,6 @@ class Internship extends Model {
         $i['Student Teaching'] = $this->student_teaching == 1 ? 'Yes' : 'No';
         $i['Clinical Practica'] = $this->clinical_practica == 1 ? 'Yes' : 'No';
         $i['Special Topics'] = $this->special_topics == 1 ? 'Yes' : 'No';
-        $i['Approved by Dean'] = $this->approved == 1 ? 'Yes' : 'No';
-        $i['Approver'] = $this->approved_by;
-        $i['Approval Date'] = $this->approved_on;
         $i['Other Type'] = $this->other_type;
         $i['Notes'] = $this->notes;
         $i['Location Address'] = $this->loc_address;
@@ -258,6 +248,15 @@ class Internship extends Model {
         }
     }
 
+    public function getStateName()
+    {
+        return $this->state;
+    }
+    
+    public function setState(WorkflowState $state){
+        $this->state = $state->getName();
+    }
+    
     /**
      * Row tags for DBPager
      */
@@ -372,7 +371,7 @@ class Internship extends Model {
             foreach ($_POST as $key => $val) {
                 $url .= "&$key=$val";
             }
-            NQ::simple('intern', INTERN_ERROR, 'Please fill in highlighted fields.');
+            NQ::simple('intern', INTERN_ERROR, 'Please fill in the highlighted fields.');
             NQ::close();
             return PHPWS_Core::reroute($url);
         }
@@ -451,7 +450,7 @@ class Internship extends Model {
             /* Location is DOMESTIC. Country is U.S. State was chosen from drop down */
             $agency->state = $_REQUEST['agency_state'] == -1 ? null : $_REQUEST['agency_state'];
             $agency->country = 'United States';
-            $agency->supervisor_state = $_REQUEST['agency_state'] == -1 ? null : $_REQUEST['agency_state'];
+            $agency->supervisor_state = $_REQUEST['agency_sup_state'] == -1 ? null : $_REQUEST['agency_sup_state'];
             $agency->supervisor_country = 'United States';
         }
 
@@ -545,25 +544,22 @@ class Internship extends Model {
         //$i->special_topics = isset($_REQUEST['special_topics_type']);
         //$i->other_type = isset($_REQUEST['check_other_type']) ? $_REQUEST['other_type'] : null;
         $i->notes = $_REQUEST['notes'];
+        
         $i->loc_address = strip_tags($_POST['loc_address']);
         $i->loc_city = strip_tags($_POST['loc_city']);
-        $i->loc_country = strip_tags($_POST['loc_country']);
         if ($_POST['loc_state'] != '-1') {
             $i->loc_state = strip_tags($_POST['loc_state']);
         } else {
             $i->loc_state = null;
         }
         $i->loc_zip = strip_tags($_POST['loc_zip']);
+        $i->loc_province = $_POST['loc_province'];
+        $i->loc_country = strip_tags($_POST['loc_country']);
+        
         $i->course_subj = strip_tags($_POST['course_subj']);
         $i->course_no = strip_tags($_POST['course_no']);
         $i->course_sect = strip_tags($_POST['course_sect']);
         $i->course_title = strip_tags($_POST['course_title']);
-        if (isset($_POST['approved'])) {
-            $i->approved = 1;
-            $i->approved_by = Current_User::getUsername();
-            $i->approved_on = time();
-            Internship::emailApproval($student, $i, $agency);
-        }
 
         try {
             $i->save();
@@ -573,6 +569,15 @@ class Internship extends Model {
             NQ::close();
             return PHPWS_Core::goBack();
         }
+        
+        /***************************
+        * State/Workflow Handling *
+        ***************************/
+        PHPWS_Core::initModClass('intern', 'WorkflowController.php');
+        PHPWS_Core::initModClass('intern', 'WorkflowTransitionFactory.php');
+        $workflow = new WorkflowController($i);
+        $t = WorkflowTransitionFactory::getTransitionByName($_POST['workflow_action']);
+        $workflow->doTransition($t);
 
         PHPWS_DB::commit();
         if (isset($_REQUEST['student_id'])) {
@@ -624,10 +629,24 @@ class Internship extends Model {
             $vals[] = 'term';
         }
 
-        if ($_REQUEST['loc_state'] == -1) {
-            $vals[] = 'loc_state';
+        // Make sure a location (domestic vs. intl) is set
+        if(!isset($_REQUEST['location'])){
+            // If not, make the user select it
+            $vals[] = 'location';
+        }else{
+            // If so, check the state/country appropriately
+            if($_REQUEST['location'] == 'domestic'){
+                // Check internshp state
+                if ($_REQUEST['loc_state'] == -1) {
+                    $vals[] = 'loc_state';
+                }
+            }else{
+                if(!isset($_REQUEST['loc_country'])){
+                    $vals[] = 'loc_country';
+                }
+            }
         }
-
+        
 
         /**
          * Funky stuff here for location.
@@ -641,10 +660,6 @@ class Internship extends Model {
         if (!isset($_REQUEST['location'])) {
             $vals[] = 'location';
         } elseif ($_REQUEST['location'] == 'domestic') {
-            if (!isset($_REQUEST['agency_state']) || $_REQUEST['agency_state'] == -1) {
-                // Add state to missing
-                $vals[] = 'agency_state';
-            }
         }
 
         return $vals;
@@ -895,53 +910,6 @@ class Internship extends Model {
         
         
         $pdf->output();
-    }
-
-    public static function emailApproval($s, $i, $a)
-    {
-        require_once (PHPWS_SOURCE_DIR . 'mod/intern/conf/email_address.php');
-        if (!INTERNSHIP_EMAIL) {
-            return;
-        }
-        $approved_on = date('g:ia m/d/Y', $i->approved_on);
-        $message = <<<EOF
-    Student
-    --------
-    Name: $s->first_name $s->middle_name $s->last_name
-    Email: <a href="mailto:$s->email">$s->email</a>
-    Phone: $s->phone
-    Major: $s->ugrad_major
-    
-    Agency
-    --------
-    Name: $a->name
-    State/Province: $a->state
-    Country: $a->country
-    
-    Internship
-    -----------
-    Location: $i->loc_state
-    Term: $i->term
-    
-    
-    Approved by: $i->approved_by
-    Approved on: $approved_on
-EOF;
-        echo '<pre>';
-        echo $message;
-        echo '</pre>';
-        exit();
-        $mail = new PHPWS_Mail;
-        $mail->addSendTo(INTERNSHIP_ADMIN_EMAIL_TO);
-        $mail->setSubject('Internship approved');
-        $mail->setFrom(INTERNSHIP_ADMIN_EMAIL_FROM);
-        $mail->setReplyTo(INTERNSHIP_ADMIN_EMAIL_FROM);
-        $mail->setMessageBody(implode("\n", $message));
-        $result = $mail->send();
-        if (!PEAR::isError($result)) {
-            PHPWS_Error::log($result);
-            $this->message = 'Service could not send email at this time. Please try again later.';
-        }
     }
 
     public function getLocCountry()

@@ -18,7 +18,7 @@ class InternshipUI implements UI {
      * 'agency_sup_city',
      */
     public static $requiredFields = array('student_first_name', 'student_last_name',
-        'banner', 'student_phone', 'student_email', 'agency_name', 'agency_state', 'term', 'loc_state', 'department');
+        'banner', 'student_phone', 'student_email', 'agency_name', 'term', 'department');
 
     public static function display()
     {
@@ -31,32 +31,27 @@ class InternshipUI implements UI {
 
         if (isset($_REQUEST['id'])) {
             /* Attempting to edit internship */
-            try {
-                $internship = new Internship($_REQUEST['id']);
-                if ($internship->id == 0) {
-                    /* Intership failed to load */
-                    NQ::simple('intern', INTERN_ERROR, 'Failed to get internship.');
-                    return false;
-                }
-                $form = self::getInternshipForm($internship);
-                $tpl['PDF'] = PHPWS_Text::moduleLink('Generate Contract', 'intern', array('action' => 'pdf', 'id' => $internship->id), null, null, 'button');
-                
-                self::plugInternship($form, $internship);
-                /* Plug in document list */
-                $docs = $internship->getDocuments();
-                if (!is_null($docs)) {
-                    foreach ($docs as $doc) {
-                        $tpl['docs'][] = array('DOWNLOAD' => $doc->getDownloadLink('blah'),
-                            'DELETE' => $doc->getDeleteLink());
-                    }
-                }
-                $folder = new Intern_Folder(Intern_Document::getFolderId());
-                $tpl['UPLOAD_DOC'] = $folder->documentUpload($internship->id);
-                $tpl['TITLE'] = 'Edit Student';
-            } catch (Exception $e) {
-                NQ::simple('intern', INTERN_ERROR, $e->getMessage());
+            $internship = new Internship($_REQUEST['id']);
+            if ($internship->id == 0) {
+                /* Intership failed to load */
+                NQ::simple('intern', INTERN_ERROR, 'Failed to get internship.');
                 return false;
             }
+            $form = self::getInternshipForm($internship);
+            $tpl['PDF'] = PHPWS_Text::moduleLink('Generate Contract', 'intern', array('action' => 'pdf', 'id' => $internship->id), null, null, 'button');
+
+            self::plugInternship($form, $internship);
+            /* Plug in document list */
+            $docs = $internship->getDocuments();
+            if (!is_null($docs)) {
+                foreach ($docs as $doc) {
+                    $tpl['docs'][] = array('DOWNLOAD' => $doc->getDownloadLink('blah'),
+                            'DELETE' => $doc->getDeleteLink());
+                }
+            }
+            $folder = new Intern_Folder(Intern_Document::getFolderId());
+            $tpl['UPLOAD_DOC'] = $folder->documentUpload($internship->id);
+            $tpl['TITLE'] = 'Edit Student';
         } else {
             /* Show form with empty fields. */
             $form = self::getInternshipForm();
@@ -66,16 +61,16 @@ class InternshipUI implements UI {
         }
         /*
          * If 'missing' is set then we have been redirected
-         * back to the form because the user didn't type in something and
-         * somehow got past the javascript.
-         */
+        * back to the form because the user didn't type in something and
+        * somehow got past the javascript.
+        */
         if (isset($_REQUEST['missing'])) {
             $missing = explode(' ', $_REQUEST['missing']);
 
             javascriptMod('intern', 'missing');
             /*
              * Set classes on field we are missing.
-             */
+            */
             foreach ($missing as $m) {
                 if ($m == 'location') {
                     $form->addTplTag('LOC_HIGHLIGHT', ' style="background-color : #FF5D5D"');
@@ -102,7 +97,11 @@ class InternshipUI implements UI {
         }
 
         $form->mergeTemplate($tpl);
+        
         Layout::addPageTitle('Add Internship');
+        
+        //test($form->getTemplate(),1);
+        
         return PHPWS_Template::process($form->getTemplate(), 'intern', 'add_internship.tpl');
     }
 
@@ -118,7 +117,6 @@ class InternshipUI implements UI {
         PHPWS_Core::initModClass('intern', 'Department.php');
         PHPWS_Core::initModClass('intern', 'Major.php');
         PHPWS_Core::initModClass('intern', 'GradProgram.php');
-        PHPWS_Core::initModClass('intern', 'State.php');
 
         $form = new PHPWS_Form('internship');
         if (!is_null($i)) {
@@ -131,22 +129,37 @@ class InternshipUI implements UI {
         $form->setAction('index.php?module=intern&action=add_internship');
         $form->addSubmit('submit', 'Save');
 
-        
-        if (!$i->approved) {
-            $form->addCheckbox('approved');
-            $form->setLabel('approved', 'Internship approved by Dean');
+
+        /*
+         if (!$i->approved) {
+        $form->addCheckbox('approved');
+        $form->setLabel('approved', 'Internship approved by Dean');
         } else {
-            $approved_on = "Approved by Dean({$i->approved_by}); Sent to Registrar's Office on " . date('g:ia, M j, Y', $i->approved_on);
-            if (Current_User::isDeity()) {
-                $approved_on .= ' <a href="index.php?module=intern&action=unapprove&id='
-                        . $i->id . '&authkey=' . Current_User::getAuthKey() . '">Unapprove</a>';
-            }
-            $form->addTplTag('APPROVED_BY_ON', $approved_on);
+        $approved_on = "Approved by Dean({$i->approved_by}); Sent to Registrar's Office on " . date('g:ia, M j, Y', $i->approved_on);
+        if (Current_User::isDeity()) {
+        $approved_on .= ' <a href="index.php?module=intern&action=unapprove&id='
+        . $i->id . '&authkey=' . Current_User::getAuthKey() . '">Unapprove</a>';
         }
-        
+        $form->addTplTag('APPROVED_BY_ON', $approved_on);
+        }*/
+
+        /*********************
+         * Workflow / Status *
+         */
+        PHPWS_Core::initModClass('intern', 'WorkflowStateFactory.php');
+        PHPWS_Core::initModClass('intern', 'WorkflowTransitionView.php');
+        if(!is_null($i->state)){
+            $state = WorkflowStateFactory::getState($i->state);
+        }else{
+            $state = WorkflowStateFactory::getState('Creation');
+        }
+
+        $transView = new WorkflowTransitionView($state, $form);
+        $transView->show();
+
         /**
-        * Student fields
-        */
+         * Student fields
+         */
         $form->addText('student_first_name');
         $form->setLabel('student_first_name', 'First Name');
         $form->addText('student_middle_name');
@@ -159,7 +172,7 @@ class InternshipUI implements UI {
         $form->setLabel('student_phone', 'Phone');
         $form->addText('student_email');
         $form->setLabel('student_email', 'ASU Email');
-        
+
         /* Student Address */
         $form->addText('student_address');
         $form->setLabel('student_address','Address');
@@ -169,48 +182,48 @@ class InternshipUI implements UI {
         $form->setLabel('student_state','State');
         $form->addText('student_zip');
         $form->setLabel('student_zip','Zip Code');
-        
+
         /* Emergency Contact */
         $form->addText('emergency_contact_name');
         $form->setClass('emergency_contact_name', 'form-text');
         $form->setLabel('emergency_contact_name', 'Name');
-        
+
         $form->addText('emergency_contact_relation');
         $form->setClass('emergency_contact_relation', 'form-text');
         $form->setLabel('emergency_contact_relation', 'Relationship');
-        
+
         $form->addText('emergency_contact_phone');
         $form->setClass('emergency_contact_phone', 'form-text');
         $form->setLabel('emergency_contact_phone', 'Phone');
-        
+
         // GPA
         $form->addText('student_gpa');
         $form->setLabel('student_gpa', 'GPA');
         $form->setRequired('student_gpa');
-        
+
         // Student level radio button
         $levels = array('ugrad' => 'Undergraduate', 'grad' => 'Graduate');
         $form->addRadioAssoc('student_level', $levels);
         $form->setMatch('student_level', 'ugrad');
         $form->setRequired('student_level');
-        
+
         // Undergrad major drop down
         if (isset($s)){
             $majors = Major::getMajorsAssoc($s->ugrad_major);
         }else{
             $majors = Major::getMajorsAssoc();
         }
-        
+
         $form->addSelect('ugrad_major', $majors);
         $form->setLabel('ugrad_major', 'Undergraduate Major');
-        
+
         // Graduate major drop down
         if (isset($s)){
             $progs = GradProgram::getGradProgsAssoc($s->grad_prog);
         }else{
             $progs = GradProgram::getGradProgsAssoc();
         }
-        
+
         $form->addSelect('grad_prog', $progs);
         $form->setLabel('grad_prog', 'Graduate Program');
 
@@ -227,50 +240,35 @@ class InternshipUI implements UI {
         $form->setLabel('supervisor_phone', 'Phone');
         if (Current_User::isDeity()) {
             if (!is_null($i))
-                $depts = Department::getDepartmentsAssoc($i->department_id);
+            $depts = Department::getDepartmentsAssoc($i->department_id);
             else
-                $depts = Department::getDepartmentsAssoc();
+            $depts = Department::getDepartmentsAssoc();
         }else {
             if (!is_null($i))
-                $depts = Department::getDepartmentsAssocForUsername(Current_User::getUsername(), $i->department_id);
+            $depts = Department::getDepartmentsAssocForUsername(Current_User::getUsername(), $i->department_id);
             else
-                $depts = Department::getDepartmentsAssocForUsername(Current_User::getUsername());
+            $depts = Department::getDepartmentsAssocForUsername(Current_User::getUsername());
         }
         $form->addSelect('department', $depts);
         $form->setLabel('department', 'Department');
 
         /**
-         * Agency supervisor info.
+         * Agency info
          */
-        $db = new PHPWS_DB('intern_state');
-        $db->addWhere('active', 1);
-        $db->addColumn('abbr');
-        $db->addColumn('full_name');
-        $db->setIndexBy('abbr');
-        // get backwards because we flip it
-        $db->addOrder('full_name desc');
-        $states = $db->select('col');
-        if (empty($states)) {
-        	NQ::simple('intern', INTERN_ERROR, 'The list of allowed US states for internship locations has not been configured. Please use the administrative options to <a href="index.php?module=intern&action=edit_states">add allowed states.</a>');
-        	NQ::close();
-        	PHPWS_Core::goBack();
-        }
-        $states[-1] = 'Select a state';
-        $states = array_reverse($states, true);
         $form->addText('agency_name');
         $form->setLabel('agency_name', 'Name');
         $form->addText('agency_address');
         $form->setLabel('agency_address', 'Address');
         $form->addText('agency_city');
         $form->setLabel('agency_city', 'City');
-        $form->addSelect('agency_state', $states);
+        $form->addSelect('agency_state', State::$UNITED_STATES);
         $form->setLabel('agency_state', 'State');
         if (!is_null($i)) {
             if (!$i->isDomestic()) {
                 /*
                  * International. Need to add the location as extra
-                 * to the form element. Hackz
-                 */
+                * to the form element. Hackz
+                */
                 $form->setExtra('agency_state', "where='$a->state'");
             }
         }
@@ -280,6 +278,10 @@ class InternshipUI implements UI {
         $form->setLabel('agency_country', 'Country');
         $form->addText('agency_phone');
         $form->setLabel('agency_phone', 'Phone');
+
+        /**
+         * Agency supervisor info
+         */
         $form->addText('agency_sup_first_name');
         $form->setLabel('agency_sup_first_name', 'First Name');
         $form->addText('agency_sup_last_name');
@@ -296,14 +298,14 @@ class InternshipUI implements UI {
         $form->setLabel('agency_sup_address', 'Address');
         $form->addText('agency_sup_city');
         $form->setLabel('agency_sup_city', 'City');
-        $form->addSelect('agency_sup_state', $states);
+        $form->addSelect('agency_sup_state', State::$UNITED_STATES);
         $form->setLabel('agency_sup_state', 'State');
         if (!is_null($i)) {
             if (!$i->isDomestic()) {
                 /*
                  * International. Need to add the location as extra
-                 * to the form element. Hackz
-                 */
+                * to the form element. Hackz
+                */
                 $form->setExtra('agency_sup_state', "where='$a->state'");
             }
         }
@@ -329,54 +331,58 @@ class InternshipUI implements UI {
         $form->setLabel('credits', 'Credit Hours');
         $form->addText('avg_hours_week');
         $form->setLabel('avg_hours_week', 'Average Hours per Week');
-        
+
+        /**
+         * Internship location
+         */
         $loc = array('domestic' => 'Domestic', 'internat' => 'International');
         $form->addRadioAssoc('location', $loc);
         //$form->setMatch('location', 'domestic'); // Default to domestic
         $form->setRequired('location');
-        
+
+        // Domestic fields
+        $form->addText('loc_address');
+        $form->setLabel('loc_address', 'Address');
+        $form->addText('loc_city');
+        $form->setLabel('loc_city', 'City');
+        $form->addSelect('loc_state', State::getAllowedStates());
+        $form->setLabel('loc_state', 'State');
+        $form->addText('loc_zip');
+        $form->setLabel('loc_zip', 'Zip');
+
+        // Itn'l location fields
+        $form->addText('loc_province');
+        $form->setLabel('loc_province', 'Province/Territory');
+        $form->addText('loc_country');
+        $form->setLabel('loc_country', 'Country');
+
         $pay = array('unpaid' => 'Unpaid', 'paid' => 'Paid');
         $form->addRadioAssoc('payment', $pay);
         $form->setMatch('payment', 'unpaid'); // Default to unpaid
         $form->addCheck('stipend');
         $form->setLabel('stipend', 'Stipend');
-        
+
         $form->addText('pay_rate');
         $form->setLabel('pay_rate', 'Pay Rate');
-        
+
         $form->addCheck('internship_default_type');
         $form->setLabel('internship_default_type', 'Internship');
         $form->setMatch('internship_default_type', true); // Internship is checked by default
-//        $form->addCheck('service_learning_type');
-//        $form->setLabel('service_learning_type', 'Service Learning');
-//        $form->addCheck('independent_study_type');
-//        $form->setLabel('independent_study_type', 'Independent Study');
-//        $form->addCheck('research_assist_type');
-//        $form->setLabel('research_assist_type', 'Research Assistant');
+        //        $form->addCheck('service_learning_type');
+        //        $form->setLabel('service_learning_type', 'Service Learning');
+        //        $form->addCheck('independent_study_type');
+        //        $form->setLabel('independent_study_type', 'Independent Study');
+        //        $form->addCheck('research_assist_type');
+        //        $form->setLabel('research_assist_type', 'Research Assistant');
         $form->addCheck('student_teaching_type');
         $form->setLabel('student_teaching_type', 'Student Teaching');
         $form->addCheck('clinical_practica_type');
         $form->setLabel('clinical_practica_type', 'Clinical Practica');
-//        $form->addCheck('special_topics_type');
-//        $form->setLabel('special_topics_type', 'Special Topics');
-//        $form->addCheck('check_other_type');
-//        $form->addText('other_type');
-//        $form->setLabel('other_type', 'Other Type');
-
-        /**
-         * Internship location
-         */
-        $form->addText('loc_address');
-        $form->setLabel('loc_address', 'Address');
-        $form->addText('loc_city');
-        $form->setLabel('loc_city', 'City');
-        $form->addText('loc_country');
-        $form->setLabel('loc_country', 'Country');
-        $form->addSelect('loc_state', $states);
-        $form->setLabel('loc_state', 'State');
-        $form->addText('loc_zip');
-        $form->setLabel('loc_zip', 'Zip');
-
+        //        $form->addCheck('special_topics_type');
+        //        $form->setLabel('special_topics_type', 'Special Topics');
+        //        $form->addCheck('check_other_type');
+        //        $form->addText('other_type');
+        //        $form->setLabel('other_type', 'Other Type');
 
         $form->addText('course_subj');
         $form->setLabel('course_subj', 'Subject');
@@ -402,7 +408,7 @@ class InternshipUI implements UI {
         javascript('jquery');
         javascript('jquery_ui');
         javascriptMod('intern', 'formGoodies');
-        
+
         return $form;
     }
 
@@ -411,7 +417,6 @@ class InternshipUI implements UI {
      */
     private static function plugInternship(PHPWS_Form $form, Internship $i)
     {
-
         $vals = array();
 
         $s = $i->getStudent();
@@ -431,18 +436,18 @@ class InternshipUI implements UI {
         $vals['grad_prog'] = $s->grad_prog;
         $vals['ugrad_major'] = $s->ugrad_major;
         $vals['student_gpa'] = $s->gpa;
-        
+
         // Student address
         $vals['student_address'] = $s->address;
         $vals['student_city'] = $s->city;
         $vals['student_state'] = $s->state;
         $vals['student_zip'] = $s->zip;
-        
+
         // Emergency contact
         $vals['emergency_contact_name'] = $s->emergency_contact_name;
         $vals['emergency_contact_relation'] = $s->emergency_contact_relation;
         $vals['emergency_contact_phone'] = $s->emergency_contact_phone;
-        
+
         // Agency
         $form->addHidden('agency_id', $a->id);
         $vals['agency_name'] = $a->name;
@@ -483,9 +488,10 @@ class InternshipUI implements UI {
         $vals['notes'] = $i->notes;
         $vals['loc_address'] = $i->loc_address;
         $vals['loc_city'] = $i->loc_city;
-        $vals['loc_country'] = $i->loc_country;
         $vals['loc_state'] = $i->loc_state;
         $vals['loc_zip'] = $i->loc_zip;
+        $vals['loc_province'] = $i->loc_province;
+        $vals['loc_country'] = $i->loc_country;
 
         $vals['course_subj'] = $i->course_subj;
         $vals['course_no'] = $i->course_no;
@@ -508,9 +514,9 @@ class InternshipUI implements UI {
         } else {
             $form->setMatch('payment', 'unpaid');
         }
-        
+
         $vals['pay_rate'] = $i->pay_rate;
-        
+
         $form->setMatch('term', $i->term);
         $form->setMatch('internship_default_type', $i->internship);
         $form->setMatch('service_learning_type', $i->service_learn);
