@@ -156,6 +156,12 @@ class InternshipUI implements UI {
 
         $transView = new WorkflowTransitionView($state, $form);
         $transView->show();
+        
+        /*****************
+         * OIED Approval *
+         */
+        $form->addCheck('oied_certified');
+        $form->setLabel('oied_certified', 'Certified by Office of International Education and Development');
 
         /**
          * Student fields
@@ -516,6 +522,10 @@ class InternshipUI implements UI {
         }
 
         $vals['pay_rate'] = $i->pay_rate;
+        
+        if($i->oied_certified){
+            $form->setMatch('oied_certified', true);
+        }
 
         $form->setMatch('term', $i->term);
         $form->setMatch('internship_default_type', $i->internship);

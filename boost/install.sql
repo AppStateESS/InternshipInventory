@@ -150,6 +150,7 @@ CREATE TABLE intern_term (
 CREATE TABLE intern_internship (
        id INT NOT NULL,
        state varchar(128) NOT NULL,
+       oied_certified smallint not null default 0,
        term INT NOT NULL REFERENCES intern_term(term),
        student_id INT NOT NULL REFERENCES intern_student(id),
        agency_id INT NOT NULL REFERENCES intern_agency(id),

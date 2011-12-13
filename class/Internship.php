@@ -18,6 +18,7 @@ class Internship extends Model {
     public $department_id;
     
     public $state;
+    public $oied_certified;
     
     public $domestic;
     public $international;
@@ -560,6 +561,9 @@ class Internship extends Model {
         $i->course_no = strip_tags($_POST['course_no']);
         $i->course_sect = strip_tags($_POST['course_sect']);
         $i->course_title = strip_tags($_POST['course_title']);
+        
+        // OIED Certification
+        $i->oied_certified = isset($_POST['oied_certified']);
 
         try {
             $i->save();

@@ -120,6 +120,7 @@
             <!-- END workflow_action_repeat -->
           </fieldset>
             </div>
+            {OIED_CERTIFIED}{OIED_CERTIFIED_LABEL}
           </td>
         </tr>
       </table>
