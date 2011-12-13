@@ -149,6 +149,8 @@ class Major extends Editable
         /* Major does not exist...keep going */
         $major = new Major();
         $major->name = $name;
+        $major->hidden = 0;
+        
         try{
             $major->save();
         }catch(Exception $e){

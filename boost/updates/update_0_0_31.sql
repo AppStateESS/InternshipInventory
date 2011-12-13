@@ -19,3 +19,7 @@ alter table intern_internship add column state varchar(128);
 update intern_internship set state = 'New';
 alter table intern_internship alter column state SET NOT NULL;
 alter table intern_internship add column oied_certified smallint not null default 0;
+
+alter table intern_major alter column hidden SET DEFAULT 0;
+update intern_major set hidden = 0 where hidden IS NULL;
+alter table intern_major alter column hidden SET NOT NULL;

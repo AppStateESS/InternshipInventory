@@ -4,7 +4,7 @@ BEGIN;
 CREATE TABLE intern_major (
        id INT NOT NULL,
        name VARCHAR NOT NULL UNIQUE,
-       hidden SMALLINT NULL DEFAULT 0,
+       hidden SMALLINT NOT NULL DEFAULT 0,
        PRIMARY KEY(id)
 );
 
