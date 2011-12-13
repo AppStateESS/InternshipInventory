@@ -575,11 +575,14 @@ class Internship extends Model {
         ***************************/
         PHPWS_Core::initModClass('intern', 'WorkflowController.php');
         PHPWS_Core::initModClass('intern', 'WorkflowTransitionFactory.php');
-        $workflow = new WorkflowController($i);
         $t = WorkflowTransitionFactory::getTransitionByName($_POST['workflow_action']);
-        $workflow->doTransition($t);
+        $workflow = new WorkflowController($i, $t);
+        $workflow->doTransition();
 
         PHPWS_DB::commit();
+        
+        $workflow->doNotification();
+        
         if (isset($_REQUEST['student_id'])) {
             // Show message if user edited internship
             NQ::simple('intern', INTERN_SUCCESS, 'Saved internship for ' . $student->getFullName());

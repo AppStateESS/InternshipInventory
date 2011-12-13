@@ -47,7 +47,6 @@ class Email {
 
         // Send the message
         if(EMAIL_TEST_FLAG){
-            self::logEmail($message);
             $result = true;
         }else{
             $result = $message->send();
@@ -58,6 +57,8 @@ class Email {
             return false;
         }
 
+        self::logEmail($message);
+        
         return true;
     }
     

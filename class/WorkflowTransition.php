@@ -34,7 +34,12 @@ abstract class WorkflowTransition {
 
     public function onTransition(Internship $i)
     {
-        // Do nothing by default. Can send notifications here.
+        // Do nothing by default.
+    }
+    
+    public function doNotification(Internship $i)
+    {
+        // Do nothign by default. Send notifications here.
     }
     
     public function getName()
