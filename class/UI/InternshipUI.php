@@ -221,7 +221,7 @@ class InternshipUI implements UI {
         }
 
         $form->addSelect('ugrad_major', $majors);
-        $form->setLabel('ugrad_major', 'Undergraduate Major');
+        $form->setLabel('ugrad_major', 'Undergraduate Majors &amp; Certificate Programs');
 
         // Graduate major drop down
         if (isset($s)){
@@ -231,7 +231,7 @@ class InternshipUI implements UI {
         }
 
         $form->addSelect('grad_prog', $progs);
-        $form->setLabel('grad_prog', 'Graduate Program');
+        $form->setLabel('grad_prog', 'Graduate Majors &amp; Certificate Programs');
 
         /**
          * Faculty supervisor info.
