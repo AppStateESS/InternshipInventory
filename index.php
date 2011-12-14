@@ -20,24 +20,6 @@ PHPWS_Core::initModClass('intern', 'InternshipInventory.php');
 PHPWS_Core::initModClass('intern', 'UI/Intern_NotifyUI.php');
 PHPWS_Core::initModClass('intern', 'UI/TopUI.php');
 
-$error = NULL;
-
-// firefox/opera/safari/whatever is preferred, but ie7 is okay.  ie<6 cannot use this module. deal with it.
-$browser = $_SERVER['HTTP_USER_AGENT'];
-$ie7 = "/MSIE [789]/";
-$ie_fail = "/MSIE/";
-
-// Check that user has compat. browser
-if (preg_match($ie7, $browser)) {
-    $error = 'It is STRONGLY recommended that you use Mozilla Firefox to access the Intern Inventory';
-} else if (preg_match($ie_fail, $browser)) {
-    NQ::simple('intern', INTERN_ERROR, 'Intern Inventory is not compatible with your browser. Please use Mozilla Firefox or another secure browser to access the database.');
-    // @hack
-    Intern_NotifyUI::display();
-    Layout::addStyle('intern', 'style.css');
-    return;
-}
-
 // This is wrong, but it'll have to do for now.
 // TODO: some sort of command pattern
 $content = null;
