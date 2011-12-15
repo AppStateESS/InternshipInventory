@@ -557,7 +557,12 @@ class Internship extends Model {
         $i->loc_province = $_POST['loc_province'];
         $i->loc_country = strip_tags($_POST['loc_country']);
         
-        $i->course_subj = strip_tags($_POST['course_subj']);
+        if($_POST['course_subj'] != '-1'){
+            $i->course_subj = strip_tags($_POST['course_subj']);
+        }else{
+            $i->course_subj = null;
+        }
+        
         $i->course_no = strip_tags($_POST['course_no']);
         $i->course_sect = strip_tags($_POST['course_sect']);
         $i->course_title = strip_tags($_POST['course_title']);

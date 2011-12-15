@@ -117,6 +117,7 @@ class InternshipUI implements UI {
         PHPWS_Core::initModClass('intern', 'Department.php');
         PHPWS_Core::initModClass('intern', 'Major.php');
         PHPWS_Core::initModClass('intern', 'GradProgram.php');
+        PHPWS_Core::initModClass('intern', 'Subject.php');
 
         $form = new PHPWS_Form('internship');
         if (!is_null($i)) {
@@ -397,7 +398,9 @@ class InternshipUI implements UI {
         //        $form->addText('other_type');
         //        $form->setLabel('other_type', 'Other Type');
 
-        $form->addText('course_subj');
+        /*** Course Info ***/
+        $subjects = Subject::getSubjects();
+        $form->addSelect('course_subj', $subjects);
         $form->setLabel('course_subj', 'Subject');
 
         $form->addText('course_no');
@@ -506,7 +509,8 @@ class InternshipUI implements UI {
         $vals['loc_province'] = $i->loc_province;
         $vals['loc_country'] = $i->loc_country;
 
-        $vals['course_subj'] = $i->course_subj;
+        //$vals['course_subj'] = $i->course_subj;
+        $form->setMatch('course_subj', $i->course_subj);
         $vals['course_no'] = $i->course_no;
         $vals['course_sect'] = $i->course_sect;
         $vals['course_title'] = $i->course_title;
