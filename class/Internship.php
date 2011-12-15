@@ -589,7 +589,7 @@ class Internship extends Model {
         PHPWS_Core::initModClass('intern', 'WorkflowTransitionFactory.php');
         $t = WorkflowTransitionFactory::getTransitionByName($_POST['workflow_action']);
         $workflow = new WorkflowController($i, $t);
-        $workflow->doTransition();
+        $workflow->doTransition(isset($_POST['notes'])?$_POST['notes']:null);
 
         PHPWS_DB::commit();
         

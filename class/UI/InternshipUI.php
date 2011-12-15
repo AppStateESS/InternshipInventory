@@ -498,7 +498,7 @@ class InternshipUI implements UI {
         $vals['credits'] = $i->credits;
         $vals['avg_hours_week'] = $i->avg_hours_week;
         $vals['other_type'] = $i->other_type;
-        $vals['notes'] = $i->notes;
+        //$vals['notes'] = $i->notes;
         $vals['loc_address'] = $i->loc_address;
         $vals['loc_city'] = $i->loc_city;
         $vals['loc_state'] = $i->loc_state;

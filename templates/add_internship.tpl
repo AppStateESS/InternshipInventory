@@ -351,7 +351,7 @@
     </td>
   </tr>
   <tr>
-    <td colspan="2" class="sub-form-cell"><span class="info-header">Notes</span>
+    <td colspan="2" class="sub-form-cell"><span class="info-header">Add a note</span>
       <table class="sub-form">
         <tr>
           <td>{NOTES}</td>

@@ -21,19 +21,27 @@ class ChangeHistoryView {
         if(is_null($changes)){
             return "";
         }
-        
+
         foreach($changes as $change){
             $changeFields = array();
 
             $changeFields['RELATIVE_DATE'] = $change->getRelativeDate();
             $changeFields['EXACT_DATE'] = $change->getFormattedDate();
-            $changeFields['FROM_STATE'] = $change->getFromStateFriendlyName();
-            $changeFields['TO_STATE'] = $change->getToStateFriendlyName();
             $changeFields['USERNAME'] = $change->getUsername();
+            
+            if($change->getFromStateFriendlyname() != $change->getToStateFriendlyName()){
+                $changeFields['FROM_STATE'] = $change->getFromStateFriendlyName();
+                $changeFields['TO_STATE'] = $change->getToStateFriendlyName();
+            }
+
+            $note = $change->getNote();
+            if(!is_null($note)){
+                $changeFields['NOTE'] = $note;
+            }
 
             $tpl['changelog_repeat'][] = $changeFields;
         }
-        
+
         return PHPWS_Template::process($tpl, 'intern', 'changeHistory.tpl');
     }
 }

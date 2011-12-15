@@ -7,6 +7,7 @@ class ChangeHistory extends Model{
     public $timestamp;
     public $from_state;
     public $to_state;
+    public $note;
 
     /**
      * NB: All of the params are optional for compatibility with db->getObjects() .. Database is done wrong. Don't have time to fix it.
@@ -16,7 +17,7 @@ class ChangeHistory extends Model{
      * @param WorkflowState $fromState
      * @param WorkflowState $toState
      */
-    public function __construct(Internship $i = null, PHPWS_User $phpwsUser = null, $timestamp = null, WorkflowState $fromState = null, WorkflowState $toState = null)
+    public function __construct(Internship $i = null, PHPWS_User $phpwsUser = null, $timestamp = null, WorkflowState $fromState = null, WorkflowState $toState = null, $note = null)
     {
         if(!is_null($i)){
             $this->id = 0;
@@ -25,6 +26,7 @@ class ChangeHistory extends Model{
             $this->timestamp = $timestamp;
             $this->from_state = $fromState->getName();
             $this->to_state = $toState->getName();
+            $this->note = $note;
         }
     }
 
@@ -83,6 +85,11 @@ class ChangeHistory extends Model{
     public function getUsername()
     {
         return $this->username;
+    }
+    
+    public function getNote()
+    {
+        return $this->note;
     }
 }
 

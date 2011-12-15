@@ -184,7 +184,6 @@ CREATE TABLE intern_internship (
        stipend SMALLINT NOT NULL, 
        unpaid SMALLINT NOT NULL,
        pay_rate VARCHAR NULL,
-       notes TEXT,
        PRIMARY KEY(id)
 );
 
@@ -209,6 +208,7 @@ CREATE TABLE intern_change_history (
     timestamp int NOT NULL,
     from_state character varying(40) NOT NULL,
     to_state character varying(40) NOT NULL,
+    note text,
     PRIMARY KEY(id)
 );
 

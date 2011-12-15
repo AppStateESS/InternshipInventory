@@ -31,8 +31,11 @@ CREATE TABLE intern_change_history (
     timestamp int NOT NULL,
     from_state character varying(40) NOT NULL,
     to_state character varying(40) NOT NULL,
+    note text,
     PRIMARY KEY(id)
 );
 
 CREATE INDEX change_history_internshp_idx ON intern_change_history(internship_id);
 create sequence intern_change_history_seq;
+
+alter table intern_internship drop column notes;

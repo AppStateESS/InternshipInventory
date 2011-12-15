@@ -14,7 +14,7 @@ class WorkflowController {
         $this->t = $t;
     }
     
-    public function doTransition()
+    public function doTransition($note = null)
     {
         // Make sure the transition makes sense based on the current state of the internship
         $currStateName = $this->internship->getStateName();
@@ -33,7 +33,11 @@ class WorkflowController {
         
         $destStateName = $this->t->getDestState();
         if($destStateName == null){
-            // No destination state, so we're done here.
+            // No destination state, so see if we need to add a note (no state change)
+            if(!is_null($note)){
+                $changeHistory = new ChangeHistory($this->internship, Current_User::getUserObj(), time(), $sourceState, $sourceState, $note);
+                $changeHistory->save();
+            }
             return;
         }
 
@@ -44,8 +48,7 @@ class WorkflowController {
         $this->internship->setState($destState);
         $this->internship->save();
 
-        $changeHistory = new ChangeHistory($this->internship, Current_User::getUserObj(), time(), $sourceState, $destState);
-        test($changeHistory);
+        $changeHistory = new ChangeHistory($this->internship, Current_User::getUserObj(), time(), $sourceState, $destState, $note);
         $changeHistory->save();
     }
     

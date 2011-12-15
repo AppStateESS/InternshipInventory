@@ -14,10 +14,10 @@
             <li>Status changed from <em>{FROM_STATE}</em> to <em>{TO_STATE}</em>
             </li>
           </ul>
-          <!-- BEGIN status_update -->
+          <!-- END status_update -->
 
           <!-- BEGIN comment -->
-          <div class="comment">{COMMENT}</div>
+          <div class="comment">{NOTE}</div>
           <!-- END comment -->
         </div>
         <!-- END changelog_repeat -->
