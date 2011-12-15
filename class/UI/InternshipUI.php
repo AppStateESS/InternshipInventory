@@ -37,7 +37,7 @@ class InternshipUI implements UI {
                 NQ::simple('intern', INTERN_ERROR, 'Failed to get internship.');
                 return false;
             }
-            $form = self::getInternshipForm($internship);
+            $form = self::getInternshipForm($internship, $tpl);
             $tpl['PDF'] = PHPWS_Text::moduleLink('Generate Contract', 'intern', array('action' => 'pdf', 'id' => $internship->id), null, null, 'button');
 
             self::plugInternship($form, $internship);
@@ -54,7 +54,7 @@ class InternshipUI implements UI {
             $tpl['TITLE'] = 'Edit Student';
         } else {
             /* Show form with empty fields. */
-            $form = self::getInternshipForm();
+            $form = self::getInternshipForm(null, $tpl);
             // Show a disabled button in document list if we are adding an internship.
             $tpl['UPLOAD_DOC'] = "<input type='button' disabled='disabled' class='disabled-button' title='Must save internship first.' value='Add Document'/>";
             $tpl['TITLE'] = 'Add Student';
@@ -111,7 +111,7 @@ class InternshipUI implements UI {
      * If there is an Internship obj passed as parameter
      * then fill in the form with that Internship's fields.
      */
-    public static function getInternshipForm(Internship $i=NULL)
+    public static function getInternshipForm(Internship $i=NULL, &$tpl)
     {
         PHPWS_Core::initModClass('intern', 'Term.php');
         PHPWS_Core::initModClass('intern', 'Department.php');
@@ -151,11 +151,18 @@ class InternshipUI implements UI {
         if(!is_null($i->state)){
             $state = WorkflowStateFactory::getState($i->state);
         }else{
-            $state = WorkflowStateFactory::getState('Creation');
+            $state = WorkflowStateFactory::getState('CreationState');
+            $i->setState($state); // Set this initial value
         }
 
         $transView = new WorkflowTransitionView($state, $form);
         $transView->show();
+        
+        if(!is_null($i->id)){
+            PHPWS_Core::initModClass('intern', 'ChangeHistoryView.php');
+            $historyView = new ChangeHistoryView($i);
+            $tpl['CHANGE_LOG'] = $historyView->show();
+        }
         
         /*****************
          * OIED Approval *

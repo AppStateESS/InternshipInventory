@@ -271,6 +271,22 @@ fieldset {
 }
 /************************************/
 
+/*** Change log styles ***/
+#changelog h3 {
+	border-bottom: 1px solid #D6D6D6;
+	color: #999;
+	font-size:100%;
+	font-weight:normal;
+}
+
+#changelog .exact-date {
+	float:right;
+}
+
+#changelog .comment {
+	margin-left: 2em;
+}
+
 /*****************
  * Button Styles *
  ****************/

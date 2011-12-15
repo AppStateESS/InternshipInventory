@@ -23,3 +23,16 @@ alter table intern_internship add column oied_certified smallint not null defaul
 alter table intern_major alter column hidden SET DEFAULT 0;
 update intern_major set hidden = 0 where hidden IS NULL;
 alter table intern_major alter column hidden SET NOT NULL;
+
+CREATE TABLE intern_change_history (
+    id INT NOT NULL,
+    internship_id INT NOT NULL REFERENCES intern_internship(id),
+    username character varying(40) NOT NULL,
+    timestamp int NOT NULL,
+    from_state character varying(40) NOT NULL,
+    to_state character varying(40) NOT NULL,
+    PRIMARY KEY(id)
+);
+
+CREATE INDEX change_history_internshp_idx ON intern_change_history(internship_id);
+create sequence intern_change_history_seq;

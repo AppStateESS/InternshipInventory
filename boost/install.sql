@@ -202,6 +202,18 @@ CREATE TABLE intern_admin (
     PRIMARY KEY (id)
 );
 
+CREATE TABLE intern_change_history (
+    id INT NOT NULL,
+    internship_id INT NOT NULL REFERENCES intern_internship(id),
+    username character varying(40) NOT NULL,
+    timestamp int NOT NULL,
+    from_state character varying(40) NOT NULL,
+    to_state character varying(40) NOT NULL,
+    PRIMARY KEY(id)
+);
+
+CREATE INDEX change_history_internshp_idx ON intern_change_history(internship_id);
+
 -- Add Departments
 INSERT INTO intern_department VALUES  (1, 'Accounting');
 INSERT INTO intern_department VALUES  (2, 'Anthropology');

@@ -1,6 +1,7 @@
 <?php
 
 PHPWS_Core::initModClass('intern', 'WorkflowStateFactory.php');
+PHPWS_Core::initModClass('intern', 'ChangeHistory.php');
 
 class WorkflowController {
     
@@ -16,11 +17,11 @@ class WorkflowController {
     public function doTransition()
     {
         // Make sure the transition makes sense based on the current state of the internship
-        $stateName = $this->internship->getStateName();
+        $currStateName = $this->internship->getStateName();
 
-        $sourceState = $this->t->getSourceState();
+        $sourceStateName = $this->t->getSourceState();
         
-        if($sourceState != '*' && $sourceState != $stateName){
+        if($sourceStateName != '*' && $sourceStateName != $currStateName){
             throw new InvalidArgumentException('Invalid transition source state.');
         }
         
@@ -28,7 +29,7 @@ class WorkflowController {
             throw new Exception("You do not have permission to set the internship to the requested status.");
         }
         
-        
+        $sourceState = WorkflowStateFactory::getState($currStateName);
         
         $destStateName = $this->t->getDestState();
         if($destStateName == null){
@@ -42,6 +43,10 @@ class WorkflowController {
         
         $this->internship->setState($destState);
         $this->internship->save();
+
+        $changeHistory = new ChangeHistory($this->internship, Current_User::getUserObj(), time(), $sourceState, $destState);
+        test($changeHistory);
+        $changeHistory->save();
     }
     
     public function doNotification(){

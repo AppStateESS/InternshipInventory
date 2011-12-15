@@ -564,6 +564,14 @@ class Internship extends Model {
         
         // OIED Certification
         $i->oied_certified = isset($_POST['oied_certified']);
+        
+        // If we don't have a state and this is a new internship,
+        // the set an initial state
+        if($i->id == 0 && is_null($i->state)){
+            PHPWS_Core::initModClass('intern', 'WorkflowStateFactory.php');
+            $state = WorkflowStateFactory::getState('CreationState');
+            $i->setState($state); // Set this initial value
+        }
 
         try {
             $i->save();
