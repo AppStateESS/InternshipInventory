@@ -4,11 +4,11 @@
 
 <table id="search-results">
 <tr id="header-row">
-  <th>Student's Name</th>
-  <th>Banner</th>
-  <th>Dept.</th>
-  <th>Faculty</th>
-  <th>Term</th>
+  <th>{STUDENT_LAST_NAME_SORT}</th>
+  <th>{BANNER_SORT}</th>
+  <th>{NAME_SORT}</th>
+  <th>{LAST_NAME_SORT}</th>
+  <th>{TERM_SORT}</th>
   <th>Action</th>
 </tr>
 

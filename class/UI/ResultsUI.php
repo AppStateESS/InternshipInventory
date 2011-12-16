@@ -101,6 +101,13 @@ class ResultsUI implements UI
         $pager->db->addJoin('LEFT', 'intern_internship', 'intern_student', 'student_id', 'id');
         $pager->db->addJoin('LEFT', 'intern_internship', 'intern_admin', 'department_id', 'department_id');
         $pager->db->addJoin('LEFT', 'intern_internship', 'intern_agency', 'agency_id', 'id');
+        
+        $pager->db->addColumn('intern_internship.*');
+        $pager->db->addColumn('intern_student.id');
+        $pager->db->addColumn('intern_student.last_name', null, 'student_last_name');
+        //$pager->db->addColumn('intern_admin.*');
+        //$pager->db->addColumn('intern_agency.*');
+        
         if(!Current_User::isDeity())
             $pager->addWhere('intern_admin.username', Current_User::getUsername());
 
@@ -180,14 +187,26 @@ class ResultsUI implements UI
         $pager->addRowTags('getRowTags');
         $pager->setEmptyMessage('No Results');
 
-        // Sort headers
-        // TODO
+        /** Sort Headers **/
+        $pager->addSortHeader('term', 'Term');
         
+        //$pager->joinResult('student_id', 'intern_student', 'id', 'student_last_name');
+        $pager->addSortHeader('student_last_name', 'Student\'s Name');
+        
+        $pager->joinResult('student_id', 'intern_student', 'id', 'banner');
+        $pager->addSortHeader('banner', 'Banner ID');
+        
+        $pager->joinResult('department_id', 'intern_department', 'id', 'name');
+        $pager->addSortHeader('name', 'Department Name');
+        
+        $pager->joinResult('faculty_supervisor_id', 'intern_faculty_supervisor', 'id', 'last_name');
+        $pager->addSortHeader('last_name', 'Faculty Advisor');
+
         $pageTags = array();
         $pageTags['BACK_LINK'] = PHPWS_Text::moduleLink('&laquo; Back to Search', 'intern', array('action' => 'search'));
 
         $pager->addPageTags($pageTags);
-
+        
         return $pager;
     }
 }
