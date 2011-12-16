@@ -1,7 +1,7 @@
 <?php
 
 class UndoDepartmentApprove extends WorkflowTransition {
-    const sourceState = 'DeptApprovedState';
+    const sourceState = 'SigAuthReadyState';
     const destState   = 'NewState';
     const actionName  = 'Send back to advisor';
 

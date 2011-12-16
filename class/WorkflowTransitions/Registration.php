@@ -1,9 +1,9 @@
 <?php
 
 class Registration extends WorkflowTransition {
-    const sourceState = 'SigAuthApprovedState';
+    const sourceState = 'DeanApprovedState';
     const destState   = 'RegisteredState';
-    const actionName  = 'Registered';
+    const actionName  = 'Mark as Registered / Enrollment Complete';
 
     public function getAllowedPermissionList(){
         return array('registrar');

@@ -1,7 +1,7 @@
 <?php
 
 class SigAuthApprove extends WorkflowTransition {
-    const sourceState = 'DeptApprovedState';
+    const sourceState = 'SigAuthReadyState';
     const destState   = 'SigAuthApprovedState';
     const actionName  = 'Approved by Signature Authority';
 

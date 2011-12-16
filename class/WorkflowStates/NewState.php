@@ -2,7 +2,7 @@
 
 class NewState extends WorkflowState {
 
-    const friendlyName = 'new';
+    const friendlyName = 'New';
 
     public function getActions()
     {

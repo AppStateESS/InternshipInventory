@@ -7,7 +7,7 @@ class LeaveTransition extends WorkflowTransition {
     const sortIndex = 0;
 
     public function getActionName(){
-        return 'leave as ' . $this->source->getFriendlyName();
+        return 'Leave as ' . $this->source->getFriendlyName();
     }
     
     public function allowed(){

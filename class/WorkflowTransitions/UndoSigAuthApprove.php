@@ -2,7 +2,7 @@
 
 class UndoSigAuthApprove extends WorkflowTransition {
     const sourceState = 'SigAuthApprovedState';
-    const destState   = 'DeptApprovedState';
+    const destState   = 'SigAuthReadyState';
     const actionName  = 'Send back to Signature Authority';
 
     const sortIndex = 6;
