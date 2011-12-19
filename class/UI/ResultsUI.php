@@ -102,9 +102,11 @@ class ResultsUI implements UI
         $pager->db->addJoin('LEFT', 'intern_internship', 'intern_admin', 'department_id', 'department_id');
         $pager->db->addJoin('LEFT', 'intern_internship', 'intern_agency', 'agency_id', 'id');
         
+        /*
         $pager->db->addColumn('intern_internship.*');
         $pager->db->addColumn('intern_student.id');
         $pager->db->addColumn('intern_student.last_name', null, 'student_last_name');
+        */
         //$pager->db->addColumn('intern_admin.*');
         //$pager->db->addColumn('intern_agency.*');
         
@@ -190,7 +192,7 @@ class ResultsUI implements UI
         /** Sort Headers **/
         $pager->addSortHeader('term', 'Term');
         
-        //$pager->joinResult('student_id', 'intern_student', 'id', 'student_last_name');
+        $pager->joinResult('student_id', 'intern_student', 'id', 'last_name', 'student_last_name');
         $pager->addSortHeader('student_last_name', 'Student\'s Name');
         
         $pager->joinResult('student_id', 'intern_student', 'id', 'banner');

@@ -57,6 +57,9 @@ class Internship extends Model {
     
     public $notes;
     
+    // For DB Pager, doesn't exist in database
+    public $student_last_name;
+    
     /**
      * @Override Model::getDb
      */
