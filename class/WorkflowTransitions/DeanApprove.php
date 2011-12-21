@@ -13,6 +13,23 @@ class DeanApprove extends WorkflowTransition {
     {
         
     }
+    
+    public function getActionName()
+    {
+        return self::actionName;
+    }
+    
+    public function getSourceState(){
+        return self::sourceState;
+    }
+    
+    public function getDestState(){
+        return self::destState;
+    }
+    
+    public function getSortIndex(){
+        return self::sortIndex;
+    }
 }
 
 ?>

@@ -35,10 +35,12 @@ abstract class WorkflowState {
         return get_called_class();
     }
     
+    /** Commented out for php 5.1 support, this requires php 5.3
     public function getFriendlyName(){
         $class = $this->getName();
         return $class::friendlyName;
     }
+    **/
 }
 
 ?>

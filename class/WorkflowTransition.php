@@ -47,6 +47,7 @@ abstract class WorkflowTransition {
         return get_called_class();
     }
     
+    /*** Commented out for PHP 5.1 compatibility. This requires php 5.3
     public function getActionName()
     {
         $class = get_called_class();
@@ -70,6 +71,7 @@ abstract class WorkflowTransition {
         $class = get_called_class();
         return $class::sortIndex;
     }
+    **/
 }
 
 ?>
