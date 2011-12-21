@@ -16,7 +16,7 @@ alter table intern_internship drop approved_by;
 alter table intern_internship drop approved_on;
 
 alter table intern_internship add column state varchar(128);
-update intern_internship set state = 'New';
+update intern_internship set state = 'NewState';
 alter table intern_internship alter column state SET NOT NULL;
 alter table intern_internship add column oied_certified smallint not null default 0;
 
