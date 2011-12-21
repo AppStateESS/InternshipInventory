@@ -6,6 +6,10 @@ class SigAuthApprovedState extends WorkflowState {
     public function getFriendlyName(){
         return self::friendlyName;
     }
+    
+    public function getName(){
+        return 'SigAuthApprovedState';
+    }
 }
 
 ?>

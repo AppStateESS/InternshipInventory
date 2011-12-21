@@ -27,6 +27,10 @@ class UndoSigAuthApprove extends WorkflowTransition {
     public function getSortIndex(){
         return self::sortIndex;
     }
+    
+    public function getName(){
+        return 'UndoSigAuthApprove';
+    }
 }
 
 ?>

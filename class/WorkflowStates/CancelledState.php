@@ -5,5 +5,9 @@ class CancelledState extends WorkflowState {
     public function getFriendlyName(){
         return self::friendlyName;
     }
+    
+    public function getName(){
+        return 'CancelledState';
+    }
 }
 ?>

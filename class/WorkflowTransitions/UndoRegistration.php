@@ -27,6 +27,10 @@ class UndoRegistration extends WorkflowTransition {
     public function getSortIndex(){
         return self::sortIndex;
     }
+    
+    public function getName(){
+        return 'UndoRegistration';
+    }
 }
 
 ?>

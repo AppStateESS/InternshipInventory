@@ -25,6 +25,10 @@ class CreationTransition extends WorkflowTransition {
     public function getSortIndex(){
         return self::sortIndex;
     }
+    
+    public function getName(){
+        return 'CreationTransition';
+    }
 }
 
 ?>

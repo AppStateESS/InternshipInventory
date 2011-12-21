@@ -30,6 +30,10 @@ class LeaveTransition extends WorkflowTransition {
         return self::sortIndex;
     }
     
+    public function getName(){
+        return 'LeaveTransition';
+    }
+    
 }
 
 ?>
