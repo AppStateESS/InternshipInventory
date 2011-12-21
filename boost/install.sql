@@ -107,7 +107,7 @@ INSERT INTO intern_state (abbr, full_name, active) VALUES ('WY', 'Wyoming', 0);
 CREATE TABLE intern_subject (
     id INT NOT NULL,
     abbreviation character varying(10) NOT NULL,
-    description character varying(40) NOT NULL,
+    description character varying(128) NOT NULL,
     PRIMARY KEY(id)
 );
 
