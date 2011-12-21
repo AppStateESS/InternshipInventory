@@ -8,6 +8,10 @@ class NewState extends WorkflowState {
     {
         return array();
     }
+    
+    public function getFriendlyName(){
+        return self::friendlyName;
+    }
 }
 
 ?>

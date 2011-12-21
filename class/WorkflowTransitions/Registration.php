@@ -23,6 +23,23 @@ class Registration extends WorkflowTransition {
         PHPWS_Core::initModClass('intern', 'Email.php');
         Email::sendRegistrarEmail($student, $i, $agency);
     }
+    
+    public function getActionName()
+    {
+        return self::actionName;
+    }
+    
+    public function getSourceState(){
+        return self::sourceState;
+    }
+    
+    public function getDestState(){
+        return self::destState;
+    }
+    
+    public function getSortIndex(){
+        return self::sortIndex;
+    }
 }
 
 ?>
