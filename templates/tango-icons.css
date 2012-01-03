@@ -1,6 +1,6 @@
-.tango16 { background: url(../img/tango/tango-16x64.png) no-repeat; padding-left: 18px;}
-.tango22 { background: url(../img/tango/tango-22x64.png) no-repeat; padding-left: 24px;}
-.tango32 { background: url(../img/tango/tango-32x64.png) no-repeat; padding-left: 34px;}
+.tango16 { background: url(../img/tango/tango-16x64.png) no-repeat; padding-left: 18px; padding-bottom:1px;}
+.tango22 { background: url(../img/tango/tango-22x64.png) no-repeat; padding-left: 24px; padding-bottom:1px;}
+.tango32 { background: url(../img/tango/tango-32x64.png) no-repeat; padding-left: 34px; padding-bottom:1px;}
 
 .tango-accessories-calculator { background-position: 0px -0px; }
 .tango-accessories-character-map { background-position: 0px -64px; }
