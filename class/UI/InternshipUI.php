@@ -391,7 +391,7 @@ class InternshipUI implements UI {
         $form->addCheck('student_teaching_type');
         $form->setLabel('student_teaching_type', 'Student Teaching');
         $form->addCheck('clinical_practica_type');
-        $form->setLabel('clinical_practica_type', 'Clinical Practica');
+        $form->setLabel('clinical_practica_type', 'Clinical Practicum');
         //        $form->addCheck('special_topics_type');
         //        $form->setLabel('special_topics_type', 'Special Topics');
         //        $form->addCheck('check_other_type');
