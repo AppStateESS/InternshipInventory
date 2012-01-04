@@ -218,7 +218,7 @@ class InternshipUI implements UI {
         // Student level radio button
         $levels = array('ugrad' => 'Undergraduate', 'grad' => 'Graduate');
         $form->addRadioAssoc('student_level', $levels);
-        $form->setMatch('student_level', 'ugrad');
+        //$form->setMatch('student_level', 'ugrad');
         $form->setRequired('student_level');
 
         // Undergrad major drop down

@@ -125,7 +125,7 @@ class Major extends Editable
         $majors = $db->select('assoc');
         // Horrible, horrible hacks. Need to add a null selection.
         $majors = array_reverse($majors, true); // preserve keys.
-        $majors[-1] = 'Select Major';
+        $majors[-1] = 'Select Undergraduate Major or Certificate Program';
         return array_reverse($majors, true);
     }
     

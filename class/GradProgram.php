@@ -125,7 +125,7 @@ class GradProgram extends Editable
         $progs = $db->select('assoc');
         // Horrible, horrible hacks. Need to add a null selection.
         $progs = array_reverse($progs, true); // preserve keys.
-        $progs[-1] = 'Select Grad Program';
+        $progs[-1] = 'Select Graduate Major or Certificate Program';
         return array_reverse($progs, true);
     }
     
