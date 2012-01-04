@@ -83,30 +83,7 @@
         </tr>
       </table></td>
     <!-- End student info section -->
-    <!-- Faculty info -->
-    <td class="sub-form-cell"><span class="info-header">Faculty</span>
-      <table class="sub-form" id="faculty-info">
-        <tr>
-          <td>{SUPERVISOR_FIRST_NAME_LABEL}</td>
-          <td>{SUPERVISOR_FIRST_NAME}</td>
-        </tr>
-        <tr>
-          <td>{SUPERVISOR_LAST_NAME_LABEL}</td>
-          <td>{SUPERVISOR_LAST_NAME}</td>
-        </tr>
-        <tr>
-          <td>{SUPERVISOR_EMAIL_LABEL}</td>
-          <td>{SUPERVISOR_EMAIL}@appstate.edu</td>
-        </tr>
-        <tr>
-          <td>{SUPERVISOR_PHONE_LABEL}</td>
-          <td>{SUPERVISOR_PHONE}</td>
-        </tr>
-        <tr>
-          <td colspan=2>{DEPARTMENT_LABEL}<br/ > {DEPARTMENT}</td>
-        </tr>
-      </table>
-
+    <td class="sub-form-cell">
       <span class="info-header">Status</span>
       <table class="sub-form">
         <tr>
@@ -136,7 +113,32 @@
               <!-- END docs -->
             </ul> {UPLOAD_DOC}</td>
         </tr>
-      </table> <!-- end document list --></td>
+      </table><!-- end document list -->
+      
+      <!-- Faculty info -->
+      <span class="info-header">Faculty</span>
+      <table class="sub-form" id="faculty-info">
+        <tr>
+          <td>{SUPERVISOR_FIRST_NAME_LABEL}</td>
+          <td>{SUPERVISOR_FIRST_NAME}</td>
+        </tr>
+        <tr>
+          <td>{SUPERVISOR_LAST_NAME_LABEL}</td>
+          <td>{SUPERVISOR_LAST_NAME}</td>
+        </tr>
+        <tr>
+          <td>{SUPERVISOR_EMAIL_LABEL}</td>
+          <td>{SUPERVISOR_EMAIL}@appstate.edu</td>
+        </tr>
+        <tr>
+          <td>{SUPERVISOR_PHONE_LABEL}</td>
+          <td>{SUPERVISOR_PHONE}</td>
+        </tr>
+        <tr>
+          <td colspan=2>{DEPARTMENT_LABEL}<br/ > {DEPARTMENT}</td>
+        </tr>
+      </table>
+      </td>
     <!-- End faculty info -->
   </tr>
 
