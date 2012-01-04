@@ -287,6 +287,12 @@ fieldset {
 	margin-left: 2em;
 }
 
+/******** Search Form Styles ****************/
+
+#major-level {
+	width:380px;
+}
+
 /*****************
  * Button Styles *
  ****************/

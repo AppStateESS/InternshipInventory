@@ -44,15 +44,32 @@ class SearchUI implements UI
         $form->addSelect('dept', $depts);
         $form->setLabel('dept', 'Department');
 
-        // Major
-        $majors = Major::getMajorsAssoc();
-        $form->addSelect('major', $majors);
-        $form->setLabel('major', 'Major');
+        // Student level radio button
+        javascript('jquery');
+        javascriptMod('intern', 'majorSelector', array('form_id'=>$form->id));
+        $levels = array('ugrad' => 'Undergraduate', 'grad' => 'Graduate');
+        $form->addRadioAssoc('student_level', $levels);
+        //$form->setMatch('student_level', 'ugrad');
 
-        // Grad. Program
-        $grad = GradProgram::getGradProgsAssoc();
-        $form->addSelect('grad', $grad);
-        $form->setLabel('grad', 'Graduate Program');
+        // Undergrad major drop down
+        if (isset($s)){
+            $majors = Major::getMajorsAssoc($s->ugrad_major);
+        }else{
+            $majors = Major::getMajorsAssoc();
+        }
+
+        $form->addSelect('ugrad_major', $majors);
+        $form->setLabel('ugrad_major', 'Undergraduate Majors &amp; Certificate Programs');
+
+        // Graduate major drop down
+        if (isset($s)){
+            $progs = GradProgram::getGradProgsAssoc($s->grad_prog);
+        }else{
+            $progs = GradProgram::getGradProgsAssoc();
+        }
+
+        $form->addSelect('grad_prog', $progs);
+        $form->setLabel('grad_prog', 'Graduate Majors &amp; Certificate Programs');
 
         // Internship types.
         $types = Internship::getTypesAssoc();
