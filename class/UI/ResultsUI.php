@@ -27,7 +27,7 @@ class ResultsUI implements UI
         $state = null;
         $prov  = null;
         $other = null;
-        $approved = null;
+        $workflowState = null;
 
         /**
          * Check if any search fields are set.
@@ -52,11 +52,11 @@ class ResultsUI implements UI
             $prov = $_REQUEST['prov'];
         if(isset($_REQUEST['other_type']))
             $other_type = $_REQUEST['other_type'];
-        if(isset($_REQUEST['approved']))
-            $approved = $_REQUEST['approved'];
+        if(isset($_REQUEST['workflow_state']))
+            $workflowState = $_REQUEST['workflow_state'];
         
         /* Get Pager */
-        $pager = self::getPager($name, $dept, $term, $major, $grad, $type, $loc, $state, $other_type, $prov, $approved);
+        $pager = self::getPager($name, $dept, $term, $major, $grad, $type, $loc, $state, $other_type, $prov, $workflowState);
         /* Get all results first. For use with CSV Exporting. Then we the limit again. Sorry */
         $pager->limit = null;
         $csvResult = $pager->get();
@@ -93,7 +93,7 @@ class ResultsUI implements UI
     private static function getPager($name=null, $deptId=null, $term=null,
                                      $major=null, $grad=null, $type=null,
                                      $loc=null, $state=null, $other_type=null,
-                                     $prov=null, $approved=null)
+                                     $prov=null, $workflowState=null)
     {
         $pager = new DBPager('intern_internship', 'Internship');
         $pager->setModule('intern');
@@ -174,6 +174,8 @@ class ResultsUI implements UI
                 $pager->addWhere('international', 1);
         }
 
+        
+        /*
         if(!is_null($approved)){
             switch($approved){
                 case 'approved':
@@ -183,6 +185,11 @@ class ResultsUI implements UI
                     $pager->addWhere('intern_internship.approved', 0);
                     break;
             }
+        }
+        */
+        
+        foreach($workflowState as $s){
+            $pager->db->addWhere('intern_internship.state', $s, '=', 'OR', 'workflow_group');
         }
         
         $pager->setTemplate('results.tpl');

@@ -60,10 +60,9 @@
     <td>{PROV}</td>
   </tr>
   <tr>
-    <td class="search-header">Approval</td>
+    <td class="search-header">Status</td>
     <td>
-      {APPROVED_1}{APPROVED_1_LABEL}<br />
-      {APPROVED_2}{APPROVED_2_LABEL}
+      {WORKFLOW_STATE}
     </td>
     
   </tr>

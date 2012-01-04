@@ -20,6 +20,7 @@ class SearchUI implements UI
         PHPWS_Core::initModClass('intern', 'GradProgram.php');
         PHPWS_Core::initModClass('intern', 'Internship.php');
         PHPWS_Core::initModClass('intern', 'Agency.php');
+        PHPWS_Core::initModClass('intern', 'WorkflowStateFactory.php');
 
         // Set up search fields
         $form = new PHPWS_Form();
@@ -85,9 +86,10 @@ class SearchUI implements UI
 
         $form->setLabel('prov', 'Province/Territory');
 
-        $approval = array('approved'=>'Only approved', 'nonapproved'=>'Only non-approved');
-        $form->addRadioAssoc('approved', $approval);
-
+        $workflowStates = WorkflowStateFactory::getStatesAssoc();
+        unset($workflowStates['CreationState']); // Remove this state, since it's not valid (internal only state for initial creation)
+        $form->addMultiple('workflow_state', $workflowStates);
+        
         $form->addSubmit('submit', 'Search');
 
         // Javascript...
