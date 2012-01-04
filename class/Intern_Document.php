@@ -92,6 +92,7 @@ class Intern_Document extends Model
     /**
      * Get the icon link to edit this document. 
      */
+    /* Commented out because it is unused.
     public function getEditLink()
     {
         PHPWS_Core::initModClass('filecabinet', 'Document.php');
@@ -112,6 +113,7 @@ class Intern_Document extends Model
 
         return javascript('open_window', $js);
     }
+    */
 
     /**
      * Get the link to delete this document.
@@ -126,7 +128,7 @@ class Intern_Document extends Model
         $jsVars = array();
         $jsVars['QUESTION'] = 'Are you sure you want to delete this document?';
         $jsVars['ADDRESS']  = $link->getAddress();
-        $jsVars['LINK']     = '<img src="images/icons/default/trash.png" id="delete-document-icon" title="Delete" />';
+        $jsVars['LINK']     = '<img src="' . PHPWS_SOURCE_HTTP . 'images/icons/default/trash.png" id="delete-document-icon" title="Delete" />';
         return javascript('confirm', $jsVars);
     }
 
