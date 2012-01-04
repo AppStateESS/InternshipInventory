@@ -41,10 +41,6 @@
     </td>
   </tr>
   <tr>
-    <td class="search-header">{OTHER_TYPE_LABEL}</td>
-    <td>{OTHER_TYPE}</td>
-  </tr>
-  <tr>
     <td class="search-header">Location</td>
     <td>
       {LOC_1}{LOC_1_LABEL}<br/>

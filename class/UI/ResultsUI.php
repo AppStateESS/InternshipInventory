@@ -26,7 +26,6 @@ class ResultsUI implements UI
         $loc   = null;
         $state = null;
         $prov  = null;
-        $other = null;
         $workflowState = null;
 
         /**
@@ -50,13 +49,11 @@ class ResultsUI implements UI
             $state = $_REQUEST['state'];
         if(isset($_REQUEST['prov']))
             $prov = $_REQUEST['prov'];
-        if(isset($_REQUEST['other_type']))
-            $other_type = $_REQUEST['other_type'];
         if(isset($_REQUEST['workflow_state']))
             $workflowState = $_REQUEST['workflow_state'];
         
         /* Get Pager */
-        $pager = self::getPager($name, $dept, $term, $major, $grad, $type, $loc, $state, $other_type, $prov, $workflowState);
+        $pager = self::getPager($name, $dept, $term, $major, $grad, $type, $loc, $state, $prov, $workflowState);
         /* Get all results first. For use with CSV Exporting. Then we the limit again. Sorry */
         $pager->limit = null;
         $csvResult = $pager->get();
@@ -92,8 +89,8 @@ class ResultsUI implements UI
      */
     private static function getPager($name=null, $deptId=null, $term=null,
                                      $major=null, $grad=null, $type=null,
-                                     $loc=null, $state=null, $other_type=null,
-                                     $prov=null, $workflowState=null)
+                                     $loc=null, $state=null, $prov=null,
+                                     $workflowState=null)
     {
         $pager = new DBPager('intern_internship', 'Internship');
         $pager->setModule('intern');
@@ -158,9 +155,6 @@ class ResultsUI implements UI
                 }
             }
         }// End type
-        if(!is_null($other_type) && $other_type != ''){
-            $pager->addWhere('other_type', "%$other_type%", 'ILIKE');
-        }
         if(!is_null($state) && $state != '-1'){
             $pager->addWhere('intern_agency.state', "%$state%", 'ILIKE');
         }

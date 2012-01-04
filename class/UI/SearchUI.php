@@ -56,8 +56,6 @@ class SearchUI implements UI
         // Internship types.
         $types = Internship::getTypesAssoc();
         $form->addCheckAssoc('type', $types);
-        $form->addText('other_type');
-        $form->setLabel('other_type', 'Other Internship Type:');
 
         // Location
         $loc = array('domestic' => 'Domestic',
