@@ -27,6 +27,7 @@ class SearchUI implements UI
         $form->setMethod('get');
         $form->addHidden('module', 'intern');
         $form->addHidden('action', 'results');
+        $form->useRowRepeat();
 
         $form->addText('name');
         $form->setLabel('name', "Name or Banner ID");
@@ -83,10 +84,11 @@ class SearchUI implements UI
         $form->addText('prov');
 
         $form->setLabel('prov', 'Province/Territory');
-
+        
+        // Workflow states
         $workflowStates = WorkflowStateFactory::getStatesAssoc();
         unset($workflowStates['CreationState']); // Remove this state, since it's not valid (internal only state for initial creation)
-        $form->addMultiple('workflow_state', $workflowStates);
+        $form->addCheckAssoc('workflow_state', $workflowStates);
         
         $form->addSubmit('submit', 'Search');
 

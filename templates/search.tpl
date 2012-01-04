@@ -30,21 +30,17 @@
   <tr>
     <td class="search-header">Internship Type</td>
     <td>
-      {TYPE_1}{TYPE_1_LABEL}<br/>
-      {TYPE_2}{TYPE_2_LABEL}<br/>
-      {TYPE_3}{TYPE_3_LABEL}
-<!--<br/>
-      {TYPE_4}{TYPE_4_LABEL}<br/>
-      {TYPE_5}{TYPE_5_LABEL}<br/>
-      {TYPE_6}{TYPE_6_LABEL}<br/>
-      {TYPE_7}{TYPE_7_LABEL} -->
+      <!-- BEGIN type_repeat -->
+      {TYPE}{TYPE_LABEL}<br/>
+      <!-- END type_repeat -->
     </td>
   </tr>
   <tr>
     <td class="search-header">Location</td>
     <td>
-      {LOC_1}{LOC_1_LABEL}<br/>
-      {LOC_2}{LOC_2_LABEL}<br/>
+      <!-- BEGIN loc_repeat -->
+      {LOC}{LOC_LABEL}<br/>
+      <!-- END loc_repeat -->
     </td>
   </tr>
   <tr>
@@ -58,7 +54,9 @@
   <tr>
     <td class="search-header">Status</td>
     <td>
-      {WORKFLOW_STATE}
+      <!-- BEGIN workflow_state_repeat -->
+      {WORKFLOW_STATE}{WORKFLOW_STATE_LABEL}<br />
+      <!-- END workflow_state_repeat -->
     </td>
     
   </tr>
