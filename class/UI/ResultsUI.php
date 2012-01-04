@@ -182,8 +182,10 @@ class ResultsUI implements UI
         }
         */
         
-        foreach($workflowState as $s){
-            $pager->db->addWhere('intern_internship.state', $s, '=', 'OR', 'workflow_group');
+        if(isset($workflowState)){
+            foreach($workflowState as $s){
+                $pager->db->addWhere('intern_internship.state', $s, '=', 'OR', 'workflow_group');
+            }
         }
         
         $pager->setTemplate('results.tpl');
