@@ -29,9 +29,9 @@ class InternshipUI implements UI {
 
         $tpl = array();
 
-        if (isset($_REQUEST['id'])) {
+        if (isset($_REQUEST['internship_id'])) {
             /* Attempting to edit internship */
-            $internship = new Internship($_REQUEST['id']);
+            $internship = new Internship($_REQUEST['internship_id']);
             if ($internship->id == 0) {
                 /* Intership failed to load */
                 NQ::simple('intern', INTERN_ERROR, 'Failed to get internship.');
@@ -92,7 +92,7 @@ class InternshipUI implements UI {
                 $form->addHidden('student_id', $s->id);
                 $form->addHidden('agency_id', $a->id);
                 $form->addHidden('supervisor_id', $f->id);
-                $form->addHidden('internship_id', $i->id);
+                $form->addHidden('id', $i->id);
             }
         }
 
@@ -129,20 +129,6 @@ class InternshipUI implements UI {
         }
         $form->setAction('index.php?module=intern&action=add_internship');
         $form->addSubmit('submit', 'Save');
-
-
-        /*
-         if (!$i->approved) {
-        $form->addCheckbox('approved');
-        $form->setLabel('approved', 'Internship approved by Dean');
-        } else {
-        $approved_on = "Approved by Dean({$i->approved_by}); Sent to Registrar's Office on " . date('g:ia, M j, Y', $i->approved_on);
-        if (Current_User::isDeity()) {
-        $approved_on .= ' <a href="index.php?module=intern&action=unapprove&id='
-        . $i->id . '&authkey=' . Current_User::getAuthKey() . '">Unapprove</a>';
-        }
-        $form->addTplTag('APPROVED_BY_ON', $approved_on);
-        }*/
 
         /*********************
          * Workflow / Status *
