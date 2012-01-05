@@ -1,26 +1,18 @@
 <h1 class="search-icon">Search Inventory</h1>
-{START_FORM}
 
-<table>
-  <tr>
-    <td class="search-header">{NAME_LABEL}</td>
-    <td>{NAME}</td>
-  </tr>
+<div style="margin-left: 60px;">
+    {START_FORM}
+    
+      <div class="search-label">{NAME_LABEL}<br />
+      {NAME}</div>
 
-  <tr>
-    <td class="search-header">{TERM_SELECT_LABEL}</td>
-    <td>{TERM_SELECT}</td>
-  </tr>
+      <div class="search-label">{TERM_SELECT_LABEL}<br />
+      {TERM_SELECT}</div>
 
-  <tr>
-    <td class="search-header">{DEPT_LABEL}</td>
-    <td>{DEPT}</td>
-  </tr>
+      <div class="search-label">{DEPT_LABEL}<br />
+      {DEPT}</div>
 
-  <tr>
-    <td class="search-header">&nbsp;</td>
-    <td id="major-level">
-      <fieldset>
+      <fieldset class="search-fieldset">
         <legend>Level &amp; Major/Program</legend>
         <!-- BEGIN student_level_repeat -->
         {STUDENT_LEVEL}{STUDENT_LEVEL_LABEL}
@@ -29,61 +21,36 @@
         <span id="ugrad_drop">{UGRAD_MAJOR}</span>
         <span id="grad_drop">{GRAD_PROG}</span>
       </fieldset>
-    </td>
-  </tr>
 
-  <tr>
-    <td class="search-header">{GRAD_LABEL}</td>
-    <td>{GRAD}</td>
-  </tr>
-
-  <tr>
-    <td class="search-header">&nbsp;</td>
-    <td>
-      <fieldset>
+      <fieldset class="search-fieldset">
         <legend>Internship Type</legend>
         <!-- BEGIN type_repeat -->
         {TYPE}{TYPE_LABEL}<br/>
         <!-- END type_repeat -->
       </fieldset>
-    </td>
-  </tr>
-  <tr>
-    <td class="search-header">&nbsp;</td>
-    <td>
-      <fieldset>
+
+      <fieldset class="search-fieldset">
         <legend>Location</legend>
         <!-- BEGIN loc_repeat -->
-        {LOC}{LOC_LABEL}<br/>
+        {LOC}{LOC_LABEL}
          <!-- END loc_repeat -->
       </fieldset>
-    </td>
-  </tr>
-  <tr>
-    <td class="search-header">{STATE_LABEL}</td>
-    <td>{STATE}</td>
-  </tr>
-  <tr>
-    <td class="search-header">{PROV_LABEL}</td>
-    <td>{PROV}</td>
-  </tr>
-  <tr>
-    <td class="search-header">&nbsp;</td>
-    <td>
-      <fieldset>
+
+      <div class="search-label">{STATE_LABEL}<br />
+      {STATE}</div>
+
+      <div class="search-label">
+      {PROV_LABEL}<br />
+      {PROV}</div>
+
+      <fieldset class="search-fieldset">
         <legend>Status</legend>
         <!-- BEGIN workflow_state_repeat -->
         {WORKFLOW_STATE}{WORKFLOW_STATE_LABEL}<br />
         <!-- END workflow_state_repeat -->
       </fieldset>
-    </td>
-    
-  </tr>
-  <tr>
-    <td colspan="2">{SUBMIT} <input type="button" title="Reset search fields" name="reset" value="Clear Fields"/></td>
-  </tr>
-</table>
-</table>
+    <br />
+    {SUBMIT} <input type="button" title="Reset search fields" name="reset" value="Clear Fields"/>
+
 {END_FORM}
 </div>
-

@@ -289,8 +289,14 @@ fieldset {
 
 /******** Search Form Styles ****************/
 
-#major-level {
+.search-fieldset {
+	margin-top:.5em;
 	width:380px;
+}
+
+.search-label {
+	margin-top:.5em;
+	margin-bottom:0;
 }
 
 /*****************
