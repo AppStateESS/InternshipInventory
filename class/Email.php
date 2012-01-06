@@ -2,11 +2,11 @@
 
 class Email {
 
-    public function sendTemplateMessage($to, $subject, $tpl, $tags)
+    public function sendTemplateMessage($to, $subject, $tpl, $tags, $cc = null)
     {
         $content = PHPWS_Template::process($tags, 'intern', $tpl);
 
-        self::sendEmail($to, NULL, $subject, $content);
+        self::sendEmail($to, NULL, $subject, $content, $cc);
     }
 
     public function sendEmail($to, $from, $subject, $content, $cc = NULL, $bcc = NULL)
@@ -105,6 +105,8 @@ class Email {
      */
     public static function sendRegistrarEmail($s, $i, $a)
     {
+        $faculty = $i->getFacultySupervisor();
+        
         $tpl = array();
         $tpl['NAME'] = "$s->first_name $s->middle_name $s->last_name";
         $tpl['BANNER'] = $s->banner;
@@ -135,9 +137,10 @@ class Email {
         $tpl['APPROVED_ON'] = date('g:ia m/d/Y', $i->approved_on);
         
         $to = REGISTRAR_EMAIL_ADDRESS;
+        $cc = array($s->email . '@appstate.edu', $faculty->email . '@appstate.edu');
         $subject = 'Internship Approved - Ready for Registration';
         
-        Email::sendTemplateMessage($to, $subject, 'email/RegistrarEmail.tpl', $tpl);
+        Email::sendTemplateMessage($to, $subject, 'email/RegistrarEmail.tpl', $tpl, $cc);
     }
 
     public static function sendIntlInternshipCreateNotice($s, $i)
