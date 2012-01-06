@@ -211,7 +211,7 @@ function intern_update(&$content, $currentVersion)
                 return $result;
 			}
 			PHPWS_Core::initModClass('users', 'Permission.php');
-			Users_Permission::registerPermissions('hms', $content);
+			Users_Permission::registerPermissions('intern', $content);
 	}
 	return TRUE;
 }

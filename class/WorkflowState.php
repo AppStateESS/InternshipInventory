@@ -10,9 +10,9 @@ abstract class WorkflowState {
      * Returns an array of the valid WorkflowActions for this State.
      * @return Array<WorkflowAction>
      */
-    public function getTransitions()
+    public function getTransitions(Internship $i)
     {
-        return WorkflowTransitionFactory::getTransitionsFromState($this);
+        return WorkflowTransitionFactory::getTransitionsFromState($this, $i);
     }
     
     /**

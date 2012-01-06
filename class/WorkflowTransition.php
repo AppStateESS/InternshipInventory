@@ -14,7 +14,7 @@ abstract class WorkflowTransition {
     
     abstract function getAllowedPermissionList();
     
-    public function allowed()
+    public function allowed(Internship $i)
     {
         $perms = $this->getAllowedPermissionList();
         

@@ -4,10 +4,12 @@ class WorkflowTransitionView {
     
     private $state;
     private $form;
+    private $internship;
     
-    public function __construct(WorkflowState $state, PHPWS_Form $form){
+    public function __construct(WorkflowState $state, PHPWS_Form $form, Internship $i){
         $this->state = $state;
         $this->form = $form;
+        $this->internship = $i;
         
         $this->form->useRowRepeat();
     }
@@ -16,7 +18,7 @@ class WorkflowTransitionView {
     {
         $this->form->addTplTag('WORKFLOW_STATE', $this->state->getFriendlyName());
         
-        $transitions = $this->state->getTransitions();
+        $transitions = $this->state->getTransitions($this->internship);
         
         $radioButtons = array();
         

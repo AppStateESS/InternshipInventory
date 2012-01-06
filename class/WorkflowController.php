@@ -25,7 +25,7 @@ class WorkflowController {
             throw new InvalidArgumentException('Invalid transition source state.');
         }
         
-        if(!$this->t->allowed()){
+        if(!$this->t->allowed($this->internship)){
             throw new Exception("You do not have permission to set the internship to the requested status.");
         }
         

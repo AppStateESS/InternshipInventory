@@ -9,6 +9,25 @@ class DeanApprove extends WorkflowTransition {
         return array('dean_approve');
     }
     
+    public function allowed(Internship $i)
+    {
+        $student = $i->getStudent();
+        if($student->campus == 'distance_ed'){
+            if(Current_User::allow('intern', 'distance_ed_dean_approve')){
+                return true;
+            }
+        }else{
+            $perms = $this->getAllowedPermissionList();
+            foreach($perms as $p){
+                if(Current_User::allow('intern', $p)){
+                    return true;
+                }
+            }
+        }
+        
+        return false;
+    }
+    
     public function onTransition(Internship $i)
     {
         

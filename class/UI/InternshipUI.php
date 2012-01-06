@@ -142,7 +142,7 @@ class InternshipUI implements UI {
             $i->setState($state); // Set this initial value
         }
 
-        $transView = new WorkflowTransitionView($state, $form);
+        $transView = new WorkflowTransitionView($state, $form, $i);
         $transView->show();
         
         if(!is_null($i->id)){

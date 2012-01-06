@@ -6,7 +6,7 @@ class WorkflowTransitionFactory {
     
     private static $dir = 'WorkflowTransitions';
     
-    public static function getTransitionsFromState(WorkflowState $state)
+    public static function getTransitionsFromState(WorkflowState $state, Internship $i)
     {
         $stateName = $state->getName();
         
@@ -18,7 +18,7 @@ class WorkflowTransitionFactory {
             $t->setSourceState($state);
             
             if($t->getSourceState() == $stateName || $t->getSourceState() == '*'){
-                if($t->allowed()){
+                if($t->allowed($i)){
                     $outgoingTrans[] = $t;
                 }
             }
