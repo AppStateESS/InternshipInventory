@@ -287,6 +287,18 @@ fieldset {
 	margin-left: 2em;
 }
 
+/******** Search Form Styles ****************/
+
+.search-fieldset {
+	margin-top:.5em;
+	width:380px;
+}
+
+.search-label {
+	margin-top:.5em;
+	margin-bottom:0;
+}
+
 /*****************
  * Button Styles *
  ****************/

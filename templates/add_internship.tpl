@@ -59,6 +59,13 @@
         <tr>
           <td>{STUDENT_GPA_LABEL}</td>
           <td>{STUDENT_GPA}</td>
+        <tr><tr>
+          <td>Campus</td>
+          <td>
+            <!-- BEGIN campus_repeat -->
+            {CAMPUS}{CAMPUS_LABEL}
+            <!-- END campus_repeat -->
+          </td>
         <tr>
           <td colspan="2">
             <fieldset>

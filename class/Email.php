@@ -140,6 +140,26 @@ class Email {
         Email::sendTemplateMessage($to, $subject, 'email/RegistrarEmail.tpl', $tpl);
     }
 
+    public static function sendIntlInternshipCreateNotice($s, $i)
+    {
+        $tpl = array();
+        
+        $tpl['NAME'] = "$s->first_name $s->middle_name $s->last_name";
+        $tpl['BANNER'] = $s->banner;
+        $tpl['USER'] = $s->email;
+        $tpl['PHONE'] = $s->phone;
+        
+        $tpl['TERM'] = Term::rawToRead($i->term);
+        $tpl['COUNTRY'] = $i->loc_country;
+        
+        $dept = new Department($i->department_id);
+        $tpl['DEPARTMENT'] = $dept->getName();
+        
+        $to = array('lewandoskik@appstate.edu', 'gomisjd@appstate.edu');
+        $subject = "International Internship Created - {$s->first_name} {$s->last_name}";
+        
+        Email::sendTemplateMessage($to, $subject, 'email/IntlInternshipCreateNotice.tpl', $tpl);
+    }
 }
 
 ?>

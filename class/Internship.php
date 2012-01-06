@@ -295,7 +295,7 @@ class Internship extends Model {
         $tags['TERM'] = Term::rawToRead($this->term);
         $tags['ID'] = $this->id;
 
-        $tags['EDIT'] = PHPWS_Text::moduleLink('Edit', 'intern', array('action' => 'edit_internship', 'id' => $this->id));
+        $tags['EDIT'] = PHPWS_Text::moduleLink('Edit', 'intern', array('action' => 'edit_internship', 'internship_id' => $this->id));
         $tags['PDF'] = PHPWS_Text::moduleLink('Generate Contract', 'intern', array('action' => 'pdf', 'id' => $this->id));
 
         // TODO: Finish off fields.
@@ -380,6 +380,18 @@ class Internship extends Model {
             return PHPWS_Core::reroute($url);
         }
 
+        // Sanity heck the Banner ID
+        if(!preg_match('/^\d{9}/', $_REQUEST['banner'])){
+            $url = 'index.php?module=intern&action=edit_internship&missing=banner';
+            // Throw in values fields the user typed in
+            foreach ($_POST as $key => $val) {
+                $url .= "&$key=$val";
+            }
+            NQ::simple('intern', INTERN_ERROR, "The Banner ID you entered is not valid. No changes were saved. The student's Banner ID should be nine digits only (no letters, spaces, or punctuation).");
+            NQ::close();
+            return PHPWS_Core::reroute($url);
+        }
+        
         PHPWS_DB::begin();
         /* See if this student exists already */
         $student = Student::getStudentByBanner($_REQUEST['banner']);
@@ -408,6 +420,7 @@ class Internship extends Model {
         $student->grad_prog = $_REQUEST['grad_prog'] == -1 ? null : $_REQUEST['grad_prog'];
         $student->ugrad_major = $_REQUEST['ugrad_major'] == -1 ? null : $_REQUEST['ugrad_major'];
         $student->gpa = $_REQUEST['student_gpa'];
+        $student->campus = $_REQUEST['campus'];
         
         $student->address = $_REQUEST['student_address'];
         $student->city = $_REQUEST['student_city'];
@@ -607,11 +620,11 @@ class Internship extends Model {
             // Show message if user edited internship
             NQ::simple('intern', INTERN_SUCCESS, 'Saved internship for ' . $student->getFullName());
             NQ::close();
-            return PHPWS_Core::reroute('index.php?module=intern&action=edit_internship&id=' . $i->id);
+            return PHPWS_Core::reroute('index.php?module=intern&action=edit_internship&internship_id=' . $i->id);
         } else {
             NQ::simple('intern', INTERN_SUCCESS, 'Added internship for ' . $student->getFullName());
             NQ::close();
-            return PHPWS_Core::reroute('index.php?module=intern&action=edit_internship&id=' . $i->id);
+            return PHPWS_Core::reroute('index.php?module=intern&action=edit_internship&internship_id=' . $i->id);
         }
     }
 

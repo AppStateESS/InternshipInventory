@@ -1,72 +1,56 @@
 <h1 class="search-icon">Search Inventory</h1>
-{START_FORM}
 
-<table>
-  <tr>
-    <td class="search-header">{NAME_LABEL}</td>
-    <td>{NAME}</td>
-  </tr>
-
-  <tr>
-    <td class="search-header">{TERM_SELECT_LABEL}</td>
-    <td>{TERM_SELECT}</td>
-  </tr>
-
-  <tr>
-    <td class="search-header">{DEPT_LABEL}</td>
-    <td>{DEPT}</td>
-  </tr>
-
-  <tr>
-    <td class="search-header">{MAJOR_LABEL}</td>
-    <td>{MAJOR}</td>
-  </tr>
-
-  <tr>
-    <td class="search-header">{GRAD_LABEL}</td>
-    <td>{GRAD}</td>
-  </tr>
-
-  <tr>
-    <td class="search-header">Internship Type</td>
-    <td>
-      {TYPE_1}{TYPE_1_LABEL}<br/>
-      {TYPE_2}{TYPE_2_LABEL}<br/>
-      {TYPE_3}{TYPE_3_LABEL}
-<!--<br/>
-      {TYPE_4}{TYPE_4_LABEL}<br/>
-      {TYPE_5}{TYPE_5_LABEL}<br/>
-      {TYPE_6}{TYPE_6_LABEL}<br/>
-      {TYPE_7}{TYPE_7_LABEL} -->
-    </td>
-  </tr>
-  <tr>
-    <td class="search-header">Location</td>
-    <td>
-      {LOC_1}{LOC_1_LABEL}<br/>
-      {LOC_2}{LOC_2_LABEL}<br/>
-    </td>
-  </tr>
-  <tr>
-    <td class="search-header">{STATE_LABEL}</td>
-    <td>{STATE}</td>
-  </tr>
-  <tr>
-    <td class="search-header">{PROV_LABEL}</td>
-    <td>{PROV}</td>
-  </tr>
-  <tr>
-    <td class="search-header">Status</td>
-    <td>
-      {WORKFLOW_STATE}
-    </td>
+<div style="margin-left: 60px;">
+    {START_FORM}
     
-  </tr>
-  <tr>
-    <td colspan="2">{SUBMIT} <input type="button" title="Reset search fields" name="reset" value="Clear Fields"/></td>
-  </tr>
-</table>
-</table>
+      <div class="search-label">{NAME_LABEL}<br />
+      {NAME}</div>
+
+      <div class="search-label">{TERM_SELECT_LABEL}<br />
+      {TERM_SELECT}</div>
+
+      <div class="search-label">{DEPT_LABEL}<br />
+      {DEPT}</div>
+
+      <fieldset class="search-fieldset">
+        <legend>Level &amp; Major/Program</legend>
+        <!-- BEGIN student_level_repeat -->
+        {STUDENT_LEVEL}{STUDENT_LEVEL_LABEL}
+        <!--  END student_level_repeat -->
+        <br />
+        <span id="ugrad_drop">{UGRAD_MAJOR}</span>
+        <span id="grad_drop">{GRAD_PROG}</span>
+      </fieldset>
+
+      <fieldset class="search-fieldset">
+        <legend>Internship Type</legend>
+        <!-- BEGIN type_repeat -->
+        {TYPE}{TYPE_LABEL}<br/>
+        <!-- END type_repeat -->
+      </fieldset>
+
+      <fieldset class="search-fieldset">
+        <legend>Location</legend>
+        <!-- BEGIN loc_repeat -->
+        {LOC}{LOC_LABEL}
+         <!-- END loc_repeat -->
+      </fieldset>
+
+      <div class="search-label">{STATE_LABEL}<br />
+      {STATE}</div>
+
+      <div class="search-label">
+      {PROV_LABEL}<br />
+      {PROV}</div>
+
+      <fieldset class="search-fieldset">
+        <legend>Status</legend>
+        <!-- BEGIN workflow_state_repeat -->
+        {WORKFLOW_STATE}{WORKFLOW_STATE_LABEL}<br />
+        <!-- END workflow_state_repeat -->
+      </fieldset>
+    <br />
+    {SUBMIT} <input type="button" title="Reset search fields" name="reset" value="Clear Fields"/>
+
 {END_FORM}
 </div>
-
