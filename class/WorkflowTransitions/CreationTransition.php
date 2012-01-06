@@ -9,6 +9,14 @@ class CreationTransition extends WorkflowTransition {
         return array('dept_approver','sig_auth');
     }
     
+    public function doNotification(Internship $i)
+    {
+        $student = $i->getStudent();
+    
+        PHPWS_Core::initModClass('intern', 'Email.php');
+        Email::sendIntlInternshipCreateNotice($student, $i);
+    }
+    
     public function getActionName()
     {
         return self::actionName;
