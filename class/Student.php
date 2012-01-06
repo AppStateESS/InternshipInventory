@@ -21,6 +21,7 @@ class Student extends Model
     public $grad_prog;
     public $ugrad_major;
     public $gpa;
+    public $campus;
 
     public $address;
     public $city;

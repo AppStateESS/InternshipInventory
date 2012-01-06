@@ -420,6 +420,7 @@ class Internship extends Model {
         $student->grad_prog = $_REQUEST['grad_prog'] == -1 ? null : $_REQUEST['grad_prog'];
         $student->ugrad_major = $_REQUEST['ugrad_major'] == -1 ? null : $_REQUEST['ugrad_major'];
         $student->gpa = $_REQUEST['student_gpa'];
+        $student->campus = $_REQUEST['campus'];
         
         $student->address = $_REQUEST['student_address'];
         $student->city = $_REQUEST['student_city'];

@@ -18,7 +18,7 @@ class InternshipUI implements UI {
      * 'agency_sup_city',
      */
     public static $requiredFields = array('student_first_name', 'student_last_name',
-        'banner', 'student_phone', 'student_email', 'agency_name', 'term', 'department');
+        'banner', 'student_phone', 'student_email', 'agency_name', 'term', 'department','campus');
 
     public static function display()
     {
@@ -183,24 +183,16 @@ class InternshipUI implements UI {
         $form->addText('student_zip');
         $form->setLabel('student_zip','Zip Code');
 
-        /* Emergency Contact */
-        $form->addText('emergency_contact_name');
-        $form->setClass('emergency_contact_name', 'form-text');
-        $form->setLabel('emergency_contact_name', 'Name');
-
-        $form->addText('emergency_contact_relation');
-        $form->setClass('emergency_contact_relation', 'form-text');
-        $form->setLabel('emergency_contact_relation', 'Relationship');
-
-        $form->addText('emergency_contact_phone');
-        $form->setClass('emergency_contact_phone', 'form-text');
-        $form->setLabel('emergency_contact_phone', 'Phone');
-
         // GPA
         $form->addText('student_gpa');
         $form->setLabel('student_gpa', 'GPA');
         $form->setRequired('student_gpa');
-
+        
+        // Campus
+        $form->addRadioAssoc('campus',Array('main_campus'=>'Main Campus', 'distance_ed'=>'Distance Ed'));
+        $form->setRequired('campus');
+        $form->setMatch('campus', 'main_campus');
+        
         // Student level radio button
         $levels = array('ugrad' => 'Undergraduate', 'grad' => 'Graduate');
         $form->addRadioAssoc('student_level', $levels);
@@ -227,6 +219,19 @@ class InternshipUI implements UI {
         $form->addSelect('grad_prog', $progs);
         $form->setLabel('grad_prog', 'Graduate Majors &amp; Certificate Programs');
 
+        /* Emergency Contact */
+        $form->addText('emergency_contact_name');
+        $form->setClass('emergency_contact_name', 'form-text');
+        $form->setLabel('emergency_contact_name', 'Name');
+        
+        $form->addText('emergency_contact_relation');
+        $form->setClass('emergency_contact_relation', 'form-text');
+        $form->setLabel('emergency_contact_relation', 'Relationship');
+        
+        $form->addText('emergency_contact_phone');
+        $form->setClass('emergency_contact_phone', 'form-text');
+        $form->setLabel('emergency_contact_phone', 'Phone');
+        
         /**
          * Faculty supervisor info.
          */
@@ -438,6 +443,7 @@ class InternshipUI implements UI {
         $vals['grad_prog'] = $s->grad_prog;
         $vals['ugrad_major'] = $s->ugrad_major;
         $vals['student_gpa'] = $s->gpa;
+        $vals['campus']      = $s->campus;
 
         // Student address
         $vals['student_address'] = $s->address;

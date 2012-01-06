@@ -35,6 +35,7 @@ CREATE TABLE intern_student (
        emergency_contact_name varchar(256),
        emergency_contact_relation varchar(256),
        emergency_contact_phone varchar(20),
+       campus character varying(128) NOT NULL,
        PRIMARY KEY(id)
 );
 -- Below table is loaded with departments after CREATE TABLE statements.
