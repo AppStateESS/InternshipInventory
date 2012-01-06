@@ -6,7 +6,7 @@ class DeanApprove extends WorkflowTransition {
     const actionName  = 'Mark as Dean Approved';
 
     public function getAllowedPermissionList(){
-        return array('dean_approver');
+        return array('dean_approve');
     }
     
     public function onTransition(Internship $i)

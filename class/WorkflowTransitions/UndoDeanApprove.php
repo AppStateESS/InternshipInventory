@@ -8,7 +8,7 @@ class UndoDeanApprove extends WorkflowTransition {
     const sortIndex = 6;
     
     public function getAllowedPermissionList(){
-        return array('dean_approver');
+        return array('dean_approve');
     }
     
     public function onTransition(Internship $i)

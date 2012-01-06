@@ -8,7 +8,7 @@ class CancelTransition extends WorkflowTransition {
     const sortIndex = 10;
 
     public function getAllowedPermissionList(){
-        return array('dept_approver', 'sig_auth', 'registrar');
+        return array('dept_approve', 'sig_auth_approve', 'register');
     }
     
     public function getActionName()

@@ -11,4 +11,20 @@ $permissions['delete_major']     = _('Add/Edit/Hide/Delete majors.');
 $permissions['delete_grad_prog'] = _('Add/Edit/Hide/Delete graduate programs.');
 $permissions['delete_dept']      = _('Add/Edit/Hide/Delete departments.');
 $permissions['edit_dept']        = _('Add/Edit/Hide departments.');
+
+
+// Permissions for workflow transitions
+$permissions['create']           = _('Create Internships');
+$permissions['dept_approve']     = _('Department Approve');
+$permissions['sig_auth_approve'] = _('Sighnature Authority Approve');
+$permissions['dean_approve']     = _('Dean Approve');
+$permissions['register']         = _('Register');
+$permissions['cancel']           = _('Cancel');
+$permissions['reinstate']        = _('Reinstate');
+
+
+// Special workflow transitions
+$permissions['oied_certify']     = _('OIED Certification');
+$permissions['distance_ed_dean_approve'] = _('Distance Ed Dean Approval');
+
 ?>

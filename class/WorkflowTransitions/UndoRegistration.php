@@ -8,7 +8,7 @@ class UndoRegistration extends WorkflowTransition {
     const sortIndex = 6;
     
     public function getAllowedPermissionList(){
-        return array('registrar');
+        return array('register');
     }
     
     public function getActionName()

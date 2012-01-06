@@ -8,7 +8,7 @@ class UndoSigAuthApprove extends WorkflowTransition {
     const sortIndex = 6;
     
     public function getAllowedPermissionList(){
-        return array('sig_auth','registrar');
+        return array('sig_auth_approve','register');
     }
     
     public function getActionName()

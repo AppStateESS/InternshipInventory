@@ -6,7 +6,7 @@ class Registration extends WorkflowTransition {
     const actionName  = 'Mark as Registered / Enrollment Complete';
 
     public function getAllowedPermissionList(){
-        return array('registrar');
+        return array('register');
     }
     
     public function onTransition(Internship $i)

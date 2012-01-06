@@ -6,7 +6,7 @@ class SigAuthApprove extends WorkflowTransition {
     const actionName  = 'Approved by Signature Authority';
 
     public function getAllowedPermissionList(){
-        return array('sig_auth');
+        return array('sig_auth_approve');
     }
     
     public function getActionName()
