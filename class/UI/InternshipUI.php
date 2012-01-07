@@ -157,6 +157,11 @@ class InternshipUI implements UI {
         $form->addCheck('oied_certified');
         $form->setLabel('oied_certified', 'Certified by Office of International Education and Development');
 
+        if(!Current_User::allow('intern', 'oied_certify')){
+            $form->setExtra('oied_certified', 'disabled');
+            $form->setClass('oied_certified', 'disabled-check');
+        }
+
         /**
          * Student fields
          */

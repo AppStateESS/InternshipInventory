@@ -269,6 +269,13 @@ fieldset {
 .align-form br {
     clear:left; /* setting clear on inputs didn't work consistently, so brs added for degrade */
 }
+
+input[type=checkbox]:disabled {
+    background-color:#D6D6D6;
+}
+input[type=checkbox]:disabled + label{
+    color:#D6D6D6;
+}
 /************************************/
 
 /*** Change log styles ***/
