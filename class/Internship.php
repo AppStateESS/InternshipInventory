@@ -202,6 +202,12 @@ class Internship extends Model {
         return new Department($this->department_id);
     }
 
+    public function getSubject()
+    {
+        PHPWS_Core::initModClass('intern', 'Subject.php');
+        return new Subject($this->course_subj);
+    }
+    
     /**
      * Get Document objects associated with this internship.
      */
@@ -381,7 +387,7 @@ class Internship extends Model {
         }
 
         // Sanity heck the Banner ID
-        if(!preg_match('/^\d{9}/', $_REQUEST['banner'])){
+        if(!preg_match('/^\d{9}$/', $_REQUEST['banner'])){
             $url = 'index.php?module=intern&action=edit_internship&missing=banner';
             // Throw in values fields the user typed in
             foreach ($_POST as $key => $val) {
@@ -718,7 +724,7 @@ class Internship extends Model {
         $f = $this->getFacultySupervisor();
         $m = $s->getUgradMajor();
         $g = $s->getGradProgram();
-
+        $subject = $this->getSubject();
 
         $pagecount = $pdf->setSourceFile(PHPWS_SOURCE_DIR . 'mod/intern/pdf/contract-flat.pdf');
         $tplidx = $pdf->importPage(1);
@@ -748,12 +754,12 @@ class Internship extends Model {
         /* Department */
         //$pdf->setFont('Times', null, 10);
         $pdf->setXY(171, 40);
-        $pdf->MultiCell(31, 3, $d->name);
+        $pdf->MultiCell(31, 3, $subject->abbreviation);
 
         // Subject and Course #
         //$pdf->setFont('Times', null, 8);
         $pdf->setXY(132, 44);
-        $course_info = $this->course_subj . ' ' . $this->course_no;
+        $course_info = $this->course_no;
         $pdf->cell(59, 5, $course_info);
 
         // Section #
@@ -804,7 +810,20 @@ class Internship extends Model {
         
         /* Student Address */
         $pdf->setXY(105, 83);
-        $pdf->cell(54, 5, $s->address . ', ' . $s->city . ', ' . $s->state . ' ' . $s->zip);
+        $studentAddress = "";
+        if(!empty($s->address)){
+            $studentAddress .= ($s->address . ", ");
+        }
+        if(!empty($s->city)){
+            $studentAddress .= ($s->city . ", ");
+        }
+        if(!empty($s->state) && $s->state != '-1'){
+            $studentAddress .= ($s->state . " ");
+        }
+        if(!empty($s->zip)){
+            $studentAddress .= $s->zip;
+        }
+        $pdf->cell(54, 5, $studentAddress);
 
 
         /* Payment */
@@ -881,7 +900,17 @@ class Internship extends Model {
         * Agency supervisor info.
         */
         $pdf->setXY(110, 129);
-        $pdf->cell(75, 5, $a->getSupervisorFullName() .  ', ' . $a->supervisor_title);
+        $super = "";
+        $superName = $a->getSupervisorFullName();
+        if(!empty($superName)){
+            //test('ohh hai',1);
+            $super .= $a->getSupervisorFullName() . ',';
+        }
+        
+        if(!empty($a->supervisor_title)){
+            $super .= $a->supervisor_title;
+        }
+        $pdf->cell(75, 5, $super);
 
         if ($this->domestic == 1) {
             $s_agency_address = $a->getSuperDomesticAddress();
