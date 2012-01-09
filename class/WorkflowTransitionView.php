@@ -27,6 +27,15 @@ class WorkflowTransitionView {
         }
         
         $this->form->addRadioAssoc('workflow_action', $radioButtons);
+
+        $radio = $this->form->grab('workflow_action');
+        
+        foreach($transitions as $t){
+            if(!$t->allowed($this->internship)){
+                // Set disabled
+                $radio[$t->getName()]->setDisabled(true);
+            }
+        }
         
         if($this->state->getName() == 'CreationState'){
             // New Internship, only option is 'create' transitions
