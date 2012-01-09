@@ -270,6 +270,9 @@ fieldset {
     clear:left; /* setting clear on inputs didn't work consistently, so brs added for degrade */
 }
 
+#contract-button {
+	float:right;
+}
 
 input[type=checkbox]:disabled {
     background-color:#D6D6D6;
@@ -306,7 +309,7 @@ input[type=radio]:disabled + label{
 
 .search-fieldset {
 	margin-top:.5em;
-	width:380px;
+	width:350px;
 }
 
 .search-label {

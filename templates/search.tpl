@@ -1,7 +1,6 @@
 <h1 class="search-icon">Search Inventory</h1>
-
-<div style="margin-left: 60px;">
     {START_FORM}
+<div style="margin-left: 60px;float:left;margin-right:3em;">
     
       <div class="search-label">{NAME_LABEL}<br />
       {NAME}</div>
@@ -29,6 +28,8 @@
         <!-- END type_repeat -->
       </fieldset>
 
+</div>
+<div style="float:left;">
       <fieldset class="search-fieldset">
         <legend>Location</legend>
         <!-- BEGIN loc_repeat -->
@@ -51,6 +52,5 @@
       </fieldset>
     <br />
     {SUBMIT} <input type="button" title="Reset search fields" name="reset" value="Clear Fields"/>
-
-{END_FORM}
 </div>
+{END_FORM}

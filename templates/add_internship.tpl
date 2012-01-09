@@ -7,7 +7,7 @@
 </script>
 
 <h1 class="add-icon">{TITLE}</h1>
-<div id="pdf-download">{PDF}</div>
+<div id="pdf-download"><a href="{PDF}" id="contract-button" class="button"><span class="tango16 tango-document-new">Generate Contract</span></a></div>
 
 {START_FORM} {SUBMIT}
 
@@ -265,7 +265,9 @@
             {CHECK_OTHER_TYPE}{OTHER_TYPE_LABEL}{OTHER_TYPE}<br/> -->
             </fieldset></td>
         </tr>
-      </table></td>
+      </table><br />
+      {SUBMIT}
+    </td>
     <!-- End internship details -->
     <!-- Agency info -->
     <td class="sub-form-cell"><span class="info-header">Agency
@@ -351,7 +353,8 @@
           <td>{AGENCY_SUP_COUNTRY_LABEL}</td>
           <td>{AGENCY_SUP_COUNTRY}</td>
         </tr>
-      </table></td>
+      </table>
+    </td>
     <!-- End agency info -->
   </tr>
   <tr>

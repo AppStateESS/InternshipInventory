@@ -38,7 +38,8 @@ class InternshipUI implements UI {
                 return false;
             }
             $form = self::getInternshipForm($internship, $tpl);
-            $tpl['PDF'] = PHPWS_Text::moduleLink('Generate Contract', 'intern', array('action' => 'pdf', 'id' => $internship->id), null, null, 'button');
+            //$tpl['PDF'] = PHPWS_Text::moduleLink('Generate Contract', 'intern', array('action' => 'pdf', 'id' => $internship->id), null, null, 'button contract-button');
+            $tpl['PDF'] = PHPWS_Text::linkAddress('intern', array('action' => 'pdf', 'id' => $internship->id));
 
             self::plugInternship($form, $internship);
             /* Plug in document list */
