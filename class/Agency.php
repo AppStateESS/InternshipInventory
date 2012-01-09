@@ -71,68 +71,78 @@ class Agency extends Model {
 
     public function getSupervisorFullName()
     {
-        return $this->supervisor_first_name . ' ' . $this->supervisor_last_name;
+        $name = "";
+        if(isset($this->supervisor_first_name)){
+            $name .= $this->supervisor_first_name;
+        }
+        
+        if(isset($this->supervisor_last_name)){
+            $name .= $this->supervisor_last_name;
+        }
+        
+        return $name;
     }
 
     /**
      * Get the domestic looking address of agency.
      */
-    public function getDomesticAddress()
+    public function getAddress()
     {
-        if ($this->address) {
+        $add = array();
+        
+        if (!empty($this->address)) {
             $add[] = $this->address . ',';
         }
-        if ($this->city) {
+        if (!empty($this->city)) {
             $add[] = $this->city . ',';
         }
-        $add[] = $this->state;
-        if ($this->zip) {
+        if(!empty($this->state)){
+            $add[] = $this->state;
+        }
+        if (!empty($this->zip)) {
             $add[] = $this->zip;
         }
-        return implode(' ', $add);
-    }
 
-    /**
-     * Get an international looking address of agency.
-     */
-    public function getInternationalAddress()
-    {
-        return "$this->address, $this->city, $this->state, $this->country $this->zip";
+        if(!empty($this->province)){
+            $add[] = $this->province . ', ';
+        }
+        
+        if(!empty($this->country)){
+            $add[] = $this->country;
+        }
+        
+        return implode(' ', $add);
     }
 
     /**
      * Get the domestic looking address of agency.
      * Update: 07/27/2011 reduction of required elements caused need for alteration
      */
-    public function getSuperDomesticAddress()
+    public function getSuperAddress()
     {
-        if ($this->address_same_flag == 1) {
-            return $this->getDomesticAddress();
-        } else {
-            if ($this->supervisor_address) {
+        if($this->address_same_flag == 1){
+            return $this->getAddress();
+        }else{
+            $add = array();
+            if(!empty($this->supervisor_address)){
                 $add[] = $this->supervisor_address . ',';
             }
-            if ($this->supervisor_city) {
+            if(!empty($this->supervisor_city)){
                 $add[] = $this->supervisor_city . ',';
             }
-            $add[] = $this->supervisor_state;
-            if ($this->supervisor_zip) {
+            if(!empty($this->supervisor_state)){
+                $add[] = $this->supervisor_state;
+            }
+            if(!empty($this->supervisor_zip)){
                 $add[] = $this->supervisor_zip;
             }
 
+            if(!empty($this->supervisor_country)){
+                $add[] = $this->supervisor_country;
+            }
+            
             return implode(' ', $add);
         }
-    }
-
-    /**
-     * Get the international looking address of agency.
-     */
-    public function getSuperInternationalAddress()
-    {
-        if ($this->address_same_flag == 1)
-            return $this->getInternationalAddress();
-        else
-            return "$this->supervisor_address, $this->supervisor_city,  $this->state, $this->supervisor_country $this->supervisor_zip";
     }
 }
 

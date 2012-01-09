@@ -875,11 +875,7 @@ class Internship extends Model {
         $pdf->setXY(133, 108);
         $pdf->cell(71, 5, $a->name);
 
-        if ($this->domestic == 1) {
-            $agency_address = $a->getDomesticAddress();
-        } else {
-            $agency_address = $a->getInternationalAddress();
-        }
+        $agency_address = $a->getAddress();
         
         if(strlen($agency_address) < 50){
             // If it's short enough, just write it
@@ -902,21 +898,17 @@ class Internship extends Model {
         $pdf->setXY(110, 129);
         $super = "";
         $superName = $a->getSupervisorFullName();
-        if(!empty($superName)){
+        if(isset($superName) && !empty($superName) && $superName != ''){
             //test('ohh hai',1);
             $super .= $a->getSupervisorFullName() . ',';
         }
         
-        if(!empty($a->supervisor_title)){
+        if(isset($a->supervisor_title) && !empty($a->supervisor_title) && $a->supervisor_title != ''){
             $super .= $a->supervisor_title;
         }
         $pdf->cell(75, 5, $super);
 
-        if ($this->domestic == 1) {
-            $s_agency_address = $a->getSuperDomesticAddress();
-        } else {
-            $s_agency_address = $a->getSuperInternationalAddress();
-        }
+        $s_agency_address = $a->getSuperAddress();
 
         $pdf->setXY(124, 134);
         $pdf->cell(78, 5, $s_agency_address);
