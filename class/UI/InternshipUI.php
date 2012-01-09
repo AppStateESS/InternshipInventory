@@ -152,6 +152,11 @@ class InternshipUI implements UI {
             $tpl['CHANGE_LOG'] = $historyView->show();
         }
         
+        // Show a warning if in SigAuthReadyState, is international, and not OIED approved
+        if($i->state == "SigAuthReadyState" && $i->international == 1 && $i->oied_certified !=1){
+            NQ::simple('intern', INTERN_WARNING, 'This internship can not be approved by the Signature Authority bearer until the internship is certified by the Office of International Education and Development.');
+        }
+        
         /*****************
          * OIED Approval *
          */
@@ -498,7 +503,7 @@ class InternshipUI implements UI {
         $vals['end_date'] = $i->end_date ? date('m/d/Y', $i->end_date) : null;
         $vals['credits'] = $i->credits;
         $vals['avg_hours_week'] = $i->avg_hours_week;
-        $vals['other_type'] = $i->other_type;
+        //$vals['other_type'] = $i->other_type;
         //$vals['notes'] = $i->notes;
         $vals['loc_address'] = $i->loc_address;
         $vals['loc_city'] = $i->loc_city;
@@ -538,15 +543,16 @@ class InternshipUI implements UI {
 
         $form->setMatch('term', $i->term);
         $form->setMatch('internship_default_type', $i->internship);
-        $form->setMatch('service_learning_type', $i->service_learn);
-        $form->setMatch('independent_study_type', $i->independent_study);
-        $form->setMatch('research_assist_type', $i->research_assist);
+        //$form->setMatch('service_learning_type', $i->service_learn);
+        //$form->setMatch('independent_study_type', $i->independent_study);
+        //$form->setMatch('research_assist_type', $i->research_assist);
         $form->setMatch('student_teaching_type', $i->student_teaching);
         $form->setMatch('clinical_practica_type', $i->clinical_practica);
-        $form->setMatch('special_topics_type', $i->special_topics);
+        //$form->setMatch('special_topics_type', $i->special_topics);
+        /*
         if ($i->other_type != '' && !is_null($i->other_type)) {
             $form->setMatch('check_other_type', true);
-        }
+        }*/
 
         // Plug
         $form->plugIn($vals);

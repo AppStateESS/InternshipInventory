@@ -47,13 +47,13 @@ class Internship extends Model {
     public $pay_rate;
     
     public $internship = 0;
-    public $service_learn = 0;
-    public $independent_study = 0;
-    public $research_assist = 0;
     public $student_teaching = 0;
     public $clinical_practica = 0;
-    public $special_topics = 0;
-    public $other_type;
+    //public $service_learn = 0;
+    //public $independent_study = 0;
+    //public $research_assist = 0;
+    //public $special_topics = 0;
+    //public $other_type;
     
     public $notes;
     
