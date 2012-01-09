@@ -157,6 +157,11 @@ class InternshipUI implements UI {
             NQ::simple('intern', INTERN_WARNING, 'This internship can not be approved by the Signature Authority bearer until the internship is certified by the Office of International Education and Development.');
         }
         
+        // Show a warning if in SigAuthApproved state and is distance_ed campus
+        if($i->state == 'SigAuthApprovedState' && $s->campus == 'distance_ed'){
+            NQ::simple('intern', INTERN_WARNING, 'This internship must be "Dean Approved" by Distance Education.');
+        }
+        
         /*****************
          * OIED Approval *
          */
