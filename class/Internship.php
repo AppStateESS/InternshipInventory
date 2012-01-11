@@ -92,13 +92,8 @@ class Internship extends Model {
         $i['Stipend'] = $this->stipend == 1 ? 'Yes' : 'No';
         $i['Unpaid'] = $this->unpaid == 1 ? 'Yes' : 'No';
         $i['Internship'] = $this->internship == 1 ? 'Yes' : 'No';
-        $i['Service Learning'] = $this->service_learn == 1 ? 'Yes' : 'No';
-        $i['Independent Study'] = $this->independent_study == 1 ? 'Yes' : 'No';
-        $i['Research Assistant'] = $this->research_assist == 1 ? 'Yes' : 'No';
         $i['Student Teaching'] = $this->student_teaching == 1 ? 'Yes' : 'No';
         $i['Clinical Practica'] = $this->clinical_practica == 1 ? 'Yes' : 'No';
-        $i['Special Topics'] = $this->special_topics == 1 ? 'Yes' : 'No';
-        $i['Other Type'] = $this->other_type;
         $i['Notes'] = $this->notes;
         $i['Location Address'] = $this->loc_address;
         $i['Location State'] = $this->loc_state;
@@ -141,26 +136,11 @@ class Internship extends Model {
         if ($this->internship == 1) {
             $types[] = 'Internship';
         }
-        if ($this->service_learn == 1) {
-            $types[] = 'Service Learning';
-        }
-        if ($this->independent_study == 1) {
-            $types[] = 'Independent Study';
-        }
-        if ($this->research_assist == 1) {
-            $types[] = 'Research Assistant';
-        }
         if ($this->student_teaching == 1) {
             $types[] = 'Student Teaching';
         }
         if ($this->clinical_practica == 1) {
             $types[] = 'Clinical Practica';
-        }
-        if ($this->special_topics == 1) {
-            $types[] = 'Special Topics';
-        }
-        if ($this->other_type != '' && $this->other_type != null) {
-            $types[] = $this->other_type;
         }
 
         return implode(', ', $types);

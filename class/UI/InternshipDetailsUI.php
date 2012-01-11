@@ -43,8 +43,8 @@ class InternshipDetailsUI implements UI
         $tpl['agency'][] = get_object_vars($a);
         // Plug in formatted address
         if($i->isDomestic()){
-            $tpl['agency'][0]['address'] = $a->getDomesticAddress();
-            $tpl['agency'][0]['supervisor_address'] = $a->getSuperDomesticAddress();
+            $tpl['agency'][0]['address'] = $a->getAddress();
+            $tpl['agency'][0]['supervisor_address'] = $a->getSuperAddress();
         }else{
             $tpl['agency'][0]['address'] = $a->getInternationalAddress();
             $tpl['agency'][0]['supervisor_address'] = $a->getSuperInternationalAddress();
