@@ -6,7 +6,7 @@ class CreationTransition extends WorkflowTransition {
     const actionName  = 'New Internship';
     
     public function getAllowedPermissionList(){
-        return array('dept_approve','sig_auth_approve');
+        return array('create_internship');
     }
     
     public function doNotification(Internship $i)

@@ -54,6 +54,13 @@ class InternshipUI implements UI {
             $tpl['UPLOAD_DOC'] = $folder->documentUpload($internship->id);
             $tpl['TITLE'] = 'Edit Student';
         } else {
+            
+            if(!Current_User::allow('intern', 'create_internship')){
+                NQ::simple('intern', INTERN_ERROR, 'You do not have permission to create new internships.');
+                NQ::close();
+                PHPWS_Core::home();
+            }
+            
             /* Show form with empty fields. */
             $form = self::getInternshipForm(null, $tpl);
             // Show a disabled button in document list if we are adding an internship.

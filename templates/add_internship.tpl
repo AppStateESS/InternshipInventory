@@ -7,7 +7,9 @@
 </script>
 
 <h1 class="add-icon">{TITLE}</h1>
+<!-- BEGIN generate_contract -->
 <div id="pdf-download"><a href="{PDF}" id="contract-button" class="button"><span class="tango16 tango-document-new">Generate Contract</span></a></div>
+<!-- END generate_contract -->
 
 {START_FORM} {SUBMIT}
 

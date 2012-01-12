@@ -30,6 +30,8 @@ class WorkflowTransitionView {
 
         $radio = $this->form->grab('workflow_action');
         
+        //test($transitions,1);
+        
         foreach($transitions as $t){
             if(!$t->allowed($this->internship)){
                 // Set disabled
