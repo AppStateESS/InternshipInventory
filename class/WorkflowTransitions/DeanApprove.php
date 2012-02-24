@@ -28,6 +28,16 @@ class DeanApprove extends WorkflowTransition {
         return false;
     }
     
+    public function doNotification(Internship $i)
+    {
+        $student = $i->getStudent();
+    
+        $agency = $i->getAgency();
+    
+        PHPWS_Core::initModClass('intern', 'Email.php');
+        Email::sendRegistrarEmail($student, $i, $agency);
+    }
+    
     public function onTransition(Internship $i)
     {
         
