@@ -14,9 +14,9 @@ Internship
 Term: {TERM}
 Course: {SUBJECT}-{COURSE_NUM} <!-- BEGIN title -->({COURSE_TITLE})<!-- END title -->
 Section: {SECTION}
+Faculty: {FACULTY}
+Department: {DEPT}
 <!-- BEGIN state -->State: {STATE}<!-- END state --><!-- BEGIN intl -->Country: {COUNTRY}<!-- END intl -->
-
-Approved by {APPROVED_BY} on {APPROVED_ON}.
 
 
 - Internship Inventory

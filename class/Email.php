@@ -105,6 +105,10 @@ class Email {
      */
     public static function sendRegistrarEmail($s, $i, $a)
     {
+        PHPWS_Core::initModClass('intern', 'Subject.php');
+        
+        $subjects = Subject::getSubjects();
+        
         $faculty = $i->getFacultySupervisor();
         
         $tpl = array();
@@ -114,7 +118,11 @@ class Email {
         $tpl['PHONE'] = $s->phone;
         
         $tpl['TERM'] = Term::rawToRead($i->term);
-        $tpl['SUBJECT'] = $i->course_subj;
+        if(isset($i->course_subj)){
+            $tpl['SUBJECT'] = $subjects[$i->course_subj];
+        }else{
+            $tpl['SUBJECT'] = '(No course subject provided)';
+        }
         $tpl['COURSE_NUM'] = $i->course_no;
         
         if(isset($i->course_sect)){
@@ -127,14 +135,21 @@ class Email {
             $tpl['COURSE_TITLE'] = $i->course_title;
         }
         
+        if(isset($i->faculty_supervisor_id)){
+            $advisor = $i->getFacultySupervisor();
+            $tpl['FACUTLY'] = $advisor->getFullName();
+        }else{
+            $tpl['FACUTLY'] = '(not provided)';
+        }
+        
+        $department = $i->getDepartment();
+        $tpl['DEPT'] = $department->getName();
+        
         if($i->international){
             $tpl['COUNTRY'] = $i->loc_country;
         }else{
             $tpl['STATE'] = $i->loc_state;
         }
-        
-        $tpl['APPROVED_BY'] = $i->approved_by;
-        $tpl['APPROVED_ON'] = date('g:ia m/d/Y', $i->approved_on);
         
         $to = REGISTRAR_EMAIL_ADDRESS;
         $cc = array($s->email . '@appstate.edu', $faculty->email . '@appstate.edu');
