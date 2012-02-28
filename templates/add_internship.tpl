@@ -65,7 +65,7 @@
           <td>Campus</td>
           <td>
             <!-- BEGIN campus_repeat -->
-            {CAMPUS}{CAMPUS_LABEL}
+            {CAMPUS}{CAMPUS_LABEL}<br />
             <!-- END campus_repeat -->
           </td>
         <tr>
@@ -75,10 +75,9 @@
               <!-- BEGIN student_level_repeat -->
               {STUDENT_LEVEL}{STUDENT_LEVEL_LABEL}
               <!--  END student_level_repeat -->
-              <br /> <span id="ugrad_drop"> {UGRAD_MAJOR_LABEL}<span
-                class="required-input">*</span><br /> {UGRAD_MAJOR} </span> <span
-                id="grad_drop"> {GRAD_PROG_LABEL}<span
-                class="required-input">*</span><br /> {GRAD_PROG} </span>
+              <br />
+              <span id="ugrad_drop"> {UGRAD_MAJOR_LABEL}<span class="required-input">*</span><br />{UGRAD_MAJOR} </span>
+              <span id="grad_drop"> {GRAD_PROG_LABEL}<span class="required-input">*</span><br /> {GRAD_PROG} </span>
             </fieldset></td>
         </tr>
         <tr>
@@ -165,7 +164,7 @@
             <fieldset{LOC_HIGHLIGHT}>
               <legend>Location</legend>
               <!-- BEGIN location_repeat -->
-              {LOCATION}{LOCATION_LABEL}
+              {LOCATION}{LOCATION_LABEL}<br />
               <!-- END location_repeat -->
             </fieldset></td>
         </tr>
