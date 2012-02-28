@@ -13,7 +13,8 @@ require_once(PHPWS_SOURCE_DIR . 'mod/intern/inc/defines.php');
 
 // Check some permissions
 if (!Current_User::isLogged()) {
-    PHPWS_Core::reroute('../../admin');
+    // Fix by replacing the Users module
+    PHPWS_Core::reroute('../secure');
 }
 
 PHPWS_Core::initModClass('intern', 'InternshipInventory.php');
