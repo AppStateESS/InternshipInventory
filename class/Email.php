@@ -135,6 +135,12 @@ class Email {
             $tpl['COURSE_TITLE'] = $i->course_title;
         }
         
+        if(isset($i->credits)){
+            $tpl['CREDITS'] = $i->credits;
+        }else{
+            $tpl['CREDITS'] = '(not provided)';
+        }
+        
         if(isset($i->faculty_supervisor_id)){
             $advisor = $i->getFacultySupervisor();
             $tpl['FACULTY'] = $advisor->getFullName();
