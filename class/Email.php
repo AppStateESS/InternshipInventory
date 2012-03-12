@@ -137,9 +137,9 @@ class Email {
         
         if(isset($i->faculty_supervisor_id)){
             $advisor = $i->getFacultySupervisor();
-            $tpl['FACUTLY'] = $advisor->getFullName();
+            $tpl['FACULTY'] = $advisor->getFullName();
         }else{
-            $tpl['FACUTLY'] = '(not provided)';
+            $tpl['FACULTY'] = '(not provided)';
         }
         
         $department = $i->getDepartment();
