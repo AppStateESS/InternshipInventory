@@ -18,7 +18,7 @@ class InternshipUI implements UI {
      * 'agency_sup_city',
      */
     public static $requiredFields = array('student_first_name', 'student_last_name',
-        'banner', 'student_phone', 'student_email', 'agency_name', 'term', 'department','campus');
+        'banner', 'student_phone', 'student_email', 'agency_name', 'term', 'department','campus','emergency_contact_name', 'emergency_contact_relation', 'emergency_contact_phone');
 
     public static function display()
     {
@@ -246,14 +246,17 @@ class InternshipUI implements UI {
         $form->addText('emergency_contact_name');
         $form->setClass('emergency_contact_name', 'form-text');
         $form->setLabel('emergency_contact_name', 'Name');
+        $form->setRequired('emergency_contact_name');
         
         $form->addText('emergency_contact_relation');
         $form->setClass('emergency_contact_relation', 'form-text');
         $form->setLabel('emergency_contact_relation', 'Relationship');
+        $form->setRequired('emergency_contact_relation');
         
         $form->addText('emergency_contact_phone');
         $form->setClass('emergency_contact_phone', 'form-text');
         $form->setLabel('emergency_contact_phone', 'Phone');
+        $form->setRequired('emergency_contact_phone');
         
         /**
          * Faculty supervisor info.
