@@ -21,7 +21,11 @@ class WorkflowController {
 
         $sourceStateName = $this->t->getSourceState();
         
-        if($sourceStateName != '*' && $sourceStateName != $currStateName){
+        if(is_array($sourceStateName)){
+            if(!in_array($currStateName, $sourceStateName)){
+                throw new InvalidArgumentException('Invalid transition source state.');
+            }
+        }else if($sourceStateName != '*' && $sourceStateName != $currStateName){
             throw new InvalidArgumentException('Invalid transition source state.');
         }
         

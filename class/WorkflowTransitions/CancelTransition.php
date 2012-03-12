@@ -17,7 +17,7 @@ class CancelTransition extends WorkflowTransition {
     }
     
     public function getSourceState(){
-        return self::sourceState;
+        return array('NewState', 'SigAuthReadyState', 'SigAuthApprovedState', 'DeanApprovedState');
     }
     
     public function getDestState(){
