@@ -117,7 +117,7 @@ class Email {
         $tpl['USER'] = $s->email;
         $tpl['PHONE'] = $s->phone;
         
-        $tpl['TERM'] = Term::rawToRead($i->term);
+        $tpl['TERM'] = Term::rawToRead($i->term, false);
         if(isset($i->course_subj)){
             $tpl['SUBJECT'] = $subjects[$i->course_subj];
         }else{
