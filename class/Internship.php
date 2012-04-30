@@ -847,7 +847,7 @@ class Internship extends Model {
         $pdf->cell(77, 5, $f->phone);
 
         $pdf->setXY(26, 145);
-        $pdf->cell(77, 5, $f->email);
+        $pdf->cell(77, 5, $f->email . '@appstate.edu');
 
         /**
          * Agency information.
