@@ -158,7 +158,7 @@ class Email {
         }
         
         $to = REGISTRAR_EMAIL_ADDRESS;
-        $cc = array($s->email . '@appstate.edu', $faculty->email . '@appstate.edu');
+        $cc = array($faculty->email . '@appstate.edu');
         $subject = 'Internship Approved - Ready for Registration';
         
         Email::sendTemplateMessage($to, $subject, 'email/RegistrarEmail.tpl', $tpl, $cc);
