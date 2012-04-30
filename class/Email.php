@@ -141,6 +141,20 @@ class Email {
             $tpl['CREDITS'] = '(not provided)';
         }
         
+        $startDate = $i->getStartDate(true);
+        if(isset($startDate)){
+            $tpl['START_DATE'] = $startDate;
+        }else{
+            $tpl['START_DATE'] = '(not provided)';
+        }
+        
+        $endDate = $i->getEndDate(true);
+        if(isset($endDate)){
+            $tpl['END_DATE'] = $endDate;
+        }else{
+            $tpl['END_DATE'] = '(not provided)';
+        }
+        
         if(isset($i->faculty_supervisor_id)){
             $advisor = $i->getFacultySupervisor();
             $tpl['FACULTY'] = $advisor->getFullName();

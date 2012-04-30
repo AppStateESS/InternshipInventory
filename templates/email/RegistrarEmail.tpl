@@ -12,6 +12,8 @@ Phone: {PHONE}
 Internship
 -----------
 Term: {TERM}
+Start Date: {START_DATE}
+End Date: {END_DATE}
 Course: {SUBJECT}-{COURSE_NUM} <!-- BEGIN title -->({COURSE_TITLE})<!-- END title -->
 Section: {SECTION}
 Credits Hours: {CREDITS}

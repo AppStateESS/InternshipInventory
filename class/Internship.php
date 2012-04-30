@@ -208,7 +208,7 @@ class Internship extends Model {
             return null;
         }
         if ($formatted) {
-            return date('j M, Y', $this->start_date);
+            return date('F j, Y', $this->start_date);
         } else {
             return $this->start_date;
         }
@@ -220,7 +220,7 @@ class Internship extends Model {
             return null;
         }
         if ($formatted) {
-            return date('j M, Y', $this->end_date);
+            return date('F j, Y', $this->end_date);
         } else {
             return $this->end_date;
         }
