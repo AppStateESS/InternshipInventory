@@ -167,13 +167,15 @@ class Email {
         
         if($i->international){
             $tpl['COUNTRY'] = $i->loc_country;
+            $intlSubject = '[int\'l] ';
         }else{
             $tpl['STATE'] = $i->loc_state;
+            $intlSubject = '';
         }
         
         $to = REGISTRAR_EMAIL_ADDRESS;
         $cc = array($faculty->email . '@appstate.edu');
-        $subject = 'Internship Approved - Ready for Registration';
+        $subject = 'Internship Approved: ' . $intlSubject . '[' . $s->getBannerId() . '] ' . $s->getFullName();
         
         Email::sendTemplateMessage($to, $subject, 'email/RegistrarEmail.tpl', $tpl, $cc);
     }
