@@ -176,7 +176,7 @@ class Email {
         }
         
         $to = REGISTRAR_EMAIL_ADDRESS;
-        $cc = array($faculty->email . '@appstate.edu');
+        $cc = array($faculty->email . '@appstate.edu', 'hicksmp@appstate.edu');
         $subject = 'Internship Approved: ' . $intlSubject . '[' . $s->getBannerId() . '] ' . $s->getFullName();
         
         Email::sendTemplateMessage($to, $subject, 'email/RegistrarEmail.tpl', $tpl, $cc);
