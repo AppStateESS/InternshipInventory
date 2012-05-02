@@ -123,6 +123,19 @@ class Student extends Model
             return $student;
         }
     }
+    
+    /**********************
+     * Accessor / Mutator *
+     */
+    
+    /**
+     * Returns the Banner ID of this student.
+     * 
+     * @return string Banner ID
+     */
+    public function getBannerId(){
+        return $this->banner;
+    }
 }
 
 ?>

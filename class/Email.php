@@ -167,9 +167,11 @@ class Email {
         
         if($i->international){
             $tpl['COUNTRY'] = $i->loc_country;
+            $tpl['INTERNATIONAL'] = 'Yes';
             $intlSubject = '[int\'l] ';
         }else{
             $tpl['STATE'] = $i->loc_state;
+            $tpl['INTERNATIONAL'] = 'No';
             $intlSubject = '';
         }
         

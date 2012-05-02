@@ -19,6 +19,10 @@ Section: {SECTION}
 Credits Hours: {CREDITS}
 Faculty: {FACULTY}
 Department: {DEPT}
+
+Location
+---------
+International: {INTERNATIONAL}
 <!-- BEGIN state -->State: {STATE}<!-- END state --><!-- BEGIN intl -->Country: {COUNTRY}<!-- END intl -->
 
 
