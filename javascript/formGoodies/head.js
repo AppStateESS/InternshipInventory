@@ -4,5 +4,6 @@
     $(document).ready(function(){
         copyAddress();
         otherStuff();
+        setupFormSubmit();
     });
 </script>

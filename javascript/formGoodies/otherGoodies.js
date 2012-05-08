@@ -5,7 +5,8 @@
  * If sameAddress == true then the 
  * 'Same Address' checkbox is clicked.
  */
-function sameAddressState(sameAddress){
+function sameAddressState(sameAddress)
+{
     $("#internship_agency_state").unbind('change');
     $("#internship_agency_state").unbind('keyup');
 
@@ -20,7 +21,41 @@ function sameAddressState(sameAddress){
     }
 };
 
-function otherStuff(){
+function setupFormSubmit()
+{
+	$("#internship").submit(formSubmitHandler);
+}
+
+function formSubmitHandler()
+{
+	// Disable the button
+	$('input[type="submit"]').attr('disabled','disabled');
+	
+	// Setup the spinner
+	var opts = {
+			  lines: 11, // The number of lines to draw
+			  length: 6, // The length of each line
+			  width: 2, // The line thickness
+			  radius: 5, // The radius of the inner circle
+			  rotate: 0, // The rotation offset
+			  color: '#000', // #rgb or #rrggbb
+			  speed: 1, // Rounds per second
+			  trail: 60, // Afterglow percentage
+			  shadow: false, // Whether to render a shadow
+			  hwaccel: false, // Whether to use hardware acceleration
+			  className: 'spinner', // The CSS class to assign to the spinner
+			  zIndex: 2e9, // The z-index (defaults to 2000000000)
+			  top: 'auto', // Top position relative to parent in px
+			  left: 'auto' // Left position relative to parent in px
+			};
+	var spinner = new Spinner(opts).spin();
+	$('input[type="submit"]').after(spinner.el);
+	
+	return;
+}
+
+function otherStuff()
+{
     /* PAYMENT 
      * If Paid is selected then make stipend selectable.
      */

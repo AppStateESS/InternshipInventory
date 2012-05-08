@@ -444,6 +444,7 @@ class InternshipUI implements UI {
 
         javascript('jquery');
         javascript('jquery_ui');
+        javascriptMod('intern', 'spinner');
         javascriptMod('intern', 'formGoodies');
 
         return $form;

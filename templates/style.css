@@ -28,6 +28,11 @@
 	font-style:italic;
 }
 
+/**** Spinner *****/
+.spinner {
+	margin-left: 80px;
+}
+
 #link-list {
     float: right;
     margin-bottom: 10px;
@@ -494,6 +499,32 @@ input[type="submit"]:active {
     background: -ms-linear-gradient(top, #dddddd 0%,#fbfbfb 75%); /* IE10+ */
     background: linear-gradient(top, #dddddd 0%,#fbfbfb 75%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dddddd', endColorstr='#fbfbfb',GradientType=0 ); /* IE6-9 */
+}
+
+input[type="submit"]:disabled{
+    float:left;
+    padding-left:10px;
+    padding-right:10px;
+    margin-right: 10px;
+    
+    color:#AAA;
+    text-decoration:none;
+    cursor:pointer;
+    
+    border:1px solid #AAA;
+    border-radius:10px;
+    
+    box-shadow: 2px 2px 1px #F0F0F0;
+    -moz-box-shadow: 1px 1px 1px #F0F0F0;
+
+    background: #e3e3e3;
+    background: -moz-linear-gradient(top, #ffffff 35%, #dddddd 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(35%,#ffffff), color-stop(100%,#dddddd)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #ffffff 35%,#dddddd 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #ffffff 35%,#dddddd 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #ffffff 35%,#dddddd 100%); /* IE10+ */
+    background: linear-gradient(top, #ffffff 35%,#dddddd 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#dddddd',GradientType=0 ); /* IE6-9 */
 }
 
 /** Gives a slightly larger button **/
