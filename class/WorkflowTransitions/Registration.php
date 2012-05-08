@@ -9,9 +9,14 @@ class Registration extends WorkflowTransition {
         return array('register');
     }
     
-    public function onTransition(Internship $i)
+    public function doNotification(Internship $i)
     {
-        
+        $student = $i->getStudent();
+    
+        $agency = $i->getAgency();
+    
+        PHPWS_Core::initModClass('intern', 'Email.php');
+        Email::sendRegistrationConfirmationEmail($student, $i, $agency);
     }
     
     public function getActionName()
