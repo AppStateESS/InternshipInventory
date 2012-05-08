@@ -167,20 +167,6 @@ class ResultsUI implements UI
             else if($loc == 'internat')
                 $pager->addWhere('international', 1);
         }
-
-        
-        /*
-        if(!is_null($approved)){
-            switch($approved){
-                case 'approved':
-                    $pager->addWhere('intern_internship.approved', 1);
-                    break;
-                case 'nonapproved':
-                    $pager->addWhere('intern_internship.approved', 0);
-                    break;
-            }
-        }
-        */
         
         if(isset($workflowState)){
             foreach($workflowState as $s){
