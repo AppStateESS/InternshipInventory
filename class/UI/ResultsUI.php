@@ -55,8 +55,8 @@ class ResultsUI implements UI
         /* Get Pager */
         $pager = self::getPager($name, $dept, $term, $major, $grad, $type, $loc, $state, $prov, $workflowState);
         /* Get all results first. For use with CSV Exporting. Then we the limit again. Sorry */
-        $pager->limit = null;
-        $csvResult = $pager->get();
+        //$pager->limit = null;
+        //$csvResult = $pager->get();
 
         /* Javascript */
         javascript('/jquery/');
@@ -93,19 +93,16 @@ class ResultsUI implements UI
                                      $workflowState=null)
     {
         $pager = new DBPager('intern_internship', 'Internship');
+        
+        // Pager Settings
         $pager->setModule('intern');
+        $pager->setTemplate('results.tpl');
+        $pager->addRowTags('getRowTags');
+        $pager->setEmptyMessage('No matching internships found.');
         
         $pager->db->addJoin('LEFT', 'intern_internship', 'intern_student', 'student_id', 'id');
         $pager->db->addJoin('LEFT', 'intern_internship', 'intern_admin', 'department_id', 'department_id');
         $pager->db->addJoin('LEFT', 'intern_internship', 'intern_agency', 'agency_id', 'id');
-        
-        /*
-        $pager->db->addColumn('intern_internship.*');
-        $pager->db->addColumn('intern_student.id');
-        $pager->db->addColumn('intern_student.last_name', null, 'student_last_name');
-        */
-        //$pager->db->addColumn('intern_admin.*');
-        //$pager->db->addColumn('intern_agency.*');
         
         if(!Current_User::isDeity())
             $pager->addWhere('intern_admin.username', Current_User::getUsername());
@@ -174,9 +171,6 @@ class ResultsUI implements UI
             }
         }
         
-        $pager->setTemplate('results.tpl');
-        $pager->addRowTags('getRowTags');
-        $pager->setEmptyMessage('No Results');
 
         /** Sort Headers **/
         $pager->addSortHeader('term', 'Term');
