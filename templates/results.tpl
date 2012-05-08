@@ -40,5 +40,6 @@
 <div align="center">
   <b>{PAGE_LABEL}</b><br />
   {PAGES}<br />
-  {LIMITS}
+  {LIMITS}<br />
+  {CSV_REPORT}
 </div>

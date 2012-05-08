@@ -16,6 +16,8 @@ class ResultsUI implements UI
     {
         PHPWS_Core::initCoreClass('DBPager.php');
         PHPWS_Core::initModClass('intern', 'Internship.php');
+        
+        Layout::addPageTitle('Search Results');
 
         $dept  = null;
         $term  = null;
@@ -54,9 +56,6 @@ class ResultsUI implements UI
         
         /* Get Pager */
         $pager = self::getPager($name, $dept, $term, $major, $grad, $type, $loc, $state, $prov, $workflowState);
-        /* Get all results first. For use with CSV Exporting. Then we the limit again. Sorry */
-        //$pager->limit = null;
-        //$csvResult = $pager->get();
 
         /* Javascript */
         javascript('/jquery/');
@@ -64,24 +63,7 @@ class ResultsUI implements UI
         javascript('confirm');
         javascriptMod('intern', 'hider');
 
-        if(!is_null($pager->display_rows)){
-            /* Build up the link for exporting rows to CSV. */
-            $ids = array();
-            foreach($pager->display_rows as $i){
-                $ids[] = $i->id;
-            }
-            /* Add link to page. */
-            javascriptMod('intern', 'csv', 
-                       array('link' => PHPWS_Text::moduleLink('Download Spreadsheet', 'intern', array('action' => 'csv', 'ids' => $ids))));
-        }
-
-        if(isset($_GET['limit'])){
-            $pager->limit = $_GET['limit'];
-            $pager->display_rows = null;
-        }
-
-        $result = $pager->get();
-        return $result;
+        return $pager->get();
     }
 
     /**
@@ -98,6 +80,7 @@ class ResultsUI implements UI
         $pager->setModule('intern');
         $pager->setTemplate('results.tpl');
         $pager->addRowTags('getRowTags');
+        $pager->setReportRow('getCSV');
         $pager->setEmptyMessage('No matching internships found.');
         
         $pager->db->addJoin('LEFT', 'intern_internship', 'intern_student', 'student_id', 'id');

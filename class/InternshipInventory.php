@@ -252,14 +252,6 @@ class InternshipInventory {
                 $i = new Internship($_REQUEST['id']);
                 $i->getPDF();
                 exit;
-            case 'csv':
-                PHPWS_Core::initModClass('intern', 'Internship.php');
-                $filename = Internship::getCSVFile($_REQUEST['ids']);
-                header('Content-Type: text/csv');
-                header('Content-Disposition: attachment; filename="InternshipsExport.csv"');
-                readfile($filename);
-                unlink($filename);
-                exit;
             case 'upload_document_form':
                 PHPWS_Core::initModClass('intern', 'Intern_Document_Manager.php');
                 $docManager = new Intern_Document_Manager();

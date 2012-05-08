@@ -309,39 +309,6 @@ class Internship extends Model {
     }
 
     /**
-     * Create a CSV file with rows for each internship with
-     * ID in $internships.
-     * @return filename
-     */
-    public static function getCSVFile($internships)
-    {
-        if (sizeof($internships) < 1) {
-            return null;
-        }
-
-        // Create a temporary file for CSV.
-        $tmpName = tempnam('/tmp', 'php');
-        $handle = fopen($tmpName, 'w');
-
-        // Get the first internship manually so we can fetch the header names.
-        $i = new Internship($internships[0]);
-        $line = $i->getCSV();
-        $headers = array_keys($line);
-        fputcsv($handle, $headers); // Write header first.
-        fputcsv($handle, $line); // Write first data line.
-        // Continue writing the rest of lines.
-        for ($index = 1; $index < sizeof($internships); $index++) {
-            $i = new Internship($internships[$index]);
-            $line = $i->getCSV();
-            fputcsv($handle, $line);
-        }
-
-        fclose($handle);
-
-        return $tmpName;
-    }
-
-    /**
      * Create a new internship. Save to DB.
      */
     public static function addInternship()
