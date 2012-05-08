@@ -238,7 +238,10 @@
         </tr>
         <tr>
           <td>{COURSE_TITLE_LABEL}</td>
-          <td>{COURSE_TITLE}</td>
+          <td>
+            {COURSE_TITLE}<br />
+            <span class="text disabled smaller italic">(Limit 28 characters; Banner)</span>
+          </td>
         </tr>
 
         <tr>

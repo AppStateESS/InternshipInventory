@@ -14,6 +14,20 @@
 }
 */
 
+/**** Text Styles ****/
+
+.text.disabled {
+	color: #666;
+}
+
+.text.smaller {
+	font-size: 11px;
+}
+
+.text.italic {
+	font-style:italic;
+}
+
 #link-list {
     float: right;
     margin-bottom: 10px;

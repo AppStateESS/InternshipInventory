@@ -53,6 +53,8 @@ class InternshipUI implements UI {
             $folder = new Intern_Folder(Intern_Document::getFolderId());
             $tpl['UPLOAD_DOC'] = $folder->documentUpload($internship->id);
             $tpl['TITLE'] = 'Edit Student';
+            
+            Layout::addPageTitle('Edit Internship');
         } else {
             
             if(!Current_User::allow('intern', 'create_internship')){
@@ -61,11 +63,14 @@ class InternshipUI implements UI {
                 PHPWS_Core::home();
             }
             
+            Layout::addPageTitle('Add Internship');
+            
             /* Show form with empty fields. */
             $form = self::getInternshipForm(null, $tpl);
             // Show a disabled button in document list if we are adding an internship.
             $tpl['UPLOAD_DOC'] = "<input type='button' disabled='disabled' class='disabled-button' title='Must save internship first.' value='Add Document'/>";
             $tpl['TITLE'] = 'Add Student';
+            
         }
         /*
          * If 'missing' is set then we have been redirected
@@ -105,8 +110,6 @@ class InternshipUI implements UI {
         }
 
         $form->mergeTemplate($tpl);
-        
-        Layout::addPageTitle('Add Internship');
         
         //test($form->getTemplate(),1);
         
@@ -258,7 +261,7 @@ class InternshipUI implements UI {
         $form->setLabel('emergency_contact_phone', 'Phone');
         $form->setRequired('emergency_contact_phone');
         
-        /**
+        /***
          * Faculty supervisor info.
          */
         $form->addText('supervisor_first_name');
@@ -283,7 +286,7 @@ class InternshipUI implements UI {
         $form->addSelect('department', $depts);
         $form->setLabel('department', 'Department');
 
-        /**
+        /***
          * Agency info
          */
         $form->addText('agency_name');
@@ -310,7 +313,7 @@ class InternshipUI implements UI {
         $form->addText('agency_phone');
         $form->setLabel('agency_phone', 'Phone');
 
-        /**
+        /***
          * Agency supervisor info
          */
         $form->addText('agency_sup_first_name');
@@ -347,7 +350,7 @@ class InternshipUI implements UI {
         $form->addText('agency_sup_fax');
         $form->setLabel('agency_sup_fax', 'Fax');
 
-        /**
+        /***
          * Internship details.
          */
         $terms = Term::getTermsAssoc();
@@ -428,6 +431,7 @@ class InternshipUI implements UI {
 
         $form->addText('course_title');
         $form->setLabel('course_title', 'Title');
+        $form->setMaxSize('course_title',28); // Limit to 28 chars, per Banner
 
 
         $form->addTextArea('notes');
