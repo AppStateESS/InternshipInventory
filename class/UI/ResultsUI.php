@@ -19,15 +19,16 @@ class ResultsUI implements UI
         
         Layout::addPageTitle('Search Results');
 
-        $dept  = null;
-        $term  = null;
-        $name  = null;
+        $dept   = null;
+        $term   = null;
+        $name   = null;
         $level  = null;
-        $major = null;
-        $type  = null;
-        $loc   = null;
-        $state = null;
-        $prov  = null;
+        $major  = null;
+        $campus = null;
+        $type   = null;
+        $loc    = null;
+        $state  = null;
+        $prov   = null;
         $workflowState = null;
 
         /**
@@ -48,6 +49,8 @@ class ResultsUI implements UI
             $level = $_REQUEST['student_level'];
         if(isset($_REQUEST['type']))
             $type = $_REQUEST['type'];
+        if(isset($_REQUEST['campus']))
+            $campus = $_REQUEST['campus'];
         if(isset($_REQUEST['loc']))
             $loc = $_REQUEST['loc'];
         if(isset($_REQUEST['state']))
@@ -58,7 +61,7 @@ class ResultsUI implements UI
             $workflowState = $_REQUEST['workflow_state'];
         
         /* Get Pager */
-        $pager = self::getPager($name, $dept, $term, $major, $level, $type, $loc, $state, $prov, $workflowState);
+        $pager = self::getPager($name, $dept, $term, $major, $level, $type, $campus, $loc, $state, $prov, $workflowState);
 
         /* Javascript */
         javascript('/jquery/');
@@ -72,10 +75,10 @@ class ResultsUI implements UI
     /**
      * Get the DBPager object. Search strings can be passed in too.
      */
-    private static function getPager($name=null, $deptId=null, $term=null,
-                                     $major=null, $level=null, $type=null,
-                                     $loc=null, $state=null, $prov=null,
-                                     $workflowState=null)
+    private static function getPager($name = null, $deptId = null, $term = null,
+                                     $major = null, $level = null, $type = null,
+                                     $campus = null,$loc = null, $state = null,
+                                     $prov = null, $workflowState = null)
     {
         $pager = new DBPager('intern_internship', 'Internship');
         
@@ -147,6 +150,11 @@ class ResultsUI implements UI
             }else if($loc == 'internat'){
                 $pager->addWhere('international', 1);
             }
+        }
+        
+        // Campus
+        if(isset($campus)){
+            $pager->addWhere('intern_student.campus', $campus);
         }
         
         // Domestic state

@@ -50,6 +50,11 @@ class SearchUI implements UI
         $levels = array('ugrad' => 'Undergraduate', 'grad' => 'Graduate');
         $form->addRadioAssoc('student_level', $levels);
         //$form->setMatch('student_level', 'ugrad');
+        
+        // Campus
+        $campuses = array('main_campus'=>'Main Campus',
+                          'distance_ed'=>'Distance Ed');
+        $form->addRadioAssoc('campus', $campuses);
 
         // Undergrad major drop down
         if (isset($s)){

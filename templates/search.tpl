@@ -14,11 +14,18 @@
       <fieldset class="search-fieldset">
         <legend>Level &amp; Major/Program</legend>
         <!-- BEGIN student_level_repeat -->
-        {STUDENT_LEVEL}{STUDENT_LEVEL_LABEL}
+        {STUDENT_LEVEL}{STUDENT_LEVEL_LABEL}&nbsp;
         <!--  END student_level_repeat -->
         <br />
         <span id="ugrad_drop">{UGRAD_MAJOR}</span>
         <span id="grad_drop">{GRAD_PROG}</span>
+      </fieldset>
+      
+      <fieldset class="search-fieldset">
+        <legend>Campus</legend>
+        <!-- BEGIN campus_repeat -->
+        {CAMPUS}{CAMPUS_LABEL}&nbsp;
+        <!-- END campus_repeat -->
       </fieldset>
 
       <fieldset class="search-fieldset">
@@ -33,7 +40,7 @@
       <fieldset class="search-fieldset">
         <legend>Location</legend>
         <!-- BEGIN loc_repeat -->
-        {LOC}{LOC_LABEL}
+        {LOC}{LOC_LABEL}&nbsp;
          <!-- END loc_repeat -->
       </fieldset>
 
@@ -50,7 +57,8 @@
         {WORKFLOW_STATE}{WORKFLOW_STATE_LABEL}<br />
         <!-- END workflow_state_repeat -->
       </fieldset>
-    <br />
-    {SUBMIT} <input type="button" title="Reset search fields" name="reset" value="Clear Fields"/>
+</div>
+<div style="clear:both; float:right;margin-top:10px;margin-right:150px;">
+  {SUBMIT} <input type="button" title="Reset search fields" name="reset" value="Clear Fields"/>
 </div>
 {END_FORM}
