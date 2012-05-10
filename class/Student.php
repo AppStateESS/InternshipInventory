@@ -33,7 +33,7 @@ class Student extends Model
     public $emergency_contact_phone;
     
     /**
-     * @Override Model::getDb
+     * @override Model::getDb
      */
     public function getDb()
     {

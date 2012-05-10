@@ -22,8 +22,8 @@ class ResultsUI implements UI
         $dept  = null;
         $term  = null;
         $name  = null;
+        $level  = null;
         $major = null;
-        $grad  = null;
         $type  = null;
         $loc   = null;
         $state = null;
@@ -44,8 +44,8 @@ class ResultsUI implements UI
             $major = $_REQUEST['ugrad_major'];
         if(isset($_REQUEST['grad_major']))
             $major = $_REQUEST['grad_major'];
-        if(isset($_REQUEST['grad']))
-            $grad = $_REQUEST['grad'];
+        if(isset($_REQUEST['student_level']))
+            $level = $_REQUEST['student_level'];
         if(isset($_REQUEST['type']))
             $type = $_REQUEST['type'];
         if(isset($_REQUEST['loc']))
@@ -58,7 +58,7 @@ class ResultsUI implements UI
             $workflowState = $_REQUEST['workflow_state'];
         
         /* Get Pager */
-        $pager = self::getPager($name, $dept, $term, $major, $grad, $type, $loc, $state, $prov, $workflowState);
+        $pager = self::getPager($name, $dept, $term, $major, $level, $type, $loc, $state, $prov, $workflowState);
 
         /* Javascript */
         javascript('/jquery/');
@@ -73,7 +73,7 @@ class ResultsUI implements UI
      * Get the DBPager object. Search strings can be passed in too.
      */
     private static function getPager($name=null, $deptId=null, $term=null,
-                                     $major=null, $grad=null, $type=null,
+                                     $major=null, $level=null, $type=null,
                                      $loc=null, $state=null, $prov=null,
                                      $workflowState=null)
     {
@@ -99,6 +99,7 @@ class ResultsUI implements UI
         if(!is_null($term) && $term != -1){
             $pager->addWhere('term', $term);
         }
+        
         if(!is_null($name) && $name != ''){
             $pager->addWhere('intern_student.first_name', "%$name%", 'ILIKE', 'OR', 'namez');
             $pager->addWhere('intern_student.middle_name', "%$name%", 'ILIKE', 'OR', 'namez');
@@ -106,26 +107,28 @@ class ResultsUI implements UI
             $pager->addWhere('intern_student.banner', "%$name%", 'ILIKE', 'OR', 'namez');
         }
         
-        if(!is_null($major) && $major != -1){
-            $pager->addWhere('intern_student.ugrad_major', $major);
+        // Student level
+        if(isset($level)){
+            $pager->addWhere('intern_student.level', $level);
+            
+            // Major
+            if(isset($major) && $major != -1){                
+                if($level == 'grad'){
+                    // Graduate
+                    $pager->addWhere('intern_student.grad_prog', $major);
+                }else if($level = 'ugrad'){
+                    // Undergraduate
+                    $pager->addWhere('intern_student.ugrad_major', $major);
+                }
+            }
         }
-        if(!is_null($grad) && $grad != -1){
-            $pager->addWhere('intern_student.grad_prog', $grad);
-        }
+        
+        // Experience type
         if(!is_null($type)){
             foreach($type as $t){
                 switch($t){
                     case 'internship':
                         $pager->addWhere('internship', 1);
-                        break;
-                    case 'service_learn':
-                        $pager->addWhere('service_learn', 1);
-                        break;
-                    case 'independent_study':
-                        $pager->addWhere('independent_study', 1);
-                        break;
-                    case 'research_assistant':
-                        $pager->addWhere('research_assist', 1);
                         break;
                     case 'student_teaching':
                         $pager->addWhere('student_teaching', 1);
@@ -133,25 +136,31 @@ class ResultsUI implements UI
                     case 'clinical_practica':
                         $pager->addWhere('clinical_practica', 1);
                         break;
-                    case 'special_topics':
-                        $pager->addWhere('special_topics', 1);
-                        break;
                 }
             }
         }// End type
-        if(!is_null($state) && $state != '-1'){
-            $pager->addWhere('intern_agency.state', "%$state%", 'ILIKE');
-        }
-        if(!is_null($prov) && $prov != ''){
-            $pager->addWhere('intern_agency.state', "%$prov%", 'ILIKE');
-        }
+
+        // Location
         if(!is_null($loc)){
-            if($loc == 'domestic')
+            if($loc == 'domestic'){
                 $pager->addWhere('domestic', 1);
-            else if($loc == 'internat')
+            }else if($loc == 'internat'){
                 $pager->addWhere('international', 1);
+            }
         }
         
+        // Domestic state
+        if(!is_null($state) && $state != '-1'){
+            $pager->addWhere('intern_internship.loc_state', "%$state%", 'ILIKE');
+        }
+        
+        // International
+        if(!is_null($prov) && $prov != ''){
+            $pager->addWhere('intern_internship.loc_country', "%$prov%", 'ILIKE', 'OR', 'intl_loc');
+            $pager->addWhere('intern_internship.loc_province', "%$prov%", 'ILIKE', 'OR', 'intl_loc');
+        }
+        
+        // Workflow state/status
         if(isset($workflowState)){
             foreach($workflowState as $s){
                 $pager->db->addWhere('intern_internship.state', $s, '=', 'OR', 'workflow_group');
