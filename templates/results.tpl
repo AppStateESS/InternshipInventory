@@ -1,6 +1,6 @@
 <h1 class="search-results-icon">Search Results</h1>
-<span>{BACK_LINK}</span><br /><br />
-<span id="csv-export">{CSV_LINK}</span>
+<span>{BACK_LINK}</span><br />
+<span style="float:right;">{CSV_REPORT}</span>
 
 <table id="search-results">
 <tr id="header-row">
@@ -37,9 +37,8 @@
 <!-- END empty_table -->
 </table>
 
-<div align="center">
-  <b>{PAGE_LABEL}</b><br />
-  {PAGES}<br />
-  {LIMITS}<br />
-  {CSV_REPORT}
+<div style="text-align:center">
+{TOTAL_ROWS} results<br />
+{PAGES}<br />
+{LIMITS}<br />
 </div>
