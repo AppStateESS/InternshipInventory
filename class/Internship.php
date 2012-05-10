@@ -537,6 +537,12 @@ class Internship extends Model {
         $i->course_title = strip_tags($_POST['course_title']);
         
         // OIED Certification
+        // Check if this has changed from non-certified->certified
+        if($i->oied_certified == 0 && $_POST['oied_certified'] == 1){
+            // note the change for later
+            $oiedCertified = true;
+        }
+        
         $i->oied_certified = isset($_POST['oied_certified']);
         
         // If we don't have a state and this is a new internship,
@@ -557,14 +563,21 @@ class Internship extends Model {
         }
         
         /***************************
-        * State/Workflow Handling *
-        ***************************/
+         * State/Workflow Handling *
+         ***************************/
         PHPWS_Core::initModClass('intern', 'WorkflowController.php');
         PHPWS_Core::initModClass('intern', 'WorkflowTransitionFactory.php');
         $t = WorkflowTransitionFactory::getTransitionByName($_POST['workflow_action']);
         $workflow = new WorkflowController($i, $t);
         $workflow->doTransition(isset($_POST['notes'])?$_POST['notes']:null);
 
+        // Create a ChangeHisotry for the OIED certification.
+        if($oiedCertified){
+            $currState = WorkflowStateFactory::getState($i->getStateName());
+            $ch = new ChangeHistory($i, Current_User::getUserObj(), time(), $currState, $currState, 'Certified by OIED');
+            $ch->save();
+        }
+        
         PHPWS_DB::commit();
         
         $workflow->doNotification();

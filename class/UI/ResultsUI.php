@@ -93,12 +93,16 @@ class ResultsUI implements UI
         $pager->db->addJoin('LEFT', 'intern_internship', 'intern_admin', 'department_id', 'department_id');
         $pager->db->addJoin('LEFT', 'intern_internship', 'intern_agency', 'agency_id', 'id');
         
-        if(!Current_User::isDeity())
+        if(!Current_User::isDeity()){
             $pager->addWhere('intern_admin.username', Current_User::getUsername());
+        }
 
-        /* Add Where clauses for each seach field */
-        if(!is_null($deptId) && $deptId != -1)
+        // Limit to requested department
+        if(!is_null($deptId) && $deptId != -1){
             $pager->addWhere('department_id', $deptId);
+        }
+        
+        // Limit to requested department
         if(!is_null($term) && $term != -1){
             $pager->addWhere('term', $term);
         }
