@@ -33,14 +33,17 @@ class ResultsUI implements UI
         /**
          * Check if any search fields are set.
          */
+        
         if(isset($_REQUEST['dept']))
             $dept = $_REQUEST['dept'];
         if(isset($_REQUEST['term_select']))
             $term = $_REQUEST['term_select'];
         if(isset($_REQUEST['name']))
             $name = $_REQUEST['name'];
-        if(isset($_REQUEST['major']))
-            $major = $_REQUEST['major'];
+        if(isset($_REQUEST['ugrad_major']))
+            $major = $_REQUEST['ugrad_major'];
+        if(isset($_REQUEST['grad_major']))
+            $major = $_REQUEST['grad_major'];
         if(isset($_REQUEST['grad']))
             $grad = $_REQUEST['grad'];
         if(isset($_REQUEST['type']))
@@ -102,6 +105,7 @@ class ResultsUI implements UI
             $pager->addWhere('intern_student.last_name', "%$name%", 'ILIKE', 'OR', 'namez');
             $pager->addWhere('intern_student.banner', "%$name%", 'ILIKE', 'OR', 'namez');
         }
+        
         if(!is_null($major) && $major != -1){
             $pager->addWhere('intern_student.ugrad_major', $major);
         }
