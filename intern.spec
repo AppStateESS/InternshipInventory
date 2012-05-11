@@ -24,7 +24,7 @@ The Internship Inventory
 
 %install
 mkdir -p "$RPM_BUILD_ROOT%{install_dir}"
-cp -r * .htaccess $RPM_BUILD_ROOT%{install_dir}
+cp -r * $RPM_BUILD_ROOT%{install_dir}
 
 %clean
 rm -rf "$RPM_BUILD_ROOT%install_dir"
