@@ -17,4 +17,7 @@ define('FROM_ADDRESS', EMAIL_ADDRESS . '@' . DOMAIN_NAME); // fully qualified "f
 define('TO_DOMAIN', '@'. DOMAIN_NAME); // Default domain to send email to, beginning with '@'
 
 define('REGISTRAR_EMAIL_ADDRESS', 'infoserv@appstate.edu');
+
+define('EMAIL_FROM_ADDRESS', 'Internship Inventory <noreply@tux.appstate.edu>');
+
 ?>
