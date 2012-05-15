@@ -68,7 +68,7 @@ class InternshipUI implements UI {
             /* Show form with empty fields. */
             $form = self::getInternshipForm(null, $tpl);
             // Show a disabled button in document list if we are adding an internship.
-            $tpl['UPLOAD_DOC'] = "<input type='button' disabled='disabled' class='disabled-button' title='Must save internship first.' value='Add Document'/>";
+            $tpl['UPLOAD_DOC'] = "<input type='button' disabled='disabled' class='disabled' title='Must save internship first.' value='Add Document'/>";
             $tpl['TITLE'] = 'Add Student';
             
         }

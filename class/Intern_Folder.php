@@ -20,7 +20,7 @@ class Intern_Folder extends Folder
         $link_var['folder_id'] = $this->id;
         $link_var['action'] = 'upload_document_form';
         $link_var['internship'] = $internshipId;
-        $label = dgettext('filecabinet', 'Add document');
+        $label = dgettext('filecabinet', 'Add document(s)');
 
         $link = new PHPWS_Link(null, 'intern', $link_var, true);
         $link->convertAmp(false);

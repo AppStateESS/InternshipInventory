@@ -111,7 +111,7 @@
       </table>
 
       <!-- start document list -->
-      <span class="info-header">Documents</span>
+      <span class="info-header">Contract &amp; Documents</span>
       <table class="sub-form">
         <tr>
           <td>
