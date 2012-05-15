@@ -6,7 +6,7 @@ class Email {
     {
         $content = PHPWS_Template::process($tags, 'intern', $tpl);
 
-        self::sendEmail($to, NULL, $subject, $content, $cc);
+        self::sendEmail($to, EMAIL_FROM_ADDRESS, $subject, $content, $cc);
     }
 
     public function sendEmail($to, $from, $subject, $content, $cc = NULL, $bcc = NULL)
