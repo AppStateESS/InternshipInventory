@@ -186,6 +186,9 @@ class InternshipUI implements UI {
             $form->setExtra('oied_certified', 'disabled="disabled" disabled');
             //$form->setClass('oied_certified', 'disabled-check');
         }
+        
+        $form->addHidden('oied_certified_hidden');
+        
 
         /**
          * Student fields
@@ -562,7 +565,10 @@ class InternshipUI implements UI {
         $vals['pay_rate'] = $i->pay_rate;
         
         if($i->oied_certified){
-            //$form->setMatch('oied_certified', true);
+            $form->setMatch('oied_certified', true);
+            $form->setValue('oied_certified_hidden', 'true');
+        }else{
+            $form->setValue('oied_certified_hidden', 'false');
         }
 
         $form->setMatch('term', $i->term);

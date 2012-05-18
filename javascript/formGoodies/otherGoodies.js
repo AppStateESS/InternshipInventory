@@ -75,6 +75,21 @@ function otherStuff()
         $("input:checkbox[name='stipend']").attr('disabled', true);
     }
 
+    /*******
+     * OIED Checkbox
+     * The OIED checkbox is shadowed by a hidden field. The hidden field
+     * is always submitted with the form. However, the checkbox value will
+     * not be submitted if the checkbox is 'disabled'.
+     */
+    
+    $("#internship_oied_certified").change(function() {
+    	if($("#internship_oied_certified").attr('checked')){
+    		$("#internship_oied_certified_hidden").val('true');
+    	}else{
+    		$("#internship_oied_certified_hidden").val('false');
+    	}
+    });
+    
     /*
      * Location stuff.
      *

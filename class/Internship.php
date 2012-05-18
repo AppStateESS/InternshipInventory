@@ -569,14 +569,20 @@ class Internship extends Model {
         $i->course_sect = strip_tags($_POST['course_sect']);
         $i->course_title = strip_tags($_POST['course_title']);
 
-        // OIED Certification
-        // Check if this has changed from non-certified->certified
-        if($i->oied_certified == 0 && $_POST['oied_certified'] == 1){
+        /************
+         * OIED Certification 
+         */
+        // Check if this has changed from non-certified->certified so we can log it later
+        if($i->oied_certified == 0 && $_POST['oied_certified_hidden'] == 'true'){
             // note the change for later
             $oiedCertified = true;
         }
 
-        $i->oied_certified = isset($_POST['oied_certified']);
+        if($_POST['oied_certified_hidden'] == 'true'){
+            $i->oied_certified = 1;
+        }else if($_POST['oied_certified_hidden'] == 'false'){
+            $i->oied_certified = 0;
+        }
 
         // If we don't have a state and this is a new internship,
         // the set an initial state
