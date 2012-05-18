@@ -19,7 +19,7 @@
     <td class="sub-form-cell"><span class="info-header">Student</span>
       <table class="sub-form" id="student-info">
         <tr>
-          <td>{STUDENT_FIRST_NAME_LABEL}</td>
+          <td>{STUDENT_FIRST_NAME_LABEL}<span class="required-input">*</span></td>
           <td>{STUDENT_FIRST_NAME}</td>
         </tr>
         <tr>
@@ -27,15 +27,15 @@
           <td>{STUDENT_MIDDLE_NAME}</td>
         </tr>
         <tr>
-          <td>{STUDENT_LAST_NAME_LABEL}</td>
+          <td>{STUDENT_LAST_NAME_LABEL}<span class="required-input">*</span></td>
           <td>{STUDENT_LAST_NAME}</td>
         </tr>
         <tr>
-          <td>{BANNER_LABEL}</td>
+          <td>{BANNER_LABEL}<span class="required-input">*</span></td>
           <td>{BANNER}</td>
         </tr>
         <tr>
-          <td>{STUDENT_EMAIL_LABEL}</td>
+          <td>{STUDENT_EMAIL_LABEL}<span class="required-input">*</span></td>
           <td>{STUDENT_EMAIL}@appstate.edu</td>
         </tr>
         <tr>
@@ -55,11 +55,11 @@
           <td>{STUDENT_ZIP}</td>
         </tr>
         <tr>
-          <td>{STUDENT_PHONE_LABEL}</td>
+          <td>{STUDENT_PHONE_LABEL}<span class="required-input">*</span></td>
           <td>{STUDENT_PHONE}</td>
         </tr>
         <tr>
-          <td>{STUDENT_GPA_LABEL}</td>
+          <td>{STUDENT_GPA_LABEL}<span class="required-input">*</span></td>
           <td>{STUDENT_GPA}</td>
         <tr><tr>
           <td>Campus</td>
@@ -71,7 +71,7 @@
         <tr>
           <td colspan="2">
             <fieldset>
-              <legend>Major</legend>
+              <legend>Major<span class="required-input">*</span></legend>
               <!-- BEGIN student_level_repeat -->
               {STUDENT_LEVEL}{STUDENT_LEVEL_LABEL}
               <!--  END student_level_repeat -->
@@ -84,9 +84,9 @@
           <td colspan="2">
             <fieldset class="align-form">
               <legend>Emergency Contact</legend>
-              {EMERGENCY_CONTACT_NAME_LABEL}{EMERGENCY_CONTACT_NAME}<br />
-              {EMERGENCY_CONTACT_RELATION_LABEL}{EMERGENCY_CONTACT_RELATION}<br />
-              {EMERGENCY_CONTACT_PHONE_LABEL}{EMERGENCY_CONTACT_PHONE}<br />
+              {EMERGENCY_CONTACT_NAME_LABEL}<span class="required-input">*</span>{EMERGENCY_CONTACT_NAME}<br />
+              {EMERGENCY_CONTACT_RELATION_LABEL}<span class="required-input">*</span>{EMERGENCY_CONTACT_RELATION}<br />
+              {EMERGENCY_CONTACT_PHONE_LABEL}<span class="required-input">*</span>{EMERGENCY_CONTACT_PHONE}<br />
             </fieldset></td>
         </tr>
       </table></td>
@@ -143,7 +143,7 @@
           <td>{SUPERVISOR_PHONE}</td>
         </tr>
         <tr>
-          <td colspan=2>{DEPARTMENT_LABEL}<br/ > {DEPARTMENT}</td>
+          <td colspan=2>{DEPARTMENT_LABEL}<span class="required-input">*</span><br/ > {DEPARTMENT}</td>
         </tr>
       </table>
       </td>
@@ -162,7 +162,7 @@
         <tr>
           <td colspan="2">
             <fieldset{LOC_HIGHLIGHT}>
-              <legend>Location</legend>
+              <legend>Location<span class="required-input">*</span></legend>
               <!-- BEGIN location_repeat -->
               {LOCATION}{LOCATION_LABEL}<br />
               <!-- END location_repeat -->
@@ -199,7 +199,7 @@
           </td>
         </tr>
         <tr>
-          <td>{TERM_LABEL}</td>
+          <td>{TERM_LABEL}<span class="required-input">*</span></td>
           <td>{TERM}</td>
         </tr>
         <tr>
@@ -279,7 +279,7 @@
       <table class="sub-form" id="agency-info">
 
         <tr>
-          <td>{AGENCY_NAME_LABEL}</td>
+          <td>{AGENCY_NAME_LABEL}<span class="required-input">*</span></td>
           <td>{AGENCY_NAME}</td>
         </tr>
         <tr>

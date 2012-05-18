@@ -348,10 +348,11 @@ class Internship extends Model {
         PHPWS_DB::begin();
         /* See if this student exists already */
         $student = Student::getStudentByBanner($_REQUEST['banner']);
-        if (isset($_REQUEST['student_id'])) {
+
+        if (isset($_REQUEST['internship_id'])) {
             /* User is attempting to edit internship. Student ID should be passed in. */
             try {
-                $student = new Student($_REQUEST['student_id']);
+                $student = Student::getStudentByBanner($_REQUEST['banner']);
             } catch (Exception $e) {
                 PHPWS_DB::rollback();
                 NQ::simple('intern', INTERN_ERROR, 'Invalid Student ID.');
@@ -359,7 +360,7 @@ class Internship extends Model {
                 return PHPWS_Core::goBack();
             }
         } else if (is_null($student)) {
-            /* Not student exists by banner ID and this is a new internship. */
+            /* No student exists by banner ID and this is a new internship. */
             $student = new Student();
         }
 
