@@ -7,18 +7,22 @@ PHPWS_Core::initModClass('intern', 'UI/UI.php');
 
 class InternshipUI implements UI {
 
-    /**
-     * @editor Matt Mcnaney
-     * The following fields were removed on 7/21/2011
-     * 'supervisor_first_name', 'supervisor_last_name', 'supervisor_email',
-     * 'supervisor_phone', 'start_date', 'end_date',
-     * 'agency_sup_phone','agency_address','agency_zip', 'agency_sup_zip',
-     * 'agency_phone',  'agency_city', 'agency_sup_state', 'agency_sup_first_name',
-     * 'agency_sup_last_name', 'agency_sup_email', 'agency_sup_address',
-     * 'agency_sup_city',
-     */
-    public static $requiredFields = array('student_first_name', 'student_last_name',
-        'banner', 'student_phone', 'student_email', 'agency_name', 'term', 'department','campus','emergency_contact_name', 'emergency_contact_relation', 'emergency_contact_phone');
+    public static $requiredFields = array('student_first_name',
+            'student_last_name',
+            'banner',
+            'student_phone',
+            'student_email',
+            'student_gpa',
+            'campus',
+            'student_level',
+            'agency_name',
+            'term',
+            'department',
+            'campus',
+            'emergency_contact_name',
+            'emergency_contact_relation',
+            'emergency_contact_phone',
+            'location');
 
     public static function display()
     {
@@ -212,18 +216,18 @@ class InternshipUI implements UI {
         // GPA
         $form->addText('student_gpa');
         $form->setLabel('student_gpa', 'GPA');
-        $form->setRequired('student_gpa');
+        //$form->setRequired('student_gpa');
         
         // Campus
         $form->addRadioAssoc('campus',Array('main_campus'=>'Main Campus', 'distance_ed'=>'Distance Ed'));
-        $form->setRequired('campus');
+        //$form->setRequired('campus');
         $form->setMatch('campus', 'main_campus');
         
         // Student level radio button
         $levels = array('ugrad' => 'Undergraduate', 'grad' => 'Graduate');
         $form->addRadioAssoc('student_level', $levels);
         //$form->setMatch('student_level', 'ugrad');
-        $form->setRequired('student_level');
+        //$form->setRequired('student_level');
 
         // Undergrad major drop down
         if (isset($s)){
@@ -249,17 +253,17 @@ class InternshipUI implements UI {
         $form->addText('emergency_contact_name');
         $form->setClass('emergency_contact_name', 'form-text');
         $form->setLabel('emergency_contact_name', 'Name');
-        $form->setRequired('emergency_contact_name');
+        //$form->setRequired('emergency_contact_name');
         
         $form->addText('emergency_contact_relation');
         $form->setClass('emergency_contact_relation', 'form-text');
         $form->setLabel('emergency_contact_relation', 'Relationship');
-        $form->setRequired('emergency_contact_relation');
+       //$form->setRequired('emergency_contact_relation');
         
         $form->addText('emergency_contact_phone');
         $form->setClass('emergency_contact_phone', 'form-text');
         $form->setLabel('emergency_contact_phone', 'Phone');
-        $form->setRequired('emergency_contact_phone');
+        //$form->setRequired('emergency_contact_phone');
         
         /***
          * Faculty supervisor info.
@@ -372,7 +376,7 @@ class InternshipUI implements UI {
         $loc = array('domestic' => 'Domestic', 'internat' => 'International');
         $form->addRadioAssoc('location', $loc);
         //$form->setMatch('location', 'domestic'); // Default to domestic
-        $form->setRequired('location');
+        //$form->setRequired('location');
 
         // Domestic fields
         $form->addText('loc_address');
@@ -439,7 +443,7 @@ class InternshipUI implements UI {
 
         // Label required fields
         foreach (self::$requiredFields as $field) {
-            $form->setRequired($field);
+            //$form->setRequired($field);
         }
 
         javascript('jquery');
