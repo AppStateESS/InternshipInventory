@@ -228,11 +228,27 @@ class Internship extends Model {
 
     /**
      * Is this internship domestic?
+     * 
+     * @return bool True if this is a domestic internship, false otherwise.
      */
     public function isDomestic()
     {
         if ($this->domestic == 1) {
             return true;
+        } else {
+            return false;
+        }
+    }
+    
+    /**
+     * Is this internship International?
+     * 
+     * @return bool True if this is an international internship, false otherwise.
+     */
+    public function isInternational()
+    {
+        if($this->international == 1) {
+            return false;
         } else {
             return false;
         }

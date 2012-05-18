@@ -120,9 +120,6 @@ function otherStuff()
         
         // Re-add handlers for copying state info. <mod/intern/javascript/copyAddress>
         sameAddressState($("input:checkbox[name='copy_address']").attr('checked'));
-        
-        // Disable OIED certification checkbox
-        $("#internship_oied_certified").attr('disabled', true);
     };
 
     /**
@@ -171,9 +168,6 @@ function otherStuff()
         // Show labels too.
         $("#internship_agency_country,#internship_agency_sup_country").parent().siblings().fadeIn('fast');
         sameAddressState($("input:checkbox[name='copy_address']").attr('checked'));
-        
-        // Enable OIED certification checkbox
-        $("#internship_oied_certified").attr('disabled', false);
     };
 
     /* Attach above function to click event */

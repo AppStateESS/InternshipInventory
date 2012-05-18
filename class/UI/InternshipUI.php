@@ -182,9 +182,9 @@ class InternshipUI implements UI {
         $form->addCheck('oied_certified');
         $form->setLabel('oied_certified', 'Certified by Office of International Education and Development');
 
-        if(!Current_User::allow('intern', 'oied_certify')){
-            $form->setExtra('oied_certified', 'disabled');
-            $form->setClass('oied_certified', 'disabled-check');
+        if(!Current_User::allow('intern', 'oied_certify') || $i->isDomestic()){
+            $form->setExtra('oied_certified', 'disabled="disabled" disabled');
+            //$form->setClass('oied_certified', 'disabled-check');
         }
 
         /**
@@ -562,7 +562,7 @@ class InternshipUI implements UI {
         $vals['pay_rate'] = $i->pay_rate;
         
         if($i->oied_certified){
-            $form->setMatch('oied_certified', true);
+            //$form->setMatch('oied_certified', true);
         }
 
         $form->setMatch('term', $i->term);
