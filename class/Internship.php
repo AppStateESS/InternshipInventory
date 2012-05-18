@@ -16,36 +16,36 @@ class Internship extends Model {
     public $agency_id;
     public $faculty_supervisor_id;
     public $department_id;
-    
+
     public $state;
     public $oied_certified;
-    
+
     public $domestic;
     public $international;
-    
+
     public $loc_address;
     public $loc_city;
     public $loc_state;
     public $loc_zip;
     public $loc_province;
     public $loc_country;
-    
+
     public $term;
     public $start_date = 0;
     public $end_date = 0;
     public $credits;
     public $avg_hours_week;
-    
+
     public $course_subj;
     public $course_no;
     public $course_sect;
     public $course_title;
-    
+
     public $paid;
     public $unpaid;
     public $stipend;
     public $pay_rate;
-    
+
     public $internship = 0;
     public $student_teaching = 0;
     public $clinical_practica = 0;
@@ -54,12 +54,12 @@ class Internship extends Model {
     //public $research_assist = 0;
     //public $special_topics = 0;
     //public $other_type;
-    
+
     public $notes;
-    
+
     // For DB Pager, doesn't exist in database
     public $student_last_name;
-    
+
     /**
      * @Override Model::getDb
      */
@@ -114,7 +114,7 @@ class Internship extends Model {
 
     /*
      private function toggle($pdf, $header=true)
-    {
+     {
     if ($header) {
     // Set header font.
     $pdf->setFont('Arial', 'B', '10');
@@ -187,7 +187,7 @@ class Internship extends Model {
         PHPWS_Core::initModClass('intern', 'Subject.php');
         return new Subject($this->course_subj);
     }
-    
+
     /**
      * Get Document objects associated with this internship.
      */
@@ -242,11 +242,11 @@ class Internship extends Model {
     {
         return $this->state;
     }
-    
+
     public function setState(WorkflowState $state){
         $this->state = $state->getName();
     }
-    
+
     /**
      * Row tags for DBPager
      */
@@ -304,8 +304,8 @@ class Internship extends Model {
          *
          */
         return array('internship' => 'Internship',
-            'student_teaching' => 'Student Teaching',
-            'clinical_practica' => 'Clinical Practica In Health Fields');
+                'student_teaching' => 'Student Teaching',
+                'clinical_practica' => 'Clinical Practica In Health Fields');
     }
 
     /**
@@ -317,6 +317,10 @@ class Internship extends Model {
         PHPWS_Core::initModClass('intern', 'Agency.php');
         PHPWS_Core::initModClass('intern', 'Department.php');
         PHPWS_Core::initModClass('intern', 'FacultySupervisor.php');
+
+        /**************
+         * Sanity Checks
+        */
 
         // Required fields check
         $missing = self::checkRequest();
@@ -333,7 +337,7 @@ class Internship extends Model {
             return PHPWS_Core::reroute($url);
         }
 
-        // Sanity heck the Banner ID
+        // Sanity check the Banner ID
         if(!preg_match('/^\d{9}$/', $_REQUEST['banner'])){
             $url = 'index.php?module=intern&action=edit_internship&missing=banner';
             // Throw in values fields the user typed in
@@ -344,7 +348,26 @@ class Internship extends Model {
             NQ::close();
             return PHPWS_Core::reroute($url);
         }
-        
+
+        // Course start date must be before end date
+        if(!empty($_REQUEST['start_date']) && !empty($_REQUEST['end_date'])){
+            $start = strtotime($_REQUEST['start_date']);
+            $end   = strtotime($_REQUEST['end_date']);
+
+            if ($start > $end) {
+                $url = 'index.php?module=intern&action=edit_internship&missing=start_date+end_date';
+                // Throw in values fields the user typed in
+                unset($_POST['start_date']);
+                unset($_POST['end_date']);
+                foreach ($_POST as $key => $val) {
+                    $url .= "&$key=$val";
+                }
+                NQ::simple('intern', INTERN_WARNING, 'The internship start date must be before the end date.');
+                NQ::close();
+                return PHPWS_Core::reroute($url);
+            }
+        }
+
         PHPWS_DB::begin();
         /* See if this student exists already */
         $student = Student::getStudentByBanner($_REQUEST['banner']);
@@ -375,12 +398,12 @@ class Internship extends Model {
         $student->ugrad_major = $_REQUEST['ugrad_major'] == -1 ? null : $_REQUEST['ugrad_major'];
         $student->gpa = $_REQUEST['student_gpa'];
         $student->campus = $_REQUEST['campus'];
-        
+
         $student->address = $_REQUEST['student_address'];
         $student->city = $_REQUEST['student_city'];
         $student->state = $_REQUEST['student_state'];
         $student->zip = $_REQUEST['student_zip'];
-        
+
         $student->emergency_contact_name = $_REQUEST['emergency_contact_name'];
         $student->emergency_contact_relation = $_REQUEST['emergency_contact_relation'];
         $student->emergency_contact_phone = $_REQUEST['emergency_contact_phone'];
@@ -489,13 +512,6 @@ class Internship extends Model {
         $i->department_id = $_REQUEST['department'];
         $i->start_date = !empty($_REQUEST['start_date']) ? strtotime($_REQUEST['start_date']) : 0;
         $i->end_date = !empty($_REQUEST['end_date']) ? strtotime($_REQUEST['end_date']) : 0;
-        // Check dates
-        if ($i->start_date > $i->end_date) {
-            PHPWS_DB::rollback();
-            NQ::simple('intern', INTERN_WARNING, 'Start date needs to be before end date.');
-            NQ::close();
-            return PHPWS_Core::goBack();
-        }
         $credits = (int) $_REQUEST['credits'];
         $i->credits = $credits ? $credits : NULL;
         $avg_hours_week = (int) $_REQUEST['avg_hours_week'];
@@ -515,7 +531,7 @@ class Internship extends Model {
         //$i->special_topics = isset($_REQUEST['special_topics_type']);
         //$i->other_type = isset($_REQUEST['check_other_type']) ? $_REQUEST['other_type'] : null;
         $i->notes = $_REQUEST['notes'];
-        
+
         $i->loc_address = strip_tags($_POST['loc_address']);
         $i->loc_city = strip_tags($_POST['loc_city']);
         if ($_POST['loc_state'] != '-1') {
@@ -526,26 +542,26 @@ class Internship extends Model {
         $i->loc_zip = strip_tags($_POST['loc_zip']);
         $i->loc_province = $_POST['loc_province'];
         $i->loc_country = strip_tags($_POST['loc_country']);
-        
+
         if($_POST['course_subj'] != '-1'){
             $i->course_subj = strip_tags($_POST['course_subj']);
         }else{
             $i->course_subj = null;
         }
-        
+
         $i->course_no = strip_tags($_POST['course_no']);
         $i->course_sect = strip_tags($_POST['course_sect']);
         $i->course_title = strip_tags($_POST['course_title']);
-        
+
         // OIED Certification
         // Check if this has changed from non-certified->certified
         if($i->oied_certified == 0 && $_POST['oied_certified'] == 1){
             // note the change for later
             $oiedCertified = true;
         }
-        
+
         $i->oied_certified = isset($_POST['oied_certified']);
-        
+
         // If we don't have a state and this is a new internship,
         // the set an initial state
         if($i->id == 0 && is_null($i->state)){
@@ -562,10 +578,10 @@ class Internship extends Model {
             NQ::close();
             return PHPWS_Core::goBack();
         }
-        
+
         /***************************
          * State/Workflow Handling *
-         ***************************/
+        ***************************/
         PHPWS_Core::initModClass('intern', 'WorkflowController.php');
         PHPWS_Core::initModClass('intern', 'WorkflowTransitionFactory.php');
         $t = WorkflowTransitionFactory::getTransitionByName($_POST['workflow_action']);
@@ -578,11 +594,11 @@ class Internship extends Model {
             $ch = new ChangeHistory($i, Current_User::getUserObj(), time(), $currState, $currState, 'Certified by OIED');
             $ch->save();
         }
-        
+
         PHPWS_DB::commit();
-        
+
         $workflow->doNotification();
-        
+
         if (isset($_REQUEST['student_id'])) {
             // Show message if user edited internship
             NQ::simple('intern', INTERN_SUCCESS, 'Saved internship for ' . $student->getFullName());
@@ -613,22 +629,22 @@ class Internship extends Model {
         /* Required select boxes should not equal -1 */
 
         if (!isset($_REQUEST['department']) ||
-        $_REQUEST['department'] == -1) {
+                $_REQUEST['department'] == -1) {
             $vals[] = 'department';
         }
 
         if(isset($_REQUEST['student_level']) && $_REQUEST['student_level'] == 'ugrad' &&
-        (!isset($_REQUEST['ugrad_major']) || $_REQUEST['ugrad_major'] == -1)){
+                (!isset($_REQUEST['ugrad_major']) || $_REQUEST['ugrad_major'] == -1)){
             $vals[] = 'ugrad_major';
         }
 
         if(isset($_REQUEST['student_level']) && $_REQUEST['student_level'] == 'grad' &&
-        (!isset($_REQUEST['grad_prog']) || $_REQUEST['grad_prog'] == -1)){
+                (!isset($_REQUEST['grad_prog']) || $_REQUEST['grad_prog'] == -1)){
             $vals[] = 'grad_prog';
         }
 
         if (!isset($_REQUEST['term']) ||
-        $_REQUEST['term'] == -1) {
+                $_REQUEST['term'] == -1) {
             $vals[] = 'term';
         }
 
@@ -649,7 +665,7 @@ class Internship extends Model {
                 }
             }
         }
-        
+
 
         /**
          * Funky stuff here for location.
@@ -728,11 +744,11 @@ class Internship extends Model {
         $pdf->cell(25, 5, $this->course_sect);
 
         /*
-        $pdf->setXY(132, 39);
+         $pdf->setXY(132, 39);
         if (!is_null($m)) {
-        	$major = $m->getName();
+        $major = $m->getName();
         } else {
-        	$major = 'N/A';
+        $major = 'N/A';
         }
         $pdf->cell(73, 5, $major);
         */
@@ -768,7 +784,7 @@ class Internship extends Model {
 
         $pdf->setXY(113, 88);
         $pdf->cell(54, 5, $s->phone);
-        
+
         /* Student Address */
         $pdf->setXY(105, 83);
         $studentAddress = "";
@@ -837,7 +853,7 @@ class Internship extends Model {
         $pdf->cell(71, 5, $a->name);
 
         $agency_address = $a->getAddress();
-        
+
         if(strlen($agency_address) < 50){
             // If it's short enough, just write it
             $pdf->setXY(125, 114);
@@ -854,8 +870,8 @@ class Internship extends Model {
         }
 
         /**
-        * Agency supervisor info.
-        */
+         * Agency supervisor info.
+         */
         $pdf->setXY(110, 129);
         $super = "";
         $superName = $a->getSupervisorFullName();
@@ -863,7 +879,7 @@ class Internship extends Model {
             //test('ohh hai',1);
             $super .= $a->getSupervisorFullName() . ',';
         }
-        
+
         if(isset($a->supervisor_title) && !empty($a->supervisor_title) && $a->supervisor_title != ''){
             $super .= $a->supervisor_title;
         }
@@ -910,8 +926,8 @@ class Internship extends Model {
         }
 
         /**********
-         * Page 2 *       
-         **********/
+         * Page 2 *
+        **********/
         $tplidx = $pdf->importPage(2);
         $pdf->addPage();
         $pdf->useTemplate($tplidx);
@@ -919,14 +935,14 @@ class Internship extends Model {
         /* Emergency Contact Info */
         $pdf->setXY(60, 252);
         $pdf->cell(52, 5, $s->emergency_contact_name);
-        
+
         $pdf->setXY(134, 252);
         $pdf->cell(52, 5, $s->emergency_contact_relation);
-        
+
         $pdf->setXY(175, 252);
         $pdf->cell(52, 5, $s->emergency_contact_phone);
-        
-        
+
+
         $pdf->output();
     }
 
