@@ -386,22 +386,32 @@ class Internship extends Model {
 
         PHPWS_DB::begin();
         /* See if this student exists already */
-        $student = Student::getStudentByBanner($_REQUEST['banner']);
+        /*
+        try {
+            $student = Student::getStudentByBanner($_REQUEST['banner']);
+        } catch (Exception $e) {
+            PHPWS_DB::rollback(); // Roll back any db changes
+            throw $e; // re-throw the exception so that the user sees a nice message and admins get an email
+            return;
+        }
+        */
 
-        if (isset($_REQUEST['internship_id'])) {
-            /* User is attempting to edit internship. Student ID should be passed in. */
+        
+        if (isset($_REQUEST['student_id'])) {
+            // User is attempting to edit internship. Student ID should be passed in.
             try {
-                $student = Student::getStudentByBanner($_REQUEST['banner']);
+                //$student = Student::getStudentByBanner($_REQUEST['student_id']);
+                $student = new Student($_REQUEST['student_id']);
             } catch (Exception $e) {
-                PHPWS_DB::rollback();
-                NQ::simple('intern', INTERN_ERROR, 'Invalid Student ID.');
-                NQ::close();
-                return PHPWS_Core::goBack();
+                PHPWS_DB::rollback(); // Roll back any db changes
+                throw $e; // re-throw the exception so that the user sees a nice message and admins get an email
+                return;
             }
-        } else if (is_null($student)) {
-            /* No student exists by banner ID and this is a new internship. */
+        }else{
+            // No student exsists (new internship), create a blank student
             $student = new Student();
         }
+        
 
         $student->first_name = $_REQUEST['student_first_name'];
         $student->middle_name = $_REQUEST['student_middle_name'];
@@ -427,8 +437,9 @@ class Internship extends Model {
         try {
             $studentId = $student->save();
         } catch (Exception $e) {
-            PHPWS_DB::rollback();
-            return NQ::simple('intern', INTERN_ERROR, $e->getMessage());
+            PHPWS_DB::rollback(); // roll back any changes
+            throw $e; // re-throw exception so user sees the nice message and admins get an email
+            return;
         }
 
         // Create/Save agency
@@ -581,6 +592,8 @@ class Internship extends Model {
         if($_POST['oied_certified_hidden'] == 'true'){
             $i->oied_certified = 1;
         }else if($_POST['oied_certified_hidden'] == 'false'){
+            $i->oied_certified = 0;
+        }else{
             $i->oied_certified = 0;
         }
 
