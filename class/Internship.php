@@ -408,10 +408,21 @@ class Internship extends Model {
                 return;
             }
         }else{
-            // No student exsists (new internship), create a blank student
-            $student = new Student();
+            // New internship, no student_id passed in. Try to find an existing student by Banner ID
+            try {
+                $student = Student::getStudentByBanner($_REQUEST['banner']);
+            }catch(Exception $e){
+                PHPWS_DB::rollback(); // Roll back any db changes
+                throw $e; // re-throw the exception so that the user sees a nice message and admins get an email
+                return;
+            }
+            
+            // If no result returned, create a new student
+            if(is_null($student)){
+                // No student exsists (new internship), create a blank student
+                $student = new Student();
+            }
         }
-        
 
         $student->first_name = $_REQUEST['student_first_name'];
         $student->middle_name = $_REQUEST['student_middle_name'];
