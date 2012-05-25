@@ -89,7 +89,6 @@ class ResultsUI implements UI
         $pager->setReportRow('getCSV');
         $pager->setEmptyMessage('No matching internships found.');
         
-        $pager->db->addJoin('LEFT', 'intern_internship', 'intern_student', 'student_id', 'id');
         $pager->db->addJoin('LEFT', 'intern_internship', 'intern_admin', 'department_id', 'department_id');
         $pager->db->addJoin('LEFT', 'intern_internship', 'intern_agency', 'agency_id', 'id');
         
@@ -108,24 +107,24 @@ class ResultsUI implements UI
         }
         
         if(!is_null($name) && $name != ''){
-            $pager->addWhere('intern_student.first_name', "%$name%", 'ILIKE', 'OR', 'namez');
-            $pager->addWhere('intern_student.middle_name', "%$name%", 'ILIKE', 'OR', 'namez');
-            $pager->addWhere('intern_student.last_name', "%$name%", 'ILIKE', 'OR', 'namez');
-            $pager->addWhere('intern_student.banner', "%$name%", 'ILIKE', 'OR', 'namez');
+            $pager->addWhere('intern_internship.first_name', "%$name%", 'ILIKE', 'OR', 'namez');
+            $pager->addWhere('intern_internship.middle_name', "%$name%", 'ILIKE', 'OR', 'namez');
+            $pager->addWhere('intern_internship.last_name', "%$name%", 'ILIKE', 'OR', 'namez');
+            $pager->addWhere('intern_internship.banner', "%$name%", 'ILIKE', 'OR', 'namez');
         }
         
         // Student level
         if(isset($level)){
-            $pager->addWhere('intern_student.level', $level);
+            $pager->addWhere('intern_internship.level', $level);
             
             // Major
             if(isset($major) && $major != -1){                
                 if($level == 'grad'){
                     // Graduate
-                    $pager->addWhere('intern_student.grad_prog', $major);
+                    $pager->addWhere('intern_internship.grad_prog', $major);
                 }else if($level = 'ugrad'){
                     // Undergraduate
-                    $pager->addWhere('intern_student.ugrad_major', $major);
+                    $pager->addWhere('intern_internship.ugrad_major', $major);
                 }
             }
         }
@@ -158,7 +157,7 @@ class ResultsUI implements UI
         
         // Campus
         if(isset($campus)){
-            $pager->addWhere('intern_student.campus', $campus);
+            $pager->addWhere('intern_internship.campus', $campus);
         }
         
         // Domestic state
@@ -183,17 +182,17 @@ class ResultsUI implements UI
         /** Sort Headers **/
         $pager->addSortHeader('term', 'Term');
         
-        $pager->joinResult('student_id', 'intern_student', 'id', 'last_name', 'student_last_name');
-        $pager->addSortHeader('student_last_name', 'Student\'s Name');
+        //$pager->joinResult('student_id', 'intern_student', 'id', 'last_name', 'student_last_name');
+        $pager->addSortHeader('last_name', 'Student\'s Name');
         
-        $pager->joinResult('student_id', 'intern_student', 'id', 'banner');
+        //$pager->joinResult('student_id', 'intern_student', 'id', 'banner');
         $pager->addSortHeader('banner', 'Banner ID');
         
         $pager->joinResult('department_id', 'intern_department', 'id', 'name');
         $pager->addSortHeader('name', 'Department Name');
         
-        $pager->joinResult('faculty_supervisor_id', 'intern_faculty_supervisor', 'id', 'last_name');
-        $pager->addSortHeader('last_name', 'Faculty Advisor');
+        $pager->joinResult('faculty_supervisor_id', 'intern_faculty_supervisor', 'id', 'last_name', 'faculty_last_name');
+        $pager->addSortHeader('faculty_last_name', 'Faculty Advisor');
 
         $pageTags = array();
         $pageTags['BACK_LINK'] = PHPWS_Text::moduleLink('&laquo; Back to Search', 'intern', array('action' => 'search'));

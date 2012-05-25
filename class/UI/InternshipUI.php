@@ -103,10 +103,8 @@ class InternshipUI implements UI {
             if (isset($_REQUEST['internship_id'])) {
                 /* Re-add hidden fields with object ID's */
                 $i = new Internship($_GET['internship_id']);
-                $s = $i->getStudent();
                 $a = $i->getAgency();
                 $f = $i->getFacultySupervisor();
-                $form->addHidden('student_id', $s->id);
                 $form->addHidden('agency_id', $a->id);
                 $form->addHidden('supervisor_id', $f->id);
                 $form->addHidden('id', $i->id);
@@ -136,7 +134,6 @@ class InternshipUI implements UI {
 
         $form = new PHPWS_Form('internship');
         if (!is_null($i)) {
-            $s = $i->getStudent();
             $a = $i->getAgency();
         } else {
             $i = new Internship;
@@ -172,7 +169,7 @@ class InternshipUI implements UI {
         }
         
         // Show a warning if in SigAuthApproved state and is distance_ed campus
-        if($i->state == 'SigAuthApprovedState' && $s->campus == 'distance_ed'){
+        if($i->state == 'SigAuthApprovedState' && $i->campus == 'distance_ed'){
             NQ::simple('intern', INTERN_WARNING, 'This internship must be "Dean Approved" by Distance Education.');
         }
         
@@ -233,8 +230,8 @@ class InternshipUI implements UI {
         //$form->setRequired('student_level');
 
         // Undergrad major drop down
-        if (isset($s)){
-            $majors = Major::getMajorsAssoc($s->ugrad_major);
+        if (isset($i)){
+            $majors = Major::getMajorsAssoc($i->ugrad_major);
         }else{
             $majors = Major::getMajorsAssoc();
         }
@@ -243,8 +240,8 @@ class InternshipUI implements UI {
         $form->setLabel('ugrad_major', 'Undergraduate Majors &amp; Certificate Programs');
 
         // Graduate major drop down
-        if (isset($s)){
-            $progs = GradProgram::getGradProgsAssoc($s->grad_prog);
+        if (isset($i)){
+            $progs = GradProgram::getGradProgsAssoc($i->grad_prog);
         }else{
             $progs = GradProgram::getGradProgsAssoc();
         }
@@ -464,35 +461,33 @@ class InternshipUI implements UI {
     {
         $vals = array();
 
-        $s = $i->getStudent();
         $a = $i->getAgency();
         $f = $i->getFacultySupervisor();
         $d = $i->getDepartment();
 
         // Student
-        $form->addHidden('student_id', $s->id);
-        $vals['student_first_name'] = $s->first_name;
-        $vals['student_middle_name'] = $s->middle_name;
-        $vals['student_last_name'] = $s->last_name;
-        $vals['banner'] = $s->banner;
-        $vals['student_phone'] = $s->phone;
-        $vals['student_email'] = $s->email;
-        $vals['student_level'] = $s->level;
-        $vals['grad_prog'] = $s->grad_prog;
-        $vals['ugrad_major'] = $s->ugrad_major;
-        $vals['student_gpa'] = $s->gpa;
-        $vals['campus']      = $s->campus;
+        $vals['student_first_name']  = $i->first_name;
+        $vals['student_middle_name'] = $i->middle_name;
+        $vals['student_last_name']   = $i->last_name;
+        $vals['banner']              = $i->banner;
+        $vals['student_phone']       = $i->phone;
+        $vals['student_email']       = $i->email;
+        $vals['student_level']       = $i->level;
+        $vals['grad_prog']           = $i->grad_prog;
+        $vals['ugrad_major']         = $i->ugrad_major;
+        $vals['student_gpa']         = $i->gpa;
+        $vals['campus']              = $i->campus;
 
         // Student address
-        $vals['student_address'] = $s->address;
-        $vals['student_city'] = $s->city;
-        $vals['student_state'] = $s->state;
-        $vals['student_zip'] = $s->zip;
+        $vals['student_address'] = $i->student_address;
+        $vals['student_city']    = $i->student_city;
+        $vals['student_state']   = $i->student_state;
+        $vals['student_zip']     = $i->student_zip;
 
         // Emergency contact
-        $vals['emergency_contact_name'] = $s->emergency_contact_name;
-        $vals['emergency_contact_relation'] = $s->emergency_contact_relation;
-        $vals['emergency_contact_phone'] = $s->emergency_contact_phone;
+        $vals['emergency_contact_name']     = $i->emergency_contact_name;
+        $vals['emergency_contact_relation'] = $i->emergency_contact_relation;
+        $vals['emergency_contact_phone']    = $i->emergency_contact_phone;
 
         // Agency
         $form->addHidden('agency_id', $a->id);
@@ -573,16 +568,8 @@ class InternshipUI implements UI {
 
         $form->setMatch('term', $i->term);
         $form->setMatch('internship_default_type', $i->internship);
-        //$form->setMatch('service_learning_type', $i->service_learn);
-        //$form->setMatch('independent_study_type', $i->independent_study);
-        //$form->setMatch('research_assist_type', $i->research_assist);
         $form->setMatch('student_teaching_type', $i->student_teaching);
         $form->setMatch('clinical_practica_type', $i->clinical_practica);
-        //$form->setMatch('special_topics_type', $i->special_topics);
-        /*
-        if ($i->other_type != '' && !is_null($i->other_type)) {
-            $form->setMatch('check_other_type', true);
-        }*/
 
         // Plug
         $form->plugIn($vals);

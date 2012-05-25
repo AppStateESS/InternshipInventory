@@ -11,8 +11,7 @@ class DeanApprove extends WorkflowTransition {
     
     public function allowed(Internship $i)
     {
-        $student = $i->getStudent();
-        if($student->campus == 'distance_ed'){
+        if($i->campus == 'distance_ed'){
             if(Current_User::allow('intern', 'distance_ed_dean_approve')){
                 return true;
             }
@@ -30,12 +29,10 @@ class DeanApprove extends WorkflowTransition {
     
     public function doNotification(Internship $i)
     {
-        $student = $i->getStudent();
-    
         $agency = $i->getAgency();
     
         PHPWS_Core::initModClass('intern', 'Email.php');
-        Email::sendRegistrarEmail($student, $i, $agency);
+        Email::sendRegistrarEmail($i, $agency);
     }
     
     public function onTransition(Internship $i)

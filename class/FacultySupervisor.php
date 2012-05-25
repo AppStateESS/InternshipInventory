@@ -17,6 +17,9 @@ class FacultySupervisor extends Model
     public $email;
     public $department_id;
     
+    // For db page, doesn't actually exist in db
+    public $faculty_last_name;
+    
     /**
      * @Override Model::getDb
      */

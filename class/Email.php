@@ -103,7 +103,7 @@ class Email {
      * @param Internship $i
      * @param Agency $a
      */
-    public static function sendRegistrarEmail(Student $s, Internship $i, Agency $a)
+    public static function sendRegistrarEmail(Internship $i, Agency $a)
     {
         PHPWS_Core::initModClass('intern', 'Subject.php');
 
@@ -112,10 +112,10 @@ class Email {
         $faculty = $i->getFacultySupervisor();
 
         $tpl = array();
-        $tpl['NAME'] = "$s->first_name $s->middle_name $s->last_name";
-        $tpl['BANNER'] = $s->banner;
-        $tpl['USER'] = $s->email;
-        $tpl['PHONE'] = $s->phone;
+        $tpl['NAME'] = $i->getFullName();
+        $tpl['BANNER'] = $i->banner;
+        $tpl['USER'] = $i->email;
+        $tpl['PHONE'] = $i->phone;
 
         $tpl['TERM'] = Term::rawToRead($i->term, false);
         if(isset($i->course_subj)){
@@ -177,19 +177,19 @@ class Email {
 
         $to = REGISTRAR_EMAIL_ADDRESS;
         $cc = array($faculty->email . '@appstate.edu', 'hicksmp@appstate.edu');
-        $subject = 'Internship Approved: ' . $intlSubject . '[' . $s->getBannerId() . '] ' . $s->getFullName();
+        $subject = 'Internship Approved: ' . $intlSubject . '[' . $i->getBannerId() . '] ' . $i->getFullName();
 
         Email::sendTemplateMessage($to, $subject, 'email/RegistrarEmail.tpl', $tpl, $cc);
     }
 
-    public static function sendIntlInternshipCreateNotice(Student $s, Internship $i)
+    public static function sendIntlInternshipCreateNotice(Internship $i)
     {
         $tpl = array();
 
-        $tpl['NAME'] = "$s->first_name $s->middle_name $s->last_name";
-        $tpl['BANNER'] = $s->banner;
-        $tpl['USER'] = $s->email;
-        $tpl['PHONE'] = $s->phone;
+        $tpl['NAME'] = $i->getFullName();
+        $tpl['BANNER'] = $i->banner;
+        $tpl['USER'] = $i->email;
+        $tpl['PHONE'] = $i->phone;
 
         $tpl['TERM'] = Term::rawToRead($i->term);
         $tpl['COUNTRY'] = $i->loc_country;
@@ -198,12 +198,12 @@ class Email {
         $tpl['DEPARTMENT'] = $dept->getName();
 
         $to = array('lewandoskik@appstate.edu', 'gomisjd@appstate.edu');
-        $subject = "International Internship Created - {$s->first_name} {$s->last_name}";
+        $subject = "International Internship Created - {$i->first_name} {$i->last_name}";
 
         Email::sendTemplateMessage($to, $subject, 'email/IntlInternshipCreateNotice.tpl', $tpl);
     }
 
-    public static function sendRegistrationConfirmationEmail(Student $s, Internship $i, Agency $a)
+    public static function sendRegistrationConfirmationEmail(Internship $i, Agency $a)
     {
         $tpl = array();
 
@@ -214,10 +214,10 @@ class Email {
         $faculty = $i->getFacultySupervisor();
 
         $tpl = array();
-        $tpl['NAME'] = $s->getFullName();
-        $tpl['BANNER'] = $s->banner;
-        $tpl['USER'] = $s->email;
-        $tpl['PHONE'] = $s->phone;
+        $tpl['NAME'] = $i->getFullName();
+        $tpl['BANNER'] = $i->banner;
+        $tpl['USER'] = $i->email;
+        $tpl['PHONE'] = $i->phone;
 
         $tpl['TERM'] = Term::rawToRead($i->term, false);
         if(isset($i->course_subj)){
@@ -277,7 +277,7 @@ class Email {
             $intlSubject = '';
         }
 
-        $to = $s->email . '@appstate.edu';
+        $to = $i->email . '@appstate.edu';
         $cc = array($faculty->email . '@appstate.edu');
         $subject = 'Your Internship is Approved, Enrollment Complete';
 

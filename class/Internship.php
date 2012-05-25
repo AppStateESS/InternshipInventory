@@ -9,10 +9,11 @@
  */
 PHPWS_Core::initModClass('intern', 'Model.php');
 PHPWS_Core::initModClass('intern', 'Email.php');
+PHPWS_Core::initModClass('intern', 'Term.php');
+PHPWS_Core::initModClass('intern', 'Major.php');
 
 class Internship extends Model {
 
-    public $student_id;
     public $agency_id;
     public $faculty_supervisor_id;
     public $department_id;
@@ -20,6 +21,30 @@ class Internship extends Model {
     public $state;
     public $oied_certified;
 
+
+    // Student data
+    public $banner;
+    public $first_name;
+    public $middle_name;
+    public $last_name;
+    public $phone;
+    public $email;
+    public $level;
+    public $grad_prog;
+    public $ugrad_major;
+    public $gpa;
+    public $campus;
+
+    public $student_address;
+    public $student_city;
+    public $student_state;
+    public $student_zip;
+
+    public $emergency_contact_name;
+    public $emergency_contact_relation;
+    public $emergency_contact_phone;
+
+    // Location data
     public $domestic;
     public $international;
 
@@ -49,16 +74,6 @@ class Internship extends Model {
     public $internship = 0;
     public $student_teaching = 0;
     public $clinical_practica = 0;
-    //public $service_learn = 0;
-    //public $independent_study = 0;
-    //public $research_assist = 0;
-    //public $special_topics = 0;
-    //public $other_type;
-
-    public $notes;
-
-    // For DB Pager, doesn't exist in database
-    public $student_last_name;
 
     /**
      * @Override Model::getDb
@@ -74,85 +89,91 @@ class Internship extends Model {
      */
     public function getCSV()
     {
-        PHPWS_Core::initModClass('intern', 'Term.php');
+        $csv = array();
 
-        $i = array();
-        $s = $this->getStudent();
+        // Student data
+        $csv['Banner'] = $this->banner;
+        $csv['Student First Name']  = $this->first_name;
+        $csv['Student Middle Name'] = $this->middle_name;
+        $csv['Student Last Name']   = $this->last_name;
+        $csv['Student Phone']       = $this->phone;
+        $csv['Student Email']       = $this->email;
+        
+        // Internship Data
+        $csv['Start Date']             = $this->getStartDate(true);
+        $csv['End Date']               = $this->getEndDate(true);
+        $csv['Term']                   = Term::rawToRead($this->term, false);
+        $csv['Credits']                = $this->credits;
+        $csv['Average Hours Per Week'] = $this->avg_hours_week;
+        $csv['Domestic']               = $this->domestic == 1 ? 'Yes' : 'No';
+        $csv['International']          = $this->international == 1 ? 'Yes' : 'No';
+        $csv['Paid']                   = $this->paid == 1 ? 'Yes' : 'No';
+        $csv['Stipend']                = $this->stipend == 1 ? 'Yes' : 'No';
+        $csv['Unpaid']                 = $this->unpaid == 1 ? 'Yes' : 'No';
+        $csv['Internship']             = $this->internship == 1 ? 'Yes' : 'No';
+        $csv['Student Teaching']       = $this->student_teaching == 1 ? 'Yes' : 'No';
+        $csv['Clinical Practica']      = $this->clinical_practica == 1 ? 'Yes' : 'No';
+
+        // Location data
+        $csv['Location Address']       = $this->loc_address;
+        $csv['Location State']         = $this->loc_state;
+        $csv['Location City']          = $this->loc_city;
+        $csv['Location Zip']           = $this->loc_zip;
+        $csv['Course Subject']         = $this->course_subj;
+        $csv['Course Number']          = $this->course_no;
+        $csv['Course Section']         = $this->course_sect;
+        $csv['Course Title']           = $this->course_title;
+
+        /*
+         * TODO: Fix this so that the columns are always present in the exported csv, even if they're empty
+        if($major != null)
+            $csv = array_merge($csv, $major->getCSV());
+        else
+            $csv = array_merge($csv, Major::getEmptyCSV());
+        if($prog != null)
+            $csv = array_merge($csv, $prog->getCSV());
+        else
+            $csv = array_merge($csv, GradProgram::getEmptyCSV());
+        */
+
+        // Get external objects
         $a = $this->getAgency();
         $f = $this->getFacultySupervisor();
         $d = $this->getDepartment();
-        $i['Start Date'] = $this->getStartDate(true);
-        $i['End Date'] = $this->getEndDate(true);
-        $i['Term'] = Term::rawToRead($this->term, false);
-        $i['Credits'] = $this->credits;
-        $i['Average Hours Per Week'] = $this->avg_hours_week;
-        $i['Domestic'] = $this->domestic == 1 ? 'Yes' : 'No';
-        $i['International'] = $this->international == 1 ? 'Yes' : 'No';
-        $i['Paid'] = $this->paid == 1 ? 'Yes' : 'No';
-        $i['Stipend'] = $this->stipend == 1 ? 'Yes' : 'No';
-        $i['Unpaid'] = $this->unpaid == 1 ? 'Yes' : 'No';
-        $i['Internship'] = $this->internship == 1 ? 'Yes' : 'No';
-        $i['Student Teaching'] = $this->student_teaching == 1 ? 'Yes' : 'No';
-        $i['Clinical Practica'] = $this->clinical_practica == 1 ? 'Yes' : 'No';
-        $i['Notes'] = $this->notes;
-        $i['Location Address'] = $this->loc_address;
-        $i['Location State'] = $this->loc_state;
-        $i['Location City'] = $this->loc_city;
-        $i['Location Zip'] = $this->loc_zip;
-        $i['Course Subject'] = $this->course_subj;
-        $i['Course Number'] = $this->course_no;
-        $i['Course Section'] = $this->course_sect;
-        $i['Course Title'] = $this->course_title;
+
         // Merge data from other objects.
-        $i = array_merge($s->getCSV(), $i);
-        $i = array_merge($i, $a->getCSV());
-        $i = array_merge($i, $f->getCSV());
-        $i = array_merge($i, $d->getCSV());
+        $csv = array_merge($csv, $a->getCSV());
+        $csv = array_merge($csv, $f->getCSV());
+        $csv = array_merge($csv, $d->getCSV());
 
-        return $i;
+        return $csv;
     }
 
-    /*
-     private function toggle($pdf, $header=true)
-     {
-    if ($header) {
-    // Set header font.
-    $pdf->setFont('Arial', 'B', '10');
-    } else {
-    // Set data font.
-    $pdf->setFont('Courier', '', '10');
-    }
-    }
-    */
 
     /**
-     * Get a comma separated list of the types for
-     * this internship.
+     * Get a Major object for the major of this student.
      */
-    public function getReadableTypes()
+    public function getUgradMajor()
     {
-        $types = array();
-
-        if ($this->internship == 1) {
-            $types[] = 'Internship';
+        PHPWS_Core::initModClass('intern', 'Major.php');
+        if(!is_null($this->ugrad_major) && $this->ugrad_major != 0){
+            return new Major($this->ugrad_major);
+        }else{
+            return null;
         }
-        if ($this->student_teaching == 1) {
-            $types[] = 'Student Teaching';
-        }
-        if ($this->clinical_practica == 1) {
-            $types[] = 'Clinical Practica';
-        }
-
-        return implode(', ', $types);
     }
 
     /**
-     * Get the Student object associated with this Internship.
+     * Get a GradProgram object for the graduate program of this student.
      */
-    public function getStudent()
+    public function getGradProgram()
     {
-        PHPWS_Core::initModClass('intern', 'Student.php');
-        return new Student($this->student_id);
+        PHPWS_Core::initModClass('intern', 'GradProgram.php');
+        if(!is_null($this->grad_prog) && $this->grad_prog != 0){
+            return new GradProgram($this->grad_prog);
+        }else{
+            return null;
+        }
     }
 
     /**
@@ -200,6 +221,40 @@ class Internship extends Model {
     }
 
     /**
+     * Get the concatenated first name, middle name/initial, and last name.
+     */
+    public function getFullName()
+    {
+        $name = $this->first_name . ' ';
+        // Middle name is not required. If no middle name as input then
+        // this will not show the extra space for padding between middle and last name.
+        $name .= (isset($this->middle_name) && $this->middle_name != '') ? $this->middle_name . ' ': null;
+        $name .= $this->last_name;
+        return $name;
+    }
+
+    /**
+     * Get a comma separated list of the types for
+     * this internship.
+     */
+    public function getReadableTypes()
+    {
+        $types = array();
+
+        if ($this->internship == 1) {
+            $types[] = 'Internship';
+        }
+        if ($this->student_teaching == 1) {
+            $types[] = 'Student Teaching';
+        }
+        if ($this->clinical_practica == 1) {
+            $types[] = 'Clinical Practica';
+        }
+
+        return implode(', ', $types);
+    }
+
+    /**
      * Get formatted dates.
      */
     public function getStartDate($formatted=false)
@@ -228,7 +283,7 @@ class Internship extends Model {
 
     /**
      * Is this internship domestic?
-     * 
+     *
      * @return bool True if this is a domestic internship, false otherwise.
      */
     public function isDomestic()
@@ -239,10 +294,10 @@ class Internship extends Model {
             return false;
         }
     }
-    
+
     /**
      * Is this internship International?
-     * 
+     *
      * @return bool True if this is an international internship, false otherwise.
      */
     public function isInternational()
@@ -252,6 +307,15 @@ class Internship extends Model {
         } else {
             return false;
         }
+    }
+
+    /**
+     * Returns the Banner ID of this student.
+     *
+     * @return string Banner ID
+     */
+    public function getBannerId(){
+        return $this->banner;
     }
 
     public function getStateName()
@@ -273,14 +337,13 @@ class Internship extends Model {
         $tags = array();
 
         // Get objects associated with this internship.
-        $s = $this->getStudent();
         $a = $this->getAgency();
         $f = $this->getFacultySupervisor();
         $d = $this->getDepartment();
 
         // Student info.
-        $tags['STUDENT_NAME'] = $s->getFullName();
-        $tags['STUDENT_BANNER'] = $s->banner;
+        $tags['STUDENT_NAME'] = $this->getFullName();
+        $tags['STUDENT_BANNER'] = $this->getBannerId();
 
         // Agency info.
         $tags['AGENCY_NAME'] = $a->name;
@@ -290,6 +353,7 @@ class Internship extends Model {
 
         // Faculty info.
         $tags['FACULTY_NAME'] = $f->getFullName();
+        
 
         // Internship info.
         $tags['START_DATE'] = $this->getStartDate();
@@ -300,7 +364,6 @@ class Internship extends Model {
         $tags['EDIT'] = PHPWS_Text::moduleLink('Edit', 'intern', array('action' => 'edit_internship', 'internship_id' => $this->id));
         $tags['PDF'] = PHPWS_Text::moduleLink('Generate Contract', 'intern', array('action' => 'pdf', 'id' => $this->id));
 
-        // TODO: Finish off fields.
         return $tags;
     }
 
@@ -309,16 +372,6 @@ class Internship extends Model {
      */
     public static function getTypesAssoc()
     {
-        /**
-         return array('internship' => 'Internship',
-         'service_learn' => 'Service Learning',
-         'independent_study' => 'Independent Study',
-         'research_assistant' => 'Research Assistant',
-         'student_teaching' => 'Student Teaching',
-         'clinical_practica' => 'Clinical Practica In Health Fields',
-         'special_topics' => 'Special Topics');
-         *
-         */
         return array('internship' => 'Internship',
                 'student_teaching' => 'Student Teaching',
                 'clinical_practica' => 'Clinical Practica In Health Fields');
@@ -329,7 +382,6 @@ class Internship extends Model {
      */
     public static function addInternship()
     {
-        PHPWS_Core::initModClass('intern', 'Student.php');
         PHPWS_Core::initModClass('intern', 'Agency.php');
         PHPWS_Core::initModClass('intern', 'Department.php');
         PHPWS_Core::initModClass('intern', 'FacultySupervisor.php');
@@ -385,73 +437,6 @@ class Internship extends Model {
         }
 
         PHPWS_DB::begin();
-        /* See if this student exists already */
-        /*
-        try {
-            $student = Student::getStudentByBanner($_REQUEST['banner']);
-        } catch (Exception $e) {
-            PHPWS_DB::rollback(); // Roll back any db changes
-            throw $e; // re-throw the exception so that the user sees a nice message and admins get an email
-            return;
-        }
-        */
-
-        
-        if (isset($_REQUEST['student_id'])) {
-            // User is attempting to edit internship. Student ID should be passed in.
-            try {
-                //$student = Student::getStudentByBanner($_REQUEST['student_id']);
-                $student = new Student($_REQUEST['student_id']);
-            } catch (Exception $e) {
-                PHPWS_DB::rollback(); // Roll back any db changes
-                throw $e; // re-throw the exception so that the user sees a nice message and admins get an email
-                return;
-            }
-        }else{
-            // New internship, no student_id passed in. Try to find an existing student by Banner ID
-            try {
-                $student = Student::getStudentByBanner($_REQUEST['banner']);
-            }catch(Exception $e){
-                PHPWS_DB::rollback(); // Roll back any db changes
-                throw $e; // re-throw the exception so that the user sees a nice message and admins get an email
-                return;
-            }
-            
-            // If no result returned, create a new student
-            if(is_null($student)){
-                // No student exsists (new internship), create a blank student
-                $student = new Student();
-            }
-        }
-
-        $student->first_name = $_REQUEST['student_first_name'];
-        $student->middle_name = $_REQUEST['student_middle_name'];
-        $student->last_name = $_REQUEST['student_last_name'];
-        $student->banner = $_REQUEST['banner'];
-        $student->phone = $_REQUEST['student_phone'];
-        $student->email = $_REQUEST['student_email'];
-        $student->level = $_REQUEST['student_level'];
-        $student->grad_prog = $_REQUEST['grad_prog'] == -1 ? null : $_REQUEST['grad_prog'];
-        $student->ugrad_major = $_REQUEST['ugrad_major'] == -1 ? null : $_REQUEST['ugrad_major'];
-        $student->gpa = $_REQUEST['student_gpa'];
-        $student->campus = $_REQUEST['campus'];
-
-        $student->address = $_REQUEST['student_address'];
-        $student->city = $_REQUEST['student_city'];
-        $student->state = $_REQUEST['student_state'];
-        $student->zip = $_REQUEST['student_zip'];
-
-        $student->emergency_contact_name = $_REQUEST['emergency_contact_name'];
-        $student->emergency_contact_relation = $_REQUEST['emergency_contact_relation'];
-        $student->emergency_contact_phone = $_REQUEST['emergency_contact_phone'];
-
-        try {
-            $studentId = $student->save();
-        } catch (Exception $e) {
-            PHPWS_DB::rollback(); // roll back any changes
-            throw $e; // re-throw exception so user sees the nice message and admins get an email
-            return;
-        }
 
         // Create/Save agency
         $agency = new Agency();
@@ -460,10 +445,9 @@ class Internship extends Model {
             try {
                 $agency = new Agency($_REQUEST['agency_id']);
             } catch (Exception $e) {
+                // Rollback and re-throw the exception so that admins gets an email
                 PHPWS_DB::rollback();
-                NQ::simple('intern', INTERN_ERROR, 'Invalid Agency ID.');
-                NQ::close();
-                return PHPWS_Core::goBack();
+                throw $e;
             }
         }
         $agency->name = $_REQUEST['agency_name'];
@@ -500,8 +484,9 @@ class Internship extends Model {
         try {
             $agencyId = $agency->save();
         } catch (Exception $e) {
+            // Rollback and re-throw the exception so that admins gets an email
             PHPWS_DB::rollback();
-            return NQ::simple('intern', INTERN_ERROR, $e->getMessage());
+            throw $e;
         }
 
         // Create/Save Faculty supervisor
@@ -511,22 +496,24 @@ class Internship extends Model {
             try {
                 $faculty = new FacultySupervisor($_REQUEST['supervisor_id']);
             } catch (Exception $e) {
+                // Rollback and re-throw the exception so that admins gets an email
                 PHPWS_DB::rollback();
-                NQ::simple('intern', INTERN_ERROR, 'Invalid Faculty Supervisor ID.');
-                NQ::close();
-                return PHPWS_Core::goBack();
+                throw $e;
             }
         }
+
         $faculty->first_name = $_REQUEST['supervisor_first_name'];
         $faculty->last_name = $_REQUEST['supervisor_last_name'];
         $faculty->email = $_REQUEST['supervisor_email'];
         $faculty->phone = $_REQUEST['supervisor_phone'];
         $faculty->department_id = $_REQUEST['department'];
+
         try {
             $facultyId = $faculty->save();
         } catch (Exception $e) {
+            // Rollback and re-throw the exception so that admins gets an email
             PHPWS_DB::rollback();
-            return NQ::simple('intern', INTERN_ERROR, $e->getMessage());
+            throw $e;
         }
 
         // Create/Save internship.
@@ -536,15 +523,13 @@ class Internship extends Model {
             try {
                 $i = new Internship($_REQUEST['internship_id']);
             } catch (Exception $e) {
+                // Rollback and re-throw the exception so that admins gets an email
                 PHPWS_DB::rollback();
-                NQ::simple('intern', INTERN_ERROR, 'Invalid Internship ID.');
-                NQ::close();
-                return PHPWS_Core::goBack();
+                throw $e;
             }
         }
 
         $i->term = $_REQUEST['term'];
-        $i->student_id = $studentId;
         $i->agency_id = $agencyId;
         $i->faculty_supervisor_id = $facultyId;
         $i->department_id = $_REQUEST['department'];
@@ -561,14 +546,8 @@ class Internship extends Model {
         $i->unpaid = $_REQUEST['payment'] == 'unpaid';
         $i->pay_rate = $_REQUEST['pay_rate'];
         $i->internship = isset($_REQUEST['internship_default_type']);
-        //$i->service_learn = isset($_REQUEST['service_learning_type']);
-        //$i->independent_study = isset($_REQUEST['independent_study_type']);
-        //$i->research_assist = isset($_REQUEST['research_assist_type']);
         $i->student_teaching = isset($_REQUEST['student_teaching_type']);
         $i->clinical_practica = isset($_REQUEST['clinical_practica_type']);
-        //$i->special_topics = isset($_REQUEST['special_topics_type']);
-        //$i->other_type = isset($_REQUEST['check_other_type']) ? $_REQUEST['other_type'] : null;
-        $i->notes = $_REQUEST['notes'];
 
         $i->loc_address = strip_tags($_POST['loc_address']);
         $i->loc_city = strip_tags($_POST['loc_city']);
@@ -591,9 +570,31 @@ class Internship extends Model {
         $i->course_sect = strip_tags($_POST['course_sect']);
         $i->course_title = strip_tags($_POST['course_title']);
 
+        // Student Information
+        $i->first_name = $_REQUEST['student_first_name'];
+        $i->middle_name = $_REQUEST['student_middle_name'];
+        $i->last_name = $_REQUEST['student_last_name'];
+        $i->banner = $_REQUEST['banner'];
+        $i->phone = $_REQUEST['student_phone'];
+        $i->email = $_REQUEST['student_email'];
+        $i->level = $_REQUEST['student_level'];
+        $i->grad_prog = $_REQUEST['grad_prog'] == -1 ? null : $_REQUEST['grad_prog'];
+        $i->ugrad_major = $_REQUEST['ugrad_major'] == -1 ? null : $_REQUEST['ugrad_major'];
+        $i->gpa = $_REQUEST['student_gpa'];
+        $i->campus = $_REQUEST['campus'];
+
+        $i->student_address = $_REQUEST['student_address'];
+        $i->student_city = $_REQUEST['student_city'];
+        $i->student_state = $_REQUEST['student_state'];
+        $i->student_zip = $_REQUEST['student_zip'];
+
+        $i->emergency_contact_name = $_REQUEST['emergency_contact_name'];
+        $i->emergency_contact_relation = $_REQUEST['emergency_contact_relation'];
+        $i->emergency_contact_phone = $_REQUEST['emergency_contact_phone'];
+
         /************
-         * OIED Certification 
-         */
+         * OIED Certification
+        */
         // Check if this has changed from non-certified->certified so we can log it later
         if($i->oied_certified == 0 && $_POST['oied_certified_hidden'] == 'true'){
             // note the change for later
@@ -619,10 +620,9 @@ class Internship extends Model {
         try {
             $i->save();
         } catch (Exception $e) {
+            // Rollback and re-throw the exception so that admins gets an email
             PHPWS_DB::rollback();
-            NQ::simple('intern', INTERN_ERROR, $e->getMessage());
-            NQ::close();
-            return PHPWS_Core::goBack();
+            throw $e;
         }
 
         /***************************
@@ -645,13 +645,13 @@ class Internship extends Model {
 
         $workflow->doNotification();
 
-        if (isset($_REQUEST['student_id'])) {
+        if (isset($_REQUEST['internship_id'])) {
             // Show message if user edited internship
-            NQ::simple('intern', INTERN_SUCCESS, 'Saved internship for ' . $student->getFullName());
+            NQ::simple('intern', INTERN_SUCCESS, 'Saved internship for ' . $i->getFullName());
             NQ::close();
             return PHPWS_Core::reroute('index.php?module=intern&action=edit_internship&internship_id=' . $i->id);
         } else {
-            NQ::simple('intern', INTERN_SUCCESS, 'Added internship for ' . $student->getFullName());
+            NQ::simple('intern', INTERN_SUCCESS, 'Added internship for ' . $i->getFullName());
             NQ::close();
             return PHPWS_Core::reroute('index.php?module=intern&action=edit_internship&internship_id=' . $i->id);
         }
@@ -741,12 +741,11 @@ class Internship extends Model {
         PHPWS_Core::initModClass('intern', 'Term.php');
 
         $pdf = new FPDI('P', 'mm', 'Letter');
-        $s = $this->getStudent();
         $a = $this->getAgency();
         $d = $this->getDepartment();
         $f = $this->getFacultySupervisor();
-        $m = $s->getUgradMajor();
-        $g = $s->getGradProgram();
+        $m = $this->getUgradMajor();
+        $g = $this->getGradProgram();
         $subject = $this->getSubject();
 
         $pagecount = $pdf->setSourceFile(PHPWS_SOURCE_DIR . 'mod/intern/pdf/contract-flat.pdf');
@@ -817,34 +816,34 @@ class Internship extends Model {
          * Student information.
          */
         $pdf->setXY(40, 77);
-        $pdf->cell(55, 5, $s->getFullName());
+        $pdf->cell(55, 5, $this->getFullName());
 
         $pdf->setXY(173,77);
-        $pdf->cell(54,5, $s->gpa);
+        $pdf->cell(54,5, $this->gpa);
 
         $pdf->setXY(32, 83);
-        $pdf->cell(42, 5, $s->banner);
+        $pdf->cell(42, 5, $this->banner);
 
         $pdf->setXY(41, 88);
-        $pdf->cell(54, 5, $s->email . '@appstate.edu');
+        $pdf->cell(54, 5, $this->email . '@appstate.edu');
 
         $pdf->setXY(113, 88);
-        $pdf->cell(54, 5, $s->phone);
+        $pdf->cell(54, 5, $this->phone);
 
         /* Student Address */
         $pdf->setXY(105, 83);
         $studentAddress = "";
-        if(!empty($s->address)){
-            $studentAddress .= ($s->address . ", ");
+        if(!empty($this->student_address)){
+            $studentAddress .= ($this->student_address . ", ");
         }
-        if(!empty($s->city)){
-            $studentAddress .= ($s->city . ", ");
+        if(!empty($this->student_city)){
+            $studentAddress .= ($this->student_city . ", ");
         }
-        if(!empty($s->state) && $s->state != '-1'){
-            $studentAddress .= ($s->state . " ");
+        if(!empty($this->student_state) && $this->student_state != '-1'){
+            $studentAddress .= ($this->student_state . " ");
         }
-        if(!empty($s->zip)){
-            $studentAddress .= $s->zip;
+        if(!empty($this->student_zip)){
+            $studentAddress .= $this->student_zip;
         }
         $pdf->cell(54, 5, $studentAddress);
 
@@ -980,14 +979,13 @@ class Internship extends Model {
 
         /* Emergency Contact Info */
         $pdf->setXY(60, 252);
-        $pdf->cell(52, 5, $s->emergency_contact_name);
+        $pdf->cell(52, 5, $this->emergency_contact_name);
 
         $pdf->setXY(134, 252);
-        $pdf->cell(52, 5, $s->emergency_contact_relation);
+        $pdf->cell(52, 5, $this->emergency_contact_relation);
 
         $pdf->setXY(175, 252);
-        $pdf->cell(52, 5, $s->emergency_contact_phone);
-
+        $pdf->cell(52, 5, $this->emergency_contact_phone);
 
         $pdf->output();
     }

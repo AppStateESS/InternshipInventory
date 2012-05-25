@@ -4,10 +4,10 @@
 
 <table id="search-results">
 <tr id="header-row">
-  <th>{STUDENT_LAST_NAME_SORT}</th>
+  <th>{LAST_NAME_SORT}</th>
   <th>{BANNER_SORT}</th>
   <th>{NAME_SORT}</th>
-  <th>{LAST_NAME_SORT}</th>
+  <th>{FACULTY_LAST_NAME_SORT}</th>
   <th>{TERM_SORT}</th>
   <th>Action</th>
 </tr>

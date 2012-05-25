@@ -16,28 +16,6 @@ CREATE TABLE intern_grad_prog (
        PRIMARY KEY(id)
 );
 
-CREATE TABLE intern_student (
-       id INT NOT NULL,
-       banner VARCHAR NOT NULL UNIQUE,
-       first_name VARCHAR NOT NULL,
-       middle_name VARCHAR,
-       last_name VARCHAR NOT NULL,
-       gpa VARCHAR NULL,
-       level VARCHAR NOT NULL,
-       phone VARCHAR NOT NULL,
-       email VARCHAR NOT NULL,
-       ugrad_major INT NULL REFERENCES intern_major(id),
-       grad_prog INT NULL REFERENCES intern_grad_prog(id),
-       address varchar(256),
-       city varchar(256),
-       state varchar(2),
-       zip varchar(5),
-       emergency_contact_name varchar(256),
-       emergency_contact_relation varchar(256),
-       emergency_contact_phone varchar(20),
-       campus character varying(128) NOT NULL,
-       PRIMARY KEY(id)
-);
 -- Below table is loaded with departments after CREATE TABLE statements.
 CREATE TABLE intern_department (
        id INT NOT NULL,
@@ -262,13 +240,28 @@ CREATE TABLE intern_internship (
        start_date INT NOT NULL default 0,
        end_date INT NOT NULL default 0,
        internship SMALLINT NOT NULL,
-       service_learn SMALLINT NOT NULL,
-       independent_study SMALLINT NOT NULL,
-       research_assist SMALLINT NOT NULL,
        student_teaching SMALLINT NOT NULL,
        clinical_practica SMALLINT NOT NULL,
-       special_topics SMALLINT NOT NULL,
-       other_type TEXT,
+       
+       banner VARCHAR NOT NULL UNIQUE,
+       first_name VARCHAR NOT NULL,
+       middle_name VARCHAR,
+       last_name VARCHAR NOT NULL,
+       gpa VARCHAR NULL,
+       level VARCHAR NOT NULL,
+       phone VARCHAR NOT NULL,
+       email VARCHAR NOT NULL,
+       ugrad_major INT NULL REFERENCES intern_major(id),
+       grad_prog INT NULL REFERENCES intern_grad_prog(id),
+       student_address varchar(256),
+       student_city varchar(256),
+       student_state varchar(2),
+       student_zip varchar(5),
+       emergency_contact_name varchar(256),
+       emergency_contact_relation varchar(256),
+       emergency_contact_phone varchar(20),
+       campus character varying(128) NOT NULL,
+       
        loc_address varchar NULL,
        loc_city varchar NULL,
        loc_state varchar NULL,
