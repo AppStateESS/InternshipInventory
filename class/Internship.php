@@ -100,6 +100,7 @@ class Internship extends Model {
         $csv['Student Email']       = $this->email;
         
         // Internship Data
+        $csv['Status']                 = $this->state;
         $csv['Start Date']             = $this->getStartDate(true);
         $csv['End Date']               = $this->getEndDate(true);
         $csv['Term']                   = Term::rawToRead($this->term, false);
