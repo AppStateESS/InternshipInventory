@@ -175,8 +175,16 @@ class Email {
             $intlSubject = '';
         }
 
-        $to = REGISTRAR_EMAIL_ADDRESS;
-        $cc = array($faculty->email . '@appstate.edu', 'hicksmp@appstate.edu');
+        // Send all international or graduate internships to 'hicksmp', per trac #102 
+        if($i->isInternational() || $i->isGraduate()){
+            $to = 'hicksmp@appstate.edu';
+        }else{
+            $to = REGISTRAR_EMAIL_ADDRESS;
+        }
+        
+        // CC the faculty members
+        $cc = array($faculty->email . '@appstate.edu');
+        
         $subject = 'Internship Approved: ' . $intlSubject . '[' . $i->getBannerId() . '] ' . $i->getFullName();
 
         Email::sendTemplateMessage($to, $subject, 'email/RegistrarEmail.tpl', $tpl, $cc);

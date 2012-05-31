@@ -150,6 +150,32 @@ class Internship extends Model {
         return $csv;
     }
 
+    /**
+     * Returns true if this internship is at the undergraduate level, false otherwise.
+     * 
+     * @return boolean
+     */
+    public function isUndergraduate()
+    {
+        if(!is_null($this->ugrad_major) && $this->ugrad_major > 0){
+            return true;
+        }
+        
+        return false;
+    }
+    
+    /**
+     * Returns true if this internship is at the graduate level, false otherwise.
+     * @return boolean
+     */
+    public function isGraduate()
+    {
+        if(!is_null($this->grad_prog) && $this->grad_prog > 0){
+            return true;
+        }
+        
+        return false;
+    }
 
     /**
      * Get a Major object for the major of this student.
