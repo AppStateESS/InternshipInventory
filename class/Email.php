@@ -165,6 +165,15 @@ class Email {
         $department = $i->getDepartment();
         $tpl['DEPT'] = $department->getName();
 
+        $campus = $i->getCampus();
+        if($campus == 'distance_ed'){
+            $tpl['CAMPUS'] = 'Distance Ed';
+        }else if($campus == 'main_campus'){
+            $tpl['CAMPUS'] = 'Main campus';
+        }else{
+            $tpl['CAMPUS'] = $campus;
+        }
+        
         if($i->international){
             $tpl['COUNTRY'] = $i->loc_country;
             $tpl['INTERNATIONAL'] = 'Yes';
@@ -175,9 +184,18 @@ class Email {
             $intlSubject = '';
         }
 
+        /***
+         * Figure out who the notification email goes to
+         */
+        // Send distance ed internship to speedse, per trac #110
+        if($i->isDistanceEd()){
+            $to = 'speedse@appstate.edu';
+            
         // Send all international or graduate internships to 'hicksmp', per trac #102 
-        if($i->isInternational() || $i->isGraduate()){
+        }else if($i->isInternational() || $i->isGraduate()){
             $to = 'hicksmp@appstate.edu';
+        
+        // Otherwise, send it to the general Registrar address
         }else{
             $to = REGISTRAR_EMAIL_ADDRESS;
         }

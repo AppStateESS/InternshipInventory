@@ -21,6 +21,7 @@ Section: {SECTION}
 Credits Hours: {CREDITS}
 Faculty: {FACULTY}
 Department: {DEPT}
+Campus: {CAMPUS}
 
 Location
 ---------

@@ -98,7 +98,7 @@ class Internship extends Model {
         $csv['Student Last Name']   = $this->last_name;
         $csv['Student Phone']       = $this->phone;
         $csv['Student Email']       = $this->email;
-        
+
         // Internship Data
         $csv['Status']                 = $this->state;
         $csv['Start Date']             = $this->getStartDate(true);
@@ -152,7 +152,7 @@ class Internship extends Model {
 
     /**
      * Returns true if this internship is at the undergraduate level, false otherwise.
-     * 
+     *
      * @return boolean
      */
     public function isUndergraduate()
@@ -160,10 +160,10 @@ class Internship extends Model {
         if(!is_null($this->ugrad_major) && $this->ugrad_major > 0){
             return true;
         }
-        
+
         return false;
     }
-    
+
     /**
      * Returns true if this internship is at the graduate level, false otherwise.
      * @return boolean
@@ -173,7 +173,7 @@ class Internship extends Model {
         if(!is_null($this->grad_prog) && $this->grad_prog > 0){
             return true;
         }
-        
+
         return false;
     }
 
@@ -337,24 +337,6 @@ class Internship extends Model {
     }
 
     /**
-     * Returns the Banner ID of this student.
-     *
-     * @return string Banner ID
-     */
-    public function getBannerId(){
-        return $this->banner;
-    }
-
-    public function getStateName()
-    {
-        return $this->state;
-    }
-
-    public function setState(WorkflowState $state){
-        $this->state = $state->getName();
-    }
-
-    /**
      * Row tags for DBPager
      */
     public function getRowTags()
@@ -380,7 +362,7 @@ class Internship extends Model {
 
         // Faculty info.
         $tags['FACULTY_NAME'] = $f->getFullName();
-        
+
 
         // Internship info.
         $tags['START_DATE'] = $this->getStartDate();
@@ -392,6 +374,54 @@ class Internship extends Model {
         $tags['PDF'] = PHPWS_Text::moduleLink('Generate Contract', 'intern', array('action' => 'pdf', 'id' => $this->id));
 
         return $tags;
+    }
+
+    /*****************************
+     * Accessor / Mutator Methods
+    */
+
+    /**
+     * Returns the Banner ID of this student.
+     *
+     * @return string Banner ID
+     */
+    public function getBannerId(){
+        return $this->banner;
+    }
+
+    public function getStateName()
+    {
+        return $this->state;
+    }
+
+    public function setState(WorkflowState $state){
+        $this->state = $state->getName();
+    }
+    
+    /**
+     * Returns the campus on which this internship is based
+     * 
+     * Valid values are: 'main_campus', 'distance_ed'
+     * 
+     * @return String campus name
+     */
+    public function getCampus()
+    {
+        return $this->campus;
+    }
+    
+    /**
+     * Returns true if this is a Distance Ed internship, false otherwise.
+     * 
+     * @return boolean
+     */
+    public function isDistanceEd()
+    {
+        if($this->getCampus() == 'distance_ed'){
+            return true;
+        }
+        
+        return false;
     }
 
     /**
