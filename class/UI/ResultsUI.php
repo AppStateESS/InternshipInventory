@@ -97,6 +97,8 @@ class ResultsUI implements UI
         if(!Current_User::isDeity()){
             $pager->db->addJoin('', 'fuzzy', 'intern_admin', 'department_id', 'department_id');
             $pager->addWhere('intern_admin.username', Current_User::getUsername());
+            //$pager->db->setTestMode();
+            //$pager->db->select();
         }
 
         // Limit to requested department
@@ -110,6 +112,12 @@ class ResultsUI implements UI
             $pager->addWhere('fuzzy.term', $term);
         }
 
+        // Check to see if name is set and looks like a valid Banner ID
+        if(!is_null($name) && preg_match("/\d{8}/", $name)){
+            $pager->addWhere('fuzzy.banner', $name);
+        }
+        
+        // Check to see if name is set
         if(!is_null($name) && $name != ''){
 
             /***
@@ -132,7 +140,7 @@ class ResultsUI implements UI
             
             while($token !== false && $tokenCount < 3){
                 $tokenCount++;
-                $tokens[] = strtolower($token); // NB: must be lowercase!
+                $tokens[] = trim(strtolower($token)); // NB: must be lowercase!
                 // tokenize on newline, tab, comma, space
                 // NB: Don't pass in the string to strtok after the first call above
                 $token = strtok("\n\t, ");
