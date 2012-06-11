@@ -227,6 +227,14 @@ function intern_update(&$content, $currentVersion)
         case version_compare($currentVersion, '0.0.36', '<'):
             PHPWS_Core::initModClass('users', 'Permission.php');
             Users_Permission::registerPermissions('intern', $content);
+
+        case version_compare($currentVersion, '0.0.37', '<'):
+            $db = new PHPWS_DB;
+            $result = $db->importFile(PHPWS_SOURCE_DIR.
+                    'mod/intern/boost/updates/update_0_0_37.sql');
+            if(PEAR::isError($result)){
+                return $result;
+            }
     }
     return TRUE;
 }

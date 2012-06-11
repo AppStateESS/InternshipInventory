@@ -7,7 +7,7 @@
   <th>{LAST_NAME_SORT}</th>
   <th>{BANNER_SORT}</th>
   <th>{NAME_SORT}</th>
-  <th>{FACULTY_LAST_NAME_SORT}</th>
+  <th>{INTERN_FACULTY_SUPERVISOR_LAST_NAME_SORT}</th>
   <th>{TERM_SORT}</th>
   <th>Action</th>
 </tr>

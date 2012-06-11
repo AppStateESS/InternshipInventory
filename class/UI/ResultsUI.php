@@ -1,22 +1,22 @@
 <?php
 
-  /**
-   * ResultsUI
-   *
-   * This is the second half to the search procedure. (Starts in SearchUI.php)
-   * ResultsUI shows the pager with search fields taken into account.
-   *
-   * @author Robert Bost <bostrt at tux dot appstate dot edu>
-   */
+/**
+ * ResultsUI
+ *
+ * This is the second half to the search procedure. (Starts in SearchUI.php)
+ * ResultsUI shows the pager with search fields taken into account.
+ *
+ * @author Robert Bost <bostrt at tux dot appstate dot edu>
+ */
 
 PHPWS_Core::initModClass('intern', 'UI/UI.php');
 class ResultsUI implements UI
 {
     public static function display()
     {
-        PHPWS_Core::initCoreClass('DBPager.php');
+        PHPWS_Core::initCoreClass('SubselectPager.php');
         PHPWS_Core::initModClass('intern', 'Internship.php');
-        
+
         Layout::addPageTitle('Search Results');
 
         $dept   = null;
@@ -34,7 +34,7 @@ class ResultsUI implements UI
         /**
          * Check if any search fields are set.
          */
-        
+
         if(isset($_REQUEST['dept']))
             $dept = $_REQUEST['dept'];
         if(isset($_REQUEST['term_select']))
@@ -59,7 +59,7 @@ class ResultsUI implements UI
             $prov = $_REQUEST['prov'];
         if(isset($_REQUEST['workflow_state']))
             $workflowState = $_REQUEST['workflow_state'];
-        
+
         /* Get Pager */
         $pager = self::getPager($name, $dept, $term, $major, $level, $type, $campus, $loc, $state, $prov, $workflowState);
 
@@ -76,59 +76,124 @@ class ResultsUI implements UI
      * Get the DBPager object. Search strings can be passed in too.
      */
     private static function getPager($name = null, $deptId = null, $term = null,
-                                     $major = null, $level = null, $type = null,
-                                     $campus = null,$loc = null, $state = null,
-                                     $prov = null, $workflowState = null)
+            $major = null, $level = null, $type = null,
+            $campus = null,$loc = null, $state = null,
+            $prov = null, $workflowState = null)
     {
-        $pager = new DBPager('intern_internship', 'Internship');
-        
+        $pager = new SubselectPager('intern_internship', 'Internship');
+
         // Pager Settings
         $pager->setModule('intern');
         $pager->setTemplate('results.tpl');
         $pager->addRowTags('getRowTags');
         $pager->setReportRow('getCSV');
         $pager->setEmptyMessage('No matching internships found.');
+
+        $pager->db->tables = array();
+        $pager->db->addTable('intern_internship', 'fuzzy');
         
-        $pager->db->addJoin('LEFT', 'intern_internship', 'intern_admin', 'department_id', 'department_id');
-        $pager->db->addJoin('LEFT', 'intern_internship', 'intern_agency', 'agency_id', 'id');
+        //$pager->db->addJoin('LEFT', 'fuzzy', 'intern_agency', 'agency_id', 'id');
         
         if(!Current_User::isDeity()){
+            $pager->db->addJoin('', 'fuzzy', 'intern_admin', 'department_id', 'department_id');
             $pager->addWhere('intern_admin.username', Current_User::getUsername());
         }
 
         // Limit to requested department
         if(!is_null($deptId) && $deptId != -1){
+            
             $pager->addWhere('department_id', $deptId);
         }
-        
-        // Limit to requested department
+
+        // Limit to requested term
         if(!is_null($term) && $term != -1){
-            $pager->addWhere('term', $term);
+            $pager->addWhere('fuzzy.term', $term);
+        }
+
+        if(!is_null($name) && $name != ''){
+
+            /***
+             * Fuzzy Search Settings 
+             */
+            $tokenLimit = 3; // Max number of tokens
+
+            // The fields (db column names) to fuzzy match against, in decreasing order of importance
+            $fuzzyFields = array('last_name', 'first_name', 'middle_name');
+            $fuzzyTolerance = 2; // Levenshtein distance allowed between the metaphones of a token and a $fuzzyField
+            
+            // Initalization
+            $orderByList = array();
+            $whereSet = array();
+            
+            // Tokenize the passed in string
+            $tokenCount = 0;
+            $tokens = array();
+            $token = strtok($name, "\n\t, "); // tokenize on newline, tab, comma, space
+            
+            while($token !== false && $tokenCount < 3){
+                $tokenCount++;
+                $tokens[] = strtolower($token); // NB: must be lowercase!
+                // tokenize on newline, tab, comma, space
+                // NB: Don't pass in the string to strtok after the first call above
+                $token = strtok("\n\t, ");
+            }
+            
+            $fuzzyDb = new SubselectDatabase('intern_internship');
+            $fuzzyDb->addColumn('intern_internship.*');
+            
+            for($i = 0; $i < $tokenCount; $i++){
+                foreach($fuzzyFields as $fieldName){
+                    // Calculate the start of the column alias based on which token we're on and which fuzzyField we're comparing against
+                    $asColName = "t{$i}_{$fieldName}";
+                    
+                    // Add a column for comparing the levenshtein distance of the  
+                    $fuzzyDb->addColumnRaw("levenshtein(metaphone('{$tokens[$i]}', 10), {$fieldName}_meta) AS $asColName" . '_metalev');
+                    $fuzzyDb->addColumnRaw("levenshtein('{$tokens[$i]}', lower($fieldName)) AS $asColName" . '_lev');
+                    
+                    $pager->db->addWhere('fuzzy.' . $asColName . '_metalev', $fuzzyTolerance, '<', 'OR', 'metaphone_where');
+                }
+                
+                // Add order for this token's *_metalev fields
+                foreach($fuzzyFields as $fieldName){
+                    $orderByList[] = "fuzzy.t{$i}_{$fieldName}_metalev";
+                }
+                
+                // Add order for this token's *_lev fields
+                foreach($fuzzyFields as $fieldName){
+                    $orderByList[] = "fuzzy.t{$i}_{$fieldName}_lev";
+                }
+            }
+
+            $pager->db->addOrder($orderByList);
+            
+            $pager->db->addColumnRaw('fuzzy.*');
+            
+            $pager->db->addSubSelect($fuzzyDb, 'fuzzy');
         }
         
-        if(!is_null($name) && $name != ''){
-            $pager->addWhere('intern_internship.first_name', "%$name%", 'ILIKE', 'OR', 'namez');
-            $pager->addWhere('intern_internship.middle_name', "%$name%", 'ILIKE', 'OR', 'namez');
-            $pager->addWhere('intern_internship.last_name', "%$name%", 'ILIKE', 'OR', 'namez');
-            $pager->addWhere('intern_internship.banner', "%$name%", 'ILIKE', 'OR', 'namez');
-        }
+        //test($pager->db->table_as,1);
+        
+        $pager->db->addJoin('LEFT OUTER', 'fuzzy', 'intern_faculty_supervisor', 'faculty_supervisor_id', 'id');
+
+        //$pager->db->setTestMode();
+        //$pager->db->select();
         
         // Student level
         if(isset($level)){
-            $pager->addWhere('intern_internship.level', $level);
-            
+            $pager->addWhere('level', $level);
+
             // Major
-            if(isset($major) && $major != -1){                
+            if(isset($major) && $major != -1){
                 if($level == 'grad'){
                     // Graduate
-                    $pager->addWhere('intern_internship.grad_prog', $major);
+                    $pager->addWhere('grad_prog', $major);
                 }else if($level = 'ugrad'){
                     // Undergraduate
-                    $pager->addWhere('intern_internship.ugrad_major', $major);
+                    $pager->addWhere('ugrad_major', $major);
                 }
             }
         }
-        
+
         // Experience type
         if(!is_null($type)){
             foreach($type as $t){
@@ -154,51 +219,52 @@ class ResultsUI implements UI
                 $pager->addWhere('international', 1);
             }
         }
-        
+
         // Campus
         if(isset($campus)){
-            $pager->addWhere('intern_internship.campus', $campus);
+            $pager->addWhere('campus', $campus);
         }
-        
+
         // Domestic state
         if(!is_null($state) && $state != '-1'){
-            $pager->addWhere('intern_internship.loc_state', "%$state%", 'ILIKE');
+            $pager->addWhere('loc_state', "%$state%", 'ILIKE');
         }
-        
+
         // International
         if(!is_null($prov) && $prov != ''){
-            $pager->addWhere('intern_internship.loc_country', "%$prov%", 'ILIKE', 'OR', 'intl_loc');
-            $pager->addWhere('intern_internship.loc_province', "%$prov%", 'ILIKE', 'OR', 'intl_loc');
+            $pager->addWhere('loc_country', "%$prov%", 'ILIKE', 'OR', 'intl_loc');
+            $pager->addWhere('loc_province', "%$prov%", 'ILIKE', 'OR', 'intl_loc');
         }
-        
+
         // Workflow state/status
         if(isset($workflowState)){
             foreach($workflowState as $s){
-                $pager->db->addWhere('intern_internship.state', $s, '=', 'OR', 'workflow_group');
+                $pager->db->addWhere('state', $s, '=', 'OR', 'workflow_group');
             }
         }
-        
+    
 
-        /** Sort Headers **/
+        /*** Sort Headers ***/
+        $pager->setAutoSort(false);
         $pager->addSortHeader('term', 'Term');
-        
+
         //$pager->joinResult('student_id', 'intern_student', 'id', 'last_name', 'student_last_name');
         $pager->addSortHeader('last_name', 'Student\'s Name');
-        
+
         //$pager->joinResult('student_id', 'intern_student', 'id', 'banner');
         $pager->addSortHeader('banner', 'Banner ID');
-        
+
         $pager->joinResult('department_id', 'intern_department', 'id', 'name');
         $pager->addSortHeader('name', 'Department Name');
-        
-        $pager->joinResult('faculty_supervisor_id', 'intern_faculty_supervisor', 'id', 'last_name', 'faculty_last_name');
-        $pager->addSortHeader('faculty_last_name', 'Faculty Advisor');
+
+        //$pager->joinResult('faculty_supervisor_id', 'intern_faculty_supervisor', 'id', 'last_name', 'faculty_last_name');
+        $pager->addSortHeader('intern_faculty_supervisor.last_name', 'Faculty Advisor');
 
         $pageTags = array();
         $pageTags['BACK_LINK'] = PHPWS_Text::moduleLink('&laquo; Back to Search', 'intern', array('action' => 'search'));
 
         $pager->addPageTags($pageTags);
-        
+
         return $pager;
     }
 }
