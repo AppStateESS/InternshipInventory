@@ -280,18 +280,27 @@ class InternshipUI implements UI {
         
         
         if (Current_User::isDeity()) {
-            if (!is_null($i))
-            $depts = Department::getDepartmentsAssoc($i->department_id);
-            else
-            $depts = Department::getDepartmentsAssoc();
+            if (!is_null($i)){
+                $depts = Department::getDepartmentsAssoc($i->department_id);
+            } else {
+                $depts = Department::getDepartmentsAssoc();
+            }
         }else {
-            if (!is_null($i))
-            $depts = Department::getDepartmentsAssocForUsername(Current_User::getUsername(), $i->department_id);
-            else
-            $depts = Department::getDepartmentsAssocForUsername(Current_User::getUsername());
+            if (!is_null($i)){
+                $depts = Department::getDepartmentsAssocForUsername(Current_User::getUsername(), $i->department_id);
+            }else{
+                $depts = Department::getDepartmentsAssocForUsername(Current_User::getUsername());
+            }
         }
         $form->addSelect('department', $depts);
         $form->setLabel('department', 'Department');
+        
+        // If the user only has one department, select it for them
+        // sizeof($depts) == 2 because of the 'Select Deparmtnet' option
+        if(sizeof($depts) == 2){
+            $keys = array_keys($depts);
+            $form->setMatch('department', $keys[1]);
+        }
 
         /***
          * Agency info

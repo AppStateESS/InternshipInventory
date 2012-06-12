@@ -43,6 +43,13 @@ class SearchUI implements UI
         }
         $form->addSelect('dept', $depts);
         $form->setLabel('dept', 'Department');
+        
+        // If the user only has one department, select it for them
+        // sizeof($depts) == 2 because of the 'Select Deparmtnet' option
+        if(sizeof($depts) == 2){
+            $keys = array_keys($depts);
+            $form->setMatch('dept', $keys[1]);
+        }
 
         // Student level radio button
         javascript('jquery');
