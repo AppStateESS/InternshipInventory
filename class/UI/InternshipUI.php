@@ -274,8 +274,11 @@ class InternshipUI implements UI {
         $form->setLabel('supervisor_last_name', 'Last Name');
         $form->addText('supervisor_email');
         $form->setLabel('supervisor_email', 'Email');
-        $form->addText('supervisor_phone');
+        
+        $form->addText('supervisor_phone', '828-262-');
         $form->setLabel('supervisor_phone', 'Phone');
+        
+        
         if (Current_User::isDeity()) {
             if (!is_null($i))
             $depts = Department::getDepartmentsAssoc($i->department_id);
