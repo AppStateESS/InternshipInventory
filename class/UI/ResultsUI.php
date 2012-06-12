@@ -123,7 +123,7 @@ class ResultsUI implements UI
             /***
              * Fuzzy Search Settings 
              */
-            $tokenLimit = 3; // Max number of tokens
+            $tokenLimit = 2; // Max number of tokens
 
             // The fields (db column names) to fuzzy match against, in decreasing order of importance
             $fuzzyFields = array('last_name', 'first_name', 'middle_name');
@@ -138,7 +138,7 @@ class ResultsUI implements UI
             $tokens = array();
             $token = strtok($name, "\n\t, "); // tokenize on newline, tab, comma, space
             
-            while($token !== false && $tokenCount < 3){
+            while($token !== false && $tokenCount < $tokenLimit){
                 $tokenCount++;
                 $tokens[] = trim(strtolower($token)); // NB: must be lowercase!
                 // tokenize on newline, tab, comma, space
@@ -149,27 +149,18 @@ class ResultsUI implements UI
             $fuzzyDb = new SubselectDatabase('intern_internship');
             $fuzzyDb->addColumn('intern_internship.*');
             
+            // Foreach token
             for($i = 0; $i < $tokenCount; $i++){
-                foreach($fuzzyFields as $fieldName){
-                    // Calculate the start of the column alias based on which token we're on and which fuzzyField we're comparing against
-                    $asColName = "t{$i}_{$fieldName}";
-                    
-                    // Add a column for comparing the levenshtein distance of the  
-                    $fuzzyDb->addColumnRaw("levenshtein(metaphone('{$tokens[$i]}', 10), {$fieldName}_meta) AS $asColName" . '_metalev');
-                    $fuzzyDb->addColumnRaw("levenshtein('{$tokens[$i]}', lower($fieldName)) AS $asColName" . '_lev');
-                    
-                    $pager->db->addWhere('fuzzy.' . $asColName . '_metalev', $fuzzyTolerance, '<', 'OR', 'metaphone_where');
-                }
+                
+                $fuzzyDb->addColumnRaw("LEAST(levenshtein('{$tokens[$i]}', lower(last_name)),levenshtein('{$tokens[$i]}', lower(first_name))) as t{$i}_lev");
+                $fuzzyDb->addColumnRaw("LEAST(levenshtein(metaphone('{$tokens[$i]}', 10), last_name_meta),levenshtein(metaphone('{$tokens[$i]}', 10), first_name_meta)) as t{$i}_metalev");
+                
+                $pager->db->addWhere("fuzzy.t{$i}_lev", 2, '<', 'OR', 'lev_where');
+                $pager->db->addWhere("fuzzy.t{$i}_metalev", $fuzzyTolerance, '<', 'OR', 'metaphone_where');
                 
                 // Add order for this token's *_metalev fields
-                foreach($fuzzyFields as $fieldName){
-                    $orderByList[] = "fuzzy.t{$i}_{$fieldName}_metalev";
-                }
-                
-                // Add order for this token's *_lev fields
-                foreach($fuzzyFields as $fieldName){
-                    $orderByList[] = "fuzzy.t{$i}_{$fieldName}_lev";
-                }
+                $orderByList[] = "fuzzy.t{$i}_lev";
+                $orderByList[] = "fuzzy.t{$i}_metalev";
             }
 
             $pager->db->addOrder($orderByList);
