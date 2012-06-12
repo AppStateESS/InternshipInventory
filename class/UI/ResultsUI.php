@@ -127,7 +127,7 @@ class ResultsUI implements UI
 
             // The fields (db column names) to fuzzy match against, in decreasing order of importance
             $fuzzyFields = array('last_name', 'first_name', 'middle_name');
-            $fuzzyTolerance = 2; // Levenshtein distance allowed between the metaphones of a token and a $fuzzyField
+            $fuzzyTolerance = 3; // Levenshtein distance allowed between the metaphones of a token and a $fuzzyField
             
             // Initalization
             $orderByList = array();
@@ -155,7 +155,7 @@ class ResultsUI implements UI
                 $fuzzyDb->addColumnRaw("LEAST(levenshtein('{$tokens[$i]}', lower(last_name)),levenshtein('{$tokens[$i]}', lower(first_name))) as t{$i}_lev");
                 $fuzzyDb->addColumnRaw("LEAST(levenshtein(metaphone('{$tokens[$i]}', 10), last_name_meta),levenshtein(metaphone('{$tokens[$i]}', 10), first_name_meta)) as t{$i}_metalev");
                 
-                $pager->db->addWhere("fuzzy.t{$i}_lev", 2, '<', 'OR', 'lev_where');
+                $pager->db->addWhere("fuzzy.t{$i}_lev", 3, '<', 'OR', 'lev_where');
                 $pager->db->addWhere("fuzzy.t{$i}_metalev", $fuzzyTolerance, '<', 'OR', 'metaphone_where');
                 
                 // Add order for this token's *_metalev fields
