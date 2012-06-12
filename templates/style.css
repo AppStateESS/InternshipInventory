@@ -394,7 +394,7 @@ a.button:active {
 }
 /** Input type=button **/
 input[type="button"]{
-	float:left;
+	/*float:left;*/
     padding-left:10px;
     padding-right:10px;
     margin-right: 10px;
@@ -475,7 +475,7 @@ input[type="button"].disabled{
 
 /** Submit Button **/
 input[type="submit"]{
-    float:left;
+    /*float:left;*/
     padding-left:10px;
     padding-right:10px;
     margin-right: 10px;
