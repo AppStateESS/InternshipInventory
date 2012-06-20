@@ -27,6 +27,12 @@ class Internship extends Model {
     public $first_name;
     public $middle_name;
     public $last_name;
+    
+    // Metaphones for fuzzy search
+    
+    public $first_name_meta;
+    public $last_name_meta;
+    
     public $phone;
     public $email;
     public $level;
@@ -423,7 +429,19 @@ class Internship extends Model {
         
         return false;
     }
+    
+    public function setFirstNameMetaphone($name){
+        $this->first_name_meta = metaphone($name);
+    }
+    
+    public function setLastNameMetaphone($name){
+        $this->last_name_meta = metaphone($name);
+    }
 
+    /***********************
+     * Static Methods
+     ***********************/
+    
     /**
      * Get internship types in an associative array.
      */
@@ -631,6 +649,10 @@ class Internship extends Model {
         $i->first_name = $_REQUEST['student_first_name'];
         $i->middle_name = $_REQUEST['student_middle_name'];
         $i->last_name = $_REQUEST['student_last_name'];
+        
+        $i->setFirstNameMetaphone($_REQUEST['student_first_name']);
+        $i->setLastNameMetaphone($_REQUEST['student_last_name']);
+        
         $i->banner = $_REQUEST['banner'];
         $i->phone = $_REQUEST['student_phone'];
         $i->email = $_REQUEST['student_email'];
