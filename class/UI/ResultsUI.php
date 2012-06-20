@@ -115,10 +115,9 @@ class ResultsUI implements UI
         // Check to see if name is set and looks like a valid Banner ID
         if(!is_null($name) && preg_match("/\d{8}/", $name)){
             $pager->addWhere('fuzzy.banner', $name);
-        }
-        
-        // Check to see if name is set
-        if(!is_null($name) && $name != ''){
+            
+            // Else, check to see if name is set
+        }else if(!is_null($name) && $name != ''){
 
             /***
              * Fuzzy Search Settings 
