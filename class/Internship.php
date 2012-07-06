@@ -321,11 +321,7 @@ class Internship extends Model {
      */
     public function isDomestic()
     {
-        if ($this->domestic == 1) {
-            return true;
-        } else {
-            return false;
-        }
+        return $this->domestic;
     }
 
     /**
@@ -335,11 +331,7 @@ class Internship extends Model {
      */
     public function isInternational()
     {
-        if($this->international == 1) {
-            return false;
-        } else {
-            return false;
-        }
+        return $this->international;
     }
 
     /**
@@ -678,6 +670,8 @@ class Internship extends Model {
         if($i->oied_certified == 0 && $_POST['oied_certified_hidden'] == 'true'){
             // note the change for later
             $oiedCertified = true;
+        }else{
+            $oiedCertified = false;
         }
 
         if($_POST['oied_certified_hidden'] == 'true'){
