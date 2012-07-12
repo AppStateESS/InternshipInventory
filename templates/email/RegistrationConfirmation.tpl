@@ -1,6 +1,6 @@
 Hello {NAME},
 
-This message is to confirm that your internship has been approved and processed by the Registrar's Office. See below for details.
+This message is to confirm that your internship has been processed by the Registrar's Office. See below for details.
 
 Students:
     Please check your AppalNet account to verify your course schedule includes the Internship Course listed below.
