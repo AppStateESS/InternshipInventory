@@ -170,6 +170,7 @@ class Department extends Editable
         $dept = new Department();
 
         $dept->name = $name;
+        $dept->hidden = 0; // Be sure to set a default value for this, otherwise it gets set to null and screws things up
 
         try{
             $dept->save();
