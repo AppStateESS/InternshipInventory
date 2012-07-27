@@ -14,7 +14,7 @@ class ResultsUI implements UI
 {
     public static function display()
     {
-        PHPWS_Core::initCoreClass('SubselectPager.php');
+        PHPWS_Core::initModClass('intern', 'SubselectPager.php');
         PHPWS_Core::initModClass('intern', 'Internship.php');
 
         Layout::addPageTitle('Search Results');
