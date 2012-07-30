@@ -8,13 +8,5 @@ class CreationState extends WorkflowState {
         $creationTrans = new CreationTransition();
         return array($creationTrans);
     }
-    
-    public function getFriendlyName(){
-        return self::friendlyName;
-    }
-    
-    public function getName(){
-        return 'CreationState';
-    }
 }
 ?>

@@ -6,6 +6,8 @@
  * Forms relationship between a student, department, and agency.
  *
  * @author Robert Bost <bostrt at tux dot appstate dot edu>
+ * @author Jeremy Booker <jbooker at tux dot appstate dot edu>
+ * @package Intern
  */
 PHPWS_Core::initModClass('intern', 'Model.php');
 PHPWS_Core::initModClass('intern', 'Email.php');
@@ -29,7 +31,6 @@ class Internship extends Model {
     public $last_name;
     
     // Metaphones for fuzzy search
-    
     public $first_name_meta;
     public $last_name_meta;
     
@@ -349,27 +350,27 @@ class Internship extends Model {
         $d = $this->getDepartment();
 
         // Student info.
-        $tags['STUDENT_NAME'] = $this->getFullName();
-        $tags['STUDENT_BANNER'] = $this->getBannerId();
-
-        // Agency info.
-        $tags['AGENCY_NAME'] = $a->name;
+        $tags['STUDENT_NAME'] = PHPWS_Text::moduleLink($this->getFullName(), 'intern', array('action' => 'edit_internship', 'internship_id' => $this->id));
+        $tags['STUDENT_BANNER'] = PHPWS_Text::moduleLink($this->getBannerId(), 'intern', array('action' => 'edit_internship', 'internship_id' => $this->id));
 
         // Dept. info
-        $tags['DEPT_NAME'] = $d->name;
+        $tags['DEPT_NAME'] = PHPWS_Text::moduleLink($d->name, 'intern', array('action' => 'edit_internship', 'internship_id' => $this->id));
 
         // Faculty info.
-        $tags['FACULTY_NAME'] = $f->getFullName();
+        $facultyName = $f->getFullName();
+        if(!empty($facultyName)){
+            $tags['FACULTY_NAME'] = PHPWS_Text::moduleLink($f->getFullName(), 'intern', array('action' => 'edit_internship', 'internship_id' => $this->id));
+        }else{
+            // Makes this cell in the table a clickable link, even if there's no faculty name
+            $tags['FACULTY_NAME'] = PHPWS_Text::moduleLink('&nbsp;', 'intern', array('action' => 'edit_internship', 'internship_id' => $this->id));
+        }
 
+        $tags['TERM'] = PHPWS_Text::moduleLink(Term::rawToRead($this->term), 'intern', array('action' => 'edit_internship', 'internship_id' => $this->id));
 
-        // Internship info.
-        $tags['START_DATE'] = $this->getStartDate();
-        $tags['END_DATE'] = $this->getEndDate();
-        $tags['TERM'] = Term::rawToRead($this->term);
-        $tags['ID'] = $this->id;
-
-        $tags['EDIT'] = PHPWS_Text::moduleLink('Edit', 'intern', array('action' => 'edit_internship', 'internship_id' => $this->id));
-        $tags['PDF'] = PHPWS_Text::moduleLink('Generate Contract', 'intern', array('action' => 'pdf', 'id' => $this->id));
+        $tags['WORKFLOW_STATE'] = PHPWS_Text::moduleLink($this->getWorkflowState()->getFriendlyName(), 'intern', array('action' => 'edit_internship', 'internship_id' => $this->id));
+        
+        //$tags['EDIT'] = PHPWS_Text::moduleLink('Edit', 'intern', array('action' => 'edit_internship', 'internship_id' => $this->id));
+        //$tags['PDF'] = PHPWS_Text::moduleLink('Generate Contract', 'intern', array('action' => 'pdf', 'id' => $this->id));
 
         return $tags;
     }
@@ -394,6 +395,12 @@ class Internship extends Model {
 
     public function setState(WorkflowState $state){
         $this->state = $state->getName();
+    }
+    
+    public function getWorkflowState()
+    {
+        PHPWS_Core::initModClass('intern', 'WorkflowStateFactory.php');
+        return WorkflowStateFactory::getState($this->getStateName());
     }
     
     /**

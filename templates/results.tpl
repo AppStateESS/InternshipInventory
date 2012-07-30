@@ -9,24 +9,17 @@
   <th>{NAME_SORT}</th>
   <th>{INTERN_FACULTY_SUPERVISOR_LAST_NAME_SORT}</th>
   <th>{TERM_SORT}</th>
-  <th>Action</th>
+  <th>{STATE_SORT}</th>
 </tr>
 
 <!-- BEGIN listrows -->
-<tr class="result-row" id="{ID}">
+<tr class="result-row {TOGGLE}">
   <td>{STUDENT_NAME}</td>
   <td>{STUDENT_BANNER}</td>
   <td>{DEPT_NAME}</td>
   <td>{FACULTY_NAME}</td>
   <td>{TERM}</td>
-  <td class="action">
-    {EDIT} | {PDF}
-  </td>
-</tr>
-<tr>
-  <td colspan="5">
-    <div id="{ID}-details"></div>
-  </td>     
+  <td>{WORKFLOW_STATE}</td>
 </tr>
 <!-- END listrows -->
 

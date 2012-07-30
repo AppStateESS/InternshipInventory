@@ -336,6 +336,32 @@ input[type=radio]:disabled + label{
 	margin-bottom:0;
 }
 
+/****** Search Results Styles **************/
+#search-results {
+	border-collapse:collapse;
+}
+
+tr.result-row:hover{
+	background:#DDD;
+}
+
+tr.result-row td a {
+	display:block;
+	height:100%;
+	width:100%;
+	
+	color:#000;
+	text-decoration:none;
+}
+
+tr.tablerow-bg-color1 {
+	background:#FFF;
+}
+
+tr.tablerow-bg-color2 {
+    background:#F0F0F0;
+}
+
 /*****************
  * Button Styles *
  ****************/

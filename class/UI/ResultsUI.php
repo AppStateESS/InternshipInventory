@@ -63,12 +63,6 @@ class ResultsUI implements UI
         /* Get Pager */
         $pager = self::getPager($name, $dept, $term, $major, $level, $type, $campus, $loc, $state, $prov, $workflowState);
 
-        /* Javascript */
-        javascript('/jquery/');
-        javascript('open_window');
-        javascript('confirm');
-        javascriptMod('intern', 'hider');
-
         return $pager->get();
     }
 
@@ -262,7 +256,14 @@ class ResultsUI implements UI
 
         //$pager->joinResult('faculty_supervisor_id', 'intern_faculty_supervisor', 'id', 'last_name', 'faculty_last_name');
         $pager->addSortHeader('intern_faculty_supervisor.last_name', 'Faculty Advisor');
+        
+        $pager->addSortHeader('state', 'Status');
 
+        /***** Row Background Color Toggles ******/
+        $pager->addToggle('tablerow-bg-color1');
+        $pager->addToggle('tablerow-bg-color2');
+        
+        /***** Other Page Tags ******/
         $pageTags = array();
         $pageTags['BACK_LINK'] = PHPWS_Text::moduleLink('&laquo; Back to Search', 'intern', array('action' => 'search'));
 
