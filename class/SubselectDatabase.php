@@ -6,7 +6,7 @@ PHPWS_Core::initCoreClass('Database.php');
  * A database class tailored for doing sub-selects
  *
  * @author  Matt McNaney <mcnaney at gmail dot com>
- * @author Jeremy Booker
+ * @author  Jeremy Booker
  * @package Intern
  */
 
@@ -953,6 +953,8 @@ class SubselectDatabase extends PHPWS_DB{
      * the column name passed in. This is helpful for adding
      * columns which are expressions involving functions other
      * than the min/max/count allowed in addColumn().
+     *
+     * NB: You *MUST* filter your input before using this method. It WILL allow SQL injection.
      *
      * @param string $columnName Any expression which is valid as an column name
      */

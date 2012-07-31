@@ -118,6 +118,9 @@ class ResultsUI implements UI
             // Else, check to see if name is set
         }else if(!is_null($name) && $name != ''){
 
+            // Prevent SQL Injection and syntax errors, since we're going to be using the addColumnRaw() method.
+            $name = addslashes($name);
+            
             /***
              * Fuzzy Search Settings 
              */
