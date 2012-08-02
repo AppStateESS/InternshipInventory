@@ -16,27 +16,6 @@ class CreationTransition extends WorkflowTransition {
             Email::sendIntlInternshipCreateNotice($i);
         }
     }
-    
-    public function getActionName()
-    {
-        return self::actionName;
-    }
-    
-    public function getSourceState(){
-        return self::sourceState;
-    }
-    
-    public function getDestState(){
-        return self::destState;
-    }
-    
-    public function getSortIndex(){
-        return self::sortIndex;
-    }
-    
-    public function getName(){
-        return 'CreationTransition';
-    }
 }
 
 ?>

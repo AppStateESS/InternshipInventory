@@ -235,6 +235,10 @@ function intern_update(&$content, $currentVersion)
             if(PEAR::isError($result)){
                 return $result;
             }
+            
+        case version_compare($currentVersion, '0.1.0', '<'):
+            Users_Permission::registerPermissions('intern', $content);
     }
+    
     return TRUE;
 }

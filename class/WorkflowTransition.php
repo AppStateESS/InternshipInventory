@@ -14,6 +14,22 @@ abstract class WorkflowTransition {
     
     abstract function getAllowedPermissionList();
     
+    /**
+     * Determines if this transition is applicable to the given Internship. If not,
+     * the transition will not be shown in the list of actions for the user.
+     * NB: This is distinct from the allowed() method because a return value of false
+     * from allowed() will show the action as a disabled (grey'd out) in the list of
+     * actions.
+     * 
+     * Returns true by default, unless overridden by a child class.
+     * 
+     * @param Internship $i
+     * @return boolean
+     */
+    public function isApplicable(Internship $i){
+        return true; // Returns true by default
+    }
+    
     public function allowed(Internship $i)
     {
         $perms = $this->getAllowedPermissionList();
@@ -42,14 +58,11 @@ abstract class WorkflowTransition {
         // Do nothign by default. Send notifications here.
     }
     
-    /***
     public function getName()
     {
         return get_called_class();
     }
-    ***/
     
-    /*** Commented out for PHP 5.1 compatibility. This requires php 5.3
     public function getActionName()
     {
         $class = get_called_class();
@@ -73,7 +86,6 @@ abstract class WorkflowTransition {
         $class = get_called_class();
         return $class::sortIndex;
     }
-    **/
 }
 
 ?>

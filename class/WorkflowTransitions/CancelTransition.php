@@ -1,7 +1,7 @@
 <?php
 
 class CancelTransition extends WorkflowTransition {
-    const sourceState = '*';
+    //const sourceState = '*';
     const destState   = 'CancelledState';
     const actionName  = 'Cancel';
     
@@ -11,25 +11,8 @@ class CancelTransition extends WorkflowTransition {
         return array('dept_approve', 'sig_auth_approve', 'register');
     }
     
-    public function getActionName()
-    {
-        return self::actionName;
-    }
-    
     public function getSourceState(){
-        return array('NewState', 'SigAuthReadyState', 'SigAuthApprovedState', 'DeanApprovedState');
-    }
-    
-    public function getDestState(){
-        return self::destState;
-    }
-    
-    public function getSortIndex(){
-        return self::sortIndex;
-    }
-    
-    public function getName(){
-        return 'CancelTransition';
+        return array('NewState', 'SigAuthReadyState', 'SigAuthApprovedState', 'DeanApprovedState', 'GradSchoolApprovedState');
     }
 }
 

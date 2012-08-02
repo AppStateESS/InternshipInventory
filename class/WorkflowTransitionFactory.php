@@ -17,9 +17,9 @@ class WorkflowTransitionFactory {
             // Set the actual source state
             $t->setSourceState($state);
             
-            if(is_array($t->getSourceState()) && in_array($stateName, $t->getSourceState())){
+            if(is_array($t->getSourceState()) && in_array($stateName, $t->getSourceState()) && $t->isApplicable($i)){
                 $outgoingTrans[] = $t;
-            }else if($t->getSourceState() == $stateName || $t->getSourceState() == '*'){
+            }else if(($t->getSourceState() == $stateName || $t->getSourceState() == '*') && $t->isApplicable($i)){
                 $outgoingTrans[] = $t;
             }
         }

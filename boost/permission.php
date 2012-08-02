@@ -27,5 +27,6 @@ $permissions['reinstate']        = _('Reinstate');
 // Special workflow transitions
 $permissions['oied_certify']         = _('OIED Certification');
 $permissions['distance_ed_register'] = _('Distance Ed Registration');
+$permissions['grad_school_approve']  = _('Graduate School Approval');
 
 ?>

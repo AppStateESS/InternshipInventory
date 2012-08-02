@@ -34,8 +34,11 @@ class Internship extends Model {
     public $first_name_meta;
     public $last_name_meta;
     
+    // Contact Info
     public $phone;
     public $email;
+    
+    // Academic info
     public $level;
     public $grad_prog;
     public $ugrad_major;
@@ -164,10 +167,10 @@ class Internship extends Model {
      */
     public function isUndergraduate()
     {
-        if(!is_null($this->ugrad_major) && $this->ugrad_major > 0){
+        if($this->getLevel() == 'ugrad'){
             return true;
         }
-
+        
         return false;
     }
 
@@ -177,10 +180,10 @@ class Internship extends Model {
      */
     public function isGraduate()
     {
-        if(!is_null($this->grad_prog) && $this->grad_prog > 0){
+        if($this->getLevel() == 'grad'){
             return true;
         }
-
+        
         return false;
     }
 
@@ -437,6 +440,10 @@ class Internship extends Model {
         $this->last_name_meta = metaphone($name);
     }
 
+    public function getLevel(){
+        return $this->level;
+    }
+    
     /***********************
      * Static Methods
      ***********************/
@@ -656,8 +663,18 @@ class Internship extends Model {
         $i->phone = $_REQUEST['student_phone'];
         $i->email = $_REQUEST['student_email'];
         $i->level = $_REQUEST['student_level'];
-        $i->grad_prog = $_REQUEST['grad_prog'] == -1 ? null : $_REQUEST['grad_prog'];
-        $i->ugrad_major = $_REQUEST['ugrad_major'] == -1 ? null : $_REQUEST['ugrad_major'];
+
+        // Check the level and record the major/program for this level.
+        // Be sure to set/clear the other leve's major/program to null
+        // in case the user is switching levels.
+        if($i->getLevel() == 'ugrad'){
+            $i->ugrad_major = $_REQUEST['ugrad_major'];
+            $i->grad_prog = null;
+        }else if($i->getLevel() == 'grad'){
+            $i->grad_prog = $_REQUEST['grad_prog'];
+            $i->ugrad_major = null;
+        }
+        
         $i->gpa = $_REQUEST['student_gpa'];
         $i->campus = $_REQUEST['campus'];
 

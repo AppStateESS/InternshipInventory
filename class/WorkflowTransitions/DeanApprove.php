@@ -11,36 +11,15 @@ class DeanApprove extends WorkflowTransition {
 
     public function doNotification(Internship $i)
     {
-        $agency = $i->getAgency();
+        
+        // If this is an undergrad internship, then send the Registrar an email
+        // Graduate level internships have another workflow state to go through before we alert the Registrar
+        if($i->isUndergraduate()){
+            $agency = $i->getAgency();
 
-        PHPWS_Core::initModClass('intern', 'Email.php');
-        Email::sendRegistrarEmail($i, $agency);
-    }
-
-    public function onTransition(Internship $i)
-    {
-
-    }
-
-    public function getActionName()
-    {
-        return self::actionName;
-    }
-
-    public function getSourceState(){
-        return self::sourceState;
-    }
-
-    public function getDestState(){
-        return self::destState;
-    }
-
-    public function getSortIndex(){
-        return self::sortIndex;
-    }
-
-    public function getName(){
-        return 'DeanApprove';
+            PHPWS_Core::initModClass('intern', 'Email.php');
+            Email::sendRegistrarEmail($i, $agency);
+        }
     }
 }
 

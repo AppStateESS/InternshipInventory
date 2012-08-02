@@ -1,6 +1,6 @@
 <?php
 
-class Registration extends WorkflowTransition {
+class UndergradRegistration extends WorkflowTransition {
     const sourceState = 'DeanApprovedState';
     const destState   = 'RegisteredState';
     const actionName  = 'Mark as Registered / Enrollment Complete';
@@ -9,11 +9,22 @@ class Registration extends WorkflowTransition {
         return array('register');
     }
 
+    public function isApplicable(Internship $i)
+    {
+        if($i->isUndergraduate()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
     public function allowed(Internship $i)
     {
         if($i->isDistanceEd()){
             if(Current_User::allow('intern', 'distance_ed_register')){
                 return true;
+            }else{
+                return false;
             }
         }else{
             return parent::allowed($i);
@@ -28,27 +39,6 @@ class Registration extends WorkflowTransition {
 
         PHPWS_Core::initModClass('intern', 'Email.php');
         Email::sendRegistrationConfirmationEmail($i, $agency);
-    }
-
-    public function getActionName()
-    {
-        return self::actionName;
-    }
-
-    public function getSourceState(){
-        return self::sourceState;
-    }
-
-    public function getDestState(){
-        return self::destState;
-    }
-
-    public function getSortIndex(){
-        return self::sortIndex;
-    }
-
-    public function getName(){
-        return 'Registration';
     }
 }
 
