@@ -86,13 +86,11 @@ class ResultsUI implements UI
         $pager->db->tables = array();
         $pager->db->addTable('intern_internship', 'fuzzy');
         
-        //$pager->db->addJoin('LEFT', 'fuzzy', 'intern_agency', 'agency_id', 'id');
-        
-        if(!Current_User::isDeity()){
+        // If the current user is not a deity and doesn't have the 'all_departments' permission,
+        // then add a join to limit the results to just the allowed departments
+        if(!Current_User::isDeity() && !Current_User::allow('intern', 'all_departments')){
             $pager->db->addJoin('', 'fuzzy', 'intern_admin', 'department_id', 'department_id');
             $pager->addWhere('intern_admin.username', Current_User::getUsername());
-            //$pager->db->setTestMode();
-            //$pager->db->select();
         }
 
         // Limit to requested department

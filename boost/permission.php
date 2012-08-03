@@ -29,4 +29,7 @@ $permissions['oied_certify']         = _('OIED Certification');
 $permissions['distance_ed_register'] = _('Distance Ed Registration');
 $permissions['grad_school_approve']  = _('Graduate School Approval');
 
+// Access to all departments
+$permissions['all_departments']      = _('Access All Departments');
+
 ?>

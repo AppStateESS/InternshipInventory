@@ -139,8 +139,12 @@ class Department extends Editable
         if(!is_null($except))
             $db->addWhere('id', $except, '=', 'OR', 'grp');
 
-        $db->addJoin('LEFT', 'intern_department', 'intern_admin', 'id', 'department_id');
-        $db->addWhere('intern_admin.username', $username);
+        // If the user doesn't have the 'all_departments' permission,
+        // then add a join to limit to specific departments
+        if(!Current_User::allow('intern', 'all_departments')){
+            $db->addJoin('LEFT', 'intern_department', 'intern_admin', 'id', 'department_id');
+            $db->addWhere('intern_admin.username', $username);
+        }
 
         $depts = $db->select('assoc');
         // Horrible, horrible hacks. Need to add a null selection.
