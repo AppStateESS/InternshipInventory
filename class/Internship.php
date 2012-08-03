@@ -460,6 +460,8 @@ class Internship extends Model {
 
     /**
      * Create a new internship. Save to DB.
+     * 
+     * TODO: Move this to it's own controller class.
      */
     public static function addInternship()
     {
@@ -740,7 +742,7 @@ class Internship extends Model {
 
         PHPWS_DB::commit();
 
-        $workflow->doNotification();
+        $workflow->doNotification(isset($_POST['notes'])?$_POST['notes']:null);
 
         if (isset($_REQUEST['internship_id'])) {
             // Show message if user edited internship

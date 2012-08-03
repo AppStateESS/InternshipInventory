@@ -18,7 +18,7 @@ class GradSchoolApprove extends WorkflowTransition {
         }
     }
     
-    public function doNotification(Internship $i)
+    public function doNotification(Internship $i, $note = null)
     {
         // Should always be a grad-level internship if we've made it to this transition, but double check
         if($i->isGraduate()){

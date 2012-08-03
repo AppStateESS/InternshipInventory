@@ -33,7 +33,7 @@ class UndergradRegistration extends WorkflowTransition {
         return false;
     }
 
-    public function doNotification(Internship $i)
+    public function doNotification(Internship $i, $note = null)
     {
         $agency = $i->getAgency();
 

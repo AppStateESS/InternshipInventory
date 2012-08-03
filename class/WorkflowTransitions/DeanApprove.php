@@ -9,7 +9,7 @@ class DeanApprove extends WorkflowTransition {
         return array('dean_approve');
     }
 
-    public function doNotification(Internship $i)
+    public function doNotification(Internship $i, $note = null)
     {
         
         // If this is an undergrad internship, then send the Registrar an email

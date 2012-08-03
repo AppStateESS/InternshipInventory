@@ -12,7 +12,7 @@ class CancelTransition extends WorkflowTransition {
     }
     
     public function getSourceState(){
-        return array('NewState', 'SigAuthReadyState', 'SigAuthApprovedState', 'DeanApprovedState', 'GradSchoolApprovedState');
+        return array('NewState', 'SigAuthReadyState', 'SigAuthApprovedState', 'DeanApprovedState', 'GradSchoolApprovedState', 'RegistrationIssueState');
     }
 }
 

@@ -19,7 +19,7 @@ class GraduateRegistration extends WorkflowTransition {
         }
     }
     
-    public function doNotification(Internship $i)
+    public function doNotification(Internship $i, $note = null)
     {
         $agency = $i->getAgency();
     

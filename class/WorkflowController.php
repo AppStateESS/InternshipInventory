@@ -56,8 +56,8 @@ class WorkflowController {
         $changeHistory->save();
     }
     
-    public function doNotification(){
-        $this->t->doNotification($this->internship);
+    public function doNotification($note = null){
+        $this->t->doNotification($this->internship, $note);
     }
 }
 

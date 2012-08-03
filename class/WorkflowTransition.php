@@ -53,7 +53,7 @@ abstract class WorkflowTransition {
         // Do nothing by default.
     }
     
-    public function doNotification(Internship $i)
+    public function doNotification(Internship $i, $note = null)
     {
         // Do nothign by default. Send notifications here.
     }
