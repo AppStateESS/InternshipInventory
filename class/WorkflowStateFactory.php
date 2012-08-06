@@ -48,6 +48,9 @@ class WorkflowStateFactory {
     public static function getStatesAssoc()
     {
         $states = self::getAllStates();
+
+        // Sort the states into a reasonable order
+        uasort($states, array('self', 'sortStates'));
         
         $assoc = array();
         
@@ -56,5 +59,18 @@ class WorkflowStateFactory {
         }
         
         return $assoc;
+    }
+    
+    /**
+     * Call-back function for sorting states by their priority. Lower sort index => lower priority.
+     * @param WorkflowState $a
+     * @param WorkflowState $b
+     */
+    private static function sortStates(WorkflowState $a, WorkflowState $b)
+    {
+        if($a->getSortIndex() == $b->getSortIndex()){
+            return 0;
+        }
+        return ($a->getSortIndex() < $b->getSortIndex()) ? -1 : 1;
     }
 }

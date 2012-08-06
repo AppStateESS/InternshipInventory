@@ -5,6 +5,7 @@ PHPWS_Core::initModClass('intern', 'WorkflowTransitionFactory.php');
 abstract class WorkflowState {
 
     const friendlyName = '';
+    const sortIndex    = 5;
     
     /**
      * Returns an array of the valid WorkflowActions for this State.
@@ -38,6 +39,12 @@ abstract class WorkflowState {
     public function getFriendlyName(){
         $class = $this->getName();
         return $class::friendlyName;
+    }
+    
+    public function getSortIndex()
+    {
+        $class = get_called_class();
+        return $class::sortIndex;
     }
 }
 
