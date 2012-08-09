@@ -1,7 +1,11 @@
-<table id="admin-pager" border=0 cellspacing=3 cellpadding=3>
+<div style="float:right;">
+    {SEARCH}
+</div>
+
+<table id="admin-pager" style="border:0; cell-spacing:3px; padding:3px;clear:both;">
 <tr>
-    <th>Username</th>
-    <th>Department</th>
+    <th>Username{USERNAME_SORT}</th>
+    <th>Department{DEPARTMENT_ID_SORT}</th>
     <th>Option</th>
 </tr>
 <!-- BEGIN empty_table -->
@@ -11,11 +15,11 @@
 <!-- END empty_table -->
 
 <!-- BEGIN listrows -->
-<tr {TOGGLE}>
+<tr class="{TOGGLE}">
     <td>{USERNAME}</td>
     <td>{DEPARTMENT}</td>
     <td>{DELETE}</td>
 </tr>
 <!-- END listrows -->
 </table>
-<div align="center">{TOTAL_ROWS}<br/>{PAGES}<br/>{LIMITS}
+<div align="center">{TOTAL_ROWS}<br/>{PAGES}<br/>{LIMITS}</div>

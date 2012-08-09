@@ -1,9 +1,9 @@
 <?php
+
 /**
  * Class for handling UI for Admin editing and creation
  * @author Micah Carter <mcarter at tux dot appstate dot edu>
-**/
-
+ **/
 class AdminUI implements UI {
 
     // Show a list of admins and a form to add a new one.
@@ -16,7 +16,6 @@ class AdminUI implements UI {
 
         // set up some stuff for the page template
         $tpl                     = array();
-        $tpl['PAGE_TITLE']       = 'Edit Administrators';
 
         // create the list of admins
         $adminList = Admin::getAdminPager();

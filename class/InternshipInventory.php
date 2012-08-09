@@ -230,13 +230,8 @@ class InternshipInventory {
                 PHPWS_Core::initModClass('intern', 'Admin.php');
                 PHPWS_Core::initModClass('intern', 'Department.php');
                 if (isset($_REQUEST['add'])) {
-                    if (isset($_REQUEST['all'])) {
-                        // Add user in REQUEST to all departments
-                        Admin::addAll($_REQUEST['username']);
-                    } else {
-                        // Add user in REQUEST to administrator list for the department in REQUEST.
-                        Admin::add($_REQUEST['username'], $_REQUEST['department_id']);
-                    }
+                    // Add user in REQUEST to administrator list for the department in REQUEST.
+                    Admin::add($_REQUEST['username'], $_REQUEST['department_id']);
                 } else if (isset($_REQUEST['del'])) {
                     // Delete the user in REQUEST from department in REQUEST.
                     Admin::del($_REQUEST['username'], $_REQUEST['department_id']);

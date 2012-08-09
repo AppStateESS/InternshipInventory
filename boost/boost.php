@@ -1,7 +1,7 @@
 <?php
 /*
-* @author Micah Carter <mcarter at tux dot appstate dot edu>
-*/
+ * @author Micah Carter <mcarter at tux dot appstate dot edu>
+ */
 
 $proper_name  = 'Intern Inventory';
 $version      = '0.1.0';
