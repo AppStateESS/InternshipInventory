@@ -163,7 +163,7 @@ class Admin extends Model
         $pager->addToggle('tablerow-bg-color2');
         
         // Search
-        $pager->setSearch('username', 'name');
+        $pager->setSearch('username');
         
         return $pager->get();
     }

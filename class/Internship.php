@@ -14,7 +14,9 @@ PHPWS_Core::initModClass('intern', 'Email.php');
 PHPWS_Core::initModClass('intern', 'Term.php');
 PHPWS_Core::initModClass('intern', 'Major.php');
 
-class Internship extends Model {
+class Internship {
+    
+    public $id;
 
     public $agency_id;
     public $faculty_supervisor_id;
@@ -86,6 +88,13 @@ class Internship extends Model {
     public $clinical_practica = 0;
 
     /**
+     * Constructs a new Internship object.
+     */
+    public function __construct(){
+        
+    }
+    
+    /**
      * @Override Model::getDb
      */
     public function getDb()
@@ -93,6 +102,64 @@ class Internship extends Model {
         return new PHPWS_DB('intern_internship');
     }
 
+    /**
+     * Load the model from the database with matching $this->id.
+     */
+    public function load()
+    {
+        if (is_null($this->id) || !is_numeric($this->id))
+            return false;
+    
+        $db = $this->getDb();
+        $db->addWhere('id', $this->id);
+        $result = $db->loadObject($this);
+    
+        if (PHPWS_Error::logIfError($result)) {
+            throw new Exception($result->toString());
+        }
+    
+        return $result;
+    }
+    
+    /**
+     * Save model to database
+     * @return - new ID of model.
+     */
+    public function save()
+    {
+        $db = $this->getDb();
+        try {
+            $result = $db->saveObject($this);
+        } catch (Exception $e) {
+            exit($e->getMessage());
+        }
+    
+        if (PHPWS_Error::logIfError($result)) {
+            throw new Exception($result->toString());
+        }
+    
+        return $this->id;
+    }
+    
+    /**
+     * Delete model from database.
+     */
+    public function delete()
+    {
+        if (is_null($this->id) || !is_numeric($this->id))
+            return false;
+    
+        $db = $this->getDb();
+        $db->addWhere('id', $this->id);
+        $result = $db->delete();
+    
+        if (PHPWS_Error::logIfError($result)) {
+            throw new Exception($result->getMessage(), $result->getCode());
+        }
+    
+        return true;
+    }
+    
     /**
      * @Override Model::getCSV
      * Get a CSV formatted for for this internship.
@@ -337,6 +404,15 @@ class Internship extends Model {
     {
         return $this->international;
     }
+    
+    public function isOiedCertified()
+    {
+        if($this->oied_certified == 1){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
     /**
      * Row tags for DBPager
@@ -383,6 +459,15 @@ class Internship extends Model {
     */
 
     /**
+     * Returns the database id of this internship.
+     * 
+     * @return int
+     */
+    public function getId(){
+        return $this->id;
+    }
+    
+    /**
      * Returns the Banner ID of this student.
      *
      * @return string Banner ID
@@ -400,10 +485,22 @@ class Internship extends Model {
         $this->state = $state->getName();
     }
     
+    /**
+     * Returns the WorkflowState object represeting this internship's current state/status.
+     * Returns null if no state has been set yet.
+     * 
+     * @return WorkflowState
+     */
     public function getWorkflowState()
     {
+        $stateName = $this->getStateName();
+        
+        if(is_null($stateName)){
+            return null;
+        }
+        
         PHPWS_Core::initModClass('intern', 'WorkflowStateFactory.php');
-        return WorkflowStateFactory::getState($this->getStateName());
+        return WorkflowStateFactory::getState($stateName);
     }
     
     /**
@@ -600,16 +697,18 @@ class Internship extends Model {
         }
 
         // Create/Save internship.
-        $i = new Internship();
         if (isset($_REQUEST['internship_id'])) {
             // User is editing internship
             try {
-                $i = new Internship($_REQUEST['internship_id']);
+                PHPWS_Core::initModClass('intern', 'InternshipFactory.php');
+                $i = InternshipFactory::getInternshipById($_REQUEST['internship_id']);
             } catch (Exception $e) {
                 // Rollback and re-throw the exception so that admins gets an email
                 PHPWS_DB::rollback();
                 throw $e;
             }
+        }else{
+            $i = new Internship();
         }
 
         $i->term = $_REQUEST['term'];

@@ -6,10 +6,11 @@ class WorkflowTransitionView {
     private $form;
     private $internship;
     
-    public function __construct(WorkflowState $state, PHPWS_Form $form, Internship $i){
-        $this->state = $state;
-        $this->form = $form;
+    public function __construct(Internship $i, PHPWS_Form &$form){
         $this->internship = $i;
+        $this->form = $form;
+        
+        $this->state = $this->internship->getWorkflowState();
         
         $this->form->useRowRepeat();
     }

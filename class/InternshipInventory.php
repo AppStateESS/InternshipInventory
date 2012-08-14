@@ -52,11 +52,6 @@ class InternshipInventory {
                 PHPWS_Core::initModClass('intern', 'Internship.php');
                 Internship::addInternship();
                 break;
-            case 'internship_details':
-                PHPWS_Core::initModClass('intern', 'UI/InternshipDetailsUI.php');
-                echo InternshipDetailsUI::display();
-                exit;
-                break;
             case 'search':
                 PHPWS_Core::initModClass('intern', 'UI/SearchUI.php');
                 $this->content = SearchUI::display();
@@ -244,7 +239,7 @@ class InternshipInventory {
                 break;
             case 'pdf':
                 PHPWS_Core::initModClass('intern', 'Internship.php');
-                $i = new Internship($_REQUEST['id']);
+                $i = InternshipFactory::getInternshipById($_REQUEST['id']);
                 $i->getPDF();
                 exit;
             case 'upload_document_form':
@@ -264,19 +259,6 @@ class InternshipInventory {
                 $doc->delete();
                 NQ::simple('intern', INTERN_SUCCESS, 'Document deleted.');
                 NQ::close();
-                PHPWS_Core::goBack();
-                break;
-
-            case 'unapprove':
-                if (!Current_User::isDeity()) {
-                    Current_User::disallow();
-                }
-                PHPWS_Core::initModClass('intern', 'Internship.php');
-                $internship = new Internship((int)$_GET['id']);
-                $internship->approved = 0;
-                $internship->approved_by = null;
-                $internship->approved_on = 0;
-                $internship->save();
                 PHPWS_Core::goBack();
                 break;
             default:
