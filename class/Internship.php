@@ -101,25 +101,6 @@ class Internship {
     {
         return new PHPWS_DB('intern_internship');
     }
-
-    /**
-     * Load the model from the database with matching $this->id.
-     */
-    public function load()
-    {
-        if (is_null($this->id) || !is_numeric($this->id))
-            return false;
-    
-        $db = $this->getDb();
-        $db->addWhere('id', $this->id);
-        $result = $db->loadObject($this);
-    
-        if (PHPWS_Error::logIfError($result)) {
-            throw new Exception($result->toString());
-        }
-    
-        return $result;
-    }
     
     /**
      * Save model to database
