@@ -25,14 +25,16 @@ class FacultySupervisor extends Model
     /**
      * @Override Model::getDb
      */
-    public function getDb(){
+    public function getDb()
+    {
         return new PHPWS_DB('intern_faculty_supervisor');
     }
 
     /**
      * @Override Model::getCSV
      */
-    public function getCSV(){
+    public function getCSV()
+    {
         $csv = array();
 
         $csv['Faculty Super. First Name'] = $this->first_name;
@@ -43,7 +45,8 @@ class FacultySupervisor extends Model
         return $csv;
     }
 
-    public function getFullName(){
+    public function getFullName()
+    {
         
         // If there's no first name and no last name, be sure to return a compltely empty string
         if(empty($this->first_name) && empty($this->last_name)){
@@ -51,6 +54,16 @@ class FacultySupervisor extends Model
         }
         
         return "$this->first_name $this->last_name";
+    }
+    
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+    
+    public function getEmail()
+    {
+        return $this->email;
     }
 }
 

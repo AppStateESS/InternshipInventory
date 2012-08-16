@@ -144,6 +144,37 @@ class Agency extends Model {
             return implode(' ', $add);
         }
     }
+    
+    public function getName()
+    {
+        return $this->name;
+    }
+    
+    public function getPhoneNumber()
+    {
+        return $this->phone;
+    }
+    
+    public function getSupervisorTitle()
+    {
+        return $this->supervisor_title;
+    }
+    
+    public function getSupervisorEmail()
+    {
+        return $this->supervisor_email;
+    }
+    
+    public function getSupervisorPhoneNumber()
+    {
+        return $this->supervisor_phone;
+    }
+    
+    public function getSupervisorFaxNumber()
+    {
+        return $this->supervisor_fax;
+    }
+    
 }
 
 ?>

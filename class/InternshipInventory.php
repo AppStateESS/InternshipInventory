@@ -238,9 +238,13 @@ class InternshipInventory {
                 $this->content = AdminUI::display();
                 break;
             case 'pdf':
-                PHPWS_Core::initModClass('intern', 'Internship.php');
+                PHPWS_Core::initModClass('intern', 'InternshipFactory.php');
+                PHPWS_Core::initModClass('intern', 'InternshipPdfView.php');
                 $i = InternshipFactory::getInternshipById($_REQUEST['id']);
-                $i->getPDF();
+                //$i->getPDF();
+                $pdfView = new InternshipPdfView($i);
+                $pdf = $pdfView->getPdf();
+                $pdf->output();
                 exit;
             case 'upload_document_form':
                 PHPWS_Core::initModClass('intern', 'Intern_Document_Manager.php');

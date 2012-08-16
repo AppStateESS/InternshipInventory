@@ -457,11 +457,26 @@ class Internship {
         return $this->banner;
     }
 
+    public function getEmailAddress(){
+        return $this->email;
+    }
+    
+    /**
+     * Returns the WorkflowState name for this internshio's current state/status.
+     * Can be null if no state has been set yet.
+     * 
+     * @return string
+     */
     public function getStateName()
     {
         return $this->state;
     }
 
+    /**
+     * Sets the WorkflowState of this internship.
+     * 
+     * @param WorkflowState $state
+     */
     public function setState(WorkflowState $state){
         $this->state = $state->getName();
     }
@@ -510,16 +525,118 @@ class Internship {
         return false;
     }
     
-    public function setFirstNameMetaphone($name){
-        $this->first_name_meta = metaphone($name);
+    /**
+     * Calculates and sets the metaphone value for this student's first name.
+     * 
+     * @param string $firstName
+     */
+    public function setFirstNameMetaphone($firstName){
+        $this->first_name_meta = metaphone($firstName);
     }
     
-    public function setLastNameMetaphone($name){
-        $this->last_name_meta = metaphone($name);
+    /**
+     * Calculates and sets the metaphone value for this student's last name.
+     * 
+     * @param string $lastName
+     */
+    public function setLastNameMetaphone($lastName){
+        $this->last_name_meta = metaphone($lastName);
     }
 
+    /**
+     * Returns this student's level ('grad', or 'undergrad')
+     * 
+     * @return string
+     */
     public function getLevel(){
         return $this->level;
+    }
+    
+    public function getGpa(){
+        return $this->gpa;
+    }
+    
+    public function getPhoneNumber(){
+        return $this->phone;
+    }
+    
+    public function getStudentAddress()
+    {
+        $studentAddress = "";
+        if(!empty($this->student_address)){
+            $studentAddress .= ($this->student_address . ", ");
+        }
+        if(!empty($this->student_city)){
+            $studentAddress .= ($this->student_city . ", ");
+        }
+        if(!empty($this->student_state) && $this->student_state != '-1'){
+            $studentAddress .= ($this->student_state . " ");
+        }
+        if(!empty($this->student_zip)){
+            $studentAddress .= $this->student_zip;
+        }
+        
+        return $studentAddress;
+    }
+    
+    /**
+     * Returns this internship's term
+     * 
+     * @return int
+     */
+    public function getTerm(){
+        return $this->term;
+    }
+    
+    public function getCourseNumber(){
+        return $this->course_no;
+    }
+    
+    public function getCourseSection(){
+        return $this->course_sect;
+    }
+    
+    public function getCourseTitle(){
+        return $this->course_title;
+    }
+    
+    public function getCreditHours(){
+        return $this->credits;
+    }
+    
+    public function getAvgHoursPerWeek(){
+        return $this->avg_hours_week;
+    }
+    
+    public function isPaid(){
+        if($this->paid == 1){
+            return true;
+        }
+        
+        return false;
+    }
+    
+    public function isUnPaid(){
+        if($this->unpaid == 1){
+            return true;
+        }
+        
+        return false;
+    }
+    
+    public function getEmergencyContactName()
+    {
+        return $this->emergency_contact_name;
+    }
+    
+    public function getEmergencyContactRelation()
+    {
+        return $this->emergency_contact_relation;
+    }
+    
+    public function getEmergencyContactPhoneNumber()
+    {
+        return $this->emergency_contact_phone;
     }
     
     /***********************
@@ -907,266 +1024,6 @@ class Internship {
         }
 
         return $vals;
-    }
-
-    /**
-     * Generate a PDF Report for this internship.
-     * Filename is returned.
-     */
-    public function getPDF()
-    {
-        require_once(PHPWS_SOURCE_DIR . 'mod/intern/pdf/fpdf.php');
-        require_once(PHPWS_SOURCE_DIR . 'mod/intern/pdf/fpdi.php');
-        PHPWS_Core::initModClass('intern', 'Term.php');
-
-        $pdf = new FPDI('P', 'mm', 'Letter');
-        $a = $this->getAgency();
-        $d = $this->getDepartment();
-        $f = $this->getFacultySupervisor();
-        $m = $this->getUgradMajor();
-        $g = $this->getGradProgram();
-        $subject = $this->getSubject();
-
-        $pagecount = $pdf->setSourceFile(PHPWS_SOURCE_DIR . 'mod/intern/pdf/contract-flat.pdf');
-        $tplidx = $pdf->importPage(1);
-        $pdf->addPage();
-        $pdf->useTemplate($tplidx);
-
-        $pdf->setFont('Times', null, 10);
-
-        /*
-         * Internship information
-        */
-
-        //        $types = $this->getReadableTypes();
-        //        // If the width of the string of types is greater than 139 (found by trial/error)
-        //        // then we need to correct the header's alignment and left border.
-        //        if ($pdf->getStringWidth($types) > 139) {
-        //            $pdf->cell(15, 10, 'Type:', 1);
-        //        } else {
-        //            $pdf->cell(15, 5, 'Type:', 1);
-        //        }
-        //        $pdf->multiCell(175, 5, $types, 1);
-
-        // Term
-        $pdf->setXY(128, 39);
-        $pdf->cell(60, 5, Term::rawToRead($this->term, false));
-
-        /* Department */
-        //$pdf->setFont('Times', null, 10);
-        $pdf->setXY(171, 40);
-        $pdf->MultiCell(31, 3, $subject->abbreviation);
-
-        // Subject and Course #
-        //$pdf->setFont('Times', null, 8);
-        $pdf->setXY(132, 44);
-        $course_info = $this->course_no;
-        $pdf->cell(59, 5, $course_info);
-
-        // Section #
-        $pdf->setXY(178, 44);
-        $pdf->cell(25, 5, $this->course_sect);
-
-        /*
-         $pdf->setXY(132, 39);
-        if (!is_null($m)) {
-        $major = $m->getName();
-        } else {
-        $major = 'N/A';
-        }
-        $pdf->cell(73, 5, $major);
-        */
-
-        //$pdf->setFont('Times', null, 10);
-        $pdf->setXY(140, 48);
-        $pdf->cell(73, 6, $this->course_title);
-
-        /* Location */
-        if($this->domestic == 1){
-            $pdf->setXY(85, 62);
-            $pdf->cell(12, 5, 'X');
-        }
-        if($this->international == 1){
-            $pdf->setXY(156, 62);
-            $pdf->cell(12, 5, 'X');
-        }
-
-        /**
-         * Student information.
-         */
-        $pdf->setXY(40, 77);
-        $pdf->cell(55, 5, $this->getFullName());
-
-        $pdf->setXY(173,77);
-        $pdf->cell(54,5, $this->gpa);
-
-        $pdf->setXY(32, 83);
-        $pdf->cell(42, 5, $this->banner);
-
-        $pdf->setXY(41, 88);
-        $pdf->cell(54, 5, $this->email . '@appstate.edu');
-
-        $pdf->setXY(113, 88);
-        $pdf->cell(54, 5, $this->phone);
-
-        /* Student Address */
-        $pdf->setXY(105, 83);
-        $studentAddress = "";
-        if(!empty($this->student_address)){
-            $studentAddress .= ($this->student_address . ", ");
-        }
-        if(!empty($this->student_city)){
-            $studentAddress .= ($this->student_city . ", ");
-        }
-        if(!empty($this->student_state) && $this->student_state != '-1'){
-            $studentAddress .= ($this->student_state . " ");
-        }
-        if(!empty($this->student_zip)){
-            $studentAddress .= $this->student_zip;
-        }
-        $pdf->cell(54, 5, $studentAddress);
-
-
-        /* Payment */
-        if($this->paid == 1){
-            $pdf->setXY(160, 88);
-            $pdf->cell(10,5, 'X');
-        }
-
-        if($this->unpaid == 1){
-            $pdf->setXY(190, 88);
-            $pdf->cell(10,5,'X');
-        }
-
-        /* Start/end dates */
-        //$pdf->setFont('Times', null, 10);
-        $pdf->setXY(50, 93);
-        $pdf->cell(25, 5, $this->getStartDate(true));
-        $pdf->setXY(93, 93);
-        $pdf->cell(25, 5, $this->getEndDate(true));
-
-        /* Hours */
-        $pdf->setXY(193, 93);
-        $pdf->cell(12, 5, $this->credits); // Credit hours
-        $pdf->setXY(157, 93);
-        $pdf->cell(12, 5, $this->avg_hours_week); // hours per week
-
-        //        $pdf->cell(35, 5, 'Graduate Program:', 'LTB');
-        //        if (!is_null($g)) {
-        //            $pdf->cell(155, 5, $g->getName(), 'RTB');
-        //        } else {
-        //            $pdf->cell(155, 5, 'N/A', 'RTB');
-        //        }
-        //
-        /**
-        * Faculty supervisor information.
-        */
-        $pdf->setXY(26, 109);
-        $pdf->cell(81, 5, $f->getFullName());
-
-        $pdf->setXY(26, 131);
-        $pdf->cell(77, 5, $f->phone);
-
-        $pdf->setXY(26, 145);
-        $pdf->cell(77, 5, $f->email . '@appstate.edu');
-
-        /**
-         * Agency information.
-         */
-        $pdf->setXY(133, 108);
-        $pdf->cell(71, 5, $a->name);
-
-        $agency_address = $a->getAddress();
-
-        if(strlen($agency_address) < 50){
-            // If it's short enough, just write it
-            $pdf->setXY(125, 114);
-            $pdf->cell(77, 5, $agency_address);
-        }else{
-            // Too long, need to use two lines
-            $agencyLine1 = substr($agency_address, 0, 49); // get first 50 chars
-            $agencyLine2 = substr($agency_address, 50); // get the rest, hope it fits
-
-            $pdf->setXY(125, 114);
-            $pdf->cell(77, 5, $agencyLine1);
-            $pdf->setXY(110, 118);
-            $pdf->cell(77, 5, $agencyLine2);
-        }
-
-        /**
-         * Agency supervisor info.
-         */
-        $pdf->setXY(110, 129);
-        $super = "";
-        $superName = $a->getSupervisorFullName();
-        if(isset($superName) && !empty($superName) && $superName != ''){
-            //test('ohh hai',1);
-            $super .= $a->getSupervisorFullName() . ',';
-        }
-
-        if(isset($a->supervisor_title) && !empty($a->supervisor_title) && $a->supervisor_title != ''){
-            $super .= $a->supervisor_title;
-        }
-        $pdf->cell(75, 5, $super);
-
-        $s_agency_address = $a->getSuperAddress();
-
-        $pdf->setXY(124, 134);
-        $pdf->cell(78, 5, $s_agency_address);
-
-        $pdf->setXY(122, 144);
-        $pdf->cell(72, 5, $a->supervisor_email);
-
-        $pdf->setXY(122, 139);
-        $pdf->cell(33, 5, $a->supervisor_phone);
-
-        $pdf->setXY(163, 139);
-        $pdf->cell(40, 5, $a->supervisor_fax);
-
-        /* Internship Location */
-        if(!empty($this->loc_address)){
-            $loc[] = $this->loc_address;
-        }
-
-        if (!empty($this->loc_city)) {
-            $loc[] = $this->loc_city;
-        }
-
-        if (!empty($this->loc_state) && $this->loc_state != '-1') {
-            $loc[] = $this->loc_state;
-        }
-
-        if(!empty($this->loc_zip)){
-            $loc[] = $this->loc_zip;
-        }
-
-        if($this->international == 1){
-            $loc[] = $this->getLocCountry();
-        }
-
-        if (isset($loc)) {
-            $pdf->setXY(110, 154);
-            $pdf->cell(52, 5, implode(', ', $loc));
-        }
-
-        /**********
-         * Page 2 *
-        **********/
-        $tplidx = $pdf->importPage(2);
-        $pdf->addPage();
-        $pdf->useTemplate($tplidx);
-
-        /* Emergency Contact Info */
-        $pdf->setXY(60, 252);
-        $pdf->cell(52, 5, $this->emergency_contact_name);
-
-        $pdf->setXY(134, 252);
-        $pdf->cell(52, 5, $this->emergency_contact_relation);
-
-        $pdf->setXY(175, 252);
-        $pdf->cell(52, 5, $this->emergency_contact_phone);
-
-        $pdf->output();
     }
 
     public function getLocCountry()

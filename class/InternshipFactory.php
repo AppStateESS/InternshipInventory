@@ -21,6 +21,8 @@ class InternshipFactory {
             throw new InvalidArgumentException('Internship ID must be greater than zero.');
         }
         
+        PHPWS_Core::initModClass('intern', 'Internship.php');
+        
         $internship = new Internship;
         
         $db = new PHPWS_DB('intern_internship');

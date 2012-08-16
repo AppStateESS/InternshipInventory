@@ -15,6 +15,11 @@ class Subject extends Model {
         return array();
     }
 
+    public function getAbbreviation()
+    {
+        return $this->abbreviation;
+    }
+    
     public static function getSubjects()
     {
         $subjects = array('-1'=>'Select a subject...');
