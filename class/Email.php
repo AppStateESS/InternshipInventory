@@ -307,7 +307,7 @@ class Email {
         $cc = array($faculty->email . '@appstate.edu');
         $subject = 'Internship Approved';
 
-        email::sendTemplateMessage($to, $subject, 'email/RegistrationConfirmation.tpl', $tpl);
+        email::sendTemplateMessage($to, $subject, 'email/RegistrationConfirmation.tpl', $tpl, $cc);
     }
 
     /**
@@ -397,7 +397,7 @@ class Email {
         $cc = array($faculty->email . '@appstate.edu');
         $subject = 'Internship Enrollment Issue';
         
-        email::sendTemplateMessage($to, $subject, 'email/RegistrationIssue.tpl', $tpl);
+        email::sendTemplateMessage($to, $subject, 'email/RegistrationIssue.tpl', $tpl, $cc);
     }
 }
 
