@@ -156,7 +156,7 @@
         Details</span>
       <table class="sub-form" id="agency-info">
         <tr>
-          <td colspan="2"><h3>Location of Internship</h3>
+          <td colspan="2"><h3>Physical Location of Internship</h3>
           </td>
         </tr>
         <tr>
@@ -223,6 +223,12 @@
         <tr>
           <td colspan="2"><h3>Course Information</h3>
           </td>
+        </tr>
+        <tr>
+          <td colspan="2">{MULTIPART}&nbsp;{MULTIPART_LABEL}</td>
+        </tr>
+        <tr>
+          <td colspan="2"><span style="padding-left: 20px;">{SECONDARY_PART}&nbsp;{SECONDARY_PART_LABEL}</span></td>
         </tr>
         <tr>
           <td>{COURSE_SUBJ_LABEL}</td>

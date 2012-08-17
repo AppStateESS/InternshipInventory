@@ -280,6 +280,8 @@ CREATE TABLE intern_internship (
        stipend SMALLINT NOT NULL, 
        unpaid SMALLINT NOT NULL,
        pay_rate VARCHAR NULL,
+       multi_part SMALLINT NOT NULL,
+       secondary_part SMALLINT NOT NULL,
        PRIMARY KEY(id)
 );
 

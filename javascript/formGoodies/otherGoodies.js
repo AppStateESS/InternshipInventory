@@ -90,6 +90,60 @@ function otherStuff()
     	}
     });
     
+    /**********
+     * Multi-part / Secondary Part *
+     */
+    // Set inital state
+    if($("#internship_multipart").attr('checked')){
+    	// disable secondary part check
+    	$("#internship_secondary_part").attr('disabled', false);
+    }else{
+    	$("#internship_secondary_part").attr('disabled', true);
+    }
+    
+    // Bind event handler
+    $("#internship_multipart").click(function(){
+    	if($("#internship_multipart").attr('checked')){
+    		// Enable secondary part
+    		$("#internship_secondary_part").attr('disabled', false);
+    	}else{
+    		// Disable and clear secondary part
+    		$("#internship_secondary_part").attr('disabled', true);
+    		$("#internship_secondary_part").attr('checked', false);
+    		// Re-enable the course fields, in case they were disabled
+    		$("#internship_course_subj").attr('disabled', false);
+    		$("#internship_course_no").attr('disabled', false);
+    		$("#internship_course_sect").attr('disabled', false);
+    		$("#internship_course_title").attr('disabled', false);
+    	}
+    });
+    
+    // Set inital state
+    if($("#internship_secondary_part").attr('checked')){
+    	// Disable course info
+    	$("#internship_course_subj").attr('disabled', true);
+		$("#internship_course_no").attr('disabled', true);
+		$("#internship_course_sect").attr('disabled', true);
+		$("#internship_course_title").attr('disabled', true);
+    }
+    
+    // Bind the event handler
+    $("#internship_secondary_part").click(function(){
+    	if($("#internship_secondary_part").attr('checked')){
+    		// Disable course info
+    		$("#internship_course_subj").attr('disabled', true);
+    		$("#internship_course_no").attr('disabled', true);
+    		$("#internship_course_sect").attr('disabled', true);
+    		$("#internship_course_title").attr('disabled', true);
+    	}else{
+    		// Enable course info
+    		$("#internship_course_subj").attr('disabled', false);
+    		$("#internship_course_no").attr('disabled', false);
+    		$("#internship_course_sect").attr('disabled', false);
+    		$("#internship_course_title").attr('disabled', false);
+    	}
+    });
+    
     /*
      * Location stuff.
      *

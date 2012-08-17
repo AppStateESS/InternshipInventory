@@ -56,6 +56,9 @@ class Internship {
     public $emergency_contact_relation;
     public $emergency_contact_phone;
 
+    public $multi_part;
+    public $secondary_part;
+    
     // Location data
     public $domestic;
     public $international;
@@ -395,6 +398,24 @@ class Internship {
         }
     }
 
+    public function isMultipart()
+    {
+        if($this->multi_part == 1){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    public function isSecondaryPart()
+    {
+        if($this->secondary_part == 1){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
     /**
      * Row tags for DBPager
      */
@@ -840,7 +861,7 @@ class Internship {
         $i->loc_province = $_POST['loc_province'];
         $i->loc_country = strip_tags($_POST['loc_country']);
 
-        if($_POST['course_subj'] != '-1'){
+        if(isset($_POST['course_subj']) && $_POST['course_subj'] != '-1'){
             $i->course_subj = strip_tags($_POST['course_subj']);
         }else{
             $i->course_subj = null;
@@ -849,6 +870,18 @@ class Internship {
         $i->course_no = strip_tags($_POST['course_no']);
         $i->course_sect = strip_tags($_POST['course_sect']);
         $i->course_title = strip_tags($_POST['course_title']);
+        
+        if(isset($_POST['multipart'])){
+            $i->multi_part = 1;
+        }else{
+            $i->multi_part = 0;
+        }
+        
+        if(isset($_POST['multipart']) && isset($_POST['secondary_part'])){
+            $i->secondary_part = 1;
+        }else{
+            $i->secondary_part = 0;
+        }
 
         // Student Information
         $i->first_name = $_REQUEST['student_first_name'];

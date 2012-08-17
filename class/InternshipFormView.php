@@ -272,21 +272,9 @@ class InternshipFormView {
         /**********************
          * Internship details *
          */
-        $terms = Term::getTermsAssoc();
-        $terms[-1] = 'Select Term';
-        $this->form->addSelect('term', $terms);
-        $this->form->setLabel('term', 'Select Term');
-        $this->form->addText('start_date');
-        $this->form->setLabel('start_date', 'Start Date');
-        $this->form->addText('end_date');
-        $this->form->setLabel('end_date', 'End Date');
-        $this->form->addText('credits');
-        $this->form->setLabel('credits', 'Credit Hours');
-        $this->form->addText('avg_hours_week');
-        $this->form->setLabel('avg_hours_week', 'Average Hours per Week');
         
-        /**
-         * Internship location
+        /***********************
+         * Internship location *
          */
         $loc = array('domestic' => 'Domestic', 'internat' => 'International');
         $this->form->addRadioAssoc('location', $loc);
@@ -308,6 +296,46 @@ class InternshipFormView {
         $this->form->setLabel('loc_province', 'Province/Territory');
         $this->form->addText('loc_country');
         $this->form->setLabel('loc_country', 'Country');
+        
+        /*************
+         * Term Info *
+         */
+        $terms = Term::getTermsAssoc();
+        $terms[-1] = 'Select Term';
+        $this->form->addSelect('term', $terms);
+        $this->form->setLabel('term', 'Select Term');
+        $this->form->addText('start_date');
+        $this->form->setLabel('start_date', 'Start Date');
+        $this->form->addText('end_date');
+        $this->form->setLabel('end_date', 'End Date');
+        $this->form->addText('credits');
+        $this->form->setLabel('credits', 'Credit Hours');
+        $this->form->addText('avg_hours_week');
+        $this->form->setLabel('avg_hours_week', 'Average Hours per Week');
+        
+        $this->form->addCheck('multipart');
+        $this->form->setLabel('multipart', 'This internship is part of a multi-part experience.');
+        
+        $this->form->addCheck('secondary_part');
+        $this->form->setLabel('secondary_part', 'This is a secondary part (enrollment complete through first part).');
+        
+        /***************
+         * Course Info *
+         */
+        $subjects = Subject::getSubjects();
+        $this->form->addSelect('course_subj', $subjects);
+        $this->form->setLabel('course_subj', 'Subject');
+        
+        $this->form->addText('course_no');
+        $this->form->setLabel('course_no', 'Number');
+        
+        $this->form->addText('course_sect');
+        $this->form->setLabel('course_sect', 'Section');
+        
+        $this->form->addText('course_title');
+        $this->form->setLabel('course_title', 'Title');
+        $this->form->setMaxSize('course_title',28); // Limit to 28 chars, per Banner
+        
         
         /************
          * Pay Info *
@@ -331,23 +359,6 @@ class InternshipFormView {
         $this->form->setLabel('student_teaching_type', 'Student Teaching');
         $this->form->addCheck('clinical_practica_type');
         $this->form->setLabel('clinical_practica_type', 'Clinical Practicum');
-        
-        /***************
-         * Course Info *
-         */
-        $subjects = Subject::getSubjects();
-        $this->form->addSelect('course_subj', $subjects);
-        $this->form->setLabel('course_subj', 'Subject');
-        
-        $this->form->addText('course_no');
-        $this->form->setLabel('course_no', 'Number');
-        
-        $this->form->addText('course_sect');
-        $this->form->setLabel('course_sect', 'Section');
-        
-        $this->form->addText('course_title');
-        $this->form->setLabel('course_title', 'Title');
-        $this->form->setMaxSize('course_title',28); // Limit to 28 chars, per Banner
         
         /*********
          * Notes *
@@ -430,14 +441,21 @@ class InternshipFormView {
         $vals['loc_zip'] = $this->intern->loc_zip;
         $vals['loc_province'] = $this->intern->loc_province;
         $vals['loc_country'] = $this->intern->loc_country;
-    
-        //$vals['course_subj'] = $this->intern->course_subj;
+
+        // Course Info
         $this->form->setMatch('course_subj', $this->intern->course_subj);
         $vals['course_no'] = $this->intern->course_no;
         $vals['course_sect'] = $this->intern->course_sect;
         $vals['course_title'] = $this->intern->course_title;
     
-    
+        if($this->intern->isMultipart()){
+            $this->form->setMatch('multipart', '1');
+        }
+        
+        if($this->intern->isSecondaryPart()){
+            $this->form->setMatch('secondary_part', '1');
+        }
+        
         // Department
         $vals['department'] = $this->intern->department_id;
     
