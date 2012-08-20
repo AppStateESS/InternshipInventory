@@ -20,6 +20,10 @@ class Subject extends Model {
         return $this->abbreviation;
     }
     
+    public function getName(){
+        return $this->description;
+    }
+    
     public static function getSubjects()
     {
         $subjects = array('-1'=>'Select a subject...');

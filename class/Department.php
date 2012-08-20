@@ -6,6 +6,7 @@
    * Represents an academic department at Appalachian State University.
    *
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
+   * @package Intern
    */
 
 PHPWS_Core::initModClass('intern', 'Editable.php');

@@ -22,9 +22,9 @@ class Internship {
     public $faculty_supervisor_id;
     public $department_id;
 
+    // Status info
     public $state;
     public $oied_certified;
-
 
     // Student data
     public $banner;
@@ -36,29 +36,28 @@ class Internship {
     public $first_name_meta;
     public $last_name_meta;
     
-    // Contact Info
-    public $phone;
-    public $email;
-    
     // Academic info
     public $level;
     public $grad_prog;
     public $ugrad_major;
     public $gpa;
     public $campus;
-
+    
+    // Contact Info
+    public $phone;
+    public $email;
+    
+    // Student address
     public $student_address;
     public $student_city;
     public $student_state;
     public $student_zip;
 
+    // Emergency contact
     public $emergency_contact_name;
     public $emergency_contact_relation;
     public $emergency_contact_phone;
 
-    public $multi_part;
-    public $secondary_part;
-    
     // Location data
     public $domestic;
     public $international;
@@ -70,22 +69,26 @@ class Internship {
     public $loc_province;
     public $loc_country;
 
+    // Term Info
     public $term;
     public $start_date = 0;
     public $end_date = 0;
     public $credits;
     public $avg_hours_week;
-
-    public $course_subj;
-    public $course_no;
-    public $course_sect;
-    public $course_title;
-
     public $paid;
     public $unpaid;
     public $stipend;
     public $pay_rate;
 
+    // Course Info
+    public $multi_part;
+    public $secondary_part;
+    public $course_subj;
+    public $course_no;
+    public $course_sect;
+    public $course_title;
+
+    // Type
     public $internship = 0;
     public $student_teaching = 0;
     public $clinical_practica = 0;
@@ -153,50 +156,77 @@ class Internship {
         $csv = array();
 
         // Student data
-        $csv['Banner'] = $this->banner;
-        $csv['Student First Name']  = $this->first_name;
-        $csv['Student Middle Name'] = $this->middle_name;
-        $csv['Student Last Name']   = $this->last_name;
-        $csv['Student Phone']       = $this->phone;
-        $csv['Student Email']       = $this->email;
+        $csv['Banner ID']   = $this->banner;
+        $csv['First Name']  = $this->first_name;
+        $csv['Middle Name'] = $this->middle_name;
+        $csv['Last Name']   = $this->last_name;
+        
+        // Academic Info
+        $csv['Level']           = $this->getLevel();
+        if($this->getLevel() == 'ugrad'){
+            $csv['Undergrad Major'] = $this->getUgradMajor()->getName();
+            $csv['Grduate Program'] = '';
+        }else if($this->getLevel() == 'grad'){
+            $csv['Undergrad Major'] = '';
+            $csv['Graduate Program'] = $this->getGradProgram()->getName();
+        }else{
+            $csv['Undergrad Major'] = '';
+            $csv['Grduate Program'] = '';
+        }
+        $csv['GPA']             = $this->getGpa();
+        $csv['Campus']          = $this->getCampus();
 
+        // Status Info
+        $csv['Status']                 = $this->getWorkflowState()->getFriendlyName();
+        $csv['OIED Certified']         = $this->isOiedCertified() == 1 ? 'Yes' : 'No';
+        
+        // Student Academic Info
+        $csv['Phone #']     = $this->phone;
+        $csv['Email']       = $this->email;
+        
+        // Student Address
+        $csv['Student Address']        = $this->student_address;
+        $csv['Student City']           = $this->student_city;
+        $csv['Student State']          = $this->student_state;
+        $csv['Student Zip']            = $this->student_zip;
+        
+        // Emergency Contact
+        $csv['Emergency Contact Name']     = $this->getEmergencyContactName();
+        $csv['Emergency Contact Relation'] = $this->getEmergencyContactRelation();
+        $csv['Emergency Contact Phone']    = $this->getEmergencyContactPhoneNumber();
+        
         // Internship Data
-        $csv['Status']                 = $this->state;
+        $csv['Term']                   = Term::rawToRead($this->term, false);
         $csv['Start Date']             = $this->getStartDate(true);
         $csv['End Date']               = $this->getEndDate(true);
-        $csv['Term']                   = Term::rawToRead($this->term, false);
         $csv['Credits']                = $this->credits;
         $csv['Average Hours Per Week'] = $this->avg_hours_week;
-        $csv['Domestic']               = $this->domestic == 1 ? 'Yes' : 'No';
-        $csv['International']          = $this->international == 1 ? 'Yes' : 'No';
         $csv['Paid']                   = $this->paid == 1 ? 'Yes' : 'No';
         $csv['Stipend']                = $this->stipend == 1 ? 'Yes' : 'No';
         $csv['Unpaid']                 = $this->unpaid == 1 ? 'Yes' : 'No';
+        
+        // Internship Type
         $csv['Internship']             = $this->internship == 1 ? 'Yes' : 'No';
         $csv['Student Teaching']       = $this->student_teaching == 1 ? 'Yes' : 'No';
         $csv['Clinical Practica']      = $this->clinical_practica == 1 ? 'Yes' : 'No';
 
-        // Location data
+        // Internship location data
+        $csv['Domestic']               = $this->isDomestic() ? 'Yes' : 'No';
+        $csv['International']          = $this->isInternational() ? 'Yes' : 'No';
         $csv['Location Address']       = $this->loc_address;
-        $csv['Location State']         = $this->loc_state;
         $csv['Location City']          = $this->loc_city;
+        $csv['Location State']         = $this->loc_state;
         $csv['Location Zip']           = $this->loc_zip;
-        $csv['Course Subject']         = $this->course_subj;
+        $csv['Province']               = $this->loc_province;
+        $csv['Country']                = $this->loc_country;
+
+        // Course Info
+        $csv['Multi-part']             = $this->isMultipart() ? 'Yes' : 'No';
+        $csv['Secondary Part']         = $this->isSecondaryPart() ? 'Yes' : 'No';
+        $csv['Course Subject']         = $this->getSubject()->getName();
         $csv['Course Number']          = $this->course_no;
         $csv['Course Section']         = $this->course_sect;
         $csv['Course Title']           = $this->course_title;
-
-        /*
-         * TODO: Fix this so that the columns are always present in the exported csv, even if they're empty
-        if($major != null)
-            $csv = array_merge($csv, $major->getCSV());
-        else
-            $csv = array_merge($csv, Major::getEmptyCSV());
-        if($prog != null)
-            $csv = array_merge($csv, $prog->getCSV());
-        else
-            $csv = array_merge($csv, GradProgram::getEmptyCSV());
-        */
 
         // Get external objects
         $a = $this->getAgency();
@@ -840,8 +870,6 @@ class Internship {
         $i->credits = $credits ? $credits : NULL;
         $avg_hours_week = (int) $_REQUEST['avg_hours_week'];
         $i->avg_hours_week = $avg_hours_week ? $avg_hours_week : NULL;
-        $i->domestic = $_REQUEST['location'] == 'domestic';
-        $i->international = $_REQUEST['location'] == 'internat';
         $i->paid = $_REQUEST['payment'] == 'paid';
         $i->stipend = isset($_REQUEST['stipend']) && $i->paid;
         $i->unpaid = $_REQUEST['payment'] == 'unpaid';
@@ -850,16 +878,40 @@ class Internship {
         $i->student_teaching = isset($_REQUEST['student_teaching_type']);
         $i->clinical_practica = isset($_REQUEST['clinical_practica_type']);
 
-        $i->loc_address = strip_tags($_POST['loc_address']);
-        $i->loc_city = strip_tags($_POST['loc_city']);
-        if ($_POST['loc_state'] != '-1') {
-            $i->loc_state = strip_tags($_POST['loc_state']);
-        } else {
+        
+        // Set fields depending on domestic/international
+        if($_REQUEST['location'] == 'domestic'){
+            // Set Flags
+            $i->domestic      = 1;
+            $i->international = 0;
+            
+            // Set state
+            if ($_POST['loc_state'] != '-1') {
+                $i->loc_state = strip_tags($_POST['loc_state']);
+            } else {
+                $i->loc_state = null;
+            }
+            
+            // Clear province, country
+            $i->loc_province  = '';
+            $i->loc_country   = '';
+        }else if($_REQUEST['location'] == 'internat'){
+            // Set flags
+            $i->domestic      = 0;
+            $i->international = 1;
+            
+            // Set province, country
+            $i->loc_province = $_POST['loc_province'];
+            $i->loc_country = strip_tags($_POST['loc_country']);
+            
+            // Clear state
             $i->loc_state = null;
         }
+
+        // Address, city, zip are always set (no matter domestic or international)
+        $i->loc_address = strip_tags($_POST['loc_address']);
+        $i->loc_city = strip_tags($_POST['loc_city']);
         $i->loc_zip = strip_tags($_POST['loc_zip']);
-        $i->loc_province = $_POST['loc_province'];
-        $i->loc_country = strip_tags($_POST['loc_country']);
 
         if(isset($_POST['course_subj']) && $_POST['course_subj'] != '-1'){
             $i->course_subj = strip_tags($_POST['course_subj']);
@@ -912,7 +964,11 @@ class Internship {
 
         $i->student_address = $_REQUEST['student_address'];
         $i->student_city = $_REQUEST['student_city'];
-        $i->student_state = $_REQUEST['student_state'];
+        if($_REQUEST['student_state'] != '-1'){
+            $i->student_state = $_REQUEST['student_state'];
+        }else{
+            $i->student_state = "";
+        }
         $i->student_zip = $_REQUEST['student_zip'];
 
         $i->emergency_contact_name = $_REQUEST['emergency_contact_name'];
