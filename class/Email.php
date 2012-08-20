@@ -99,7 +99,6 @@ class Email {
      * Sends an email to the registrar notifying them to register
      * the student for the appropriate internship course.
      *
-     * @param Student $s
      * @param Internship $i
      * @param Agency $a
      */
@@ -208,6 +207,100 @@ class Email {
         Email::sendTemplateMessage($to, $subject, 'email/RegistrarEmail.tpl', $tpl, $cc);
     }
 
+    /**
+     * Sends an email to the grad school office, letting them know there's someone to notify
+     *
+     * @param Internship $i
+     * @param Agency $a
+     */
+    public static function sendGradSchoolNotification(Internship $i, Agency $a)
+    {
+        PHPWS_Core::initModClass('intern', 'Subject.php');
+    
+        $subjects = Subject::getSubjects();
+    
+        $faculty = $i->getFacultySupervisor();
+    
+        $tpl = array();
+        $tpl['NAME'] = $i->getFullName();
+        $tpl['BANNER'] = $i->banner;
+        $tpl['USER'] = $i->email;
+        $tpl['PHONE'] = $i->phone;
+    
+        $tpl['TERM'] = Term::rawToRead($i->term, false);
+        if(isset($i->course_subj)){
+            $tpl['SUBJECT'] = $subjects[$i->course_subj];
+        }else{
+            $tpl['SUBJECT'] = '(No course subject provided)';
+        }
+        $tpl['COURSE_NUM'] = $i->course_no;
+    
+        if(isset($i->course_sect)){
+            $tpl['SECTION'] = $i->course_sect;
+        }else{
+            $tpl['SECTION'] = '(not provided)';
+        }
+    
+        if(isset($i->course_title)){
+            $tpl['COURSE_TITLE'] = $i->course_title;
+        }
+    
+        if(isset($i->credits)){
+            $tpl['CREDITS'] = $i->credits;
+        }else{
+            $tpl['CREDITS'] = '(not provided)';
+        }
+    
+        $startDate = $i->getStartDate(true);
+        if(isset($startDate)){
+            $tpl['START_DATE'] = $startDate;
+        }else{
+            $tpl['START_DATE'] = '(not provided)';
+        }
+    
+        $endDate = $i->getEndDate(true);
+        if(isset($endDate)){
+            $tpl['END_DATE'] = $endDate;
+        }else{
+            $tpl['END_DATE'] = '(not provided)';
+        }
+    
+        if(isset($i->faculty_supervisor_id)){
+            $advisor = $i->getFacultySupervisor();
+            $tpl['FACULTY'] = $advisor->getFullName();
+        }else{
+            $tpl['FACULTY'] = '(not provided)';
+        }
+    
+        $department = $i->getDepartment();
+        $tpl['DEPT'] = $department->getName();
+    
+        $campus = $i->getCampus();
+        if($campus == 'distance_ed'){
+            $tpl['CAMPUS'] = 'Distance Ed';
+        }else if($campus == 'main_campus'){
+            $tpl['CAMPUS'] = 'Main campus';
+        }else{
+            $tpl['CAMPUS'] = $campus;
+        }
+    
+        if($i->international){
+            $tpl['COUNTRY'] = $i->loc_country;
+            $tpl['INTERNATIONAL'] = 'Yes';
+            $intlSubject = '[int\'l] ';
+        }else{
+            $tpl['STATE'] = $i->loc_state;
+            $tpl['INTERNATIONAL'] = 'No';
+            $intlSubject = '';
+        }
+    
+        $to = 'hirsthp@appstate.edu'; // To Holly Hirst, for now
+    
+        $subject = 'Internship Approval Needed: ' . $intlSubject . '[' . $i->getBannerId() . '] ' . $i->getFullName();
+    
+        Email::sendTemplateMessage($to, $subject, 'email/GradSchoolNotification.tpl', $tpl, $cc);
+    }
+    
     public static function sendIntlInternshipCreateNotice(Internship $i)
     {
         $tpl = array();
