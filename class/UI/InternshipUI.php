@@ -50,12 +50,12 @@ class InternshipUI implements UI {
             }
             
             $internshipForm = new InternshipFormView($i);
+            $internshipForm->plugInternship();
             
             Layout::addPageTitle('Edit Internship');
             $tpl['TITLE'] = 'Edit Internship';
             
             $form = $internshipForm->getForm();
-            //self::plugInternship($form, $internship);
             
             /*** 'Generate Contract' Button ***/
             $tpl['PDF'] = PHPWS_Text::linkAddress('intern', array('action' => 'pdf', 'id' => $i->id));

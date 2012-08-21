@@ -36,7 +36,7 @@ class InternshipFormView {
         $this->getInternshipForm();
         
         // Plug in the passed in Internship object (sets default/selected values)
-        $this->plugInternship();
+        //$this->plugInternship();
     }
 
     public function getForm()
@@ -118,7 +118,7 @@ class InternshipFormView {
         $this->form->setLabel('student_gpa', 'GPA');
         
         // Campus
-        $this->form->addRadioAssoc('campus',Array('main_campus'=>'Main Campus', 'distance_ed'=>'Distance Ed'));
+        $this->form->addRadioAssoc('campus', array('main_campus'=>'Main Campus', 'distance_ed'=>'Distance Ed'));
         $this->form->setMatch('campus', 'main_campus');
         
         // Student level radio button
@@ -371,7 +371,7 @@ class InternshipFormView {
      * Loads the form's fields with the internship's information.
      * TODO: Use getter methods instead of just accessing Internship member variables directly.
      */
-    protected function plugInternship()
+    public function plugInternship()
     {
         $vals = array();
     
