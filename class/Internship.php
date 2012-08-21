@@ -846,7 +846,7 @@ class Internship {
         }
 
         // Create/Save internship.
-        if (isset($_REQUEST['internship_id'])) {
+        if (isset($_REQUEST['internship_id']) && $_REQUEST['internship_id'] != '') {
             // User is editing internship
             try {
                 PHPWS_Core::initModClass('intern', 'InternshipFactory.php');
