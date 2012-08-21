@@ -19,9 +19,8 @@ The Internship Inventory
 %prep
 %setup -n intern
 
-#%post
-#curl https://
-#/sbin/service httpd restart
+%post
+curl http://127.0.0.1/apc/clear/
 
 %install
 mkdir -p "$RPM_BUILD_ROOT%{install_dir}"
