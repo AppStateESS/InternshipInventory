@@ -1,0 +1,58 @@
+<?php
+
+/**
+ * Class to handle saving and loading objects from the database.
+ * 
+ * @author jbooker
+ * @package intern
+ */
+class DatabaseStorage {
+    
+    /**
+     * Saves the given object to the database.
+     * @param Object $obj
+     */
+    public static function save($obj)
+    {
+        $db = new PHPWS_DB($obj->getTableName());
+        
+        try {
+            $result = $db->saveObject($obj);
+        } catch (Exception $e) {
+            // rethrow any exceptions
+            throw $e;
+        }
+        
+        if (PHPWS_Error::logIfError($result)) {
+            throw new Exception($result->toString());
+        }
+        
+        return $obj->id;
+    }
+
+    /**
+     * Loads an object from the database using the given class name and object id.
+     * 
+     * @param String $class
+     * @param int $id
+     */
+    public static function load($class, $id)
+    {
+        PHPWS_Core::initModClass($class . '.php');
+        
+        $table = $class::getTableName();
+        
+        $db = new PHPWS_DB($table);
+        
+        $instance = new $class;
+        
+        $db->addWhere('id', $id);
+        $result = $db->loadObject($instance);
+        
+        if (PHPWS_Error::logIfError($result)) {
+            throw new Exception($result->toString());
+        }
+        
+        return $result;
+    }
+}

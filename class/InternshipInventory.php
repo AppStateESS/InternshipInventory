@@ -265,6 +265,16 @@ class InternshipInventory {
                 NQ::close();
                 PHPWS_Core::goBack();
                 break;
+            case 'addEmergencyContact':
+                PHPWS_Core::initModClass('intern', 'command/AddEmergencyContact.php');
+                $ctrl = new AddEmergencyContact();
+                $ctrl->execute();
+                break;
+            case 'removeEmergencyContact':
+                PHPWS_Core::initModClass('intern', 'command/RemoveEmergencyContact.php');
+                $ctrl = new RemoveEmergencyContact();
+                $ctrl->execute();
+                break;
             default:
                 PHPWS_Core::initModClass('intern', 'Intern_Menu.php');
                 $this->content = Intern_Menu::showMenu();
