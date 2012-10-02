@@ -80,15 +80,6 @@
               <span id="grad_drop"> {GRAD_PROG_LABEL}<span class="required-input">*</span><br /> {GRAD_PROG} </span>
             </fieldset></td>
         </tr>
-        <tr>
-          <td colspan="2">
-            <fieldset class="align-form">
-              <legend>Emergency Contact</legend>
-              {EMERGENCY_CONTACT_NAME_LABEL}<span class="required-input">*</span>{EMERGENCY_CONTACT_NAME}<br />
-              {EMERGENCY_CONTACT_RELATION_LABEL}<span class="required-input">*</span>{EMERGENCY_CONTACT_RELATION}<br />
-              {EMERGENCY_CONTACT_PHONE_LABEL}<span class="required-input">*</span>{EMERGENCY_CONTACT_PHONE}<br />
-            </fieldset></td>
-        </tr>
       </table></td>
     <!-- End student info section -->
     <td class="sub-form-cell">
@@ -110,19 +101,6 @@
         </tr>
       </table>
 
-      <!-- start document list -->
-      <span class="info-header">Contract &amp; Documents</span>
-      <table class="sub-form">
-        <tr>
-          <td>
-            <ul>
-              <!-- BEGIN docs -->
-              <li>{DOWNLOAD}{DELETE}</li>
-              <!-- END docs -->
-            </ul> {UPLOAD_DOC}</td>
-        </tr>
-      </table><!-- end document list -->
-      
       <!-- Faculty info -->
       <span class="info-header">Faculty</span>
       <table class="sub-form" id="faculty-info">
@@ -148,6 +126,43 @@
       </table>
       </td>
     <!-- End faculty info -->
+  </tr>
+
+  <tr>
+    <!-- Emergency Contacts -->
+    <td class="sub-form-cell">
+      <span class="info-header">Emergency Contacts</span>
+      <table class="sub-form">
+        <tr>
+          <td>
+            <span style="float:right;">{ADD_EMERGENCY_CONTACT}</span>
+            <div id="emergency-contact-list-container" style="width:325px">
+            <ul id="emergency-contact-list">
+            </ul>
+            </div>
+            <div id="emergency-spinner" style="margin-top:15px;"></div>
+          </td>
+        </tr>
+      </table>
+    </td>
+    <!-- End Emergency Contacts -->
+
+    <!-- Document List -->    
+    <td class="sub-form-cell">
+      <span class="info-header">Contract &amp; Documents</span>
+      <table class="sub-form">
+        <tr>
+          <td>
+            <ul>
+              <!-- BEGIN docs -->
+              <li>{DOWNLOAD}{DELETE}</li>
+              <!-- END docs -->
+            </ul> <span style="float:right;">{UPLOAD_DOC}</span>
+          </td>
+        </tr>
+      </table>
+    </td>
+    <!-- End document list -->
   </tr>
 
   <tr>
@@ -384,3 +399,4 @@
 <br />
 {SUBMIT} {END_FORM}
 
+{EMERGENCY_CONTACT_DIALOG}

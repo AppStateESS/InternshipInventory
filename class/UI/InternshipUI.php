@@ -19,9 +19,6 @@ class InternshipUI implements UI {
             'term',
             'department',
             'campus',
-            'emergency_contact_name',
-            'emergency_contact_relation',
-            'emergency_contact_phone',
             'location');
 
     public static function display()
@@ -32,6 +29,7 @@ class InternshipUI implements UI {
         PHPWS_Core::initModClass('intern', 'Intern_Folder.php');
         PHPWS_Core::initModClass('intern', 'Agency.php');
         PHPWS_Core::initModClass('intern', 'InternshipFormView.php');
+        PHPWS_Core::initModClass('intern', 'EditInternshipFormView.php');
         PHPWS_Core::initModClass('intern', 'Term.php');
         PHPWS_Core::initModClass('intern', 'Department.php');
         PHPWS_Core::initModClass('intern', 'Major.php');
@@ -49,10 +47,10 @@ class InternshipUI implements UI {
                 return;
             }
             
-            $internshipForm = new InternshipFormView($i);
+            $internshipForm = new EditInternshipFormView('Edit Internship', $i);
+            $internshipForm->buildInternshipForm();
             $internshipForm->plugInternship();
             
-            Layout::addPageTitle('Edit Internship');
             $tpl['TITLE'] = 'Edit Internship';
             
             $form = $internshipForm->getForm();
@@ -71,6 +69,31 @@ class InternshipUI implements UI {
             $folder = new Intern_Folder(Intern_Document::getFolderId());
             $tpl['UPLOAD_DOC'] = $folder->documentUpload($i->id);
             
+            /******************
+             * Change History *
+            */
+            if(!is_null($i->id)){
+                PHPWS_Core::initModClass('intern', 'ChangeHistoryView.php');
+                $historyView = new ChangeHistoryView($i);
+                $tpl['CHANGE_LOG'] = $historyView->show();
+            }
+            
+            // Show a warning if in SigAuthReadyState, is international, and not OIED approved
+            if($i->getWorkflowState() == 'SigAuthReadyState' && $i->isInternational() && !$i->isOiedCertified()){
+                NQ::simple('intern', INTERN_WARNING, 'This internship can not be approved by the Signature Authority bearer until the internship is certified by the Office of International Education and Development.');
+            }
+            
+            // Show a warning if in DeanApproved state and is distance_ed campus
+            if($i->getWorkflowState() == 'DeanApprovedState' && $i->isDistanceEd()){
+                NQ::simple('intern', INTERN_WARNING, 'This internship must be registered by Distance Education.');
+            }
+            
+            PHPWS_Core::initModClass('intern', 'EmergencyContactFormView.php');
+            $emgContactDialog = new EmergencyContactFormView($i);
+            
+            $tpl['ADD_EMERGENCY_CONTACT']    = '<input type="button" id="add-ec-button" value="Add Contact">';
+            $tpl['EMERGENCY_CONTACT_DIALOG'] = $emgContactDialog->getHtml(); 
+            
         } else {
             // Attempting to create a new internship
             
@@ -81,16 +104,18 @@ class InternshipUI implements UI {
                 PHPWS_Core::home();
             }
             
-            Layout::addPageTitle('Add Internship');
             $tpl['TITLE'] = 'Add Student';
             
-            $i = new Internship();
-            $internshipForm = new InternshipFormView($i);
+            $internshipForm = new InternshipFormView('Add Internship');
+            $internshipForm->buildInternshipForm();
             
             /* Show form with empty fields. */
             $form = $internshipForm->getForm();
             // Show a disabled button in document list if we are adding an internship.
             $tpl['UPLOAD_DOC'] = "<input type='button' disabled='disabled' class='disabled' title='Must save internship first.' value='Add Document'/>";
+
+            // Show a disabled emergency contact button
+            $tpl['ADD_EMERGENCY_CONTACT'] = "<input type='button' disabled='disabled' class='disabled' title='Must save internship first.' value='Add Contact'/>";
             
         }
         
@@ -129,25 +154,6 @@ class InternshipUI implements UI {
             }
         }
 
-        /******************
-         * Change History *
-        */
-        if(!is_null($i->id)){
-            PHPWS_Core::initModClass('intern', 'ChangeHistoryView.php');
-            $historyView = new ChangeHistoryView($i);
-            $tpl['CHANGE_LOG'] = $historyView->show();
-        }
-        
-        // Show a warning if in SigAuthReadyState, is international, and not OIED approved
-        if($i->getWorkflowState() == 'SigAuthReadyState' && $i->isInternational() && !$i->isOiedCertified()){
-            NQ::simple('intern', INTERN_WARNING, 'This internship can not be approved by the Signature Authority bearer until the internship is certified by the Office of International Education and Development.');
-        }
-        
-        // Show a warning if in DeanApproved state and is distance_ed campus
-        if($i->getWorkflowState() == 'DeanApprovedState' && $i->isDistanceEd()){
-            NQ::simple('intern', INTERN_WARNING, 'This internship must be registered by Distance Education.');
-        }
-        
         $form->mergeTemplate($tpl);
         
         //test($form->getTemplate(),1);

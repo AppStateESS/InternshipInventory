@@ -971,9 +971,11 @@ class Internship {
         }
         $i->student_zip = $_REQUEST['student_zip'];
 
+        /*
         $i->emergency_contact_name = $_REQUEST['emergency_contact_name'];
         $i->emergency_contact_relation = $_REQUEST['emergency_contact_relation'];
         $i->emergency_contact_phone = $_REQUEST['emergency_contact_phone'];
+        */
 
         /************
          * OIED Certification

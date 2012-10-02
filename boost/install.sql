@@ -257,9 +257,6 @@ CREATE TABLE intern_internship (
        student_city varchar(256),
        student_state varchar(2),
        student_zip varchar(5),
-       emergency_contact_name varchar(256),
-       emergency_contact_relation varchar(256),
-       emergency_contact_phone varchar(20),
        campus character varying(128) NOT NULL,
        
        loc_address varchar NULL,
@@ -283,6 +280,15 @@ CREATE TABLE intern_internship (
        multi_part SMALLINT NOT NULL,
        secondary_part SMALLINT NOT NULL,
        PRIMARY KEY(id)
+);
+
+CREATE TABLE intern_emergency_contact (
+    id          INT NOT NULL,
+    internship_id INT REFERENCES intern_internship(id),
+    name        character varying,
+    relation    character varying,
+    phone       character varying,
+    PRIMARY KEY (id)
 );
 
 CREATE TABLE intern_document (

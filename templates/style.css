@@ -306,6 +306,17 @@ input[type=radio]:disabled {
 input[type=radio]:disabled + label{
     color:#D6D6D6;
 }
+
+.contact-delete-link {
+	margin-left: 2px;
+	margin-right: 75px;
+	float:right;
+}
+
+.contact-delete-link:hover {
+	cursor: pointer;
+	color: red;
+}
 /************************************/
 
 /*** Change log styles ***/
