@@ -25,7 +25,7 @@
                 dialogAddButtonHandler();
             }
         });
-        
+
     });
     
     // Handle the user clicking the 'Add' button in the dialog.
