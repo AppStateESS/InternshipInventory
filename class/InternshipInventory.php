@@ -49,8 +49,9 @@ class InternshipInventory {
                 $this->content = InternshipUI::display();
                 break;
             case 'add_internship':
-                PHPWS_Core::initModClass('intern', 'Internship.php');
-                Internship::addInternship();
+                PHPWS_Core::initModClass('intern', 'command/SaveInternship.php');
+                $ctrl = new SaveInternship();
+                $ctrl->execute();
                 break;
             case 'search':
                 PHPWS_Core::initModClass('intern', 'UI/SearchUI.php');
