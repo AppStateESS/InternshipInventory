@@ -1,7 +1,7 @@
 <?php
 
 /**
- * InternshipPdfView
+ * InternshipContractPdfView
  *
  * View class for generating a PDF of an internship.
  *
@@ -9,19 +9,23 @@
  * @package Intern
  */
 
-class InternshipPdfView {
+class InternshipContractPdfView {
 
     private $internship;
+    private $emergencyContacts;    
+    
     private $pdf;
 
     /**
-     * Creates a new InternshipPdfView
+     * Creates a new InternshipContractPdfView
      *
      * @param Internship $i
+     * @param Array<EmergencyContact> $emergencyContact
      */
-    public function __construct(Internship $i)
+    public function __construct(Internship $i, Array $emergencyContacts)
     {
         $this->internship = $i;
+        $this->emergencyContacts = $emergencyContacts;
         
         require_once(PHPWS_SOURCE_DIR . 'mod/intern/pdf/fpdf.php');
         require_once(PHPWS_SOURCE_DIR . 'mod/intern/pdf/fpdi.php');
@@ -264,14 +268,18 @@ class InternshipPdfView {
         $this->pdf->useTemplate($tplidx);
 
         /* Emergency Contact Info */
-        $this->pdf->setXY(60, 252);
-        $this->pdf->cell(52, 5, $this->internship->getEmergencyContactName());
+        if(sizeof($this->emergencyContacts) > 0){
+            $firstContact = $this->emergencyContacts[0];
+        
+            $this->pdf->setXY(60, 259);
+            $this->pdf->cell(52, 0, $firstContact->getName());
 
-        $this->pdf->setXY(134, 252);
-        $this->pdf->cell(52, 5, $this->internship->getEmergencyContactRelation());
+            $this->pdf->setXY(134, 259);
+            $this->pdf->cell(52, 0, $firstContact->getRelation());
 
-        $this->pdf->setXY(175, 252);
-        $this->pdf->cell(52, 5, $this->internship->getEmergencyContactPhoneNumber());
+            $this->pdf->setXY(175, 259);
+            $this->pdf->cell(52, 0, $firstContact->getPhone());
+        }
     }
 }
 

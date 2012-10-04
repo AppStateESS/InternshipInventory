@@ -240,10 +240,11 @@ class InternshipInventory {
                 break;
             case 'pdf':
                 PHPWS_Core::initModClass('intern', 'InternshipFactory.php');
-                PHPWS_Core::initModClass('intern', 'InternshipPdfView.php');
+                PHPWS_Core::initModClass('intern', 'InternshipContractPdfView.php');
+                PHPWS_Core::initModClass('intern', 'EmergencyContactFactory.php');
                 $i = InternshipFactory::getInternshipById($_REQUEST['id']);
-                //$i->getPDF();
-                $pdfView = new InternshipPdfView($i);
+                $emgContacts = EmergencyContactFactory::getContactsForInternship($i);
+                $pdfView = new InternshipContractPdfView($i, $emgContacts);
                 $pdf = $pdfView->getPdf();
                 $pdf->output();
                 exit;

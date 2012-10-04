@@ -8,6 +8,7 @@ class EmergencyContactFactory {
      * Returns an array of EmergencyContact objects for the given Internship.
      * 
      * @param Internship $i
+     * @return Array<EmergencyContact> Array of EmergencyContact objects for the given Internship, or an empty array if none exist.
      * @throws InvalidArgumentException
      * @throws Exception
      * @see EmergencyContactDB
@@ -22,11 +23,16 @@ class EmergencyContactFactory {
         
         $db = new PHPWS_DB('intern_emergency_contact');
         $db->addWhere('internship_id', $internshipId);
+        $db->addOrder('id ASC'); // Get them in order of ID, so earliest contacts come first
         
         $result = $db->getObjects('EmergencyContactDB');
         
         if(PHPWS_Error::logIfError($result)){
             throw new Exception($result->toString());
+        }
+        
+        if(sizeof($result) <= 0){
+            return array(); // Return an empty array
         }
         
         return $result;
