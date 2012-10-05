@@ -1,6 +1,5 @@
 %define name intern
-%define release 1
-%define install_dir /var/www/html/hub/mod/intern
+%define install_dir /var/www/phpwebsite/mod/intern
 
 Summary:   Internship Inventory
 Name:      %{name}
@@ -9,28 +8,39 @@ Release:   %{release}
 License:   GPL
 Group:     Development/PHP
 URL:       http://phpwebsite.appstate.edu
-Source:    %{name}-%{version}.tar.bz2
-Requires:  php >= 5.0.0, php-gd >= 5.0.0, phpwebsite
+Source:    %{name}-%{version}-%{release}.tar.bz2
+Requires:  php >= 5.0.0, php-gd >= 5.0.0
+Prefix:    /var/www/phpwebsite
 BuildArch: noarch
 
 %description
 The Internship Inventory
 
 %prep
-%setup -n intern
+%setup -n %{name}-%{version}-%{release}
 
 %post
-curl http://127.0.0.1/apc/clear/
+/usr/bin/curl -L -k http://127.0.0.1/apc/clear
 
 %install
 mkdir -p "$RPM_BUILD_ROOT%{install_dir}"
+cp -r * "$RPM_BUILD_ROOT%{install_dir}"
+
+# Default Deletes for clean RPM
+
+rm -Rf "$RPM_BUILD_ROOT%{install_dir}/docs/"
+rm -Rf "$RPM_BUILD_ROOT%{install_dir}/.hg/"
+rm -f "$RPM_BUILD_ROOT%{install_dir}/.hgtags"
+rm -f "$RPM_BUILD_ROOT%{install_dir}/build.xml"
+rm -f "$RPM_BUILD_ROOT%{install_dir}/*.spec"
+rm -f "$RPM_BUILD_ROOT%{install_dir}/phpdox.xml"
 cp -r * $RPM_BUILD_ROOT%{install_dir}
 
 %clean
-rm -rf "$RPM_BUILD_ROOT%install_dir"
+rm -rf "$RPM_BUILD_ROOT%{install_dir}"
 
 %files
-%defattr(-,apache,apache)
+%defattr(-,root,root)
 %{install_dir}
 
 %changelog
