@@ -42,6 +42,16 @@ class EditInternshipFormView extends InternshipFormView {
         
         // Plug in the passed in Internship object (sets default/selected values)
         //$this->plugInternship();
+        
+        /***
+         * Emergency Contacts
+         */
+        javascript('jquery');
+        PHPWS_Core::initModClass('intern', 'EmergencyContactFactory.php');
+        $contacts = EmergencyContactFactory::getContactsForInternship($this->intern);
+        $emgContactJson = json_encode($contacts);
+        Layout::add(javascriptMod('intern', 'emergencyContact', array('existing_contacts_json'=>$emgContactJson)));
+        
     }
 
     public function getForm()

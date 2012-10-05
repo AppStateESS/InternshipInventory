@@ -46,14 +46,6 @@ class InternshipFormView {
         $this->form->addSubmit('submit', 'Save');
 
 
-        /***
-         * Emergency Contacts
-         */
-        PHPWS_Core::initModClass('intern', 'EmergencyContactFactory.php');
-        $contacts = EmergencyContactFactory::getContactsForInternship($this->intern);
-        $emgContactJson = json_encode($contacts);
-        Layout::add(javascriptMod('intern', 'emergencyContact', array('existing_contacts_json'=>$emgContactJson)));
-        
         /*********************
          * Workflow / Status *
         */
