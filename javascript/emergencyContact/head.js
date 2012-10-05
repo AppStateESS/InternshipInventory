@@ -1,4 +1,4 @@
-<script type="text/javascript" src="./mod/intern/javascript/emergencyContact/EmgContactList.js" ></script>
+<script type="text/javascript" src="{source_http}mod/intern/javascript/emergencyContact/EmgContactList.js" ></script>
 <script type="text/javascript">
 
 	var emgSpinner = null;
