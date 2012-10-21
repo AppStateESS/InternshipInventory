@@ -38,6 +38,12 @@
 </div>
 <div style="float:left;">
       <fieldset class="search-fieldset">
+        <legend>Course</legend>
+        {COURSE_SUBJ}<br />
+        <div class="search-label">Course Number:&nbsp;{COURSE_NO}</div>
+        <div class="search-label">Section Number:&nbsp;{COURSE_SECT}</div>
+      </fieldset>
+      <fieldset class="search-fieldset">
         <legend>Location</legend>
         <!-- BEGIN loc_repeat -->
         {LOC}{LOC_LABEL}&nbsp;

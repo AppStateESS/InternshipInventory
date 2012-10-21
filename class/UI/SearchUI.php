@@ -20,6 +20,7 @@ class SearchUI implements UI
         PHPWS_Core::initModClass('intern', 'GradProgram.php');
         PHPWS_Core::initModClass('intern', 'Internship.php');
         PHPWS_Core::initModClass('intern', 'Agency.php');
+        PHPWS_Core::initModClass('intern', 'Subject.php');
         PHPWS_Core::initModClass('intern', 'WorkflowStateFactory.php');
 
         // Set up search fields
@@ -83,6 +84,21 @@ class SearchUI implements UI
         $form->addSelect('grad_prog', $progs);
         $form->setLabel('grad_prog', 'Graduate Majors &amp; Certificate Programs');
 
+
+        /***************
+         * Course Info *
+         ***************/
+        $subjects = Subject::getSubjects();
+        $form->addSelect('course_subj', $subjects);
+        $form->setLabel('course_subj', 'Subject');
+        
+        $form->addText('course_no');
+        $form->setLabel('course_no', 'Number');
+        
+        $form->addText('course_sect');
+        $form->setLabel('course_sect', 'Section');
+
+
         // Internship types.
         $types = Internship::getTypesAssoc();
         $form->addCheckAssoc('type', $types);
@@ -91,6 +107,7 @@ class SearchUI implements UI
         $loc = array('domestic' => 'Domestic',
                      'internat' => 'International');
         $form->addRadioAssoc('loc',$loc);
+
         /* State search */
         $db = new PHPWS_DB('intern_state');
         $db->addWhere('active', 1);
@@ -109,9 +126,9 @@ class SearchUI implements UI
         $states = array_reverse($states, true);
         $form->addSelect('state', $states);
         $form->setLabel('state', 'State');
+
         /* Province search */
         $form->addText('prov');
-
         $form->setLabel('prov', 'Province/Territory');
         
         // Workflow states

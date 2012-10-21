@@ -33,6 +33,7 @@ class ResultsUI implements UI
 
         /**
          * Check if any search fields are set.
+         * This is a pretty nasty block of code...
          */
 
         if(isset($_REQUEST['dept']))
@@ -59,9 +60,15 @@ class ResultsUI implements UI
             $prov = $_REQUEST['prov'];
         if(isset($_REQUEST['workflow_state']))
             $workflowState = $_REQUEST['workflow_state'];
+        if(isset($_REQUEST['course_subj']))
+            $courseSubject = $_REQUEST['course_subj'];
+        if(isset($_REQUEST['course_no']))
+            $courseNum = $_REQUEST['course_no'];
+        if(isset($_REQUEST['course_sect']))
+            $courseSect = $_REQUEST['course_sect'];
 
         /* Get Pager */
-        $pager = self::getPager($name, $dept, $term, $major, $level, $type, $campus, $loc, $state, $prov, $workflowState);
+        $pager = self::getPager($name, $dept, $term, $major, $level, $type, $campus, $loc, $state, $prov, $workflowState, $courseSubject, $courseNum, $courseSect);
 
         return $pager->get();
     }
@@ -72,7 +79,8 @@ class ResultsUI implements UI
     private static function getPager($name = null, $deptId = null, $term = null,
             $major = null, $level = null, $type = null,
             $campus = null,$loc = null, $state = null,
-            $prov = null, $workflowState = null)
+            $prov = null, $workflowState = null, $courseSubject = null,
+            $courseNum = null, $courseSect = null)
     {
         $pager = new SubselectPager('intern_internship', 'Internship');
 
@@ -173,8 +181,6 @@ class ResultsUI implements UI
         
         $pager->db->addJoin('LEFT OUTER', 'fuzzy', 'intern_faculty_supervisor', 'faculty_supervisor_id', 'id');
 
-        //$pager->db->setTestMode();
-        //$pager->db->select();
         
         // Student level
         if(isset($level)){
@@ -209,6 +215,20 @@ class ResultsUI implements UI
             }
         }// End type
 
+        // Course Info
+        if(!is_null($courseSubject) && $courseSubject != '-1'){
+            $pager->addWhere('course_subj', $courseSubject);
+        }
+
+        if(!is_null($courseNum) && $courseNum != ''){
+            $pager->addWhere('course_no', $courseNum);
+        }
+
+        if(!is_null($courseSect) && $courseSect != ''){
+            $pager->addWhere('course_sect', $courseSect);
+        }
+
+
         // Location
         if(!is_null($loc)){
             if($loc == 'domestic'){
@@ -241,6 +261,9 @@ class ResultsUI implements UI
             }
         }
     
+
+        //$pager->db->setTestMode();
+        //$pager->db->select();
 
         /*** Sort Headers ***/
         $pager->setAutoSort(false);
