@@ -342,6 +342,10 @@ input[type=radio]:disabled + label{
 	width:350px;
 }
 
+input[type=text].search-input.name{
+    font-size: 16px;
+}
+
 .search-label {
 	margin-top:.5em;
 	margin-bottom:0;

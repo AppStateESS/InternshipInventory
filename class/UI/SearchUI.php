@@ -32,6 +32,9 @@ class SearchUI implements UI
 
         $form->addText('name');
         $form->setLabel('name', "Name or Banner ID");
+        $form->setClass('name', 'search-input name');
+
+
         $terms = Term::getTermsAssoc();
         $form->addSelect('term_select', $terms);
         $form->setLabel('term_select', 'Term');
@@ -94,9 +97,13 @@ class SearchUI implements UI
         
         $form->addText('course_no');
         $form->setLabel('course_no', 'Number');
+        $form->setSize('course_no', 6);
+        $form->setMaxSize('course_no', 4);
         
         $form->addText('course_sect');
         $form->setLabel('course_sect', 'Section');
+        $form->setSize('course_sect', 6);
+        $form->setMaxSize('course_sect', 4);
 
 
         // Internship types.
