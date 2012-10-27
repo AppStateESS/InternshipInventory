@@ -280,14 +280,13 @@
           <td colspan="2">
             <fieldset>
               <legend>Type</legend>
-              {INTERNSHIP_DEFAULT_TYPE}{INTERNSHIP_DEFAULT_TYPE_LABEL}<br />
-              <!-- {SERVICE_LEARNING_TYPE}{SERVICE_LEARNING_TYPE_LABEL}<br/>
-            {INDEPENDENT_STUDY_TYPE}{INDEPENDENT_STUDY_TYPE_LABEL}<br/>
-            {RESEARCH_ASSIST_TYPE}{RESEARCH_ASSIST_TYPE_LABEL}<br/> -->
+              <!-- {INTERNSHIP_DEFAULT_TYPE}{INTERNSHIP_DEFAULT_TYPE_LABEL}<br />
+              {SERVICE_LEARNING_TYPE}{SERVICE_LEARNING_TYPE_LABEL}<br/>
               {STUDENT_TEACHING_TYPE}{STUDENT_TEACHING_TYPE_LABEL}<br />
-              {CLINICAL_PRACTICA_TYPE}{CLINICAL_PRACTICA_TYPE_LABEL}<br />
-              <!-- {SPECIAL_TOPICS_TYPE}{SPECIAL_TOPICS_TYPE_LABEL}<br/>
-            {CHECK_OTHER_TYPE}{OTHER_TYPE_LABEL}{OTHER_TYPE}<br/> -->
+              {CLINICAL_PRACTICA_TYPE}{CLINICAL_PRACTICA_TYPE_LABEL}<br /> -->
+              <!-- BEGIN experience_type_repeat -->
+              {EXPERIENCE_TYPE}&nbsp;{EXPERIENCE_TYPE_LABEL}<br />
+              <!-- END experience_type_repeat -->
             </fieldset></td>
         </tr>
       </table><br />

@@ -203,10 +203,15 @@ class SaveInternship {
         $i->stipend = isset($_REQUEST['stipend']) && $i->paid;
         $i->unpaid = $_REQUEST['payment'] == 'unpaid';
         $i->pay_rate = $_REQUEST['pay_rate'];
-        $i->internship = isset($_REQUEST['internship_default_type']);
-        $i->student_teaching = isset($_REQUEST['student_teaching_type']);
-        $i->clinical_practica = isset($_REQUEST['clinical_practica_type']);
 
+        //$i->internship = isset($_REQUEST['internship_default_type']);
+        //$i->student_teaching = isset($_REQUEST['student_teaching_type']);
+        //$i->clinical_practica = isset($_REQUEST['clinical_practica_type']);
+       
+        // Internship experience type
+        if(isset($_REQUEST['experience_type'])){
+            $i->setExperienceType($_REQUEST['experience_type']);
+        }
         
         // Set fields depending on domestic/international
         if($_REQUEST['location'] == 'domestic'){

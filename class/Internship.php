@@ -53,11 +53,6 @@ class Internship {
     public $student_state;
     public $student_zip;
 
-    // Emergency contact
-    public $emergency_contact_name;
-    public $emergency_contact_relation;
-    public $emergency_contact_phone;
-
     // Location data
     public $domestic;
     public $international;
@@ -89,9 +84,7 @@ class Internship {
     public $course_title;
 
     // Type
-    public $internship = 0;
-    public $student_teaching = 0;
-    public $clinical_practica = 0;
+    public $experience_type;
 
     /**
      * Constructs a new Internship object.
@@ -191,10 +184,11 @@ class Internship {
         $csv['Student Zip']            = $this->student_zip;
         
         // Emergency Contact
-        $csv['Emergency Contact Name']     = $this->getEmergencyContactName();
-        $csv['Emergency Contact Relation'] = $this->getEmergencyContactRelation();
-        $csv['Emergency Contact Phone']    = $this->getEmergencyContactPhoneNumber();
-        
+        //$csv['Emergency Contact Name']     = $this->getEmergencyContactName();
+        //$csv['Emergency Contact Relation'] = $this->getEmergencyContactRelation();
+        //$csv['Emergency Contact Phone']    = $this->getEmergencyContactPhoneNumber();
+        //TODO
+
         // Internship Data
         $csv['Term']                   = Term::rawToRead($this->term, false);
         $csv['Start Date']             = $this->getStartDate(true);
@@ -206,9 +200,10 @@ class Internship {
         $csv['Unpaid']                 = $this->unpaid == 1 ? 'Yes' : 'No';
         
         // Internship Type
-        $csv['Internship']             = $this->internship == 1 ? 'Yes' : 'No';
-        $csv['Student Teaching']       = $this->student_teaching == 1 ? 'Yes' : 'No';
-        $csv['Clinical Practica']      = $this->clinical_practica == 1 ? 'Yes' : 'No';
+        //$csv['Internship']             = $this->internship == 1 ? 'Yes' : 'No';
+        //$csv['Student Teaching']       = $this->student_teaching == 1 ? 'Yes' : 'No';
+        //$csv['Clinical Practica']      = $this->clinical_practica == 1 ? 'Yes' : 'No';
+        $csv['Experience Type']          = $this->getExperienceType();
 
         // Internship location data
         $csv['Domestic']               = $this->isDomestic() ? 'Yes' : 'No';
@@ -349,27 +344,6 @@ class Internship {
         $name .= (isset($this->middle_name) && $this->middle_name != '') ? $this->middle_name . ' ': null;
         $name .= $this->last_name;
         return $name;
-    }
-
-    /**
-     * Get a comma separated list of the types for
-     * this internship.
-     */
-    public function getReadableTypes()
-    {
-        $types = array();
-
-        if ($this->internship == 1) {
-            $types[] = 'Internship';
-        }
-        if ($this->student_teaching == 1) {
-            $types[] = 'Student Teaching';
-        }
-        if ($this->clinical_practica == 1) {
-            $types[] = 'Clinical Practica';
-        }
-
-        return implode(', ', $types);
     }
 
     /**
@@ -674,35 +648,26 @@ class Internship {
         
         return false;
     }
-    
-    public function getEmergencyContactName()
-    {
-        return $this->emergency_contact_name;
+
+    public function getExperienceType(){
+        return $this->experience_type;
     }
-    
-    public function getEmergencyContactRelation()
-    {
-        return $this->emergency_contact_relation;
-    }
-    
-    public function getEmergencyContactPhoneNumber()
-    {
-        return $this->emergency_contact_phone;
+
+    public function setExperienceType($type){
+        $this->experience_type = $type;
     }
     
     /***********************
      * Static Methods
      ***********************/
-    
-    /**
-     * Get internship types in an associative array.
-     */
     public static function getTypesAssoc()
     {
-        return array('internship' => 'Internship',
-                'student_teaching' => 'Student Teaching',
-                'clinical_practica' => 'Clinical Practica In Health Fields');
+        return array('internship'       => 'Internship',
+                     'student_teaching' => 'Student Teaching',
+                     'practicum'        => 'Practicum',
+                     'clinical'         => 'Clinical');
     }
+
 
     public function getLocCountry()
     {

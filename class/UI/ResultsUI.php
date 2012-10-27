@@ -200,20 +200,9 @@ class ResultsUI implements UI
 
         // Experience type
         if(!is_null($type)){
-            foreach($type as $t){
-                switch($t){
-                    case 'internship':
-                        $pager->addWhere('internship', 1);
-                        break;
-                    case 'student_teaching':
-                        $pager->addWhere('student_teaching', 1);
-                        break;
-                    case 'clinical_practica':
-                        $pager->addWhere('clinical_practica', 1);
-                        break;
-                }
-            }
-        }// End type
+            $pager->addWhere('internship_type', $type);
+            
+        }
 
         // Course Info
         if(!is_null($courseSubject) && $courseSubject != '-1'){

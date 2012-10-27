@@ -87,9 +87,9 @@ class EditInternshipFormView extends InternshipFormView {
         $vals['student_zip']     = $this->intern->student_zip;
     
         // Emergency contact
-        $vals['emergency_contact_name']     = $this->intern->emergency_contact_name;
-        $vals['emergency_contact_relation'] = $this->intern->emergency_contact_relation;
-        $vals['emergency_contact_phone']    = $this->intern->emergency_contact_phone;
+        //$vals['emergency_contact_name']     = $this->intern->emergency_contact_name;
+        //$vals['emergency_contact_relation'] = $this->intern->emergency_contact_relation;
+        //$vals['emergency_contact_phone']    = $this->intern->emergency_contact_phone;
     
         // Agency
         $this->form->addHidden('agency_id', $this->agency->id);
@@ -174,9 +174,7 @@ class EditInternshipFormView extends InternshipFormView {
         }
     
         $this->form->setMatch('term', $this->intern->term);
-        $this->form->setMatch('internship_default_type', $this->intern->internship);
-        $this->form->setMatch('student_teaching_type', $this->intern->student_teaching);
-        $this->form->setMatch('clinical_practica_type', $this->intern->clinical_practica);
+        $this->form->setMatch('experience_type', $this->intern->getExperienceType());
     
         // Plug
         $this->form->plugIn($vals);

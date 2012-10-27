@@ -331,6 +331,7 @@ class InternshipFormView {
         /*******************
          * Internship Type *
          */
+        /*
         $this->form->addCheck('internship_default_type');
         $this->form->setLabel('internship_default_type', 'Internship');
         $this->form->setMatch('internship_default_type', true); // Internship is checked by default
@@ -338,7 +339,10 @@ class InternshipFormView {
         $this->form->setLabel('student_teaching_type', 'Student Teaching');
         $this->form->addCheck('clinical_practica_type');
         $this->form->setLabel('clinical_practica_type', 'Clinical Practicum');
-        
+        */
+        $this->form->addRadioAssoc('experience_type', Internship::getTypesAssoc());
+        $this->form->setMatch('experience_type', 'internship');
+
         /*********
          * Notes *
          */
