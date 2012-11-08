@@ -43,9 +43,9 @@ class ResultsUI implements UI
         if(isset($_REQUEST['name']))
             $name = $_REQUEST['name'];
         if(isset($_REQUEST['ugrad_major']))
-            $major = $_REQUEST['ugrad_major'];
-        if(isset($_REQUEST['grad_major']))
-            $major = $_REQUEST['grad_major'];
+            $ugradMajor = $_REQUEST['ugrad_major'];
+        if(isset($_REQUEST['grad_prog']))
+            $gradProg = $_REQUEST['grad_prog'];
         if(isset($_REQUEST['student_level']))
             $level = $_REQUEST['student_level'];
         if(isset($_REQUEST['type']))
@@ -68,7 +68,7 @@ class ResultsUI implements UI
             $courseSect = $_REQUEST['course_sect'];
 
         /* Get Pager */
-        $pager = self::getPager($name, $dept, $term, $major, $level, $type, $campus, $loc, $state, $prov, $workflowState, $courseSubject, $courseNum, $courseSect);
+        $pager = self::getPager($name, $dept, $term, $ugradMajor, $gradProg, $level, $type, $campus, $loc, $state, $prov, $workflowState, $courseSubject, $courseNum, $courseSect);
 
         return $pager->get();
     }
@@ -77,7 +77,7 @@ class ResultsUI implements UI
      * Get the DBPager object. Search strings can be passed in too.
      */
     private static function getPager($name = null, $deptId = null, $term = null,
-            $major = null, $level = null, $type = null,
+            $ugradMajor = null, $gradProg = null, $level = null, $type = null,
             $campus = null,$loc = null, $state = null,
             $prov = null, $workflowState = null, $courseSubject = null,
             $courseNum = null, $courseSect = null)
@@ -187,14 +187,12 @@ class ResultsUI implements UI
             $pager->addWhere('level', $level);
 
             // Major
-            if(isset($major) && $major != -1){
-                if($level == 'grad'){
-                    // Graduate
-                    $pager->addWhere('grad_prog', $major);
-                }else if($level = 'ugrad'){
-                    // Undergraduate
-                    $pager->addWhere('ugrad_major', $major);
-                }
+            if($level == 'ugrad' && isset($ugradMajor) && $ugradMajor != -1){
+                // Undergrad major
+                $pager->addWhere('ugrad_major', $major);
+            }else if($level == 'grad' && isset($gradProg) && $gradProg != -1){
+                // Graduate program
+                $pager->addWhere('grad_prog', $gradProg);
             }
         }
 
