@@ -90,6 +90,22 @@ function otherStuff()
     	}
     });
     
+    /************************
+     * Internship Type Help *
+     */
+    // Setup the dialog
+    $("#internship-type-help").dialog({
+    	autoOpen: false,
+    	buttons: {Close: function() {$(this).dialog("close");}},
+    	modal: true,
+    	width: 600
+    });
+    
+    // Register the event handler for the help button that shows the dialog
+    $("#internship-type-help-button").click(function(){
+    	$("#internship-type-help").dialog('open');
+    });
+    
     /**********
      * Multi-part / Secondary Part *
      */

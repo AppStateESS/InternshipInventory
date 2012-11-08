@@ -280,10 +280,7 @@
           <td colspan="2">
             <fieldset>
               <legend>Type</legend>
-              <!-- {INTERNSHIP_DEFAULT_TYPE}{INTERNSHIP_DEFAULT_TYPE_LABEL}<br />
-              {SERVICE_LEARNING_TYPE}{SERVICE_LEARNING_TYPE_LABEL}<br/>
-              {STUDENT_TEACHING_TYPE}{STUDENT_TEACHING_TYPE_LABEL}<br />
-              {CLINICAL_PRACTICA_TYPE}{CLINICAL_PRACTICA_TYPE_LABEL}<br /> -->
+              <a id="internship-type-help-button" class="tango16 tango-help-browser" style="float:right;cursor: pointer;">Type Definitions</a>
               <!-- BEGIN experience_type_repeat -->
               {EXPERIENCE_TYPE}&nbsp;{EXPERIENCE_TYPE_LABEL}<br />
               <!-- END experience_type_repeat -->
@@ -399,3 +396,28 @@
 {SUBMIT} {END_FORM}
 
 {EMERGENCY_CONTACT_DIALOG}
+
+<div id="internship-type-help">
+	<h2>Internship Type Definitions</h2>
+	<h3>Student Teaching</h3>
+	<p>A course requiring students to instruct or teach at an entity
+		external to the institution, generally as part of the culminating
+		curriculum of a teacher education or certificate program.</p>
+
+	<h3>Practicum</h3>
+	<p>A course requiring students to participate in an approved
+		project or proposal that practically applies previously studied theory
+		of the field or discipline under the supervision of an expert or
+		qualified representative of the field or discipline.</p>
+
+	<h3>Clinical</h3>
+	<p>A course requiring medical- or healthcare-focused experiential
+		work where students test, observe, experiment, or practice a field or
+		discipline in a hands-on or simulated environment.</p>
+
+	<h3>Internship</h3>
+	<p>A course requiring students to participate in a partnership,
+		professional employment, work experience or cooperative education with
+		any entity external to the institution, generally under the
+		supervision of an employee of the external entity.</p>
+</div>
