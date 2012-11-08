@@ -230,18 +230,21 @@ CREATE TABLE intern_term (
 
 CREATE TABLE intern_internship (
        id INT NOT NULL,
-       state varchar(128) NOT NULL,
-       oied_certified smallint not null default 0,
        term INT NOT NULL REFERENCES intern_term(term),
-       student_id INT NOT NULL REFERENCES intern_student(id),
+       
        agency_id INT NOT NULL REFERENCES intern_agency(id),
        faculty_supervisor_id INT NOT NULL REFERENCES intern_faculty_supervisor(id),
        department_id INT NOT NULL,
+       
        start_date INT NOT NULL default 0,
        end_date INT NOT NULL default 0,
+       
        internship SMALLINT NOT NULL,
        student_teaching SMALLINT NOT NULL,
        clinical_practica SMALLINT NOT NULL,
+       
+       state varchar(128) NOT NULL,
+       oied_certified smallint not null default 0,
        
        banner VARCHAR NOT NULL UNIQUE,
        first_name VARCHAR NOT NULL,
@@ -258,6 +261,9 @@ CREATE TABLE intern_internship (
        student_state varchar(2),
        student_zip varchar(5),
        campus character varying(128) NOT NULL,
+       first_name_meta character varying,
+       middle_name_meta character varying,
+       last_name_meta character varying,
        
        loc_address varchar NULL,
        loc_city varchar NULL,
@@ -279,6 +285,7 @@ CREATE TABLE intern_internship (
        pay_rate VARCHAR NULL,
        multi_part SMALLINT NOT NULL,
        secondary_part SMALLINT NOT NULL,
+       experience_type varchar NOT NULL,
        PRIMARY KEY(id)
 );
 
