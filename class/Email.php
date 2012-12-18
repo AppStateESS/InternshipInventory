@@ -315,8 +315,8 @@ class Email {
 
         $dept = new Department($i->department_id);
         $tpl['DEPARTMENT'] = $dept->getName();
-
-        $to = array('lewandoskik@appstate.edu', 'gomisjd@appstate.edu');
+		
+        $to = array('newelllm@appstate.edu');
         $subject = "International Internship Created - {$i->first_name} {$i->last_name}";
 
         Email::sendTemplateMessage($to, $subject, 'email/IntlInternshipCreateNotice.tpl', $tpl);
