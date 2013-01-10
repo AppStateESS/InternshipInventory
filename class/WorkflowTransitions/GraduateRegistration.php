@@ -19,6 +19,21 @@ class GraduateRegistration extends WorkflowTransition {
         }
     }
     
+    public function allowed(Internship $i)
+    {
+    	if($i->isDistanceEd()){
+    		if(Current_User::allow('intern', 'distance_ed_register')){
+    			return true;
+    		}else{
+    			return false;
+    		}
+    	}else{
+    		return parent::allowed($i);
+    	}
+    
+    	return false;
+    }
+    
     public function doNotification(Internship $i, $note = null)
     {
         $agency = $i->getAgency();
