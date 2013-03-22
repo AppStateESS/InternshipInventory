@@ -10,7 +10,8 @@ Name: {NAME}
 Banner ID: {BANNER}
 Username: {USER}
 Phone: {PHONE}
-    
+
+
 Internship
 -----------
 Term: {TERM}
@@ -22,6 +23,7 @@ Credits Hours: {CREDITS}
 Faculty: {FACULTY}
 Department: {DEPT}
 Campus: {CAMPUS}
+
 
 Location
 ---------
