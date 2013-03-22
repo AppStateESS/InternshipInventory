@@ -198,7 +198,7 @@ class ResultsUI implements UI
 
         // Experience type
         if(!is_null($type)){
-            $pager->addWhere('internship_type', $type);
+            $pager->addWhere('experience_type', $type);
             
         }
 
