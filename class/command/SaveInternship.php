@@ -253,10 +253,12 @@ class SaveInternship {
             $i->course_subj = null;
         }
 
+        // Course info
         $i->course_no = strip_tags($_POST['course_no']);
         $i->course_sect = strip_tags($_POST['course_sect']);
         $i->course_title = strip_tags($_POST['course_title']);
         
+        // Multipart course
         if(isset($_POST['multipart'])){
             $i->multi_part = 1;
         }else{
@@ -267,6 +269,15 @@ class SaveInternship {
             $i->secondary_part = 1;
         }else{
             $i->secondary_part = 0;
+        }
+        
+        // Corequisite Course Info
+        if (isset($_POST['corequisite_course_num'])) {
+        	$i->corequisite_number = $_POST['corequisite_course_num'];
+        }
+        
+        if (isset($_POST['corequisite_course_sect'])) {
+        	$i->corequisite_section = $_POST['corequisite_course_sect'];
         }
 
         // Student Information

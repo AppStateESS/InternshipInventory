@@ -264,6 +264,22 @@
             <span class="text disabled smaller italic">(Limit 28 characters; Banner)</span>
           </td>
         </tr>
+        
+        <!-- BEGIN corequisite -->
+        <tr>
+        	<td colspan="2">
+        	<h3>Corequisite Course</h3>
+        	</td>
+        </tr>
+        <tr>
+        	<td>Course Number:</td>
+        	<td>{COREQUISITE_COURSE_NUM}</td>
+        </tr>
+        <tr>
+        	<td>Section Number:</td>
+        	<td>{COREQUISITE_COURSE_SECT}</td>
+        </tr>
+        <!-- END corequisite -->
 
         <tr>
           <td colspan="2">

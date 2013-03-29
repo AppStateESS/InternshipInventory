@@ -82,6 +82,11 @@ class Internship {
     public $course_no;
     public $course_sect;
     public $course_title;
+    
+    // Corequisite Course Info
+    // Course must be in the same subject, so there's no subject code
+    public $corequisite_number;
+    public $corequisite_section;
 
     // Type
     public $experience_type;
@@ -460,6 +465,14 @@ class Internship {
         return $tags;
     }
 
+    public function getLocCountry()
+    {
+    	if (!$this->loc_country) {
+    		return 'United States';
+    	}
+    	return $this->loc_country;
+    }
+    
     /*****************************
      * Accessor / Mutator Methods
     */
@@ -629,6 +642,14 @@ class Internship {
         return $this->credits;
     }
     
+    public function getCorequisiteNum(){
+    	return $this->corequisite_number;
+    }
+    
+    public function getCorequisiteSection(){
+    	return $this->corequisite_section;
+    }
+    
     public function getAvgHoursPerWeek(){
         return $this->avg_hours_week;
     }
@@ -667,16 +688,6 @@ class Internship {
                      'practicum'        => 'Practicum',
                      'clinical'         => 'Clinical');
     }
-
-
-    public function getLocCountry()
-    {
-        if (!$this->loc_country) {
-            return 'United States';
-        }
-        return $this->loc_country;
-    }
-
 }
 
 ?>

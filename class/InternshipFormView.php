@@ -315,6 +315,14 @@ class InternshipFormView {
         $this->form->setLabel('course_title', 'Title');
         $this->form->setMaxSize('course_title',28); // Limit to 28 chars, per Banner
         
+        // Corequisite
+        if (!is_null($this->intern)) {
+        	$dept = $this->intern->getDepartment();
+        	if ($dept->hasCorequisite()){
+        		$this->form->addText('corequisite_course_num');
+        		$this->form->addText('corequisite_course_sect');
+        	}
+        }
         
         /************
          * Pay Info *

@@ -21,6 +21,7 @@ CREATE TABLE intern_department (
        id INT NOT NULL,
        name VARCHAR NOT NULL UNIQUE,
        hidden SMALLINT NULL DEFAULT 0,
+       corequisite SMALLINT NOT NULL DEFAULT 0,
        PRIMARY KEY(id)
 );
 
@@ -276,6 +277,8 @@ CREATE TABLE intern_internship (
        course_sect varchar(20) null,
        course_title varchar(40) null,
        credits INT NULL,
+       corequisite_number character varying,
+       corequisite_section character varying,
        avg_hours_week INT NULL,
        domestic SMALLINT NOT NULL, 
        international SMALLINT NOT NULL,
@@ -324,6 +327,7 @@ CREATE TABLE intern_change_history (
 );
 
 CREATE INDEX change_history_internshp_idx ON intern_change_history(internship_id);
+CREATE SEQUENCE intern_change_history_seq;
 
 -- Add Departments
 INSERT INTO intern_department VALUES  (1, 'Accounting');

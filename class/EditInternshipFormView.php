@@ -148,6 +148,9 @@ class EditInternshipFormView extends InternshipFormView {
             $this->form->setMatch('secondary_part', '1');
         }
         
+        $vals['corequisite_course_num']     = $this->intern->getCorequisiteNum();
+        $vals['corequisite_course_sect']    = $this->intern->getCorequisiteSection();
+        
         // Department
         $vals['department'] = $this->intern->department_id;
     

@@ -52,6 +52,7 @@ class InternshipInventory {
                 PHPWS_Core::initModClass('intern', 'command/SaveInternship.php');
                 $ctrl = new SaveInternship();
                 $ctrl->execute();
+                test('finished execute',1);
                 break;
             case 'search':
                 PHPWS_Core::initModClass('intern', 'UI/SearchUI.php');

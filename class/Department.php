@@ -1,20 +1,21 @@
 <?php
 
-  /**
-   * Model
-   *
-   * Represents an academic department at Appalachian State University.
-   *
-   * @author Robert Bost <bostrt at tux dot appstate dot edu>
-   * @package Intern
-   */
-
 PHPWS_Core::initModClass('intern', 'Editable.php');
+
 define('DEPT_EDIT', 'edit_dept');
+
+ /**
+  * Represents an academic department.
+  *
+  * @author Robert Bost <bostrt at tux dot appstate dot edu>
+  * @author Jeremy Booker <jbooker at tux dot appstate dot edu>
+  * @package Intern
+  */
 class Department extends Editable
 {
     public $name;
     public $hidden;
+    public $corequisite; // Whether or not a corequisite course is required for interns in this department.
 
     /**
      * @Override Model::getDb
@@ -226,6 +227,20 @@ class Department extends Editable
     public function isHidden()
     {
         return $this->hidden == 1;
+    }
+    
+    public function hasCorequisite()
+    {
+    	if ($this->corequisite == 1) {
+    		return true;
+    	}
+    	
+    	return false;
+    }
+    
+    public function setCorequisite($coreq)
+    {
+    	$this->corequisite = $coreq;
     }
 }
 
