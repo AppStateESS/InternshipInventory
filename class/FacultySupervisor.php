@@ -5,6 +5,8 @@
    *
    * Represents a faculty supervisor for an academic department.
    *
+   * @deprecated 
+   * @see Faculty
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    * @author Jeremy Booker <jbooker at tux dot appstate dot edu>
    * @package Intern

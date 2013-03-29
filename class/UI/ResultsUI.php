@@ -12,7 +12,7 @@
 PHPWS_Core::initModClass('intern', 'UI/UI.php');
 class ResultsUI implements UI
 {
-    public static function display()
+    public function display()
     {
         PHPWS_Core::initModClass('intern', 'SubselectPager.php');
         PHPWS_Core::initModClass('intern', 'Internship.php');

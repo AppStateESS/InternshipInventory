@@ -7,7 +7,7 @@
 class AdminUI implements UI {
 
     // Show a list of admins and a form to add a new one.
-    public static function display() {
+    public function display() {
         // permissions...
         if(!Current_User::isDeity()) {
             NQ::simple('intern', INTERN_ERROR, 'You cannot edit administrators.');

@@ -277,9 +277,18 @@ class InternshipInventory {
                 $ctrl = new RemoveEmergencyContact();
                 $ctrl->execute();
                 break;
+            case 'edit_faculty':
+            	if (!Current_User::allow('intern', 'edit_faculty') && !Current_User::isDeity()) {
+            		throw new PermissionException("You don't have permission to edit faculty members.");
+            	}
+            	PHPWS_Core::initModClass('intern', 'FacultyUI.php');
+            	$facultyUI = new FacultyUI();
+            	$this->content = $facultyUI->display();
+            	break;
             default:
-                PHPWS_Core::initModClass('intern', 'Intern_Menu.php');
-                $this->content = Intern_Menu::showMenu();
+                PHPWS_Core::initModClass('intern', 'UI/InternMenu.php');
+                $menu = new InternMenu();
+                $this->content = $menu->display();
                 break;
         }
     }

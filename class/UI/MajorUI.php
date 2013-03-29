@@ -2,7 +2,7 @@
 
 class MajorUI implements UI
 {
-    public static function display()
+    public function display()
     {
         /* Check if user can add/edit/hide/delete majors. */
         if(!Current_User::allow('intern', 'edit_major') && 

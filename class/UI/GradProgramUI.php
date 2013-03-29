@@ -2,7 +2,7 @@
 
 class GradProgramUI implements UI
 {
-    public static function display()
+    public function display()
     {
         /* Check if user can add/edit/hide/delete grad programs. */
         if(!Current_User::allow('intern', 'edit_grad_prog') && 

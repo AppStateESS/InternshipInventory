@@ -19,6 +19,7 @@
         <!-- BEGIN grad --><li>{EDIT_GRAD_LINK}</li><!-- END grad -->
         <!-- BEGIN depts --><li>{EDIT_DEPARTMENTS_LINK}</li><!-- END depts -->
         <!-- BEGIN admins --><li>{EDIT_ADMINS_LINK}</li><!-- END admins -->
+        <!-- BEGIN faculty --><li>{EDIT_FACULTY}</li><!-- END faculty -->
         <!-- BEGIN states --><li>{EDIT_STATES_LINK}</li><!-- END states -->
         <!-- BEGIN ctrl_panel --><li>{CONTROL_PANEL}</li><!-- END ctrl_panel -->
       </ul>

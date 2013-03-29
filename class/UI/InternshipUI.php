@@ -21,7 +21,7 @@ class InternshipUI implements UI {
             'campus',
             'location');
 
-    public static function display()
+    public function display()
     {
         PHPWS_Core::initModClass('intern', 'Internship.php');
         PHPWS_Core::initModClass('intern', 'InternshipFactory.php');
