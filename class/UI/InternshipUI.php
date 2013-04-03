@@ -79,7 +79,7 @@ class InternshipUI implements UI {
             }
             
             // Show a warning if in SigAuthReadyState, is international, and not OIED approved
-            if($i->getWorkflowState() == 'SigAuthReadyState' && $i->isInternational() && !$i->isOiedCertified()){
+            if($i->getWorkflowState() instanceof SigAuthReadyState && $i->isInternational() && !$i->isOiedCertified()){
                 NQ::simple('intern', INTERN_WARNING, 'This internship can not be approved by the Signature Authority bearer until the internship is certified by the Office of International Education and Development.');
             }
             
