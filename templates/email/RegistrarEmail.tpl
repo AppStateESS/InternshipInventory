@@ -24,6 +24,11 @@ Faculty: {FACULTY}
 Department: {DEPT}
 Campus: {CAMPUS}
 
+<!-- BEGIN coreq -->
+**** Corequisite Course ****
+Course: {COREQ_SUBJECT}-{COREQ_COURSE_NUM}
+Section: {COREQ_COURSE_SECT}
+<!-- END coreq -->
 
 Location
 ---------

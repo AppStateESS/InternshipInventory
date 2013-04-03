@@ -173,6 +173,14 @@ class Email {
             $tpl['CAMPUS'] = $campus;
         }
         
+        /**** Corequisite Checking ****/
+        $coreq = $i->getCorequisiteNum();
+        if(!is_null($coreq) && $coreq != ''){
+            $tpl['COREQ_SUBJECT'] = $subjects[$i->course_subj];
+            $tpl['COREQ_COURSE_NUM'] = $coreq;
+            $tpl['COREQ_COURSE_SECT'] = $i->getCorequisiteSection();
+        }
+        
         if($i->international){
             $tpl['COUNTRY'] = $i->loc_country;
             $tpl['INTERNATIONAL'] = 'Yes';
