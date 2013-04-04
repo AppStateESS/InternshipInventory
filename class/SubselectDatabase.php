@@ -2812,36 +2812,6 @@ class SubselectDatabase extends PHPWS_DB{
         return $this->query($query);
     }
 
-    public function begin()
-    {
-        // If transaction started already, return false.
-        if (isset($GLOBALS['DB_Transaction']) && $GLOBALS['DB_Transaction']) {
-            return false;
-        }
-        $GLOBALS['DB_Transaction'] = true;
-        return PHPWS_DB::query('BEGIN');
-    }
-
-    public function commit()
-    {
-        // if transaction not started, return false.
-        if (!$GLOBALS['DB_Transaction']) {
-            return false;
-        }
-        $GLOBALS['DB_Transaction'] = false;
-        return PHPWS_DB::query('COMMIT');
-    }
-
-    public function rollback()
-    {
-        // if transaction not started, return false.
-        if (!$GLOBALS['DB_Transaction']) {
-            return false;
-        }
-        $GLOBALS['DB_Transaction'] = false;
-        return PHPWS_DB::query('ROLLBACK');
-    }
-
     /**
      * Move row in a table based on a column designating the current order
      * direction == 1 means INCREASE order by one
