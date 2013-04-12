@@ -10,7 +10,8 @@
  */
 class AddEmergencyContact {
 
-    public function __construct(){
+    public function __construct()
+    {
         
     }
     
@@ -23,19 +24,19 @@ class AddEmergencyContact {
         $phone        = $_REQUEST['emergency_contact_phone'];
         
         // Sanity checking
-        if(is_null($internshipId) || !isset($internshipId)){
+        if (is_null($internshipId) || !isset($internshipId)) {
             throw new InvalidArgumentException('Missing internship ID.');
         }
         
-        if(is_null($name) || !isset($name)){
+        if (is_null($name) || !isset($name)) {
             throw new InvalidArgumentException('Missing contact name.');
         }
         
-        if(is_null($relation) || !isset($relation)){
+        if (is_null($relation) || !isset($relation)) {
             throw new InvalidArgumentException('Missing contact relationship.');
         }
         
-        if(is_null($phone) || !isset($phone)){
+        if (is_null($phone) || !isset($phone)) {
             throw new InvalidArgumentException('Missing contact phone number.');
         }
         
