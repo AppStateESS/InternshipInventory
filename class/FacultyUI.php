@@ -29,9 +29,23 @@ class FacultyUI implements UI
 			throw new PermissionException("You don't have permission to edit faculty members.");
 		}
 		
+		// Get the list of departments the current user has access to
+		PHPWS_Core::initModClass('intern', 'Department.php');
+		$departments = Department::getDepartmentsAssocForUsername(Current_User::getUsername());
+		
+		javascript('jquery');
+		javascriptMod('intern', 'facultyEdit');
+		
 		$tpl = array();
 		
-		return PHPWS_Template::process($tpl, 'intern', 'editFaculty.php');
+		$form = new PHPWS_Form('facultyEdit');
+		
+		$form->addDropBox('department_drop', $departments);
+		
+		$form->mergeTemplate($tpl);
+		$tpl = $form->getTemplate();
+		
+		return PHPWS_Template::process($tpl, 'intern', 'editFaculty.tpl');
 	}
 }
 

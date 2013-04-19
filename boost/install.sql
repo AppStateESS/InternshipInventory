@@ -25,6 +25,29 @@ CREATE TABLE intern_department (
        PRIMARY KEY(id)
 );
 
+create table intern_faculty (
+    id              integer NOT NULL,
+    banner_id       character varying NOT NULL,
+    username        character varying NOT NULL,
+    first_name      character varying NOT NULL,
+    last_name       character varying NOT NULL,
+    phone           character varying,
+    fax             character varying,
+    street_address1 character varying,
+    street_address2 character varying,
+    city            character varying,
+    state           character varying,
+    zip             character varying,
+    PRIMARY KEY(id)
+);
+
+create unique index intern_faculty_banner_id_idx ON intern_faculty(banner_id);
+
+create table intern_faculty_department (
+    banner_id       character varying NOT NULL REFERENCES intern_faculty(banner_id),
+    department_id   integer NOT NULL REFERENCES intern_department(id)
+);
+
 CREATE TABLE intern_state (
        abbr varchar NOT NULL UNIQUE,
        full_name VARCHAR NOT NULL UNIQUE,
@@ -212,16 +235,6 @@ CREATE TABLE intern_agency (
        PRIMARY KEY(id)
 );
 
-CREATE TABLE intern_faculty_supervisor (
-       id INT NOT NULL,
-       first_name VARCHAR NOT NULL,
-       last_name VARCHAR NOT NULL,
-       phone VARCHAR NOT NULL,
-       email VARCHAR NOT NULL,
-       department_id INT NOT NULL,
-       PRIMARY KEY(id)              
-);
-
 -- Term format YYYY# (e.g. 20111 is Spring 2011, 20113 is Fall 2011)
 CREATE TABLE intern_term (
        id INT NOT NULL,
@@ -235,6 +248,7 @@ CREATE TABLE intern_internship (
        
        agency_id INT NOT NULL REFERENCES intern_agency(id),
        faculty_supervisor_id INT NOT NULL REFERENCES intern_faculty_supervisor(id),
+       faculty_banner_id character varying REFERENCES intern_faculty(banner_id);
        department_id INT NOT NULL,
        
        start_date INT NOT NULL default 0,
@@ -247,7 +261,7 @@ CREATE TABLE intern_internship (
        state varchar(128) NOT NULL,
        oied_certified smallint not null default 0,
        
-       banner VARCHAR NOT NULL UNIQUE,
+       banner VARCHAR NOT NULL,
        first_name VARCHAR NOT NULL,
        middle_name VARCHAR,
        last_name VARCHAR NOT NULL,

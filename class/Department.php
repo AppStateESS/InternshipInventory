@@ -118,11 +118,10 @@ class Department extends Editable
         if(!is_null($except))
             $db->addWhere('id', $except, '=', 'OR');
 
-        $depts = $db->select('assoc');
-        // Horrible, horrible hacks. Need to add a null selection.
-        $depts = array_reverse($depts, true); // preserve keys.
         $depts[-1] = 'Select Department';
-        return array_reverse($depts, true);
+        $depts += $db->select('assoc');
+        
+        return $depts;
     }
 
     /**
@@ -143,16 +142,15 @@ class Department extends Editable
 
         // If the user doesn't have the 'all_departments' permission,
         // then add a join to limit to specific departments
-        if(!Current_User::allow('intern', 'all_departments')){
+        if(!Current_User::allow('intern', 'all_departments') && !Current_User::isDeity()){
             $db->addJoin('LEFT', 'intern_department', 'intern_admin', 'id', 'department_id');
             $db->addWhere('intern_admin.username', $username);
         }
 
-        $depts = $db->select('assoc');
-        // Horrible, horrible hacks. Need to add a null selection.
-        $depts = array_reverse($depts, true); // preserve keys.
         $depts[-1] = 'Select Department';
-        return array_reverse($depts, true);
+        $depts += $db->select('assoc');
+        
+        return $depts;
     }
     
     /**
@@ -237,10 +235,38 @@ class Department extends Editable
     	
     	return false;
     }
+}
+
+/**
+ * Subclass for restoring from database.
+ * @author jbooker
+ * @package intern
+ */
+class DepartmentDB extends Department {
+    
+    /**
+     * Empty constructor for restoring object from database
+     */
+    public function __construct(){}
+    
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+    
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+    
+    public function setHidden($hide)
+    {
+        $this->hidden = $hide;
+    }
     
     public function setCorequisite($coreq)
     {
-    	$this->corequisite = $coreq;
+        $this->corequisite = $coreq;
     }
 }
 

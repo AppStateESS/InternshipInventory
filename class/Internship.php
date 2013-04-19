@@ -9,7 +9,6 @@
  * @author Jeremy Booker <jbooker at tux dot appstate dot edu>
  * @package Intern
  */
-PHPWS_Core::initModClass('intern', 'Model.php');
 PHPWS_Core::initModClass('intern', 'Email.php');
 PHPWS_Core::initModClass('intern', 'Term.php');
 PHPWS_Core::initModClass('intern', 'Major.php');
@@ -18,9 +17,14 @@ class Internship {
     
     public $id;
 
+    // Agency
     public $agency_id;
-    public $faculty_supervisor_id;
+    
+    // Department
     public $department_id;
+
+    //public $faculty_supervisor_id;
+    public $faculty_banner_id;
 
     // Status info
     public $state;
@@ -305,6 +309,10 @@ class Internship {
 
     /**
      * Get the Faculty Supervisor object associated with this internship.
+     * 
+     * @deprecated
+     * @see Faculty
+     * TODO: Use the Faculty class instead.
      */
     public function getFacultySupervisor()
     {
@@ -497,6 +505,24 @@ class Internship {
 
     public function getEmailAddress(){
         return $this->email;
+    }
+    
+    /**
+     * Returns the facuty advisor's BannerId
+     * @return integer BannerId
+     */
+    public function getFacultyBannerId()
+    {
+        return $this->faculty_banner_id;
+    }
+    
+    /**
+     * Returns the Department's database id
+     * @return integer department id
+     */
+    public function getDepartmentId()
+    {
+        return $this->department_id;
     }
     
     /**

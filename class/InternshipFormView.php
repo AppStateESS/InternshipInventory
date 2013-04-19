@@ -126,6 +126,7 @@ class InternshipFormView {
         $this->form->addSelect('ugrad_major', $majors);
         $this->form->setLabel('ugrad_major', 'Undergraduate Majors &amp; Certificate Programs');
         
+        
         /****************************
          * Graduate Major Drop Down *
          */
@@ -138,20 +139,6 @@ class InternshipFormView {
         $this->form->addSelect('grad_prog', $progs);
         $this->form->setLabel('grad_prog', 'Graduate Majors &amp; Certificate Programs');
         
-        
-        
-        /***************************
-         * Faculty supervisor info *
-         */
-        $this->form->addText('supervisor_first_name');
-        $this->form->setLabel('supervisor_first_name', 'First Name');
-        $this->form->addText('supervisor_last_name');
-        $this->form->setLabel('supervisor_last_name', 'Last Name');
-        $this->form->addText('supervisor_email');
-        $this->form->setLabel('supervisor_email', 'Email');
-        
-        $this->form->addText('supervisor_phone', '828-262-');
-        $this->form->setLabel('supervisor_phone', 'Phone');
         
         /************************
          * Department Drop Down *
@@ -178,6 +165,21 @@ class InternshipFormView {
             $keys = array_keys($depts);
             $this->form->setMatch('department', $keys[1]);
         }
+        
+        
+        /********************
+         * Faculty Member Dropdown
+         * 
+         * The options for this drop down are provided through AJAX on page-load and
+         * when the user changes the department dropdown above.
+         */
+        $this->form->addSelect('faculty', array(-1=>'Select Faculty Advisor'));
+        $this->form->setExtra('faculty', 'disabled');
+        $this->form->setLabel('faculty', 'Faculty Advisor / Instructor of Record');
+        
+        // Hidden field for selected faculty member
+        $this->form->addHidden('faculty_banner_id');
+        
         
         /***************
          * Agency info *

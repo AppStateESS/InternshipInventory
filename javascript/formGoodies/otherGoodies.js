@@ -160,6 +160,136 @@ function otherStuff()
     	}
     });
     
+    
+    /********************
+     * Faculty Selection
+     */
+    // Bind onChange event handler for department drop down
+    $("#internship_department").bind('change', function(event){
+    	// Reset state of interface
+    	$("#internship_faculty").prop('disabled', true); // Disable faculty drop down
+    	$("#internship_faculty").html("<option value='-1'>Loading...</option>"); // Reset list of options in drop down
+    	
+    	$("#faculty_details").hide();
+    	$("#faculty_email").html('');
+    	$("#faculty_phone").html('');
+    	$("#faculty_fax").html('');
+    	$("#faculty_address").html('');
+    	
+    	// Make the request for the list of faculty members for the selected department
+    	$.ajax({
+    		success: handleFacultyResponse,
+    		error: handleFacultyReponseError,
+    		data: {module: 'intern',
+    			   action: 'getFacultyListForDept',
+    			   department: $("#internship_department").val()
+    			   },
+            dataType: 'json',
+    	    url: 'index.php'
+    	});
+    });
+    
+    var facultyData = null;
+    
+    // Handle the AJAX response containing the faculty members for a department
+    function handleFacultyResponse(data, textStatus, jqXHR)
+    {
+    	//console.log(data);
+    	
+    	// Save the data outside this method for later
+    	facultyData = data;
+    	
+    	// Show a message if no faculty were returned for the selected department
+    	if(data.length == 0){
+    		$("#internship_faculty").html("<option value='-1'>No Advisors Available</option>");
+    		return;
+    	}
+    	
+    	// Generate the dropdown list
+        var listItems = "<option value='-1'>None</option>";
+        for (var i = 0; i < data.length; i++){
+        	// If the banner ID matches what's in the hidden field, set the selected option in the drop down
+        	selected = '';
+        	if($("#internship_faculty_banner_id").val() == data[i].banner_id){
+        		selected = 'selected="selected"';
+        	}
+            listItems += "<option value='" + data[i].banner_id + "' " + selected + ">" + data[i].first_name + " " + data[i].last_name + "</option>";
+        }
+        $("#internship_faculty").html(listItems);
+        $("#internship_faculty").prop('disabled', false);
+        
+        // If a banner id is already set in the hidden field, select it
+        if ($("#internship_faculty_banner_id").val() != null) {
+        	selectFaculty($("#internship_faculty_banner_id").val());
+        }
+    }
+    
+    // Handle an AJAX error when getting faculty members for a department
+    function handleFacultyReponseError(jqXHR, textStatus, errorThrown)
+    {
+    	console.log("Error loading facuty list. Please contact ESS.");
+    	console.log(textStats);
+    }
+    
+    // Trigger a change for the inital loading of faculty info
+    $("#internship_department").change(); // Trigger an initial update
+    
+    // Handle changes to the faculty drop down
+    $("#internship_faculty").bind('click', function(){
+    	if($("#internship_faculty").val() != "-1") {
+    		selectFaculty($("#internship_faculty").val());
+    	}
+    });
+    
+    // Change link click handler
+    $("#faculty-change").bind('click', function(){
+    	// Reset the selected banner_id in the hidden field
+    	$("#internship_faculty_banner_id").val(null);
+    	
+    	// Slide the faculty details panel out, and the faculty selector panel in
+    	$("#faculty_details").hide('slide', {direction: 'right'}, "fast", function(){
+    		$("#faculty_selector").show('slide', {direction: 'left'}, "fast");
+    	});
+    });
+    
+    function selectFaculty(bannerId)
+    {
+    	// Store the selected faculty banner id in the hidden field
+    	$("#internship_faculty_banner_id").val(bannerId);
+    	
+    	// Search the list of faculty for a match to the JSON data fetched earlier
+    	//TODO What if there isn't a match? We still need to be able to find/show that faculty member.
+    	var faculty = null;
+    	for(var i = 0; i < facultyData.length; i++){
+    		if(facultyData[i].banner_id == bannerId){
+    			faculty = facultyData[i];
+    			break;
+    		}
+    	}
+    	
+    	// Update the faculty details panel
+    	departmentName = $("#internship_department :selected").text();
+    	
+    	$("#faculty_details").removeClass('text disabled'); // Disable detail text
+    	$("#faculty_name").html(faculty.first_name + " " + faculty.last_name + " - " + departmentName);
+    	$("#faculty_email").html('<a href="mailto:' + faculty.username + '@appstate.edu">' + faculty.username + '@appstate.edu </a>');
+    	$("#faculty_phone").html('<a href="tel:+1' + faculty.phone + '">' + faculty.phone + '</a>');
+    	$("#faculty_fax").html('<a href="fax:+1' + faculty.fax + '">' + faculty.fax + '</a>');
+
+    	// Format the address
+    	var address = faculty.street_address1;
+    	if (faculty.street_address1 != '') {
+    		address += ("<br />" + faculty.street_address2); 
+    	}
+    	address += ("<br />" + faculty.city + ", " + faculty.state + " " + faculty.zip);
+    	$("#faculty_address").html(address);
+    	
+    	// Slide the faculty selector div (drop downs) out, then slide the faculty details panel in
+    	$("#faculty_selector").hide('slide', {direction: 'left'}, "fast", function(){
+    		$("#faculty_details").show('slide', {direction: 'right'}, "fast");
+    	});
+    }
+    
     /*
      * Location stuff.
      *

@@ -20,7 +20,6 @@ PHPWS_Core::initModClass('intern', 'Subject.php');
 class EditInternshipFormView extends InternshipFormView {
     
     private $agency;
-    private $faculty;
     private $department;
     
     /**
@@ -37,7 +36,6 @@ class EditInternshipFormView extends InternshipFormView {
         $this->intern = $i;
 
         $this->agency     = $this->intern->getAgency();
-        $this->faculty    = $this->intern->getFacultySupervisor();
         $this->department = $this->intern->getDepartment();
         
         // Plug in the passed in Internship object (sets default/selected values)
@@ -52,11 +50,6 @@ class EditInternshipFormView extends InternshipFormView {
         $emgContactJson = json_encode($contacts);
         Layout::add(javascriptMod('intern', 'emergencyContact', array('existing_contacts_json'=>$emgContactJson)));
         
-    }
-
-    public function getForm()
-    {
-        return $this->form;
     }
     
     /**
@@ -86,10 +79,8 @@ class EditInternshipFormView extends InternshipFormView {
         $vals['student_state']   = $this->intern->student_state;
         $vals['student_zip']     = $this->intern->student_zip;
     
-        // Emergency contact
-        //$vals['emergency_contact_name']     = $this->intern->emergency_contact_name;
-        //$vals['emergency_contact_relation'] = $this->intern->emergency_contact_relation;
-        //$vals['emergency_contact_phone']    = $this->intern->emergency_contact_phone;
+        // Faculty Supervisor
+        $vals['faculty_banner_id'] = $this->intern->getFacultyBannerId();
     
         // Agency
         $this->form->addHidden('agency_id', $this->agency->id);
@@ -111,15 +102,7 @@ class EditInternshipFormView extends InternshipFormView {
         $vals['agency_sup_state']        = $this->agency->supervisor_state;
         $vals['agency_sup_zip']          = $this->agency->supervisor_zip;
         $vals['agency_sup_country']      = $this->agency->supervisor_country;
-        $vals['copy_address']            = $this->agency->address_same_flag == 't';
-    
-        // Faculty supervisor
-        $this->form->addHidden('supervisor_id', $this->faculty->id);
-        $vals['supervisor_first_name'] = $this->faculty->first_name;
-        $vals['supervisor_last_name'] = $this->faculty->last_name;
-        $vals['supervisor_email'] = $this->faculty->email;
-        $vals['supervisor_phone'] = $this->faculty->phone;
-    
+        $vals['copy_address']            = $this->agency->address_same_flag == 't';  
     
         // Internship
         $this->form->addHidden('internship_id', $this->intern->id);

@@ -18,7 +18,7 @@ class SaveInternship {
         PHPWS_Core::initModClass('intern', 'Internship.php');
         PHPWS_Core::initModClass('intern', 'Agency.php');
         PHPWS_Core::initModClass('intern', 'Department.php');
-        PHPWS_Core::initModClass('intern', 'FacultySupervisor.php');
+        PHPWS_Core::initModClass('intern', 'Faculty.php');
 
         /**************
          * Sanity Checks
@@ -59,18 +59,6 @@ class SaveInternship {
                 $url .= "&$key=$val";
             }
             NQ::simple('intern', INTERN_ERROR, "The student's email address is invalid. No changes were saved. Enter only the username portion of the student's email address. The '@appstate.edu' portion is not necessary.");
-            NQ::close();
-            return PHPWS_Core::reroute($url);
-        }
-        
-        // Sanity check faculty email
-        if(isset($_REQUEST['supervisor_email']) && preg_match("/@/", $_REQUEST['supervisor_email'])){
-            $url = 'index.php?module=intern&action=edit_internship&missing=supervisor_email';
-            // Restore the values in the fields the user already entered
-            foreach ($_POST as $key => $val) {
-                $url .= "&$key=$val";
-            }
-            NQ::simple('intern', INTERN_ERROR, "The faculty member's email address is invalid. No changes were saved. Enter only the username portion of the faculty member's email address. The '@appstate.edu' portion is not necessary.");
             NQ::close();
             return PHPWS_Core::reroute($url);
         }
@@ -147,34 +135,9 @@ class SaveInternship {
             throw $e;
         }
 
-        // Create/Save Faculty supervisor
-        $faculty = new FacultySupervisor();
-        if (isset($_REQUEST['supervisor_id'])) {
-            // User is editing internship
-            try {
-                $faculty = new FacultySupervisor($_REQUEST['supervisor_id']);
-            } catch (Exception $e) {
-                // Rollback and re-throw the exception so that admins gets an email
-                PHPWS_DB::rollback();
-                throw $e;
-            }
-        }
-
-        $faculty->first_name = $_REQUEST['supervisor_first_name'];
-        $faculty->last_name = $_REQUEST['supervisor_last_name'];
-        $faculty->email = $_REQUEST['supervisor_email'];
-        $faculty->phone = $_REQUEST['supervisor_phone'];
-        $faculty->department_id = $_REQUEST['department'];
-
-        try {
-            $facultyId = $faculty->save();
-        } catch (Exception $e) {
-            // Rollback and re-throw the exception so that admins gets an email
-            PHPWS_DB::rollback();
-            throw $e;
-        }
-
-        // Create/Save internship.
+        /**********************************
+         * Create and/or save the Internship
+         */
         if (isset($_REQUEST['internship_id']) && $_REQUEST['internship_id'] != '') {
             // User is editing internship
             try {
@@ -191,23 +154,19 @@ class SaveInternship {
 
         $i->term = $_REQUEST['term'];
         $i->agency_id = $agencyId;
-        $i->faculty_supervisor_id = $facultyId;
+        $i->faculty_banner_id = $_REQUEST['faculty_banner_id'] > 0 ? $_REQUEST['faculty_banner_id'] : null;
         $i->department_id = $_REQUEST['department'];
         $i->start_date = !empty($_REQUEST['start_date']) ? strtotime($_REQUEST['start_date']) : 0;
         $i->end_date = !empty($_REQUEST['end_date']) ? strtotime($_REQUEST['end_date']) : 0;
         $credits = (int) $_REQUEST['credits'];
-        $i->credits = $credits ? $credits : NULL;
+        $i->credits = $credits ? $credits : null;
         $avg_hours_week = (int) $_REQUEST['avg_hours_week'];
-        $i->avg_hours_week = $avg_hours_week ? $avg_hours_week : NULL;
+        $i->avg_hours_week = $avg_hours_week ? $avg_hours_week : null;
         $i->paid = $_REQUEST['payment'] == 'paid';
         $i->stipend = isset($_REQUEST['stipend']) && $i->paid;
         $i->unpaid = $_REQUEST['payment'] == 'unpaid';
         $i->pay_rate = $_REQUEST['pay_rate'];
 
-        //$i->internship = isset($_REQUEST['internship_default_type']);
-        //$i->student_teaching = isset($_REQUEST['student_teaching_type']);
-        //$i->clinical_practica = isset($_REQUEST['clinical_practica_type']);
-       
         // Internship experience type
         if(isset($_REQUEST['experience_type'])){
             $i->setExperienceType($_REQUEST['experience_type']);

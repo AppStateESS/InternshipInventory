@@ -87,14 +87,14 @@
       <table class="sub-form">
         <tr>
           <td>
-          Current Status: <strong>{WORKFLOW_STATE}</strong>
+            Current Status: <strong>{WORKFLOW_STATE}</strong>
             <div class="status-box-content">
-          <fieldset>
-            <legend>Action</legend>
-            <!-- BEGIN workflow_action_repeat -->
-            {WORKFLOW_ACTION}{WORKFLOW_ACTION_LABEL}<br />
-            <!-- END workflow_action_repeat -->
-          </fieldset>
+              <fieldset>
+                <legend>Action</legend>
+                <!-- BEGIN workflow_action_repeat -->
+                {WORKFLOW_ACTION}{WORKFLOW_ACTION_LABEL}<br />
+                <!-- END workflow_action_repeat -->
+              </fieldset>
             </div>
             {OIED_CERTIFIED}{OIED_CERTIFIED_LABEL}
           </td>
@@ -105,27 +105,37 @@
       <span class="info-header">Faculty</span>
       <table class="sub-form" id="faculty-info">
         <tr>
-          <td>{SUPERVISOR_FIRST_NAME_LABEL}</td>
-          <td>{SUPERVISOR_FIRST_NAME}</td>
-        </tr>
-        <tr>
-          <td>{SUPERVISOR_LAST_NAME_LABEL}</td>
-          <td>{SUPERVISOR_LAST_NAME}</td>
-        </tr>
-        <tr>
-          <td>{SUPERVISOR_EMAIL_LABEL}</td>
-          <td>{SUPERVISOR_EMAIL}@appstate.edu</td>
-        </tr>
-        <tr>
-          <td>{SUPERVISOR_PHONE_LABEL}</td>
-          <td>{SUPERVISOR_PHONE}</td>
-        </tr>
-        <tr>
-          <td colspan=2>{DEPARTMENT_LABEL}<span class="required-input">*</span><br/ > {DEPARTMENT}</td>
+          <td colspan=2>
+            <div id="faculty_selector">
+              <div>
+                {DEPARTMENT_LABEL}
+                <span class="required-input">*</span><br /> {DEPARTMENT}
+              </div>
+              <div style="margin-top:1em;">
+                {FACULTY_LABEL}<br />
+                {FACULTY}
+              </div>
+            </div>
+            <div id="faculty_details" style="margin-top:1em;">
+              <div id="faculty_change" style="float:right;"><a id="faculty-change" style="cursor:pointer">change</a></div>
+              <div id="faculty_name" style="font-size:1.5em;"></div>
+              <div id="faculty_email"  style="margin-top:1em;"></div>
+              <div style="float:right;margin-right:3em;margin-top:1em;">
+                Fax: <span id="faculty_fax" style="margin-top:1em;"></span>
+              </div>
+              <div style="margin-top:1em;">
+                Phone: <span id="faculty_phone" style="margin-top:1em;"></span><br />
+              </div>
+              <div  style="margin-top:1em;">
+                Address: <div id="faculty_address"></div>
+              </div>
+            </div>
+          </td>
         </tr>
       </table>
-      </td>
-    <!-- End faculty info -->
+      <!-- End faculty info -->
+      
+    </td>
   </tr>
 
   <tr>
