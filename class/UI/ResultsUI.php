@@ -189,7 +189,7 @@ class ResultsUI implements UI
             // Major
             if($level == 'ugrad' && isset($ugradMajor) && $ugradMajor != -1){
                 // Undergrad major
-                $pager->addWhere('ugrad_major', $major);
+                $pager->addWhere('ugrad_major', $ugradMajor);
             }else if($level == 'grad' && isset($gradProg) && $gradProg != -1){
                 // Graduate program
                 $pager->addWhere('grad_prog', $gradProg);
