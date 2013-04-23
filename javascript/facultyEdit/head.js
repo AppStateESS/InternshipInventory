@@ -1,35 +1,44 @@
+<script type="text/template" id="faculty-template">
+    <li>
+        <%= first_name %> <%= last_name %> - <%= banner_id %>
+    </li>
+</script>
+
+<script type="text/javascript" src="{source_http}mod/intern/javascript/facultyEdit/faculty.js"></script>
 <script type="text/javascript">
     $(document).ready(function(){
-        $("#facultyEdit_department_drop").bind('change', handleDepartmentChange)
+        $("#facultyEdit_department_drop").bind('change', handleDepartmentChange);
+        
+        // Setup the new faculty member dialog
+        $("#new-faculty-dialog").dialog({
+        	title: 'Add a Faculty Member',
+        	autoOpen: false,
+        	modal: true,
+        	buttons: [
+        	          {text: "Add",
+        	        	  click: function(){
+        	        		  alert('ohh hai');
+        	        	  }
+        	          },
+        	          {text: "Cancel",
+        	        	  click: function(){
+        	        		  $(this).dialog('close');
+        	        	  }
+        	          }
+        	          ]
+        });
+        
+        $("#add-button").bind('click', function(){
+        	$("#new-faculty-dialog").dialog('open');
+        });
     });
     
+    var crap = new FacultyListView();
+    
     function handleDepartmentChange(event)
-    {
-    	// Make the request for the list of faculty members for the selected department
-    	$.ajax({
-    		success: handleFacultyResponse,
-    		error: handleFacultyReponseError,
-    		data: {module: 'intern',
-    			   action: 'getFacultyListForDept',
-    			   department: $("#facultyEdit_department_drop").val()
-    			   },
-            dataType: 'json',
-    	    url: 'index.php'
-    	});
+    {	
+    	crap.el = $("#facultyList");
+    	crap.collection.department = $("#facultyEdit_department_drop").val();
+    	crap.collection.fetch();
     }
-    
-    function handleFacultyResponse(data, textStatus, jqXHR)
-    {
-    	console.log(data);
-    	
-    	$("#facultyList").html(''); //TODO load the page content via ajax
-    }
-    
-    // Handle an AJAX error when getting faculty members for a department
-    function handleFacultyReponseError(jqXHR, textStatus, errorThrown)
-    {
-    	console.log("Error loading facuty list. Please contact ESS.");
-    	console.log(textStats);
-    }
-    
 </script>

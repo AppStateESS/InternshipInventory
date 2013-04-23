@@ -1,0 +1,2 @@
+<script type="text/javascript" src="{source_http}mod/intern/javascript/backbone/underscore-min.js"></script>
+<script type="text/javascript" src="{source_http}mod/intern/javascript/backbone/backbone-min.js"></script>

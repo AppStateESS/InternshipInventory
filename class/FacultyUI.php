@@ -34,13 +34,33 @@ class FacultyUI implements UI
 		$departments = Department::getDepartmentsAssocForUsername(Current_User::getUsername());
 		
 		javascript('jquery');
+		javascript('jquery_ui');
+		javascriptMod('intern', 'backbone');
 		javascriptMod('intern', 'facultyEdit');
 		
 		$tpl = array();
 		
 		$form = new PHPWS_Form('facultyEdit');
 		
+		
+		// Faculty drop down
 		$form->addDropBox('department_drop', $departments);
+		
+		
+		// New facult dialog fields
+		$form->addText('bannerId');
+		$form->addText('username');
+		$form->addText('firstName');
+		$form->addText('lastName');
+		
+		$form->addText('phone');
+		$form->addText('fax');
+		
+		$form->addText('streetAddress1');
+		$form->addText('streetAddress2');
+		$form->addText('city');
+		$form->addText('state');
+		$form->addText('zip');
 		
 		$form->mergeTemplate($tpl);
 		$tpl = $form->getTemplate();
