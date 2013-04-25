@@ -60,7 +60,6 @@
     </div>
 </script>
 
-<script type="text/javascript" src="{source_http}mod/intern/javascript/faculty/faculty.js"></script>
 <script type="text/javascript">
 $(function () {
     new FacultyManagementView();

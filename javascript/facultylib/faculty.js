@@ -226,5 +226,9 @@ $(function() {
         }
     });
 
+    var FacultyFormView = Backbone.View.extend({
+    });
+
     window.FacultyManagementView = FacultyManagementView;
+    window.FacultyFormView = FacultyFormView;
 });
