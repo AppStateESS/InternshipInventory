@@ -32,38 +32,22 @@ class FacultyUI implements UI
 		// Get the list of departments the current user has access to
 		PHPWS_Core::initModClass('intern', 'Department.php');
 		$departments = Department::getDepartmentsAssocForUsername(Current_User::getUsername());
+
+        $renderedDepts = '';
+        foreach($departments as $key => $val) {
+            $renderedDepts .= PHPWS_Template::process(
+                array('DEPT'=>$val,'ID'=>$key),
+                'intern',
+                'facultySelectOption.tpl');
+        }
 		
 		javascript('jquery');
 		javascript('jquery_ui');
 		javascriptMod('intern', 'backbone');
-		javascriptMod('intern', 'facultyEdit');
-		
+
 		$tpl = array();
-		
-		$form = new PHPWS_Form('facultyEdit');
-		
-		
-		// Faculty drop down
-		$form->addDropBox('department_drop', $departments);
-		
-		
-		// New facult dialog fields
-		$form->addText('bannerId');
-		$form->addText('username');
-		$form->addText('firstName');
-		$form->addText('lastName');
-		
-		$form->addText('phone');
-		$form->addText('fax');
-		
-		$form->addText('streetAddress1');
-		$form->addText('streetAddress2');
-		$form->addText('city');
-		$form->addText('state');
-		$form->addText('zip');
-		
-		$form->mergeTemplate($tpl);
-		$tpl = $form->getTemplate();
+        $tpl['FACULTY_EDIT'] =
+            javascriptMod('intern', 'facultyEdit', array('DEPTS'=>$renderedDepts));
 		
 		return PHPWS_Template::process($tpl, 'intern', 'editFaculty.tpl');
 	}

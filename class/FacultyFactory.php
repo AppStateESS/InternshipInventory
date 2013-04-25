@@ -38,6 +38,11 @@ class FacultyFactory {
 	    $sql = "SELECT intern_faculty.* FROM intern_faculty JOIN intern_faculty_department ON intern_faculty.banner_id = intern_faculty_department.banner_id WHERE intern_faculty_department.department_id = {$department->getId()}";
 	            
 	    $result = PHPWS_DB::getAll($sql);
+
+        foreach($result as &$fac) {
+            $fac['id'] = $fac['banner_id'];
+            unset($fac['banner_id']);
+        }
 	    
 	    /*
 	    $deptFaculty = array();

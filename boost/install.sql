@@ -247,8 +247,8 @@ CREATE TABLE intern_internship (
        term INT NOT NULL REFERENCES intern_term(term),
        
        agency_id INT NOT NULL REFERENCES intern_agency(id),
-       faculty_supervisor_id INT NOT NULL REFERENCES intern_faculty_supervisor(id),
-       faculty_banner_id character varying REFERENCES intern_faculty(banner_id);
+       faculty_supervisor_id INT NOT NULL,
+       faculty_banner_id character varying REFERENCES intern_faculty(banner_id),
        department_id INT NOT NULL,
        
        start_date INT NOT NULL default 0,
@@ -557,7 +557,6 @@ SELECT SETVAL('intern_grad_prog_seq', MAX(id)) FROM intern_grad_prog;
 
 CREATE SEQUENCE intern_student_seq;
 CREATE SEQUENCE intern_agency_seq;
-CREATE SEQUENCE intern_faculty_supervisor_seq;
 CREATE SEQUENCE intern_term_seq;
 CREATE SEQUENCE intern_internship_seq;
 CREATE SEQUENCE intern_document_seq;
