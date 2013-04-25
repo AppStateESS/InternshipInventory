@@ -18,9 +18,7 @@ class GetFacultyById {
     {
         PHPWS_Core::initModClass('intern', 'FacultyFactory.php');
         
-        $postarray = json_decode(file_get_contents('php://input'), true);
-        
-        $id = $postarray['id'];
+        $id = $_GET['id'];
         
         if(!isset($id) || $id == '') {
             throw new InvalidArgumentException('Missing faculty ID.');
