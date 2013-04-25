@@ -1,5 +1,7 @@
 <?php
 
+PHPWS_Core::initModClass('intern', 'DbStorable.php');
+
 /**
  * Faculty
  * 

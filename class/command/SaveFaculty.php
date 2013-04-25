@@ -15,6 +15,8 @@ class SaveFaculty {
     
     public function execute()
     {
+        PHPWS_Core::initModClass('intern', 'Faculty.php');
+        
         $postarray = json_decode(file_get_contents('php://input'), true);
         
         $faculty = new FacultyDB();
