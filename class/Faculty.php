@@ -9,11 +9,9 @@
  * @package Hms
  */
 
-class Faculty {
+class Faculty implements DbStorable {
 	
 	private $id;
-	
-	private $bannerId;
 	private $username;
 	
 	private $firstName;
@@ -31,11 +29,9 @@ class Faculty {
 	/**
 	 * Constructor
 	 */
-	public function __construct($bannerId, $username, $firstName, $lastName, $phone, $fax, $streetAddress1, $streetAddress2, $city, $state, $zip)
+	public function __construct($id, $username, $firstName, $lastName, $phone, $fax, $streetAddress1, $streetAddress2, $city, $state, $zip)
 	{
-		$this->id = null;
-		
-		$this->setBannerId($bannerId);
+		$this->setId($id);
 		$this->setUsername($username);
 		
 		$this->setFirstName($firstName);
@@ -50,6 +46,14 @@ class Faculty {
 		$this->setState($state);
 		$this->setZip($zip);
 	}
+	
+	/**
+     * Returns the database table name for this class.
+     * @see DbStorable::getTableName()
+     */
+    public static function getTableName(){
+        return 'intern_faculty';
+    }
 	
 	/**
 	 * Returns an array of columns to be used in a CSV export.
@@ -97,25 +101,6 @@ class Faculty {
 	public function setId($id)
 	{
 		$this->id = $id;
-	}
-
-	/**
-	 * Returns the faculty member's Banner Id number.
-	 * @return integer $bannerId
-	 */
-	public function getBannerId()
-	{
-		return $this->bannerId;
-	}
-	
-	/**
-	 * Sets the facult member's Banner Id number.
-	 * Should be nine digits, beginning with "900"
-	 * @param integer $banner
-	 */
-	public function setBannerId($banner)
-	{
-		$this->bannerId = $banner;
 	}
 	
 	/**
