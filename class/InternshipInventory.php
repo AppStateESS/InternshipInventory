@@ -291,6 +291,11 @@ class InternshipInventory {
                 $ctrl = new GetFacultyListForDept();
                 $ctrl->execute();
                 break;
+            case 'getFacultyById':
+                PHPWS_Core::initModClass('intern', 'command/GetFacultyById.php');
+                $ctrl = new GetFacultyById();
+                $ctrl->execute();
+                break;
             default:
                 PHPWS_Core::initModClass('intern', 'UI/InternMenu.php');
                 $menu = new InternMenu();

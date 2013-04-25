@@ -1,6 +1,5 @@
 create table intern_faculty (
     id              integer NOT NULL,
-    banner_id       character varying NOT NULL,
     username        character varying NOT NULL,
     first_name      character varying NOT NULL,
     last_name       character varying NOT NULL,
@@ -14,14 +13,12 @@ create table intern_faculty (
     PRIMARY KEY(id)
 );
 
-create unique index intern_faculty_banner_id_idx ON intern_faculty(banner_id);
-
 create table intern_faculty_department (
-    banner_id       character varying NOT NULL REFERENCES intern_faculty(banner_id),
+    faculty_id      integer NOT NULL REFERENCES intern_faculty(id),
     department_id   integer NOT NULL REFERENCES intern_department(id)
 );
 
-alter table intern_internship add column faculty_banner_id character varying REFERENCES intern_faculty(banner_id);
+alter table intern_internship add column faculty_id integer REFERENCES intern_faculty(id);
 
 -- TODO: Drop faculty_supervisor_id column from intern_internship table
 -- TODO: Drop intern_faculty_supervisor table (after converting data over to above table)
