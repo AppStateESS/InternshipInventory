@@ -1,0 +1,4 @@
+DO NOT USE THIS DIRECTLY WITH javascriptMod().  It won't work.
+
+Instead, reference it from your Faculty controllers, like facultyEdit or
+facultySelect.

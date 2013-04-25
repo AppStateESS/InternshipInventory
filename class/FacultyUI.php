@@ -41,10 +41,6 @@ class FacultyUI implements UI
                 'facultySelectOption.tpl');
         }
 		
-		javascript('jquery');
-		javascript('jquery_ui');
-		javascriptMod('intern', 'backbone');
-
 		$tpl = array();
         $tpl['FACULTY_EDIT'] =
             javascriptMod('intern', 'facultyEdit', array('DEPTS'=>$renderedDepts));

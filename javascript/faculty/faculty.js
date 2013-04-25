@@ -22,7 +22,7 @@ $(function() {
         url: function() {
             return 'index.php?module=intern&action=getFacultyListForDept&department=' + this.department;
         },
-        initialize: function(options) {
+        initialize: function(models, options) {
             if(!options.department) {
                 throw 'Please pass a department in options to new FacultyCollection';
             }
@@ -51,6 +51,7 @@ $(function() {
     });
 
     var FacultyCollectionView = Backbone.View.extend({
+        el: '<ul>',
         initialize: function(options) {
             this.collection = options.collection;
 
@@ -59,14 +60,15 @@ $(function() {
             this.listenTo(this.collection, 'all', this.render);
         },
         render: function() {
-            this.$el.empty();
+            this.addAll();
+            return this;
         },
         addOne: function(faculty) {
             var view = new FacultyView({model: faculty});
-
-            this.el.append(view.render().el);
+            this.$el.append(view.render().el);
         },
         addAll: function() {
+            this.$el.empty();
             this.collection.each(this.addOne, this);
         }
     });
@@ -82,17 +84,19 @@ $(function() {
         render: function() {
             var me = this;
 
+            // Title changes depending on how new the model is
             var title = 'Add a Faculty Member';
             if(this.model.get('id')) {
                 title = 'Edit a Faculty Member';
-            } else {
-                $('.show-only-new', this.$el).hide();
             }
 
+            // Render template and open dialog
             this.$el.html(this.template(this.model.toJSON())).dialog({
                 title: title,
                 autoOpen: true,
                 modal: true,
+                width: 500,
+                height: 600,
                 buttons: [
                     {
                         text: 'Save',
@@ -108,6 +112,25 @@ $(function() {
                     }]
             });
 
+            // Refer to DOM elements that will be used later
+            this.$id = $('#faculty-edit-id', this.$el);
+            this.$manualentry = $('.manual-entry', this.$el);
+            // Same and hide by default
+            this.$editmoredata = $('.edit-more-data', this.$el).hide();
+            this.$promptmoredata = $('.prompt-more-data', this.$el).hide();
+            this.$loadingmoredata = $('.loading-more-data', this.$el).hide();
+
+            // If we get to the manual entry button, it should show elements
+            this.$manualentry.bind('click', function (e) { me.manualEntry.call(me, e); });
+
+            if(this.model.get('id')) {
+                // Show "more data" if faculty exists already at this point
+                this.$editmoredata.show();
+            } else {
+                // Expect user to enter an id if this is truly new
+                this.$id.bind('keyup', function (e) { me.idKeypress.call(me, e); });
+            }
+
             return this;
         },
         add: function(e) {
@@ -122,13 +145,34 @@ $(function() {
         cleanup: function(e) {
             this.$el.dialog('destroy');
             this.$el.children().remove();
-        }
+        },
+        manualEntry: function(e) {
+            this.$promptmoredata.hide();
+            this.$editmoredata.show();
+        },
+        idKeypress: function(e) {
+            if(this.keyPressTimeout) {
+                clearTimeout(this.keyPressTimeout);
+            }
+
+            var me = this;
+            this.keyPressTimeout = setTimeout(function () {
+                me.$loadingmoredata.show();
+                // TODO: ajax
+                setTimeout(function() {
+                    me.$loadingmoredata.hide();
+                    me.$promptmoredata.show();
+                }, 1000);
+            }, 500);
+        },
     });
 
     var FacultyManagementView = Backbone.View.extend({
         initialize: function() {
             this.$department = $('#department');
             this.$newbutton = $('#faculty-new');
+            this.$listholder = $('#faculty-list');
+            this.$loading = $('.faculty-loading').hide();
 
             var me = this;
 
@@ -139,14 +183,13 @@ $(function() {
                 me.add.call(me, e);
             });
 
-            this.$newbutton.hide();;
+            this.$newbutton.hide();
         },
         render: function() {
             var me = this;
         },
         add: function(e) {
             var dialog = new FacultyEditView({model: new Faculty()});
-            console.log(new Faculty());
             dialog.render();
         },
         select: function(e) {
@@ -161,18 +204,27 @@ $(function() {
                 return;
             }
 
+            var me = this;
+
             this.$newbutton.show();
 
             delete this.collection;
 
-            this.collection = new FacultyCollection({department: this.$department.val()});
-
-            this.listView = new FacultyCollectionView({collection: this.collection});
-            this.listView.el = $('#faculty-list');
-
+            this.collection = new FacultyCollection([],{department: this.$department.val()});
             this.collection.fetch();
+            this.$loading.show();
+
+            var me = this;
+            this.collection.fetch({
+                success: function (collection, response, options) {
+                    me.$loading.hide();
+                    me.listView = new FacultyCollectionView({collection: collection});
+                    me.$listholder.html(me.listView.$el);
+                }
+            });
+
         }
     });
 
-    new FacultyManagementView();
+    window.FacultyManagementView = FacultyManagementView;
 });
