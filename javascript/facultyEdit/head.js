@@ -4,11 +4,8 @@
 
 <script type="text/template" id="faculty-edit-dialog-template">
     <div id="faculty-edit-dialog">
-    <% if(!id) { %>
-        <p>Please begin by entering a Banner ID.  If the faculty member exists within Internship Inventory, their data will be loaded automatically.</p>
-    <% } else {%>
-        <p>Note: Changes to this faculty member will be applied to all internships and departments in which the member is involved.</p>
-    <% } %>
+        <p class="faculty-edit-no-id">Please begin by entering a Banner ID.  If the faculty member exists within Internship Inventory, their data will be loaded automatically.</p>
+        <p class="faculty-edit-with-id">Note: Changes to this faculty member will be applied to all internships and departments in which the member is involved.</p>
         <table>
             <tr>
                 <th>Banner ID:</th>

@@ -1,5 +1,4 @@
 $(function() {
-
     var Faculty = Backbone.Model.extend({
         defaults: {
             id: null,
@@ -13,6 +12,9 @@ $(function() {
             city: null,
             state: null,
             zip: null
+        },
+        url: function() {
+            return 'index.php?module=intern&action=getFacultyById&id=' + this.get('id');
         }
     });
 
@@ -41,7 +43,7 @@ $(function() {
         render: function() {
             this.$el.html(this.template(this.model.toJSON()));
             var me = this;
-            $('.faculty-edit', this.$el).bind('click', function(e) { me.edit.call(me, e); });
+            this.$('.faculty-edit').bind('click', function(e) { me.edit.call(me, e); });
             return this;
         },
         edit: function(e) {
@@ -73,52 +75,69 @@ $(function() {
         }
     });
 
+    var BannerIDRegex = /^9\d{8}$/;
+
     var FacultyEditView = Backbone.View.extend({
+        el: '<div>',
         template: _.template($('#faculty-edit-dialog-template').html()),
         events: {
             'remove': 'cleanup'
         },
         initialize: function(options) {
             this.model = options.model;
+
+            this.listenTo(this.model, 'sync', this.render);
+
+            this.firstRender = true;
+
+            this.createNew = !!this.model.get('id');
         },
         render: function() {
             var me = this;
 
-            // Title changes depending on how new the model is
-            var title = 'Add a Faculty Member';
-            if(this.model.get('id')) {
-                title = 'Edit a Faculty Member';
+            if(this.firstRender) {
+                this.firstRender = false;
+
+                var title = this.createNew ? 'Add a Faculty Member' : 'Edit a Faculty Member';
+                this.$el.dialog({
+                    title: title,
+                    autoOpen: true,
+                    modal: true,
+                    width: 500,
+                    height: 600,
+                    buttons:
+                        [
+                            {
+                                text: 'Save',
+                                click: function(e) {
+                                    return me.save.call(me, e);
+                                }
+                            },
+                            {
+                                text: 'Cancel',
+                                click: function(e) {
+                                    return me.cancel.call(me, e);
+                                }
+                            }
+                        ]
+                });
             }
 
-            // Render template and open dialog
-            this.$el.html(this.template(this.model.toJSON())).dialog({
-                title: title,
-                autoOpen: true,
-                modal: true,
-                width: 500,
-                height: 600,
-                buttons: [
-                    {
-                        text: 'Save',
-                        click: function(e) {
-                            return me.add.call(me, e);
-                        }
-                    },
-                    {
-                        text: 'Cancel',
-                        click: function(e) {
-                            return me.cancel.call(me, e);
-                        }
-                    }]
-            });
+            this.$el.html(this.template(this.model.toJSON()));
+
+            if(this.createNew) {
+                $('.faculty-edit-id').hide();
+            } else {
+                $('.faculty-edit-no-id').hide();
+            }
 
             // Refer to DOM elements that will be used later
-            this.$id = $('#faculty-edit-id', this.$el);
-            this.$manualentry = $('.manual-entry', this.$el);
+            this.$id = this.$('#faculty-edit-id');
+            this.$manualentry = this.$('.manual-entry');
             // Same and hide by default
-            this.$editmoredata = $('.edit-more-data', this.$el).hide();
-            this.$promptmoredata = $('.prompt-more-data', this.$el).hide();
-            this.$loadingmoredata = $('.loading-more-data', this.$el).hide();
+            this.$editmoredata = this.$('.edit-more-data').hide();
+            this.$promptmoredata = this.$('.prompt-more-data').hide();
+            this.$loadingmoredata = this.$('.loading-more-data').hide();
 
             // If we get to the manual entry button, it should show elements
             this.$manualentry.bind('click', function (e) { me.manualEntry.call(me, e); });
@@ -133,18 +152,20 @@ $(function() {
 
             return this;
         },
-        add: function(e) {
-//            this.collection.add(this.model);
-//            this.collection.save();
+        cleanup: function(e) {
+            this.$el.dialog('destroy');
+            this.$el.children().remove();
+        },
+        save: function(e) {
+            console.log('SAVE');
+            console.log(this.model.id);
+//            this.model.save();
             // TODO: handle errors
+            // TODO: fire event
             this.remove();
         },
         cancel: function(e) {
             this.remove();
-        },
-        cleanup: function(e) {
-            this.$el.dialog('destroy');
-            this.$el.children().remove();
         },
         manualEntry: function(e) {
             this.$promptmoredata.hide();
@@ -157,12 +178,22 @@ $(function() {
 
             var me = this;
             this.keyPressTimeout = setTimeout(function () {
+                if(!BannerIDRegex.test(me.$id.val())) return;
+                
                 me.$loadingmoredata.show();
-                // TODO: ajax
-                setTimeout(function() {
-                    me.$loadingmoredata.hide();
-                    me.$promptmoredata.show();
-                }, 1000);
+
+                me.model.set('id', me.$id.val());
+
+                me.model.fetch({
+                    success: function (collection, response, options) {
+                    },
+                    error: function (collection, response, options) {
+                        me.$promptmoredata.show();
+                    },
+                    complete: function () {
+                        me.$loadingmoredata.hide();
+                    }
+                });
             }, 500);
         },
     });
