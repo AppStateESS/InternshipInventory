@@ -47,13 +47,10 @@ class Faculty {
 		$this->setZip($zip);
 	}
 	
-	/**
-     * Returns the database table name for this class.
-     * @see DbStorable::getTableName()
-     */
-    public static function getTableName(){
-        return 'intern_faculty';
-    }
+	public function getJson()
+	{
+	    return json_encode($this);
+	}
 	
 	/**
 	 * Returns an array of columns to be used in a CSV export.

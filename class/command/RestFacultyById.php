@@ -57,7 +57,7 @@ class RestFacultyById {
         
         $postarray = json_decode(file_get_contents('php://input'), true);
 
-        var_dump($postarray);
+        //var_dump($postarray);
         
         $faculty = new FacultyDB();
         
@@ -75,20 +75,48 @@ class RestFacultyById {
         $faculty->setState($postarray['state']);
         $faculty->setZip($postarray['zip']);
         
+
+        $vars = self::extractVars($faculty);
+        
         // Save the faculty object
         PHPWS_Core::initModClass('intern', 'DatabaseStorage.php');
         try {
-            var_dump(DatabaseStorage::save($faculty));
+            // TODO
+            
         }
         catch(Exception $e) {
             header('HTTP/1.1 500 Internal Server Error');
             exit;
         }
         
-        echo json_encode($faculty);
+        echo json_encode();
         
         // Exit, since this is called by JSON
         exit;
+    }
+    
+    public static function extractVars ($o)
+    {
+        $xary = (array) $o;
+        $xarynew = array ();
+        foreach ($xary as $k => $v)
+        {
+            if ($k[0] == "\0")
+            {
+                // private/protected members have null-delimited prefixes
+                // that need to be removed
+                $prefix_length = stripos ($k, "\0", 1) + 1;
+                $k = substr ($k, $prefix_length, strlen ($k) - $prefix_length);
+            }
+    
+            // recurse through any objects
+            if (is_object ($v))
+            {
+                $v = object_extractor::get_vars ($v);
+            }
+            $xarynew[$k] = $v;
+        }
+        return $xarynew;
     }
 }
 
