@@ -1,7 +1,5 @@
 <?php
 
-PHPWS_Core::initModClass('intern', 'DbStorable.php');
-
 /**
  * Faculty
  * 
@@ -11,7 +9,7 @@ PHPWS_Core::initModClass('intern', 'DbStorable.php');
  * @package Hms
  */
 
-class Faculty implements DbStorable {
+class Faculty {
 	
 	private $id;
 	private $username;
