@@ -1,5 +1,7 @@
 <?php
 
+PHPWS_Core::initModClass('intern', 'DbStorable.php');
+
 /**
  * Faculty
  * 
@@ -9,7 +11,7 @@
  * @package Hms
  */
 
-class Faculty {
+class Faculty implements DbStorable {
 	
 	private $id;
 	private $username;
@@ -47,10 +49,37 @@ class Faculty {
 		$this->setZip($zip);
 	}
 	
-	public function getJson()
+	public function extractVars()
 	{
-	    return json_encode($this);
+	    $xary = (array) $this;
+	    $xarynew = array ();
+	    foreach ($xary as $k => $v)
+	    {
+	        if ($k[0] == "\0")
+	        {
+	            // private/protected members have null-delimited prefixes
+	            // that need to be removed
+	            $prefix_length = stripos ($k, "\0", 1) + 1;
+	            $k = substr ($k, $prefix_length, strlen ($k) - $prefix_length);
+	        }
+	
+	        // recurse through any objects
+	        if (is_object ($v))
+	        {
+	            $v = object_extractor::get_vars ($v);
+	        }
+	        $xarynew[$k] = $v;
+	    }
+	    return $xarynew;
 	}
+	
+	/**
+     * Returns the database table name for this class.
+     * @see DbStorable::getTableName()
+     */
+    public static function getTableName(){
+        return 'intern_faculty';
+    }
 	
 	/**
 	 * Returns an array of columns to be used in a CSV export.

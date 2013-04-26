@@ -55,4 +55,22 @@ class DatabaseStorage {
         
         return $result;
     }
+    
+    public static function saveObject(DbStorable $o)
+    {
+        $vars = $o->extractVars();
+        $tableName = $o::getTableName();
+
+        // Check if the key already exists
+        $query = "SELECT * FROM $tableName WHERE id = {$vars['id']}";
+        $result = PHPWS_DB::getAll($query);
+        
+        if (count($result) > 0) {
+            $exists = true;
+        } else {
+            $exists = false;
+        }
+
+        
+    }
 }
