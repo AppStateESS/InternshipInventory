@@ -27,9 +27,7 @@ class FacultyFactory {
 
 	    */
 	    
-	    return json_encode($row);
-	    
-	    return $faculty;
+	    return $row;
 	}
 	
 	/**
