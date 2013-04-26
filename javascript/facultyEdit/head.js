@@ -4,12 +4,12 @@
 
 <script type="text/template" id="faculty-edit-dialog-template">
     <div id="faculty-edit-dialog">
-        <p class="faculty-edit-no-id">Please begin by entering a Banner ID.  If the faculty member exists within Internship Inventory, their data will be loaded automatically.</p>
-        <p class="faculty-edit-with-id">Note: Changes to this faculty member will be applied to all internships and departments in which the member is involved.</p>
+        <p class="faculty-show-new">Please begin by entering a Banner ID.  If the faculty member exists within Internship Inventory, their data will be loaded automatically.</p>
+        <p class="faculty-show-edit">Note: Changes to this faculty member will be applied to all internships and departments in which the member is involved.</p>
         <table>
             <tr>
                 <th>Banner ID:</th>
-                <td><input type="text" id="faculty-edit-id" value="<%=id%>"></td>
+                <td><input type="text" id="faculty-edit-id" class="faculty-show-new" value="<%=id%>"><span class="faculty-show-edit"><%=id%></span></td>
             </tr>
             <tr class="edit-more-data">
                 <th>Username:</th>

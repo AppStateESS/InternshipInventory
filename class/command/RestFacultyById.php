@@ -1,12 +1,13 @@
 <?php
 
 /**
- * Controller for saving a Faculty object.
+ * Controller class for manipulating a Faculty member's data through
+ * proper REST
  * 
  * @author jbooker
  * @package intern
  */
-class SaveFaculty {
+class RestFacultyById {
     
     public function __construct()
     {
@@ -15,9 +16,48 @@ class SaveFaculty {
     
     public function execute()
     {
+        switch($_SERVER['REQUEST_METHOD']) {
+        case 'GET':
+            $this->get();
+            exit;
+        case 'PUT':
+            $this->put();
+            exit;
+        default:
+            header('HTTP/1.1 405 Method Not Allowed');
+            exit;
+        }
+    }
+
+    public function get()
+    {
+        PHPWS_Core::initModClass('intern', 'FacultyFactory.php');
+        
+        $id = $_GET['id'];
+        
+        if(!isset($id) || $id == '') {
+            throw new InvalidArgumentException('Missing faculty ID.');
+        }
+        
+        $faculty = FacultyFactory::getFacultyById($id);
+
+        if(empty($faculty)) {
+            header('HTTP/1.1 404 Not Found');
+            exit;
+        }
+        
+        echo json_encode($faculty);
+        
+        exit;
+    }
+
+    public function put()
+    {
         PHPWS_Core::initModClass('intern', 'Faculty.php');
         
         $postarray = json_decode(file_get_contents('php://input'), true);
+
+        var_dump($postarray);
         
         $faculty = new FacultyDB();
         
@@ -37,7 +77,13 @@ class SaveFaculty {
         
         // Save the faculty object
         PHPWS_Core::initModClass('intern', 'DatabaseStorage.php');
-        DatabaseStorage::save($faculty);
+        try {
+            var_dump(DatabaseStorage::save($faculty));
+        }
+        catch(Exception $e) {
+            header('HTTP/1.1 500 Internal Server Error');
+            exit;
+        }
         
         echo json_encode($faculty);
         
@@ -45,3 +91,5 @@ class SaveFaculty {
         exit;
     }
 }
+
+?>

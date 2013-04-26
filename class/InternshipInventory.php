@@ -291,14 +291,9 @@ class InternshipInventory {
                 $ctrl = new GetFacultyListForDept();
                 $ctrl->execute();
                 break;
-            case 'getFacultyById':
-                PHPWS_Core::initModClass('intern', 'command/GetFacultyById.php');
-                $ctrl = new GetFacultyById();
-                $ctrl->execute();
-                break;
-            case 'saveFaculty':
-                PHPWS_Core::initModClass('intern', 'command/SaveFaculty.php');
-                $ctrl = new SaveFaculty();
+            case 'restFacultyById':
+                PHPWS_Core::initModClass('intern', 'command/RestFacultyById.php');
+                $ctrl = new RestFacultyById();
                 $ctrl->execute();
                 break;
             default:

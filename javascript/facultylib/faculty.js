@@ -14,7 +14,7 @@ $(function() {
             zip: null
         },
         url: function() {
-            return 'index.php?module=intern&action=getFacultyById&id=' + this.get('id');
+            return 'index.php?module=intern&action=restFacultyById&id=' + this.get('id');
         }
     });
 
@@ -85,12 +85,9 @@ $(function() {
         },
         initialize: function(options) {
             this.model = options.model;
-
             this.listenTo(this.model, 'sync', this.render);
-
             this.firstRender = true;
-
-            this.createNew = !!this.model.get('id');
+            this.createNew = !this.model.get('id');
         },
         render: function() {
             var me = this;
@@ -125,12 +122,6 @@ $(function() {
 
             this.$el.html(this.template(this.model.toJSON()));
 
-            if(this.createNew) {
-                $('.faculty-edit-id').hide();
-            } else {
-                $('.faculty-edit-no-id').hide();
-            }
-
             // Refer to DOM elements that will be used later
             this.$id = this.$('#faculty-edit-id');
             this.$manualentry = this.$('.manual-entry');
@@ -138,6 +129,8 @@ $(function() {
             this.$editmoredata = this.$('.edit-more-data').hide();
             this.$promptmoredata = this.$('.prompt-more-data').hide();
             this.$loadingmoredata = this.$('.loading-more-data').hide();
+            this.$ifnew = this.$('.faculty-show-new').hide();
+            this.$ifedit = this.$('.faculty-show-edit').hide();
 
             // If we get to the manual entry button, it should show elements
             this.$manualentry.bind('click', function (e) { me.manualEntry.call(me, e); });
@@ -150,6 +143,12 @@ $(function() {
                 this.$id.bind('keyup', function (e) { me.idKeypress.call(me, e); });
             }
 
+            if(this.createNew) {
+                this.$ifnew.show();
+            } else {
+                this.$ifedit.show();
+            }
+
             return this;
         },
         cleanup: function(e) {
@@ -157,9 +156,7 @@ $(function() {
             this.$el.children().remove();
         },
         save: function(e) {
-            console.log('SAVE');
-            console.log(this.model.id);
-//            this.model.save();
+            this.model.save();
             // TODO: handle errors
             // TODO: fire event
             this.remove();
@@ -186,6 +183,7 @@ $(function() {
 
                 me.model.fetch({
                     success: function (collection, response, options) {
+                        me.createNew = false;
                     },
                     error: function (collection, response, options) {
                         me.$promptmoredata.show();
