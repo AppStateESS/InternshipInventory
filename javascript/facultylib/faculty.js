@@ -156,6 +156,17 @@ $(function() {
             this.$el.children().remove();
         },
         save: function(e) {
+            this.model.set('id', this.$('#faculty-edit-id').val());
+            this.model.set('username', this.$('#faculty-edit-username').val());
+            this.model.set('first_name', this.$('#faculty-edit-first_name').val());
+            this.model.set('last_name', this.$('#faculty-edit-last_name').val());
+            this.model.set('phone', this.$('#faculty-edit-phone').val());
+            this.model.set('fax', this.$('#faculty-edit-fax').val());
+            this.model.set('street_address1', this.$('#faculty-edit-street_address1').val());
+            this.model.set('street_address2', this.$('#faculty-edit-street_address2').val());
+            this.model.set('city', this.$('#faculty-edit-city').val());
+            this.model.set('state', this.$('#faculty-edit-state').val());
+            this.model.set('zip', this.$('#faculty-edit-zip').val());
             this.model.save();
             // TODO: handle errors
             // TODO: fire event

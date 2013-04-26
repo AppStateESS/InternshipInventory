@@ -210,10 +210,10 @@ function otherStuff()
         for (var i = 0; i < data.length; i++){
         	// If the banner ID matches what's in the hidden field, set the selected option in the drop down
         	selected = '';
-        	if($("#internship_faculty_banner_id").val() == data[i].banner_id){
+        	if($("#internship_faculty_banner_id").val() == data[i].id){
         		selected = 'selected="selected"';
         	}
-            listItems += "<option value='" + data[i].banner_id + "' " + selected + ">" + data[i].first_name + " " + data[i].last_name + "</option>";
+            listItems += "<option value='" + data[i].id + "' " + selected + ">" + data[i].first_name + " " + data[i].last_name + "</option>";
         }
         $("#internship_faculty").html(listItems);
         $("#internship_faculty").prop('disabled', false);
@@ -261,7 +261,7 @@ function otherStuff()
     	//TODO What if there isn't a match? We still need to be able to find/show that faculty member.
     	var faculty = null;
     	for(var i = 0; i < facultyData.length; i++){
-    		if(facultyData[i].banner_id == bannerId){
+    		if(facultyData[i].id == bannerId){
     			faculty = facultyData[i];
     			break;
     		}
