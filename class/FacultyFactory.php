@@ -52,7 +52,6 @@ class FacultyFactory {
 	        $faculty = new FacultyDB();
 	        
 	        $faculty->setId($row['id']);
-	        $faculty->setBannerId($row['banner_id']);
 	        $faculty->setUsername($row['username']);
 	        $faculty->setFirstName($row['first_name']);
 	        $faculty->setLastName($row['last_name']);
