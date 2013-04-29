@@ -60,7 +60,7 @@ class DatabaseStorage {
     {
         $vars = $o->extractVars();
         $tableName = $o::getTableName();
-
+        
         // Check if the key already exists
         $query = "SELECT * FROM $tableName WHERE id = {$vars['id']}";
         $result = PHPWS_DB::getAll($query);
@@ -81,7 +81,11 @@ class DatabaseStorage {
             $db->addWhere('id', $vars['id']);
             $result = $db->update();
         } else {
-            $result = $db->insert();
+            $result = $db->insert(false);
+        }
+
+        if(PHPWS_Error::logIfError($result)) {
+            throw new Exception($result->toString());
         }
     }
     

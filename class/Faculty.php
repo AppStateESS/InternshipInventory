@@ -101,7 +101,7 @@ class Faculty implements DbStorable {
 	 */
 	public function getFullName()
 	{
-		return $this->getFirtName() . ' ' . $this->getLastName();
+		return $this->getFirstName() . ' ' . $this->getLastName();
 	}
 	
 	/***************************

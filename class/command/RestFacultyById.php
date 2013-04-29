@@ -74,7 +74,7 @@ class RestFacultyById {
         $faculty->setCity($postarray['city']);
         $faculty->setState($postarray['state']);
         $faculty->setZip($postarray['zip']);
-        
+
         // Save the faculty object
         PHPWS_Core::initModClass('intern', 'DatabaseStorage.php');
         
