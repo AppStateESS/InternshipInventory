@@ -85,9 +85,9 @@ class RestFacultyById {
             header('HTTP/1.1 500 Internal Server Error');
             exit;
         }
-        /*
+        
         echo json_encode($faculty->extractVars());
-  */      
+        
         // Exit, since this is called by JSON
         exit;
     }

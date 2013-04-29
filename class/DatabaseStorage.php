@@ -71,6 +71,19 @@ class DatabaseStorage {
             $exists = false;
         }
 
+        $db = new PHPWS_DB($o->getTableName());
         
+        foreach ($vars as $key => $value) {
+            $db->addValue($key, $value);
+        }
+        
+        if ($exists) {
+            $db->addWhere('id', $vars['id']);
+            $result = $db->update();
+        } else {
+            $result = $db->insert();
+        }
     }
+    
+    
 }

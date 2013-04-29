@@ -51,26 +51,23 @@ class Faculty implements DbStorable {
 	
 	public function extractVars()
 	{
-	    $xary = (array) $this;
-	    $xarynew = array ();
-	    foreach ($xary as $k => $v)
-	    {
-	        if ($k[0] == "\0")
-	        {
-	            // private/protected members have null-delimited prefixes
-	            // that need to be removed
-	            $prefix_length = stripos ($k, "\0", 1) + 1;
-	            $k = substr ($k, $prefix_length, strlen ($k) - $prefix_length);
-	        }
-	
-	        // recurse through any objects
-	        if (is_object ($v))
-	        {
-	            $v = object_extractor::get_vars ($v);
-	        }
-	        $xarynew[$k] = $v;
-	    }
-	    return $xarynew;
+	    $vars = array();
+	    $vars['id']                 = $this->getId();
+	    $vars['username']           = $this->getUsername();
+	    
+	    $vars['first_name']         = $this->getFirstName();
+	    $vars['last_name']          = $this->getLastName();
+	    
+	    $vars['phone']              = $this->getPhone();
+	    $vars['fax']                = $this->getFax();
+	    
+	    $vars['street_address1']    = $this->getStreetAddress1();
+	    $vars['street_address2']    = $this->getStreetAddress2();
+	    $vars['city']               = $this->getCity();
+	    $vars['state']              = $this->getState();
+	    $vars['zip']                = $this->getZip();
+	    
+	    return $vars;
 	}
 	
 	/**
