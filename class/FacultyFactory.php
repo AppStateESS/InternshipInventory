@@ -37,33 +37,10 @@ class FacultyFactory {
 	 */
 	public static function getFacultyByDepartmentAssoc(Department $department)
 	{
-	    $sql = "SELECT intern_faculty.* FROM intern_faculty JOIN intern_faculty_department ON intern_faculty.id = intern_faculty_department.faculty_id WHERE intern_faculty_department.department_id = {$department->getId()}";
+	    $sql = "SELECT intern_faculty.* FROM intern_faculty JOIN intern_faculty_department ON intern_faculty.id = intern_faculty_department.faculty_id WHERE intern_faculty_department.department_id = {$department->getId()} ORDER BY last_name ASC";
 	            
 	    $result = PHPWS_DB::getAll($sql);
 
-	    /*
-	    $deptFaculty = array();
-	    
-	    // For each row in the results set, create an object
-	    foreach($result as $row)
-	    {
-	        $faculty = new FacultyDB();
-	        
-	        $faculty->setId($row['id']);
-	        $faculty->setUsername($row['username']);
-	        $faculty->setFirstName($row['first_name']);
-	        $faculty->setLastName($row['last_name']);
-	        $faculty->setPhone($row['phone']);
-	        $faculty->setFax($row['fax']);
-	        $faculty->setStreetAddress1($row['street_address1']);
-	        $faculty->setStreetAddress2($row['street_address2']);
-	        $faculty->setCity($row['city']);
-	        $faculty->setState($row['state']);
-	        $faculty->setZip($row['zip']);
-	        
-	        $deptFaculty[] = $faculty;
-	    }
-	    */
 	    return $result;
 	}
 }
