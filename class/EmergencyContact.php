@@ -39,8 +39,22 @@ class EmergencyContact implements DbStorable {
      * Returns the database table name for this class.
      * @see DbStorable::getTableName()
      */
-    public static function getTableName(){
+    public static function getTableName()
+    {
         return 'intern_emergency_contact';
+    }
+    
+    public function extractVars()
+    {
+        $vars = array();
+        
+        $vars['id']           = $this->getId();
+        $vars['intership_id'] = $this->getInternshipId();
+        $vars['name']         = $this->getName();
+        $vars['relation']     = $this->getRelation();
+        $vars['phone']        = $this->getPhone();
+        
+        return $vars;
     }
     
     public function getId()

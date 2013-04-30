@@ -311,6 +311,7 @@ input[type=radio]:disabled + label{
 	margin-left: 2px;
 	margin-right: 75px;
 	float:right;
+	font-size:1.75em;
 }
 
 .contact-delete-link:hover {

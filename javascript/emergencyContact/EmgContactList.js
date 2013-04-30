@@ -24,7 +24,7 @@
             newContact.html(name + ' &bull; ' + relation + ' &bull; ' + phone);
             
             var deleteLink = $('<span>');
-            deleteLink.html('X');
+            deleteLink.html("&times;");
             deleteLink.addClass('contact-delete-link');
             deleteLink.attr('style', 'opacity:0;');
             //deleteLink.hide();
