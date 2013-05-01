@@ -41,8 +41,9 @@ create table intern_faculty (
 );
 
 create table intern_faculty_department (
-    faculty_id       integer NOT NULL REFERENCES intern_faculty(id),
-    department_id   integer NOT NULL REFERENCES intern_department(id)
+    faculty_id      integer NOT NULL REFERENCES intern_faculty(id),
+    department_id   integer NOT NULL REFERENCES intern_department(id),
+    PRIMARY KEY (faculty_id, department_id)
 );
 
 CREATE TABLE intern_state (

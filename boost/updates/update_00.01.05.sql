@@ -15,7 +15,8 @@ create table intern_faculty (
 
 create table intern_faculty_department (
     faculty_id      integer NOT NULL REFERENCES intern_faculty(id),
-    department_id   integer NOT NULL REFERENCES intern_department(id)
+    department_id   integer NOT NULL REFERENCES intern_department(id),
+    PRIMARY KEY (faculty_id, department_id)
 );
 
 alter table intern_internship add column faculty_id integer REFERENCES intern_faculty(id);

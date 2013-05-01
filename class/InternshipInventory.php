@@ -11,12 +11,12 @@ define('STATE_EDIT', 'edit_states');
 class InternshipInventory {
 
     private $content;
-    
+
     public function __construct()
     {
 
     }
-    
+
     public function getContent()
     {
         return $this->content;
@@ -279,13 +279,13 @@ class InternshipInventory {
                 $ctrl->execute();
                 break;
             case 'edit_faculty':
-            	if (!Current_User::allow('intern', 'edit_faculty') && !Current_User::isDeity()) {
-            		throw new PermissionException("You don't have permission to edit faculty members.");
-            	}
-            	PHPWS_Core::initModClass('intern', 'FacultyUI.php');
-            	$facultyUI = new FacultyUI();
-            	$this->content = $facultyUI->display();
-            	break;
+                if (!Current_User::allow('intern', 'edit_faculty') && !Current_User::isDeity()) {
+                    throw new PermissionException("You don't have permission to edit faculty members.");
+                }
+                PHPWS_Core::initModClass('intern', 'FacultyUI.php');
+                $facultyUI = new FacultyUI();
+                $this->content = $facultyUI->display();
+                break;
             case 'getFacultyListForDept':
                 PHPWS_Core::initModClass('intern', 'command/GetFacultyListForDept.php');
                 $ctrl = new GetFacultyListForDept();
@@ -294,6 +294,11 @@ class InternshipInventory {
             case 'restFacultyById':
                 PHPWS_Core::initModClass('intern', 'command/RestFacultyById.php');
                 $ctrl = new RestFacultyById();
+                $ctrl->execute();
+                break;
+            case 'facultyDeptRest':
+                PHPWS_Core::initModClass('intern', 'command/FacultyDeptRest.php');
+                $ctrl = new FacultyDeptRest();
                 $ctrl->execute();
                 break;
             default:
