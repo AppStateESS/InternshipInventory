@@ -8,7 +8,7 @@ class Term extends Model
 {
     public $term;
 
-    public function getDb()
+    public static function getDb()
     {
         return new PHPWS_DB('intern_term');
     }

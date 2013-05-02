@@ -12,9 +12,6 @@ abstract class Model {
 
     public $id;
 
-    /** Get a PHPWS_DB Object. * */
-    abstract function getDb();
-
     /** Get an array that's ready to turn into CSV. * */
     abstract function getCSV();
 

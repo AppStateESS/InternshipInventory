@@ -9,9 +9,9 @@
 PHPWS_Core::initModClass('intern', 'UI/UI.php');
 class TopUI implements UI
 {
-    public function display(){}
+    public static function display(){}
    
-    public function plug($content, $notifications)
+    public static function plug($content, $notifications)
     {
         if(Current_User::isLogged()){
             /* Okay to show the menu */

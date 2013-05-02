@@ -20,7 +20,7 @@ class Department extends Editable
     /**
      * @Override Model::getDb
      */
-    public function getDb(){
+    public static function getDb(){
         return new PHPWS_DB('intern_department');
     }
 
