@@ -173,6 +173,7 @@ $(function() {
             if(this.model.get('id')) {
                 // Show "more data" if faculty exists already at this point
                 this.$editmoredata.show();
+                this.bindEnter();
             } else {
                 // Expect user to enter an id if this is truly new
                 this.$id.bind('keyup', function (e) { me.idKeypress.call(me, e); });
@@ -206,10 +207,11 @@ $(function() {
             this.model.save([], {
                 success: function (model, response, options) {
                     self.trigger('save', model);
+                    NQ.notify('success', 'Changes were saved');
                     self.remove();
                 },
                 error: function (model, xhr, options) {
-                    self.$el.prepend('<p style="color: #F00;">OH THE HUMANITY</p>');
+                    NQ.notify('error', 'A server error occurred attempting to save your changes.');
                 }
             });
         },
@@ -219,6 +221,15 @@ $(function() {
         manualEntry: function(e) {
             this.$promptmoredata.hide();
             this.$editmoredata.show();
+            this.bindEnter();
+        },
+        bindEnter: function() {
+            var self = this;
+            this.$el.keyup(function (e) {
+                if(e.keyCode == 13) {
+                    self.save(e);
+                }
+            });
         },
         idKeypress: function(e) {
             if(this.keyPressTimeout) {
