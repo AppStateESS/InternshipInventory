@@ -18,6 +18,16 @@ $(function() {
         }
     });
 
+    var FacultyDept = Backbone.Model.extend({
+        defaults: {
+            faculty_id: null,
+            department_id: null
+        },
+        url: function() {
+            return 'index.php?module=intern&action=facultyDeptRest';
+        }
+    });
+
     var FacultyCollection = Backbone.Collection.extend({
         model: Faculty,
         department: '0',
@@ -167,10 +177,16 @@ $(function() {
             this.model.set('city', this.$('#faculty-edit-city').val());
             this.model.set('state', this.$('#faculty-edit-state').val());
             this.model.set('zip', this.$('#faculty-edit-zip').val());
-            this.model.save();
-            // TODO: handle errors
-            // TODO: fire event
-            this.remove();
+            var self = this;
+            this.model.save([], {
+                success: function (model, response, options) {
+                    self.trigger('save', model);
+                    self.remove();
+                },
+                error: function (model, xhr, options) {
+                    self.$el.prepend('<p style="color: #F00;">OH THE HUMANITY</p>');
+                }
+            });
         },
         cancel: function(e) {
             this.remove();
@@ -230,7 +246,19 @@ $(function() {
         },
         add: function(e) {
             var dialog = new FacultyEditView({model: new Faculty()});
+            this.listenTo(dialog, 'save', this.assocNew);
             dialog.render();
+        },
+        assocNew: function(model) {
+            var association = new FacultyDept({
+                faculty_id: model.get('id'),
+                department_id: this.$department.val()
+            });
+
+            // TODO: handle success and error
+            association.save();
+
+            this.collection.add(model);
         },
         select: function(e) {
             if(this.$department.val() == -1) {
