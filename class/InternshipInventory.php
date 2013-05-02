@@ -46,7 +46,7 @@ class InternshipInventory {
 
             case 'edit_internship':
                 PHPWS_Core::initModClass('intern', 'UI/InternshipUI.php');
-                $view = new InternshpUI();
+                $view = new InternshipUI();
                 $this->content = $view->display();
                 break;
             case 'add_internship':
