@@ -281,7 +281,6 @@ $(function() {
             this.$newbutton.hide();
 
             var elements = this.$department.children('[value!="-1"]');
-            console.log(elements);
             if(elements.length == 1) {
                 this.$department.val(elements.val());
                 this.$department.change();
@@ -359,23 +358,26 @@ $(function() {
     var NQ = {
         init: function() {
             var me = this;
-            this.$nq = $('.nq')
+            this.$nq = $('.nq');
+            this.$div = $('.notification')
+                .hide();
+            this.$close = $('.nq-close')
                 .click(function(e) {
                     me.hideNotify();
-                });
+                })
         },
         notify: function(cls, msg) {
             if(cls != 'success' && cls != 'warning' && cls != 'error')
                 throw 'Class must be either success, warning, or error';
             this.$nq.removeClass('success warning error')
                 .addClass(cls)
-                .html(msg)
-                .show();
+                .html(msg);
+            this.$div.show();
         },
         hideNotify: function() {
             this.$nq.removeClass('success warning error')
-                .empty()
-                .hide();
+                .empty();
+            this.$div.hide();
         }
     };
     NQ.init();
