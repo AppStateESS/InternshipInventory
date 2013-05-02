@@ -13,6 +13,9 @@ $(function() {
             state: null,
             zip: null
         },
+        getFullName: function() {
+            return this.get('first_name') + ' ' + this.get('last_name');
+        },
         url: function() {
             return 'index.php?module=intern&action=restFacultyById&id=' + this.get('id');
         }
@@ -96,7 +99,14 @@ $(function() {
                 faculty_id: model.get('id'),
                 department_id: this.collection.department
             });
-            association.destroy();
+            association.destroy({
+                success: function(delmodel, xhr, options) {
+                    NQ.notify('success', model.getFullName() + ' was removed from the selected department.');
+                },
+                error: function(delmodel, xhr, options) {
+                    NQ.notify('error', 'Could not remove ' + model.getFullName() + ' from selected department due to internal server error.');
+                }
+            });
         }
     });
 
@@ -265,15 +275,32 @@ $(function() {
             dialog.render();
         },
         assocNew: function(model) {
+            var self = this;
+            var fullname = model.getFullName();
+            var dept = this.$department.find(':selected').text();
+            var newid = model.get('id');
+
+            if(this.collection.find(function(findmodel) { return findmodel.get('id') == newid; })) {
+                NQ.notify('warning', fullname + ' is already a member of ' + dept);
+                return;
+            }
+
             var association = new FacultyDept({
-                faculty_id: model.get('id'),
+                faculty_id: newid,
                 department_id: this.$department.val()
             });
 
-            // TODO: handle success and error
-            association.save();
+            association.save([], {
+                success: function(derp, response, options) {
+                    self.collection.add(model);
+                    NQ.notify('success', fullname + " was added to " + dept);
+                },
+                error: function(model, xhr, options) {
+                    NQ.notify('error', 'A server error occurred attempting to add ' +
+                        fullname + ' to ' + dept);
+                }
+            });
 
-            this.collection.add(model);
         },
         select: function(e) {
             if(this.$department.val() == -1) {
@@ -308,6 +335,30 @@ $(function() {
 
         }
     });
+
+    var NQ = {
+        init: function() {
+            var me = this;
+            this.$nq = $('.nq')
+                .click(function(e) {
+                    me.hideNotify();
+                });
+        },
+        notify: function(cls, msg) {
+            if(cls != 'success' && cls != 'warning' && cls != 'error')
+                throw 'Class must be either success, warning, or error';
+            this.$nq.removeClass('success warning error')
+                .addClass(cls)
+                .html(msg)
+                .show();
+        },
+        hideNotify: function() {
+            this.$nq.removeClass('success warning error')
+                .empty()
+                .hide();
+        }
+    };
+    NQ.init();
 
     var FacultyFormView = Backbone.View.extend({
     });
