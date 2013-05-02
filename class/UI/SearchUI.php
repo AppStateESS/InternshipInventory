@@ -12,7 +12,7 @@
 PHPWS_Core::initModClass('intern', 'UI/UI.php');
 class SearchUI implements UI
 {
-    public function display()
+    public static function display()
     {
         PHPWS_Core::initModClass('intern', 'Term.php');
         PHPWS_Core::initModClass('intern', 'Department.php');
