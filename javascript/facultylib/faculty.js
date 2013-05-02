@@ -82,6 +82,9 @@ $(function() {
         },
         render: function() {
             this.addAll();
+            if(this.collection.size() == 0) {
+                this.$el.append('<li class="text disabled italic">There are no faculty members in this department.</li>');
+            }
             return this;
         },
         addOne: function(faculty) {
@@ -276,9 +279,15 @@ $(function() {
             });
 
             this.$newbutton.hide();
+
+            var elements = this.$department.children('[value!="-1"]');
+            console.log(elements);
+            if(elements.length == 1) {
+                this.$department.val(elements.val());
+                this.$department.change();
+            }
         },
         render: function() {
-            var me = this;
         },
         add: function(e) {
             var dialog = new FacultyEditView({model: new Faculty()});
