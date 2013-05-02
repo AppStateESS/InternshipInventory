@@ -143,6 +143,12 @@ class SearchUI implements UI
         unset($workflowStates['CreationState']); // Remove this state, since it's not valid (internal only state for initial creation)
         $form->addCheckAssoc('workflow_state', $workflowStates);
         
+        unset($_REQUEST['module']);
+        unset($_REQUEST['action']);
+        unset($_REQUEST['submit']);
+        //test($_REQUEST,1);
+        $form->plugIn($_REQUEST);
+        
         $form->addSubmit('submit', 'Search');
 
         // Javascript...

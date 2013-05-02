@@ -70,7 +70,26 @@ class ResultsUI implements UI
         /* Get Pager */
         $pager = self::getPager($name, $dept, $term, $ugradMajor, $gradProg, $level, $type, $campus, $loc, $state, $prov, $workflowState, $courseSubject, $courseNum, $courseSect);
 
-        return $pager->get();
+        $pagerContent = $pager->get();
+        
+        //test($_REQUEST,1);
+        
+        // If there were no results, send the user back to the search interface
+        if($pager->total_rows == 0) {
+            NQ::simple('intern', INTERN_WARNING, "There were no internships that matched your search criteria. If you're looking for a specific student double check the student's name, id number, or email address. Otherwise, try selecting less search criteria and then search again.");
+            NQ::close();
+            
+            // Rebuild the URL
+            $url = 'index.php?module=intern&action=search&';
+            unset($_REQUEST['action']);
+            unset($_REQUEST['module']);
+            
+            $url .= http_build_query($_REQUEST);
+            
+            return PHPWS_Core::reroute($url);
+        }
+        
+        return $pagerContent;
     }
 
     /**
