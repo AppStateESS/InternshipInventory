@@ -22,7 +22,7 @@ class Intern_NotifyUI implements UI
      * Pop all notifications from NQ. Get the type for use with CSS.
      * @return - Properly styled notifications.
      */
-    public static function display()
+    public function display()
     {
         $notifications = NQ::popAll('intern');
         $tags = array();

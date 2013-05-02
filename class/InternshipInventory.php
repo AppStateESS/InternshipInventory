@@ -46,7 +46,8 @@ class InternshipInventory {
 
             case 'edit_internship':
                 PHPWS_Core::initModClass('intern', 'UI/InternshipUI.php');
-                $this->content = InternshipUI::display();
+                $view = new InternshpUI();
+                $this->content = $view->display();
                 break;
             case 'add_internship':
                 PHPWS_Core::initModClass('intern', 'command/SaveInternship.php');
@@ -56,11 +57,13 @@ class InternshipInventory {
                 break;
             case 'search':
                 PHPWS_Core::initModClass('intern', 'UI/SearchUI.php');
-                $this->content = SearchUI::display();
+                $view = new SearchUI();
+                $this->content = $view->display();
                 break;
             case 'results':
                 PHPWS_Core::initModClass('intern', 'UI/ResultsUI.php');
-                $this->content = ResultsUI::display();
+                $view = new ResultsUI();
+                $this->content = $view->display();
                 break;
             case DEPT_EDIT:
                 PHPWS_Core::initModClass('intern', 'UI/DepartmentUI.php');
@@ -100,7 +103,8 @@ class InternshipInventory {
                     /** for now... */
                     NQ::simple('intern', INTERN_WARNING, 'Sorry, cannot forcefully delete a department.');
                 }
-                $this->content = DepartmentUI::display();
+                $view = new DepartmentUI();
+                $this->content = $view->display();
                 break;
             case GRAD_PROG_EDIT:
                 PHPWS_Core::initModClass('intern', 'GradProgram.php');
@@ -145,7 +149,8 @@ class InternshipInventory {
                         NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot delete graduate program.");
                     }
                 }
-                $this->content = GradProgramUI::display();
+                $view = new GradProgramUI();
+                $this->content = $view->display();
                 break;
             case MAJOR_EDIT:
                 PHPWS_Core::initModClass('intern', 'UI/MajorUI.php');
@@ -190,7 +195,8 @@ class InternshipInventory {
                         NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot delete major.");
                     }
                 }
-                $this->content = MajorUI::display();
+                $view = new MajorUI();
+                $this->content = $view->display();
                 break;
                 /**
                  * Matt additions!
@@ -220,7 +226,8 @@ class InternshipInventory {
                     disallow();
                 }
                 PHPWS_Core::initModClass('intern', 'UI/StateUI.php');
-                $this->content = StateUI::display();
+                $view = new StateUI();
+                $this->content = $view->display();
                 break;
             case 'edit_admins':
                 PHPWS_Core::initModClass('intern', 'UI/AdminUI.php');
@@ -237,7 +244,8 @@ class InternshipInventory {
                     echo json_encode($users);
                     exit();
                 }
-                $this->content = AdminUI::display();
+                $view = new AdminUI();
+                $this->content = $view->display();
                 break;
             case 'pdf':
                 PHPWS_Core::initModClass('intern', 'InternshipFactory.php');

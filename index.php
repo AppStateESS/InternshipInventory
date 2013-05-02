@@ -65,7 +65,8 @@ if (isset($content)) {
 }
 
 // Notifications
-$notifications = Intern_NotifyUI::display();
+$nv = new Intern_NotifyUI();
+$notifications = $nv->display();
 $content = TopUI::plug($content, $notifications);
 
 // Add content to Layout

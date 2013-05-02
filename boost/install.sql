@@ -245,7 +245,6 @@ CREATE TABLE intern_internship (
        term INT NOT NULL REFERENCES intern_term(term),
        
        agency_id INT NOT NULL REFERENCES intern_agency(id),
-       faculty_supervisor_id INT NOT NULL,
        faculty_id integer REFERENCES intern_faculty(id),
        department_id INT NOT NULL,
        
