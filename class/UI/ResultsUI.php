@@ -179,7 +179,7 @@ class ResultsUI implements UI
         
         //test($pager->db->table_as,1);
         
-        $pager->db->addJoin('LEFT OUTER', 'fuzzy', 'intern_faculty_supervisor', 'faculty_supervisor_id', 'id');
+        $pager->db->addJoin('LEFT OUTER', 'fuzzy', 'intern_faculty', 'faculty_id', 'id');
 
         
         // Student level
@@ -265,8 +265,7 @@ class ResultsUI implements UI
         $pager->joinResult('department_id', 'intern_department', 'id', 'name');
         $pager->addSortHeader('name', 'Department Name');
 
-        //$pager->joinResult('faculty_supervisor_id', 'intern_faculty_supervisor', 'id', 'last_name', 'faculty_last_name');
-        $pager->addSortHeader('intern_faculty_supervisor.last_name', 'Faculty Advisor');
+        $pager->addSortHeader('intern_faculty.last_name', 'Faculty Advisor');
         
         $pager->addSortHeader('state', 'Status');
 

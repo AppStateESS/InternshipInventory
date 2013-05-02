@@ -210,7 +210,7 @@ function otherStuff()
         for (var i = 0; i < data.length; i++){
         	// If the banner ID matches what's in the hidden field, set the selected option in the drop down
         	selected = '';
-        	if($("#internship_faculty_banner_id").val() == data[i].id){
+        	if($("#internship_faculty_id").val() == data[i].id){
         		selected = 'selected="selected"';
         	}
             listItems += "<option value='" + data[i].id + "' " + selected + ">" + data[i].first_name + " " + data[i].last_name + "</option>";
@@ -219,8 +219,8 @@ function otherStuff()
         $("#internship_faculty").prop('disabled', false);
         
         // If a banner id is already set in the hidden field, select it
-        if ($("#internship_faculty_banner_id").val() != null) {
-        	selectFaculty($("#internship_faculty_banner_id").val());
+        if ($("#internship_faculty_id").val() != null) {
+        	selectFaculty($("#internship_faculty_id").val());
         }
     }
     
@@ -244,7 +244,7 @@ function otherStuff()
     // Change link click handler
     $("#faculty-change").bind('click', function(){
     	// Reset the selected banner_id in the hidden field
-    	$("#internship_faculty_banner_id").val(null);
+    	$("#internship_faculty_id").val(null);
     	
     	// Slide the faculty details panel out, and the faculty selector panel in
     	$("#faculty_details").hide('slide', {direction: 'right'}, "fast", function(){
@@ -255,7 +255,7 @@ function otherStuff()
     function selectFaculty(bannerId)
     {
     	// Store the selected faculty banner id in the hidden field
-    	$("#internship_faculty_banner_id").val(bannerId);
+    	$("#internship_faculty_id").val(bannerId);
     	
     	// Search the list of faculty for a match to the JSON data fetched earlier
     	//TODO What if there isn't a match? We still need to be able to find/show that faculty member.
@@ -267,21 +267,44 @@ function otherStuff()
     		}
     	}
     	
+    	console.log(faculty);
+    	
     	// Update the faculty details panel
     	departmentName = $("#internship_department :selected").text();
     	
     	$("#faculty_details").removeClass('text disabled'); // Disable detail text
     	$("#faculty_name").html(faculty.first_name + " " + faculty.last_name + " - " + departmentName);
     	$("#faculty_email").html('<a href="mailto:' + faculty.username + '@appstate.edu">' + faculty.username + '@appstate.edu </a>');
-    	$("#faculty_phone").html('<a href="tel:+1' + faculty.phone + '">' + faculty.phone + '</a>');
-    	$("#faculty_fax").html('<a href="fax:+1' + faculty.fax + '">' + faculty.fax + '</a>');
+    	
+    	if(faculty.phone != ''){
+    	    $("#faculty_phone").html('<a href="tel:+1' + faculty.phone + '">' + faculty.phone + '</a>');
+    	}else{
+    	    $("#faculty_phone").html('<span class="text disabled italic">has not been set</span>');
+    	}
+    	
+    	if(faculty.fax != ''){
+    	    $("#faculty_fax").html('<a href="fax:+1' + faculty.fax + '">' + faculty.fax + '</a>');
+    	}else{
+    	    $("#faculty_fax").html('<span class="text disabled italic">has not been set</span>');
+    	}
 
     	// Format the address
-    	var address = faculty.street_address1;
-    	if (faculty.street_address1 != '') {
-    		address += ("<br />" + faculty.street_address2); 
+    	var address = ''
+    	if(faculty.street_address1 != ''){
+    	    address += faculty.street_address1;
+    	    
+    	    if (faculty.street_address2 != '') {
+                address += ("<br />" + faculty.street_address2); 
+            }
+    	} else {
+    	    address += ('<span class="text disabled italic">has not been set</span>');
     	}
-    	address += ("<br />" + faculty.city + ", " + faculty.state + " " + faculty.zip);
+    	if(faculty.city != '' && faculty.state != ''){
+    	    address += ("<br />" + faculty.city + ", " + faculty.state);
+    	}
+    	if(faculty.zip != '') {
+    	    address += " " + faculty.zip;
+    	}
     	$("#faculty_address").html(address);
     	
     	// Slide the faculty selector div (drop downs) out, then slide the faculty details panel in

@@ -24,7 +24,7 @@ class Internship {
     public $department_id;
 
     //public $faculty_supervisor_id;
-    public $faculty_banner_id;
+    public $faculty_id;
 
     // Status info
     public $state;
@@ -234,7 +234,7 @@ class Internship {
 
         // Get external objects
         $a = $this->getAgency();
-        $f = $this->getFacultySupervisor();
+        $f = $this->getFaculty();
         $d = $this->getDepartment();
 
         // Merge data from other objects.
@@ -310,14 +310,11 @@ class Internship {
     /**
      * Get the Faculty Supervisor object associated with this internship.
      * 
-     * @deprecated
-     * @see Faculty
-     * TODO: Use the Faculty class instead.
      */
-    public function getFacultySupervisor()
+    public function getFaculty()
     {
-        PHPWS_Core::initModClass('intern', 'FacultySupervisor.php');
-        return new FacultySupervisor($this->faculty_supervisor_id);
+        PHPWS_Core::initModClass('intern', 'FacultyFactory.php');
+        return FacultyFactory::getFacultyObjectById($this->faculty_id);
     }
 
     /**
@@ -444,7 +441,7 @@ class Internship {
 
         // Get objects associated with this internship.
         $a = $this->getAgency();
-        $f = $this->getFacultySupervisor();
+        $f = $this->getFaculty();
         $d = $this->getDepartment();
 
         // Student info.
@@ -505,15 +502,6 @@ class Internship {
 
     public function getEmailAddress(){
         return $this->email;
-    }
-    
-    /**
-     * Returns the facuty advisor's BannerId
-     * @return integer BannerId
-     */
-    public function getFacultyBannerId()
-    {
-        return $this->faculty_banner_id;
     }
     
     /**

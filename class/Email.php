@@ -154,8 +154,8 @@ class Email {
             $tpl['END_DATE'] = '(not provided)';
         }
 
-        if(isset($i->faculty_supervisor_id)){
-            $advisor = $i->getFacultySupervisor();
+        if(isset($i->faculty_id)){
+            $advisor = $i->getFaculty();
             $tpl['FACULTY'] = $advisor->getFullName();
         }else{
             $tpl['FACULTY'] = '(not provided)';
@@ -273,8 +273,8 @@ class Email {
             $tpl['END_DATE'] = '(not provided)';
         }
     
-        if(isset($i->faculty_supervisor_id)){
-            $advisor = $i->getFacultySupervisor();
+        if(isset($i->faculty_id)){
+            $advisor = $i->getFaculty();
             $tpl['FACULTY'] = $advisor->getFullName();
         }else{
             $tpl['FACULTY'] = '(not provided)';
@@ -384,8 +384,8 @@ class Email {
             $tpl['END_DATE'] = '(not provided)';
         }
 
-        if(isset($i->faculty_supervisor_id)){
-            $advisor = $i->getFacultySupervisor();
+        if(isset($i->faculty_id)){
+            $advisor = $i->getFaculty();
             $tpl['FACULTY'] = $advisor->getFullName();
         }else{
             $tpl['FACULTY'] = '(not provided)';
@@ -472,8 +472,8 @@ class Email {
             $tpl['END_DATE'] = '(not provided)';
         }
         
-        if(isset($i->faculty_supervisor_id)){
-            $advisor = $i->getFacultySupervisor();
+        if(isset($i->faculty_id)){
+            $advisor = $i->getFaculty();
             $tpl['FACULTY'] = $advisor->getFullName();
         }else{
             $tpl['FACULTY'] = '(not provided)';

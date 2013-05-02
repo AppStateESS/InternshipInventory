@@ -178,7 +178,7 @@ class InternshipFormView {
         $this->form->setLabel('faculty', 'Faculty Advisor / Instructor of Record');
         
         // Hidden field for selected faculty member
-        $this->form->addHidden('faculty_banner_id');
+        $this->form->addHidden('faculty_id');
         
         
         /***************
