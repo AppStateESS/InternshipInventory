@@ -24,7 +24,7 @@ $(function() {
             department_id: null
         },
         url: function() {
-            return 'index.php?module=intern&action=facultyDeptRest';
+            return 'index.php?module=intern&action=facultyDeptRest&faculty_id=' + this.get('faculty_id') + '&department_id=' + this.get('department_id');
         }
     });
 
@@ -48,17 +48,23 @@ $(function() {
         template:_.template($('#faculty-template').html()),
         initialize: function() {
             this.listenTo(this.model, 'change', this.render);
-            this.listenTo(this.model, 'destroy', this.remove);
         },
         render: function() {
             this.$el.html(this.template(this.model.toJSON()));
             var me = this;
             this.$('.faculty-edit').bind('click', function(e) { me.edit.call(me, e); });
+            this.$('.faculty-remove').bind('click', function(e) { me.disassociate.call(me, e); });
             return this;
         },
         edit: function(e) {
             var dialog = new FacultyEditView({model: this.model});
             dialog.render();
+        },
+        disassociate: function(e) {
+            this.trigger('disassociate', this.model);
+            this.model.set('id', null);
+            this.model.destroy();
+            this.remove();
         }
     });
 
@@ -78,10 +84,19 @@ $(function() {
         addOne: function(faculty) {
             var view = new FacultyView({model: faculty});
             this.$el.append(view.render().el);
+            this.listenTo(view, 'disassociate', this.removeMember);
         },
         addAll: function() {
             this.$el.empty();
             this.collection.each(this.addOne, this);
+        },
+        removeMember: function(model) {
+            var association = new FacultyDept({
+                id: 1,
+                faculty_id: model.get('id'),
+                department_id: this.collection.department
+            });
+            association.destroy();
         }
     });
 

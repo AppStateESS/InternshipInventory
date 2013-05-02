@@ -49,10 +49,11 @@ class FacultyDeptRest {
     
     private function delete()
     {
-        $postArray = json_decode(file_get_contents('php://input'), true);
-        
-        $facultyId       = $postArray['faculty_id'];
-        $departmentId    = $postArray['department_id'];
+        // Because we're halfway between an "old way" and a "new way", delete
+        // takes input from query instead of JSON.  Beg your pardon but this
+        // is the quickest way to get this thing out the door.
+        $facultyId       = $_REQUEST['faculty_id'];
+        $departmentId    = $_REQUEST['department_id'];
         
         $sql = "DELETE FROM intern_faculty_department WHERE faculty_id = $facultyId AND department_id = $departmentId";
 

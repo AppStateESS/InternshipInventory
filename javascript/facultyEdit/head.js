@@ -1,5 +1,5 @@
 <script type="text/template" id="faculty-template">
-<a href="javascript:void(0)" class="faculty-edit"><%= id %> - <%= first_name %> <%= last_name %>
+<a href="javascript:void(0)" class="faculty-edit"><%= id %> - <%= first_name %> <%= last_name %></a> [<a href="javascript:void(0)" class="faculty-remove">Remove from Department</a>]
 </script>
 
 <script type="text/template" id="faculty-edit-dialog-template">
