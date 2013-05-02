@@ -13,7 +13,7 @@ class InternMenu implements UI{
 	/**
 	 * Main display method
 	 */
-    public function display() {
+    public static function display() {
         PHPWS_Core::initModClass('intern', 'Major.php');
 
         //housekeeping
