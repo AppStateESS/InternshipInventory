@@ -267,8 +267,6 @@ function otherStuff()
     		}
     	}
     	
-    	console.log(faculty);
-    	
     	// Update the faculty details panel
     	departmentName = $("#internship_department :selected").text();
     	
