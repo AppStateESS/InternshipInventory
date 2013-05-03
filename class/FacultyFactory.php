@@ -32,9 +32,18 @@ class FacultyFactory {
 
     public function getFacultyObjectById($id)
     {
+
+        if(!isset($id)) {
+            throw new InvalidArgumentException('Missing faculty id.');
+        }
+
         $sql = "SELECT intern_faculty.* FROM intern_faculty WHERE intern_faculty.id = {$id}";
          
         $row = PHPWS_DB::getRow($sql);
+
+        if (PHPWS_Error::logIfError($row)) {
+            throw new Exception($row);
+        }
 
         $faculty = new FacultyDB();
          

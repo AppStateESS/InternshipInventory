@@ -313,6 +313,10 @@ class Internship {
      */
     public function getFaculty()
     {
+        if(!isset($this->faculty_id)){
+            return null;
+        }
+
         PHPWS_Core::initModClass('intern', 'FacultyFactory.php');
         return FacultyFactory::getFacultyObjectById($this->faculty_id);
     }
@@ -452,8 +456,8 @@ class Internship {
         $tags['DEPT_NAME'] = PHPWS_Text::moduleLink($d->name, 'intern', array('action' => 'edit_internship', 'internship_id' => $this->id));
 
         // Faculty info.
-        $facultyName = $f->getFullName();
-        if(!empty($facultyName)){
+        if(isset($facultyName)){
+            $facultyName = $f->getFullName();
             $tags['FACULTY_NAME'] = PHPWS_Text::moduleLink($f->getFullName(), 'intern', array('action' => 'edit_internship', 'internship_id' => $this->id));
         }else{
             // Makes this cell in the table a clickable link, even if there's no faculty name
