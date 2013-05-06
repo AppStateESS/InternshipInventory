@@ -287,9 +287,6 @@ class InternshipInventory {
                 $ctrl->execute();
                 break;
             case 'edit_faculty':
-                if (!Current_User::allow('intern', 'edit_faculty') && !Current_User::isDeity()) {
-                    throw new PermissionException("You don't have permission to edit faculty members.");
-                }
                 PHPWS_Core::initModClass('intern', 'FacultyUI.php');
                 $facultyUI = new FacultyUI();
                 $this->content = $facultyUI->display();
