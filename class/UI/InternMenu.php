@@ -49,10 +49,10 @@ class InternMenu implements UI{
         }
         
         // Edit faculty members for allowed departments
-        if(Current_User::allow('intern', 'edit_faculty') || Current_User::isDeity())
-        {
+        //if(Current_User::allow('intern', 'edit_faculty') || Current_User::isDeity())
+        //{
         	$adminOptions['EDIT_FACULTY'] = PHPWS_Text::secureLink('Edit Faculty Members', 'intern', array('action'=>'edit_faculty'));
-        }
+        //}
         
         if(Current_User::isDeity()){
         	$tags['CONTROL_PANEL']         = PHPWS_Text::secureLink('Control Panel','controlpanel');
