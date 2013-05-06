@@ -108,7 +108,7 @@ class Email {
 
         $subjects = Subject::getSubjects();
 
-        $faculty = $i->getFacultySupervisor();
+        $faculty = $i->getFaculty();
 
         $tpl = array();
         $tpl['NAME'] = $i->getFullName();
@@ -227,7 +227,7 @@ class Email {
     
         $subjects = Subject::getSubjects();
     
-        $faculty = $i->getFacultySupervisor();
+        $faculty = $i->getFaculty();
     
         $tpl = array();
         $tpl['NAME'] = $i->getFullName();
@@ -338,7 +338,7 @@ class Email {
 
         $subjects = Subject::getSubjects();
 
-        $faculty = $i->getFacultySupervisor();
+        $faculty = $i->getFaculty();
 
         $tpl = array();
         $tpl['NAME'] = $i->getFullName();
@@ -426,7 +426,7 @@ class Email {
         
         $subjects = Subject::getSubjects();
         
-        $faculty = $i->getFacultySupervisor();
+        $faculty = $i->getFaculty();
         
         $tpl = array();
         $tpl['NAME'] = $i->getFullName();
