@@ -508,6 +508,11 @@ class Internship {
         return $this->email;
     }
     
+    public function getFacultyId()
+    {
+        return $this->faculty_id;
+    }
+    
     /**
      * Returns the Department's database id
      * @return integer department id
