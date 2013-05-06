@@ -170,7 +170,7 @@ class InternshipContractPdfView {
         /***
          * Faculty supervisor information.
          */
-        if(isset($this->f)){
+        if(isset($f)){
             $this->pdf->setXY(26, 109);
             $this->pdf->cell(81, 5, $f->getFullName());
 
