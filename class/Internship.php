@@ -445,7 +445,6 @@ class Internship {
 
         // Get objects associated with this internship.
         $a = $this->getAgency();
-        $f = $this->getFaculty();
         $d = $this->getDepartment();
 
         // Student info.
@@ -456,7 +455,8 @@ class Internship {
         $tags['DEPT_NAME'] = PHPWS_Text::moduleLink($d->name, 'intern', array('action' => 'edit_internship', 'internship_id' => $this->id));
 
         // Faculty info.
-        if(isset($facultyName)){
+        if(isset($this->faculty_id)){
+            $f = $this->getFaculty();
             $facultyName = $f->getFullName();
             $tags['FACULTY_NAME'] = PHPWS_Text::moduleLink($f->getFullName(), 'intern', array('action' => 'edit_internship', 'internship_id' => $this->id));
         }else{

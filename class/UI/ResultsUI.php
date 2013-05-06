@@ -140,7 +140,7 @@ class ResultsUI implements UI
         if(!is_null($name) && preg_match("/\d{8}/", $name)){
             $pager->addWhere('fuzzy.banner', $name);
             
-            // Else, check to see if name is set
+        // Else, check to see if name is set
         }else if(!is_null($name) && $name != ''){
 
             // Prevent SQL Injection and syntax errors, since we're going to be using the addColumnRaw() method.
@@ -195,8 +195,6 @@ class ResultsUI implements UI
             
             $pager->db->addSubSelect($fuzzyDb, 'fuzzy');
         }
-        
-        //test($pager->db->table_as,1);
         
         $pager->db->addJoin('LEFT OUTER', 'fuzzy', 'intern_faculty', 'faculty_id', 'id');
 
@@ -284,6 +282,7 @@ class ResultsUI implements UI
         $pager->joinResult('department_id', 'intern_department', 'id', 'name');
         $pager->addSortHeader('name', 'Department Name');
 
+        //$pager->joinResult('faculty_id', 'intern_faculty', 'id', 'last_name', 'faculty_last_name');
         $pager->addSortHeader('intern_faculty.last_name', 'Faculty Advisor');
         
         $pager->addSortHeader('state', 'Status');
