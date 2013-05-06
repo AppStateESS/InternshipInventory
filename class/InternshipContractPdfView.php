@@ -53,7 +53,7 @@ class InternshipContractPdfView {
         $this->pdf = new FPDI('P', 'mm', 'Letter');
         $a = $this->internship->getAgency();
         $d = $this->internship->getDepartment();
-        $f = $this->internship->getFacultySupervisor();
+        $f = $this->internship->getFaculty();
         $m = $this->internship->getUgradMajor();
         $g = $this->internship->getGradProgram();
         $subject = $this->internship->getSubject();
@@ -173,11 +173,20 @@ class InternshipContractPdfView {
         $this->pdf->setXY(26, 109);
         $this->pdf->cell(81, 5, $f->getFullName());
 
+        $this->pdf->setXY(29, 116);
+        $this->pdf->cell(81, 5, $f->getStreetAddress1());
+        
+        $this->pdf->setXY(18, 123);
+        $this->pdf->cell(81, 5, $f->getStreetAddress2());
+        
         $this->pdf->setXY(26, 131);
         $this->pdf->cell(77, 5, $f->getPhone());
+        
+        $this->pdf->setXY(25, 138);
+        $this->pdf->cell(77, 5, $f->getFax());
 
         $this->pdf->setXY(26, 145);
-        $this->pdf->cell(77, 5, $f->getEmail() . '@appstate.edu');
+        $this->pdf->cell(77, 5, $f->getUsername() . '@appstate.edu');
 
         /**
          * Agency information.
