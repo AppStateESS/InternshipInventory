@@ -208,7 +208,7 @@ class Email {
         }
         
         // CC the faculty members
-        $cc = array($faculty->email . '@appstate.edu');
+        $cc = array($faculty->getUsername() . '@appstate.edu');
         
         $subject = 'Internship Approved: ' . $intlSubject . '[' . $i->getBannerId() . '] ' . $i->getFullName();
 
@@ -405,7 +405,7 @@ class Email {
         }
 
         $to = $i->email . '@appstate.edu';
-        $cc = array($faculty->email . '@appstate.edu');
+        $cc = array($faculty->getUsername() . '@appstate.edu');
         $subject = 'Internship Approved';
 
         email::sendTemplateMessage($to, $subject, 'email/RegistrationConfirmation.tpl', $tpl, $cc);
@@ -495,7 +495,7 @@ class Email {
         $tpl['NOTE'] = $note;
         
         $to = $i->email . '@appstate.edu';
-        $cc = array($faculty->email . '@appstate.edu');
+        $cc = array($faculty->getUsername() . '@appstate.edu');
         $subject = 'Internship Enrollment Issue';
         
         email::sendTemplateMessage($to, $subject, 'email/RegistrationIssue.tpl', $tpl, $cc);
