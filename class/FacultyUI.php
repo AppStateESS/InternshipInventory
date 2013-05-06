@@ -25,10 +25,6 @@ class FacultyUI implements UI
 	 */
 	public function display()
 	{
-		if (!Current_User::allow('intern', 'edit_faculty') && !Current_User::isDeity()) {
-			throw new PermissionException("You don't have permission to edit faculty members.");
-		}
-		
 		// Get the list of departments the current user has access to
 		PHPWS_Core::initModClass('intern', 'Department.php');
 		$departments = Department::getDepartmentsAssocForUsername(Current_User::getUsername());
