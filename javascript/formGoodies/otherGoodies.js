@@ -280,7 +280,7 @@ function otherStuff()
     	    $("#faculty_phone").html('<span class="text disabled italic">has not been set</span>');
     	}
     	
-    	if(faculty.fax != ''){
+    	if(faculty.fax != '' && faculty.fax != null){
     	    $("#faculty_fax").html('<a href="fax:+1' + faculty.fax + '">' + faculty.fax + '</a>');
     	}else{
     	    $("#faculty_fax").html('<span class="text disabled italic">has not been set</span>');
@@ -288,7 +288,7 @@ function otherStuff()
 
     	// Format the address
     	var address = ''
-    	if(faculty.street_address1 != ''){
+    	if(faculty.street_address1 != '' && faculty.street_address1 != null){
     	    address += faculty.street_address1;
     	    
     	    if (faculty.street_address2 != '') {
@@ -297,10 +297,10 @@ function otherStuff()
     	} else {
     	    address += ('<span class="text disabled italic">has not been set</span>');
     	}
-    	if(faculty.city != '' && faculty.state != ''){
+    	if(faculty.city != '' && faculty.city != null && faculty.state != '' && faculty.state != null){
     	    address += ("<br />" + faculty.city + ", " + faculty.state);
     	}
-    	if(faculty.zip != '') {
+    	if(faculty.zip != '' && faculty.zip != null) {
     	    address += " " + faculty.zip;
     	}
     	$("#faculty_address").html(address);
