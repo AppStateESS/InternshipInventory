@@ -11,7 +11,7 @@ class GetFacultyListForDept {
     {
         $departmentId = $_REQUEST['department'];
         
-        if (is_null($departmentId)) {
+        if (is_null($departmentId) || !isset($departmentId)) {
             throw new InvalidArgumentException('Missing department id.');
         }
         
