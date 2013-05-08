@@ -154,9 +154,9 @@ class Email {
             $tpl['END_DATE'] = '(not provided)';
         }
 
-        if(isset($i->faculty_id)){
-            $advisor = $i->getFaculty();
-            $tpl['FACULTY'] = $advisor->getFullName();
+        if($faculty instanceof Faculty){
+            $faculty = $i->getFaculty();
+            $tpl['FACULTY'] = $faculty->getFullName();
         }else{
             $tpl['FACULTY'] = '(not provided)';
         }
@@ -208,7 +208,11 @@ class Email {
         }
         
         // CC the faculty members
-        $cc = array($faculty->email . '@appstate.edu');
+        if ($faculty instanceof Faculty) {
+            $cc = array($faculty->getUsername() . '@appstate.edu');
+        } else {
+            $cc = array();
+        }
         
         $subject = 'Internship Approved: ' . $intlSubject . '[' . $i->getBannerId() . '] ' . $i->getFullName();
 
@@ -273,7 +277,7 @@ class Email {
             $tpl['END_DATE'] = '(not provided)';
         }
     
-        if(isset($i->faculty_id)){
+        if($faculty instanceof Faculty){
             $advisor = $i->getFaculty();
             $tpl['FACULTY'] = $advisor->getFullName();
         }else{
@@ -306,7 +310,7 @@ class Email {
     
         $subject = 'Internship Approval Needed: ' . $intlSubject . '[' . $i->getBannerId() . '] ' . $i->getFullName();
     
-        Email::sendTemplateMessage($to, $subject, 'email/GradSchoolNotification.tpl', $tpl, $cc);
+        Email::sendTemplateMessage($to, $subject, 'email/GradSchoolNotification.tpl', $tpl);
     }
     
     public static function sendIntlInternshipCreateNotice(Internship $i)
@@ -384,9 +388,8 @@ class Email {
             $tpl['END_DATE'] = '(not provided)';
         }
 
-        if(isset($i->faculty_id)){
-            $advisor = $i->getFaculty();
-            $tpl['FACULTY'] = $advisor->getFullName();
+        if($faculty instanceof Faculty){
+            $tpl['FACULTY'] = $faculty->getFullName();
         }else{
             $tpl['FACULTY'] = '(not provided)';
         }
@@ -405,7 +408,11 @@ class Email {
         }
 
         $to = $i->email . '@appstate.edu';
-        $cc = array($faculty->email . '@appstate.edu');
+        if ($faculty instanceof Faculty) {
+            $cc = array($faculty->getUsername() . '@appstate.edu');
+        } else {
+            $cc = array();
+        }
         $subject = 'Internship Approved';
 
         email::sendTemplateMessage($to, $subject, 'email/RegistrationConfirmation.tpl', $tpl, $cc);
@@ -472,9 +479,8 @@ class Email {
             $tpl['END_DATE'] = '(not provided)';
         }
         
-        if(isset($i->faculty_id)){
-            $advisor = $i->getFaculty();
-            $tpl['FACULTY'] = $advisor->getFullName();
+        if($faculty instanceof Faculty){
+            $tpl['FACULTY'] = $faculty->getFullName();
         }else{
             $tpl['FACULTY'] = '(not provided)';
         }
@@ -495,7 +501,11 @@ class Email {
         $tpl['NOTE'] = $note;
         
         $to = $i->email . '@appstate.edu';
-        $cc = array($faculty->email . '@appstate.edu');
+        if ($faculty instanceof Faculty) {
+            $cc = array($faculty->getUsername() . '@appstate.edu');
+        } else {
+            $cc = array();
+        }
         $subject = 'Internship Enrollment Issue';
         
         email::sendTemplateMessage($to, $subject, 'email/RegistrationIssue.tpl', $tpl, $cc);
