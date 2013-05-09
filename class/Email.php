@@ -156,7 +156,7 @@ class Email {
 
         if($faculty instanceof Faculty){
             $faculty = $i->getFaculty();
-            $tpl['FACULTY'] = $faculty->getFullName();
+            $tpl['FACULTY'] = $faculty->getFullName() . ' (' . $faculty->getId() . ')';
         }else{
             $tpl['FACULTY'] = '(not provided)';
         }
