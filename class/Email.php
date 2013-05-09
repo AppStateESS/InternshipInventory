@@ -116,7 +116,9 @@ class Email {
         $tpl['USER'] = $i->email;
         $tpl['PHONE'] = $i->phone;
 
-        $tpl['TERM'] = Term::rawToRead($i->term, false);
+        $term = Term::rawToRead($i->term, false);
+        
+        $tpl['TERM'] = $term;
         if(isset($i->course_subj)){
             $tpl['SUBJECT'] = $subjects[$i->course_subj];
         }else{
@@ -214,7 +216,7 @@ class Email {
             $cc = array();
         }
 
-        $subject = 'Internship Approved: ' . $intlSubject . '[' . $i->getBannerId() . '] ' . $i->getFullName();
+        $subject = $term . ' ' . $intlSubject . '[' . $i->getBannerId() . '] ' . $i->getFullName();
 
         Email::sendTemplateMessage($to, $subject, 'email/RegistrarEmail.tpl', $tpl, $cc);
     }
