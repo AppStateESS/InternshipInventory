@@ -80,7 +80,10 @@ class EditInternshipFormView extends InternshipFormView {
         $vals['student_zip']     = $this->intern->student_zip;
     
         // Faculty Supervisor
-        $vals['faculty_id'] = $this->intern->getFaculty()->getId();
+        $facultyId = $this->intern->getFacultyId();
+        if(isset($facultyId) && $facultyId != 0){
+            $vals['faculty_id'] = $facultyId;
+        }
     
         // Agency
         $this->form->addHidden('agency_id', $this->agency->id);

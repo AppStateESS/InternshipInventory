@@ -506,6 +506,7 @@ class Email {
         } else {
             $cc = array();
         }
+
         $subject = 'Internship Enrollment Issue';
         
         email::sendTemplateMessage($to, $subject, 'email/RegistrationIssue.tpl', $tpl, $cc);

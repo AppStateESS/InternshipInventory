@@ -235,7 +235,7 @@ function otherStuff()
     $("#internship_department").change(); // Trigger an initial update
     
     // Handle changes to the faculty drop down
-    $("#internship_faculty").bind('click', function(){
+    $("#internship_faculty").bind('change', function(){
     	if($("#internship_faculty").val() != "-1") {
     		selectFaculty($("#internship_faculty").val());
     	}
