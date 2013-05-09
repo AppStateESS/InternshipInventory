@@ -30,6 +30,10 @@ Course: {COREQ_SUBJECT}-{COREQ_COURSE_NUM}
 Section: {COREQ_COURSE_SECT}
 <!-- END coreq -->
 
+<!-- BEGIN secondary_part -->
+**** Secondary Part of Multi-part Internship ****{SECONDARY_PART}
+<!-- END secondary_part -->
+
 Location
 ---------
 International: {INTERNATIONAL}
