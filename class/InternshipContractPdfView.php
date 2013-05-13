@@ -177,8 +177,17 @@ class InternshipContractPdfView {
             $this->pdf->setXY(29, 116);
             $this->pdf->cell(81, 5, $f->getStreetAddress1());
 
-            $this->pdf->setXY(18, 123);
+            $this->pdf->setXY(15, 123);
             $this->pdf->cell(81, 5, $f->getStreetAddress2());
+            
+            $this->pdf->setXY(60, 123);
+            $this->pdf->cell(81, 5, $f->getCity());
+            
+            $this->pdf->setXY(88, 123);
+            $this->pdf->cell(81, 5, $f->getState());
+            
+            $this->pdf->setXY(95, 123);
+            $this->pdf->cell(81, 5, $f->getZip());
 
             $this->pdf->setXY(26, 131);
             $this->pdf->cell(77, 5, $f->getPhone());
