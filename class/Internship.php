@@ -239,8 +239,11 @@ class Internship {
 
         // Merge data from other objects.
         $csv = array_merge($csv, $a->getCSV());
-        $csv = array_merge($csv, $f->getCSV());
         $csv = array_merge($csv, $d->getCSV());
+        
+        if ($f instanceof Faculty) {
+            $csv = array_merge($csv, $f->getCSV());
+        }
 
         return $csv;
     }
