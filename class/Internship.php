@@ -14,12 +14,12 @@ PHPWS_Core::initModClass('intern', 'Term.php');
 PHPWS_Core::initModClass('intern', 'Major.php');
 
 class Internship {
-    
+
     public $id;
 
     // Agency
     public $agency_id;
-    
+
     // Department
     public $department_id;
 
@@ -35,22 +35,22 @@ class Internship {
     public $first_name;
     public $middle_name;
     public $last_name;
-    
+
     // Metaphones for fuzzy search
     public $first_name_meta;
     public $last_name_meta;
-    
+
     // Academic info
     public $level;
     public $grad_prog;
     public $ugrad_major;
     public $gpa;
     public $campus;
-    
+
     // Contact Info
     public $phone;
     public $email;
-    
+
     // Student address
     public $student_address;
     public $student_city;
@@ -86,7 +86,7 @@ class Internship {
     public $course_no;
     public $course_sect;
     public $course_title;
-    
+
     // Corequisite Course Info
     // Course must be in the same subject, so there's no subject code
     public $corequisite_number;
@@ -99,9 +99,9 @@ class Internship {
      * Constructs a new Internship object.
      */
     public function __construct(){
-        
+
     }
-    
+
     /**
      * @Override Model::getDb
      */
@@ -109,7 +109,7 @@ class Internship {
     {
         return new PHPWS_DB('intern_internship');
     }
-    
+
     /**
      * Save model to database
      * @return - new ID of model.
@@ -122,14 +122,14 @@ class Internship {
         } catch (Exception $e) {
             exit($e->getMessage());
         }
-    
+
         if (PHPWS_Error::logIfError($result)) {
             throw new Exception($result->toString());
         }
-    
+
         return $this->id;
     }
-    
+
     /**
      * Delete model from database.
      */
@@ -137,18 +137,18 @@ class Internship {
     {
         if (is_null($this->id) || !is_numeric($this->id))
             return false;
-    
+
         $db = $this->getDb();
         $db->addWhere('id', $this->id);
         $result = $db->delete();
-    
+
         if (PHPWS_Error::logIfError($result)) {
             throw new Exception($result->getMessage(), $result->getCode());
         }
-    
+
         return true;
     }
-    
+
     /**
      * @Override Model::getCSV
      * Get a CSV formatted for for this internship.
@@ -162,7 +162,7 @@ class Internship {
         $csv['First Name']  = $this->first_name;
         $csv['Middle Name'] = $this->middle_name;
         $csv['Last Name']   = $this->last_name;
-        
+
         // Academic Info
         $csv['Level']           = $this->getLevel();
         if($this->getLevel() == 'ugrad'){
@@ -181,17 +181,17 @@ class Internship {
         // Status Info
         $csv['Status']                 = $this->getWorkflowState()->getFriendlyName();
         $csv['OIED Certified']         = $this->isOiedCertified() == 1 ? 'Yes' : 'No';
-        
+
         // Student Academic Info
         $csv['Phone #']     = $this->phone;
         $csv['Email']       = $this->email;
-        
+
         // Student Address
         $csv['Student Address']        = $this->student_address;
         $csv['Student City']           = $this->student_city;
         $csv['Student State']          = $this->student_state;
         $csv['Student Zip']            = $this->student_zip;
-        
+
         // Emergency Contact
         //$csv['Emergency Contact Name']     = $this->getEmergencyContactName();
         //$csv['Emergency Contact Relation'] = $this->getEmergencyContactRelation();
@@ -207,7 +207,7 @@ class Internship {
         $csv['Paid']                   = $this->paid == 1 ? 'Yes' : 'No';
         $csv['Stipend']                = $this->stipend == 1 ? 'Yes' : 'No';
         $csv['Unpaid']                 = $this->unpaid == 1 ? 'Yes' : 'No';
-        
+
         // Internship Type
         $csv['Experience Type']          = $this->getExperienceType();
 
@@ -236,7 +236,7 @@ class Internship {
 
         // Merge data from other objects.
         $csv = array_merge($csv, $a->getCSV());
-        
+
         if ($f instanceof Faculty) {
             $csv = array_merge($csv, $f->getCSV());
         } else {
@@ -244,7 +244,7 @@ class Internship {
         }
 
         $csv = array_merge($csv, $d->getCSV());
-        
+
         return $csv;
     }
 
@@ -258,7 +258,7 @@ class Internship {
         if($this->getLevel() == 'ugrad'){
             return true;
         }
-        
+
         return false;
     }
 
@@ -271,7 +271,7 @@ class Internship {
         if($this->getLevel() == 'grad'){
             return true;
         }
-        
+
         return false;
     }
 
@@ -312,7 +312,7 @@ class Internship {
 
     /**
      * Get the Faculty Supervisor object associated with this internship.
-     * 
+     *
      */
     public function getFaculty()
     {
@@ -409,7 +409,7 @@ class Internship {
     {
         return $this->international;
     }
-    
+
     public function isOiedCertified()
     {
         if($this->oied_certified == 1){
@@ -427,7 +427,7 @@ class Internship {
             return false;
         }
     }
-    
+
     public function isSecondaryPart()
     {
         if($this->secondary_part == 1){
@@ -436,7 +436,7 @@ class Internship {
             return false;
         }
     }
-    
+
     /**
      * Row tags for DBPager
      */
@@ -470,7 +470,7 @@ class Internship {
         $tags['TERM'] = PHPWS_Text::moduleLink(Term::rawToRead($this->term), 'intern', array('action' => 'edit_internship', 'internship_id' => $this->id));
 
         $tags['WORKFLOW_STATE'] = PHPWS_Text::moduleLink($this->getWorkflowState()->getFriendlyName(), 'intern', array('action' => 'edit_internship', 'internship_id' => $this->id));
-        
+
         //$tags['EDIT'] = PHPWS_Text::moduleLink('Edit', 'intern', array('action' => 'edit_internship', 'internship_id' => $this->id));
         //$tags['PDF'] = PHPWS_Text::moduleLink('Generate Contract', 'intern', array('action' => 'pdf', 'id' => $this->id));
 
@@ -479,25 +479,25 @@ class Internship {
 
     public function getLocCountry()
     {
-    	if (!$this->loc_country) {
-    		return 'United States';
-    	}
-    	return $this->loc_country;
+        if (!$this->loc_country) {
+            return 'United States';
+        }
+        return $this->loc_country;
     }
-    
+
     /*****************************
      * Accessor / Mutator Methods
     */
 
     /**
      * Returns the database id of this internship.
-     * 
+     *
      * @return int
      */
     public function getId(){
         return $this->id;
     }
-    
+
     /**
      * Returns the Banner ID of this student.
      *
@@ -510,12 +510,12 @@ class Internship {
     public function getEmailAddress(){
         return $this->email;
     }
-    
+
     public function getFacultyId()
     {
         return $this->faculty_id;
     }
-    
+
     /**
      * Returns the Department's database id
      * @return integer department id
@@ -524,11 +524,11 @@ class Internship {
     {
         return $this->department_id;
     }
-    
+
     /**
      * Returns the WorkflowState name for this internshio's current state/status.
      * Can be null if no state has been set yet.
-     * 
+     *
      * @return string
      */
     public function getStateName()
@@ -538,46 +538,46 @@ class Internship {
 
     /**
      * Sets the WorkflowState of this internship.
-     * 
+     *
      * @param WorkflowState $state
      */
     public function setState(WorkflowState $state){
         $this->state = $state->getName();
     }
-    
+
     /**
      * Returns the WorkflowState object represeting this internship's current state/status.
      * Returns null if no state has been set yet.
-     * 
+     *
      * @return WorkflowState
      */
     public function getWorkflowState()
     {
         $stateName = $this->getStateName();
-        
+
         if(is_null($stateName)){
             return null;
         }
-        
+
         PHPWS_Core::initModClass('intern', 'WorkflowStateFactory.php');
         return WorkflowStateFactory::getState($stateName);
     }
-    
+
     /**
      * Returns the campus on which this internship is based
-     * 
+     *
      * Valid values are: 'main_campus', 'distance_ed'
-     * 
+     *
      * @return String campus name
      */
     public function getCampus()
     {
         return $this->campus;
     }
-    
+
     /**
      * Returns true if this is a Distance Ed internship, false otherwise.
-     * 
+     *
      * @return boolean
      */
     public function isDistanceEd()
@@ -585,22 +585,22 @@ class Internship {
         if($this->getCampus() == 'distance_ed'){
             return true;
         }
-        
+
         return false;
     }
-    
+
     /**
      * Calculates and sets the metaphone value for this student's first name.
-     * 
+     *
      * @param string $firstName
      */
     public function setFirstNameMetaphone($firstName){
         $this->first_name_meta = metaphone($firstName);
     }
-    
+
     /**
      * Calculates and sets the metaphone value for this student's last name.
-     * 
+     *
      * @param string $lastName
      */
     public function setLastNameMetaphone($lastName){
@@ -609,21 +609,21 @@ class Internship {
 
     /**
      * Returns this student's level ('grad', or 'undergrad')
-     * 
+     *
      * @return string
      */
     public function getLevel(){
         return $this->level;
     }
-    
+
     public function getGpa(){
         return $this->gpa;
     }
-    
+
     public function getPhoneNumber(){
         return $this->phone;
     }
-    
+
     public function getStudentAddress()
     {
         $studentAddress = "";
@@ -639,60 +639,60 @@ class Internship {
         if(!empty($this->student_zip)){
             $studentAddress .= $this->student_zip;
         }
-        
+
         return $studentAddress;
     }
-    
+
     /**
      * Returns this internship's term
-     * 
+     *
      * @return int
      */
     public function getTerm(){
         return $this->term;
     }
-    
+
     public function getCourseNumber(){
         return $this->course_no;
     }
-    
+
     public function getCourseSection(){
         return $this->course_sect;
     }
-    
+
     public function getCourseTitle(){
         return $this->course_title;
     }
-    
+
     public function getCreditHours(){
         return $this->credits;
     }
-    
+
     public function getCorequisiteNum(){
-    	return $this->corequisite_number;
+        return $this->corequisite_number;
     }
-    
+
     public function getCorequisiteSection(){
-    	return $this->corequisite_section;
+        return $this->corequisite_section;
     }
-    
+
     public function getAvgHoursPerWeek(){
         return $this->avg_hours_week;
     }
-    
+
     public function isPaid(){
         if($this->paid == 1){
             return true;
         }
-        
+
         return false;
     }
-    
+
     public function isUnPaid(){
         if($this->unpaid == 1){
             return true;
         }
-        
+
         return false;
     }
 
@@ -703,16 +703,16 @@ class Internship {
     public function setExperienceType($type){
         $this->experience_type = $type;
     }
-    
+
     /***********************
      * Static Methods
-     ***********************/
+    ***********************/
     public static function getTypesAssoc()
     {
         return array('internship'       => 'Internship',
-                     'student_teaching' => 'Student Teaching',
-                     'practicum'        => 'Practicum',
-                     'clinical'         => 'Clinical');
+                'student_teaching' => 'Student Teaching',
+                'practicum'        => 'Practicum',
+                'clinical'         => 'Clinical');
     }
 }
 
