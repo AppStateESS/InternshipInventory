@@ -209,9 +209,6 @@ class Internship {
         $csv['Unpaid']                 = $this->unpaid == 1 ? 'Yes' : 'No';
         
         // Internship Type
-        //$csv['Internship']             = $this->internship == 1 ? 'Yes' : 'No';
-        //$csv['Student Teaching']       = $this->student_teaching == 1 ? 'Yes' : 'No';
-        //$csv['Clinical Practica']      = $this->clinical_practica == 1 ? 'Yes' : 'No';
         $csv['Experience Type']          = $this->getExperienceType();
 
         // Internship location data
@@ -239,12 +236,15 @@ class Internship {
 
         // Merge data from other objects.
         $csv = array_merge($csv, $a->getCSV());
-        $csv = array_merge($csv, $d->getCSV());
         
         if ($f instanceof Faculty) {
             $csv = array_merge($csv, $f->getCSV());
+        } else {
+            $csv = array_merge($csv, Faculty::getEmptyCsvRow());
         }
 
+        $csv = array_merge($csv, $d->getCSV());
+        
         return $csv;
     }
 

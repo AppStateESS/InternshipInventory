@@ -307,6 +307,23 @@ class Faculty implements DbStorable {
     {
         $this->zip = $zip;
     }
+    
+    /**
+     * Returns an empty row for CSV reproting. Used as a placeholder when no faculty member is selected.
+     * 
+     * @return Array <string, string>
+     */
+    public static function getEmptyCsvRow()
+    {
+        $csv = array();
+        
+        $csv['Faculty Super. First Name'] = '';
+        $csv['Faculty Super. Last Name']  = '';
+        $csv['Faculty Super. Phone']      = '';
+        $csv['Faculty Super. Email']      = '';
+        
+        return $csv;        
+    }
 }
 
 class FacultyDB extends Faculty {
