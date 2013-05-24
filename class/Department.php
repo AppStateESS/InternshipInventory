@@ -175,13 +175,9 @@ class Department extends Editable
 
         $dept->name = $name;
         $dept->hidden = 0; // Be sure to set a default value for this, otherwise it gets set to null and screws things up
+        $dept->corequisite = 0; // Be sure to set a default value for this, otherwise it gets set to null and screws things up
 
-        try{
-            $dept->save();
-        }catch(Exception $e){
-            NQ::simple('intern', INTERN_ERROR, "Error adding department <i>$name</i>.<br/>".$e->getMessage());
-            return;
-        }
+        $dept->save();
 
         // Successfully saved department to DB. Alert user and remind them the department they just saved.
         NQ::simple('intern', INTERN_SUCCESS, "Department <i>$name</i> added.");
