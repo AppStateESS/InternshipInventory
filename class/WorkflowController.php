@@ -2,6 +2,7 @@
 
 PHPWS_Core::initModClass('intern', 'WorkflowStateFactory.php');
 PHPWS_Core::initModClass('intern', 'ChangeHistory.php');
+PHPWS_Core::initModClass('intern', 'exception/MissingDataException.php');
 
 class WorkflowController {
     
@@ -32,6 +33,11 @@ class WorkflowController {
         if(!$this->t->allowed($this->internship)){
             throw new Exception("You do not have permission to set the internship to the requested status.");
         }
+        
+        // Check that the fields required to take this transition have been filled in
+        // Will throw an exception in the case of any missing data.
+        $this->t->checkRequiredFields($this->internship);
+        
         
         $sourceState = WorkflowStateFactory::getState($currStateName);
         

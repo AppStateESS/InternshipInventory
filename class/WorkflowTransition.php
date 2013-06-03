@@ -55,7 +55,13 @@ abstract class WorkflowTransition {
     
     public function doNotification(Internship $i, $note = null)
     {
-        // Do nothign by default. Send notifications here.
+        // Do nothing by default. Send notifications here.
+    }
+    
+    public function checkRequiredFields(Internship $i)
+    {
+        // Do nothing by default.
+        // Check for required data here before allowing internship to complete this transition.
     }
     
     public function getName()

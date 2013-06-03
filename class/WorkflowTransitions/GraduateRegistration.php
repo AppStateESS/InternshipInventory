@@ -41,4 +41,31 @@ class GraduateRegistration extends WorkflowTransition {
         PHPWS_Core::initModClass('intern', 'Email.php');
         Email::sendRegistrationConfirmationEmail($i, $agency);
     }
+    
+    public function checkRequiredFields(Internship $i)
+    {
+        // Check the course subject
+        $courseSubj = $i->getSubject();
+        if (!isset($courseSubj) || $courseSubj == '' || $courseSubj->id == 0) {
+            throw new MissingDataException("Please select a course subject.");
+        }
+    
+        // Check the course number
+        $courseNum = $i->getCourseNumber();
+        if (!isset($courseNum) || $courseNum == '') {
+            throw new MissingDataException("Please enter a course number.");
+        }
+    
+        // Check the course section number
+        $sectionNum = $i->getCourseSection();
+        if (!isset($sectionNum) || $sectionNum == '') {
+            throw new MissingDataException("Please enter a course section number.");
+        }
+    
+        // Check the course credit hours field
+        $creditHours = $i->getCreditHours();
+        if (!isset($creditHours) || $creditHours == '') {
+            throw new MissingDataException("Please enter the number of course credit hours.");
+        }
+    }
 }

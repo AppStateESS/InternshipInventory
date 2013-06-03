@@ -316,6 +316,8 @@ class SaveInternship {
             throw $e;
         }
 
+        PHPWS_DB::commit();
+        
         /***************************
          * State/Workflow Handling *
         ***************************/
@@ -323,7 +325,13 @@ class SaveInternship {
         PHPWS_Core::initModClass('intern', 'WorkflowTransitionFactory.php');
         $t = WorkflowTransitionFactory::getTransitionByName($_POST['workflow_action']);
         $workflow = new WorkflowController($i, $t);
-        $workflow->doTransition(isset($_POST['notes'])?$_POST['notes']:null);
+        try {
+            $workflow->doTransition(isset($_POST['notes'])?$_POST['notes']:null);
+        } catch (MissingDataException $e) {
+            NQ::simple('intern', INTERN_ERROR, $e->getMessage());
+            NQ::close();
+            return PHPWS_Core::reroute('index.php?module=intern&action=edit_internship&internship_id=' . $i->id);
+        }
 
         // Create a ChangeHisotry for the OIED certification.
         if($oiedCertified){
@@ -331,8 +339,6 @@ class SaveInternship {
             $ch = new ChangeHistory($i, Current_User::getUserObj(), time(), $currState, $currState, 'Certified by OIED');
             $ch->save();
         }
-
-        PHPWS_DB::commit();
 
         $workflow->doNotification(isset($_POST['notes'])?$_POST['notes']:null);
 
