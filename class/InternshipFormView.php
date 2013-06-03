@@ -298,7 +298,7 @@ class InternshipFormView {
         $this->form->setLabel('multipart', 'This internship is part of a multi-part experience.');
         
         $this->form->addCheck('secondary_part');
-        $this->form->setLabel('secondary_part', 'This is a secondary part (enrollment complete through first part).');
+        $this->form->setLabel('secondary_part', 'This is a secondary part (enrollment complete through primary part).');
         
         /***************
          * Course Info *

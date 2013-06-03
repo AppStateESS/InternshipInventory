@@ -238,14 +238,6 @@
           </td>
         </tr>
         <tr>
-          <td>{CREDITS_LABEL}</td>
-          <td>{CREDITS}</td>
-        </tr>
-        <tr>
-          <td>{AVG_HOURS_WEEK_LABEL}</td>
-          <td>{AVG_HOURS_WEEK}</td>
-        </tr>
-        <tr>
           <td colspan="2"><h3>Course Information</h3>
           </td>
         </tr>
@@ -266,6 +258,10 @@
         <tr>
           <td>{COURSE_SECT_LABEL}</td>
           <td>{COURSE_SECT}</td>
+        </tr>
+        <tr>
+          <td>{CREDITS_LABEL}</td>
+          <td>{CREDITS}</td>
         </tr>
         <tr>
           <td>{COURSE_TITLE_LABEL}</td>
@@ -301,6 +297,10 @@
               <span style="padding-left: 15px;">{STIPEND}{STIPEND_LABEL}</span><br />
               <span style="padding-left: 15px;">{PAY_RATE_LABEL}{PAY_RATE}</span>
             </fieldset></td>
+        </tr>
+        <tr>
+          <td>{AVG_HOURS_WEEK_LABEL}</td>
+          <td>{AVG_HOURS_WEEK}</td>
         </tr>
         <tr>
           <td colspan="2">

@@ -130,6 +130,7 @@ function otherStuff()
     		$("#internship_course_subj").attr('disabled', false);
     		$("#internship_course_no").attr('disabled', false);
     		$("#internship_course_sect").attr('disabled', false);
+    		$("#internship_credits").attr('disabled', false);
     		$("#internship_course_title").attr('disabled', false);
     	}
     });
@@ -140,6 +141,7 @@ function otherStuff()
     	$("#internship_course_subj").attr('disabled', true);
 		$("#internship_course_no").attr('disabled', true);
 		$("#internship_course_sect").attr('disabled', true);
+		$("#internship_credits").attr('disabled', true);
 		$("#internship_course_title").attr('disabled', true);
     }
     
@@ -150,12 +152,14 @@ function otherStuff()
     		$("#internship_course_subj").attr('disabled', true);
     		$("#internship_course_no").attr('disabled', true);
     		$("#internship_course_sect").attr('disabled', true);
+    		$("#internship_credits").attr('disabled', true);
     		$("#internship_course_title").attr('disabled', true);
     	}else{
     		// Enable course info
     		$("#internship_course_subj").attr('disabled', false);
     		$("#internship_course_no").attr('disabled', false);
     		$("#internship_course_sect").attr('disabled', false);
+    		$("#internship_credits").attr('disabled', false);
     		$("#internship_course_title").attr('disabled', false);
     	}
     });
