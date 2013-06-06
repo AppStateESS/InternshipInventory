@@ -96,7 +96,7 @@ class Department extends Editable
     /**
      * @Override Editable::forceDelete
      */
-    public function forceDelete()
+    public static function forceDelete()
     {
         /* This isn't called because it's not supported right now. Maybe later though....? */
         return NQ::simple('intern', INTERN_WARNING, 'Sorry, cannot forcefully delete a department.');

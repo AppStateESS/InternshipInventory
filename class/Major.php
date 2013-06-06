@@ -67,7 +67,7 @@ class Major extends Editable
     /**
      * @Override Editable::forceDelete
      */
-    public function forceDelete()
+    public static function forceDelete()
     {
         if(!Current_User::allow('intern', $this->getDeletePermission())){
             return NQ::simple('intern', INTERN_ERROR, 'You do not have permission to delete majors.');

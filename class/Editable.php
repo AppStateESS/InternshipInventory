@@ -19,23 +19,36 @@ abstract class Editable extends Model
      * Ex. Major implements Editable and it's 
      *     getEditAction method returns 'edit_major'.
      */
-    abstract static function getEditAction();
+    static function getEditAction()
+    {
+        throw new Exception('Not yet implemented.');
+    }
 
     /**
      * Get the name of the permission needed to edit the item.
      */
-    abstract static function getEditPermission();
+    static function getEditPermission()
+    {
+        throw new Exception('Not yet implemented.');
+    }
+    
 
     /**
      * Get the name of the permission needed to delete the item.
      */
-    abstract static function getDeletePermission();
+    static function getDeletePermission()
+    {
+        throw new Exception('Not yet implemented.');
+    }
 
     /**
      * Forcefully delete an item. If a student is related to 
      * the Editable item then set that relationship to null (if you can).
      */
-    abstract public function forceDelete();
+    static public function forceDelete()
+    {
+        throw new Exception('Not yet implemented.');
+    }
 
     /**
      * Rename the Editable item with ID $id to $newName.

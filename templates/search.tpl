@@ -1,6 +1,8 @@
 <h1 class="search-icon">Search Inventory</h1>
     {START_FORM}
-<div style="margin-left: 60px;float:left;margin-right:3em;">
+
+<div class="row">
+  <div class="span6">
     
       <div class="search-label">{NAME_LABEL}<br />
       {NAME}</div>
@@ -11,7 +13,7 @@
       <div class="search-label">{DEPT_LABEL}<br />
       {DEPT}</div>
 
-      <fieldset class="search-fieldset">
+      <fieldset>
         <legend>Level &amp; Major/Program</legend>
         <!-- BEGIN student_level_repeat -->
         {STUDENT_LEVEL}{STUDENT_LEVEL_LABEL}&nbsp;
@@ -21,22 +23,22 @@
         <span id="grad_drop">{GRAD_PROG}</span>
       </fieldset>
       
-      <fieldset class="search-fieldset">
+      <fieldset>
         <legend>Campus</legend>
         <!-- BEGIN campus_repeat -->
         {CAMPUS}{CAMPUS_LABEL}&nbsp;
         <!-- END campus_repeat -->
       </fieldset>
 
-      <fieldset class="search-fieldset">
+      <fieldset>
         <legend>Internship Type</legend>
         <!-- BEGIN type_repeat -->
         {TYPE}{TYPE_LABEL}<br/>
         <!-- END type_repeat -->
       </fieldset>
 
-</div>
-<div style="float:left;">
+  </div>
+  <div class="span6">
       <fieldset class="search-fieldset">
         <legend>Course</legend>
         {COURSE_SUBJ}<br />
@@ -64,7 +66,9 @@
         <!-- END workflow_state_repeat -->
       </fieldset>
 </div>
+</div>
 <div style="clear:both; float:right;margin-top:10px;margin-right:150px;">
   {SUBMIT} <input type="button" title="Reset search fields" name="reset" value="Clear Fields"/>
 </div>
 {END_FORM}
+
