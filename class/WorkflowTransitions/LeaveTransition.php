@@ -10,7 +10,7 @@ class LeaveTransition extends WorkflowTransition {
         return 'Leave as ' . $this->source->getFriendlyName();
     }
     
-    public function allowed(){
+    public function allowed(Internship $i){
         return true;
     }
     

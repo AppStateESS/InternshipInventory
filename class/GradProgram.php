@@ -19,7 +19,7 @@ class GradProgram extends Editable
     /**
      * @Override Model::getDb
      */
-    public function getDb()
+    public static function getDb()
     {
         $db = new PHPWS_DB('intern_grad_prog');
         return $db;

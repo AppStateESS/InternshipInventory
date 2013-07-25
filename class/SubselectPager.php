@@ -1084,6 +1084,7 @@ class SubselectPager extends DBPager {
         return $template;
     }
 
+    /*
     public function getPageDrop()
     {
         if (empty($this->total_pages)) {
@@ -1114,7 +1115,7 @@ class SubselectPager extends DBPager {
         }
 
         return implode("\n", $template);
-    }
+    }*/
 
     public function getSearchBox()
     {

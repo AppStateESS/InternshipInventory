@@ -111,8 +111,14 @@ class InternshipFormView {
         $this->form->setMatch('campus', 'main_campus');
         
         // Student level radio button
-        $levels = array('ugrad' => 'Undergraduate', 'grad' => 'Graduate');
-        $this->form->addRadioAssoc('student_level', $levels);
+        $levels = array('-1' => 'Choose level', 'ugrad' => 'Undergraduate', 'grad' => 'Graduate');
+        $this->form->addDropBox('student_level', $levels);
+        $this->form->setLabel('student_level', 'Level');
+        
+        // Student Major dummy box (gets replaced by dropdowns below using JS when student_level is selected)
+        $levels = array('-1' => 'Choose level first');
+        $this->form->addDropBox('student_major', $levels);
+        $this->form->setLabel('student_major', 'Major / Program');
         
         /*****************************
          * Undergrad Major Drop Down *

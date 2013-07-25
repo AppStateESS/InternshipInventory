@@ -232,11 +232,12 @@ function otherStuff()
     function handleFacultyReponseError(jqXHR, textStatus, errorThrown)
     {
     	console.log("Error loading facuty list. Please contact ESS.");
-    	console.log(textStats);
+    	console.log(textStatus);
     }
     
     // Trigger a change for the inital loading of faculty info
     $("#internship_department").change(); // Trigger an initial update
+    
     
     // Handle changes to the faculty drop down
     $("#internship_faculty").bind('change', function(){
@@ -255,6 +256,7 @@ function otherStuff()
     		$("#faculty_selector").show('slide', {direction: 'left'}, "fast");
     	});
     });
+    
     
     function selectFaculty(bannerId)
     {
@@ -315,11 +317,9 @@ function otherStuff()
     	});
     }
     
-    /*
-     * Location stuff.
-     *
-     * If domestic is clicked then change labels appropriately.
-     */
+    /***********************************************
+     * Location Domestic vs International handling *
+     ***********************************************/
     var domesticClick = function(){
     	/**** Internship Location ****/
     	// Show the state dropdown, add require field class
@@ -336,6 +336,7 @@ function otherStuff()
         
         /****** Other Fields ***********/
         
+        /*
         // Change province/territory label to say state.
         $("#internship_agency_state-label,#internship_agency_sup_state-label").text("State");
         // Swap out province textbox for state drop down
@@ -353,6 +354,7 @@ function otherStuff()
         $("#internship_agency_country,#internship_agency_sup_country").fadeOut('fast');
         // Hide labels too.
         $("#internship_agency_country,#internship_agency_sup_country").parent().siblings().fadeOut('fast');
+        */
         
         // Make the state field required again
         //$("#internship_loc_state").addClass('input-required');
@@ -383,6 +385,7 @@ function otherStuff()
         $("#internship_loc_zip-label").text("Postal Code");
         
         /********** Other Fields *******************/
+        /*
         
         // Change state to say province/territory.
     	$("#internship_agency_state-label,#internship_agency_sup_state-label").text("Province/Territory");
@@ -406,7 +409,9 @@ function otherStuff()
         // Show countries
         $("#internship_agency_country,#internship_agency_sup_country").fadeIn('fast');
         // Show labels too.
+        
         $("#internship_agency_country,#internship_agency_sup_country").parent().siblings().fadeIn('fast');
+        */
         sameAddressState($("input:checkbox[name='copy_address']").attr('checked'));
     };
 
@@ -426,31 +431,45 @@ function otherStuff()
     
     // If domestic is checked initially then do setup...
     if($("input:radio[name=location][value=domestic]").attr('checked')){
-        domesticClick();
+        //domesticClick();
     }
 
     // If internat is checked initially then do setup...
     if($("input:radio[name=location][value=internat]").attr('checked')){
-        internatClick();
+        //internatClick();
     }
 
-    /* Undergraduate Level and Major handling */
+    /******************************************
+     * Undergraduate Level and Major handling *
+     ******************************************/
     
-    var ugradClick = function()
+    // Set initial state
+    $("#internship_ugrad_major").hide();
+    $("#internship_grad_prog").hide();
+    //TODO: handle showing the correct drop down if student level is already set
+    
+    // Event handler for student level drop down
+    function handleLevelChange()
     {
-    	$("#grad_drop").hide();
-    	$("#ugrad_drop").show();
-    };
+        console.log($("#internship_student_level").val());
+        
+        if($("#internship_student_level").val() == 'ugrad'){
+            $("#internship_grad_prog").hide();
+            $("#internship_student_major").hide();
+            $("#internship_ugrad_major").show();
+        }else if ($("#internship_student_level").val() == 'grad'){
+            $("#internship_ugrad_major").hide();
+            $("#internship_student_major").hide();
+            $("#internship_grad_prog").show();
+        }else {
+            $("#internship_ugrad_major").hide();
+            $("#internship_grad_prog").hide();
+            $("#internship_student_major").show();
+        }
+    }
     
-    var gradClick = function()
-    {
-    	$("#ugrad_drop").hide();
-    	$("#grad_drop").show();
-    };
-    
-    // Bind event handler for radio button change
-    $("#internship_student_level_ugrad").click(function(){ugradClick();});
-    $("#internship_student_level_grad").click(function(){gradClick();});
+    // Bind event handler for drop down change
+    $("#internship_student_level").change(handleLevelChange);
     
     // Set initial state for student level radio button
     if($("#internship_student_level_ugrad").attr('checked')){

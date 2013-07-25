@@ -91,7 +91,7 @@ class InternshipUI implements UI {
             PHPWS_Core::initModClass('intern', 'EmergencyContactFormView.php');
             $emgContactDialog = new EmergencyContactFormView($i);
             
-            $tpl['ADD_EMERGENCY_CONTACT']    = '<input type="button" id="add-ec-button" value="Add Contact">';
+            $tpl['ADD_EMERGENCY_CONTACT'] = '<button class="btn btn-small pull-right" id="add-ec-button" style="margin-top:10px;"><i class="icon-plus"></i> Add Contact</button>';
             $tpl['EMERGENCY_CONTACT_DIALOG'] = $emgContactDialog->getHtml(); 
             
         } else {
@@ -115,7 +115,7 @@ class InternshipUI implements UI {
             $tpl['UPLOAD_DOC'] = "<input type='button' disabled='disabled' class='disabled' title='Must save internship first.' value='Add Document'/>";
 
             // Show a disabled emergency contact button
-            $tpl['ADD_EMERGENCY_CONTACT'] = "<input type='button' disabled='disabled' class='disabled' title='Must save internship first.' value='Add Contact'/>";
+            $tpl['ADD_EMERGENCY_CONTACT'] = '<button class="btn disabled btn-small pull-right" id="add-ec-button" style="margin-top:10px;" disabled="disabled" title="Please save this internship first."><i class="icon-plus"></i> Add Contact</button>';
             
         }
         
@@ -132,11 +132,7 @@ class InternshipUI implements UI {
              * Set classes on field we are missing.
             */
             foreach ($missing as $m) {
-                if ($m == 'location') {
-                    $form->addTplTag('LOC_HIGHLIGHT', ' style="background-color : #FF5D5D"');
-                } else {
-                    $form->setClass($m, 'missing');
-                }
+            	$form->setClass($m, 'missing');
             }
 
             /* Plug old values back into form fields. */

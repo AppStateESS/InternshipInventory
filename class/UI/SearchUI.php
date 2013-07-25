@@ -97,7 +97,7 @@ class SearchUI implements UI
         $form->setLabel('course_subj', 'Subject');
         
         $form->addText('course_no');
-        $form->setLabel('course_no', 'Number');
+        $form->setLabel('course_no', 'Course Number');
         $form->setSize('course_no', 6);
         $form->setMaxSize('course_no', 4);
         

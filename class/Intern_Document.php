@@ -15,10 +15,7 @@ class Intern_Document extends Model
     public $internship_id;
     public $document_fc_id; // File cabinet ID. References documents(id).
 
-    /**
-     * @Override Model::getDb
-     */
-    public function getDb(){
+    public static function getDb(){
         return new PHPWS_DB('intern_document');
     }
 

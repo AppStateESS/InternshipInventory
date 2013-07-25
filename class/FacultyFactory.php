@@ -30,7 +30,7 @@ class FacultyFactory {
         return $row;
     }
 
-    public function getFacultyObjectById($id)
+    public static function getFacultyObjectById($id)
     {
 
         if(!isset($id)) {

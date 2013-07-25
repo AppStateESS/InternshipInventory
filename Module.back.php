@@ -2,7 +2,7 @@
 
 namespace intern;
 
-class Module extends \ModuleAbstract {
+class Module extends \Module {
     
     public function __construct()
     {
@@ -27,6 +27,11 @@ class Module extends \ModuleAbstract {
     public function post()
     {
         require $this->directory . 'index.php';
+    }
+    
+    public function getController(\Request $request)
+    {
+    	
     }
 }
 ?>

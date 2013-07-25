@@ -1,6 +1,6 @@
 <?php
 
-PHPWS_Core::initCoreClass('Database.php');
+PHPWS_Core::initCoreClass('PHPWS_DB.php');
 
 /**
  * A database class tailored for doing sub-selects
