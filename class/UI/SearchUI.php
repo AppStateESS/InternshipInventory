@@ -30,15 +30,17 @@ class SearchUI implements UI
         $form->addHidden('action', 'results');
         $form->useRowRepeat();
 
+        /*
         $form->addText('name');
         $form->setLabel('name', "Name or Banner ID");
         $form->setClass('name', 'search-input name');
         $form->setExtra('name', 'autofocus');
-
+        */
 
         $terms = Term::getTermsAssoc();
         $form->addSelect('term_select', $terms);
         $form->setLabel('term_select', 'Term');
+        $form->setClass('term_select', 'form-control');
 
         // Deity can search for any department. Other users are restricted.
         if(Current_User::isDeity()){
@@ -48,6 +50,8 @@ class SearchUI implements UI
         }
         $form->addSelect('dept', $depts);
         $form->setLabel('dept', 'Department');
+        //$form->setClass('', 'form-control');
+        $form->setClass('dept', 'form-control');
         
         // If the user only has one department, select it for them
         // sizeof($depts) == 2 because of the 'Select Deparmtnet' option
@@ -57,17 +61,13 @@ class SearchUI implements UI
         }
 
         // Student level radio button
-        javascript('jquery');
-        javascriptMod('intern', 'majorSelector', array('form_id'=>$form->id));
+        //javascript('jquery');
+        //javascriptMod('intern', 'majorSelector', array('form_id'=>$form->id));
         $levels = array('ugrad' => 'Undergraduate', 'grad' => 'Graduate');
-        $form->addRadioAssoc('student_level', $levels);
-        //$form->setMatch('student_level', 'ugrad');
+        $form->addSelect('student_level', $levels);
+        $form->setLabel('student_level', 'Level');
+        $form->setClass('student_level', 'form-control');
         
-        // Campus
-        $campuses = array('main_campus'=>'Main Campus',
-                          'distance_ed'=>'Distance Ed');
-        $form->addRadioAssoc('campus', $campuses);
-
         // Undergrad major drop down
         if (isset($s)){
             $majors = Major::getMajorsAssoc($s->ugrad_major);
@@ -77,6 +77,7 @@ class SearchUI implements UI
 
         $form->addSelect('ugrad_major', $majors);
         $form->setLabel('ugrad_major', 'Undergraduate Majors &amp; Certificate Programs');
+        $form->setClass('ugrad_major', 'form-control');
 
         // Graduate major drop down
         if (isset($s)){
@@ -87,24 +88,32 @@ class SearchUI implements UI
 
         $form->addSelect('grad_prog', $progs);
         $form->setLabel('grad_prog', 'Graduate Majors &amp; Certificate Programs');
+        $form->setClass('grad_prog', 'form-control');
 
-
+        // Campus
+        $campuses = array('main_campus'=>'Main Campus',
+        		'distance_ed'=>'Distance Ed');
+        $form->addRadioAssoc('campus', $campuses);
+        
         /***************
          * Course Info *
          ***************/
         $subjects = Subject::getSubjects();
         $form->addSelect('course_subj', $subjects);
         $form->setLabel('course_subj', 'Subject');
+        $form->setClass('course_subj', 'form-control');
         
         $form->addText('course_no');
         $form->setLabel('course_no', 'Course Number');
         $form->setSize('course_no', 6);
         $form->setMaxSize('course_no', 4);
+        $form->setClass('course_no', 'form-control');
         
         $form->addText('course_sect');
         $form->setLabel('course_sect', 'Section');
         $form->setSize('course_sect', 6);
         $form->setMaxSize('course_sect', 4);
+        $form->setClass('course_sect', 'form-control');
 
 
         // Internship types.
@@ -134,10 +143,12 @@ class SearchUI implements UI
         $states = array_reverse($states, true);
         $form->addSelect('state', $states);
         $form->setLabel('state', 'State');
+        $form->setClass('state', 'form-control');
 
         /* Province search */
         $form->addText('prov');
         $form->setLabel('prov', 'Province/Territory');
+        $form->setClass('prov', 'form-control');
         
         // Workflow states
         $workflowStates = WorkflowStateFactory::getStatesAssoc();

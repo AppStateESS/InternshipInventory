@@ -1,19 +1,19 @@
 <div class="row">
-  <div class="span4">
+  <div class="col-lg-4">
     <h2>Add Internship</h2>
     <p>Create a new internship.</p>
-    <p><a class="btn btn-large" href="index.php?module=intern&action=edit_internship"><i class="icon-plus"></i> Add Internship</a></p>
+    <p><a class="btn btn-primary btn-large" href="index.php?module=intern&action=edit_internship"><i class="icon-plus"></i> Add Internship</a></p>
   </div>
-  <div class="span4">
+  <div class="col-lg-4">
     <h2>Search</h2>
     <p>Find an existing internship or generate reports based on search criteria.</p>
-    <p><a class="btn btn-large" href="index.php?module=intern&action=search"><i class="icon-search"></i> Search Inventory</a></p>
+    <p><a class="btn btn-primary btn-large" href="index.php?module=intern&action=search"><i class="icon-search"></i> Search Inventory</a></p>
   </div>
-  <div class="span4">
+  <div class="col-lg-4">
     <h2>Settings</h2>
     <p>Change settings and edit options.</p>
     <div class="btn-group">
-      <a class="btn btn-large dropdown-toggle" data-toggle="dropdown" href="#">
+      <a class="btn btn-primary btn-large dropdown-toggle" data-toggle="dropdown" href="#">
         <i class="icon-cog"></i>&nbsp;
         Settings &nbsp;
         <span class="caret"></span>

@@ -81,44 +81,65 @@ class InternshipFormView {
          */
         $this->form->addText('student_first_name');
         $this->form->setLabel('student_first_name', 'First Name');
+        $this->form->setClass('student_first_name', 'form-control');
+        
         $this->form->addText('student_middle_name');
         $this->form->setLabel('student_middle_name', 'Middle Name/Initial');
+        $this->form->setClass('student_middle_name', 'form-control');
+        
         $this->form->addText('student_last_name');
         $this->form->setLabel('student_last_name', 'Last Name');
+        $this->form->setClass('student_last_name', 'form-control');
+        
         $this->form->addText('banner');
         $this->form->setLabel('banner', 'Banner ID'); // Digits only
+        $this->form->setClass('banner', 'form-control');
+        
         $this->form->addText('student_phone');
         $this->form->setLabel('student_phone', 'Phone');
+        $this->form->setClass('student_phone', 'form-control');
+        
         $this->form->addText('student_email');
         $this->form->setLabel('student_email', 'ASU Email');
+        $this->form->setClass('student_email', 'form-control');
         
         /* Student Address */
         $this->form->addText('student_address');
         $this->form->setLabel('student_address','Address');
+        $this->form->setClass('student_address', 'form-control');
+        
         $this->form->addText('student_city');
         $this->form->setLabel('student_city','City');
+        $this->form->setClass('student_city', 'form-control');
+        
         $this->form->addDropBox('student_state', State::$UNITED_STATES);
         $this->form->setLabel('student_state','State');
+        $this->form->setClass('student_state', 'form-control');
+        
         $this->form->addText('student_zip');
         $this->form->setLabel('student_zip','Zip Code');
+        $this->form->setClass('student_zip', 'form-control');
         
         // GPA
         $this->form->addText('student_gpa');
         $this->form->setLabel('student_gpa', 'GPA');
+        $this->form->setClass('student_gpa', 'form-control');
         
         // Campus
         $this->form->addRadioAssoc('campus', array('main_campus'=>'Main Campus', 'distance_ed'=>'Distance Ed'));
         $this->form->setMatch('campus', 'main_campus');
         
-        // Student level radio button
+        // Student level
         $levels = array('-1' => 'Choose level', 'ugrad' => 'Undergraduate', 'grad' => 'Graduate');
         $this->form->addDropBox('student_level', $levels);
         $this->form->setLabel('student_level', 'Level');
+        $this->form->setClass('student_level', 'form-control');
         
         // Student Major dummy box (gets replaced by dropdowns below using JS when student_level is selected)
         $levels = array('-1' => 'Choose level first');
         $this->form->addDropBox('student_major', $levels);
         $this->form->setLabel('student_major', 'Major / Program');
+        $this->form->setClass('student_major', 'form-control');
         
         /*****************************
          * Undergrad Major Drop Down *
@@ -131,6 +152,7 @@ class InternshipFormView {
         
         $this->form->addSelect('ugrad_major', $majors);
         $this->form->setLabel('ugrad_major', 'Undergraduate Majors &amp; Certificate Programs');
+        $this->form->setClass('ugrad_major', 'form-control');
         
         
         /****************************
@@ -144,6 +166,7 @@ class InternshipFormView {
         
         $this->form->addSelect('grad_prog', $progs);
         $this->form->setLabel('grad_prog', 'Graduate Majors &amp; Certificate Programs');
+        $this->form->setClass('grad_prog', 'form-control');
         
         
         /************************
@@ -164,6 +187,7 @@ class InternshipFormView {
         }
         $this->form->addSelect('department', $depts);
         $this->form->setLabel('department', 'Department');
+        $this->form->setClass('department', 'form-control');
         
         // If the user only has one department, select it for them
         // sizeof($depts) == 2 because of the 'Select Deparmtnet' option
@@ -182,6 +206,7 @@ class InternshipFormView {
         $this->form->addSelect('faculty', array(-1=>'Select Faculty Advisor'));
         $this->form->setExtra('faculty', 'disabled');
         $this->form->setLabel('faculty', 'Faculty Advisor / Instructor of Record');
+        $this->form->setClass('faculty', 'form-control');
         
         // Hidden field for selected faculty member
         $this->form->addHidden('faculty_id');
@@ -192,69 +217,83 @@ class InternshipFormView {
          */
         $this->form->addText('agency_name');
         $this->form->setLabel('agency_name', 'Name');
+        $this->form->setClass('agency_name', 'form-control');
+        
         $this->form->addText('agency_address');
         $this->form->setLabel('agency_address', 'Address');
+        $this->form->setClass('agency_address', 'form-control');
+        
         $this->form->addText('agency_city');
         $this->form->setLabel('agency_city', 'City');
+        $this->form->setClass('agency_city', 'form-control');
+        
         $this->form->addSelect('agency_state', State::$UNITED_STATES);
         $this->form->setLabel('agency_state', 'State');
-        
-        /*
-        if (!is_null($this->intern)) {
-            if (!$this->intern->isDomestic()) {
-                
-                // International. Need to add the location as extra
-                // to the form element. Hackz
-                
-                $this->form->setExtra('agency_state', "where='{$this->agency->state}'");
-            }
-        }
-        */
+        $this->form->setClass('agency_state', 'form-control');
         
         $this->form->addText('agency_zip');
         $this->form->setLabel('agency_zip', 'Zip Code');
+        $this->form->setClass('agency_zip', 'form-control');
+        
         $this->form->addText('agency_country');
         $this->form->setLabel('agency_country', 'Country');
+        $this->form->setClass('agency_country', 'form-control');
+        
         $this->form->addText('agency_phone');
         $this->form->setLabel('agency_phone', 'Phone');
+        $this->form->setClass('agency_phone', 'form-control');
         
         /***
          * Agency supervisor info
         */
         $this->form->addText('agency_sup_first_name');
         $this->form->setLabel('agency_sup_first_name', 'First Name');
+        $this->form->setClass('agency_sup_first_name', 'form-control');
+        
         $this->form->addText('agency_sup_last_name');
         $this->form->setLabel('agency_sup_last_name', 'Last Name');
+        $this->form->setClass('agency_sup_last_name', 'form-control');
+        
         $this->form->addText('agency_sup_title');
         $this->form->setLabel('agency_sup_title', 'Title');
+        $this->form->setClass('agency_sup_title', 'form-control');
+        
         $this->form->addText('agency_sup_phone');
         $this->form->setLabel('agency_sup_phone', 'Phone');
+        $this->form->setClass('agency_sup_phone', 'form-control');
+        
         $this->form->addText('agency_sup_email');
         $this->form->setLabel('agency_sup_email', 'Email');
+        $this->form->setClass('agency_sup_email', 'form-control');
+        
         $this->form->addCheck('copy_address');
         $this->form->setLabel('copy_address', "Supervisor's address is same as agency's");
+        
         $this->form->addText('agency_sup_address');
         $this->form->setLabel('agency_sup_address', 'Address');
+        $this->form->setClass('agency_sup_address', 'form-control');
+        
         $this->form->addText('agency_sup_city');
         $this->form->setLabel('agency_sup_city', 'City');
+        $this->form->setClass('agency_sup_city', 'form-control');
+        
         $this->form->addSelect('agency_sup_state', State::$UNITED_STATES);
         $this->form->setLabel('agency_sup_state', 'State');
-        
-        /*
-        if (!is_null($this->intern)) {
-            if (!$this->intern->isDomestic()) {
-                 //International. Need to add the location as extra
-                 // to the form element. Hackz
-                $this->form->setExtra('agency_sup_state', "where='{$this->agency->state}'");
-            }
-        }*/
+        $this->form->setClass('agency_sup_state', 'form-control');
         
         $this->form->addText('agency_sup_zip');
         $this->form->setLabel('agency_sup_zip', 'Zip Code');
+        $this->form->setClass('agency_sup_zip', 'form-control');
+        
+        
         $this->form->addText('agency_sup_country');
         $this->form->setLabel('agency_sup_country', 'Country');
+        $this->form->setClass('agency_sup_country', 'form-control');
+        
         $this->form->addText('agency_sup_fax');
         $this->form->setLabel('agency_sup_fax', 'Fax');
+        $this->form->setClass('agency_sup_fax', 'form-control');
+        
         
         /**********************
          * Internship details *
@@ -271,18 +310,28 @@ class InternshipFormView {
         // Domestic fields
         $this->form->addText('loc_address');
         $this->form->setLabel('loc_address', 'Address');
+        $this->form->setClass('loc_address', 'form-control');
+        
         $this->form->addText('loc_city');
         $this->form->setLabel('loc_city', 'City');
+        $this->form->setClass('loc_city', 'form-control');
+        
         $this->form->addSelect('loc_state', State::getAllowedStates());
         $this->form->setLabel('loc_state', 'State');
+        $this->form->setClass('loc_state', 'form-control');
+        
         $this->form->addText('loc_zip');
         $this->form->setLabel('loc_zip', 'Zip');
+        $this->form->setClass('loc_zip', 'form-control');
         
         // Itn'l location fields
         $this->form->addText('loc_province');
         $this->form->setLabel('loc_province', 'Province/Territory');
+        $this->form->setClass('loc_province', 'form-control');
+        
         $this->form->addText('loc_country');
         $this->form->setLabel('loc_country', 'Country');
+        $this->form->setClass('loc_country', 'form-control');
         
         /*************
          * Term Info *
@@ -291,14 +340,23 @@ class InternshipFormView {
         $terms[-1] = 'Select Term';
         $this->form->addSelect('term', $terms);
         $this->form->setLabel('term', 'Select Term');
+        $this->form->setClass('term', 'form-control');
+        
         $this->form->addText('start_date');
         $this->form->setLabel('start_date', 'Start Date');
+        $this->form->setClass('start_date', 'form-control');
+        
         $this->form->addText('end_date');
         $this->form->setLabel('end_date', 'End Date');
+        $this->form->setClass('end_date', 'form-control');
+        
         $this->form->addText('credits');
         $this->form->setLabel('credits', 'Credit Hours');
+        $this->form->setClass('credits', 'form-control');
+        
         $this->form->addText('avg_hours_week');
         $this->form->setLabel('avg_hours_week', 'Average Hours per Week');
+        $this->form->setClass('avg_hours_week', 'form-control');
         
         $this->form->addCheck('multipart');
         $this->form->setLabel('multipart', 'This internship is part of a multi-part experience.');
@@ -312,23 +370,30 @@ class InternshipFormView {
         $subjects = Subject::getSubjects();
         $this->form->addSelect('course_subj', $subjects);
         $this->form->setLabel('course_subj', 'Subject');
+        $this->form->setClass('course_subj', 'form-control');
         
         $this->form->addText('course_no');
         $this->form->setLabel('course_no', 'Number');
+        $this->form->setClass('course_no', 'form-control');
         
         $this->form->addText('course_sect');
         $this->form->setLabel('course_sect', 'Section');
+        $this->form->setClass('course_sect', 'form-control');
         
         $this->form->addText('course_title');
         $this->form->setLabel('course_title', 'Title');
         $this->form->setMaxSize('course_title',28); // Limit to 28 chars, per Banner
+        $this->form->setClass('course_title', 'form-control');
         
         // Corequisite
         if (!is_null($this->intern)) {
         	$dept = $this->intern->getDepartment();
         	if ($dept->hasCorequisite()){
         		$this->form->addText('corequisite_course_num');
+        		$this->form->setClass('corequisite_course_num', 'form-control');
+        		
         		$this->form->addText('corequisite_course_sect');
+        		$this->form->setClass('corequisite_course_sect', 'form-control');
         	}
         }
         
@@ -343,6 +408,7 @@ class InternshipFormView {
         
         $this->form->addText('pay_rate');
         $this->form->setLabel('pay_rate', 'Pay Rate');
+        $this->form->setClass('pay_rate', 'form-control');
         
         /*******************
          * Internship Type *
@@ -364,6 +430,7 @@ class InternshipFormView {
          */
         $this->form->addTextArea('notes');
         $this->form->setLabel('notes', 'Notes');
+        $this->form->setClass('notes', 'form-control');
     }
 }
 
