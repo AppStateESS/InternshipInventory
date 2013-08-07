@@ -1,27 +1,31 @@
-<script type="text/javascript">
-	$(document).ready(function() {
-		if ($(".nq").text() !== "") {
-			$(".nq-container").hide();
-			$(".nq-container").slideDown();
-		}
-	});
-</script>
-<div class="nq-container">  
-    <!-- BEGIN NOTIFICATIONS -->
-    <div class="notification">
+<div class="nq-container">
+  <!-- BEGIN NOTIFICATIONS -->
     <!-- BEGIN ERROR -->
-    <p class="nq error">{ERROR}</p>
+    <div class="alert alert-danger">
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+      {ERROR}
+    </div>
     <!-- END ERROR -->
+
     <!-- BEGIN WARNING -->
-    <p class="nq warning">{WARNING}</p>
+    <div class="alert">
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+      {WARNING}
+    </div>
     <!-- END WARNING -->
+
     <!-- BEGIN SUCCESS -->
-    <p class="nq success">{SUCCESS}</p>
+    <div class="alert alert-success">
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+      {SUCCESS}
+    </div>
     <!-- END SUCCESS -->
 
     <!-- BEGIN UNKNOWN -->
-    <p class="nq unknown">{UNKNOWN}</p>
-    <!-- END UNKNOWN -->
+    <div class="alert alert-info">
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+      {UNKNOWN}
     </div>
-    <!-- END NOTIFICATIONS -->
+    <!-- END UNKNOWN -->
+  <!-- END NOTIFICATIONS -->
 </div>

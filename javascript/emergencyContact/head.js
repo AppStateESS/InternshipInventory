@@ -9,6 +9,7 @@
         		autoOpen: false,
         		modal: true,
         		title: 'Add Emergency Contact',
+        		width: 560,
         		buttons: {"Add": dialogAddButtonHandler,
         				  "Cancel": dialogCancelButtonHandler
         				}

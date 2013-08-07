@@ -60,19 +60,19 @@ function otherStuff()
      * If Paid is selected then make stipend selectable.
      */
     $("input:radio[value='paid']").click(function(){
-        $("input:checkbox[name='stipend']").attr('disabled', false);
+        $("input:checkbox[name='stipend']").prop('disabled', false);
     });
     /* If unpaid is selected uncheck stipend and make it unselectable */
     $("input:radio[value='unpaid']").click(function(){
-        $("input:checkbox[name='stipend']").attr('disabled', true);
-        $("input:checkbox[name='stipend']").attr('checked', false);
+        $("input:checkbox[name='stipend']").prop('disabled', true);
+        $("input:checkbox[name='stipend']").prop('checked', false);
     });
     
     /* Check whether to set stipend as disabled */
-    if($("input:radio[value='paid']").attr('checked')){
-        $("input:checkbox[name='stipend']").attr('disabled', false);
+    if($("input:radio[value='paid']").prop('checked')){
+        $("input:checkbox[name='stipend']").prop('disabled', false);
     }else{
-        $("input:checkbox[name='stipend']").attr('disabled', true);
+        $("input:checkbox[name='stipend']").prop('disabled', true);
     }
 
     /*******
@@ -83,10 +83,10 @@ function otherStuff()
      */
     
     $("#internship_oied_certified").change(function() {
-    	if($("#internship_oied_certified").attr('checked')){
-    		$("#internship_oied_certified_hidden").val('true');
+    	if($("#internship_oied_certified").prop('checked')){
+    		$("#internship_oied_certified_hidden").prop('true');
     	}else{
-    		$("#internship_oied_certified_hidden").val('false');
+    		$("#internship_oied_certified_hidden").prop('false');
     	}
     });
     
@@ -110,57 +110,59 @@ function otherStuff()
      * Multi-part / Secondary Part *
      */
     // Set inital state
-    if($("#internship_multipart").attr('checked')){
+    if($("#internship_multipart").prop('checked')){
     	// disable secondary part check
-    	$("#internship_secondary_part").attr('disabled', false);
+    	$("#internship_secondary_part").prop('disabled', false);
     }else{
-    	$("#internship_secondary_part").attr('disabled', true);
+    	$("#internship_secondary_part").prop('disabled', true);
     }
     
     // Bind event handler
     $("#internship_multipart").click(function(){
-    	if($("#internship_multipart").attr('checked')){
+        console.log($("#internship_multipart").prop('checked'));
+    	if($("#internship_multipart").prop('checked')){
+    	    console.log('checked');
     		// Enable secondary part
-    		$("#internship_secondary_part").attr('disabled', false);
+    		$("#internship_secondary_part").prop('disabled', false);
     	}else{
     		// Disable and clear secondary part
-    		$("#internship_secondary_part").attr('disabled', true);
-    		$("#internship_secondary_part").attr('checked', false);
+    		$("#internship_secondary_part").prop('disabled', true);
+    		$("#internship_secondary_part").prop('checked', false);
     		// Re-enable the course fields, in case they were disabled
-    		$("#internship_course_subj").attr('disabled', false);
-    		$("#internship_course_no").attr('disabled', false);
-    		$("#internship_course_sect").attr('disabled', false);
-    		$("#internship_credits").attr('disabled', false);
-    		$("#internship_course_title").attr('disabled', false);
+    		$("#internship_course_subj").prop('disabled', false);
+    		$("#internship_course_no").prop('disabled', false);
+    		$("#internship_course_sect").prop('disabled', false);
+    		$("#internship_credits").prop('disabled', false);
+    		$("#internship_course_title").prop('disabled', false);
     	}
     });
     
     // Set inital state
-    if($("#internship_secondary_part").attr('checked')){
+    if($("#internship_secondary_part").prop('checked')){
     	// Disable course info
-    	$("#internship_course_subj").attr('disabled', true);
-		$("#internship_course_no").attr('disabled', true);
-		$("#internship_course_sect").attr('disabled', true);
-		$("#internship_credits").attr('disabled', true);
-		$("#internship_course_title").attr('disabled', true);
+    	$("#internship_course_subj").prop('disabled', true);
+		$("#internship_course_no").prop('disabled', true);
+		$("#internship_course_sect").prop('disabled', true);
+		$("#internship_credits").prop('disabled', true);
+		$("#internship_course_title").prop('disabled', true);
     }
     
     // Bind the event handler
     $("#internship_secondary_part").click(function(){
-    	if($("#internship_secondary_part").attr('checked')){
+    	if($("#internship_secondary_part").prop('checked')){
     		// Disable course info
-    		$("#internship_course_subj").attr('disabled', true);
-    		$("#internship_course_no").attr('disabled', true);
-    		$("#internship_course_sect").attr('disabled', true);
-    		$("#internship_credits").attr('disabled', true);
-    		$("#internship_course_title").attr('disabled', true);
+    		$("#internship_course_subj").prop('disabled', true);
+    		$("#internship_course_no").prop('disabled', true);
+    		$("#internship_course_sect").prop('disabled', true);
+    		$("#internship_credits").prop('disabled', true);
+    		$("#internship_course_title").prop('disabled', true);
     	}else{
     		// Enable course info
-    		$("#internship_course_subj").attr('disabled', false);
-    		$("#internship_course_no").attr('disabled', false);
-    		$("#internship_course_sect").attr('disabled', false);
-    		$("#internship_credits").attr('disabled', false);
-    		$("#internship_course_title").attr('disabled', false);
+    		$("#internship_course_subj").prop('disabled', false);
+    		$("#internship_course_no").prop('disabled', false);
+    		$("#internship_course_sect").prop('disabled', false);
+    		$("#internship_credits").prop('disabled', false);
+    		$("#internship_course_title").prop('disabled', false);
     	}
     });
     
@@ -179,6 +181,10 @@ function otherStuff()
     	$("#faculty_phone").html('');
     	$("#faculty_fax").html('');
     	$("#faculty_address").html('');
+    	
+    	if($("#internship_department").val() == -1){
+    	    return;
+    	}
     	
     	// Make the request for the list of faculty members for the selected department
     	$.ajax({
@@ -283,13 +289,13 @@ function otherStuff()
     	if(faculty.phone != ''){
     	    $("#faculty_phone").html('<a href="tel:+1' + faculty.phone + '">' + faculty.phone + '</a>');
     	}else{
-    	    $("#faculty_phone").html('<span class="text disabled italic">has not been set</span>');
+    	    $("#faculty_phone").html('<small class="text-muted">Has not been set</small>');
     	}
     	
     	if(faculty.fax != '' && faculty.fax != null){
     	    $("#faculty_fax").html('<a href="fax:+1' + faculty.fax + '">' + faculty.fax + '</a>');
     	}else{
-    	    $("#faculty_fax").html('<span class="text disabled italic">has not been set</span>');
+    	    $("#faculty_fax").html('<small class="text-muted">Has not been set</small>');
     	}
 
     	// Format the address
@@ -301,7 +307,7 @@ function otherStuff()
                 address += ("<br />" + faculty.street_address2); 
             }
     	} else {
-    	    address += ('<span class="text disabled italic">has not been set</span>');
+    	    address += ('<small class="text-muted">Address has not been set</small>');
     	}
     	if(faculty.city != '' && faculty.city != null && faculty.state != '' && faculty.state != null){
     	    address += ("<br />" + faculty.city + ", " + faculty.state);
@@ -333,32 +339,36 @@ function otherStuff()
         // Remove required class to country (internship location)
         $("#internship_loc_country").removeClass('input-required');
         
+        // Change the postal code label to 'zip'
+        $("#internship_loc_zip-label").text("Zip");
         
-        /****** Other Fields ***********/
         
-        /*
-        // Change province/territory label to say state.
-        $("#internship_agency_state-label,#internship_agency_sup_state-label").text("State");
-        // Swap out province textbox for state drop down
-        $("#internship_agency_state").parent().html(stateSelect);
-        $("#internship_agency_sup_state").parent().html(supStateSelect);
-        //$("#internship_loc_state").parent().html(locStateSelect);
-
-        // Change postal code label to say zip.
-        $("#internship_agency_zip-label,#internship_agency_sup_zip-label,#internship_loc_zip-label").text("Zip Code");
-
-        // Remove requirement class from country (agency and supervisor)
-        $("#internship_loc_country").removeClass('input-required');
+        /****** Agency Location ********/
+        // Show the state dropdown
+        $("#internship_agency_state").parent().parent().fadeIn('fast');
         
-        // Hide country
-        $("#internship_agency_country,#internship_agency_sup_country").fadeOut('fast');
-        // Hide labels too.
-        $("#internship_agency_country,#internship_agency_sup_country").parent().siblings().fadeOut('fast');
-        */
+        // Hide the province and country fields
+        $("#internship_agency_province").parent().parent().fadeOut('fast');
+        $("#internship_agency_country").parent().parent().fadeOut('fast');
         
-        // Make the state field required again
-        //$("#internship_loc_state").addClass('input-required');
-        //$("#internship_loc_state-label").append('<span class="required-input">*</span>');
+        // Change the postal code label to 'zip code'
+        $("#internship_agency_zip-label").text("Zip");
+        
+        /****** Agency Supervisor ******/
+        // Show the state dropdown
+        $("#internship_agency_sup_state").parent().parent().fadeIn('fast');
+        
+        // Hide the province and country fields
+        $("#internship_agency_sup_province").parent().parent().fadeOut('fast');
+        $("#internship_agency_sup_country").parent().parent().fadeOut('fast');
+        
+        // Change the postal code label to 'zip'
+        $("#internship_agency_sup_zip-label").text("Zip");
+        
+        /****** Other Fields ********/
+        // Disable the OIED checkbox
+        $("#internship_oied_certified").prop('disabled', true);
+        $("#internship_oied_certified-label").addClass('text-muted');
         
         // Re-add handlers for copying state info. <mod/intern/javascript/copyAddress>
         sameAddressState($("input:checkbox[name='copy_address']").attr('checked'));
@@ -384,59 +394,52 @@ function otherStuff()
         // Change the zip code label to 'postal code'
         $("#internship_loc_zip-label").text("Postal Code");
         
-        /********** Other Fields *******************/
-        /*
         
-        // Change state to say province/territory.
-    	$("#internship_agency_state-label,#internship_agency_sup_state-label").text("Province/Territory");
-    	
-        // Create elements if they don't exist
-        if(territory == undefined || supTerritory == undefined){
-            territory = $("<input type='text' name='agency_state' id='internship_agency_state'>");
-            supTerritory = $("<input type='text' name='agency_sup_state' id='internship_agency_sup_state'>");
-            $(territory).val($("#internship_agency_state").attr("where"));
-            $(supTerritory).val($("#internship_agency_sup_state").attr("where"));
-        }
+        /********** Agency Location *******************/
+        // Hide the state dropdown
+        $("#internship_agency_state").parent().parent().fadeOut('fast');
         
-        // Swap state drop down for a text box
-        $("#internship_agency_state").parent().html(territory);
-        $("#internship_agency_sup_state").parent().html(supTerritory);
-
-        // Change zip code to say postal code
-        $("#internship_agency_zip-label,#internship_agency_sup_zip-label").text("Postal Code");
-
-        //$("#internship_loc_country-label").append('<span class="required-input">*</span>');
-        // Show countries
-        $("#internship_agency_country,#internship_agency_sup_country").fadeIn('fast');
-        // Show labels too.
+        // Show the province and country fields
+        $("#internship_agency_province").parent().parent().fadeIn('fast');
+        $("#internship_agency_country").parent().parent().fadeIn('fast');
         
-        $("#internship_agency_country,#internship_agency_sup_country").parent().siblings().fadeIn('fast');
-        */
+        // Change the zip code label to 'postal code'
+        $("#internship_agency_zip-label").text("Postal Code");
+        
+        
+        /********* Agency Supervisor Location ***********/
+        // Hide the state dropdown
+        $("#internship_agency_sup_state").parent().parent().fadeOut('fast');
+        
+        // Show the province and country fields
+        $("#internship_agency_sup_province").parent().parent().fadeIn('fast');
+        $("#internship_agency_sup_country").parent().parent().fadeIn('fast');
+        
+        // Change the zip code label to 'postal code'
+        $("#internship_agency_sup_zip-label").text("Postal Code");
+        
+        /****** Other Fields ********/
+        // Enable the OIED checkbox
+        $("#internship_oied_certified").prop('disabled', false);
+        $("#internship_oied_certified-label").removeClass('text-muted');
+        
         sameAddressState($("input:checkbox[name='copy_address']").attr('checked'));
     };
 
-    /* Attach above function to click event */
+    // Attach above function to click event
     $("input:radio[name=location][value=domestic]").click(function(){ domesticClick(); });
 
-    /* Attach above function to click event */
+    // Attach above function to click event
     $("input:radio[name=location][value=internat]").click(function(){ internatClick(); });
-    
-    // Save select box in variable..will be swapped a lot (possibly) later...
-    var stateSelect = $("select[name=agency_state]");
-    var supStateSelect = $("select[name=agency_sup_state]");
-    var locStateSelect = $("select[name=loc_state]");
-    var territory = undefined;
-    var supTerritory = undefined;
-    var locTerritory = undefined;
     
     // If domestic is checked initially then do setup...
     if($("input:radio[name=location][value=domestic]").attr('checked')){
-        //domesticClick();
+        domesticClick();
     }
 
     // If internat is checked initially then do setup...
     if($("input:radio[name=location][value=internat]").attr('checked')){
-        //internatClick();
+        internatClick();
     }
 
     /******************************************
@@ -446,13 +449,16 @@ function otherStuff()
     // Set initial state
     $("#internship_ugrad_major").hide();
     $("#internship_grad_prog").hide();
-    //TODO: handle showing the correct drop down if student level is already set
+
+    // Set initial state for student level drop down by calling the
+    // usual event handler if needed
+    if($("#internship_student_level").val() != -1){
+        handleLevelChange();
+    }
     
     // Event handler for student level drop down
     function handleLevelChange()
     {
-        console.log($("#internship_student_level").val());
-        
         if($("#internship_student_level").val() == 'ugrad'){
             $("#internship_grad_prog").hide();
             $("#internship_student_major").hide();
@@ -470,15 +476,4 @@ function otherStuff()
     
     // Bind event handler for drop down change
     $("#internship_student_level").change(handleLevelChange);
-    
-    // Set initial state for student level radio button
-    if($("#internship_student_level_ugrad").attr('checked')){
-    	ugradClick();
-    }else if($("#internship_student_level_grad").attr('checked')){
-    	gradClick();
-    }else{
-    	// Nothing is checked, hide both
-    	$("#ugrad_drop").hide();
-    	$("#grad_drop").hide();
-    }
 };

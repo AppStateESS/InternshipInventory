@@ -21,17 +21,18 @@ class WorkflowTransitionView {
         
         $transitions = $this->state->getTransitions($this->internship);
         
+        // Generate the array of radio buttons to add (one for each possible transition)
         $radioButtons = array();
         
         foreach($transitions as $t){
             $radioButtons[$t->getName()] = $t->getActionName();
         }
-        
+
+        // Add the radio buttons to the form
         $this->form->addRadioAssoc('workflow_action', $radioButtons);
 
+        // Find and disable any transitions that aren't allowed (but still show them in the list)
         $radio = $this->form->grab('workflow_action');
-        
-        //test($transitions,1);
         
         foreach($transitions as $t){
             if(!$t->allowed($this->internship)){

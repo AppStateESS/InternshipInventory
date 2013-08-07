@@ -6,12 +6,12 @@
   <div class="row">
     <div class="col-lg-4 col-lg-offset-4">
       <div class="form-group">
-        <label class="control-label" for="{NAME_ID}" style="display: none;">{NAME_LABEL_TEXT}</label> <input type="text" id="{NAME_ID}" name="{NAME_NAME}" class="form-control input-large" placeholder="Name or Banner ID" autofocus>
+        <label class="control-label" for="{NAME_ID}" style="display: none;">{NAME_LABEL_TEXT}</label> <input type="text" id="{NAME_ID}" name="{NAME_NAME}" class="form-control input-lg" placeholder="Name or Banner ID" autofocus>
       </div>
     </div>
 
     <div class="col-lg-4">
-      <button class="btn btn-primary pull-right btn-large" id="{SUBMIT_ID}">Search</button>
+      <button class="btn btn-primary pull-right btn-lg" id="{SUBMIT_ID}">Search</button>
     </div>
   </div>
 

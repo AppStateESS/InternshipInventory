@@ -91,7 +91,7 @@ class InternshipUI implements UI {
             PHPWS_Core::initModClass('intern', 'EmergencyContactFormView.php');
             $emgContactDialog = new EmergencyContactFormView($i);
             
-            $tpl['ADD_EMERGENCY_CONTACT'] = '<button class="btn btn-small pull-right" id="add-ec-button" style="margin-top:10px;"><i class="icon-plus"></i> Add Contact</button>';
+            $tpl['ADD_EMERGENCY_CONTACT'] = '<button type="button" class="btn btn-default btn-xs pull-right" id="add-ec-button"><i class="icon-plus"></i> Add Contact</button>';
             $tpl['EMERGENCY_CONTACT_DIALOG'] = $emgContactDialog->getHtml(); 
             
         } else {
@@ -109,13 +109,15 @@ class InternshipUI implements UI {
             $internshipForm = new InternshipFormView('Add Internship');
             $internshipForm->buildInternshipForm();
             
+            $tpl['AUTOFOCUS'] = 'autofocus';
+            
             /* Show form with empty fields. */
             $form = $internshipForm->getForm();
             // Show a disabled button in document list if we are adding an internship.
-            $tpl['UPLOAD_DOC'] = "<input type='button' disabled='disabled' class='disabled' title='Must save internship first.' value='Add Document'/>";
+            $tpl['UPLOAD_DOC'] = '<button class="btn btn-default btn-xs" disabled="disabled" title="Please save this internship first." value="Add Document"><i class="icon-plus"></i> Add document</button>';
 
             // Show a disabled emergency contact button
-            $tpl['ADD_EMERGENCY_CONTACT'] = '<button class="btn disabled btn-small pull-right" id="add-ec-button" style="margin-top:10px;" disabled="disabled" title="Please save this internship first."><i class="icon-plus"></i> Add Contact</button>';
+            $tpl['ADD_EMERGENCY_CONTACT'] = '<button class="btn btn-default btn-xs pull-right" id="add-ec-button" disabled="disabled" title="Please save this internship first."><i class="icon-plus"></i> Add Contact</button>';
             
         }
         
@@ -132,7 +134,7 @@ class InternshipUI implements UI {
              * Set classes on field we are missing.
             */
             foreach ($missing as $m) {
-            	$form->setClass($m, 'missing');
+            	$form->setClass($m, 'has-error');
             }
 
             /* Plug old values back into form fields. */
@@ -143,9 +145,9 @@ class InternshipUI implements UI {
                 /* Re-add hidden fields with object ID's */
                 $i = InternshipFactory::getInternshipById($_GET['internship_id']);
                 $a = $i->getAgency();
-                $f = $i->getFacultySupervisor();
+                //$f = $i->getFacultySupervisor();
                 $form->addHidden('agency_id', $a->id);
-                $form->addHidden('supervisor_id', $f->id);
+                //$form->addHidden('supervisor_id', $f->id);
                 $form->addHidden('id', $i->id);
             }
         }

@@ -107,7 +107,7 @@ $(function() {
                     NQ.notify('success', model.getFullName() + ' was removed from the selected department.');
                 },
                 error: function(delmodel, xhr, options) {
-                    NQ.notify('error', 'Could not remove ' + model.getFullName() + ' from selected department due to internal server error.');
+                    NQ.notify('danger', 'Could not remove ' + model.getFullName() + ' from selected department due to internal server error.');
                 }
             });
         }
@@ -214,7 +214,7 @@ $(function() {
                     self.remove();
                 },
                 error: function (model, xhr, options) {
-                    NQ.notify('error', 'A server error occurred attempting to save your changes.');
+                    NQ.notify('danger', 'A server error occurred attempting to save your changes.');
                 }
             });
         },
@@ -300,7 +300,7 @@ $(function() {
             var newid = model.get('id');
 
             if(this.collection.find(function(findmodel) { return findmodel.get('id') == newid; })) {
-                NQ.notify('warning', fullname + ' is already a member of ' + dept);
+                NQ.notify('alert', fullname + ' is already a member of ' + dept);
                 return;
             }
 
@@ -315,7 +315,7 @@ $(function() {
                     NQ.notify('success', fullname + " was added to " + dept);
                 },
                 error: function(model, xhr, options) {
-                    NQ.notify('error', 'A server error occurred attempting to add ' +
+                    NQ.notify('danger', 'A server error occurred attempting to add ' +
                         fullname + ' to ' + dept);
                 }
             });
@@ -359,25 +359,15 @@ $(function() {
         init: function() {
             var me = this;
             this.$nq = $('.nq');
-            this.$div = $('.notification')
+            this.$div = $('.alert')
                 .hide();
-            this.$close = $('.nq-close')
-                .click(function(e) {
-                    me.hideNotify();
-                })
         },
         notify: function(cls, msg) {
-            if(cls != 'success' && cls != 'warning' && cls != 'error')
+            if(cls != 'danger' && cls != 'success' && cls != 'info' && cls != 'alert')
                 throw 'Class must be either success, warning, or error';
-            this.$nq.removeClass('success warning error')
-                .addClass(cls)
-                .html(msg);
+            this.$div.removeClass('alert-success alert-danger alert-info alert-alert').addClass('alert-' + cls);
+            this.$nq.html(msg);
             this.$div.show();
-        },
-        hideNotify: function() {
-            this.$nq.removeClass('success warning error')
-                .empty();
-            this.$div.hide();
         }
     };
     NQ.init();

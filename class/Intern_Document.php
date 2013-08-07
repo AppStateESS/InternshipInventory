@@ -125,7 +125,7 @@ class Intern_Document extends Model
         $jsVars = array();
         $jsVars['QUESTION'] = 'Are you sure you want to delete this document?';
         $jsVars['ADDRESS']  = $link->getAddress();
-        $jsVars['LINK']     = '<img src="' . PHPWS_SOURCE_HTTP . 'images/icons/default/trash.png" id="delete-document-icon" title="Delete" />';
+        $jsVars['LINK']     = '<i class="icon-trash close"></i>';
         return javascript('confirm', $jsVars);
     }
 

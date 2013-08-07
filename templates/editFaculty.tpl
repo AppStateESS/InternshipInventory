@@ -1,3 +1,3 @@
-<h1>Faculty Members</h1>
+<h2>Faculty Members</h2>
 
 {FACULTY_EDIT}

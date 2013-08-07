@@ -25,17 +25,21 @@ class EmergencyContactFormView {
         $this->form->addHidden('action', 'addEmergencyContact');
         $this->form->addHidden('internshipId', $this->internshipId);
         
+        
         $this->form->addText('emergency_contact_name');
         $this->form->setClass('emergency_contact_name', 'form-text');
         $this->form->setLabel('emergency_contact_name', 'Name');
+        $this->form->setClass('emergency_contact_name', 'form-control');
         
         $this->form->addText('emergency_contact_relation');
         $this->form->setClass('emergency_contact_relation', 'form-text');
         $this->form->setLabel('emergency_contact_relation', 'Relationship');
+        $this->form->setClass('emergency_contact_relation', 'form-control');
         
         $this->form->addText('emergency_contact_phone');
         $this->form->setClass('emergency_contact_phone', 'form-text');
         $this->form->setLabel('emergency_contact_phone', 'Phone');
+        $this->form->setClass('emergency_contact_phone', 'form-control');
         
         return PHPWS_Template::process($this->form->getTemplate(), 'intern', 'emergencyContactForm.tpl');
     }

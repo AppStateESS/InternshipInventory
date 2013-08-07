@@ -13,7 +13,7 @@
 
   <!-- BEGIN generate_contract -->
   <div class="controls pull-right">
-    <a href="{PDF}" id="contract-button" class="btn"><i class="icon-file"></i> Generate Contract</a>
+    <a href="{PDF}" id="contract-button" class="btn btn-default"><i class="icon-file"></i> Generate Contract</a>
   </div>
   <!-- END generate_contract -->
 
@@ -27,7 +27,7 @@
         <legend>Student</legend>
 
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{BANNER_ID}">{BANNER_LABEL_TEXT}</label>
+          <label class="col-lg-3 control-label" for="{BANNER_ID}"{AUTOFOCUS}>{BANNER_LABEL_TEXT}</label>
           <div class="col-lg-6">{BANNER}</div>
         </div>
 
@@ -106,12 +106,15 @@
       <!-- Emergency Contact Info -->
       <fieldset>
         <legend>Emergency Contacts</legend>
-        {ADD_EMERGENCY_CONTACT}
-        <div id="emergency-contact-list-container" style="width: 325px">
-          <ul id="emergency-contact-list">
-          </ul>
+        <div class="row">
+          <div class="col-lg-9">
+            <ul id="emergency-contact-list" class="list-group">
+            </ul>
+            <div id="emergency-spinner" style="margin-top: 15px;"></div>
+          </div>
+          <div class="col-lg-3">{ADD_EMERGENCY_CONTACT}</div>
+
         </div>
-        <div id="emergency-spinner" style="margin-top: 15px;"></div>
       </fieldset>
 
       <fieldset>
@@ -146,7 +149,7 @@
       </div>
 
       <div class="form-group">
-        <label class="col-lg-3 control-label" for="{LOC_ZIP_ID}">{LOC_ZIP_LABEL_TEXT}</label>
+        <label class="col-lg-3 control-label" for="{LOC_ZIP_ID}" id="internship_loc_zip-label">{LOC_ZIP_LABEL_TEXT}</label>
         <div class="col-lg-6">{LOC_ZIP}</div>
       </div>
 
@@ -272,6 +275,10 @@
           </div>
         </div>
       </fieldset>
+      
+      <div class="form-group">
+          <button type="submit" class="btn btn-primary" id="{SUBMIT_ID}">{SUBMIT_VALUE}</button>
+      </div>
 
     </div>
     <!-- End of left column -->
@@ -285,17 +292,15 @@
         <p>
           Current Status: <strong>{WORKFLOW_STATE}</strong>
         </p>
-        <p>Next status</p>
-        <div class="form-group">
-          <div class="col-lg-10">
-            <div class="well">
-              <!-- BEGIN workflow_state_repeat -->
-              <div class="radio">
-                <label>{WORKFLOW_ACTION} {WORKFLOW_ACTION_LABEL}</label>
-              </div>
-              <!-- END workflow_state_repeat -->
-            </div>
+        <div class="panel">
+          <p><strong>Next status</strong></p>
+
+          <!-- BEGIN workflow_action_repeat -->
+          <div class="radio">
+            <label>{WORKFLOW_ACTION} {WORKFLOW_ACTION_LABEL}</label>
           </div>
+          <!-- END workflow_action_repeat -->
+
         </div>
         <div class="form-group">
           <div class="col-lg-10">
@@ -319,34 +324,71 @@
             <div class="col-lg-8">{FACULTY}</div>
           </div>
         </div>
-        <div id="faculty_details" style="margin-top: 1em;">
-          <div id="faculty_change" style="float: right;">
-            <a id="faculty-change" style="cursor: pointer">change</a>
+        <div id="faculty_details">
+
+          <div class="row">
+            <div id="faculty_change" class="col-lg-2">
+              <button id="faculty-change" type="button" class="btn btn-default btn-xs">
+                <i class="icon-chevron-left"></i> change
+              </button>
+            </div>
+            <div id="faculty_name" class="col-lg-10 lead"></div>
           </div>
-          <div id="faculty_name" style="font-size: 1.5em;"></div>
-          <div id="faculty_email" style="margin-top: 1em;"></div>
-          <div style="float: right; margin-right: 3em; margin-top: 1em;">
-            Fax: <span id="faculty_fax" style="margin-top: 1em;"></span>
+
+          <div class="row">
+            <div class="col-lg-5 col-lg-offset-2">
+
+              <div class="row">
+                <div class="col-lg-12">
+                  <p>
+                    <abbr title="Email address"><i class="icon-envelope"></i></abbr> &nbsp;<span id="faculty_email"></span>
+                  </p>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-12">
+                  <p>
+                    <abbr title="Phone"><i class="icon-phone"></i></abbr> &nbsp;<span id="faculty_phone"></span>
+                  </p>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-12">
+                  <p>
+                    <abbr title="Fax"><i class="icon-print"></i></abbr> &nbsp;<span id="faculty_fax"></span>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-5">
+              <abbr title="Address"><i class="icon-map-marker"></i></abbr> &nbsp;
+              <address id="faculty_address"></address>
+            </div>
           </div>
-          <div style="margin-top: 1em;">
-            Phone: <span id="faculty_phone" style="margin-top: 1em;"></span><br />
-          </div>
-          <div style="margin-top: 1em;">
-            Address:
-            <div id="faculty_address"></div>
-          </div>
+
         </div>
       </fieldset>
 
       <!-- Document List -->
       <fieldset>
         <legend>Documents</legend>
-        <div class="pull-right">{UPLOAD_DOC}</div>
-        <ul>
-          <!-- BEGIN docs -->
-          <li>{DOWNLOAD}{DELETE}</li>
-          <!-- END docs -->
-        </ul>
+        <div class="row">
+          <div class="col-lg-9">
+            <ul class="list-group">
+              <!-- BEGIN docs -->
+              <li class="list-group-item">
+                <i class="icon-file-alt"></i> {DOWNLOAD} &nbsp;{DELETE}
+              </li>
+              <!-- END docs -->
+            </ul>
+          </div>
+          <div class="col-lg-2">
+            {UPLOAD_DOC}
+          </div>
+        </div>
       </fieldset>
 
       <!-- Agency info -->
@@ -356,125 +398,134 @@
           <label class="col-lg-3 control-label" for="{AGENCY_NAME_ID}">{AGENCY_NAME_LABEL_TEXT}</label>
           <div class="col-lg-6">{AGENCY_NAME}</div>
         </div>
-        
+
         <div class="form-group">
           <label class="col-lg-3 control-label" for="{AGENCY_PHONE_ID}">{AGENCY_PHONE_LABEL_TEXT}</label>
           <div class="col-lg-6">{AGENCY_PHONE}</div>
         </div>
-        
+
         <div class="form-group">
           <label class="col-lg-3 control-label" for="{AGENCY_ADDRESS_ID}">{AGENCY_ADDRESS_LABEL_TEXT}</label>
           <div class="col-lg-6">{AGENCY_ADDRESS}</div>
         </div>
-        
+
         <div class="form-group">
           <label class="col-lg-3 control-label" for="{AGENCY_CITY_ID}">{AGENCY_CITY_LABEL_TEXT}</label>
           <div class="col-lg-6">{AGENCY_CITY}</div>
         </div>
-        
+
         <div class="form-group">
           <label class="col-lg-3 control-label" for="{AGENCY_STATE_ID}">{AGENCY_STATE_LABEL_TEXT}</label>
           <div class="col-lg-6">{AGENCY_STATE}</div>
         </div>
-        
+
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{AGENCY_ZIP_ID}">{AGENCY_ZIP_LABEL_TEXT}</label>
+          <label class="col-lg-3 control-label" for="{AGENCY_ZIP_ID}" id="internship_agency_zip-label">{AGENCY_ZIP_LABEL_TEXT}</label>
           <div class="col-lg-6">{AGENCY_ZIP}</div>
         </div>
-        
+
+        <div class="form-group">
+          <label class="col-lg-3 control-label" for="{AGENCY_PROVINCE_ID}">{AGENCY_PROVINCE_LABEL_TEXT}</label>
+          <div class="col-lg-6">{AGENCY_PROVINCE}</div>
+        </div>
+
         <div class="form-group">
           <label class="col-lg-3 control-label" for="{AGENCY_COUNTRY_ID}">{AGENCY_COUNTRY_LABEL_TEXT}</label>
           <div class="col-lg-6">{AGENCY_COUNTRY}</div>
         </div>
-        
+
       </fieldset>
-      
+
       <fieldset>
         <legend>Supervisor Info</legend>
         <div class="form-group">
           <label class="col-lg-3 control-label" for="{AGENCY_SUP__ID}">{AGENCY_SUP__LABEL_TEXT}</label>
           <div class="col-lg-6">{AGENCY_SUP_}</div>
         </div>
-        
+
         <div class="form-group">
           <label class="col-lg-3 control-label" for="{AGENCY_SUP_FIRST_NAME_ID}">{AGENCY_SUP_FIRST_NAME_LABEL_TEXT}</label>
           <div class="col-lg-6">{AGENCY_SUP_FIRST_NAME}</div>
         </div>
-        
+
         <div class="form-group">
           <label class="col-lg-3 control-label" for="{AGENCY_SUP_LAST_NAME_ID}">{AGENCY_SUP_LAST_NAME_LABEL_TEXT}</label>
           <div class="col-lg-6">{AGENCY_SUP_LAST_NAME}</div>
         </div>
-        
+
         <div class="form-group">
           <label class="col-lg-3 control-label" for="{AGENCY_SUP_TITLE_ID}">{AGENCY_SUP_TITLE_LABEL_TEXT}</label>
           <div class="col-lg-6">{AGENCY_SUP_TITLE}</div>
         </div>
-        
+
         <div class="form-group">
           <label class="col-lg-3 control-label" for="{AGENCY_SUP_PHONE_ID}">{AGENCY_SUP_PHONE_LABEL_TEXT}</label>
           <div class="col-lg-6">{AGENCY_SUP_PHONE}</div>
         </div>
-        
+
         <div class="form-group">
           <label class="col-lg-3 control-label" for="{AGENCY_SUP_EMAIL_ID}">{AGENCY_SUP_EMAIL_LABEL_TEXT}</label>
           <div class="col-lg-6">{AGENCY_SUP_EMAIL}</div>
         </div>
-        
-        <div class="form-group">
-          <label class="col-lg-3 control-label" for="{AGENCY_SUP__ID}">{AGENCY_SUP__LABEL_TEXT}</label>
-          <div class="col-lg-6">{AGENCY_SUP_}</div>
-        </div>
-        
+
         <div class="form-group">
           <label class="col-lg-3 control-label" for="{AGENCY_SUP_FAX_ID}">{AGENCY_SUP_FAX_LABEL_TEXT}</label>
           <div class="col-lg-6">{AGENCY_SUP_FAX}</div>
         </div>
-        
+
         {COPY_ADDRESS}{COPY_ADDRESS_LABEL}
-        
+
         <div class="form-group">
           <label class="col-lg-3 control-label" for="{AGENCY_SUP_ADDRESS_ID}">{AGENCY_SUP_ADDRESS_LABEL_TEXT}</label>
           <div class="col-lg-6">{AGENCY_SUP_ADDRESS}</div>
         </div>
-        
+
         <div class="form-group">
           <label class="col-lg-3 control-label" for="{AGENCY_SUP_CITY_ID}">{AGENCY_SUP_CITY_LABEL_TEXT}</label>
           <div class="col-lg-6">{AGENCY_SUP_CITY}</div>
         </div>
-        
+
         <div class="form-group">
           <label class="col-lg-3 control-label" for="{AGENCY_SUP_STATE_ID}">{AGENCY_SUP_STATE_LABEL_TEXT}</label>
           <div class="col-lg-6">{AGENCY_SUP_STATE}</div>
         </div>
-        
+
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{AGENCY_SUP_ZIP_ID}">{AGENCY_SUP_ZIP_LABEL_TEXT}</label>
+          <label class="col-lg-3 control-label" for="{AGENCY_SUP_ZIP_ID}" id="internship_agency_sup_zip-label">{AGENCY_SUP_ZIP_LABEL_TEXT}</label>
           <div class="col-lg-6">{AGENCY_SUP_ZIP}</div>
         </div>
-        
+
+        <div class="form-group">
+          <label class="col-lg-3 control-label" for="{AGENCY_SUP_PROVINCE_ID}">{AGENCY_SUP_PROVINCE_LABEL_TEXT}</label>
+          <div class="col-lg-6">{AGENCY_SUP_PROVINCE}</div>
+        </div>
+
         <div class="form-group">
           <label class="col-lg-3 control-label" for="{AGENCY_SUP_COUNTRY_ID}">{AGENCY_SUP_COUNTRY_LABEL_TEXT}</label>
-          <div class="col-lg-6">{AGENCY_COUNTRY_ZIP}</div>
+          <div class="col-lg-6">{AGENCY_SUP_COUNTRY}</div>
         </div>
-        
+
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary pull-right" id="{SUBMIT_ID}">{SUBMIT_VALUE}</button>
+        </div>
+
       </fieldset>
 
     </div>
     <!-- End of right column -->
   </div>
-
+  
   <div class="row">
-    <div class="col-lg-12">
-      <div class="form-group">{CHANGE_LOG}</div>
+    <div class="col-lg-6">
+      <div class="form-group">
+        <label for="{NOTES_ID}">Add a note</label> {NOTES}
+      </div>
     </div>
   </div>
 
   <div class="row">
     <div class="col-lg-12">
-      <div class="form-group">
-        <label for="{NOTES_ID}">Add a note</label> {NOTES}
-      </div>
+      <div class="form-group">{CHANGE_LOG}</div>
     </div>
   </div>
 

@@ -34,7 +34,6 @@ class Intern_NotifyUI implements UI
         }
 
         $content = PHPWS_Template::process($tags, 'intern', 'notification.tpl');
-        javascript('jquery');
         
         return $content;
     }

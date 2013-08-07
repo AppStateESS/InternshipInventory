@@ -20,13 +20,12 @@
         // Add method
         add: function(id, name, relation, phone){
             
-            var newContact = $('<li>');
+            var newContact = $('<li class="list-group-item">');
             newContact.html(name + ' &bull; ' + relation + ' &bull; ' + phone);
             
-            var deleteLink = $('<span>');
+            var deleteLink = $('<button type="button" class="close">');
             deleteLink.html("&times;");
             deleteLink.addClass('contact-delete-link');
-            deleteLink.attr('style', 'opacity:0;');
             //deleteLink.hide();
             
             
@@ -67,16 +66,6 @@
             newContact.append(deleteLink);
             $this.append(newContact);
             
-            
-            newContact.bind('mouseover', function(){
-                //deleteLink.show();
-                deleteLink.attr('style', 'opacity:1;');
-            });
-            
-            newContact.bind('mouseout', function(){
-                //deleteLink.hide();
-                deleteLink.attr('style', 'opacity:0;');
-            });
         }
     };
     

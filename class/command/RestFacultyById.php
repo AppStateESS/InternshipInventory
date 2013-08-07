@@ -55,9 +55,10 @@ class RestFacultyById {
     {
         PHPWS_Core::initModClass('intern', 'Faculty.php');
 
-        $postarray = json_decode(file_get_contents('php://input'), true);
+        //$postarray = json_decode(file_get_contents('php://input'), true);
 
-        //var_dump($postarray);
+        $req = Server::getCurrentRequest();
+        $postarray = json_decode($req->getRawData(), true);
 
         $faculty = new FacultyDB();
 

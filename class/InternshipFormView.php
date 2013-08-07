@@ -66,14 +66,17 @@ class InternshipFormView {
         
         /*****************
          * OIED Approval *
-        */
+         */
         $this->form->addCheck('oied_certified');
         $this->form->setLabel('oied_certified', 'Certified by Office of International Education and Development');
-        
+
+        // If the user is not allowed to do OIED certification, disable the checkbox
         if(!Current_User::allow('intern', 'oied_certify') || $this->intern->isDomestic()){
             $this->form->setExtra('oied_certified', 'disabled="disabled" disabled');
         }
-        
+
+        // Hidden field that shadows the real field, to ensure a value is always submitted,
+        // because disabled fields are not submitted
         $this->form->addHidden('oied_certified_hidden');
         
         /******************
@@ -136,7 +139,7 @@ class InternshipFormView {
         $this->form->setClass('student_level', 'form-control');
         
         // Student Major dummy box (gets replaced by dropdowns below using JS when student_level is selected)
-        $levels = array('-1' => 'Choose level first');
+        $levels = array('-1' => 'Choose student level first');
         $this->form->addDropBox('student_major', $levels);
         $this->form->setLabel('student_major', 'Major / Program');
         $this->form->setClass('student_major', 'form-control');
@@ -235,6 +238,10 @@ class InternshipFormView {
         $this->form->setLabel('agency_zip', 'Zip Code');
         $this->form->setClass('agency_zip', 'form-control');
         
+        $this->form->addText('agency_province');
+        $this->form->setLabel('agency_province', 'Province/Territory');
+        $this->form->setClass('agency_province', 'form-control');
+        
         $this->form->addText('agency_country');
         $this->form->setLabel('agency_country', 'Country');
         $this->form->setClass('agency_country', 'form-control');
@@ -285,6 +292,9 @@ class InternshipFormView {
         $this->form->setLabel('agency_sup_zip', 'Zip Code');
         $this->form->setClass('agency_sup_zip', 'form-control');
         
+        $this->form->addText('agency_sup_province');
+        $this->form->setLabel('agency_sup_province', 'Province');
+        $this->form->setClass('agency_sup_province', 'form-control');
         
         $this->form->addText('agency_sup_country');
         $this->form->setLabel('agency_sup_country', 'Country');
@@ -413,15 +423,6 @@ class InternshipFormView {
         /*******************
          * Internship Type *
          */
-        /*
-        $this->form->addCheck('internship_default_type');
-        $this->form->setLabel('internship_default_type', 'Internship');
-        $this->form->setMatch('internship_default_type', true); // Internship is checked by default
-        $this->form->addCheck('student_teaching_type');
-        $this->form->setLabel('student_teaching_type', 'Student Teaching');
-        $this->form->addCheck('clinical_practica_type');
-        $this->form->setLabel('clinical_practica_type', 'Clinical Practicum');
-        */
         $this->form->addRadioAssoc('experience_type', Internship::getTypesAssoc());
         $this->form->setMatch('experience_type', 'internship');
 

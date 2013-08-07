@@ -1,4 +1,4 @@
-<span class="info-header">Change History</span>
+<h3>Change History</h3>
 <table class="sub-form">
   <tr>
     <td>
