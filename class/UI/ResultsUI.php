@@ -46,7 +46,7 @@ class ResultsUI implements UI
             $ugradMajor = $_REQUEST['ugrad_major'];
         if(isset($_REQUEST['grad_prog']))
             $gradProg = $_REQUEST['grad_prog'];
-        if(isset($_REQUEST['student_level']))
+        if(isset($_REQUEST['student_level']) && $_REQUEST['student_level'] != '-1')
             $level = $_REQUEST['student_level'];
         if(isset($_REQUEST['type']))
             $type = $_REQUEST['type'];
@@ -291,7 +291,8 @@ class ResultsUI implements UI
         
         /***** Other Page Tags ******/
         $pageTags = array();
-        $pageTags['BACK_LINK'] = PHPWS_Text::moduleLink('&laquo; Back to Search', 'intern', array('action' => 'search'));
+        //$pageTags['BACK_LINK'] = PHPWS_Text::moduleLink('&laquo; Back to Search', 'intern', array('action' => 'search'));
+        $pageTags['BACK_LINK'] = PHPWS_Text::linkAddress('intern', array('action' => 'search'));
 
         $pager->addPageTags($pageTags);
 

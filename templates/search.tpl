@@ -1,4 +1,4 @@
-<h2 class="search-icon">Search Inventory</h2>
+<h2><i class="icon-search"></i> Search Inventory</h2>
 
 <form class="form-horizontal {FORM_CLASS}" id="{FORM_ID}" action="{FORM_ACTION}" autocomplete="{FORM_AUTOCOMPLETE}" method="{FORM_METHOD}"{FORM_ENCODE}>
   {HIDDEN_FIELDS}
@@ -41,7 +41,7 @@
 
         <div class="form-group">
           <label class="col-lg-3 control-label" for="{UGRAD_MAJOR_ID}">Major / Program</label>
-          <div class="col-lg-8">{UGRAD_MAJOR} {GRAD_PROG}</div>
+          <div class="col-lg-8">{STUDENT_MAJOR}{UGRAD_MAJOR}{GRAD_PROG}</div>
         </div>
       </fieldset>
 
@@ -119,7 +119,7 @@
         <legend>Status</legend>
         <div class="form-group">
           <div class="col-lg-10 col-lg-offset-2">
-            <div class="well">
+            <div class="panel">
               <!-- BEGIN workflow_state_repeat -->
               <div class="checkbox">
                 <label> {WORKFLOW_STATE} {WORKFLOW_STATE_LABEL_TEXT}</label>
@@ -135,7 +135,7 @@
     <div class="col-lg-4 col-lg-offset-8">
       <div class="form-group">
         <button type="submit" class="btn btn-primary" name="{SUBMIT_NAME}" value="Search">Search</button>
-        <button type="button" name="reset" class="btn">Clear Fields</button>
+        <button type="button" name="reset" class="btn btn-default">Clear Fields</button>
       </div>
     </div>
   </div>

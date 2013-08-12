@@ -1,8 +1,19 @@
-<h1 class="search-results-icon">Search Results</h1>
-<span>{BACK_LINK}</span><br />
-<span style="float:right;">{CSV_REPORT}</span>
+<h2><i class="icon-report"></i> Search Results</h2>
 
-<table id="search-results">
+<div class="row">
+  <div class="col-lg-1">
+    <p>
+      <a href="{BACK_LINK_URI}" class="btn btn-default btn-sm"><i class="icon-chevron-left"></i> Back to search</a>
+    </p>
+  </div>
+  <div class="col-lg-2 col-lg-offset-9">
+    {CSV_REPORT}
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-12">
+<table class="table table-stripped" id="search-results">
 <tr id="header-row">
   <th>{LAST_NAME_SORT}</th>
   <th>{BANNER_SORT}</th>
@@ -22,16 +33,13 @@
   <td>{WORKFLOW_STATE}</td>
 </tr>
 <!-- END listrows -->
-
-<!-- BEGIN empty_table -->
-<tr>
-    <td colspan=5 class="empty-message">{EMPTY_MESSAGE}</td>
-</tr>
-<!-- END empty_table -->
 </table>
 
 <div style="text-align:center">
 {TOTAL_ROWS} results<br />
 {PAGES}<br />
 {LIMITS}<br />
+</div>
+
+  </div>
 </div>

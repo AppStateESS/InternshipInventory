@@ -1,31 +1,33 @@
 function initMajors(form_id){
 	
-	console.log(form_id);
-	
-	var ugradClick = function()
-    {
-    	$("#grad_drop").hide();
-    	$("#ugrad_drop").show();
-    };
-    
-    var gradClick = function()
-    {
-    	$("#ugrad_drop").hide();
-    	$("#grad_drop").show();
-    };
-    
-    // Bind event handler for radio button change
-    $("#" + form_id + "_student_level_ugrad").click(function(){ugradClick();});
-    $("#" + form_id + "_student_level_grad").click(function(){gradClick();});
-    
-    // Set initial state for student level radio button
-    if($("#" + form_id + "_student_level_ugrad").attr('checked')){
-    	ugradClick();
-    }else if($("#" + form_id + "student_level_grad").attr('checked')){
-    	gradClick();
-    }else{
-    	// Nothing is checked, hide both
-    	$("#ugrad_drop").hide();
-    	$("#grad_drop").hide();
+	// Set initial state
+    $("#" + form_id +"_ugrad_major").hide();
+    $("#" + form_id +"_grad_prog").hide();
+
+    // Set initial state for student level drop down by calling the
+    // usual event handler if needed
+    if($("#" + form_id +"_student_level").val() != -1){
+        handleLevelChange();
     }
+    
+    // Event handler for student level drop down
+    function handleLevelChange()
+    {
+        if($("#" + form_id +"_student_level").val() == 'ugrad'){
+            $("#" + form_id +"_grad_prog").hide();
+            $("#" + form_id +"_student_major").hide();
+            $("#" + form_id +"_ugrad_major").show();
+        }else if ($("#" + form_id +"_student_level").val() == 'grad'){
+            $("#" + form_id +"_ugrad_major").hide();
+            $("#" + form_id +"_student_major").hide();
+            $("#" + form_id +"_grad_prog").show();
+        }else {
+            $("#" + form_id +"_ugrad_major").hide();
+            $("#" + form_id +"_grad_prog").hide();
+            $("#" + form_id +"_student_major").show();
+        }
+    }
+    
+    // Bind event handler for drop down change
+    $("#" + form_id +"_student_level").change(handleLevelChange);
 };
