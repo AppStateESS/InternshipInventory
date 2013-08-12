@@ -14,24 +14,19 @@ class Intern_Folder extends Folder
      */
     public function documentUpload($internshipId)
     {
-        $vars['width']   = 600;
-        $vars['height']  = 600;
-
         $link_var['folder_id'] = $this->id;
         $link_var['action'] = 'upload_document_form';
         $link_var['internship'] = $internshipId;
-        $label = dgettext('filecabinet', 'Add document(s)');
 
         $link = new PHPWS_Link(null, 'intern', $link_var, true);
         $link->convertAmp(false);
         $link->setSalted();
         $vars['address'] = $link->getAddress();
-        $vars['title'] = & $label;
         
-        $vars['label']   = $label;
-        $vars['type']    = 'button';
+        $label = dgettext('filecabinet', 'Add document');
 
-        return javascript('open_window', $vars);
+        javascript('open_window');
+        return '<button type="button" class="btn btn-default btn-sm" onClick="javascript:open_window(\'' . $link->getAddress() . '\', 600, 600, \'default970975506\', 1); return false;"><i class="icon-upload-alt"></i> ' . $label . '</button>';
     }
 }
 

@@ -1,57 +1,48 @@
 function copyAddress(){
-    /* When magic check-box is CHECKED copy the contents
-     * of the agency's address info into the supervisor's
-     * address info and update when changes are made.
-     * When the box is UN-CHECKED remove handlers.
-     */
-    function doIt(item){
-        if($(item).attr('checked')){
-            /* Copy values from agency */
-            $("input:text[name='agency_sup_address']").val($("input:text[name='agency_address']").val());
-            $("input:text[name='agency_sup_city']").val($("input:text[name='agency_city']").val());
-            $("#internship_agency_sup_state").val($("#internship_agency_state").val());
-            $("input:text[name='agency_sup_zip']").val($("input:text[name='agency_zip']").val());
-            $("input:text[name='agency_sup_country']").val($("input:text[name='agency_country']").val());
-            /* Setup handlers */
-            $("input:text[name='agency_address']").keyup(function(){
-                $("input:text[name='agency_sup_address']").val($("input:text[name='agency_address']").val());
-            });
-            $("input:text[name='agency_city']").keyup(function(){
-                $("input:text[name='agency_sup_city']").val($("input:text[name='agency_city']").val());
-            });
-            /* State might be a select or text box (for provinces) so we need to 
-             * listen for change events and keyup events 
-             */
-            $("#internship_agency_state").change(function(){
-                $("#internship_agency_sup_state").val($("#internship_agency_state").val()).change();
-            });
-            $("#internship_agency_state").keyup(function(){
-                $("#internship_agency_sup_state").val($("#internship_agency_state").val());
-            });
 
-            $("input:text[name='agency_zip']").keyup(function(){
-                $("input:text[name='agency_sup_zip']").val($("input:text[name='agency_zip']").val());
-            });
-            $("input:text[name='agency_country']").keyup(function(){
-                $("input:text[name='agency_sup_country']").val($("input:text[name='agency_country']").val());
-            });
-        }else{
-            /* Remove handlers */
-            $("input:text[name='agency_address']").unbind('keyup');
-            $("input:text[name='agency_city']").unbind('keyup');
-            $("input:text[name='agency_zip']").unbind('keyup');
-            $("input:text[name='agency_country']").unbind('keyup');
-            $("#internship_agency_state").unbind('change');
-            $("#internship_agency_state").unbind('keyup');
-        }
+    function doCopy(){
+        $("#internship_agency_sup_address").val($("#internship_agency_address").val());
+        $("#internship_agency_sup_city").val($("#internship_agency_city").val());
+        $("#internship_agency_sup_state").val($("#internship_agency_state").val());
+        $("#internship_agency_sup_zip").val($("#internship_agency_zip").val());
+        $("#internship_agency_sup_province").val($("#internship_agency_province").val());
+        $("#internship_agency_sup_country").val($("#internship_agency_country").val());
     }
 
-
-    $("input:checkbox[name='copy_address']").click(function(){
-        doIt(this);
+    function addHandlers(){
+        $("#internship_agency_address").keyup(doCopy);
+        $("#internship_agency_city").keyup(doCopy);
+        $("#internship_agency_state").change(doCopy);
+        $("#internship_agency_zip").keyup(doCopy);
+        $("#internship_agency_province").keyup(doCopy);
+        $("#internship_agency_country").keyup(doCopy);
+    }
+    
+    function removeHandlers(){
+        /* Remove handlers */
+        $("#internship_agency_address").unbind('keyup');
+        $("#internship_agency_city").unbind('keyup');
+        $("#internship_agency_state").unbind('change');
+        $("#internship_agency_zip").unbind('keyup');
+        $("#internship_agency_province").unbind('keyup');
+        $("#internship_agency_country").unbind('keyup');
+    }
+    
+    // Bind event handler for "same address" checkbox
+    $("#internship_copy_address").change(function(){
+        if($("#internship_copy_address").prop('checked')){
+            // Same address box was checked, so copy the address
+            doCopy();
+            // Setup the event handlers for copying later changes
+            addHandlers();
+        }else{
+            // Box was unchecked, so remove event handlers for later changes
+            removeHandlers();
+        }
     });
-    /* If checkbox is set already then go ahead and copy the address to make sure. */
-    if($("input:checkbox[name='copy_address']").attr('checked')){
-        doIt("input:checkbox[name='copy_address']");
+    
+    // Set initial state
+    if($("#internship_copy_address").prop('checked')){
+        addHandlers();
     }
 };

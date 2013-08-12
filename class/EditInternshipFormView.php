@@ -78,25 +78,27 @@ class EditInternshipFormView extends InternshipFormView {
         
         // Agency
         $this->form->addHidden('agency_id', $this->agency->id);
-        $vals['agency_name'] = $this->agency->name;
-        $vals['agency_address'] = $this->agency->address;
-        $vals['agency_city'] = $this->agency->city;
-        $vals['agency_state'] = $this->agency->state;
-        $vals['agency_zip'] = $this->agency->zip;
-        $vals['agency_country'] = $this->agency->country;
-        $vals['agency_phone'] = $this->agency->phone;
-        $vals['agency_sup_first_name'] = $this->agency->supervisor_first_name;
-        $vals['agency_sup_last_name'] = $this->agency->supervisor_last_name;
-        $vals['agency_sup_title'] = $this->agency->supervisor_title;
-        $vals['agency_sup_phone'] = $this->agency->supervisor_phone;
-        $vals['agency_sup_email'] = $this->agency->supervisor_email;
-        $vals['agency_sup_fax'] = $this->agency->supervisor_fax;
-        $vals['agency_sup_address'] = $this->agency->supervisor_address;
-        $vals['agency_sup_city'] = $this->agency->supervisor_city;
-        $vals['agency_sup_state'] = $this->agency->supervisor_state;
-        $vals['agency_sup_zip'] = $this->agency->supervisor_zip;
-        $vals['agency_sup_country'] = $this->agency->supervisor_country;
-        $vals['copy_address'] = $this->agency->address_same_flag == 't';
+        $vals['agency_name']            = $this->agency->name;
+        $vals['agency_address']         = $this->agency->address;
+        $vals['agency_city']            = $this->agency->city;
+        $vals['agency_state']           = $this->agency->state;
+        $vals['agency_zip']             = $this->agency->zip;
+        $vals['agency_province']        = $this->agency->province;
+        $vals['agency_country']         = $this->agency->country;
+        $vals['agency_phone']           = $this->agency->phone;
+        $vals['agency_sup_first_name']  = $this->agency->supervisor_first_name;
+        $vals['agency_sup_last_name']   = $this->agency->supervisor_last_name;
+        $vals['agency_sup_title']       = $this->agency->supervisor_title;
+        $vals['agency_sup_phone']       = $this->agency->supervisor_phone;
+        $vals['agency_sup_email']       = $this->agency->supervisor_email;
+        $vals['agency_sup_fax']         = $this->agency->supervisor_fax;
+        $vals['agency_sup_address']     = $this->agency->supervisor_address;
+        $vals['agency_sup_city']        = $this->agency->supervisor_city;
+        $vals['agency_sup_state']       = $this->agency->supervisor_state;
+        $vals['agency_sup_zip']         = $this->agency->supervisor_zip;
+        $vals['agency_sup_province']    = $this->agency->supervisor_province;
+        $vals['agency_sup_country']     = $this->agency->supervisor_country;
+        $vals['copy_address']           = $this->agency->address_same_flag == 't';
         
         // Internship
         $this->form->addHidden('internship_id', $this->intern->id);

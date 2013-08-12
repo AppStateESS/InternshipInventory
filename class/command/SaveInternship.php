@@ -105,8 +105,11 @@ class SaveInternship {
         if ($_REQUEST['location'] == 'internat') {
             /* Location is INTERNATIONAL. Country is required. Province was typed in. */
             $agency->state = $_REQUEST['agency_state'];
+            $agency->province = $_REQUEST['agency_province'];
             $agency->country = $_REQUEST['agency_country'];
-            $agency->supervisor_state = $_REQUEST['agency_state'];
+            
+            $agency->supervisor_state = $_REQUEST['agency_sup_state'];
+            $agency->supervisor_province = $_REQUEST['agency_sup_province'];
             $agency->supervisor_country = $_REQUEST['agency_sup_country'];
         } else {
             /* Location is DOMESTIC. Country is U.S. State was chosen from drop down */

@@ -16,6 +16,7 @@ class Agency extends Model {
     public $city;
     public $state;
     public $zip;
+    public $province;
     public $country;
     
     public $phone;
@@ -30,6 +31,7 @@ class Agency extends Model {
     public $supervisor_city;
     public $supervisor_state;
     public $supervisor_zip;
+    public $supervisor_province;
     public $supervisor_country;
     public $address_same_flag;
 

@@ -1,26 +1,7 @@
-/**
- * Since we are messing around with the state
- * fields we have to do some of the job that 
- * coypAddress.js does.
- * If sameAddress == true then the 
- * 'Same Address' checkbox is clicked.
+/***********************
+ * Form Save Handler
+ * Prevents duplicate form submission.
  */
-function sameAddressState(sameAddress)
-{
-    $("#internship_agency_state").unbind('change');
-    $("#internship_agency_state").unbind('keyup');
-
-    if(sameAddress){
-        // Re-add handlers
-        $("#internship_agency_state").change(function(){
-            $("#internship_agency_sup_state").val($("#internship_agency_state").val()).change();
-        });
-        $("#internship_agency_state").keyup(function(){
-            $("#internship_agency_sup_state").val($("#internship_agency_state").val());
-        });
-    }
-};
-
 function setupFormSubmit()
 {
 	$("#internship").submit(formSubmitHandler);
@@ -29,33 +10,18 @@ function setupFormSubmit()
 function formSubmitHandler()
 {
 	// Disable the button
-	$('input[type="submit"]').attr('disabled','disabled');
+	$('button[type="submit"]').prop('disabled','disabled');
 	
-	// Setup the spinner
-	var opts = {
-			  lines: 11, // The number of lines to draw
-			  length: 6, // The length of each line
-			  width: 2, // The line thickness
-			  radius: 5, // The radius of the inner circle
-			  rotate: 0, // The rotation offset
-			  color: '#000', // #rgb or #rrggbb
-			  speed: 1, // Rounds per second
-			  trail: 60, // Afterglow percentage
-			  shadow: false, // Whether to render a shadow
-			  hwaccel: false, // Whether to use hardware acceleration
-			  className: 'spinner', // The CSS class to assign to the spinner
-			  zIndex: 2e9, // The z-index (defaults to 2000000000)
-			  top: 'auto', // Top position relative to parent in px
-			  left: 'auto' // Left position relative to parent in px
-			};
-	var spinner = new Spinner(opts).spin();
-	$('input[type="submit"]').after(spinner.el);
-	
-	return;
+	$('button[type="submit"]').html('Saving... <i class="icon-spinner icon-spin"></i>');
 }
 
 function otherStuff()
 {
+    // Add error class to parent object (hopefully a div.form-group)
+    // of any form element with the data-has-error="true" attribute.
+    $("input[data-has-error='true'").parent().parent().addClass('has-error');
+    $("select[data-has-error='true'").parent().parent().addClass('has-error');
+    
     /* PAYMENT 
      * If Paid is selected then make stipend selectable.
      */
@@ -119,9 +85,7 @@ function otherStuff()
     
     // Bind event handler
     $("#internship_multipart").click(function(){
-        console.log($("#internship_multipart").prop('checked'));
     	if($("#internship_multipart").prop('checked')){
-    	    console.log('checked');
     		// Enable secondary part
     		$("#internship_secondary_part").prop('disabled', false);
     	}else{
@@ -174,7 +138,7 @@ function otherStuff()
     $("#internship_department").bind('change', function(event){
     	// Reset state of interface
     	$("#internship_faculty").prop('disabled', true); // Disable faculty drop down
-    	$("#internship_faculty").html("<option value='-1'>Loading...</option>"); // Reset list of options in drop down
+    	$("#internship_faculty").html("<option value='-1'></option>"); // Reset list of options in drop down
     	
     	$("#faculty_details").hide();
     	$("#faculty_email").html('');
@@ -371,7 +335,7 @@ function otherStuff()
         $("#internship_oied_certified-label").addClass('text-muted');
         
         // Re-add handlers for copying state info. <mod/intern/javascript/copyAddress>
-        sameAddressState($("input:checkbox[name='copy_address']").attr('checked'));
+        //sameAddressState($("input:checkbox[name='copy_address']").attr('checked'));
     };
 
     /**
@@ -423,7 +387,7 @@ function otherStuff()
         $("#internship_oied_certified").prop('disabled', false);
         $("#internship_oied_certified-label").removeClass('text-muted');
         
-        sameAddressState($("input:checkbox[name='copy_address']").attr('checked'));
+        //sameAddressState($("input:checkbox[name='copy_address']").attr('checked'));
     };
 
     // Attach above function to click event

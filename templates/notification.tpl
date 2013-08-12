@@ -3,28 +3,28 @@
     <!-- BEGIN ERROR -->
     <div class="alert alert-danger">
       <button type="button" class="close" data-dismiss="alert">&times;</button>
-      {ERROR}
+      <i class="icon-remove-sign"></i> {ERROR}
     </div>
     <!-- END ERROR -->
 
     <!-- BEGIN WARNING -->
     <div class="alert">
       <button type="button" class="close" data-dismiss="alert">&times;</button>
-      {WARNING}
+      <i class="icon-warning-sign"></i> {WARNING}
     </div>
     <!-- END WARNING -->
 
     <!-- BEGIN SUCCESS -->
     <div class="alert alert-success">
       <button type="button" class="close" data-dismiss="alert">&times;</button>
-      {SUCCESS}
+      <i class="icon-ok"></i> {SUCCESS}
     </div>
     <!-- END SUCCESS -->
 
     <!-- BEGIN UNKNOWN -->
     <div class="alert alert-info">
       <button type="button" class="close" data-dismiss="alert">&times;</button>
-      {UNKNOWN}
+      <i class="icon-info-sign"></i> {UNKNOWN}
     </div>
     <!-- END UNKNOWN -->
   <!-- END NOTIFICATIONS -->

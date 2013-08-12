@@ -1,39 +1,19 @@
 
 /**** Spinner *****/
-.spinner {
-	margin-left: 80px;
+div .spinner {
+	margin-left: 70px;
 }
 
-#link-list {
-    float: right;
-    margin-bottom: 10px;
-    font-weight: bold;
-    font-size: 10pt;
+
+form .required label:after {
+    color: #e32;
+    content: '*';
+    display:inline;
 }
 
 .add {
 	background: url('../img/contact-new.png') no-repeat 8px 50%;
     padding-left: 65px;
-}
-
-
-#everyone-list {
-    list-style-type: none;
-    list-style-image: none;
-}
-
-#everyone-list li {
-    margin-left: -15px;
-    font-size: 12pt;
-    margin-bottom: 10px;
-}
-
-#main-menu-icon {
-    float: right;
-    position: relative;
-    margin-top: 50px;
-    right: 250px;
-    padding-bottom: 50px;
 }
 
 .search-icon {
@@ -69,14 +49,6 @@
 .hidden-prog {
     font-style: italic;
     color: #888888;
-}
-
-.toggle1 {
-    background-color:#FFFFFF;
-}
-
-.toggle2 {
-    background-color:#FFFDCC;
 }
 
 .expanded {
@@ -116,7 +88,6 @@
 /*** Change log styles ***/
 #changelog h3 {
 	border-bottom: 1px solid #D6D6D6;
-	color: #999;
 	font-size:100%;
 	font-weight:normal;
 }
@@ -129,13 +100,7 @@
 	margin-left: 2em;
 }
 
-/******** Search Form Styles ****************/
-
 /****** Search Results Styles **************/
-#search-results {
-	border-collapse:collapse;
-}
-
 tr.result-row:hover{
 	background:#DDD;
 }
@@ -149,53 +114,11 @@ tr.result-row td a {
 	text-decoration:none;
 }
 
-tr.tablerow-bg-color1 {
-	background:#FFF;
-}
-
-tr.tablerow-bg-color2 {
-    background:#F0F0F0;
-}
-
 
 .empty-message {
     font-weight: bold;
     text-align: center;
     font-style: italic;
-}
-
-.internship-details {
-    padding-bottom: 30px;
-    float: left;
-    padding-top: 16px;
-}
-
-.internship-details th {
-    background: none;
-    border-bottom: 3px dotted #C0C0C0;
-}
-
-.detail-header {
-    font-size: 12pt;
-    padding-top: 10px;
-    color: #555555;
-}
-
-.document-list h4{
-    margin-left: -20px;
-    background: none;
-    border-bottom: 3px dotted #C0C0C0;
-}
-.document-list {
-    margin-left: -20px;
-}
-
-#internship_notes {
-    width: 100%;
-}
-
-#search-results {
-    width: 100%;
 }
 
 #name-term-dept-search {
@@ -212,10 +135,6 @@ tr.tablerow-bg-color2 {
     font-size: 10pt;
 }
 
-.disabled-button {
-    color: silver;
-    border: 1px solid silver;
-}
 
 .ui-autocomplete {
     width: 100px;

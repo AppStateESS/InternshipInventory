@@ -6,18 +6,23 @@
     });
 </script>
 
-<h1 class="add-icon">{TITLE}</h1>
+<h1>
+  <i class="icon-edit"></i> {TITLE}
+</h1>
 
 <form class="form-horizontal {FORM_CLASS}" id="{FORM_ID}" action="{FORM_ACTION}" autocomplete="{FORM_AUTOCOMPLETE}" method="{FORM_METHOD}"{FORM_ENCODE}>
   {HIDDEN_FIELDS}
 
-  <!-- BEGIN generate_contract -->
-  <div class="controls pull-right">
-    <a href="{PDF}" id="contract-button" class="btn btn-default"><i class="icon-file"></i> Generate Contract</a>
+  <div class="form-group">
+    <div class="col-lg-1 col-lg-offset-8">
+      <button type="submit" class="btn btn-primary" id="{SUBMIT_ID}">{SUBMIT_VALUE}</button>
+    </div>
+    <div class="col-lg-1 col-lg-offset-1">
+      <!-- BEGIN generate_contract -->
+      <a href="{PDF}" id="contract-button" class="btn btn-default"><i class="icon-file"></i> Generate Contract</a>
+      <!-- END generate_contract -->
+    </div>
   </div>
-  <!-- END generate_contract -->
-
-  <button type="submit" class="btn btn-primary" id="{SUBMIT_ID}">{SUBMIT_VALUE}</button>
 
   <div class="row">
     <!-- Left column -->
@@ -26,12 +31,12 @@
       <fieldset>
         <legend>Student</legend>
 
-        <div class="form-group">
+        <div class="form-group required">
           <label class="col-lg-3 control-label" for="{BANNER_ID}"{AUTOFOCUS}>{BANNER_LABEL_TEXT}</label>
           <div class="col-lg-6">{BANNER}</div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group required">
           <label class="col-lg-3 control-label" for="{STUDENT_FIRST_NAME_ID}">{STUDENT_FIRST_NAME_LABEL_TEXT}</label>
           <div class="col-lg-6">{STUDENT_FIRST_NAME}</div>
         </div>
@@ -41,12 +46,12 @@
           <div class="col-lg-6">{STUDENT_MIDDLE_NAME}</div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group required">
           <label class="col-lg-3 control-label" for="{STUDENT_LAST_NAME_ID}">{STUDENT_LAST_NAME_LABEL_TEXT}</label>
           <div class="col-lg-6">{STUDENT_LAST_NAME}</div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group required">
           <label class="col-lg-3 control-label" for="{STUDENT_EMAIL_ID}">{STUDENT_EMAIL_LABEL_TEXT}</label>
           <div class="col-lg-6 input-group">
             {STUDENT_EMAIL}<span class="input-group-addon">@appstate.edu</span>
@@ -73,12 +78,12 @@
           <div class="col-lg-6">{STUDENT_ZIP}</div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group required">
           <label class="col-lg-3 control-label" for="{STUDENT_PHONE_ID}">{STUDENT_PHONE_LABEL_TEXT}</label>
           <div class="col-lg-6">{STUDENT_PHONE}</div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group required">
           <label class="col-lg-3 control-label" for="{STUDENT_GPA_ID}">{STUDENT_GPA_LABEL_TEXT}</label>
           <div class="col-lg-6">{STUDENT_GPA}</div>
         </div>
@@ -164,7 +169,7 @@
       </div>
 
       <h4>Term Information</h4>
-      <div class="form-group">
+      <div class="form-group required">
         <label class="col-lg-3 control-label" for="{TERM_ID}">{TERM_LABEL_TEXT}</label>
         <div class="col-lg-6">{TERM}</div>
       </div>
@@ -237,32 +242,6 @@
       <!-- END corequisite -->
 
       <fieldset>
-        <legend>Compensation</legend>
-
-        <div class="form-group">
-          <div class="col-lg-6 col-lg-offset-3">
-            <!-- BEGIN payment_repeat -->
-            <label class="radio-inline"> {PAYMENT}{PAYMENT_LABEL_TEXT}</label>
-            <!-- END payment_repeat -->
-
-            <div class="checkbox">
-              <label>{STIPEND}&nbsp;{STIPEND_LABEL_TEXT}</label>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="col-lg-3 control-label" for="{PAY_RATE_ID}">Pay rate</label>
-          <div class="col-lg-3">{PAY_RATE}</div>
-        </div>
-
-        <div class="form-group">
-          <label class="col-lg-3 col-lg-offset-1control-label" for="{AVG_HOURS_WEEK_ID}">{AVG_HOURS_WEEK_LABEL_TEXT}</label>
-          <div class="col-lg-3">{AVG_HOURS_WEEK}</div>
-        </div>
-      </fieldset>
-
-      <fieldset>
         <legend>Type</legend>
         <div class="form-group">
           <div class="col-lg-6 col-lg-offset-3">
@@ -275,11 +254,6 @@
           </div>
         </div>
       </fieldset>
-      
-      <div class="form-group">
-          <button type="submit" class="btn btn-primary" id="{SUBMIT_ID}">{SUBMIT_VALUE}</button>
-      </div>
-
     </div>
     <!-- End of left column -->
 
@@ -293,7 +267,9 @@
           Current Status: <strong>{WORKFLOW_STATE}</strong>
         </p>
         <div class="panel">
-          <p><strong>Next status</strong></p>
+          <p>
+            <strong>Next status</strong>
+          </p>
 
           <!-- BEGIN workflow_action_repeat -->
           <div class="radio">
@@ -315,7 +291,7 @@
       <fieldset>
         <legend>Faculty Advisor</legend>
         <div id="faculty_selector">
-          <div class="form-group">
+          <div class="form-group required">
             <label class="col-lg-3 control-label" for="{DEPARTMENT_ID}">{DEPARTMENT_LABEL_TEXT}</label>
             <div class="col-lg-8">{DEPARTMENT}</div>
           </div>
@@ -379,22 +355,18 @@
           <div class="col-lg-9">
             <ul class="list-group">
               <!-- BEGIN docs -->
-              <li class="list-group-item">
-                <i class="icon-file-alt"></i> {DOWNLOAD} &nbsp;{DELETE}
-              </li>
+              <li class="list-group-item"><i class="icon-file-alt"></i> {DOWNLOAD} &nbsp;{DELETE}</li>
               <!-- END docs -->
             </ul>
           </div>
-          <div class="col-lg-2">
-            {UPLOAD_DOC}
-          </div>
+          <div class="col-lg-2">{UPLOAD_DOC}</div>
         </div>
       </fieldset>
 
       <!-- Agency info -->
       <fieldset>
         <legend>Agency Details</legend>
-        <div class="form-group">
+        <div class="form-group required">
           <label class="col-lg-3 control-label" for="{AGENCY_NAME_ID}">{AGENCY_NAME_LABEL_TEXT}</label>
           <div class="col-lg-6">{AGENCY_NAME}</div>
         </div>
@@ -438,10 +410,6 @@
 
       <fieldset>
         <legend>Supervisor Info</legend>
-        <div class="form-group">
-          <label class="col-lg-3 control-label" for="{AGENCY_SUP__ID}">{AGENCY_SUP__LABEL_TEXT}</label>
-          <div class="col-lg-6">{AGENCY_SUP_}</div>
-        </div>
 
         <div class="form-group">
           <label class="col-lg-3 control-label" for="{AGENCY_SUP_FIRST_NAME_ID}">{AGENCY_SUP_FIRST_NAME_LABEL_TEXT}</label>
@@ -473,7 +441,9 @@
           <div class="col-lg-6">{AGENCY_SUP_FAX}</div>
         </div>
 
-        {COPY_ADDRESS}{COPY_ADDRESS_LABEL}
+        <div class="checkbox">
+          <label> {COPY_ADDRESS} {COPY_ADDRESS_LABEL_TEXT} </label>
+        </div>
 
         <div class="form-group">
           <label class="col-lg-3 control-label" for="{AGENCY_SUP_ADDRESS_ID}">{AGENCY_SUP_ADDRESS_LABEL_TEXT}</label>
@@ -504,36 +474,55 @@
           <label class="col-lg-3 control-label" for="{AGENCY_SUP_COUNTRY_ID}">{AGENCY_SUP_COUNTRY_LABEL_TEXT}</label>
           <div class="col-lg-6">{AGENCY_SUP_COUNTRY}</div>
         </div>
-
-        <div class="form-group">
-          <button type="submit" class="btn btn-primary pull-right" id="{SUBMIT_ID}">{SUBMIT_VALUE}</button>
-        </div>
-
       </fieldset>
 
+      <fieldset>
+        <legend>Compensation</legend>
+
+        <div class="form-group">
+          <div class="col-lg-6 col-lg-offset-3">
+            <!-- BEGIN payment_repeat -->
+            <label class="radio-inline"> {PAYMENT}{PAYMENT_LABEL_TEXT}</label>
+            <!-- END payment_repeat -->
+
+            <div class="checkbox">
+              <label>{STIPEND}&nbsp;{STIPEND_LABEL_TEXT}</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-lg-3 control-label" for="{PAY_RATE_ID}">Pay rate</label>
+          <div class="col-lg-3">{PAY_RATE}</div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-lg-3 col-lg-offset-1control-label" for="{AVG_HOURS_WEEK_ID}">{AVG_HOURS_WEEK_LABEL_TEXT}</label>
+          <div class="col-lg-3">{AVG_HOURS_WEEK}</div>
+        </div>
+      </fieldset>
+      
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary pull-right" id="{SUBMIT_ID}">{SUBMIT_VALUE}</button>
+      </div>
     </div>
     <!-- End of right column -->
   </div>
-  
+
   <div class="row">
     <div class="col-lg-6">
       <div class="form-group">
         <label for="{NOTES_ID}">Add a note</label> {NOTES}
       </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-lg-12">
-      <div class="form-group">{CHANGE_LOG}</div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-lg-2">
       <div class="form-group">
-        <button type="submit" class="btn btn-primary" id="{SUBMIT_ID}">{SUBMIT_VALUE}</button>
+        <button type="submit" class="btn btn-primary pull-right" id="{SUBMIT_ID}">{SUBMIT_VALUE}</button>
       </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="form-group">{CHANGE_LOG}</div>
     </div>
   </div>
 
