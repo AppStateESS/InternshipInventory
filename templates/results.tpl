@@ -7,7 +7,7 @@
     </p>
   </div>
   <div class="col-lg-2 col-lg-offset-9">
-    {CSV_REPORT}
+    <a href="{EXPORT_URI}" class="btn btn-primary"><i class="icon-download-alt"></i> Export to Spreadsheet</a>
   </div>
 </div>
 
