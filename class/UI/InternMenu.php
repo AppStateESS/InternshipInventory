@@ -14,6 +14,8 @@ class InternMenu implements UI{
 	 * Main display method
 	 */
     public function display() {
+        javascript('jquery');
+        
         PHPWS_Core::initModClass('intern', 'Major.php');
 
         //housekeeping

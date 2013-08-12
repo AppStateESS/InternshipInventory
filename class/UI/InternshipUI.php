@@ -104,7 +104,7 @@ class InternshipUI implements UI {
                 PHPWS_Core::home();
             }
             
-            $tpl['TITLE'] = 'Add Student';
+            $tpl['TITLE'] = 'Add Internship';
             
             $internshipForm = new InternshipFormView('Add Internship');
             $internshipForm->buildInternshipForm();

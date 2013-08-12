@@ -1,4 +1,4 @@
-<h2><i class="icon-report"></i> Search Results</h2>
+<h2><i class="icon-search"></i> Search Results</h2>
 
 <div class="row">
   <div class="col-lg-1">

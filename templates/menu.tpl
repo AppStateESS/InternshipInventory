@@ -13,11 +13,11 @@
     <h2>Settings</h2>
     <p>Change settings and edit options.</p>
     <div class="btn-group">
-      <a class="btn btn-primary btn-large dropdown-toggle" data-toggle="dropdown" href="#">
+      <button type="button" class="btn btn-primary btn-large dropdown-toggle" data-toggle="dropdown">
         <i class="icon-cog"></i>&nbsp;
         Settings &nbsp;
         <span class="caret"></span>
-      </a>
+      </button>
       <ul class="dropdown-menu">
       <!-- dropdown menu links -->
         <!-- BEGIN majors --><li>{EDIT_MAJORS_LINK}</li><!-- END majors -->
