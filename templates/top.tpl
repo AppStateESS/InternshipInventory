@@ -1,20 +1,30 @@
 <div class="navbar">
-  <a class="navbar-brand" href="#">Internship Inventory</a>
-  <ul class="nav navbar-nav">
-    <li><a href="index.php?module=intern&action=edit_internship"><i class="icon-plus"></i> Add Internship</a></li>
-    <li><a href="index.php?module=intern&action=search"><i class="icon-search"></i> Search</a></li>
-    <li><a href="mailto:websupport@tux.appstate.edu?subject=Intern Inventory Help Request"><i class="icon-question-sign"></i> Get Help</a></li>
-  </ul>
+  <div class="container">
 
-  <ul class="nav navbar-nav pull-right">
-    <li class="dropdown">
-      <a href="#" class="dropdown-toggle" data-toggle="dropdown"> {USER_FULL_NAME} <b class="caret"></b></a>
-      <ul class="dropdown-menu">
-        <li>{LOGOUT}</li>
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+      <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+    </button>
+
+    <a class="navbar-brand" href="#">Internship Inventory</a>
+
+    <div class="nav-collapse collapse navbar-responsive-collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="index.php?module=intern&action=edit_internship"><i class="icon-plus"></i> Add Internship</a></li>
+        <li><a href="index.php?module=intern&action=search"><i class="icon-search"></i> Search</a></li>
+        <li><a href="mailto:websupport@tux.appstate.edu?subject=Intern Inventory Help Request"><i class="icon-question-sign"></i> Get Help</a></li>
       </ul>
-    </li>
-  </ul>
+
+      <ul class="nav navbar-nav pull-right">
+        <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"> {USER_FULL_NAME} <b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li>{LOGOUT}</li>
+          </ul></li>
+      </ul>
+    </div>
+  </div>
+  <!-- / .container -->
 </div>
+<!-- / .navbar -->
 
 
 <!-- BEGIN notification -->
