@@ -216,6 +216,7 @@ CREATE TABLE intern_agency (
        city VARCHAR NULL,
        state VARCHAR,
        zip VARCHAR NULL,
+       province character varying,
        country VARCHAR NOT NULL,
        phone VARCHAR NOT NULL,
        supervisor_first_name VARCHAR NULL,
@@ -228,6 +229,7 @@ CREATE TABLE intern_agency (
        supervisor_city VARCHAR NULL,
        supervisor_state VARCHAR NULL,
        supervisor_zip VARCHAR NULL,
+       supervisor_province character varying,
        supervisor_country VARCHAR NOT NULL DEFAULT 'United States',
        address_same_flag BOOLEAN NOT NULL DEFAULT TRUE,
        PRIMARY KEY(id)
