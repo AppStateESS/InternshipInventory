@@ -15,6 +15,8 @@ class ResultsUI implements UI {
 
     public function display()
     {
+        javascript('jquery');
+        
         PHPWS_Core::initModClass('intern', 'SubselectPager.php');
         PHPWS_Core::initModClass('intern', 'Internship.php');
         

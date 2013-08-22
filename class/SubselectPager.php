@@ -1158,40 +1158,6 @@ class SubselectPager extends DBPager {
         return implode("\n", $template);
     }
 
-    private function getNavigation(&$template)
-    {
-        if ($this->total_rows < 1) {
-            $total_row = $start_row = $end_row = 1;
-        } else {
-            $total_row = $this->total_rows;
-            $start_row = ( ($this->current_page - 1) * $this->limit ) + 1;
-            $end_row = $this->current_page * $this->limit;
-            if ($end_row > $total_row)
-                $end_row = $total_row;
-        }
-
-        $pages = $this->getPageLinks();
-
-        if (PHPWS_Error::isError($pages)) {
-            return $pages;
-        }
-
-        $template['PAGES'] = $pages;
-        $template['PAGE_LABEL'] = _('Page');
-        $template['LIMIT_LABEL'] = _('Limit');
-        $template['PAGE_DROP'] = $this->getPageDrop();
-        $template['TOTAL_ROWS'] = sprintf(_('%s - %s of %s'), $start_row, $end_row, $total_row);
-        $template['LIMITS'] = $this->getLimitList();
-
-        if (isset($this->searchColumn) || $this->sub_search) {
-            $template['SEARCH'] = $this->getSearchBox();
-        }
-
-        if (!empty($this->report_row)) {
-            $template['CSV_REPORT'] = $this->getReportLink();
-        }
-    }
-
     function createReport()
     {
         if ($this->class) {
