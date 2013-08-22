@@ -13,7 +13,7 @@
 
 <div class="row">
   <div class="col-lg-12">
-<table class="table table-stripped" id="search-results">
+<table class="table table-striped" id="search-results">
 <tr id="header-row">
   <th>{LAST_NAME_SORT}</th>
   <th>{BANNER_SORT}</th>
