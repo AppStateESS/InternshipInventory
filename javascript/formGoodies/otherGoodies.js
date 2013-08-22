@@ -19,8 +19,8 @@ function otherStuff()
 {
     // Add error class to parent object (hopefully a div.form-group)
     // of any form element with the data-has-error="true" attribute.
-    $("input[data-has-error='true'").parent().parent().addClass('has-error');
-    $("select[data-has-error='true'").parent().parent().addClass('has-error');
+    $("input[data-has-error='true']").parent().parent().addClass('has-error');
+    $("select[data-has-error='true']").parent().parent().addClass('has-error');
     
     /* PAYMENT 
      * If Paid is selected then make stipend selectable.
