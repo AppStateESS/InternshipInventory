@@ -119,12 +119,14 @@
         <legend>Status</legend>
         <div class="form-group">
           <div class="col-lg-10 col-lg-offset-2">
-            <div class="panel">
-              <!-- BEGIN workflow_state_repeat -->
-              <div class="checkbox">
-                <label> {WORKFLOW_STATE} {WORKFLOW_STATE_LABEL_TEXT}</label>
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <!-- BEGIN workflow_state_repeat -->
+                <div class="checkbox">
+                  <label> {WORKFLOW_STATE} {WORKFLOW_STATE_LABEL_TEXT}</label>
+                </div>
+                <!-- END workflow_state_repeat -->
               </div>
-              <!-- END workflow_state_repeat -->
             </div>
           </div>
         </div>
