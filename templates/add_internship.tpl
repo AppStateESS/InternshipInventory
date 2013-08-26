@@ -128,10 +128,10 @@
           <span class="help-block">Physical Location of Internship</span>
         </p>
 
-        <div class="form-group">
+        <div class="form-group required">
           <div class="col-lg-6 col-lg-offset-3">
             <!-- BEGIN location_repeat -->
-            <label class="radio-inline"> {LOCATION}{LOCATION_LABEL_TEXT} </label>
+            <label class="radio-inline control-label"> {LOCATION}{LOCATION_LABEL_TEXT} </label>
             <!-- END location_repeat -->
           </div>
         </div>
@@ -148,7 +148,7 @@
         <div class="col-lg-6">{LOC_CITY}</div>
       </div>
 
-      <div class="form-group">
+      <div class="form-group required">
         <label class="col-lg-3 control-label" for="{LOC_STATE_ID}">{LOC_STATE_LABEL_TEXT}</label>
         <div class="col-lg-6">{LOC_STATE}</div>
       </div>
@@ -163,7 +163,7 @@
         <div class="col-lg-6">{LOC_PROVINCE}</div>
       </div>
 
-      <div class="form-group">
+      <div class="form-group required">
         <label class="col-lg-3 control-label" for="LOC_COUNTRY_ID}">{LOC_COUNTRY_LABEL_TEXT}</label>
         <div class="col-lg-6">{LOC_COUNTRY}</div>
       </div>
@@ -193,9 +193,9 @@
           </div>
         </div>
 
-        <div class="col-lg-8 col-lg-offset-4">
+        <div class="col-lg-8 col-lg-offset-3">
           <div class="checkbox">
-            <label>{SECONDARY_PART}&nbsp;{SECONDARY_PART_LABEL_TEXT}</label>
+            <label id="secondar-part-label">{SECONDARY_PART}&nbsp;{SECONDARY_PART_LABEL_TEXT}</label>
           </div>
         </div>
       </div>
@@ -244,13 +244,13 @@
       <fieldset>
         <legend>Type</legend>
         <div class="form-group">
-          <div class="col-lg-6 col-lg-offset-3">
+          <div class="col-lg-5 col-lg-offset-3">
             <!-- BEGIN experience_type_repeat -->
             <label class="radio"> {EXPERIENCE_TYPE} {EXPERIENCE_TYPE_LABEL} </label>
             <!-- END experience_type_repeat -->
           </div>
-          <div class="col-lg-3">
-            <a id="internship-type-help-button" class="pull-right" style="cursor: pointer;"><i class="icon-question-sign" style="text-decoration: none;"></i> Type Definitions</a>
+          <div class="col-lg-4">
+            <a id="internship-type-help-button" class="pull-right"><i class="icon-question-sign"></i> Type Definitions</a>
           </div>
         </div>
       </fieldset>
@@ -266,17 +266,18 @@
         <p>
           Current Status: <strong>{WORKFLOW_STATE}</strong>
         </p>
-        <div class="panel">
-          <p>
-            <strong>Next status</strong>
-          </p>
-
-          <!-- BEGIN workflow_action_repeat -->
-          <div class="radio">
-            <label>{WORKFLOW_ACTION} {WORKFLOW_ACTION_LABEL}</label>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">Next status</h4>
           </div>
-          <!-- END workflow_action_repeat -->
+          <div class="panel-body">
 
+            <!-- BEGIN workflow_action_repeat -->
+            <div class="radio">
+              <label>{WORKFLOW_ACTION} {WORKFLOW_ACTION_LABEL}</label>
+            </div>
+            <!-- END workflow_action_repeat -->
+          </div>
         </div>
         <div class="form-group">
           <div class="col-lg-10">

@@ -21,24 +21,29 @@ function otherStuff()
     // of any form element with the data-has-error="true" attribute.
     $("input[data-has-error='true']").parent().parent().addClass('has-error');
     $("select[data-has-error='true']").parent().parent().addClass('has-error');
+    $("input[type='radio'][data-has-error='true']").parent().addClass('has-error');
     
     /* PAYMENT 
      * If Paid is selected then make stipend selectable.
      */
     $("input:radio[value='paid']").click(function(){
         $("input:checkbox[name='stipend']").prop('disabled', false);
+        $("input:checkbox[name='stipend']").parent().removeClass('text-muted');
     });
     /* If unpaid is selected uncheck stipend and make it unselectable */
     $("input:radio[value='unpaid']").click(function(){
         $("input:checkbox[name='stipend']").prop('disabled', true);
         $("input:checkbox[name='stipend']").prop('checked', false);
+        $("input:checkbox[name='stipend']").parent().addClass('text-muted');
     });
     
     /* Check whether to set stipend as disabled */
     if($("input:radio[value='paid']").prop('checked')){
         $("input:checkbox[name='stipend']").prop('disabled', false);
+        $("input:checkbox[name='stipend']").parent().removeClass('text-muted');
     }else{
         $("input:checkbox[name='stipend']").prop('disabled', true);
+        $("input:checkbox[name='stipend']").parent().addClass('text-muted');
     }
 
     /*******
@@ -75,12 +80,14 @@ function otherStuff()
     /**********
      * Multi-part / Secondary Part *
      */
-    // Set inital state
+    // Set inital state for primary/secondar part checkboxes
     if($("#internship_multipart").prop('checked')){
     	// disable secondary part check
     	$("#internship_secondary_part").prop('disabled', false);
+    	$("#internship_secondary_part").parent().removeClass('text-muted');
     }else{
     	$("#internship_secondary_part").prop('disabled', true);
+    	$("#internship_secondary_part").parent().addClass('text-muted');
     }
     
     // Bind event handler
@@ -88,10 +95,13 @@ function otherStuff()
     	if($("#internship_multipart").prop('checked')){
     		// Enable secondary part
     		$("#internship_secondary_part").prop('disabled', false);
+    		$("#internship_secondary_part").parent().removeClass('text-muted');
     	}else{
     		// Disable and clear secondary part
     		$("#internship_secondary_part").prop('disabled', true);
     		$("#internship_secondary_part").prop('checked', false);
+    		$("#internship_secondary_part").parent().addClass('text-muted');
+    		
     		// Re-enable the course fields, in case they were disabled
     		$("#internship_course_subj").prop('disabled', false);
     		$("#internship_course_no").prop('disabled', false);
@@ -101,7 +111,7 @@ function otherStuff()
     	}
     });
     
-    // Set inital state
+    // Set inital state for course info fields
     if($("#internship_secondary_part").prop('checked')){
     	// Disable course info
     	$("#internship_course_subj").prop('disabled', true);
