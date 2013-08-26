@@ -13,7 +13,7 @@
 
 <div class="row">
   <div class="col-lg-12">
-<table class="table table-striped" id="search-results">
+<table class="table table-striped table-hover" id="search-results">
 <tr id="header-row">
   <th>{LAST_NAME_SORT}</th>
   <th>{BANNER_SORT}</th>
@@ -24,7 +24,7 @@
 </tr>
 
 <!-- BEGIN listrows -->
-<tr class="result-row {TOGGLE}">
+<tr class="result-row">
   <td>{STUDENT_NAME}</td>
   <td>{STUDENT_BANNER}</td>
   <td>{DEPT_NAME}</td>

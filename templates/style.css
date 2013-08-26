@@ -1,37 +1,25 @@
 
+/* Turns off underline on icons in links */
+i[class^="icon-"]:before {
+    display: inline-block;
+    text-decoration: none;
+}
+
+a {
+    cursor: pointer;
+    text-decoration: none;
+}
+
 /**** Spinner *****/
 div .spinner {
 	margin-left: 70px;
 }
 
-
+/* Required field labels marked with splat */
 form .required label:after {
     color: #e32;
     content: '*';
     display:inline;
-}
-
-.add {
-	background: url('../img/contact-new.png') no-repeat 8px 50%;
-    padding-left: 65px;
-}
-
-.search-icon {
-    background: url('../img/edit-find.png') no-repeat 8px 50%;
-    padding-left: 60px;
-    line-height: 50px;
-}
-
-.add-icon {
-    background: url('../img/contact-new.png') no-repeat 8px 50%;
-    padding-left: 60px;
-    line-height: 50px;
-}
-
-.search-results-icon {
-    background: url('../img/intern_search_results_icon.png') no-repeat 8px 50%;
-    padding-left: 60px;
-    line-height: 50px;
 }
 
 #intern-totals {
@@ -59,11 +47,6 @@ form .required label:after {
 .expanded td {
     padding-left:5px;
     padding-right:5px;
-}
-
-.document-list img {
-    vertical-align: middle;
-    margin-top: -2px;
 }
 
 #department-pager {
@@ -101,24 +84,18 @@ form .required label:after {
 }
 
 /****** Search Results Styles **************/
-tr.result-row:hover{
-	background:#DDD;
+#search-results tr.result-row td {
+  padding: 0px;
+  white-space: nowrap;
 }
 
-tr.result-row td a {
+#search-results tr.result-row td a {
 	display:block;
 	height:100%;
 	width:100%;
-	
+	padding: 8px;
 	color:#000;
 	text-decoration:none;
-}
-
-
-.empty-message {
-    font-weight: bold;
-    text-align: center;
-    font-style: italic;
 }
 
 #name-term-dept-search {
@@ -129,21 +106,7 @@ tr.result-row td a {
     padding-left: 5px;
 }
 
-.search-header {
-    text-align: right;
-    font-weight: bold;
-    font-size: 10pt;
-}
-
 
 .ui-autocomplete {
     width: 100px;
-}
-
-/* Overriding default formatting of asterisk
-   for required fields in Form class */
-.required-input {
-    font-size: 16pt;
-    position: relative;
-    top: 5px;
 }
