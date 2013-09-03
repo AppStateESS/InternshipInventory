@@ -351,7 +351,7 @@
 
       <!-- Document List -->
       <fieldset>
-        <legend>Documents</legend>
+        <legend>Contract &amp; Documents</legend>
         <div class="row">
           <div class="col-lg-9">
             <ul class="list-group">
