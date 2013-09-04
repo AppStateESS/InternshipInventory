@@ -30,12 +30,8 @@ class SearchUI implements UI
         $form->addHidden('action', 'results');
         $form->useRowRepeat();
 
-        /*
         $form->addText('name');
         $form->setLabel('name', "Name or Banner ID");
-        $form->setClass('name', 'search-input name');
-        $form->setExtra('name', 'autofocus');
-        */
 
         $terms = Term::getTermsAssoc();
         $form->addSelect('term_select', $terms);
