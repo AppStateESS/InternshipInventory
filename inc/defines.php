@@ -7,17 +7,5 @@
 require_once(PHPWS_SOURCE_DIR . 'inc/intern_defines.php');
 
 
-/**
-* Name & Email address info - Used for sending out emails
-*/
-define('SYSTEM_NAME', 'Intern Inventory'); // Used as "from" name in emails
-define('EMAIL_ADDRESS', 'noreply'); // user name of email account to send email from
-define('DOMAIN_NAME', 'tux.appstate.edu'); // domain name to send email from
-define('FROM_ADDRESS', EMAIL_ADDRESS . '@' . DOMAIN_NAME); // fully qualified "from" address
-define('TO_DOMAIN', '@'. DOMAIN_NAME); // Default domain to send email to, beginning with '@'
-
-define('REGISTRAR_EMAIL_ADDRESS', 'infoserv@appstate.edu');
-
-define('EMAIL_FROM_ADDRESS', 'Internship Inventory <noreply@tux.appstate.edu>');
 
 ?>

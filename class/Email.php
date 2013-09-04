@@ -4,20 +4,24 @@ class Email {
 
     public function sendTemplateMessage($to, $subject, $tpl, $tags, $cc = null)
     {
+        $settings = InternSettings::getInstance();
+        
         $content = PHPWS_Template::process($tags, 'intern', $tpl);
 
-        self::sendEmail($to, EMAIL_FROM_ADDRESS, $subject, $content, $cc);
+        self::sendEmail($to, $settings->getEmailFromAddress(), $subject, $content, $cc);
     }
 
     public function sendEmail($to, $from, $subject, $content, $cc = NULL, $bcc = NULL)
     {
+        $settings = InternSettings::getInstance();
+        
         // Sanity checking
         if(!isset($to) || is_null($to)){
             return false;
         }
 
         if(!isset($from) || is_null($from)){
-            $from = SYSTEM_NAME . ' <' . FROM_ADDRESS .'>';
+            $from = $settings->getSystemName() . ' <' . $settings->getEmailFromAddress() .'>';
         }
 
         if(!isset($subject) || is_null($subject)){
@@ -106,6 +110,8 @@ class Email {
     {
         PHPWS_Core::initModClass('intern', 'Subject.php');
 
+        $settings = InternSettings::getInstance();
+        
         $subjects = Subject::getSubjects();
 
         $faculty = $i->getFaculty();
@@ -204,20 +210,24 @@ class Email {
         */
         // Send distance ed internship to speedse, per trac #110
         if ($i->isDistanceEd()) {
-            $to = 'speedse@appstate.edu';
+            $to = $settings->getDistanceEdEmail();
 
             // Send all international or graduate internships to 'hicksmp', per trac #102
         } else if ($i->isInternational() || $i->isGraduate()) {
-            $to = 'hicksmp@appstate.edu';
+            $to = $settings->getGraduateRegEmail();
 
             // Otherwise, send it to the general Registrar address
         } else {
-            $to = REGISTRAR_EMAIL_ADDRESS;
+            $to = $settings->getRegistrarEmail();
+        }
+        
+        if(!isset($to) || $to == null) {
+            throw new InvalidArgumentException('Missing configurating for email addresses (registrar)');
         }
 
         // CC the faculty members
         if ($faculty instanceof Faculty) {
-            $cc = array($faculty->getUsername() . '@appstate.edu');
+            $cc = array($faculty->getUsername() . $settings->getEmailDomain());
         } else {
             $cc = array();
         }
@@ -236,6 +246,8 @@ class Email {
     public static function sendGradSchoolNotification(Internship $i, Agency $a)
     {
         PHPWS_Core::initModClass('intern', 'Subject.php');
+        
+        $settings = InternSettings::getInstance();
 
         $subjects = Subject::getSubjects();
 
@@ -314,7 +326,9 @@ class Email {
             $intlSubject = '';
         }
 
-        $to = 'hirsthp@appstate.edu'; // To Holly Hirst, for now
+        $emails = $settings->getGradSchoolEmail(); // To Holly Hirst, for now
+        
+        $to = explode(',', $emails);
 
         $subject = 'Internship Approval Needed: ' . $intlSubject . '[' . $i->getBannerId() . '] ' . $i->getFullName();
 
@@ -323,6 +337,8 @@ class Email {
 
     public static function sendIntlInternshipCreateNotice(Internship $i)
     {
+        $settings = InternSettings::getInstance();
+        
         $tpl = array();
 
         $tpl['NAME'] = $i->getFullName();
@@ -336,7 +352,7 @@ class Email {
         $dept = new Department($i->department_id);
         $tpl['DEPARTMENT'] = $dept->getName();
 
-        $to = array('newelllm@appstate.edu');
+        $to = $settings->getInternationalOfficeEmail();
         $subject = "International Internship Created - {$i->first_name} {$i->last_name}";
 
         Email::sendTemplateMessage($to, $subject, 'email/IntlInternshipCreateNotice.tpl', $tpl);
@@ -344,6 +360,8 @@ class Email {
 
     public static function sendRegistrationConfirmationEmail(Internship $i, Agency $a)
     {
+        $settings = InternSettings::getInstance();
+        
         $tpl = array();
 
         PHPWS_Core::initModClass('intern', 'Subject.php');
@@ -415,9 +433,9 @@ class Email {
             $intlSubject = '';
         }
 
-        $to = $i->email . '@appstate.edu';
+        $to = $i->email . $settings->getEmailDomain();
         if ($faculty instanceof Faculty) {
-            $cc = array($faculty->getUsername() . '@appstate.edu');
+            $cc = array($faculty->getUsername() . $settings->getEmailDomain());
         } else {
             $cc = array();
         }
@@ -438,8 +456,9 @@ class Email {
         $tpl = array();
 
         PHPWS_Core::initModClass('intern', 'Subject.php');
-
         $subjects = Subject::getSubjects();
+        
+        $settings = InternSettings::getInstance();
 
         $faculty = $i->getFaculty();
 
@@ -508,9 +527,9 @@ class Email {
 
         $tpl['NOTE'] = $note;
 
-        $to = $i->email . '@appstate.edu';
+        $to = $i->email . $settings->getEmailDomain();
         if ($faculty instanceof Faculty) {
-            $cc = array($faculty->getUsername() . '@appstate.edu');
+            $cc = array($faculty->getUsername() . $settings->getEmailDomain());
         } else {
             $cc = array();
         }
