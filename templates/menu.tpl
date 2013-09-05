@@ -10,25 +10,11 @@
     <p><a class="btn btn-primary btn-large" href="index.php?module=intern&action=search"><i class="icon-search"></i> Search Inventory</a></p>
   </div>
   <div class="col-lg-4">
-    <h2>Settings</h2>
-    <p>Change settings and edit options.</p>
-    <div class="btn-group">
-      <button type="button" class="btn btn-primary btn-large dropdown-toggle" data-toggle="dropdown">
-        <i class="icon-cog"></i>&nbsp;
-        Settings &nbsp;
-        <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu">
-      <!-- dropdown menu links -->
-        <!-- BEGIN majors --><li>{EDIT_MAJORS_LINK}</li><!-- END majors -->
-        <!-- BEGIN grad --><li>{EDIT_GRAD_LINK}</li><!-- END grad -->
-        <!-- BEGIN depts --><li>{EDIT_DEPARTMENTS_LINK}</li><!-- END depts -->
-        <!-- BEGIN admins --><li>{EDIT_ADMINS_LINK}</li><!-- END admins -->
-        <!-- BEGIN faculty --><li>{EDIT_FACULTY}</li><!-- END faculty -->
-        <!-- BEGIN states --><li>{EDIT_STATES_LINK}</li><!-- END states -->
-        <!-- BEGIN ctrl_panel --><li>{CONTROL_PANEL}</li><!-- END ctrl_panel -->
-      </ul>
-    </div>
+    <h2>Faculty</h2>
+    <p>Add, remove, and update information for faculty supervisors.</p>
+    <p><a class="btn btn-primary btn-large" href="index.php?module=intern&action=edit_faculty"><i class="icon-edit"></i> Edit Faculty</a></p>
+    
+    
   </div>
 </div>
 

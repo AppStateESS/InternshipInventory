@@ -21,8 +21,43 @@ class TopUI implements UI
         $auth = Current_User::getAuthorization();
 
         $tpl['USER_FULL_NAME'] = Current_User::getDisplayName();
-        $tpl['LOGOUT'] = "<a href='$auth->logout_link'>Logout</a>";
-
+        $tpl['LOGOUT_URI'] = $auth->logout_link;
+        
+        
+        $adminOptions = array();
+        
+        // Edit list of majors
+        if(Current_User::allow('intern', 'edit_major')){
+            $adminOptions['EDIT_MAJORS_LINK'] = PHPWS_Text::secureLink('Edit Undergraduate Majors','intern',array('action' => MAJOR_EDIT));
+        }
+        
+        // Edit list grad programs
+        if(Current_User::allow('intern', 'edit_grad_prog')){
+            $adminOptions['EDIT_GRAD_LINK'] = PHPWS_Text::secureLink('Edit Graduate Programs','intern',array('action' => GRAD_PROG_EDIT));
+        }
+        
+        // Edit departments
+        if(Current_User::allow('intern', 'edit_dept')){
+            $adminOptions['EDIT_DEPARTMENTS_LINK'] = PHPWS_Text::secureLink('Edit Departments','intern',array('action' => DEPT_EDIT));
+        }
+        
+        // Edit list of states
+        if(Current_User::allow('intern', 'edit_states')){
+            $adminOptions['EDIT_STATES_LINK'] = PHPWS_Text::secureLink('Edit States','intern',array('action' => STATE_EDIT));
+        }
+        
+        if(Current_User::isDeity()){
+            $adminOptions['CONTROL_PANEL']         = PHPWS_Text::secureLink('Control Panel','controlpanel');
+            $adminOptions['EDIT_ADMINS_LINK']      = PHPWS_Text::secureLink('Edit Administrators','intern',array('action' => 'edit_admins'));
+        }
+        
+        // If any admin options were added, them show the dropdown and merge those
+        // links into the main set of template tags
+        if(sizeof($adminOptions) > 0){
+            $tpl['ADMIN_OPTIONS'] = ''; // dummy var to show dropdown menu in template
+            $tpl = array_merge($tpl, $adminOptions);
+        }
+        
         /* Plug in main UI */
         $tpl['CONTENT']      = $content;
 
