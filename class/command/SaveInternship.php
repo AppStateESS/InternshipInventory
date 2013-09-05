@@ -379,6 +379,10 @@ class SaveInternship {
             $vals[] = 'department';
         }
 
+        if(isset($_REQUEST['student_level']) && $_REQUEST['student_level'] == -1){
+            $vals[] = 'student_level';
+        }
+        
         if(isset($_REQUEST['student_level']) && $_REQUEST['student_level'] == 'ugrad' &&
                 (!isset($_REQUEST['ugrad_major']) || $_REQUEST['ugrad_major'] == -1)){
             $vals[] = 'ugrad_major';

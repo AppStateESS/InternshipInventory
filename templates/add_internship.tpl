@@ -96,12 +96,12 @@
           </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group required">
           <label class="col-lg-3 control-label" for="{STUDENT_LEVEL_ID}">{STUDENT_LEVEL_LABEL_TEXT}</label>
           <div class="col-lg-4">{STUDENT_LEVEL}</div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group required">
           <label class="col-lg-3 control-label" for="{STUDENT_MAJOR_ID}">{STUDENT_MAJOR_LABEL_TEXT}</label>
           <div class="col-lg-8">{STUDENT_MAJOR} {UGRAD_MAJOR} {GRAD_PROG}</div>
         </div>
