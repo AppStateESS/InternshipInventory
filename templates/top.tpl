@@ -52,7 +52,7 @@
         <a href="#">{USER_FULL_NAME}</a>
       </li>
       <li>
-        <a href="{LOGOUT_URI}"><i class="icon-signout"></i> Logout</a>
+        <a href="{LOGOUT_URI}"><i class="icon-signout"></i> Sign out</a>
       </li>
       
     </ul>
