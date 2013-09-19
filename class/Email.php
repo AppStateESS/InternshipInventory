@@ -2,7 +2,7 @@
 
 class Email {
 
-    public function sendTemplateMessage($to, $subject, $tpl, $tags, $cc = null)
+    public static function sendTemplateMessage($to, $subject, $tpl, $tags, $cc = null)
     {
         $settings = InternSettings::getInstance();
         
@@ -11,7 +11,7 @@ class Email {
         self::sendEmail($to, $settings->getEmailFromAddress(), $subject, $content, $cc);
     }
 
-    public function sendEmail($to, $from, $subject, $content, $cc = NULL, $bcc = NULL)
+    public static function sendEmail($to, $from, $subject, $content, $cc = NULL, $bcc = NULL)
     {
         $settings = InternSettings::getInstance();
         
@@ -69,7 +69,7 @@ class Email {
     /**
      * Logs a PHPWS_Mail object to a text file
      */
-    public function logEmail($message)
+    public static function logEmail($message)
     {
         // Log the message to a text file
         $fd = fopen(PHPWS_SOURCE_DIR . 'logs/email.log',"a");
