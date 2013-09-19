@@ -814,7 +814,7 @@ class SubselectDatabase extends PHPWS_DB{
 
                 $where_list[$group_name]['group_sql'] = $subsql;
 
-                if (@$conj = $groups['conj']) {
+                if (isset($groups['conj']) && $conj = $groups['conj']) {
                     $where_list[$group_name]['group_conj'] = $conj;
                 } else {
                     $where_list[$group_name]['group_conj'] = 'AND';
