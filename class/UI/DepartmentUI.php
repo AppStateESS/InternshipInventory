@@ -2,7 +2,7 @@
 
 class DepartmentUI implements UI
 {
-    public function display()
+    public static function display()
     {
         /* Permission check */
         if(!Current_User::allow('intern', Department::getEditPermission())){

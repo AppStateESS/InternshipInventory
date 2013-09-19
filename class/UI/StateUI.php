@@ -7,7 +7,7 @@
  */
 class StateUI implements UI {
 
-    public function display()
+    public static function display()
     {
         javascriptMod('intern', 'pick_state');
         $db = new PHPWS_DB('intern_state');
