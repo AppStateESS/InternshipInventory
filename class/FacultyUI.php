@@ -23,7 +23,7 @@ class FacultyUI implements UI
 	 * (non-PHPdoc)
 	 * @see UI::display()
 	 */
-	public function display()
+	public static function display()
 	{
 		// Get the list of departments the current user has access to
 		PHPWS_Core::initModClass('intern', 'Department.php');
