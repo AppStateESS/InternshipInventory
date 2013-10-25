@@ -13,7 +13,7 @@ PHPWS_Core::initModClass('intern', 'UI/UI.php');
 
 class ResultsUI implements UI {
 
-    public function display()
+    public static function display()
     {
         javascript('jquery');
         

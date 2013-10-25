@@ -9,7 +9,7 @@
 PHPWS_Core::initModClass('intern', 'UI/UI.php');
 class TopUI implements UI
 {
-    public function display(){
+    public static function display(){
     }
     
     public static function plug($content, $notifications)

@@ -14,7 +14,7 @@ class InternMenu implements UI {
     /**
      * Main display method
      */
-    public function display()
+    public static function display()
     {
         javascript('jquery');
         

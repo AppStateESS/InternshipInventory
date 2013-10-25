@@ -23,7 +23,7 @@ class InternSettings {
      *
      * @return InternSettings
      */
-    public function getInstance()
+    public static function getInstance()
     {
         if (self::$instance == null) {
             self::$instance = new InternSettings();
