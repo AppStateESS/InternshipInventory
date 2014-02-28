@@ -346,7 +346,7 @@ class InternshipFormView {
         /*************
          * Term Info *
          */
-        $terms = Term::getTermsAssoc();
+        $terms = Term::getFutureTermsAssoc();
         $terms[-1] = 'Select Term';
         $this->form->addSelect('term', $terms);
         $this->form->setLabel('term', 'Select Term');
