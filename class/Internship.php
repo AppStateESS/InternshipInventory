@@ -234,10 +234,20 @@ class Internship {
         $a = $this->getAgency();
         $f = $this->getFaculty();
         $d = $this->getDepartment();
+        $c = $this->getDocuments();
 
         // Merge data from other objects.
         $csv = array_merge($csv, $a->getCSV());
 
+		if(count($c) > 0)
+		{
+			$csv['Document Uploaded']  = 'Yes';
+		}
+		else
+		{
+			$csv['Document Uploaded']  = 'No';
+		}
+		
         if ($f instanceof Faculty) {
             $csv = array_merge($csv, $f->getCSV());
         } else {
