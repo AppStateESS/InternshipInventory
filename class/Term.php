@@ -162,7 +162,7 @@ class Term extends Model
      * @param $time - unix time
      * @return Integer value of term. (Ex. 20101)
      */
-    private static function timeToTerm($time)
+    public static function timeToTerm($time)
     {
         $time = getdate($time);
         $term = $time['year'];
