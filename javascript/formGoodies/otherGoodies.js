@@ -55,9 +55,9 @@ function otherStuff()
     
     $("#internship_oied_certified").change(function() {
     	if($("#internship_oied_certified").prop('checked')){
-    		$("#internship_oied_certified_hidden").prop('true');
+    		$("#internship_oied_certified_hidden").prop('value', 'true');
     	}else{
-    		$("#internship_oied_certified_hidden").prop('false');
+    		$("#internship_oied_certified_hidden").prop('value', 'false');
     	}
     });
     
