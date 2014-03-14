@@ -57,11 +57,12 @@ class TopUI implements UI
             $tpl['ADMIN_OPTIONS'] = ''; // dummy var to show dropdown menu in template
             $tpl = array_merge($tpl, $adminOptions);
         }
-        
+       
         /* Plug in main UI */
         $tpl['CONTENT']      = $content;
 
-        return PHPWS_Template::process($tpl, 'intern', 'top.tpl');
+        //return PHPWS_Template::process($tpl, 'intern', 'top.tpl');
+        Layout::plug(PHPWS_Template::process($tpl, 'intern', 'top.tpl'), 'NAV_LINKS');
     }
 }
 
