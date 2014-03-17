@@ -222,6 +222,9 @@ class InternshipFormView {
         $this->form->setLabel('agency_name', 'Name');
         $this->form->addCssClass('agency_name', 'form-control');
         
+        $this->form->addCheck('copy_address_agency');
+        $this->form->setLabel('copy_address_agency', "Agency's address is same as Internship's");
+        
         $this->form->addText('agency_address');
         $this->form->setLabel('agency_address', 'Address');
         $this->form->addCssClass('agency_address', 'form-control');

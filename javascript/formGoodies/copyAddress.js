@@ -1,6 +1,6 @@
 function copyAddress(){
 
-    function doCopy(){
+    function doCopySupervisor(){
         $("#internship_agency_sup_address").val($("#internship_agency_address").val());
         $("#internship_agency_sup_city").val($("#internship_agency_city").val());
         $("#internship_agency_sup_state").val($("#internship_agency_state").val());
@@ -8,17 +8,17 @@ function copyAddress(){
         $("#internship_agency_sup_province").val($("#internship_agency_province").val());
         $("#internship_agency_sup_country").val($("#internship_agency_country").val());
     }
-
-    function addHandlers(){
-        $("#internship_agency_address").keyup(doCopy);
-        $("#internship_agency_city").keyup(doCopy);
-        $("#internship_agency_state").change(doCopy);
-        $("#internship_agency_zip").keyup(doCopy);
-        $("#internship_agency_province").keyup(doCopy);
-        $("#internship_agency_country").keyup(doCopy);
+    
+    function addHandlersSupervisor(){
+        $("#internship_agency_address").keyup(doCopySupervisor);
+        $("#internship_agency_city").keyup(doCopySupervisor);
+        $("#internship_agency_state").change(doCopySupervisor);
+        $("#internship_agency_zip").keyup(doCopySupervisor);
+        $("#internship_agency_province").keyup(doCopySupervisor);
+        $("#internship_agency_country").keyup(doCopySupervisor);
     }
     
-    function removeHandlers(){
+    function removeHandlersSupervisor(){
         /* Remove handlers */
         $("#internship_agency_address").unbind('keyup');
         $("#internship_agency_city").unbind('keyup');
@@ -27,22 +27,68 @@ function copyAddress(){
         $("#internship_agency_province").unbind('keyup');
         $("#internship_agency_country").unbind('keyup');
     }
+
+    function doCopyAgency(){
+        $("#internship_agency_address").val($("#internship_loc_address").val());
+        $("#internship_agency_city").val($("#internship_loc_city").val());
+        $("#internship_agency_state").val($("#internship_loc_state").val());
+        $("#internship_agency_zip").val($("#internship_loc_zip").val());
+        $("#internship_agency_province").val($("#internship_loc_province").val());
+        $("#internship_agency_country").val($("#internship_loc_country").val());
+    }
+    
+    function addHandlersAgency(){
+        $("#internship_loc_address").keyup(doCopyAgency);
+        $("#internship_loc_city").keyup(doCopyAgency);
+        $("#internship_loc_state").change(doCopyAgency);
+        $("#internship_loc_zip").keyup(doCopyAgency);
+        $("#internship_loc_province").keyup(doCopyAgency);
+        $("#internship_loc_country").keyup(doCopyAgency);
+    }
+    
+    function removeHandlersAgency(){
+        /* Remove handlers */
+        $("#internship_loc_address").unbind('keyup');
+        $("#internship_loc_city").unbind('keyup');
+        $("#internship_loc_state").unbind('change');
+        $("#internship_loc_zip").unbind('keyup');
+        $("#internship_loc_province").unbind('keyup');
+        $("#internship_loc_country").unbind('keyup');
+    }
     
     // Bind event handler for "same address" checkbox
     $("#internship_copy_address").change(function(){
         if($("#internship_copy_address").prop('checked')){
             // Same address box was checked, so copy the address
-            doCopy();
+            doCopySupervisor();
             // Setup the event handlers for copying later changes
-            addHandlers();
+            addHandlersSupervisor();
         }else{
             // Box was unchecked, so remove event handlers for later changes
-            removeHandlers();
+            removeHandlersSupervisor();
+        }
+    });
+    
+    // Bind event handler for "same address" checkbox
+    $("#internship_copy_address_agency").change(function(){
+        if($("#internship_copy_address_agency").prop('checked')){
+            // Same address box was checked, so copy the address
+            doCopyAgency();
+            // Setup the event handlers for copying later changes
+            addHandlersAgency();
+        }else{
+            // Box was unchecked, so remove event handlers for later changes
+            removeHandlersAgency();
         }
     });
     
     // Set initial state
     if($("#internship_copy_address").prop('checked')){
-        addHandlers();
+        addHandlersSupervisor();
+    }
+    
+    // Set initial state
+    if($("#internship_copy_address_agency").prop('checked')){
+        addHandlersAgency()();
     }
 };

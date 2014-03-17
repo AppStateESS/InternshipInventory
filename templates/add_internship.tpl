@@ -376,6 +376,10 @@
           <label class="col-lg-3 control-label" for="{AGENCY_PHONE_ID}">{AGENCY_PHONE_LABEL_TEXT}</label>
           <div class="col-lg-6">{AGENCY_PHONE}</div>
         </div>
+        
+        <div class="checkbox">
+          <label> {COPY_ADDRESS_AGENCY} {COPY_ADDRESS_AGENCY_LABEL_TEXT} </label>
+        </div>
 
         <div class="form-group">
           <label class="col-lg-3 control-label" for="{AGENCY_ADDRESS_ID}">{AGENCY_ADDRESS_LABEL_TEXT}</label>
