@@ -194,11 +194,10 @@ class Internship {
         $csv['Student Zip']            = $this->student_zip;
 
         // Emergency Contact
-        //$csv['Emergency Contact Name']     = $this->getEmergencyContactName();
-        //$csv['Emergency Contact Relation'] = $this->getEmergencyContactRelation();
-        //$csv['Emergency Contact Phone']    = $this->getEmergencyContactPhoneNumber();
-        //TODO
-
+        $csv['Emergency Contact Name']     = $this->getEmergencyContactName();
+        $csv['Emergency Contact Relation'] = $this->getEmergencyContactRelation();
+        $csv['Emergency Contact Phone']    = $this->getEmergencyContactPhoneNumber();
+		
         // Internship Data
         $csv['Term']                   = Term::rawToRead($this->term, false);
         $csv['Start Date']             = $this->getStartDate(true);
@@ -335,6 +334,45 @@ class Internship {
         return FacultyFactory::getFacultyObjectById($this->faculty_id);
     }
 
+	/**
+	 * Get the Emergency Contact's First Name
+	 */
+	public function getEmergencyContactName()
+	{
+		PHPWS_Core::initModClass('intern', 'EmergencyContactFactory.php');
+		$name = EmergencyContactFactory::getContactsForInternship($this);
+		if(!empty($name))
+		{
+			 return $name[0]->getName();
+		}
+	}
+	
+		/**
+	 * Get the Emergency Contact's Relationship
+	 */
+	public function getEmergencyContactRelation()
+	{
+		PHPWS_Core::initModClass('intern', 'EmergencyContactFactory.php');
+		$relationship = EmergencyContactFactory::getContactsForInternship($this);
+		if(!empty($relationship))
+		{
+			 return $relationship[0]->getRelation();
+		}
+	}
+	
+		/**
+	 * Get the Emergency Contact's Phone Number
+	 */
+	public function getEmergencyContactPhoneNumber()
+	{
+		PHPWS_Core::initModClass('intern', 'EmergencyContactFactory.php');
+		$phone = EmergencyContactFactory::getContactsForInternship($this);
+		if(!empty($phone))
+		{
+			 return $phone[0]->getPhone();
+		}
+	}
+	
     /**
      * Get the Department object associated with this internship.
      */
