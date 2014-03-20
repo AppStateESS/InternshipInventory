@@ -64,7 +64,7 @@ class SaveInternship {
         }
 
 		// Sanity check student zip
-		if(isset($_REQUEST['student_zip']) && (strlen($_REQUEST['student_zip']) > 5 || !is_numeric($_REQUEST['student_zip']))) {
+		if((isset($_REQUEST['student_zip']) && $_REQUEST['student_zip'] != "") && (strlen($_REQUEST['student_zip']) > 5 || !is_numeric($_REQUEST['student_zip']))) {
 			$url = 'index.php?module=intern&action=edit_internship&missing=student_zip';
 			// Restore the values in the fields the user already entered
 			foreach ($_POST as $key => $val){
@@ -95,7 +95,7 @@ class SaveInternship {
         }
         
 		// Sanity check internship location zip
-		if(isset($_REQUEST['loc_zip']) && strlen($_REQUEST['loc_zip']) > 5 || !is_numeric($_REQUEST['loc_zip'])) {
+		if((isset($_REQUEST['loc_zip']) && $_REQUEST['loc_zip'] != "") && (strlen($_REQUEST['loc_zip']) > 5 || !is_numeric($_REQUEST['loc_zip']))) {
 			$url = 'index.php?module=intern&action=edit_internship&missing=loc_zip';
 			// Restore the values in the fields the user already entered
 			foreach ($_POST as $key => $val){
@@ -107,7 +107,7 @@ class SaveInternship {
 		}
 		
 		// Sanity check agency zip
-		if(isset($_REQUEST['agency_zip']) && strlen($_REQUEST['agency_zip']) > 5 || !is_numeric($_REQUEST['agency_zip'])) {
+		if((isset($_REQUEST['agency_zip']) && $_REQUEST['agency_zip'] != "") && (strlen($_REQUEST['agency_zip']) > 5 || !is_numeric($_REQUEST['agency_zip']))) {
 			$url = 'index.php?module=intern&action=edit_internship&missing=agency_zip';
 			// Restore the values in the fields the user already entered
 			foreach ($_POST as $key => $val){
@@ -119,13 +119,13 @@ class SaveInternship {
 		}
         
 		// Sanity check supervisor's zip
-		if(isset($_REQUEST['agency_sup_zip']) && strlen($_REQUEST['agency_sup_zip']) > 5 || !is_numeric($_REQUEST['agency_sup_zip'])) {
+		if((isset($_REQUEST['agency_sup_zip']) && $_REQUEST['agency_sup_zip'] != "") && (strlen($_REQUEST['agency_sup_zip']) > 5 || !is_numeric($_REQUEST['agency_sup_zip']))) {
 			$url = 'index.php?module=intern&action=edit_internship&missing=agency_sup_zip';
 			// Restore the values in the fields the user already entered
 			foreach ($_POST as $key => $val){
 				$url .= "&$key=$val";
 			}
-			NQ::simple('intern', INTERN_ERROR, "The agency's zip code is invalid. No changes were saved. Zip codes should be 5 digits only (no letters, spaces, or punctuation).");
+			NQ::simple('intern', INTERN_ERROR, "The agency supervisor's zip code is invalid. No changes were saved. Zip codes should be 5 digits only (no letters, spaces, or punctuation).");
 			NQ::close();
 			return PHPWS_Core::reroute($url);
 		}
