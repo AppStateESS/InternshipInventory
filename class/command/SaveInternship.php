@@ -63,6 +63,18 @@ class SaveInternship {
             return PHPWS_Core::reroute($url);
         }
 
+		// Sanity check student zip
+		if(isset($_REQUEST['student_zip']) && (strlen($_REQUEST['student_zip']) > 5 || !is_numeric($_REQUEST['student_zip']))) {
+			$url = 'index.php?module=intern&action=edit_internship&missing=student_zip';
+			// Restore the values in the fields the user already entered
+			foreach ($_POST as $key => $val){
+				$url .= "&$key=$val";
+			}
+			NQ::simple('intern', INTERN_ERROR, "The student's zip code is invalid. No changes were saved. Zip codes should be 5 digits only (no letters, spaces, or punctuation).");
+			NQ::close();
+			return PHPWS_Core::reroute($url);
+		}
+		
         // Course start date must be before end date
         if(!empty($_REQUEST['start_date']) && !empty($_REQUEST['end_date'])){
             $start = strtotime($_REQUEST['start_date']);
@@ -81,6 +93,42 @@ class SaveInternship {
                 return PHPWS_Core::reroute($url);
             }
         }
+        
+		// Sanity check internship location zip
+		if(isset($_REQUEST['loc_zip']) && strlen($_REQUEST['loc_zip']) > 5 || !is_numeric($_REQUEST['loc_zip'])) {
+			$url = 'index.php?module=intern&action=edit_internship&missing=loc_zip';
+			// Restore the values in the fields the user already entered
+			foreach ($_POST as $key => $val){
+				$url .= "&$key=$val";
+			}
+			NQ::simple('intern', INTERN_ERROR, "The internship location's zip code is invalid. No changes were saved. Zip codes should be 5 digits only (no letters, spaces, or punctuation).");
+			NQ::close();
+			return PHPWS_Core::reroute($url);
+		}
+		
+		// Sanity check agency zip
+		if(isset($_REQUEST['agency_zip']) && strlen($_REQUEST['agency_zip']) > 5 || !is_numeric($_REQUEST['agency_zip'])) {
+			$url = 'index.php?module=intern&action=edit_internship&missing=agency_zip';
+			// Restore the values in the fields the user already entered
+			foreach ($_POST as $key => $val){
+				$url .= "&$key=$val";
+			}
+			NQ::simple('intern', INTERN_ERROR, "The agency's zip code is invalid. No changes were saved. Zip codes should be 5 digits only (no letters, spaces, or punctuation).");
+			NQ::close();
+			return PHPWS_Core::reroute($url);
+		}
+        
+		// Sanity check supervisor's zip
+		if(isset($_REQUEST['agency_sup_zip']) && strlen($_REQUEST['agency_sup_zip']) > 5 || !is_numeric($_REQUEST['agency_sup_zip'])) {
+			$url = 'index.php?module=intern&action=edit_internship&missing=agency_sup_zip';
+			// Restore the values in the fields the user already entered
+			foreach ($_POST as $key => $val){
+				$url .= "&$key=$val";
+			}
+			NQ::simple('intern', INTERN_ERROR, "The agency's zip code is invalid. No changes were saved. Zip codes should be 5 digits only (no letters, spaces, or punctuation).");
+			NQ::close();
+			return PHPWS_Core::reroute($url);
+		}
 
         PHPWS_DB::begin();
 
