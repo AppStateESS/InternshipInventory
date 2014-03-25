@@ -37,6 +37,28 @@ class Term extends Model
 
         return $readables;
     }
+    
+        /**
+     * Get an associative array of terms > current term
+     * in the database. Looks like: { raw_term => readable_string }
+     */
+    public static function getFutureTermsAssoc()
+    {
+		$currentTerm = self::timeToTerm(time());
+		$db = self::getDb();
+		$db->addWhere('intern_term.term', $currentTerm, '>=');
+		$db->addOrder('term desc');
+        $terms = $db->getObjects('Term');
+        $readables = array();
+        $readables[-1] = 'All';
+        
+        foreach($terms as $t){
+            // Ex. array(20111 => "Spring 2011");
+            $readables[$t->term] = self::rawToRead($t->term);
+        }
+
+        return $readables;
+    }
 
     /**
      * Converts the database entry of Term into human
