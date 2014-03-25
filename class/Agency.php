@@ -81,7 +81,7 @@ class Agency extends Model {
     {
         $name = "";
         if(isset($this->supervisor_first_name)){
-            $name .= $this->supervisor_first_name;
+            $name .= $this->supervisor_first_name . " ";
         }
         
         if(isset($this->supervisor_last_name)){

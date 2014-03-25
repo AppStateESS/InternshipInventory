@@ -69,6 +69,11 @@ class InternshipUI implements UI {
             $folder = new Intern_Folder(Intern_Document::getFolderId());
             $tpl['UPLOAD_DOC'] = $folder->documentUpload($i->id);
             
+			if($i->getWorkflowState() instanceof SigAuthApprovedState && ($docs < 1))
+			{
+	        	NQ::simple('intern', INTERN_WARNING, "Please upload a Document");
+			}
+			
             /******************
              * Change History *
             */

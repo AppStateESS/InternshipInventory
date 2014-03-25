@@ -273,7 +273,7 @@ CREATE TABLE intern_internship (
        student_address varchar(256),
        student_city varchar(256),
        student_state varchar(2),
-       student_zip varchar(5),
+       student_zip VARCHAR NULL,
        campus character varying(128) NOT NULL,
        first_name_meta character varying,
        middle_name_meta character varying,
