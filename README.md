@@ -17,6 +17,8 @@ Have a bug or a feature request? Please first search for existing and closed iss
 ## Contributing
 Community contributions are welcome. Please open a pull request.
 
+By contributing your code, you agree to license your contribution under the [GNU GPL v3](LICENSE). 
+
 ## Versioning
 Internship Inventory is maintained under the Semantic Versioning guidelines. We'll adhere to these rules whenever possible.
 
@@ -40,4 +42,4 @@ For more information on SemVer, please visit <http://semver.org/>.
 - Micah Carter
 
 ## Copyright and license
-Code and documentation copyright 2008-2014 Appalachian State University. Code released under [the GNU GPL v3](LICENSE). Docs released under Creative Commons.
+Code and documentation copyright 2008-2014 Appalachian State University. Code released under the [GNU GPL v3](LICENSE). Docs released under Creative Commons.
