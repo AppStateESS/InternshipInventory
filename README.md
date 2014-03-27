@@ -19,6 +19,11 @@ Internship Inventory is a sleek, intunitive, and powerful web-application for tr
 
 
 ## Authors
-
+- **Jeremy Booker** - <http://twitter.com/jbook3r>
+- Jacob Pollard
+- Jeff Tickle
+- Robert Bost
+- Micah Carter
 
 ## Copyright and license
+Code and documentation copyright 2008-2014 Appalachian State University. Code released under [the GNU GPL v3](LICENSE). Docs released under Creative Commons.
