@@ -35,7 +35,7 @@ class Email {
         // Create a Mail object and set it up
         PHPWS_Core::initCoreClass('Mail.php');
         $message = new PHPWS_Mail;
-
+		
         $message->addSendTo($to);
         $message->setFrom($from);
         $message->setSubject($subject);
@@ -62,7 +62,7 @@ class Email {
         }
 
         self::logEmail($message);
-
+        
         return true;
     }
 
@@ -73,6 +73,7 @@ class Email {
     {
         // Log the message to a text file
         $fd = fopen(PHPWS_SOURCE_DIR . 'logs/email.log',"a");
+        
         fprintf($fd, "=======================\n");
 
         foreach($message->send_to as $recipient){
@@ -351,12 +352,57 @@ class Email {
 
         $dept = new Department($i->department_id);
         $tpl['DEPARTMENT'] = $dept->getName();
-
         $to = $settings->getInternationalOfficeEmail();
+
         $subject = "International Internship Created - {$i->first_name} {$i->last_name}";
 
         Email::sendTemplateMessage($to, $subject, 'email/IntlInternshipCreateNotice.tpl', $tpl);
     }
+    
+    public static function sendIntlInternshipCreateNoticeStudent(Internship $i)
+    {
+        $settings = InternSettings::getInstance();
+        
+        $tpl = array();
+
+        $tpl['NAME'] = $i->getFullName();
+        $tpl['BANNER'] = $i->banner;
+        $tpl['USER'] = $i->email;
+        $tpl['PHONE'] = $i->phone;
+
+        $tpl['TERM'] = Term::rawToRead($i->term);
+        $tpl['COUNTRY'] = $i->loc_country;
+
+        $dept = new Department($i->department_id);
+        $tpl['DEPARTMENT'] = $dept->getName();
+        $to = $i->email . '@appstate.edu';
+
+        $subject = "International Internship Created - {$i->first_name} {$i->last_name}";
+
+        Email::sendTemplateMessage($to, $subject, 'email/IntStudentInternshipOIEDNotice.tpl', $tpl);
+    }
+    /*public static function sendIntlInternshipCreateNoticeStudent(Internship $i)
+    {
+        $settings = InternSettings::getInstance();
+        
+        $tpl = array();
+
+        $tpl['NAME'] = $i->getFullName();
+        $tpl['BANNER'] = $i->banner;
+        $tpl['USER'] = $i->email;
+        $tpl['PHONE'] = $i->phone;
+
+        $tpl['TERM'] = Term::rawToRead($i->term);
+        $tpl['COUNTRY'] = $i->loc_country;
+
+        $dept = new Department($i->department_id);
+        $tpl['DEPARTMENT'] = $dept->getName();
+        $to = $i->email . 'appstate.edu';
+
+        $subject = "International Internship Created - {$i->first_name} {$i->last_name}";
+
+        Email::sendTemplateMessage($to, $subject, 'email/IntlInternshipCreateNotice.tpl', $tpl);
+    }*/
 
     public static function sendRegistrationConfirmationEmail(Internship $i, Agency $a)
     {
