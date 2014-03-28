@@ -565,6 +565,41 @@ class Internship {
         return $this->faculty_id;
     }
 
+	public function getStreetAddress(){
+		return $this->loc_address;
+	}
+	
+    /**
+     * Get the domestic looking address of agency.
+     */
+    public function getLocationAddress()
+    {
+        $add = array();
+        
+        if (!empty($this->loc_address)) {
+            $add[] = $this->loc_address . ',';
+        }
+        if (!empty($this->loc_city)) {
+            $add[] = $this->loc_city . ',';
+        }
+        if(!empty($this->loc_state)){
+            $add[] = $this->loc_state;
+        }
+        if (!empty($this->loc_zip)) {
+            $add[] = $this->loc_zip;
+        }
+
+        if(!empty($this->loc_province)){
+            $add[] = $this->loc_province . ', ';
+        }
+        
+        if(!empty($this->loc_country)){
+            $add[] = $this->loc_country;
+        }
+        
+        return implode(' ', $add);
+    }
+    
     /**
      * Returns the Department's database id
      * @return integer department id
@@ -638,6 +673,7 @@ class Internship {
         return false;
     }
 
+
     /**
      * Calculates and sets the metaphone value for this student's first name.
      *
@@ -672,7 +708,7 @@ class Internship {
     public function getPhoneNumber(){
         return $this->phone;
     }
-
+	
     public function getStudentAddress()
     {
         $studentAddress = "";
