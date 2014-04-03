@@ -231,13 +231,13 @@ class InternshipContractPdfView {
         $superName = $a->getSupervisorFullName();
         if(isset($superName) && !empty($superName) && $superName != ''){
             //test('ohh hai',1);
-            $super .= $a->getSupervisorFullName() . ',';
+            $super .= $a->getSupervisorFullName();
         }
 
         $supervisorTitle = $a->getSupervisorTitle();
 
         if(isset($a->supervisor_title) && !empty($a->supervisor_title)){
-            $super .= $supervisorTitle;
+            $super .= ', ' . $supervisorTitle;
         }
         $this->pdf->cell(75, 5, $super);
 
