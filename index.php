@@ -65,7 +65,7 @@ if (isset($content)) {
 }
 
 // Add top menu bar to theme
-TopUI::plug($content, $notifications);
+TopUI::plug();
 
 
 // Get Notifications, add to layout
