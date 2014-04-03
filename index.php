@@ -64,10 +64,15 @@ if (isset($content)) {
     }
 }
 
-// Notifications
+// Add top menu bar to theme
+TopUI::plug($content, $notifications);
+
+
+// Get Notifications, add to layout
 $nv = new Intern_NotifyUI();
 $notifications = $nv->display();
-$content = TopUI::plug($content, $notifications);
+Layout::add($notifications);
+
 
 // Add content to Layout
 Layout::addStyle('intern', 'style.css');

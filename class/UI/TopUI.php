@@ -12,7 +12,7 @@ class TopUI implements UI
     public static function display(){
     }
     
-    public static function plug($content, $notifications)
+    public static function plug()
     {
         $tpl['NOTIFICATIONS'] = $notifications;
         $tpl['HOME_LINK']    = PHPWS_Text::moduleLink('Menu', 'intern');
