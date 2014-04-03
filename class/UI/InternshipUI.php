@@ -71,7 +71,7 @@ class InternshipUI implements UI {
             
 			if($i->getWorkflowState() instanceof SigAuthApprovedState && ($docs < 1))
 			{
-	        	NQ::simple('intern', INTERN_WARNING, "Please upload a Document");
+	        	NQ::simple('intern', INTERN_WARNING, "No documents have been uploaded yet. Usually a copy of the signed contract document should be uploaded.");
 			}
 			
             /******************
