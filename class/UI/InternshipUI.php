@@ -77,20 +77,30 @@ class InternshipUI implements UI {
             /******************
              * Change History *
             */
-            if(!is_null($i->id)){
+            if (!is_null($i->id)) {
                 PHPWS_Core::initModClass('intern', 'ChangeHistoryView.php');
                 $historyView = new ChangeHistoryView($i);
                 $tpl['CHANGE_LOG'] = $historyView->show();
             }
             
             // Show a warning if in SigAuthReadyState, is international, and not OIED approved
-            if($i->getWorkflowState() instanceof SigAuthReadyState && $i->isInternational() && !$i->isOiedCertified()){
+            if ($i->getWorkflowState() instanceof SigAuthReadyState && $i->isInternational() && !$i->isOiedCertified()) {
                 NQ::simple('intern', INTERN_WARNING, 'This internship can not be approved by the Signature Authority bearer until the internship is certified by the Office of International Education and Development.');
             }
             
             // Show a warning if in DeanApproved state and is distance_ed campus
-            if($i->getWorkflowState() == 'DeanApprovedState' && $i->isDistanceEd()){
+            if ($i->getWorkflowState() == 'DeanApprovedState' && $i->isDistanceEd()) {
                 NQ::simple('intern', INTERN_WARNING, 'This internship must be registered by Distance Education.');
+            }
+            
+            // Sanity check cource section #
+            if ($i->isDistanceEd() && ($i->getCourseSection() < 300 || $i->getCourseSection() > 399)) {
+    			NQ::simple('intern', INTERN_WARNING, "This is a distance ed internship, so the course section number should be between 300 and 399.");
+            }
+        
+            // Sanity check distance ed radio
+            if (!$i->isDistanceEd() && ($i->getCourseSection() > 300 && $i->getCourseSection() < 400)) {
+                NQ::simple('intern', INTERN_WARNING, "The course section number you entered looks like a distance ed course. Be sure to check the Distance Ed option, or double check the section number.");
             }
             
             PHPWS_Core::initModClass('intern', 'EmergencyContactFormView.php');

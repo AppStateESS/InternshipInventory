@@ -94,30 +94,6 @@ class SaveInternship {
             }
         }
         
-        // Sanity check cource section #
-        if(($_REQUEST['campus'] == 'distance_ed') && isset($_REQUEST['course_sect']) && !($_REQUEST['course_sect'] >= 300 && 					$_REQUEST['course_sect'] <= 400)){
-	        $url = 'index.php?module=intern&action=edit_internship&missing=course_sect';
-			// Restore the values in the fields the user already entered
-			foreach ($_POST as $key => $val){
-				$url .= "&$key=$val";
-			}
-			NQ::simple('intern', INTERN_WARNING, "This is a distance ed internship, so the course section should be between 300 and 400.");
-			NQ::close();
-			return PHPWS_Core::reroute($url);
-        }
-        
-        // Sanity check distance ed radio
-        if(($_REQUEST['campus'] != 'distance_ed') && isset($_REQUEST['course_sect']) && ($_REQUEST['course_sect'] >= 300 && 					$_REQUEST['course_sect'] <= 400)){
-	        $url = 'index.php?module=intern&action=edit_internship&missing=course_sect';
-			// Restore the values in the fields the user already entered
-			foreach ($_POST as $key => $val){
-				$url .= "&$key=$val";
-			}
-			NQ::simple('intern', INTERN_WARNING, "The course section number you entered looks like it should be a distance ed course.");
-			NQ::close();
-			return PHPWS_Core::reroute($url);
-        }
-        
 		// Sanity check internship location zip
 		if((isset($_REQUEST['loc_zip']) && $_REQUEST['loc_zip'] != "") && (strlen($_REQUEST['loc_zip']) != 5 || !is_numeric($_REQUEST['loc_zip']))) {
 			$url = 'index.php?module=intern&action=edit_internship&missing=loc_zip';
