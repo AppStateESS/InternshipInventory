@@ -155,7 +155,16 @@ class EditInternshipFormView extends InternshipFormView {
             $this->form->setValue('oied_certified_hidden', 'false');
         }
         
+
+        // Remove the term dropdown and repalce it
+        $this->form->dropElement('term');
+        $this->form->addSelect('term', array($this->intern->term => Term::rawToRead($this->intern->term)));
+        $this->form->setLabel('term', 'Select Term');
+        $this->form->addCssClass('term', 'form-control');
         $this->form->setMatch('term', $this->intern->term);
+
+
+
         $this->form->setMatch('experience_type', $this->intern->getExperienceType());
         
         // Plug
