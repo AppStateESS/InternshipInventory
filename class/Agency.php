@@ -122,6 +122,15 @@ class Agency extends Model {
         return implode(' ', $add);
     }
 
+
+    /**
+     * Get the street address of the agency
+     */
+    public function getStreetAddress()
+    {
+        return $this->address;
+    }
+
     /**
      * Get the domestic looking address of agency.
      * Update: 07/27/2011 reduction of required elements caused need for alteration

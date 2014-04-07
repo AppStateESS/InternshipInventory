@@ -254,31 +254,14 @@ class InternshipContractPdfView {
         $this->pdf->cell(40, 5, $a->getSupervisorFaxNumber());
 
         /* Internship Location */
-        /*
-         if(!empty($this->loc_address)){
-        $loc[] = $this->loc_address;
-        }
+        $internshipAddress = trim($this->internship->getStreetAddress());
+        $agencyAddress = trim($a->getStreetAddress());
 
-        if (!empty($this->loc_city)) {
-        $loc[] = $this->loc_city;
-        }
-
-        if (!empty($this->loc_state) && $this->loc_state != '-1') {
-        $loc[] = $this->loc_state;
-        }
-
-        if(!empty($this->loc_zip)){
-        $loc[] = $this->loc_zip;
-        }
-
-        if($this->international == 1){
-        $loc[] = $this->getLocCountry();
-        }
-        */
-        if (isset($loc)) {
+        if($internshipAddress != '' && $agencyAddress != '' && $internshipAddress != $agencyAddress) {
             $this->pdf->setXY(110, 154);
             $this->pdf->cell(52, 5, $this->internship->getLocationAddress());
         }
+
 
         /**********
          * Page 2 *
