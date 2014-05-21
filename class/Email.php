@@ -381,11 +381,15 @@ class Email {
 
         Email::sendTemplateMessage($to, $subject, 'email/IntStudentInternshipOIEDNotice.tpl', $tpl);
     }
-    /*public static function sendIntlInternshipCreateNoticeStudent(Internship $i)
+    
+    public static function sendIntlInternshipCancelNoticeStudent(Internship $i)
     {
         $settings = InternSettings::getInstance();
+        $agency = new Agency($i->agency_id);
         
         $tpl = array();
+        
+        $faculty = $i->getFaculty();
 
         $tpl['NAME'] = $i->getFullName();
         $tpl['BANNER'] = $i->banner;
@@ -394,16 +398,23 @@ class Email {
 
         $tpl['TERM'] = Term::rawToRead($i->term);
         $tpl['COUNTRY'] = $i->loc_country;
+        $tpl['AGENCY'] = $agency->getName();
 
         $dept = new Department($i->department_id);
         $tpl['DEPARTMENT'] = $dept->getName();
-        $to = $i->email . 'appstate.edu';
+        $to = $i->email . '@appstate.edu';
+        
+        if ($faculty instanceof Faculty) {
+            $cc = array($faculty->getUsername() . $settings->getEmailDomain(), $settings->getRegistrarEmail());
+        } else {
+            $cc = array();
+        }
 
-        $subject = "International Internship Created - {$i->first_name} {$i->last_name}";
+        $subject = "Internship Cancelled - {$agency->getName()} - Term : " . Term::rawToRead($i->term);
 
-        Email::sendTemplateMessage($to, $subject, 'email/IntlInternshipCreateNotice.tpl', $tpl);
-    }*/
-
+        Email::sendTemplateMessage($to, $subject, 'email/StudentCancellationNotice.tpl', $tpl, $cc);
+    }
+    
     public static function sendRegistrationConfirmationEmail(Internship $i, Agency $a)
     {
         $settings = InternSettings::getInstance();
