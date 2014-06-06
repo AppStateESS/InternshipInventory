@@ -63,6 +63,7 @@ class SubselectDatabase extends PHPWS_DB{
         $GLOBALS['PHPWS_DB']['type'] = & $GLOBALS['PHPWS_DB']['dbs'][$key]['type'];
     }
 
+/*
     public static function loadDB($dsn = null, $tbl_prefix = null, $force_reconnect = false, $show_error = true)
     {
         if (!isset($dsn)) {
@@ -127,7 +128,7 @@ class SubselectDatabase extends PHPWS_DB{
 
         return true;
     }
-
+*/
     public static function logDB($sql)
     {
         if (!defined('LOG_DB') || LOG_DB != true) {
@@ -165,7 +166,7 @@ class SubselectDatabase extends PHPWS_DB{
             return null;
         }
     }
-
+/*
     public function inDatabase($table, $column = null)
     {
         $table = PHPWS_DB::addPrefix(strip_tags($table));
@@ -209,7 +210,7 @@ class SubselectDatabase extends PHPWS_DB{
 
         return $answer;
     }
-
+*/
     /**
      * Gets information on all the columns in the current table
      */
@@ -279,15 +280,15 @@ class SubselectDatabase extends PHPWS_DB{
     {
         switch (strtolower($mode)) {
             case 'ordered':
-                $this->mode = DB_FETCHMODE_ORDERED;
+                $this->mode = MDB2_FETCHMODE_ORDERED;
                 break;
 
             case 'object':
-                $this->mode = DB_FETCHMODE_OBJECT;
+                $this->mode = MDB2_FETCHMODE_OBJECT;
                 break;
 
             case 'assoc':
-                $this->mode = DB_FETCHMODE_ASSOC;
+                $this->mode = MDB2_FETCHMODE_ASSOC;
                 break;
         }
     }
@@ -306,11 +307,13 @@ class SubselectDatabase extends PHPWS_DB{
         return in_array($table, $tables);
     }
 
+/*
     public static function listTables()
     {
         PHPWS_DB::touchDB();
         return $GLOBALS['PHPWS_DB']['connection']->getlistOf('tables');
     }
+*/
 
     public function listDatabases()
     {
@@ -377,6 +380,7 @@ class SubselectDatabase extends PHPWS_DB{
         $this->index = $index;
     }
 
+/*
     public function getIndex($table = null)
     {
         if (isset($this->index)) {
@@ -403,6 +407,7 @@ class SubselectDatabase extends PHPWS_DB{
 
         return null;
     }
+*/
 
     public function _getJoinOn($join_on_1, $join_on_2, $table1, $table2, $ignore_tables = false)
     {
@@ -654,7 +659,7 @@ class SubselectDatabase extends PHPWS_DB{
                         return $result;
                     }
                 } else {
-                    $newVal = $GLOBALS['PHPWS_DB']['connection']->escapeSimple($newVal);
+                    $newVal = $GLOBALS['PHPWS_DB']['connection']->escape($newVal);
                     $new_value_list[] = $newVal;
                 }
             }
@@ -674,7 +679,7 @@ class SubselectDatabase extends PHPWS_DB{
                 }
                 $value = 'NULL';
             } else {
-                $value = $GLOBALS['PHPWS_DB']['connection']->escapeSimple($value);
+                $value = $GLOBALS['PHPWS_DB']['connection']->escape($value);
             }
         }
 
@@ -1464,7 +1469,7 @@ class SubselectDatabase extends PHPWS_DB{
         if (!isset($sql)) {
             $sql = $this->getTheQuery($type);
         } else {
-            $mode = DB_FETCHMODE_ASSOC;
+            $mode = MDB2_FETCHMODE_ASSOC;
         }
 
         $sql = PHPWS_DB::prefixQuery($sql);
@@ -1493,7 +1498,7 @@ class SubselectDatabase extends PHPWS_DB{
 
                 if (isset($indexby)) {
                     PHPWS_DB::logDB($sql);
-                    $result = $GLOBALS['PHPWS_DB']['connection']->getAll($sql, null, $mode);
+                    $result = $GLOBALS['PHPWS_DB']['connection']->queryAll($sql, null, $mode);
 
                     if (PHPWS_Error::isError($result)) {
                         return $result;
@@ -1501,31 +1506,31 @@ class SubselectDatabase extends PHPWS_DB{
                     return PHPWS_DB::_indexBy($result, $indexby, true);
                 }
                 PHPWS_DB::logDB($sql);
-                return $GLOBALS['PHPWS_DB']['connection']->getCol($sql);
+                return $GLOBALS['PHPWS_DB']['connection']->queryCol($sql);
                 break;
 
             case 'min':
             case 'max':
             case 'one':
                 PHPWS_DB::logDB($sql);
-                return $GLOBALS['PHPWS_DB']['connection']->getOne($sql, null, $mode);
+                return $GLOBALS['PHPWS_DB']['connection']->queryOne($sql, null, $mode);
                 break;
 
             case 'row':
                 PHPWS_DB::logDB($sql);
-                return $GLOBALS['PHPWS_DB']['connection']->getRow($sql, array(), $mode);
+                return $GLOBALS['PHPWS_DB']['connection']->queryRow($sql, null, $mode);
                 break;
 
             case 'count':
                 PHPWS_DB::logDB($sql);
                 if (empty($this->columns)) {
-                    $result = $GLOBALS['PHPWS_DB']['connection']->getRow($sql);
+                    $result = $GLOBALS['PHPWS_DB']['connection']->queryRow($sql);
                     if (PHPWS_Error::isError($result)) {
                         return $result;
                     }
                     return $result[0];
                 } else {
-                    $result = $GLOBALS['PHPWS_DB']['connection']->getCol($sql);
+                    $result = $GLOBALS['PHPWS_DB']['connection']->queryCol($sql);
                     if (PHPWS_Error::isError($result)) {
                         return $result;
                     }
@@ -1536,7 +1541,7 @@ class SubselectDatabase extends PHPWS_DB{
 
             case 'count_array':
                 PHPWS_DB::logDB($sql);
-                $result = $GLOBALS['PHPWS_DB']['connection']->getAll($sql, null, $mode);
+                $result = $GLOBALS['PHPWS_DB']['connection']->queryAll($sql, null, $mode);
                 if (PHPWS_Error::isError($result)) {
                     return $result;
                 }
@@ -1547,7 +1552,7 @@ class SubselectDatabase extends PHPWS_DB{
             case 'all':
             default:
                 PHPWS_DB::logDB($sql);
-                $result = $GLOBALS['PHPWS_DB']['connection']->getAll($sql, null, $mode);
+                $result = $GLOBALS['PHPWS_DB']['connection']->queryAll($sql, null, $mode);
                 if (PHPWS_Error::isError($result)) {
                     return $result;
                 }
@@ -1708,6 +1713,7 @@ class SubselectDatabase extends PHPWS_DB{
         return $this->incrementColumn($column_name, ($amount * -1));
     }
 
+/*
     public function delete($return_affected = false)
     {
         $table = $this->getTable(false);
@@ -1735,6 +1741,7 @@ class SubselectDatabase extends PHPWS_DB{
             }
         }
     }
+    */
 
     /**
      * Static call only
@@ -2185,7 +2192,7 @@ class SubselectDatabase extends PHPWS_DB{
 
         return $column_info;
     }
-
+/*
     public function export($structure = true, $contents = true)
     {
         PHPWS_DB::touchDB();
@@ -2210,7 +2217,7 @@ class SubselectDatabase extends PHPWS_DB{
                 foreach ($rows as $dataRow) {
                     foreach ($dataRow as $key => $value) {
                         $allKeys[] = $key;
-                        $allValues[] = PHPWS_DB::quote($value);
+                        $allValues[] = PHPWS_DB::escape($value);
                     }
 
                     $sql[] = "INSERT INTO $table (" . implode(', ', $allKeys) . ') VALUES (' . implode(', ', $allValues) . ');';
@@ -2225,7 +2232,7 @@ class SubselectDatabase extends PHPWS_DB{
             return null;
         }
     }
-
+*/
     public function quote($text)
     {
         return $GLOBALS['PHPWS_DB']['connection']->quote($text);
@@ -2288,12 +2295,13 @@ class SubselectDatabase extends PHPWS_DB{
      * @return mixed $value The prepared value
      * @access public
      */
+     /*
     public function dbReady($value = null)
     {
         if (is_array($value) || is_object($value)) {
             return PHPWS_DB::dbReady(serialize($value));
         } elseif (is_string($value)) {
-            return "'" . $GLOBALS['PHPWS_DB']['connection']->escapeSimple($value) . "'";
+            return "'" . $GLOBALS['PHPWS_DB']['connection']->escape($value) . "'";
         } elseif (is_null($value)) {
             return 'NULL';
         } elseif (is_bool($value)) {
@@ -2302,6 +2310,7 @@ class SubselectDatabase extends PHPWS_DB{
             return $value;
         }
     }
+    */
 
 // END FUNC dbReady()
 
