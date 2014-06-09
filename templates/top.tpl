@@ -11,9 +11,9 @@
 <!-- Collect the nav links, forms, and other content for toggling -->
   <div class="collapse navbar-collapse">
     <ul class="nav navbar-nav">
-      <li><a href="index.php?module=intern&action=edit_internship"><i class="icon-plus"></i> Add Internship</a></li>
-      <li><a href="index.php?module=intern&action=search"><i class="icon-search"></i> Search</a></li>
-      <li><a href="mailto:websupport@tux.appstate.edu?subject=Intern Inventory Help Request"><i class="icon-question-sign"></i> Get Help</a></li>
+      <li><a href="index.php?module=intern&action=edit_internship"><i class="fa fa-plus"></i> Add Internship</a></li>
+      <li><a href="index.php?module=intern&action=search"><i class="fa fa-search"></i> Search</a></li>
+      <li><a href="mailto:websupport@tux.appstate.edu?subject=Intern Inventory Help Request"><i class="fa fa-question"></i> Get Help</a></li>
     </ul>
 
 
@@ -21,7 +21,7 @@
       <!-- BEGIN admin_links -->
       {ADMIN_OPTIONS}
       <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-cog"></i> Settings &nbsp;<b class="caret"></b></a>
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog"></i> Settings &nbsp;<b class="caret"></b></a>
         <ul class="dropdown-menu">
           <!-- BEGIN majors -->
           <li>{EDIT_MAJORS_LINK}</li>
@@ -51,7 +51,7 @@
         <a href="#">{USER_FULL_NAME}</a>
       </li>
       <li>
-        <a href="{LOGOUT_URI}"><i class="icon-signout"></i> Sign out</a>
+        <a href="{LOGOUT_URI}"><i class="fa fa-sign-out"></i> Sign out</a>
       </li>
       
     </ul>
