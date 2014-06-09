@@ -34,11 +34,11 @@ class SearchUI implements UI
         $form->setLabel('name', "Name or Banner ID");
         
         $terms = Term::getTermsAssoc();
-        $thisTerm = Term::timeToTerm(time());
+        //$thisTerm = Term::timeToTerm(time());
         $form->addSelect('term_select', $terms);
         $form->setLabel('term_select', 'Term');
         $form->setClass('term_select', 'form-control');
-        $form->setMatch('term_select', $thisTerm);
+        //$form->setMatch('term_select', $thisTerm);
 
         // Deity can search for any department. Other users are restricted.
         if(Current_User::isDeity()){
