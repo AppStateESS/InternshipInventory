@@ -26,7 +26,7 @@ class Intern_Folder extends Folder
         $label = dgettext('filecabinet', 'Add document');
 
         javascript('open_window');
-        return '<button type="button" class="btn btn-default btn-sm" onClick="javascript:open_window(\'' . $link->getAddress() . '\', 600, 600, \'default970975506\', 1); return false;"><i class="icon-upload-alt"></i> ' . $label . '</button>';
+        return '<button type="button" class="btn btn-default btn-sm" onClick="javascript:open_window(\'' . $link->getAddress() . '\', 600, 600, \'default970975506\', 1); return false;"><i class="fa fa-upload"></i> ' . $label . '</button>';
     }
 }
 

@@ -1,4 +1,4 @@
-<h2><i class="icon-search"></i> Search Inventory</h2>
+<h2><i class="fa fa-search"></i> Search Inventory</h2>
 
 <form class="form-horizontal {FORM_CLASS}" id="{FORM_ID}" action="{FORM_ACTION}" autocomplete="{FORM_AUTOCOMPLETE}" method="{FORM_METHOD}"{FORM_ENCODE}>
   {HIDDEN_FIELDS}

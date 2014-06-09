@@ -1,13 +1,13 @@
-<h2><i class="icon-search"></i> Search Results</h2>
+<h2><i class="fa fa-search"></i> Search Results</h2>
 
 <div class="row">
   <div class="col-lg-1">
     <p>
-      <a href="{BACK_LINK_URI}" class="btn btn-default btn-sm"><i class="icon-chevron-left"></i> Back to search</a>
+      <a href="{BACK_LINK_URI}" class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i> Back to search</a>
     </p>
   </div>
   <div class="col-lg-2 col-lg-offset-9">
-    <a href="{EXPORT_URI}" class="btn btn-primary"><i class="icon-download-alt"></i> Export to Spreadsheet</a>
+    <a href="{EXPORT_URI}" class="btn btn-primary"><i class="fa fa-download"></i> Export to Spreadsheet</a>
   </div>
 </div>
 

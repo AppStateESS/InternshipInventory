@@ -125,7 +125,7 @@ class Intern_Document extends Model
         $jsVars = array();
         $jsVars['QUESTION'] = 'Are you sure you want to delete this document?';
         $jsVars['ADDRESS']  = $link->getAddress();
-        $jsVars['LINK']     = '<i class="icon-trash close"></i>';
+        $jsVars['LINK']     = '<i class="fa fa-trash-o close"></i>';
         return javascript('confirm', $jsVars);
     }
 

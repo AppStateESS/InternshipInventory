@@ -12,7 +12,7 @@ function formSubmitHandler()
 	// Disable the button
 	$('button[type="submit"]').prop('disabled','disabled');
 	
-	$('button[type="submit"]').html('Saving... <i class="icon-spinner icon-spin"></i>');
+	$('button[type="submit"]').html('Saving... <i class="fa fa-spinner fa-spin"></i>');
 }
 
 function otherStuff()

@@ -3,28 +3,28 @@
     <!-- BEGIN ERROR -->
     <div class="alert alert-danger">
       <button type="button" class="close" data-dismiss="alert">&times;</button>
-      <i class="icon-remove-sign icon-2x pull-left"></i> {ERROR}
+      <i class="fa fa-times-circle fa-2x pull-left"></i> {ERROR}
     </div>
     <!-- END ERROR -->
 
     <!-- BEGIN WARNING -->
     <div class="alert alert-warning">
       <button type="button" class="close" data-dismiss="alert">&times;</button>
-      <i class="icon-warning-sign icon-2x pull-left"></i> {WARNING}
+      <i class="fa fa-exclamation-triangle fa-2x pull-left"></i> {WARNING}
     </div>
     <!-- END WARNING -->
 
     <!-- BEGIN SUCCESS -->
     <div class="alert alert-success">
       <button type="button" class="close" data-dismiss="alert">&times;</button>
-      <i class="icon-ok icon-2x pull-left"></i> {SUCCESS}
+      <i class="fa fa-check fa-2x pull-left"></i> {SUCCESS}
     </div>
     <!-- END SUCCESS -->
 
     <!-- BEGIN UNKNOWN -->
     <div class="alert alert-info">
       <button type="button" class="close" data-dismiss="alert">&times;</button>
-      <i class="icon-info-sign icon-2x pull-left"></i> {UNKNOWN}
+      <i class="fa fa-info-circle fa-2x pull-left"></i> {UNKNOWN}
     </div>
     <!-- END UNKNOWN -->
   <!-- END NOTIFICATIONS -->

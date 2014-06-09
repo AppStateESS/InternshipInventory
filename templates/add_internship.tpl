@@ -7,7 +7,7 @@
 </script>
 
 <h1>
-  <i class="icon-edit"></i> {TITLE}
+  <i class="fa fa-edit"></i> {TITLE}
 </h1>
 
 <form class="form-horizontal {FORM_CLASS}" id="{FORM_ID}" action="{FORM_ACTION}" autocomplete="{FORM_AUTOCOMPLETE}" method="{FORM_METHOD}"{FORM_ENCODE}>
@@ -19,7 +19,7 @@
     </div>
     <div class="col-lg-1 col-lg-offset-1">
       <!-- BEGIN generate_contract -->
-      <a href="{PDF}" id="contract-button" class="btn btn-default"><i class="icon-file"></i> Generate Contract</a>
+      <a href="{PDF}" id="contract-button" class="btn btn-default"><i class="fa fa-file"></i> Generate Contract</a>
       <!-- END generate_contract -->
     </div>
   </div>
@@ -250,7 +250,7 @@
             <!-- END experience_type_repeat -->
           </div>
           <div class="col-lg-4">
-            <a id="internship-type-help-button" class="pull-right"><i class="icon-question-sign"></i> Type Definitions</a>
+            <a id="internship-type-help-button" class="pull-right"><i class="fa fa-question-circle"></i> Type Definitions</a>
           </div>
         </div>
       </fieldset>
@@ -306,7 +306,7 @@
           <div class="row">
             <div id="faculty_change" class="col-lg-2">
               <button id="faculty-change" type="button" class="btn btn-default btn-xs">
-                <i class="icon-chevron-left"></i> change
+                <i class="fa fa-chevron-left"></i> change
               </button>
             </div>
             <div id="faculty_name" class="col-lg-10 lead"></div>
@@ -318,7 +318,7 @@
               <div class="row">
                 <div class="col-lg-12">
                   <p>
-                    <abbr title="Email address"><i class="icon-envelope"></i></abbr> &nbsp;<span id="faculty_email"></span>
+                    <abbr title="Email address"><i class="fa fa-envelope"></i></abbr> &nbsp;<span id="faculty_email"></span>
                   </p>
                 </div>
               </div>
@@ -326,7 +326,7 @@
               <div class="row">
                 <div class="col-lg-12">
                   <p>
-                    <abbr title="Phone"><i class="icon-phone"></i></abbr> &nbsp;<span id="faculty_phone"></span>
+                    <abbr title="Phone"><i class="fa fa-phone"></i></abbr> &nbsp;<span id="faculty_phone"></span>
                   </p>
                 </div>
               </div>
@@ -334,14 +334,14 @@
               <div class="row">
                 <div class="col-lg-12">
                   <p>
-                    <abbr title="Fax"><i class="icon-print"></i></abbr> &nbsp;<span id="faculty_fax"></span>
+                    <abbr title="Fax"><i class="fa fa-print"></i></abbr> &nbsp;<span id="faculty_fax"></span>
                   </p>
                 </div>
               </div>
             </div>
 
             <div class="col-lg-5">
-              <abbr title="Address"><i class="icon-map-marker"></i></abbr> &nbsp;
+              <abbr title="Address"><i class="fa fa-map-marker"></i></abbr> &nbsp;
               <address id="faculty_address"></address>
             </div>
           </div>
@@ -356,7 +356,7 @@
           <div class="col-lg-9">
             <ul class="list-group">
               <!-- BEGIN docs -->
-              <li class="list-group-item"><i class="icon-file-alt"></i> {DOWNLOAD} &nbsp;{DELETE}</li>
+              <li class="list-group-item"><i class="fa fa-file"></i> {DOWNLOAD} &nbsp;{DELETE}</li>
               <!-- END docs -->
             </ul>
           </div>

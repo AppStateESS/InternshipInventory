@@ -106,7 +106,7 @@ class InternshipUI implements UI {
             PHPWS_Core::initModClass('intern', 'EmergencyContactFormView.php');
             $emgContactDialog = new EmergencyContactFormView($i);
             
-            $tpl['ADD_EMERGENCY_CONTACT'] = '<button type="button" class="btn btn-default btn-sm" id="add-ec-button"><i class="icon-plus"></i> Add Contact</button>';
+            $tpl['ADD_EMERGENCY_CONTACT'] = '<button type="button" class="btn btn-default btn-sm" id="add-ec-button"><i class="fa fa-plus"></i> Add Contact</button>';
             $tpl['EMERGENCY_CONTACT_DIALOG'] = $emgContactDialog->getHtml(); 
             
         } else {
@@ -129,10 +129,10 @@ class InternshipUI implements UI {
             /* Show form with empty fields. */
             $form = $internshipForm->getForm();
             // Show a disabled button in document list if we are adding an internship.
-            $tpl['UPLOAD_DOC'] = '<div title="Please save this internship first."><button id="doc-upload-btn" class="btn btn-default btn-sm" title="Please save this internship first." disabled="disabled"><i class="icon-upload-alt"></i> Add document</button></div>';
+            $tpl['UPLOAD_DOC'] = '<div title="Please save this internship first."><button id="doc-upload-btn" class="btn btn-default btn-sm" title="Please save this internship first." disabled="disabled"><i class="fa fa-upload"></i> Add document</button></div>';
 
             // Show a disabled emergency contact button
-            $tpl['ADD_EMERGENCY_CONTACT'] = '<div title="Please save this internship first."><button class="btn btn-default btn-sm" id="add-ec-button" disabled="disabled" data-toggle="tooltip" title="first tooltip"><i class="icon-plus"></i> Add Contact</button></div>';
+            $tpl['ADD_EMERGENCY_CONTACT'] = '<div title="Please save this internship first."><button class="btn btn-default btn-sm" id="add-ec-button" disabled="disabled" data-toggle="tooltip" title="first tooltip"><i class="fa fa-plus"></i> Add Contact</button></div>';
             
         }
         
