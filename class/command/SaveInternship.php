@@ -129,6 +129,18 @@ class SaveInternship {
 			NQ::close();
 			return PHPWS_Core::reroute($url);
 		}
+		
+		// Sanity check course number
+		if((isset($_REQUEST['course_no']) && $_REQUEST['course_no'] != "") && (strlen($_REQUEST['course_no']) > 20 || !is_numeric($_REQUEST['course_no']))) {
+			$url = 'index.php?module=intern&action=edit_internship&missing=agency_sup_zip';
+			// Restore the values in the fields the user already entered
+			foreach ($_POST as $key => $val){
+				$url .= "&$key=$val";
+			}
+			NQ::simple('intern', INTERN_ERROR, "The course number provided is invalid. No changes were saved. Course numbers should be less than 20 digits (no letters, spaces, or punctuation).");
+			NQ::close();
+			return PHPWS_Core::reroute($url);
+		}
 
         PHPWS_DB::begin();
 
