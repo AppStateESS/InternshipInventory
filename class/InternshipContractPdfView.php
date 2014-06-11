@@ -99,7 +99,7 @@ class InternshipContractPdfView {
         */
 
         //$this->pdf->setFont('Times', null, 10);
-        $this->pdf->setXY(140, 48);
+        $this->pdf->setXY(140, 53);
         $this->pdf->cell(73, 6, $this->internship->getCourseTitle());
 
         /* Location */
