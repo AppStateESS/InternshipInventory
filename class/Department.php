@@ -115,11 +115,14 @@ class Department extends Editable
         $db->addColumn('id');
         $db->addColumn('name');
         $db->addWhere('hidden', 0, '=', 'OR');
-        if(!is_null($except))
+        if(!is_null($except)) {
             $db->addWhere('id', $except, '=', 'OR');
+        }
+
+        $db->setIndexBy('id');
 
         $depts[-1] = 'Select Department';
-        $depts += $db->select('assoc');
+        $depts += $db->select('col');
         
         return $depts;
     }
@@ -127,18 +130,20 @@ class Department extends Editable
     /**
      * Return an associative array {id => dept. name} for all the departments
      * that the user with $username is allowed to see.
-     * @param $except - Always show the department with this ID. Used for internships
+     * @param $includeHiddenDept - Include the department with this ID, even if it's hidden. Used for internships
      *                  with a hidden department. We still want to see it in the select box. 
      */
-    public static function getDepartmentsAssocForUsername($username, $except=null)
+    public static function getDepartmentsAssocForUsername($username, $includeHiddenDept = null)
     {
         $db = self::getDb();
         $db->addOrder('name');
         $db->addColumn('id');
         $db->addColumn('name');
         $db->addWhere('hidden', 0, '=', 'OR', 'grp');
-        if(!is_null($except))
+
+        if(!is_null($includeHiddenDept)){
             $db->addWhere('id', $except, '=', 'OR', 'grp');
+        }
 
         // If the user doesn't have the 'all_departments' permission,
         // then add a join to limit to specific departments
@@ -147,9 +152,11 @@ class Department extends Editable
             $db->addWhere('intern_admin.username', $username);
         }
 
+        $db->setIndexBy('id');
+
         $depts[-1] = 'Select Department';
-        $depts += $db->select('assoc');
-        
+        $depts += $db->select('col');
+
         return $depts;
     }
     

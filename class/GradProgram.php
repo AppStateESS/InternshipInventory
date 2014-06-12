@@ -122,11 +122,13 @@ class GradProgram extends Editable
         if(!is_null($except)){
             $db->addWhere('id', $except, '=', 'OR');
         }
-        $progs = $db->select('assoc');
-        // Horrible, horrible hacks. Need to add a null selection.
-        $progs = array_reverse($progs, true); // preserve keys.
+        
+        $db->setIndexBy('id');
+
         $progs[-1] = 'Select Graduate Major or Certificate Program';
-        return array_reverse($progs, true);
+        $progs += $db->select('col');
+
+        return $progs;
     }
     
     /**

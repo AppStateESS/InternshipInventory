@@ -122,11 +122,13 @@ class Major extends Editable
         if(!is_null($except)){
             $db->addWhere('id', $except, '=', 'OR');
         }
-        $majors = $db->select('assoc');
-        // Horrible, horrible hacks. Need to add a null selection.
-        $majors = array_reverse($majors, true); // preserve keys.
+
+        $db->setIndexBy('id');
+
         $majors[-1] = 'Select Undergraduate Major or Certificate Program';
-        return array_reverse($majors, true);
+        $majors += $db->select('col');
+
+        return $majors;
     }
     
     /**
