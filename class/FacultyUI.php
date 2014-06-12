@@ -32,7 +32,7 @@ class FacultyUI implements UI
         $renderedDepts = '';
         foreach($departments as $key => $val) {
             $renderedDepts .= PHPWS_Template::process(
-                array('DEPT'=>$val,'ID'=>$key),
+                array('ID'=>$key, 'DEPT'=>$val),
                 'intern',
                 'facultySelectOption.tpl');
         }
