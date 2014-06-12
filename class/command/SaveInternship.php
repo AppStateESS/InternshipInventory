@@ -131,8 +131,8 @@ class SaveInternship {
 		}
 		
 		// Sanity check course number
-		if((isset($_REQUEST['course_no']) && $_REQUEST['course_no'] != "") && (strlen($_REQUEST['course_no']) > 20 || !is_numeric($_REQUEST['course_no']))) {
-			$url = 'index.php?module=intern&action=edit_internship&missing=agency_sup_zip';
+		if((isset($_REQUEST['course_no']) && $_REQUEST['course_no'] != '') && (strlen($_REQUEST['course_no']) > 20 || !is_numeric($_REQUEST['course_no']))) {
+			$url = 'index.php?module=intern&action=edit_internship&missing=course_no';
 			// Restore the values in the fields the user already entered
 			foreach ($_POST as $key => $val){
 				$url .= "&$key=$val";
