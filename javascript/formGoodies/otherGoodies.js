@@ -15,14 +15,17 @@ function formSubmitHandler()
     $('button[type="submit"]').html('Saving... <i class="fa fa-spinner fa-spin"></i>');
 }
 
-function otherStuff()
+function addFormErrors()
 {
     // Add error class to parent object (hopefully a div.form-group)
     // of any form element with the data-has-error="true" attribute.
     $("input[data-has-error='true']").parent().parent().addClass('has-error');
     $("select[data-has-error='true']").parent().parent().addClass('has-error');
     $("input[type='radio'][data-has-error='true']").parent().addClass('has-error');
+}
 
+function initPayment()
+{
     /* PAYMENT 
      * If Paid is selected then make stipend selectable.
      */
@@ -45,7 +48,10 @@ function otherStuff()
         $("input:checkbox[name='stipend']").prop('disabled', true);
         $("input:checkbox[name='stipend']").parent().addClass('text-muted');
     }
+}
 
+function initOIED()
+{
     /*******
      * OIED Checkbox
      * The OIED checkbox is shadowed by a hidden field. The hidden field
@@ -60,7 +66,10 @@ function otherStuff()
             $("#internship_oied_certified_hidden").prop('value', 'false');
         }
     });
+}
 
+function initTypeHelp()
+{
     /************************
      * Internship Type Help *
      */
@@ -76,7 +85,10 @@ function otherStuff()
     $("#internship-type-help-button").click(function(){
         $("#internship-type-help").dialog('open');
     });
+}
 
+function initMultiPart()
+{
     /**********
      * Multi-part / Secondary Part *
      */
@@ -139,8 +151,10 @@ function otherStuff()
             $("#internship_course_title").prop('disabled', false);
         }
     });
+}
 
-
+function initFacultySelector()
+{
     /********************
      * Faculty Selection
      */
@@ -175,38 +189,38 @@ function otherStuff()
 
     var facultyData = null;
 
-// Handle the AJAX response containing the faculty members for a department
-function handleFacultyResponse(data)
-{
-    //console.log(data);
+    // Handle the AJAX response containing the faculty members for a department
+    function handleFacultyResponse(data)
+    {
+        //console.log(data);
 
-    // Save the data outside this method for later
-    facultyData = data;
+        // Save the data outside this method for later
+        facultyData = data;
 
-    // Show a message if no faculty were returned for the selected department
-    if(data.length === 0){
-        $("#internship_faculty").html("<option value='-1'>No Advisors Available</option>");
-        return;
-    }
-
-    // Generate the dropdown list
-    var listItems = "<option value='-1'>None</option>";
-    for (var i = 0; i < data.length; i++){
-        // If the banner ID matches what's in the hidden field, set the selected option in the drop down
-        var selected = '';
-        if($("#internship_faculty_id").val() === data[i].id){
-            selected = 'selected="selected"';
+        // Show a message if no faculty were returned for the selected department
+        if(data.length === 0){
+            $("#internship_faculty").html("<option value='-1'>No Advisors Available</option>");
+            return;
         }
-        listItems += "<option value='" + data[i].id + "' " + selected + ">" + data[i].first_name + " " + data[i].last_name + "</option>";
-    }
-    $("#internship_faculty").html(listItems);
-    $("#internship_faculty").prop('disabled', false);
 
-    // If a banner id is already set in the hidden field, select it
-    if ($("#internship_faculty_id").val() !== null) {
-        selectFaculty($("#internship_faculty_id").val());
+        // Generate the dropdown list
+        var listItems = "<option value='-1'>None</option>";
+        for (var i = 0; i < data.length; i++){
+            // If the banner ID matches what's in the hidden field, set the selected option in the drop down
+            var selected = '';
+            if($("#internship_faculty_id").val() === data[i].id){
+                selected = 'selected="selected"';
+            }
+            listItems += "<option value='" + data[i].id + "' " + selected + ">" + data[i].first_name + " " + data[i].last_name + "</option>";
+        }
+        $("#internship_faculty").html(listItems);
+        $("#internship_faculty").prop('disabled', false);
+
+        // If a banner id is already set in the hidden field, select it
+        if ($("#internship_faculty_id").val() !== null) {
+            selectFaculty($("#internship_faculty_id").val());
+        }
     }
-}
 
     // Handle an AJAX error when getting faculty members for a department
     function handleFacultyReponseError(jqXHR, textStatus)
@@ -296,11 +310,10 @@ function handleFacultyResponse(data)
                 $("#faculty_details").show('slide', {direction: 'right'}, "fast");
                 });
     }
+}
 
-/***********************************************
- * Location Domestic vs International handling *
- ***********************************************/
-var domesticClick = function(){
+function handleDomesticClick()
+{
     /**** Internship Location ****/
     // Show the state dropdown, add require field class
     $("#internship_loc_state").parent().parent().fadeIn('fast');
@@ -346,13 +359,11 @@ var domesticClick = function(){
 
     // Re-add handlers for copying state info. <mod/intern/javascript/copyAddress>
     //sameAddressState($("input:checkbox[name='copy_address']").attr('checked'));
-};
 
-/**
- * If internat is selected: show country. Add required flag to country.
- */
-var internatClick = function(){
+}
 
+function handleIntlClick()
+{
     /**** Internship Location ****/
     // Hide state dropdown, remove required field class
     $("#internship_loc_state").removeClass('input-required');
@@ -398,36 +409,29 @@ var internatClick = function(){
     $("#internship_oied_certified-label").removeClass('text-muted');
 
     //sameAddressState($("input:checkbox[name='copy_address']").attr('checked'));
-};
 
-// Attach above function to click event
-$("input:radio[name=location][value=domestic]").click(function(){ domesticClick(); });
-
-// Attach above function to click event
-$("input:radio[name=location][value=internat]").click(function(){ internatClick(); });
-
-// If domestic is checked initially then do setup...
-if($("input:radio[name=location][value=domestic]").attr('checked')){
-    domesticClick();
 }
 
-// If internat is checked initially then do setup...
-if($("input:radio[name=location][value=internat]").attr('checked')){
-    internatClick();
-}
+function initIntlHandlers()
+{
+    /***********************************************
+     * Location Domestic vs International handling *
+     ***********************************************/
+    // Attach above function to click event
+    $("input:radio[name=location][value=domestic]").click(function(){ handleDomesticClick(); });
 
-/******************************************
- * Undergraduate Level and Major handling *
- ******************************************/
+    // Attach above function to click event
+    $("input:radio[name=location][value=internat]").click(function(){ handleIntlClick(); });
 
-// Set initial state
-$("#internship_ugrad_major").hide();
-$("#internship_grad_prog").hide();
+    // If domestic is checked initially then do setup...
+    if($("input:radio[name=location][value=domestic]").attr('checked')){
+        handleDomesticClick();
+    }
 
-// Set initial state for student level drop down by calling the
-// usual event handler if needed
-if($("#internship_student_level").val() != -1){
-    handleLevelChange();
+    // If internat is checked initially then do setup...
+    if($("input:radio[name=location][value=internat]").attr('checked')){
+        handleIntlClick();
+    }
 }
 
 // Event handler for student level drop down
@@ -448,6 +452,35 @@ function handleLevelChange()
     }
 }
 
-// Bind event handler for drop down change
-$("#internship_student_level").change(handleLevelChange);
+function initStudentLevel()
+{
+    /******************************************
+     * Undergraduate Level and Major handling *
+     ******************************************/
+
+    // Set initial state
+    $("#internship_ugrad_major").hide();
+    $("#internship_grad_prog").hide();
+
+    // Set initial state for student level drop down by calling the
+    // usual event handler if needed
+    if($("#internship_student_level").val() != -1){
+        handleLevelChange();
+    }
+
+    // Bind event handler for drop down change
+    $("#internship_student_level").change(handleLevelChange);
+}
+
+function otherStuff()
+{
+    
+    addFormErrors();
+    initPayment();
+    initOIED();
+    initTypeHelp();
+    initMultiPart();
+    initFacultySelector();
+    initIntlHandlers();
+    initStudentLevel();
 }
