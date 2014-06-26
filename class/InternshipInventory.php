@@ -140,14 +140,6 @@ class InternshipInventory {
                     } else {
                         NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot delete graduate program.");
                     }
-                } else if (isset($_REQUEST['fDel'])) {
-                    /* Forcefully delete a grad program */
-                    if (isset($_REQUEST['id'])) {
-                        $g = new GradProgram($_REQUEST['id']);
-                        $g->forceDelete();
-                    } else {
-                        NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot delete graduate program.");
-                    }
                 }
                 $view = new GradProgramUI();
                 $this->content = $view->display();
@@ -183,14 +175,6 @@ class InternshipInventory {
                     if (isset($_REQUEST['id'])) {
                         $m = new Major($_REQUEST['id']);
                         $m->del();
-                    } else {
-                        NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot delete major.");
-                    }
-                } else if (isset($_REQUEST['fDel'])) {
-                    /* Forcefully delete a major */
-                    if (isset($_REQUEST['id'])) {
-                        $m = new Major($_REQUEST['id']);
-                        $m->forceDelete();
                     } else {
                         NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot delete major.");
                     }

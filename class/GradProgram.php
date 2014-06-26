@@ -64,38 +64,6 @@ class GradProgram extends Editable
         return 'delete_grad_prog';
     }
 
-    /**
-     * @Override Editable::forceDelete
-     */
-    public static function forceDelete()
-    {
-        if(!Current_User::allow('intern', $this->getDeletePermission())){
-            return NQ::simple('intern', INTERN_ERROR, 'You do not have permission to delete grad programs.');
-        }
-
-        PHPWS_Core::initModClass('intern', 'Student.php');
-        if($this->id == 0)
-            return;
-        $db = Student::getDb();
-        $db->addWhere('grad_prog', $this->id);
-        $studs = $db->getObjects('Student');
-        
-        // Set each grad_prog to NULL
-        foreach($studs as $stud){
-            $stud->grad_prog = null;
-            $stud->save();
-        }
-
-        // Finally, delete this.
-        try{
-            $this->delete();
-            NQ::simple('intern', INTERN_SUCCESS, "<i>$this->name</i> deleted.");
-        }catch(Exception $e){
-            NQ::simple('intern', INTERN_ERROR, $e->getMessage());
-            return;
-        }
-    }
-
     public function getName()
     {
         return $this->name;

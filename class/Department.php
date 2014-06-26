@@ -94,15 +94,6 @@ class Department extends Editable
     }
 
     /**
-     * @Override Editable::forceDelete
-     */
-    public static function forceDelete()
-    {
-        /* This isn't called because it's not supported right now. Maybe later though....? */
-        return NQ::simple('intern', INTERN_WARNING, 'Sorry, cannot forcefully delete a department.');
-    }
-
-    /**
      * Return an associative array {id => dept. name} for all the 
      * departments in database.
      * @param $except - Always show the department with this ID. Used for internships

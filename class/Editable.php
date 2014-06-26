@@ -42,15 +42,6 @@ abstract class Editable extends Model
     }
 
     /**
-     * Forcefully delete an item. If a student is related to 
-     * the Editable item then set that relationship to null (if you can).
-     */
-    static public function forceDelete()
-    {
-        throw new Exception('Not yet implemented.');
-    }
-
-    /**
      * Rename the Editable item with ID $id to $newName.
      */
     public function rename($newName)
@@ -165,12 +156,6 @@ abstract class Editable extends Model
             // Item deleted successfully.
             NQ::simple('intern', INTERN_SUCCESS, "Deleted <i>$name</i>");
         }catch(Exception $e){
-            if($e->getCode() == DB_ERROR_CONSTRAINT){
-                $force = PHPWS_Text::moduleLink("Force Delete?", 'intern', array('action' => $this->getEditAction(), 'fDel' => true, 'id' => $this->id));
-                NQ::simple('intern', INTERN_ERROR, "One or more students have <i>$name</i> as their Major, Grad Program, or Department.<br/>[$force] This will remove all students' connection with this major or grad. prog");
-                return;
-            }
-
             NQ::simple('intern', INTERN_ERROR, $e->getMessage());
             return;
         }

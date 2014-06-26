@@ -64,38 +64,6 @@ class Major extends Editable
         return 'delete_major';
     }
 
-    /**
-     * @Override Editable::forceDelete
-     */
-    public static function forceDelete()
-    {
-        if(!Current_User::allow('intern', $this->getDeletePermission())){
-            return NQ::simple('intern', INTERN_ERROR, 'You do not have permission to delete majors.');
-        }
-
-        PHPWS_Core::initModClass('intern', 'Student.php');
-        if($this->id == 0)
-            return;
-        $db = Student::getDb();
-        $db->addWhere('ugrad_major', $this->id);
-        $studs = $db->getObjects('Student');
-        
-        // Set each ugrad_major to NULL
-        foreach($studs as $stud){
-            $stud->ugrad_major = null;
-            $stud->save();
-        }
-
-        // Finally, delete this.
-        try{
-            $this->delete();
-            NQ::simple('intern', INTERN_SUCCESS, "<i>$this->name</i> deleted.");
-        }catch(Exception $e){
-            NQ::simple('intern', INTERN_ERROR, $e->getMessage());
-            return;
-        }
-    }
-
     public function getName()
     {
         return $this->name;
