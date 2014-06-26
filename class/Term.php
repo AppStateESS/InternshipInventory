@@ -65,7 +65,7 @@ class Term extends Model
      * If $super is true then <sup> tags will be used in 1st and 2nd.
      * readable form. (Ex: 20111 => 'Spring 2011')
      */
-    public static function rawToRead($t, $super=true)
+    public static function rawToRead($t, $super=false)
     {
         $semester = $t[strlen($t)-1];// Get last char
         $year = substr($t, 0, strlen($t)-1);

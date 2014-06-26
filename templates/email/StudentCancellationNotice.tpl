@@ -1,9 +1,8 @@
-Banner ID: {BANNER}
-
 Hello {NAME},
 
-Your internship information concerning the agency "{AGENCY}" during the {TERM} term has been cancelled. 
+Your internship for {TERM} has been marked as cancelled in the Internship Inventory.
 Please contact your faculty adviser if this is incorrect. 
 
-Thank you.
 
+Your Banner ID: {BANNER}
+Department: {DEPARTMENT}

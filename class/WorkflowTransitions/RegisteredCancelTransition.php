@@ -1,14 +1,14 @@
 <?php
 
 class RegisteredCancelTransition extends WorkflowTransition {
-    const sourceState = '*';
+    const sourceState = 'RegisteredState';
     const destState   = 'CancelledState';
     const actionName  = 'Cancel';
     
     const sortIndex = 10;
 
     public function getAllowedPermissionList(){
-        return array('dept_approve', 'sig_auth_approve', 'register');
+        return array('register');
     }
     
     public function getSourceState(){
@@ -18,7 +18,7 @@ class RegisteredCancelTransition extends WorkflowTransition {
     public function doNotification(Internship $i, $note = null)
     {
             PHPWS_Core::initModClass('intern', 'Email.php');
-            Email::sendIntlInternshipCancelNoticeStudent($i);
+            Email::sendInternshipCancelNotice($i);
     }
 }
 
