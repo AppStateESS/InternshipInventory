@@ -69,7 +69,9 @@ class InternshipUI implements UI {
             $folder = new Intern_Folder(Intern_Document::getFolderId());
             $tpl['UPLOAD_DOC'] = $folder->documentUpload($i->id);
             
-			if($i->getWorkflowState() instanceof SigAuthApprovedState && ($docs < 1))
+            $wfState = $i->getWorkflowState();
+
+			if(($wfState instanceof SigAuthReadyState || $wfState instanceof SigAuthApprovedState || $wfState instanceof DeanApprovedState || $wfState instanceof RegisteredState) && ($docs < 1))
 			{
 	        	NQ::simple('intern', INTERN_WARNING, "No documents have been uploaded yet. Usually a copy of the signed contract document should be uploaded.");
 			}
