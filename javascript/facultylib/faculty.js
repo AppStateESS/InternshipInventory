@@ -59,11 +59,11 @@ $(function() {
             this.$('.faculty-remove').bind('click', function(e) { me.disassociate.call(me, e); });
             return this;
         },
-        edit: function(e) {
+        edit: function() {
             var dialog = new FacultyEditView({model: this.model});
             dialog.render();
         },
-        disassociate: function(e) {
+        disassociate: function() {
             this.trigger('disassociate', this.model);
             this.model.set('id', null);
             this.model.destroy();
@@ -82,7 +82,7 @@ $(function() {
         },
         render: function() {
             this.addAll();
-            if(this.collection.size() == 0) {
+            if(this.collection.size() === 0) {
                 this.$el.append('<li class="text disabled italic">There are no faculty members in this department.</li>');
             }
             return this;
@@ -103,10 +103,10 @@ $(function() {
                 department_id: this.collection.department
             });
             association.destroy({
-                success: function(delmodel, xhr, options) {
+                success: function() {
                     NQ.notify('success', model.getFullName() + ' was removed from the selected department.');
                 },
-                error: function(delmodel, xhr, options) {
+                error: function() {
                     NQ.notify('danger', 'Could not remove ' + model.getFullName() + ' from selected department due to internal server error.');
                 }
             });
@@ -208,20 +208,20 @@ $(function() {
             this.model.set('zip', this.$('#faculty-edit-zip').val());
             var self = this;
             this.model.save([], {
-                success: function (model, response, options) {
+                success: function (model) {
                     self.trigger('save', model);
                     NQ.notify('success', 'Changes were saved');
                     self.remove();
                 },
-                error: function (model, xhr, options) {
+                error: function () {
                     NQ.notify('danger', 'A server error occurred attempting to save your changes.');
                 }
             });
         },
-        cancel: function(e) {
+        cancel: function() {
             this.remove();
         },
-        manualEntry: function(e) {
+        manualEntry: function() {
             this.$promptmoredata.hide();
             this.$editmoredata.show();
             this.bindEnter();
@@ -229,29 +229,31 @@ $(function() {
         bindEnter: function() {
             var self = this;
             this.$el.keyup(function (e) {
-                if(e.keyCode == 13) {
+                if(e.keyCode === 13) {
                     self.save(e);
                 }
             });
         },
-        idKeypress: function(e) {
+        idKeypress: function() {
             if(this.keyPressTimeout) {
                 clearTimeout(this.keyPressTimeout);
             }
 
             var me = this;
             this.keyPressTimeout = setTimeout(function () {
-                if(!BannerIDRegex.test(me.$id.val())) return;
+                if(!BannerIDRegex.test(me.$id.val())){
+                    return;
+                }
                 
                 me.$loadingmoredata.show();
 
                 me.model.set('id', me.$id.val());
 
                 me.model.fetch({
-                    success: function (collection, response, options) {
+                    success: function (collection, response) {
                         me.createNew = false;
                     },
-                    error: function (collection, response, options) {
+                    error: function (collection, response) {
                         me.$promptmoredata.show();
                     },
                     complete: function () {
@@ -281,14 +283,14 @@ $(function() {
             this.$newbutton.hide();
 
             var elements = this.$department.children('[value!="-1"]');
-            if(elements.length == 1) {
+            if(elements.length === 1) {
                 this.$department.val(elements.val());
                 this.$department.change();
             }
         },
         render: function() {
         },
-        add: function(e) {
+        add: function() {
             var dialog = new FacultyEditView({model: new Faculty()});
             this.listenTo(dialog, 'save', this.assocNew);
             dialog.render();
@@ -310,11 +312,11 @@ $(function() {
             });
 
             association.save([], {
-                success: function(derp, response, options) {
+                success: function() {
                     self.collection.add(model);
                     NQ.notify('success', fullname + " was added to " + dept);
                 },
-                error: function(model, xhr, options) {
+                error: function() {
                     NQ.notify('danger', 'A server error occurred attempting to add ' +
                         fullname + ' to ' + dept);
                 }
@@ -363,8 +365,9 @@ $(function() {
                 .hide();
         },
         notify: function(cls, msg) {
-            if(cls != 'danger' && cls != 'success' && cls != 'info' && cls != 'alert')
+            if(cls !== 'danger' && cls !== 'success' && cls !== 'info' && cls !== 'alert'){
                 throw 'Class must be either success, warning, or error';
+            }
             this.$div.removeClass('alert-success alert-danger alert-info alert-alert').addClass('alert-' + cls);
             this.$nq.html(msg);
             this.$div.show();
