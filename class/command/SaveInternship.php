@@ -470,7 +470,7 @@ class SaveInternship {
                     $vals[] = 'loc_state';
                 }
             }else{
-                if(!isset($_REQUEST['loc_country'])){
+                if($_REQUEST['loc_country'] == ''){
                     $vals[] = 'loc_country';
                 }
             }
