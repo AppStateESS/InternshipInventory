@@ -145,7 +145,7 @@ function otherStuff()
      * Faculty Selection
      */
     // Bind onChange event handler for department drop down
-    $("#internship_department").bind('change', function(event){
+    $("#internship_department").bind('change', function(){
         // Reset state of interface
         $("#internship_faculty").prop('disabled', true); // Disable faculty drop down
         $("#internship_faculty").html("<option value='-1'></option>"); // Reset list of options in drop down
@@ -156,7 +156,7 @@ function otherStuff()
         $("#faculty_fax").html('');
         $("#faculty_address").html('');
 
-        if($("#internship_department").val() == -1){
+        if($("#internship_department").val() === -1){
             return;
         }
 
@@ -176,7 +176,7 @@ function otherStuff()
     var facultyData = null;
 
 // Handle the AJAX response containing the faculty members for a department
-function handleFacultyResponse(data, textStatus, jqXHR)
+function handleFacultyResponse(data)
 {
     //console.log(data);
 
@@ -184,7 +184,7 @@ function handleFacultyResponse(data, textStatus, jqXHR)
     facultyData = data;
 
     // Show a message if no faculty were returned for the selected department
-    if(data.length == 0){
+    if(data.length === 0){
         $("#internship_faculty").html("<option value='-1'>No Advisors Available</option>");
         return;
     }
@@ -193,8 +193,8 @@ function handleFacultyResponse(data, textStatus, jqXHR)
     var listItems = "<option value='-1'>None</option>";
     for (var i = 0; i < data.length; i++){
         // If the banner ID matches what's in the hidden field, set the selected option in the drop down
-        selected = '';
-        if($("#internship_faculty_id").val() == data[i].id){
+        var selected = '';
+        if($("#internship_faculty_id").val() === data[i].id){
             selected = 'selected="selected"';
         }
         listItems += "<option value='" + data[i].id + "' " + selected + ">" + data[i].first_name + " " + data[i].last_name + "</option>";
@@ -203,13 +203,13 @@ function handleFacultyResponse(data, textStatus, jqXHR)
     $("#internship_faculty").prop('disabled', false);
 
     // If a banner id is already set in the hidden field, select it
-    if ($("#internship_faculty_id").val() != null) {
+    if ($("#internship_faculty_id").val() !== null) {
         selectFaculty($("#internship_faculty_id").val());
     }
 }
 
     // Handle an AJAX error when getting faculty members for a department
-    function handleFacultyReponseError(jqXHR, textStatus, errorThrown)
+    function handleFacultyReponseError(jqXHR, textStatus)
     {
         console.log("Error loading facuty list. Please contact ESS.");
         console.log(textStatus);
@@ -221,7 +221,7 @@ function handleFacultyResponse(data, textStatus, jqXHR)
 
     // Handle changes to the faculty drop down
     $("#internship_faculty").bind('change', function(){
-        if($("#internship_faculty").val() != "-1") {
+        if($("#internship_faculty").val() !== "-1") {
             selectFaculty($("#internship_faculty").val());
         }
     });
@@ -247,46 +247,46 @@ function handleFacultyResponse(data, textStatus, jqXHR)
         //TODO What if there isn't a match? We still need to be able to find/show that faculty member.
         var faculty = null;
         for(var i = 0; i < facultyData.length; i++){
-            if(facultyData[i].id == bannerId){
+            if(facultyData[i].id === bannerId){
                 faculty = facultyData[i];
                 break;
             }
         }
 
         // Update the faculty details panel
-        departmentName = $("#internship_department :selected").text();
+        var departmentName = $("#internship_department :selected").text();
 
         $("#faculty_details").removeClass('text disabled'); // Disable detail text
         $("#faculty_name").html(faculty.first_name + " " + faculty.last_name + " - " + departmentName);
         $("#faculty_email").html('<a href="mailto:' + faculty.username + '@appstate.edu">' + faculty.username + '@appstate.edu </a>');
 
-        if(faculty.phone != ''){
+        if(faculty.phone !== ''){
             $("#faculty_phone").html('<a href="tel:+1' + faculty.phone + '">' + faculty.phone + '</a>');
         }else{
             $("#faculty_phone").html('<small class="text-muted">Has not been set</small>');
         }
 
-        if(faculty.fax != '' && faculty.fax != null){
+        if(faculty.fax !== '' && faculty.fax !== null){
             $("#faculty_fax").html('<a href="fax:+1' + faculty.fax + '">' + faculty.fax + '</a>');
         }else{
             $("#faculty_fax").html('<small class="text-muted">Has not been set</small>');
         }
 
         // Format the address
-        var address = ''
-            if(faculty.street_address1 != '' && faculty.street_address1 != null){
+        var address = '';
+            if(faculty.street_address1 !== '' && faculty.street_address1 !== null){
                 address += faculty.street_address1;
 
-                if (faculty.street_address2 != '') {
+                if (faculty.street_address2 !== '') {
                     address += ("<br />" + faculty.street_address2); 
                 }
             } else {
                 address += ('<small class="text-muted">Address has not been set</small>');
             }
-        if(faculty.city != '' && faculty.city != null && faculty.state != '' && faculty.state != null){
+        if(faculty.city !== '' && faculty.city !== null && faculty.state !== '' && faculty.state !== null){
             address += ("<br />" + faculty.city + ", " + faculty.state);
         }
-        if(faculty.zip != '' && faculty.zip != null) {
+        if(faculty.zip !== '' && faculty.zip !== null) {
             address += " " + faculty.zip;
         }
         $("#faculty_address").html(address);
@@ -433,11 +433,11 @@ if($("#internship_student_level").val() != -1){
 // Event handler for student level drop down
 function handleLevelChange()
 {
-    if($("#internship_student_level").val() == 'ugrad'){
+    if($("#internship_student_level").val() === 'ugrad'){
         $("#internship_grad_prog").hide();
         $("#internship_student_major").hide();
         $("#internship_ugrad_major").show();
-    }else if ($("#internship_student_level").val() == 'grad'){
+    }else if ($("#internship_student_level").val() === 'grad'){
         $("#internship_ugrad_major").hide();
         $("#internship_student_major").hide();
         $("#internship_grad_prog").show();
@@ -450,4 +450,4 @@ function handleLevelChange()
 
 // Bind event handler for drop down change
 $("#internship_student_level").change(handleLevelChange);
-};
+}
