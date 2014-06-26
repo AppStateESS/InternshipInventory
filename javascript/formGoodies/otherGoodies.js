@@ -122,7 +122,10 @@ function initMultiPart()
             $("#internship_course_title").prop('disabled', false);
         }
     });
+}
 
+function initSecondaryPart()
+{
     // Set inital state for course info fields
     if($("#internship_secondary_part").prop('checked')){
         // Disable course info
@@ -437,15 +440,15 @@ function initIntlHandlers()
 // Event handler for student level drop down
 function handleLevelChange()
 {
-    if($("#internship_student_level").val() === 'ugrad'){
+    if ($("#internship_student_level").val() === 'ugrad') {
+        $("#internship_ugrad_major").show();
         $("#internship_grad_prog").hide();
         $("#internship_student_major").hide();
-        $("#internship_ugrad_major").show();
-    }else if ($("#internship_student_level").val() === 'grad'){
+    } else if ($("#internship_student_level").val() === 'grad') {
         $("#internship_ugrad_major").hide();
-        $("#internship_student_major").hide();
         $("#internship_grad_prog").show();
-    }else {
+        $("#internship_student_major").hide();
+    } else {
         $("#internship_ugrad_major").hide();
         $("#internship_grad_prog").hide();
         $("#internship_student_major").show();
@@ -480,6 +483,7 @@ function otherStuff()
     initOIED();
     initTypeHelp();
     initMultiPart();
+    initSecondaryPart();
     initFacultySelector();
     initIntlHandlers();
     initStudentLevel();
