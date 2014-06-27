@@ -1,33 +1,36 @@
 function initMajors(form_id){
 	
+    var selectorBase = "#" + form_id;
+
 	// Set initial state
-    $("#" + form_id +"_ugrad_major").hide();
-    $("#" + form_id +"_grad_prog").hide();
+    $(selectorBase +"_ugrad_major").hide();
+    $(selectorBase +"_grad_prog").hide();
 
     // Set initial state for student level drop down by calling the
     // usual event handler if needed
-    if($("#" + form_id +"_student_level").val() != -1){
+    if($(selectorBase +"_student_level").val() !== -1){
         handleLevelChange();
     }
     
     // Event handler for student level drop down
     function handleLevelChange()
     {
-        if($("#" + form_id +"_student_level").val() == 'ugrad'){
-            $("#" + form_id +"_grad_prog").hide();
-            $("#" + form_id +"_student_major").hide();
-            $("#" + form_id +"_ugrad_major").show();
-        }else if ($("#" + form_id +"_student_level").val() == 'grad'){
-            $("#" + form_id +"_ugrad_major").hide();
-            $("#" + form_id +"_student_major").hide();
-            $("#" + form_id +"_grad_prog").show();
-        }else {
-            $("#" + form_id +"_ugrad_major").hide();
-            $("#" + form_id +"_grad_prog").hide();
-            $("#" + form_id +"_student_major").show();
+        var studentLevel = $(selectorBase + "_student_level").val();
+        if(studentLevel === 'ugrad'){
+            $(selectorBase +"_student_major").hide();
+            $(selectorBase +"_grad_prog").hide();
+            $(selectorBase +"_ugrad_major").show();
+        } else if (studentLevel === 'grad'){
+            $(selectorBase +"_student_major").hide();
+            $(selectorBase +"_grad_prog").show();
+            $(selectorBase +"_ugrad_major").hide();
+        } else {
+            $(selectorBase +"_student_major").show();
+            $(selectorBase +"_grad_prog").hide();
+            $(selectorBase +"_ugrad_major").hide();
         }
     }
     
     // Bind event handler for drop down change
-    $("#" + form_id +"_student_level").change(handleLevelChange);
-};
+    $(selectorBase +"_student_level").change(handleLevelChange);
+}
