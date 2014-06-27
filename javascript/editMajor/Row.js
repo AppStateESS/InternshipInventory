@@ -15,7 +15,7 @@ function Row(nameSelect, id, editAction){
          */
         $.get('index.php', {'module':'intern', 'action':this.editAction,
                             'rename':$(this.edit).val(), 'id':this.id, 'ajax':true},
-              function(data){
+              function(){
                   /* Reload page so NQ is shown and pager is re-ordered. */
                   window.location = 'index.php?module=intern&action='+me.editAction;
               });
@@ -52,7 +52,7 @@ function Row(nameSelect, id, editAction){
             /* If ENTER is pressed submit the new name */
             $(this.edit).keypress(function(event){
                 /* 13 == ENTER */
-                if(event.charCode == 13){
+                if(event.charCode === 13){
                     me.save();
                 }
             });
