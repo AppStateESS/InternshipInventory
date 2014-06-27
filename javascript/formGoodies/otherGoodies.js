@@ -467,7 +467,7 @@ function initStudentLevel()
 
     // Set initial state for student level drop down by calling the
     // usual event handler if needed
-    if($("#internship_student_level").val() != -1){
+    if($("#internship_student_level").val() !== -1){
         handleLevelChange();
     }
 
@@ -487,4 +487,6 @@ function otherStuff()
     initFacultySelector();
     initIntlHandlers();
     initStudentLevel();
+
+    setupFormSubmit();
 }
