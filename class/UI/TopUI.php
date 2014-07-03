@@ -14,6 +14,7 @@ class TopUI implements UI
     
     public static function plug()
     {
+	$tpl = array();
         $tpl['HOME_LINK']    = PHPWS_Text::moduleLink('Menu', 'intern');
         $tpl['ADD_LINK']     = PHPWS_Text::moduleLink('Add Student', 'intern', array('action' => 'edit_internship'));
         $tpl['SEARCH_LINK']  = PHPWS_Text::moduleLink('Search', 'intern', array('action' => 'search'));
