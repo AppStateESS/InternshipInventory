@@ -14,7 +14,6 @@ class TopUI implements UI
     
     public static function plug()
     {
-        $tpl['NOTIFICATIONS'] = $notifications;
         $tpl['HOME_LINK']    = PHPWS_Text::moduleLink('Menu', 'intern');
         $tpl['ADD_LINK']     = PHPWS_Text::moduleLink('Add Student', 'intern', array('action' => 'edit_internship'));
         $tpl['SEARCH_LINK']  = PHPWS_Text::moduleLink('Search', 'intern', array('action' => 'search'));
@@ -58,10 +57,6 @@ class TopUI implements UI
             $tpl = array_merge($tpl, $adminOptions);
         }
        
-        /* Plug in main UI */
-        $tpl['CONTENT']      = $content;
-
-        //return PHPWS_Template::process($tpl, 'intern', 'top.tpl');
         Layout::plug(PHPWS_Template::process($tpl, 'intern', 'top.tpl'), 'NAV_LINKS');
     }
 }
