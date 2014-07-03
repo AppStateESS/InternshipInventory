@@ -22,9 +22,12 @@ class ResultsUI implements UI {
         
         Layout::addPageTitle('Search Results');
         
+        // Initalize variables
         $dept = null;
         $term = null;
         $name = null;
+        $ugradMajor = null;
+        $gradProg = null;
         $level = null;
         $major = null;
         $campus = null;
@@ -33,7 +36,11 @@ class ResultsUI implements UI {
         $state = null;
         $prov = null;
         $workflowState = null;
-        
+        $courseSubject = null;
+        $courseNum = null;
+        $courseSect = null;
+
+
         /**
          * Check if any search fields are set.
          * This is a pretty nasty block of code...
