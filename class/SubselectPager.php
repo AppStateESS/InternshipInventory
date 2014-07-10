@@ -19,6 +19,332 @@ class SubselectPager extends DBPager {
         // Replace the db instance with an instance of SubselectDatabase
         $this->db = new SubselectDatabase($table);
     }
+    
+    /**
+     * Returns the content of the the pager object
+     */
+    public function get($return_blank_results=true)
+    {
+        $template = array();
+
+        if (empty($this->display_rows)) {
+            $result = $this->initialize();
+            if (PHPWS_Error::isError($result)) {
+                throw new Exception ($result->toString());
+                return $result;
+            }
+        }
+
+        // Report ends the function call
+        if ($this->report_type && $this->report_row) {
+            $this->createReport();
+            exit();
+        }
+
+        if (!isset($this->module)) {
+            return PHPWS_Error::get(DBPAGER_MODULE_NOT_SET, 'core', 'DBPager::get');
+        }
+
+        if (!isset($this->template)) {
+            return PHPWS_Error::get(DBPAGER_TEMPLATE_NOT_SET, 'core', 'DBPager::get');
+        }
+
+        $rows = $this->getPageRows();
+
+        if (PHPWS_Error::isError($rows)) {
+            throw new Exception($rows);
+            return $rows;
+        }
+
+        if (isset($this->toggles)) {
+            $max_tog = count($this->toggles);
+        }
+
+        $count = 0;
+        $this->getNavigation($template);
+        $this->getSortButtons($template);
+
+        if (isset($rows)) {
+            foreach ($rows as $rowitem) {
+                if (isset($max_tog)) {
+                    if ($max_tog == 1) {
+                        if ($count % 2) {
+                            $rowitem['TOGGLE'] = $this->toggles[0];
+                        } else {
+                            $rowitem['TOGGLE'] = null;
+                        }
+                        $count++;
+                    } else {
+                        $rowitem['TOGGLE'] = $this->toggles[$count];
+                        $count++;
+
+                        if ($count >= $max_tog) {
+                            $count = 0;
+                        }
+                    }
+                } else {
+                    $rowitem['TOGGLE'] = null;
+                }
+
+                $template['listrows'][] = $rowitem;
+            }
+        } elseif (!$return_blank_results) {
+            return null;
+        } else {
+            $template['EMPTY_MESSAGE'] = $this->empty_message;
+        }
+
+        DBPager::plugPageTags($template);
+        $this->final_template = & $template;
+        return PHPWS_Template::process($template, $this->module, $this->template);
+    }
+    
+    /**
+     * Pulls the appropriate rows from the database.
+     *
+     * This function pulls the database information then plugs
+     * the data it gets into the object.
+     * @modified Eloi George
+     */
+    public function initialize($load_rows=true)
+    {
+        $order_set = false;
+        $this->table_columns = $this->db->getTableColumns();
+        
+        if (!empty($this->needed_columns)) {
+            if(isset($this->table_columns)){
+                $this->table_columns = array_merge($this->table_columns, $this->needed_columns);
+            }else{
+                $this->table_columns = $this->needed_columns;
+            }
+        }
+        
+        // If true, determine which report type to use
+        if ($this->report_type) {
+            $report = true;
+            if ($this->report_type == XML_FULL || $this->report_type == CSV_FULL) {
+                $full_report = true;
+            } else {
+                $full_report = false;
+            }
+        } else {
+            // No report requested
+            $report = false;
+            $full_report = false;
+        }
+
+        
+        if (empty($this->cache_identifier)) {
+            $this->cache_identifier = $this->template;
+        }
+
+        if (empty($this->limit) && empty($this->orderby) &&
+                empty($this->search) && isset($_SESSION['DB_Cache'][$this->module][$this->cache_identifier])) {
+            extract($_SESSION['DB_Cache'][$this->module][$this->cache_identifier]);
+            $this->limit = $limit;
+            $this->orderby = $orderby;
+            $this->orderby_dir = $orderby_dir;
+            $this->search = $search;
+            $this->current_page = $current_page;
+        }
+
+        // What would be setting $this->error??
+        if (isset($this->error)) {
+            return $this->error;
+        }
+        
+        // Repalce space characters in search string with pipes?
+        if ($this->search) {
+            $search = preg_replace('/\s/', '|', $this->search);
+        } else {
+            $search = null;
+        }
+        
+        /*
+        if (!empty($this->sub_result)) {
+            foreach ($this->sub_result as $sub_table => $sub) {
+                if (!$sub['tbl']) {
+                    //$this->db->addTable($sub['jt'], $sub_table);
+                    //$this->db->addJoin('left', $this->table, $sub_table, $sub['sc'], $sub['jc']);
+                }
+
+                if (!empty($search)) {
+                    if ($sub['srch']) {
+                        $col = $sub_table . '.' . $sub['cc'];
+                        $this->db->addWhere($col, $search, 'regexp', 'or', 1);
+                    }
+                }
+            }
+        }
+        */
+
+        // Add a 'where' clause to the application for search string
+        if (!$full_report && !empty($search) && isset($this->searchColumn)) {
+            foreach ($this->searchColumn as $column_name) {
+                $this->db->addWhere($column_name, $search, 'regexp', 'or', 1);
+            }
+        }
+        
+        $count = $this->getTotalRows();
+        
+        //**************************************/ 
+        //$this->db->setTestMode();
+    	//var_dump($this->db->select());exit;
+    	//**************************************/
+        
+        if (PHPWS_Error::isError($count)) {
+            throw new Exception($count->toString());
+        }
+        
+        /*
+        $this->db->setDistinct(true);
+        if (!empty($this->sub_result)) {
+            $this->db->addColumn('*');
+            foreach ($this->sub_result as $sub_table => $sub) {
+                if ($sub['tbl']) {
+                    $this->db->addColumn($sub['tbl'] . '.' . $sub['cc'], null, $sub['nn']);
+                } else {
+                    $this->db->addColumn($sub_table . '.' . $sub['cc'], null, $sub['nn']);
+                }
+            }
+        }
+        */
+
+        if (empty($this->limit)) {
+            if ($this->default_limit) {
+                $this->limit = $this->default_limit;
+            } else {
+                $this->limit = DBPAGER_DEFAULT_LIMIT;
+            }
+        }
+
+        if (!$full_report && $this->limit > 0) {
+            $this->db->setLimit($this->getLimit());
+        }
+
+        if (!$full_report) {
+            $this->total_rows = & $count;
+            $this->total_pages = ceil($this->total_rows / $this->limit);
+
+            if ($this->current_page > $this->total_pages || $this->current_page == 'last') {
+                $this->current_page = $this->total_pages;
+                $this->db->setLimit($this->getLimit());
+            }
+        }
+
+        // If a column name to order by has been set, then add the 'order by' clause 
+        if (isset($this->orderby)) {
+            
+            // Find the column name
+            if ($pos = strpos($this->orderby, '.')) {
+                $col_name = substr($this->orderby, $pos + 1);
+            } else {
+                $col_name = $this->orderby;
+            }
+
+            // Check for "sub order" (??)
+            $sub_order = @$this->sub_order[$col_name];
+            if (!empty($sub_order)) {
+                $orderby = implode('.', $sub_order);
+            } else {
+                $orderby = $this->orderby;
+            }
+
+            $orderby = $this->orderby;
+            
+            $this->db->resetOrder();
+            $this->db->addOrder($orderby . ' ' . $this->orderby_dir);
+            $order_set = true;
+        }
+
+        if (!$order_set && isset($this->default_order)) {
+            $this->db->addOrder($this->default_order . ' ' . $this->default_order_dir);
+        }
+
+        if (!$load_rows) {
+            return true;
+        }
+        
+        if (empty($this->class)) {
+            $result = $this->db->select();
+        } else {
+            $result = $this->db->getObjects($this->class);
+        }
+        $this->row_query = $this->db->lastQuery();
+        if (PHPWS_Error::isError($result)) {
+            return $result;
+        }
+        $this->display_rows = & $result;
+
+        if ($this->cache_queries) {
+            $cache['limit'] = $this->limit;
+            $cache['orderby'] = $this->orderby;
+            $cache['orderby_dir'] = $this->orderby_dir;
+            $cache['search'] = $this->search;
+            $cache['current_page'] = $this->current_page;
+
+            $_SESSION['DB_Cache'][$this->module][$this->cache_identifier] = $cache;
+        } else {
+            $this->clearQuery();
+        }
+
+        return true;
+    }
+
+	//TODO: Why is this recursive?
+    public function getTotalRows()
+    {
+        /**
+         * if total_column is set, use it to get total rows
+         */
+        if ($this->total_column) {
+            // Save the order, columns, groupby
+            $order = $this->db->order;
+            $columns = $this->db->columns;
+            $group_by = $this->db->group_by;
+            
+            // Reset them
+            $this->db->group_by = null;
+            $this->db->order    = null;
+            $this->db->columns  = null;
+            
+            // Add the $total_column and get a count
+            $this->db->addColumn($this->total_column, null, null, true, true);
+            $result = $this->db->count();
+            
+            // Restore the columns, order, and groupby
+            $this->db->columns = $columns;
+            $this->db->order = $order;
+            $this->db->group_by = $group_by;
+            
+            return $result;
+        } else {
+            /**
+             * If total_column is not set check number of tables
+             */
+            if (count($this->db->tables) > 1) {
+                /**
+                 * if more than one table, go through each and look for an index.
+                 * if an index is found, set it as the total_column and recursively
+                 * call this function.
+                 */
+                foreach ($this->db->tables as $table) {
+                    if ($index = $this->db->getIndex($table)) {
+                        $this->total_column = $table . '.' . $index;
+                        return $this->getTotalRows();
+                    }
+                }
+
+                /**
+                 * An index could not be found, use full count method to return
+                 * row count.
+                 */
+                return $this->fullRowCount();
+            } else {
+            	return $this->fullRowCount();
+            }
+        }
+    }
 
     public function getError()
     {
@@ -370,79 +696,6 @@ class SubselectPager extends DBPager {
         }
     }
 
-    //TODO: Why is this recursive?
-    public function getTotalRows()
-    {
-        /**
-         * if total_column is set, use it to get total rows
-         */
-        if ($this->total_column) {
-            
-            // Save the order, columns, groupby
-            $order = $this->db->order;
-            $columns = $this->db->columns;
-            $group_by = $this->db->group_by;
-            
-            // Reset them
-            $this->db->group_by = null;
-            $this->db->order    = null;
-            $this->db->columns  = null;
-            
-            // Add the $total_column and get a count
-            $this->db->addColumn($this->total_column, null, null, true, true);
-            $result = $this->db->count();
-            
-            // Restore the columns, order, and groupby
-            $this->db->columns = $columns;
-            $this->db->order = $order;
-            $this->db->group_by = $group_by;
-            
-            return $result;
-        } else {
-            /**
-             * If total_column is not set check number of tables
-             */
-            if (count($this->db->tables) > 1) {
-                /**
-                 * if more than one table, go through each and look for an index.
-                 * if an index is found, set it as the total_column and recursively
-                 * call this function.
-                 */
-                foreach ($this->db->tables as $table) {
-                    if ($index = $this->db->getIndex($table)) {
-                        $this->total_column = $table . '.' . $index;
-                        return $this->getTotalRows();
-                    }
-                }
-
-                /**
-                 * An index could not be found, use full count method to return
-                 * row count.
-                 */
-                return $this->fullRowCount();
-            } else {
-                /**
-                 * There is only one table. See if it has an index
-                 */
-                if ($index = $this->db->getIndex()) {
-                    /**
-                     * An index was found, set as total_column and recursively
-                     * call this function
-                     */
-                    $table = $this->db->getTable(false);
-                    $this->total_column = $table . '.' . $index;
-                    return $this->getTotalRows();
-                } else {
-                    /**
-                     * An index could not be found, use full count method to return
-                     * row count.
-                     */
-                    return $this->fullRowCount();
-                }
-            }
-        }
-    }
-
     /**
      * Calls a count on *. Less reliable than counting on one column.
      * A fallback method for getTotalRows
@@ -466,192 +719,6 @@ class SubselectPager extends DBPager {
         return $this->display_rows;
     }
 
-    /**
-     * Pulls the appropriate rows from the database.
-     *
-     * This function pulls the database information then plugs
-     * the data it gets into the object.
-     * @modified Eloi George
-     */
-    public function initialize($load_rows=true)
-    {
-        $order_set = false;
-        $this->table_columns = $this->db->getTableColumns();
-        
-        if (!empty($this->needed_columns)) {
-            if(isset($this->table_columns)){
-                $this->table_columns = array_merge($this->table_columns, $this->needed_columns);
-            }else{
-                $this->table_columns = $this->needed_columns;
-            }
-        }
-        
-        // If true, determine which report type to use
-        if ($this->report_type) {
-            $report = true;
-            if ($this->report_type == XML_FULL || $this->report_type == CSV_FULL) {
-                $full_report = true;
-            } else {
-                $full_report = false;
-            }
-        } else {
-            // No report requested
-            $report = false;
-            $full_report = false;
-        }
-
-        
-        if (empty($this->cache_identifier)) {
-            $this->cache_identifier = $this->template;
-        }
-
-        if (empty($this->limit) && empty($this->orderby) &&
-                empty($this->search) && isset($_SESSION['DB_Cache'][$this->module][$this->cache_identifier])) {
-            extract($_SESSION['DB_Cache'][$this->module][$this->cache_identifier]);
-            $this->limit = $limit;
-            $this->orderby = $orderby;
-            $this->orderby_dir = $orderby_dir;
-            $this->search = $search;
-            $this->current_page = $current_page;
-        }
-
-        // What would be setting $this->error??
-        if (isset($this->error)) {
-            return $this->error;
-        }
-        
-        // Repalce space characters in search string with pipes?
-        if ($this->search) {
-            $search = preg_replace('/\s/', '|', $this->search);
-        } else {
-            $search = null;
-        }
-        
-        /*
-        if (!empty($this->sub_result)) {
-            foreach ($this->sub_result as $sub_table => $sub) {
-                if (!$sub['tbl']) {
-                    //$this->db->addTable($sub['jt'], $sub_table);
-                    //$this->db->addJoin('left', $this->table, $sub_table, $sub['sc'], $sub['jc']);
-                }
-
-                if (!empty($search)) {
-                    if ($sub['srch']) {
-                        $col = $sub_table . '.' . $sub['cc'];
-                        $this->db->addWhere($col, $search, 'regexp', 'or', 1);
-                    }
-                }
-            }
-        }
-        */
-
-        // Add a 'where' clause to the application for search string
-        if (!$full_report && !empty($search) && isset($this->searchColumn)) {
-            foreach ($this->searchColumn as $column_name) {
-                $this->db->addWhere($column_name, $search, 'regexp', 'or', 1);
-            }
-        }
-        
-        $count = $this->getTotalRows();
-        
-        if (PHPWS_Error::isError($count)) {
-            throw new Exception($count->toString());
-        }
-        
-        /*
-        $this->db->setDistinct(true);
-        if (!empty($this->sub_result)) {
-            $this->db->addColumn('*');
-            foreach ($this->sub_result as $sub_table => $sub) {
-                if ($sub['tbl']) {
-                    $this->db->addColumn($sub['tbl'] . '.' . $sub['cc'], null, $sub['nn']);
-                } else {
-                    $this->db->addColumn($sub_table . '.' . $sub['cc'], null, $sub['nn']);
-                }
-            }
-        }
-        */
-
-        if (empty($this->limit)) {
-            if ($this->default_limit) {
-                $this->limit = $this->default_limit;
-            } else {
-                $this->limit = DBPAGER_DEFAULT_LIMIT;
-            }
-        }
-
-        if (!$full_report && $this->limit > 0) {
-            $this->db->setLimit($this->getLimit());
-        }
-
-        if (!$full_report) {
-            $this->total_rows = & $count;
-            $this->total_pages = ceil($this->total_rows / $this->limit);
-
-            if ($this->current_page > $this->total_pages || $this->current_page == 'last') {
-                $this->current_page = $this->total_pages;
-                $this->db->setLimit($this->getLimit());
-            }
-        }
-
-        // If a column name to order by has been set, then add the 'order by' clause 
-        if (isset($this->orderby)) {
-            
-            // Find the column name
-            if ($pos = strpos($this->orderby, '.')) {
-                $col_name = substr($this->orderby, $pos + 1);
-            } else {
-                $col_name = $this->orderby;
-            }
-
-            // Check for "sub order" (??)
-            $sub_order = @$this->sub_order[$col_name];
-            if (!empty($sub_order)) {
-                $orderby = implode('.', $sub_order);
-            } else {
-                $orderby = $this->orderby;
-            }
-
-            $orderby = $this->orderby;
-            
-            $this->db->resetOrder();
-            $this->db->addOrder($orderby . ' ' . $this->orderby_dir);
-            $order_set = true;
-        }
-
-        if (!$order_set && isset($this->default_order)) {
-            $this->db->addOrder($this->default_order . ' ' . $this->default_order_dir);
-        }
-
-        if (!$load_rows) {
-            return true;
-        }
-        
-        if (empty($this->class)) {
-            $result = $this->db->select();
-        } else {
-            $result = $this->db->getObjects($this->class);
-        }
-        $this->row_query = $this->db->lastQuery();
-        if (PHPWS_Error::isError($result)) {
-            return $result;
-        }
-        $this->display_rows = & $result;
-
-        if ($this->cache_queries) {
-            $cache['limit'] = $this->limit;
-            $cache['orderby'] = $this->orderby;
-            $cache['orderby_dir'] = $this->orderby_dir;
-            $cache['search'] = $this->search;
-            $cache['current_page'] = $this->current_page;
-
-            $_SESSION['DB_Cache'][$this->module][$this->cache_identifier] = $cache;
-        } else {
-            $this->clearQuery();
-        }
-
-        return true;
-    }
 
     public function getPageLinks()
     {
@@ -1215,85 +1282,6 @@ class SubselectPager extends DBPager {
         $dl->setContentType('text/csv');
         $dl->send();
         exit();
-    }
-
-    /**
-     * Returns the content of the the pager object
-     */
-    public function get($return_blank_results=true)
-    {
-        $template = array();
-
-        if (empty($this->display_rows)) {
-            $result = $this->initialize();
-            if (PHPWS_Error::isError($result)) {
-                throw new Exception ($result->toString());
-                return $result;
-            }
-        }
-
-        // Report ends the function call
-        if ($this->report_type && $this->report_row) {
-            $this->createReport();
-            exit();
-        }
-
-        if (!isset($this->module)) {
-            return PHPWS_Error::get(DBPAGER_MODULE_NOT_SET, 'core', 'DBPager::get');
-        }
-
-        if (!isset($this->template)) {
-            return PHPWS_Error::get(DBPAGER_TEMPLATE_NOT_SET, 'core', 'DBPager::get');
-        }
-
-        $rows = $this->getPageRows();
-
-        if (PHPWS_Error::isError($rows)) {
-            throw new Exception($rows);
-            return $rows;
-        }
-
-        if (isset($this->toggles)) {
-            $max_tog = count($this->toggles);
-        }
-
-        $count = 0;
-        $this->getNavigation($template);
-        $this->getSortButtons($template);
-
-        if (isset($rows)) {
-            foreach ($rows as $rowitem) {
-                if (isset($max_tog)) {
-                    if ($max_tog == 1) {
-                        if ($count % 2) {
-                            $rowitem['TOGGLE'] = $this->toggles[0];
-                        } else {
-                            $rowitem['TOGGLE'] = null;
-                        }
-                        $count++;
-                    } else {
-                        $rowitem['TOGGLE'] = $this->toggles[$count];
-                        $count++;
-
-                        if ($count >= $max_tog) {
-                            $count = 0;
-                        }
-                    }
-                } else {
-                    $rowitem['TOGGLE'] = null;
-                }
-
-                $template['listrows'][] = $rowitem;
-            }
-        } elseif (!$return_blank_results) {
-            return null;
-        } else {
-            $template['EMPTY_MESSAGE'] = $this->empty_message;
-        }
-
-        DBPager::plugPageTags($template);
-        $this->final_template = & $template;
-        return PHPWS_Template::process($template, $this->module, $this->template);
     }
 
     public function getFinalTemplate()
