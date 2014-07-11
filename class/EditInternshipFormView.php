@@ -182,6 +182,10 @@ class EditInternshipFormView extends InternshipFormView {
     private function plugCourseInfo()
     {
         // Course Info
+        
+        // Remove the subject field and re-add it
+        $this->form->dropElement('course_subj');
+        $this->form->addSelect('course_subj', Subject::getSubjects($this->intern->course_subj));
         $this->form->setMatch('course_subj', $this->intern->course_subj);
         $this->formVals['course_no'] = $this->intern->course_no;
         $this->formVals['course_sect'] = $this->intern->course_sect;
