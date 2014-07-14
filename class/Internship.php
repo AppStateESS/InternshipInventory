@@ -1,5 +1,7 @@
 <?php
 
+namespace Intern;
+
 /**
  * Internship
  *
@@ -9,11 +11,6 @@
  * @author Jeremy Booker <jbooker at tux dot appstate dot edu>
  * @package Intern
  */
-PHPWS_Core::initModClass('intern', 'Email.php');
-PHPWS_Core::initModClass('intern', 'Term.php');
-PHPWS_Core::initModClass('intern', 'Major.php');
-PHPWS_Core::initModClass('intern', 'Faculty.php');
-
 class Internship {
 
     public $id;

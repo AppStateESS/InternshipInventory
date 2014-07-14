@@ -1,5 +1,7 @@
 <?php
 
+namespace Intern;
+
 /**
  * InternshipContractPdfView
  *
@@ -29,8 +31,6 @@ class InternshipContractPdfView {
 
         require_once(PHPWS_SOURCE_DIR . 'mod/intern/pdf/fpdf.php');
         require_once(PHPWS_SOURCE_DIR . 'mod/intern/pdf/fpdi.php');
-
-        PHPWS_Core::initModClass('intern', 'Term.php');
 
         $this->generatePdf();
     }

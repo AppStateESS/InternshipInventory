@@ -1,5 +1,7 @@
 <?php
 
+namespace Intern;
+
 class InternshipFactory {
     
     /**
@@ -20,8 +22,6 @@ class InternshipFactory {
         if($id <= 0){
             throw new InvalidArgumentException('Internship ID must be greater than zero.');
         }
-        
-        PHPWS_Core::initModClass('intern', 'Internship.php');
         
         $internship = new Internship;
         

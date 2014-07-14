@@ -5,8 +5,6 @@
  *
  * @author Robert Bost <bostrt at tux dot appstate dot edu>
  */
-
-PHPWS_Core::initModClass('intern', 'UI/UI.php');
 class TopUI implements UI
 {
     public static function display(){

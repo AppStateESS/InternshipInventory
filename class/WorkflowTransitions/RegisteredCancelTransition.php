@@ -17,8 +17,7 @@ class RegisteredCancelTransition extends WorkflowTransition {
     
     public function doNotification(Internship $i, $note = null)
     {
-            PHPWS_Core::initModClass('intern', 'Email.php');
-            Email::sendInternshipCancelNotice($i);
+        Email::sendInternshipCancelNotice($i);
     }
 }
 

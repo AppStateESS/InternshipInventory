@@ -1,5 +1,7 @@
 <?php
 
+namespace Intern;
+
 /**
  * View class for showing the big internship form for
  * creating a new Internship.
@@ -49,9 +51,6 @@ class InternshipFormView {
         /*********************
          * Workflow / Status *
         */
-        PHPWS_Core::initModClass('intern', 'WorkflowStateFactory.php');
-        PHPWS_Core::initModClass('intern', 'WorkflowTransitionView.php');
-        
         // Check the Internship's state, and set a default state if it's a new internship
         $workflowState = $this->intern->getWorkflowState();
         if(is_null($workflowState)){

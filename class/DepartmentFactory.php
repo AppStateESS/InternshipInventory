@@ -1,6 +1,6 @@
 <?php
 
-PHPWS_Core::initModClass('intern', 'Department.php');
+namespace Intern;
 
 /**
  * Factory for loading Department objects.

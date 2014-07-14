@@ -1,11 +1,6 @@
 <?php
-PHPWS_Core::initModClass('intern', 'InternshipFormView.php');
 
-PHPWS_Core::initModClass('intern', 'Department.php');
-PHPWS_Core::initModClass('intern', 'Major.php');
-PHPWS_Core::initModClass('intern', 'GradProgram.php');
-PHPWS_Core::initModClass('intern', 'Subject.php');
-
+namespace Intern;
 
 /**
  * View class for showing the big internship form for
@@ -77,7 +72,6 @@ class EditInternshipFormView extends InternshipFormView {
          * Emergency Contacts
          */
         //javascript('jquery');
-        PHPWS_Core::initModClass('intern', 'EmergencyContactFactory.php');
         $contacts = EmergencyContactFactory::getContactsForInternship($this->intern);
         $emgContactJson = json_encode($contacts);
         Layout::add(javascriptMod('intern', 'emergencyContact', array('existing_contacts_json' => $emgContactJson)));

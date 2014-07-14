@@ -1,5 +1,7 @@
 <?php
 
+namespace Intern;
+
 class Subject extends Model {
 
     public $id;

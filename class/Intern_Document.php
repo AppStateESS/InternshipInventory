@@ -1,5 +1,7 @@
 <?php
 
+namespace Intern;
+
   /**
    * Intern_Document
    *

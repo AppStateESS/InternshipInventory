@@ -21,7 +21,6 @@ class AdminUI implements UI {
         $adminList = Admin::getAdminPager();
 
         // get the list of departments
-        PHPWS_Core::initModClass('intern','Department.php');
         $depts = Department::getDepartmentsAssoc();
 
         // make the form for adding a new admin

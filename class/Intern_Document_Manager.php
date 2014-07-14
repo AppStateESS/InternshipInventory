@@ -1,5 +1,7 @@
 <?php
 
+namespace Intern;
+
 /**
  * Document_Manager
  *
@@ -31,7 +33,6 @@ class Intern_Document_Manager extends FC_Document_Manager {
         // when Intern_Folder::documentUpload() was called.
         // Create one and load it.
         if ($this->folder->id == 0) {
-            PHPWS_Core::initModClass('intern', 'Intern_Folder.php');
             PHPWS_Core::requireInc('filecabinet', 'defines.php');
             $folder = new Intern_Folder();
             $folder->module_created = 'intern';
@@ -145,7 +146,6 @@ class Intern_Document_Manager extends FC_Document_Manager {
             // it into database.
             if (!isset($_REQUEST['document_id'])) {
                 // Save Intern_Document in database.
-                PHPWS_Core::initModClass('intern', 'Intern_Document.php');
                 $doc = new Intern_Document();
                 $doc->internship_id = $_REQUEST['internship'];
                 $doc->document_fc_id = $this->document->id;

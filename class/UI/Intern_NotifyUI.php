@@ -13,8 +13,7 @@ define('INTERN_ERROR',   1);
 define('INTERN_WARNING', 2);
 define('INTERN_UNKNOWN', 3);
 
-PHPWS_Core::initModClass('notification', 'NQ.php');
-PHPWS_Core::initModClass('intern', 'UI/UI.php');
+\PHPWS_Core::initModClass('notification', 'NQ.php');
 
 class Intern_NotifyUI implements UI
 {

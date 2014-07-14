@@ -3,8 +3,6 @@
 /**
  * This class holds the form for adding/editing an internship.
  */
-PHPWS_Core::initModClass('intern', 'UI/UI.php');
-
 class InternshipUI implements UI {
 
     public static $requiredFields = array('student_first_name',
@@ -23,19 +21,6 @@ class InternshipUI implements UI {
 
     public static function display()
     {
-        PHPWS_Core::initModClass('intern', 'Internship.php');
-        PHPWS_Core::initModClass('intern', 'InternshipFactory.php');
-        PHPWS_Core::initModClass('intern', 'Intern_Document.php');
-        PHPWS_Core::initModClass('intern', 'Intern_Folder.php');
-        PHPWS_Core::initModClass('intern', 'Agency.php');
-        PHPWS_Core::initModClass('intern', 'InternshipFormView.php');
-        PHPWS_Core::initModClass('intern', 'EditInternshipFormView.php');
-        PHPWS_Core::initModClass('intern', 'Term.php');
-        PHPWS_Core::initModClass('intern', 'Department.php');
-        PHPWS_Core::initModClass('intern', 'Major.php');
-        PHPWS_Core::initModClass('intern', 'GradProgram.php');
-        PHPWS_Core::initModClass('intern', 'Subject.php');
-
         $tpl = array();
 
         if (isset($_REQUEST['internship_id'])) {
@@ -80,7 +65,6 @@ class InternshipUI implements UI {
              * Change History *
             */
             if (!is_null($i->id)) {
-                PHPWS_Core::initModClass('intern', 'ChangeHistoryView.php');
                 $historyView = new ChangeHistoryView($i);
                 $tpl['CHANGE_LOG'] = $historyView->show();
             }
@@ -105,7 +89,6 @@ class InternshipUI implements UI {
                 NQ::simple('intern', INTERN_WARNING, "The course section number you entered looks like a distance ed course. Be sure to check the Distance Ed option, or double check the section number.");
             }
             
-            PHPWS_Core::initModClass('intern', 'EmergencyContactFormView.php');
             $emgContactDialog = new EmergencyContactFormView($i);
             
             $tpl['ADD_EMERGENCY_CONTACT'] = '<button type="button" class="btn btn-default btn-sm" id="add-ec-button"><i class="fa fa-plus"></i> Add Contact</button>';

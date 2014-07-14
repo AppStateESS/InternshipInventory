@@ -1,5 +1,7 @@
 <?php
 
+namespace Intern;
+
 class ChangeHistory extends Model{
 
     public $internship_id;

@@ -1,7 +1,7 @@
 <?php
 
-PHPWS_Core::initModClass('intern', 'WorkflowStateFactory.php');
-PHPWS_Core::initModClass('intern', 'ChangeHistory.php');
+namespace Intern;
+
 PHPWS_Core::initModClass('intern', 'exception/MissingDataException.php');
 
 class WorkflowController {

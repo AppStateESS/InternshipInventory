@@ -1,6 +1,6 @@
 <?php
 
-PHPWS_Core::initModClass('intern', 'UI/UI.php');
+namespace Intern;
 
 /**
  * View class for the add/edit faculty menu.
@@ -26,7 +26,6 @@ class FacultyUI implements UI
 	public static function display()
 	{
 		// Get the list of departments the current user has access to
-		PHPWS_Core::initModClass('intern', 'Department.php');
 		$departments = Department::getDepartmentsAssocForUsername(Current_User::getUsername());
 
         $renderedDepts = '';

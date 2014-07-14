@@ -8,17 +8,11 @@
  *
  * @author Robert Bost <bostrt at tux dot appstate dot edu>
  */
-PHPWS_Core::initModClass('intern', 'UI/UI.php');
-
-
 class ResultsUI implements UI {
 
     public static function display()
     {
         javascript('jquery');
-        
-        PHPWS_Core::initModClass('intern', 'SubselectPager.php');
-        PHPWS_Core::initModClass('intern', 'Internship.php');
         
         Layout::addPageTitle('Search Results');
         

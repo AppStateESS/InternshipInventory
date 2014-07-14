@@ -1,5 +1,7 @@
 <?php
 
+namespace Intern;
+
 /**
  * Class to handle saving and loading objects from the database.
  * 

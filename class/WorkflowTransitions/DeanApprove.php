@@ -11,9 +11,6 @@ class DeanApprove extends WorkflowTransition {
 
     public function doNotification(Internship $i, $note = null)
     {
-        
-        PHPWS_Core::initModClass('intern', 'Email.php');
-
         $agency = $i->getAgency();
         
         // If this is an undergrad internship, then send the Registrar an email

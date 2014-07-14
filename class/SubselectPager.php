@@ -1,7 +1,8 @@
 <?php
 
+namespace Intern;
+
 PHPWS_Core::initCoreClass('DBPager.php');
-PHPWS_Core::initModClass('intern', 'SubselectDatabase.php');
 
 // Defines are set in parent class
 

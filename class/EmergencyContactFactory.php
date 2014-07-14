@@ -1,6 +1,6 @@
 <?php
 
-PHPWS_Core::initModClass('intern', 'EmergencyContact.php');
+namespace Intern;
 
 class EmergencyContactFactory {
 

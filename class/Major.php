@@ -1,5 +1,7 @@
 <?php
 
+namespace Intern;
+
   /**
    * Major
    *
@@ -8,9 +10,6 @@
    *
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
-
-PHPWS_Core::initModClass('intern', 'Model.php');
-PHPWS_Core::initModClass('intern', 'Editable.php');
 define('MAJOR_EDIT', 'edit_major');
 class Major extends Editable
 {

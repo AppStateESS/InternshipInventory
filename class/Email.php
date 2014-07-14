@@ -1,5 +1,7 @@
 <?php
 
+namespace Intern;
+
 class Email {
 
     public static function sendTemplateMessage($to, $subject, $tpl, $tags, $cc = null)
@@ -109,8 +111,6 @@ class Email {
      */
     public static function sendRegistrarEmail(Internship $i, Agency $a)
     {
-        PHPWS_Core::initModClass('intern', 'Subject.php');
-
         $settings = InternSettings::getInstance();
         
         $subjects = Subject::getSubjects();
@@ -246,8 +246,6 @@ class Email {
      */
     public static function sendGradSchoolNotification(Internship $i, Agency $a)
     {
-        PHPWS_Core::initModClass('intern', 'Subject.php');
-        
         $settings = InternSettings::getInstance();
 
         $subjects = Subject::getSubjects();
@@ -417,8 +415,6 @@ class Email {
         
         $tpl = array();
 
-        PHPWS_Core::initModClass('intern', 'Subject.php');
-
         $subjects = Subject::getSubjects();
 
         $faculty = $i->getFaculty();
@@ -508,7 +504,6 @@ class Email {
     {
         $tpl = array();
 
-        PHPWS_Core::initModClass('intern', 'Subject.php');
         $subjects = Subject::getSubjects();
         
         $settings = InternSettings::getInstance();

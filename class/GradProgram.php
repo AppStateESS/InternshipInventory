@@ -1,5 +1,7 @@
 <?php
 
+namespace Intern;
+
   /**
    * GradProgram
    *
@@ -8,8 +10,6 @@
    *
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
-
-PHPWS_Core::initModClass('intern', 'Editable.php');
 define('GRAD_PROG_EDIT', 'edit_grad');
 class GradProgram extends Editable
 {

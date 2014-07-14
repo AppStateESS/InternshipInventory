@@ -8,21 +8,10 @@
    *
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
-
-PHPWS_Core::initModClass('intern', 'UI/UI.php');
 class SearchUI implements UI
 {
     public static function display()
     {
-        PHPWS_Core::initModClass('intern', 'Term.php');
-        PHPWS_Core::initModClass('intern', 'Department.php');
-        PHPWS_Core::initModClass('intern', 'Major.php');
-        PHPWS_Core::initModClass('intern', 'GradProgram.php');
-        PHPWS_Core::initModClass('intern', 'Internship.php');
-        PHPWS_Core::initModClass('intern', 'Agency.php');
-        PHPWS_Core::initModClass('intern', 'Subject.php');
-        PHPWS_Core::initModClass('intern', 'WorkflowStateFactory.php');
-
         // Set up search fields
         $form = new PHPWS_Form();
         $form->setMethod('get');

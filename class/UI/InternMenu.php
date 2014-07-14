@@ -1,5 +1,4 @@
 <?php
-PHPWS_Core::initModClass('intern', 'UI/UI.php');
 
 
 /**
@@ -17,8 +16,6 @@ class InternMenu implements UI {
     public static function display()
     {
         javascript('jquery');
-        
-        PHPWS_Core::initModClass('intern', 'Major.php');
         
         // housekeeping
         if (isset($_SESSION['query']))

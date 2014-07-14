@@ -13,7 +13,6 @@ class RegisterAfterIssue extends WorkflowTransition {
     {
         $agency = $i->getAgency();
     
-        PHPWS_Core::initModClass('intern', 'Email.php');
         Email::sendRegistrationConfirmationEmail($i, $agency);
     }
 }

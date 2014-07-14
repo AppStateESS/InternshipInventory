@@ -1,4 +1,7 @@
 <?php
+
+namespace Intern;
+
 /**
  * Editable
  *
@@ -10,7 +13,6 @@
  *
  *@author Robert Bost <bostrt at tux dot appstate dot edu>
  */
-PHPWS_Core::initModClass('intern', 'Model.php');
 abstract class Editable extends Model
 {
     /**

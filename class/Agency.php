@@ -1,5 +1,7 @@
 <?php
 
+namespace Intern;
+
 /**
  * Agency
  *

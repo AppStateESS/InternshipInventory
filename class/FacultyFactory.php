@@ -1,6 +1,6 @@
 <?php
 
-PHPWS_Core::initModClass('intern', 'Faculty.php');
+namespace Intern;
 
 class FacultyFactory {
 

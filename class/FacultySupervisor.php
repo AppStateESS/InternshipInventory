@@ -1,5 +1,7 @@
 <?php
 
+namespace Intern;
+
   /**
    * FacultySupervisor
    *
@@ -12,7 +14,6 @@
    * @package Intern
    */
 
-PHPWS_Core::initModClass('intern', 'Model.php');
 class FacultySupervisor extends Model
 {
     public $first_name;

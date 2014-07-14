@@ -1,5 +1,7 @@
 <?php
 
+namespace Intern;
+
 
 /**
  * Singleton object for storing Internship Inventory Settings

@@ -1,6 +1,6 @@
 <?php
 
-PHPWS_Core::initModClass('intern', 'Editable.php');
+namespace Intern;
 
 define('DEPT_EDIT', 'edit_dept');
 

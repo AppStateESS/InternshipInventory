@@ -26,7 +26,6 @@ class RemoveEmergencyContact {
         
         $contactId = $_REQUEST['contactId'];
         
-        PHPWS_Core::initModClass('intern', 'EmergencyContactFactory.php');
         $contact = EmergencyContactFactory::getContactById($contactId);
         
         EmergencyContactFactory::delete($contact);

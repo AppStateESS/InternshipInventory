@@ -12,7 +12,6 @@ class CreationTransition extends WorkflowTransition {
     public function doNotification(Internship $i, $note = null)
     {
         if(!$i->isDomestic()){
-            PHPWS_Core::initModClass('intern', 'Email.php');
             Email::sendIntlInternshipCreateNotice($i);
             Email::sendIntlInternshipCreateNoticeStudent($i);
         }

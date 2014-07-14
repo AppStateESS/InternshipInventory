@@ -1,6 +1,6 @@
 <?php
 
-PHPWS_Core::initModClass('intern', 'WorkflowTransition.php');
+namespace Intern;
 
 class WorkflowTransitionFactory {
     

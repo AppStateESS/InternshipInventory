@@ -1,6 +1,6 @@
 <?php
 
-PHPWS_Core::initModClass('intern', 'WorkflowState.php');
+namespace Intern;
 
 class WorkflowStateFactory {
     

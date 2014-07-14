@@ -24,7 +24,6 @@ class RegistrationIssueGrad extends WorkflowTransition {
     {
         $agency = $i->getAgency();
     
-        PHPWS_Core::initModClass('intern', 'Email.php');
         Email::sendRegistrationIssueEmail($i, $agency, $note);
     }
 }

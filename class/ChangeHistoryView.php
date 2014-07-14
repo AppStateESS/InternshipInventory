@@ -1,5 +1,7 @@
 <?php
 
+namespace Intern;
+
 class ChangeHistoryView {
 
     private $internship;
@@ -15,7 +17,6 @@ class ChangeHistoryView {
 
         $tpl['CHANGELOG_REPEAT'] = array();
 
-        PHPWS_Core::initModClass('intern', 'ChangeHistoryFactory.php');
         $changes = ChangeHistoryFactory::getChangesForInternship($this->internship);
 
         if(is_null($changes)){

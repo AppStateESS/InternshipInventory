@@ -1,5 +1,7 @@
 <?php
 
+namespace Intern;
+
   /**
    * Admin
    *
@@ -7,7 +9,6 @@
    *
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
-PHPWS_Core::initModClass('intern', 'Model.php');
 
 class Admin extends Model
 {
@@ -32,7 +33,7 @@ class Admin extends Model
 
     public static function currentAllowed($dept)
     {
-        PHPWS_Core::initModClass('users', 'Current_User.php');
+        \PHPWS_Core::initModClass('users', 'Current_User.php');
         return self::allowed(Current_User::getUsername(), $dept);
     }
 
@@ -61,7 +62,6 @@ class Admin extends Model
      */
     public function rowTags()
     {
-        PHPWS_Core::initModClass('intern', 'Department.php');
         //$d = new Department($this->department_id);
         
         /*
@@ -109,7 +109,6 @@ class Admin extends Model
             return NQ::simple('intern', INTERN_WARNING, "<i>$username</i> can view all internships in all departments.");
         }
         
-        PHPWS_Core::initModClass('intern', 'Department.php');
         $d = new Department($departmentId);
 
         // Check if user already has permission.
@@ -130,7 +129,6 @@ class Admin extends Model
      */
     public static function del($username, $departmentId)
     {
-        PHPWS_Core::initModClass('intern', 'Department.php');
         $d = new Department($departmentId);
 
         $db = self::getDb();
@@ -142,7 +140,7 @@ class Admin extends Model
 
     public static function getAdminPager()
     {
-        PHPWS_Core::initCoreClass('DBPager.php');
+        \PHPWS_Core::initCoreClass('DBPager.php');
         $pager = new DBPager('intern_admin', 'Admin');
 
         $pager->setModule('intern');

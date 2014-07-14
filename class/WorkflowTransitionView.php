@@ -1,5 +1,7 @@
 <?php
 
+namespace Intern;
+
 class WorkflowTransitionView {
     
     private $state;

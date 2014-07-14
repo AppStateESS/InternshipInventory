@@ -1,5 +1,7 @@
 <?php
 
+namespace Intern;
+
 /**
  * View class for generating the emergency contact form.
  * 

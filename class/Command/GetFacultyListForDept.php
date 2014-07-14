@@ -15,9 +15,6 @@ class GetFacultyListForDept {
             throw new InvalidArgumentException('Missing department id.');
         }
         
-        PHPWS_Core::initModClass('intern', 'FacultyFactory.php');
-        PHPWS_Core::initModClass('intern', 'DepartmentFactory.php');
-        
         $department = DepartmentFactory::getDepartmentById($departmentId);
         
         $faculty = FacultyFactory::getFacultyByDepartmentAssoc($department);

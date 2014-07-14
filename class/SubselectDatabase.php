@@ -1,5 +1,7 @@
 <?php
 
+namespace Intern;
+
 PHPWS_Core::initCoreClass('PHPWS_DB.php');
 
 /**

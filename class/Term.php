@@ -1,9 +1,10 @@
 <?php
 
+namespace Intern;
+
   /**
    * Term...
    */
-PHPWS_Core::initModClass('intern', 'Model.php');
 class Term extends Model
 {
     public $term;

@@ -15,11 +15,6 @@ class SaveInternship {
     
     public function execute()
     {
-        PHPWS_Core::initModClass('intern', 'Internship.php');
-        PHPWS_Core::initModClass('intern', 'Agency.php');
-        PHPWS_Core::initModClass('intern', 'Department.php');
-        PHPWS_Core::initModClass('intern', 'Faculty.php');
-
         /**************
          * Sanity Checks
          */
@@ -36,7 +31,7 @@ class SaveInternship {
             }
             NQ::simple('intern', INTERN_ERROR, 'Please fill in the highlighted fields.');
             NQ::close();
-            return PHPWS_Core::reroute($url);
+            return \PHPWS_Core::reroute($url);
         }
 
         // Sanity check the Banner ID
@@ -48,7 +43,7 @@ class SaveInternship {
             }
             NQ::simple('intern', INTERN_ERROR, "The Banner ID you entered is not valid. No changes were saved. The student's Banner ID should be nine digits only (no letters, spaces, or punctuation).");
             NQ::close();
-            return PHPWS_Core::reroute($url);
+            return \PHPWS_Core::reroute($url);
         }
         
         // Sanity check student email
@@ -60,7 +55,7 @@ class SaveInternship {
             }
             NQ::simple('intern', INTERN_ERROR, "The student's email address is invalid. No changes were saved. Enter only the username portion of the student's email address. The '@appstate.edu' portion is not necessary.");
             NQ::close();
-            return PHPWS_Core::reroute($url);
+            return \PHPWS_Core::reroute($url);
         }
 
 		// Sanity check student zip
@@ -72,7 +67,7 @@ class SaveInternship {
 			}
 			NQ::simple('intern', INTERN_ERROR, "The student's zip code is invalid. No changes were saved. Zip codes should be 5 digits only (no letters, spaces, or punctuation).");
 			NQ::close();
-			return PHPWS_Core::reroute($url);
+			return \PHPWS_Core::reroute($url);
 		}
 		
         // Course start date must be before end date
@@ -90,7 +85,7 @@ class SaveInternship {
                 }
                 NQ::simple('intern', INTERN_WARNING, 'The internship start date must be before the end date.');
                 NQ::close();
-                return PHPWS_Core::reroute($url);
+                return \PHPWS_Core::reroute($url);
             }
         }
         
@@ -103,7 +98,7 @@ class SaveInternship {
 			}
 			NQ::simple('intern', INTERN_ERROR, "The internship location's zip code is invalid. No changes were saved. Zip codes should be 5 digits only (no letters, spaces, or punctuation).");
 			NQ::close();
-			return PHPWS_Core::reroute($url);
+			return \PHPWS_Core::reroute($url);
 		}
 		
 		// Sanity check agency zip
@@ -115,7 +110,7 @@ class SaveInternship {
 			}
 			NQ::simple('intern', INTERN_ERROR, "The agency's zip code is invalid. No changes were saved. Zip codes should be 5 digits only (no letters, spaces, or punctuation).");
 			NQ::close();
-			return PHPWS_Core::reroute($url);
+			return \PHPWS_Core::reroute($url);
 		}
         
 		// Sanity check supervisor's zip
@@ -127,7 +122,7 @@ class SaveInternship {
 			}
 			NQ::simple('intern', INTERN_ERROR, "The agency supervisor's zip code is invalid. No changes were saved. Zip codes should be 5 digits only (no letters, spaces, or punctuation).");
 			NQ::close();
-			return PHPWS_Core::reroute($url);
+			return \PHPWS_Core::reroute($url);
 		}
 		
 		// Sanity check course number
@@ -139,7 +134,7 @@ class SaveInternship {
 			}
 			NQ::simple('intern', INTERN_ERROR, "The course number provided is invalid. No changes were saved. Course numbers should be less than 20 digits (no letters, spaces, or punctuation).");
 			NQ::close();
-			return PHPWS_Core::reroute($url);
+			return \PHPWS_Core::reroute($url);
 		}
 
         PHPWS_DB::begin();
@@ -204,7 +199,6 @@ class SaveInternship {
         if (isset($_REQUEST['internship_id']) && $_REQUEST['internship_id'] != '') {
             // User is editing internship
             try {
-                PHPWS_Core::initModClass('intern', 'InternshipFactory.php');
                 $i = InternshipFactory::getInternshipById($_REQUEST['internship_id']);
             } catch (Exception $e) {
                 // Rollback and re-throw the exception so that admins gets an email
@@ -366,7 +360,6 @@ class SaveInternship {
         // If we don't have a state and this is a new internship,
         // the set an initial state
         if($i->id == 0 && is_null($i->state)){
-            PHPWS_Core::initModClass('intern', 'WorkflowStateFactory.php');
             $state = WorkflowStateFactory::getState('CreationState');
             $i->setState($state); // Set this initial value
         }
@@ -384,8 +377,6 @@ class SaveInternship {
         /***************************
          * State/Workflow Handling *
         ***************************/
-        PHPWS_Core::initModClass('intern', 'WorkflowController.php');
-        PHPWS_Core::initModClass('intern', 'WorkflowTransitionFactory.php');
         $t = WorkflowTransitionFactory::getTransitionByName($_POST['workflow_action']);
         $workflow = new WorkflowController($i, $t);
         try {
@@ -393,7 +384,7 @@ class SaveInternship {
         } catch (MissingDataException $e) {
             NQ::simple('intern', INTERN_ERROR, $e->getMessage());
             NQ::close();
-            return PHPWS_Core::reroute('index.php?module=intern&action=edit_internship&internship_id=' . $i->id);
+            return \PHPWS_Core::reroute('index.php?module=intern&action=edit_internship&internship_id=' . $i->id);
         }
 
         // Create a ChangeHisotry for the OIED certification.
@@ -409,11 +400,11 @@ class SaveInternship {
             // Show message if user edited internship
             NQ::simple('intern', INTERN_SUCCESS, 'Saved internship for ' . $i->getFullName());
             NQ::close();
-            return PHPWS_Core::reroute('index.php?module=intern&action=edit_internship&internship_id=' . $i->id);
+            return \PHPWS_Core::reroute('index.php?module=intern&action=edit_internship&internship_id=' . $i->id);
         } else {
             NQ::simple('intern', INTERN_SUCCESS, 'Added internship for ' . $i->getFullName());
             NQ::close();
-            return PHPWS_Core::reroute('index.php?module=intern&action=edit_internship&internship_id=' . $i->id);
+            return \PHPWS_Core::reroute('index.php?module=intern&action=edit_internship&internship_id=' . $i->id);
         }
     }
 
@@ -422,7 +413,6 @@ class SaveInternship {
      */
     private static function checkRequest()
     {
-        PHPWS_Core::initModClass('intern', 'UI/InternshipUI.php');
         $vals = null;
 
         foreach (InternshipUI::$requiredFields as $field) {

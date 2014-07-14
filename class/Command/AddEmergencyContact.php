@@ -40,9 +40,6 @@ class AddEmergencyContact {
             throw new InvalidArgumentException('Missing contact phone number.');
         }
         
-        PHPWS_Core::initModClass('intern', 'EmergencyContact.php');
-        PHPWS_Core::initModClass('intern', 'InternshipFactory.php');
-
         // Get an Internship object based on the ID
         $internship = InternshipFactory::getInternshipById($internshipId);
         
@@ -50,7 +47,6 @@ class AddEmergencyContact {
         $contact = new EmergencyContact($internship, $name, $relation, $phone);
         
         // Save the emergency contact object
-        PHPWS_Core::initModClass('intern', 'DatabaseStorage.php');
         DatabaseStorage::save($contact);
         
         echo json_encode($contact);

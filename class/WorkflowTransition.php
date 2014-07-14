@@ -1,5 +1,7 @@
 <?php
 
+namespace Intern;
+
 abstract class WorkflowTransition {
     const sourceState = ''; // Name of Source/Dest states
     const destState   = '';

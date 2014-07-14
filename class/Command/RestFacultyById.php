@@ -31,8 +31,6 @@ class RestFacultyById {
 
     private function get()
     {
-        PHPWS_Core::initModClass('intern', 'FacultyFactory.php');
-
         $id = $_GET['id'];
 
         if(!isset($id) || $id == '') {
@@ -53,8 +51,6 @@ class RestFacultyById {
 
     private function put()
     {
-        PHPWS_Core::initModClass('intern', 'Faculty.php');
-
         //$postarray = json_decode(file_get_contents('php://input'), true);
 
         $req = Server::getCurrentRequest();
@@ -77,10 +73,8 @@ class RestFacultyById {
         $faculty->setZip($postarray['zip']);
 
         // Save the faculty object
-        PHPWS_Core::initModClass('intern', 'DatabaseStorage.php');
-
         try {
-            DatabaseStorage::saveObject($faculty);
+            Intern\DatabaseStorage::saveObject($faculty);
         }
         catch(Exception $e) {
             header('HTTP/1.1 500 Internal Server Error');
