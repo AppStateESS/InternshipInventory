@@ -58,7 +58,7 @@ class TopUI implements UI
             $tpl = array_merge($tpl, $adminOptions);
         }
        
-        Layout::plug(PHPWS_Template::process($tpl, 'intern', 'top.tpl'), 'NAV_LINKS');
+        \Layout::plug(\PHPWS_Template::process($tpl, 'intern', 'top.tpl'), 'NAV_LINKS');
     }
 }
 

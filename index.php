@@ -67,15 +67,15 @@ UI\TopUI::plug();
 
 
 // Get Notifications, add to layout
-$nv = new Intern_NotifyUI();
+$nv = new UI\NotifyUI();
 $notifications = $nv->display();
-Layout::add($notifications);
+\Layout::add($notifications);
 
 
 // Add content to Layout
-Layout::addStyle('intern', 'style.css');
-Layout::addStyle('intern', 'tango-icons.css');
-Layout::add($content);
+\Layout::addStyle('intern', 'style.css');
+\Layout::addStyle('intern', 'tango-icons.css');
+\Layout::add($content);
 
 function formatException(Exception $e)
 {

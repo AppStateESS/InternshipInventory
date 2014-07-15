@@ -25,7 +25,7 @@ class NotifyUI implements UI
      */
     public static function display()
     {
-        $notifications = NQ::popAll('intern');
+        $notifications = \NQ::popAll('intern');
         $tags = array();
 
         foreach($notifications as $notification)
@@ -34,7 +34,7 @@ class NotifyUI implements UI
             $tags['NOTIFICATIONS'][][$type] = $notification->toString();
         }
 
-        $content = PHPWS_Template::process($tags, 'intern', 'notification.tpl');
+        $content = \PHPWS_Template::process($tags, 'intern', 'notification.tpl');
         
         return $content;
     }
