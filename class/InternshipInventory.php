@@ -47,11 +47,11 @@ class InternshipInventory {
                 $response = $ctrl->execute();
                 break;
             case 'search':
-                $view = new SearchUI();
+                $view = new UI\SearchUI();
                 $this->content = $view->display();
                 break;
             case 'results':
-                $view = new ResultsUI();
+                $view = new UI\ResultsUI();
                 $this->content = $view->display();
                 break;
             case 'edit_dept':
@@ -257,7 +257,7 @@ class InternshipInventory {
                 $ctrl->execute();
                 break;
             default:
-                $menu = new InternMenu();
+                $menu = new UI\InternMenu();
                 $this->content = $menu->display();
                 break;
         }

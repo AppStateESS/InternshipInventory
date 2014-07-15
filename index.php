@@ -63,6 +63,7 @@ if (isset($content)) {
 }
 
 // Add top menu bar to theme
+\PHPWS_Core::initModClass('intern', 'UI/TopUI.php');
 UI\TopUI::plug();
 
 

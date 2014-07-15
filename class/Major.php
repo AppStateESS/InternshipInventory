@@ -20,7 +20,7 @@ class Major extends Editable
      */
     public static function getDb()
     {
-        return new PHPWS_DB('intern_major');
+        return new \PHPWS_DB('intern_major');
     }
 
     /**
@@ -104,13 +104,13 @@ class Major extends Editable
     {
         $name = trim($name);
         if($name == ''){
-            return NQ::simple('intern', INTERN_WARNING, 'No name given for new major. No major was added.');
+            return \NQ::simple('intern', INTERN_WARNING, 'No name given for new major. No major was added.');
         }
         /* Search DB for major with matching name. */
         $db = self::getDb();
         $db->addWhere('name', $name);
         if($db->select('count') > 0){
-            NQ::simple('intern', INTERN_WARNING, "The major <i>$name</i> already exists.");
+            \NQ::simple('intern', INTERN_WARNING, "The major <i>$name</i> already exists.");
             return;
         }
 
@@ -122,12 +122,12 @@ class Major extends Editable
         try{
             $major->save();
         }catch(Exception $e){
-            NQ::simple('intern', INTERN_ERROR, "Error adding major <i>$name</i>.<br/>".$e->getMessage());
+            \NQ::simple('intern', INTERN_ERROR, "Error adding major <i>$name</i>.<br/>".$e->getMessage());
             return;
         }
 
         /* Major was successfully added. */
-        NQ::simple('intern', INTERN_SUCCESS, "<i>$name</i> added as undergraduate major.");
+        \NQ::simple('intern', INTERN_SUCCESS, "<i>$name</i> added as undergraduate major.");
     }
 }
 

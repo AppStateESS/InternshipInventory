@@ -1,4 +1,6 @@
 <?php
+namespace Intern\WorkflowState;
+use Intern\WorkflowState;
 
 class NewState extends WorkflowState {
 

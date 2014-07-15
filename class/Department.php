@@ -19,7 +19,7 @@ class Department extends Editable
      * @Override Model::getDb
      */
     public static function getDb(){
-        return new PHPWS_DB('intern_department');
+        return new \PHPWS_DB('intern_department');
     }
 
     /**
@@ -62,12 +62,12 @@ class Department extends Editable
     public function del()
     {
         if(!Current_User::allow('intern', $this->getDeletePermission())){
-            return NQ::simple('intern', INTERN_ERROR, 'You do not have permission to delete departments.');
+            return \NQ::simple('intern', INTERN_ERROR, 'You do not have permission to delete departments.');
         }
 
         if($this->id == 0){
             // Item wasn't loaded correctly
-            NQ::simple('intern', INTERN_ERROR, "Error occurred while loading information from database.");
+            \NQ::simple('intern', INTERN_ERROR, "Error occurred while loading information from database.");
             return;
         }
 
@@ -77,16 +77,16 @@ class Department extends Editable
             // Try to delete item
             if(!$this->delete()){
                 // Something bad happend. This should have been caught in the check above...
-                NQ::simple('intern', INTERN_SUCCESS, "Error occurred removing <i>$name</i> from database.");
+                \NQ::simple('intern', INTERN_SUCCESS, "Error occurred removing <i>$name</i> from database.");
                 return;
             }
             // Item deleted successfully.
-            NQ::simple('intern', INTERN_SUCCESS, "Deleted <i>$name</i>");
+            \NQ::simple('intern', INTERN_SUCCESS, "Deleted <i>$name</i>");
         }catch(Exception $e){
             if($e->getCode() == DB_ERROR_CONSTRAINT){
-                return NQ::simple('intern', INTERN_ERROR, "One or more internship has <i>$this->name</i> as their department. Sorry, cannot delete.");
+                return \NQ::simple('intern', INTERN_ERROR, "One or more internship has <i>$this->name</i> as their department. Sorry, cannot delete.");
             }else{
-                return NQ::simple('intern', INTERN_ERROR, $e->getMessage());
+                return \NQ::simple('intern', INTERN_ERROR, $e->getMessage());
             }
         }
     }
@@ -156,13 +156,13 @@ class Department extends Editable
     {
         $name = trim($name);
         if($name == ''){
-            return NQ::simple('intern', INTERN_WARNING, 'No name given for new major. No major was added.');
+            return \NQ::simple('intern', INTERN_WARNING, 'No name given for new major. No major was added.');
         }
 
         $db = self::getDb();
         $db->addWhere('name', $name);
         if($db->select('count') > 0){
-            NQ::simple('intern', INTERN_WARNING, "Department <i>$name</i> already exists.");
+            \NQ::simple('intern', INTERN_WARNING, "Department <i>$name</i> already exists.");
             return;
         }
 
@@ -176,7 +176,7 @@ class Department extends Editable
         $dept->save();
 
         // Successfully saved department to DB. Alert user and remind them the department they just saved.
-        NQ::simple('intern', INTERN_SUCCESS, "Department <i>$name</i> added.");
+        \NQ::simple('intern', INTERN_SUCCESS, "Department <i>$name</i> added.");
     }
 
     /**
@@ -188,7 +188,7 @@ class Department extends Editable
 
         if($dept->id == 0){
             // Department wasn't loaded correctly
-            NQ::simple('intern', INTERN_ERROR, "Error occurred while loading department from database.");
+            \NQ::simple('intern', INTERN_ERROR, "Error occurred while loading department from database.");
             return;
         }
 
@@ -198,16 +198,16 @@ class Department extends Editable
             // Try to delete department.
             if(!$dept->delete()){
                 // Something bad happend. This should have been caught in the check above...
-                NQ::simple('intern', INTERN_SUCCESS, "Error occurred deleting department from database.");
+                \NQ::simple('intern', INTERN_SUCCESS, "Error occurred deleting department from database.");
                 return;
             }
         }catch(Exception $e){
-            NQ::simple('intern', INTERN_ERROR, $e->getMessage());
+            \NQ::simple('intern', INTERN_ERROR, $e->getMessage());
             return;
         }
 
         // Department deleted successfully.
-        NQ::simple('intern', INTERN_SUCCESS, "Deleted department <i>$name</i>");
+        \NQ::simple('intern', INTERN_SUCCESS, "Deleted department <i>$name</i>");
     }
 
     public function getName()

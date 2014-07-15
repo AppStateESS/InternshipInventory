@@ -20,7 +20,7 @@ class GradProgram extends Editable
      */
     public static function getDb()
     {
-        $db = new PHPWS_DB('intern_grad_prog');
+        $db = new \PHPWS_DB('intern_grad_prog');
         return $db;
     }
 
@@ -105,14 +105,14 @@ class GradProgram extends Editable
     {
         $name = trim($name);
         if($name == ''){
-            return NQ::simple('intern', INTERN_ERROR, 'No name given for new graduate program. No graduate program added.');
+            return \NQ::simple('intern', INTERN_ERROR, 'No name given for new graduate program. No graduate program added.');
         }
 
         /* Search DB for program with matching name. */
         $db = self::getDb();
         $db->addWhere('name', $name);
         if($db->select('count') > 0){
-            NQ::simple('intern', INTERN_WARNING, "The graduate program <i>$name</i> already exists.");
+            \NQ::simple('intern', INTERN_WARNING, "The graduate program <i>$name</i> already exists.");
             return;
         }
 
@@ -122,12 +122,12 @@ class GradProgram extends Editable
         try{
             $prog->save();
         }catch(Exception $e){
-            NQ::simple('intern', INTERN_ERROR, "Error adding graduate program <i>$name</i>.<br/>".$e->getMessage());
+            \NQ::simple('intern', INTERN_ERROR, "Error adding graduate program <i>$name</i>.<br/>".$e->getMessage());
             return;
         }
 
         /* Program was successfully added. */
-        NQ::simple('intern', INTERN_SUCCESS, "<i>$name</i> added as graduate program.");
+        \NQ::simple('intern', INTERN_SUCCESS, "<i>$name</i> added as graduate program.");
     }
 }
 

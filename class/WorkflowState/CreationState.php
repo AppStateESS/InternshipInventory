@@ -1,4 +1,8 @@
 <?php
+namespace Intern\WorkflowState;
+use Intern\WorkflowState;
+use Intern\Internship;
+
 class CreationState extends WorkflowState {
     const friendlyName = 'New Internship';
     

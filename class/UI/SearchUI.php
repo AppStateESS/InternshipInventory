@@ -2,6 +2,14 @@
 
 namespace Intern\UI;
 
+use Intern\Internship;
+use Intern\Term;
+use Intern\Department;
+use Intern\Major;
+use Intern\GradProgram;
+use Intern\Subject;
+use Intern\WorkflowStateFactory;
+
   /**
    * SearchUI
    *
@@ -15,7 +23,7 @@ class SearchUI implements UI
     public static function display()
     {
         // Set up search fields
-        $form = new PHPWS_Form();
+        $form = new \PHPWS_Form();
         $form->setMethod('get');
         $form->addHidden('module', 'intern');
         $form->addHidden('action', 'results');
@@ -32,7 +40,7 @@ class SearchUI implements UI
         //$form->setMatch('term_select', $thisTerm);
 
         // Deity can search for any department. Other users are restricted.
-        if(Current_User::isDeity()){
+        if(\Current_User::isDeity()){
             $depts = Department::getDepartmentsAssoc();
         }else{
             $depts = Department::getDepartmentsAssocForUsername(Current_User::getUsername());
@@ -124,7 +132,7 @@ class SearchUI implements UI
         $form->addRadioAssoc('loc',$loc);
 
         /* State search */
-        $db = new PHPWS_DB('intern_state');
+        $db = new \PHPWS_DB('intern_state');
         $db->addWhere('active', 1);
         $db->addColumn('abbr');
         $db->addColumn('full_name');
@@ -135,7 +143,7 @@ class SearchUI implements UI
         if (empty($states)) {
         	NQ::simple('intern', INTERN_ERROR, 'The list of allowed US states for internship locations has not been configured. Please use the administrative options to <a href="index.php?module=intern&action=edit_states">add allowed states.</a>');
         	NQ::close();
-        	PHPWS_Core::goBack();
+        	\PHPWS_Core::goBack();
         }
         $states[-1] = 'Select state';
         $states = array_reverse($states, true);
@@ -153,11 +161,14 @@ class SearchUI implements UI
         unset($workflowStates['CreationState']); // Remove this state, since it's not valid (internal only state for initial creation)
         $form->addCheckAssoc('workflow_state', $workflowStates);
         
-        unset($_REQUEST['module']);
-        unset($_REQUEST['action']);
-        unset($_REQUEST['submit']);
-        //test($_REQUEST,1);
-        $form->plugIn($_REQUEST);
+        // NB: Can't modify the _REQUEST variable directly because autoloading depends on it (ugh)
+        // Instead, make a copy and modify the copy
+        $prevRequest = $_REQUEST;
+        unset($prevRequest['module']);
+        unset($prevRequest['action']);
+        unset($prevRequest['submit']);
+        
+        $form->plugIn($prevRequest);
         
         $form->addSubmit('submit', 'Search');
 
@@ -165,7 +176,7 @@ class SearchUI implements UI
         javascript('jquery');
         javascriptMod('intern', 'resetSearch');
 
-        return PHPWS_Template::process($form->getTemplate(), 'intern', 'search.tpl');
+        return \PHPWS_Template::process($form->getTemplate(), 'intern', 'search.tpl');
     }
 
 }

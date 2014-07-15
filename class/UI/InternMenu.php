@@ -25,19 +25,19 @@ class InternMenu implements UI {
         $tags = array();
         
         // Total number of internships for Diety users
-        if (Current_User::isDeity()) {
+        if (\Current_User::isDeity()) {
             $tags['GRAND_TOTAL_LABEL'] = _('Total Internships in Database: ');
             
-            $db = new PHPWS_DB('intern_internship');
+            $db = new \PHPWS_DB('intern_internship');
             $gt = $db->select('count');
             $tags['GRAND_TOTAL'] = $gt;
         }
         
         // Example form link
-        $tags['EXAMPLE_LINK'] = PHPWS_Text::secureLink('Example form', 'intern', array('action' => 'example_form'));
+        $tags['EXAMPLE_LINK'] = \PHPWS_Text::secureLink('Example form', 'intern', array('action' => 'example_form'));
         
         
-        return PHPWS_Template::process($tags, 'intern', 'menu.tpl');
+        return \PHPWS_Template::process($tags, 'intern', 'menu.tpl');
     }
 }
 ?>

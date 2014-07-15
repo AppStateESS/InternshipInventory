@@ -10,7 +10,7 @@ class Subject extends Model {
     public $active;
 
     public function getDB(){
-        return new PHPWS_DB('intern_subject');
+        return new \PHPWS_DB('intern_subject');
     }
 
     public function getCSV()
@@ -36,7 +36,7 @@ class Subject extends Model {
     {
         $subjects = array('-1'=>'Select a subject...');
 
-        $db = new PHPWS_DB('intern_subject');
+        $db = new \PHPWS_DB('intern_subject');
         $db->addWhere('active', 1, '=', 'OR');
         if(!is_null($mustIncludeId)) {
             $db->addWhere('id', $mustIncludeId, '=', 'OR');
