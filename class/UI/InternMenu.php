@@ -1,5 +1,6 @@
 <?php
 
+namespace Intern\UI;
 
 /**
  * Display the menu page based on what the current (logged in) user can do

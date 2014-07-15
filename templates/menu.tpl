@@ -2,7 +2,7 @@
   <div class="col-lg-4">
     <h2>Add Internship</h2>
     <p>Create a new internship.</p>
-    <p><a class="btn btn-primary btn-large" href="index.php?module=intern&action=edit_internship"><i class="fa fa-plus"></i> Add Internship</a></p>
+    <p><a class="btn btn-primary btn-large" href="index.php?module=intern&action=ShowAddInternship"><i class="fa fa-plus"></i> Add Internship</a></p>
   </div>
   <div class="col-lg-4">
     <h2>Search</h2>

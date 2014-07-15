@@ -1,12 +1,7 @@
 <?php
 
-  /**
-   * Intern_NotifyUI
-   *
-   * Displays all notifications pushed on intern's NQ.
-   *
-   * @author Robert Bost <bostrt at tux dot appstate dot edu>
-   */
+namespace Intern\UI;
+
 
 define('INTERN_SUCCESS', 0);
 define('INTERN_ERROR',   1);
@@ -15,7 +10,14 @@ define('INTERN_UNKNOWN', 3);
 
 \PHPWS_Core::initModClass('notification', 'NQ.php');
 
-class Intern_NotifyUI implements UI
+/**
+ * Intern_NotifyUI
+ *
+ * Displays all notifications pushed on intern's NQ.
+ *
+ * @author Robert Bost <bostrt at tux dot appstate dot edu>
+ */
+class NotifyUI implements UI
 {
     /**
      * Pop all notifications from NQ. Get the type for use with CSS.

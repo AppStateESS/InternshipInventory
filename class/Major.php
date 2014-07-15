@@ -10,7 +10,6 @@ namespace Intern;
    *
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
-define('MAJOR_EDIT', 'edit_major');
 class Major extends Editable
 {
     public $name;
@@ -44,7 +43,7 @@ class Major extends Editable
      */
     public static function getEditAction()
     {
-        return MAJOR_EDIT;
+        return 'edit_major';
     }
 
     /**

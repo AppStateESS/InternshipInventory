@@ -1,5 +1,7 @@
 <?php
 
+namespace Intern\UI;
+
 class MajorUI implements UI
 {
     public static function display()
@@ -21,7 +23,7 @@ class MajorUI implements UI
         $form->addText('name');
         $form->setLabel('name', 'Major Title');
         $form->addSubmit('submit','Add Major');
-        $form->setAction('index.php?module=intern&action='.MAJOR_EDIT);
+        $form->setAction('index.php?module=intern&action=edit_major');
         $form->addHidden('add',TRUE);
 
         $form->mergeTemplate($tpl);

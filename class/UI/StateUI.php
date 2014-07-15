@@ -1,5 +1,7 @@
 <?php
 
+namespace Intern\UI;
+
 /**
  * 
  * @author Matthew McNaney <mcnaney at gmail dot com>

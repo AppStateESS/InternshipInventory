@@ -1,5 +1,7 @@
 <?php
 
+namespace Intern\UI;
+
 class DepartmentUI implements UI
 {
     public static function display()

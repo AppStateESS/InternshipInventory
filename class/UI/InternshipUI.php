@@ -1,5 +1,7 @@
 <?php
 
+namespace Intern\UI;
+
 /**
  * This class holds the form for adding/editing an internship.
  */

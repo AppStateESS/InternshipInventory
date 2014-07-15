@@ -1,6 +1,7 @@
 <?php
 
 namespace Intern\Command;
+use \Intern;
 
 /*
  * ShowAddInternship
@@ -16,7 +17,7 @@ class ShowAddInternship {
     
     public function execute()
     {
-        $terms = Intern\Term::getFutureTerms();
+        $terms = Intern\Term::getFutureTermsAssoc();
         $departments = array();
         
         

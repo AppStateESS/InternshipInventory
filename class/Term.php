@@ -11,7 +11,7 @@ class Term extends Model
 
     public static function getDb()
     {
-        return new PHPWS_DB('intern_term');
+        return new \PHPWS_DB('intern_term');
     }
 
     public function getCSV()
@@ -27,7 +27,7 @@ class Term extends Model
     {
         $db = self::getDb();
         $db->addOrder('term desc');
-        $terms = $db->getObjects('Term');
+        $terms = $db->getObjects('Intern\Term');
         $readables = array();
         $readables[-1] = 'All';
         
@@ -39,7 +39,7 @@ class Term extends Model
         return $readables;
     }
     
-        /**
+    /**
      * Get an associative array of terms > current term
      * in the database. Looks like: { raw_term => readable_string }
      */
@@ -49,7 +49,7 @@ class Term extends Model
 		$db = self::getDb();
 		$db->addWhere('intern_term.term', $currentTerm, '>=');
 		$db->addOrder('term desc');
-        $terms = $db->getObjects('Term');
+        $terms = $db->getObjects('Intern\Term');
         $readables = array();
         $readables[-1] = 'All';
         
@@ -106,7 +106,7 @@ class Term extends Model
         $result = $db->select();
         
         /* Just log if it's an error. User can resume their work.*/
-        if(PHPWS_Error::logIfError($result))
+        if(\PHPWS_Error::logIfError($result))
             return null;// Be quiet.
         /* 
          * If there aren't at least three elements in the result return true.
@@ -143,7 +143,7 @@ class Term extends Model
             $result = $db->select('row');// Get first row (Max).
 
             /* Just log if it's an error. User can resume their work.*/
-            if(PHPWS_Error::logIfError($result))
+            if(\PHPWS_Error::logIfError($result))
                 return null;// Be quiet.
             
             if(sizeof($result) == 0){

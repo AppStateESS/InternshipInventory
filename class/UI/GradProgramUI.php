@@ -1,5 +1,7 @@
 <?php
 
+namespace Intern\UI;
+
 class GradProgramUI implements UI
 {
     public static function display()

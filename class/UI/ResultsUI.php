@@ -1,5 +1,7 @@
 <?php
 
+namespace Intern\UI;
+
 /**
  * ResultsUI
  *

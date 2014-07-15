@@ -131,7 +131,7 @@ class InternshipInventory {
                 $view = new GradProgramUI();
                 $this->content = $view->display();
                 break;
-            case MAJOR_EDIT:
+            case 'edit_major':
 
                 if (isset($_REQUEST['add'])) {
                     /* Add major with the name passed in REQUEST. */
