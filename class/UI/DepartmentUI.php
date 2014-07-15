@@ -19,7 +19,7 @@ class DepartmentUI implements UI
         $form->addText('name');
         $form->setLabel('name','Department Name');
         $form->addSubmit('submit','Add Department');
-        $form->setAction('index.php?module=intern&action='.DEPT_EDIT);
+        $form->setAction('index.php?module=intern&action=edit_dept');
         $form->addHidden('add',TRUE);
 
         $tpl['PAGER'] = DepartmentUI::doPager();

@@ -10,7 +10,6 @@ namespace Intern;
    *
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
-define('GRAD_PROG_EDIT', 'edit_grad');
 class GradProgram extends Editable
 {
     public $name;
@@ -45,7 +44,7 @@ class GradProgram extends Editable
      */
     public static function getEditAction()
     {
-        return GRAD_PROG_EDIT;
+        return edit_grad;
     }
 
     /**

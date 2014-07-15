@@ -33,17 +33,17 @@ class TopUI implements UI
         
         // Edit list grad programs
         if(\Current_User::allow('intern', 'edit_grad_prog')){
-            $adminOptions['EDIT_GRAD_LINK'] = \PHPWS_Text::secureLink('Edit Graduate Programs','intern',array('action' => GRAD_PROG_EDIT));
+            $adminOptions['EDIT_GRAD_LINK'] = \PHPWS_Text::secureLink('Edit Graduate Programs','intern',array('action' => 'edit_grad'));
         }
         
         // Edit departments
         if(\Current_User::allow('intern', 'edit_dept')){
-            $adminOptions['EDIT_DEPARTMENTS_LINK'] = \PHPWS_Text::secureLink('Edit Departments','intern',array('action' => DEPT_EDIT));
+            $adminOptions['EDIT_DEPARTMENTS_LINK'] = \PHPWS_Text::secureLink('Edit Departments','intern',array('action' => 'edit_dept'));
         }
         
         // Edit list of states
         if(\Current_User::allow('intern', 'edit_states')){
-            $adminOptions['EDIT_STATES_LINK'] = \PHPWS_Text::secureLink('Edit States','intern',array('action' => STATE_EDIT));
+            $adminOptions['EDIT_STATES_LINK'] = \PHPWS_Text::secureLink('Edit States','intern',array('action' => 'edit_states'));
         }
         
         if(\Current_User::isDeity()){

@@ -2,8 +2,6 @@
 
 namespace Intern;
 
-define('STATE_EDIT', 'edit_states');
-
 class InternshipInventory {
 
     private $content;
@@ -56,7 +54,7 @@ class InternshipInventory {
                 $view = new ResultsUI();
                 $this->content = $view->display();
                 break;
-            case DEPT_EDIT:
+            case 'edit_dept':
                 if (isset($_REQUEST['add'])) {
                     /* Add department with the name in REQUEST */
                     if (isset($_REQUEST['name'])) {
@@ -95,7 +93,7 @@ class InternshipInventory {
                 $view = new DepartmentUI();
                 $this->content = $view->display();
                 break;
-            case GRAD_PROG_EDIT:
+            case 'edit_grad':
                 if (isset($_REQUEST['add'])) {
                     /* Add grad program with the name in REQUEST */
                     if (isset($_REQUEST['name'])) {
@@ -189,7 +187,7 @@ class InternshipInventory {
                 $state->save();
                 exit();
                 break;
-            case STATE_EDIT:
+            case 'edit_states':
                 if (!Current_User::allow('intern', 'edit_state')) {
                     disallow();
                 }

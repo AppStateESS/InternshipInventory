@@ -2,8 +2,6 @@
 
 namespace Intern;
 
-define('DEPT_EDIT', 'edit_dept');
-
  /**
   * Represents an academic department.
   *
@@ -37,7 +35,7 @@ class Department extends Editable
      */
     public static function getEditAction()
     {
-        return DEPT_EDIT;
+        return 'edit_dept';
     }
 
     /**
