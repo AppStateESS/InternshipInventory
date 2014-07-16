@@ -1,6 +1,7 @@
 <?php
 
 namespace Intern\UI;
+use Intern\InternshipFormView;
 
 /**
  * This class holds the form for adding/editing an internship.
@@ -43,7 +44,7 @@ class InternshipUI implements UI {
             $form = $internshipForm->getForm();
             
             /*** 'Generate Contract' Button ***/
-            $tpl['PDF'] = PHPWS_Text::linkAddress('intern', array('action' => 'pdf', 'id' => $i->id));
+            $tpl['PDF'] = \PHPWS_Text::linkAddress('intern', array('action' => 'pdf', 'id' => $i->id));
 
             /*** Document List ***/
             $docs = $i->getDocuments();
@@ -100,10 +101,10 @@ class InternshipUI implements UI {
             // Attempting to create a new internship
             
             // Check permissions
-            if(!Current_User::allow('intern', 'create_internship')){
+            if(!\Current_User::allow('intern', 'create_internship')){
                 NQ::simple('intern', INTERN_ERROR, 'You do not have permission to create new internships.');
                 NQ::close();
-                PHPWS_Core::home();
+                \PHPWS_Core::home();
             }
             
             $tpl['TITLE'] = 'Add Internship';
@@ -160,7 +161,7 @@ class InternshipUI implements UI {
         
         //test($form->getTemplate(),1);
         
-        return PHPWS_Template::process($form->getTemplate(), 'intern', 'add_internship.tpl');
+        return \PHPWS_Template::process($form->getTemplate(), 'intern', 'add_internship.tpl');
     }
 
 }

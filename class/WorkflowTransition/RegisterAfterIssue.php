@@ -1,5 +1,9 @@
 <?php
 
+namespace Intern\WorkflowTransition;
+use Intern\WorkflowTransition;
+use Intern\Internship;
+
 class RegisterAfterIssue extends WorkflowTransition {
     const sourceState = 'RegistrationIssueState';
     const destState   = 'RegisteredState';

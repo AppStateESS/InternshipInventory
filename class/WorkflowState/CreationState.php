@@ -2,6 +2,7 @@
 namespace Intern\WorkflowState;
 use Intern\WorkflowState;
 use Intern\Internship;
+use Intern\WorkflowTransition\CreationTransition;
 
 class CreationState extends WorkflowState {
     const friendlyName = 'New Internship';

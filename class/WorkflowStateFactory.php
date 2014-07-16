@@ -12,14 +12,6 @@ class WorkflowStateFactory {
             throw new InvalidArgumentException('Missing state name.');
         }
         
-        $fileName = $className . '.php';
-        
-        try{
-            \PHPWS_Core::initModClass('intern', '/WorkflowState/' . $fileName);
-        }catch(Exception $e){
-            throw new Exception('Invalid state name.');
-        }
-        
         return new $className;
     }
     
@@ -37,7 +29,7 @@ class WorkflowStateFactory {
                 \PHPWS_Core::initModClass('intern', self::$dir . '/' . $f);
                 $className = preg_replace('/\.php/', '', $f);
         
-                $className = 'Intern\\WorkflowState\\' . $className;
+                $className = 'Intern\WorkflowState\\' . $className;
         
                 // Instanciate each one
                 $states[] = new $className;

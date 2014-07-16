@@ -22,10 +22,10 @@ class InternshipFormView {
      */
     public function __construct($pageTitle)
     {
-        $this->form = new PHPWS_Form('internship');
+        $this->form = new \PHPWS_Form('internship');
         $this->intern = new Internship();
         
-        Layout::addPageTitle($pageTitle);
+        \Layout::addPageTitle($pageTitle);
     }
 
     public function getForm()
@@ -54,7 +54,7 @@ class InternshipFormView {
         // Check the Internship's state, and set a default state if it's a new internship
         $workflowState = $this->intern->getWorkflowState();
         if(is_null($workflowState)){
-            $state = WorkflowStateFactory::getState('CreationState');
+            $state = WorkflowStateFactory::getState('Intern\WorkflowState\CreationState');
             $this->intern->setState($state); // Set this initial value
         }
         
@@ -70,7 +70,7 @@ class InternshipFormView {
         $this->form->setLabel('oied_certified', 'Certified by Office of International Education and Development');
 
         // If the user is not allowed to do OIED certification, disable the checkbox
-        if(!Current_User::allow('intern', 'oied_certify') || $this->intern->isDomestic()){
+        if(!\Current_User::allow('intern', 'oied_certify') || $this->intern->isDomestic()){
             $this->form->setExtra('oied_certified', 'disabled="disabled" disabled');
         }
 
@@ -174,7 +174,7 @@ class InternshipFormView {
         /************************
          * Department Drop Down *
          */
-        if (Current_User::isDeity()) {
+        if (\Current_User::isDeity()) {
             if (!is_null($this->intern)){
                 $depts = Department::getDepartmentsAssoc($this->intern->department_id);
             } else {
@@ -182,9 +182,9 @@ class InternshipFormView {
             }
         }else {
             if (!is_null($this->intern)){
-                $depts = Department::getDepartmentsAssocForUsername(Current_User::getUsername(), $this->intern->department_id);
+                $depts = Department::getDepartmentsAssocForUsername(\Current_User::getUsername(), $this->intern->department_id);
             }else{
-                $depts = Department::getDepartmentsAssocForUsername(Current_User::getUsername());
+                $depts = Department::getDepartmentsAssocForUsername(\Current_User::getUsername());
             }
         }
         $this->form->addSelect('department', $depts);

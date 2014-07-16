@@ -287,7 +287,6 @@ class Internship {
      */
     public function getUgradMajor()
     {
-        PHPWS_Core::initModClass('intern', 'Major.php');
         if(!is_null($this->ugrad_major) && $this->ugrad_major != 0){
             return new Major($this->ugrad_major);
         }else{
@@ -300,7 +299,6 @@ class Internship {
      */
     public function getGradProgram()
     {
-        PHPWS_Core::initModClass('intern', 'GradProgram.php');
         if(!is_null($this->grad_prog) && $this->grad_prog != 0){
             return new GradProgram($this->grad_prog);
         }else{
@@ -313,7 +311,6 @@ class Internship {
      */
     public function getAgency()
     {
-        PHPWS_Core::initModClass('intern', 'Agency.php');
         return new Agency($this->agency_id);
     }
 
@@ -327,7 +324,6 @@ class Internship {
             return null;
         }
 
-        PHPWS_Core::initModClass('intern', 'FacultyFactory.php');
         return FacultyFactory::getFacultyObjectById($this->faculty_id);
     }
 
@@ -336,7 +332,6 @@ class Internship {
 	 */
 	public function getEmergencyContactName()
 	{
-		PHPWS_Core::initModClass('intern', 'EmergencyContactFactory.php');
 		$name = EmergencyContactFactory::getContactsForInternship($this);
 		if(!empty($name))
 		{
@@ -349,7 +344,6 @@ class Internship {
 	 */
 	public function getEmergencyContactRelation()
 	{
-		PHPWS_Core::initModClass('intern', 'EmergencyContactFactory.php');
 		$relationship = EmergencyContactFactory::getContactsForInternship($this);
 		if(!empty($relationship))
 		{
@@ -362,7 +356,6 @@ class Internship {
 	 */
 	public function getEmergencyContactPhoneNumber()
 	{
-		PHPWS_Core::initModClass('intern', 'EmergencyContactFactory.php');
 		$phone = EmergencyContactFactory::getContactsForInternship($this);
 		if(!empty($phone))
 		{
@@ -375,13 +368,11 @@ class Internship {
      */
     public function getDepartment()
     {
-        PHPWS_Core::initModClass('intern', 'Department.php');
         return new Department($this->department_id);
     }
 
     public function getSubject()
     {
-        PHPWS_Core::initModClass('intern', 'Subject.php');
         return new Subject($this->course_subj);
     }
 
@@ -390,7 +381,6 @@ class Internship {
      */
     public function getDocuments()
     {
-        PHPWS_Core::initModClass('intern', 'Intern_Document.php');
         $db = Intern_Document::getDB();
         $db->addWhere('internship_id', $this->id);
         return $db->getObjects('Intern_Document');
@@ -640,7 +630,6 @@ class Internship {
             return null;
         }
 
-        PHPWS_Core::initModClass('intern', 'WorkflowStateFactory.php');
         return WorkflowStateFactory::getState($stateName);
     }
 

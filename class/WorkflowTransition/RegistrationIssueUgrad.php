@@ -1,7 +1,11 @@
 <?php
 
-class RegistrationIssueGrad extends WorkflowTransition {
-    const sourceState = 'GradSchoolApprovedState';
+namespace Intern\WorkflowTransition;
+use Intern\WorkflowTransition;
+use Intern\Internship;
+
+class RegistrationIssueUgrad extends WorkflowTransition {
+    const sourceState = 'DeanApprovedState';
     const destState   = 'RegistrationIssueState';
     const actionName  = 'Mark as Registration Issue';
     
@@ -10,20 +14,20 @@ class RegistrationIssueGrad extends WorkflowTransition {
     public function getAllowedPermissionList(){
         return array('register');
     }
-    
+
     public function isApplicable(Internship $i)
     {
-        if($i->isGraduate()){
+        if($i->isUndergraduate()){
             return true;
         }else{
             return false;
         }
     }
-    
+
     public function doNotification(Internship $i, $note = null)
     {
         $agency = $i->getAgency();
-    
+
         Email::sendRegistrationIssueEmail($i, $agency, $note);
     }
 }

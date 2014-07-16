@@ -1,5 +1,9 @@
 <?php
 
+namespace Intern\WorkflowTransition;
+use Intern\WorkflowTransition;
+use Intern\Internship;
+
 class CreationTransition extends WorkflowTransition {
     const sourceState = 'CreationState';
     const destState   = 'NewState';

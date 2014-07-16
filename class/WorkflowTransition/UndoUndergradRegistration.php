@@ -1,5 +1,9 @@
 <?php
 
+namespace Intern\WorkflowTransition;
+use Intern\WorkflowTransition;
+use Intern\Internship;
+
 class UndoUndergradRegistration extends WorkflowTransition {
     const sourceState = 'RegisteredState';
     const destState   = 'DeanApprovedState';

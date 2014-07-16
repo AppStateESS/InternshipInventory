@@ -1,5 +1,9 @@
 <?php
 
+namespace Intern\WorkflowTransition;
+use Intern\WorkflowTransition;
+use Intern\Internship;
+
 class UndoGradSchoolApproval extends WorkflowTransition {
     
     const sourceState = 'GradSchoolApprovedState';

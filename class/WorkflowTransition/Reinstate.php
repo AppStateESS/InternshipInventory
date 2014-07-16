@@ -1,5 +1,9 @@
 <?php
 
+namespace Intern\WorkflowTransition;
+use Intern\WorkflowTransition;
+use Intern\Internship;
+
 class Reinstate extends WorkflowTransition {
     const sourceState = 'CancelledState';
     const destState   = 'NewState';

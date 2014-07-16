@@ -1,5 +1,9 @@
 <?php
 
+namespace Intern\WorkflowTransition;
+use Intern\WorkflowTransition;
+use Intern\Internship;
+
 class GradSchoolApprove extends WorkflowTransition {
     
     const sourceState = 'DeanApprovedState';

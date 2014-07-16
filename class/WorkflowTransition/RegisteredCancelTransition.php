@@ -1,5 +1,9 @@
 <?php
 
+namespace Intern\WorkflowTransition;
+use Intern\WorkflowTransition;
+use Intern\Internship;
+
 class RegisteredCancelTransition extends WorkflowTransition {
     const sourceState = 'RegisteredState';
     const destState   = 'CancelledState';

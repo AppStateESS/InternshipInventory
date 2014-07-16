@@ -1,18 +1,21 @@
 <?php
 
-class GraduateRegistration extends WorkflowTransition {
-    
-    const sourceState = 'GradSchoolApprovedState';
+namespace Intern\WorkflowTransition;
+use Intern\WorkflowTransition;
+use Intern\Internship;
+
+class UndergradRegistration extends WorkflowTransition {
+    const sourceState = 'DeanApprovedState';
     const destState   = 'RegisteredState';
-    const actionName  = 'Mark as Registered / Enrollment Complete (grad)';
-    
+    const actionName  = 'Mark as Registered / Enrollment Complete';
+
     public function getAllowedPermissionList(){
         return array('register');
     }
-    
+
     public function isApplicable(Internship $i)
     {
-        if($i->isGraduate()){
+        if($i->isUndergraduate()){
             return true;
         }else{
             return false;
@@ -21,23 +24,23 @@ class GraduateRegistration extends WorkflowTransition {
     
     public function allowed(Internship $i)
     {
-    	if($i->isDistanceEd()){
-    		if(Current_User::allow('intern', 'distance_ed_register')){
-    			return true;
-    		}else{
-    			return false;
-    		}
-    	}else{
-    		return parent::allowed($i);
-    	}
-    
-    	return false;
+        if($i->isDistanceEd()){
+            if(Current_User::allow('intern', 'distance_ed_register')){
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return parent::allowed($i);
+        }
+
+        return false;
     }
-    
+
     public function doNotification(Internship $i, $note = null)
     {
         $agency = $i->getAgency();
-    
+
         Email::sendRegistrationConfirmationEmail($i, $agency);
     }
     
@@ -70,3 +73,5 @@ class GraduateRegistration extends WorkflowTransition {
         }
     }
 }
+
+?>

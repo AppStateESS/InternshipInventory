@@ -1,5 +1,9 @@
 <?php
 
+namespace Intern\WorkflowTransition;
+use Intern\WorkflowTransition;
+use Intern\Internship;
+
 class SigAuthApprove extends WorkflowTransition {
     const sourceState = 'SigAuthReadyState';
     const destState   = 'SigAuthApprovedState';

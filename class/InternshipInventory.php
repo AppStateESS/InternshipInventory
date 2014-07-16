@@ -39,7 +39,7 @@ class InternshipInventory {
                 break;
 
             case 'edit_internship':
-                $view = new InternshipUI();
+                $view = new UI\InternshipUI();
                 $this->content = $view->display();
                 break;
             case 'ShowAddInternship':
@@ -245,7 +245,7 @@ class InternshipInventory {
                 $this->content = $facultyUI->display();
                 break;
             case 'getFacultyListForDept':
-                $ctrl = new GetFacultyListForDept();
+                $ctrl = new Command\GetFacultyListForDept();
                 $ctrl->execute();
                 break;
             case 'restFacultyById':

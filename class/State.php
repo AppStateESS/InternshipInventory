@@ -14,14 +14,14 @@ class State {
 
     public function __construct($abbr)
     {
-        $db = new PHPWS_DB('intern_state');
+        $db = new \PHPWS_DB('intern_state');
         $db->addWhere('abbr', $abbr);
         return $db->loadObject($this);
     }
 
     public function save()
     {
-        $db = new PHPWS_DB('intern_state');
+        $db = new \PHPWS_DB('intern_state');
         $db->addWhere('abbr', $this->abbr);
         return $db->saveObject($this);
     }
@@ -33,7 +33,7 @@ class State {
 
     public static function getAllowedStates()
     {
-        $db = new PHPWS_DB('intern_state');
+        $db = new \PHPWS_DB('intern_state');
         $db->addWhere('active', 1);
         $db->addColumn('abbr');
         $db->addColumn('full_name');

@@ -1,5 +1,9 @@
 <?php
 
+namespace Intern\WorkflowTransition;
+use Intern\WorkflowTransition;
+use Intern\Internship;
+
 class LeaveTransition extends WorkflowTransition {
     const sourceState = '*';
     const destState   = null;

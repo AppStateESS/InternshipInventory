@@ -8,7 +8,7 @@ class WorkflowTransitionView {
     private $form;
     private $internship;
     
-    public function __construct(Internship $i, PHPWS_Form &$form){
+    public function __construct(Internship $i, \PHPWS_Form &$form){
         $this->internship = $i;
         $this->form = $form;
         

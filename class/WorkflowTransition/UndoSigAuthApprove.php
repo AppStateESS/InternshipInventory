@@ -1,5 +1,9 @@
 <?php
 
+namespace Intern\WorkflowTransition;
+use Intern\WorkflowTransition;
+use Intern\Internship;
+
 class UndoSigAuthApprove extends WorkflowTransition {
     const sourceState = 'SigAuthApprovedState';
     const destState   = 'SigAuthReadyState';
