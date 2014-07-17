@@ -33,12 +33,12 @@ if(DEBUG){
         $content = $inventory->getContent();
     }catch(Exception $e){
         try{
-            NQ::simple('intern', INTERN_ERROR, 'The Intern Inventory has experienced an error. The software engineers have been notified about this problem. We apologize for the inconvenience.');
+            \NQ::simple('intern', INTERN_ERROR, 'The Intern Inventory has experienced an error. The software engineers have been notified about this problem. We apologize for the inconvenience.');
 
             $message = formatException($e);
             emailError($message);
-            
-            NQ::close();
+
+            \NQ::close();
             Intern_NotifyUI::display();
 
             \PHPWS_Core::goBack();
@@ -57,7 +57,7 @@ if(DEBUG){
  */
 if (isset($content)) {
     if ($content === false) {
-        NQ::close();
+        \NQ::close();
         \PHPWS_Core::reroute('index.php?module=intern');
     }
 }

@@ -60,7 +60,7 @@ class InternshipInventory {
                     if (isset($_REQUEST['name'])) {
                         Department::add($_REQUEST['name']);
                     } else {
-                        NQ::simple('intern', INTERN_ERROR, "Department must have name.");
+                        \NQ::simple('intern', INTERN_ERROR, "Department must have name.");
                     }
                 } else if (isset($_REQUEST['rename'])) {
                     /* Rename dept with ID to new name that was passed in REQUEST */
@@ -68,7 +68,7 @@ class InternshipInventory {
                         $d = new Department($_REQUEST['id']);
                         $d->rename($_REQUEST['rename']);
                     } else {
-                        NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot rename department.");
+                        \NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot rename department.");
                     }
                 } else if (isset($_REQUEST['hide'])) {
                     /* Hide/Show department with ID passed in REQUEST. */
@@ -76,7 +76,7 @@ class InternshipInventory {
                         $d = new Department($_REQUEST['id']);
                         $d->hide($_REQUEST['hide'] == 1);
                     } else {
-                        NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot hide department.");
+                        \NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot hide department.");
                     }
                 } else if (isset($_REQUEST['del'])) {
                     /* Delete department with same ID passed in REQUEST. */
@@ -84,11 +84,11 @@ class InternshipInventory {
                         $d = new Department($_REQUEST['id']);
                         $d->del();
                     } else {
-                        NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot delete department.");
+                        \NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot delete department.");
                     }
                 } else if (isset($_REQUEST['fDel'])) {
                     /** for now... */
-                    NQ::simple('intern', INTERN_WARNING, 'Sorry, cannot forcefully delete a department.');
+                    \NQ::simple('intern', INTERN_WARNING, 'Sorry, cannot forcefully delete a department.');
                 }
                 $view = new DepartmentUI();
                 $this->content = $view->display();
@@ -99,7 +99,7 @@ class InternshipInventory {
                     if (isset($_REQUEST['name'])) {
                         GradProgram::add($_REQUEST['name']);
                     } else {
-                        NQ::simple('intern', INTERN_ERROR, "Grad Program must have name.");
+                        \NQ::simple('intern', INTERN_ERROR, "Grad Program must have name.");
                     }
                 } else if (isset($_REQUEST['rename'])) {
                     /* Rename program with ID to new name that was passed in REQUEST */
@@ -107,7 +107,7 @@ class InternshipInventory {
                         $g = new GradProgram($_REQUEST['id']);
                         $g->rename($_REQUEST['rename']);
                     } else {
-                        NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot rename graduate program.");
+                        \NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot rename graduate program.");
                     }
                 } else if (isset($_REQUEST['hide'])) {
                     /* Hide/Show program with ID passed in REQUEST. */
@@ -115,7 +115,7 @@ class InternshipInventory {
                         $g = new GradProgram($_REQUEST['id']);
                         $g->hide($_REQUEST['hide'] == 1);
                     } else {
-                        NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot hide graduate program.");
+                        \NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot hide graduate program.");
                     }
                 } else if (isset($_REQUEST['del'])) {
                     /* Delete program with same ID passed in REQUEST. */
@@ -123,7 +123,7 @@ class InternshipInventory {
                         $g = new GradProgram($_REQUEST['id']);
                         $g->del();
                     } else {
-                        NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot delete graduate program.");
+                        \NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot delete graduate program.");
                     }
                 }
                 $view = new GradProgramUI();
@@ -136,7 +136,7 @@ class InternshipInventory {
                     if (isset($_REQUEST['name'])) {
                         Major::add($_REQUEST['name']);
                     } else {
-                        NQ::simple('intern', INTERN_ERROR, "Major must have name.");
+                        \NQ::simple('intern', INTERN_ERROR, "Major must have name.");
                     }
                 } else if (isset($_REQUEST['rename'])) {
                     /* Rename major with ID to new name that was passed in REQUEST */
@@ -144,7 +144,7 @@ class InternshipInventory {
                         $m = new Major($_REQUEST['id']);
                         $m->rename($_REQUEST['rename']);
                     } else {
-                        NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot rename major.");
+                        \NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot rename major.");
                     }
                 } else if (isset($_REQUEST['hide'])) {
                     /* Hide major with ID passed in REQUEST. */
@@ -152,7 +152,7 @@ class InternshipInventory {
                         $m = new Major($_REQUEST['id']);
                         $m->hide($_REQUEST['hide'] == 1);
                     } else {
-                        NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot hide major.");
+                        \NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot hide major.");
                     }
                 } else if (isset($_REQUEST['del'])) {
                     /* Delete major with same ID passed in REQUEST. */
@@ -160,7 +160,7 @@ class InternshipInventory {
                         $m = new Major($_REQUEST['id']);
                         $m->del();
                     } else {
-                        NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot delete major.");
+                        \NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot delete major.");
                     }
                 }
                 $view = new MajorUI();
@@ -228,8 +228,8 @@ class InternshipInventory {
             case 'delete_document':
                 $doc = new InternDocument($_REQUEST['doc_id']);
                 $doc->delete();
-                NQ::simple('intern', INTERN_SUCCESS, 'Document deleted.');
-                NQ::close();
+                \NQ::simple('intern', INTERN_SUCCESS, 'Document deleted.');
+                \NQ::close();
                 PHPWS_Core::goBack();
                 break;
             case 'addEmergencyContact':

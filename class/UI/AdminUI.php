@@ -11,8 +11,8 @@ class AdminUI implements UI {
     // Show a list of admins and a form to add a new one.
     public static function display() {
         // permissions...
-        if(!Current_User::isDeity()) {
-            NQ::simple('intern', INTERN_ERROR, 'You cannot edit administrators.');
+        if(!\Current_User::isDeity()) {
+            \NQ::simple('intern', INTERN_ERROR, 'You cannot edit administrators.');
             return false;
         }
 
@@ -26,7 +26,7 @@ class AdminUI implements UI {
         $depts = Department::getDepartmentsAssoc();
 
         // make the form for adding a new admin
-        $form = new PHPWS_Form('add_admin');
+        $form = new \PHPWS_Form('add_admin');
         $form->addSelect('department_id', $depts);
         $form->setLabel('department_id','Department');
         $form->addText('username');
@@ -46,7 +46,7 @@ class AdminUI implements UI {
 
         $form->mergeTemplate($tpl);
 
-        return PHPWS_Template::process($form->getTemplate(), 'intern','edit_admin.tpl');
+        return \PHPWS_Template::process($form->getTemplate(), 'intern','edit_admin.tpl');
 
     }
 }

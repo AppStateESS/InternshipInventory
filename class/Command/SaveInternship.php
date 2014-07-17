@@ -3,17 +3,17 @@ namespace Intern\Command;
 
 /**
  * Controller class to save changes (on create or update) to an Internship
- * 
+ *
  * @author jbooker
  * @package intern
  */
 class SaveInternship {
-    
+
     public function __construct()
     {
-        
+
     }
-    
+
     public function execute()
     {
         /**************
@@ -30,8 +30,8 @@ class SaveInternship {
             foreach ($_POST as $key => $val) {
                 $url .= "&$key=$val";
             }
-            NQ::simple('intern', INTERN_ERROR, 'Please fill in the highlighted fields.');
-            NQ::close();
+            \NQ::simple('intern', INTERN_ERROR, 'Please fill in the highlighted fields.');
+            \NQ::close();
             return \PHPWS_Core::reroute($url);
         }
 
@@ -42,11 +42,11 @@ class SaveInternship {
             foreach ($_POST as $key => $val) {
                 $url .= "&$key=$val";
             }
-            NQ::simple('intern', INTERN_ERROR, "The Banner ID you entered is not valid. No changes were saved. The student's Banner ID should be nine digits only (no letters, spaces, or punctuation).");
-            NQ::close();
+            \NQ::simple('intern', INTERN_ERROR, "The Banner ID you entered is not valid. No changes were saved. The student's Banner ID should be nine digits only (no letters, spaces, or punctuation).");
+            \NQ::close();
             return \PHPWS_Core::reroute($url);
         }
-        
+
         // Sanity check student email
         if(isset($_REQUEST['student_email']) && preg_match("/@/", $_REQUEST['student_email'])){
             $url = 'index.php?module=intern&action=edit_internship&missing=student_email';
@@ -54,8 +54,8 @@ class SaveInternship {
             foreach ($_POST as $key => $val) {
                 $url .= "&$key=$val";
             }
-            NQ::simple('intern', INTERN_ERROR, "The student's email address is invalid. No changes were saved. Enter only the username portion of the student's email address. The '@appstate.edu' portion is not necessary.");
-            NQ::close();
+            \NQ::simple('intern', INTERN_ERROR, "The student's email address is invalid. No changes were saved. Enter only the username portion of the student's email address. The '@appstate.edu' portion is not necessary.");
+            \NQ::close();
             return \PHPWS_Core::reroute($url);
         }
 
@@ -66,11 +66,11 @@ class SaveInternship {
 			foreach ($_POST as $key => $val){
 				$url .= "&$key=$val";
 			}
-			NQ::simple('intern', INTERN_ERROR, "The student's zip code is invalid. No changes were saved. Zip codes should be 5 digits only (no letters, spaces, or punctuation).");
-			NQ::close();
+			\NQ::simple('intern', INTERN_ERROR, "The student's zip code is invalid. No changes were saved. Zip codes should be 5 digits only (no letters, spaces, or punctuation).");
+			\NQ::close();
 			return \PHPWS_Core::reroute($url);
 		}
-		
+
         // Course start date must be before end date
         if(!empty($_REQUEST['start_date']) && !empty($_REQUEST['end_date'])){
             $start = strtotime($_REQUEST['start_date']);
@@ -84,12 +84,12 @@ class SaveInternship {
                 foreach ($_POST as $key => $val) {
                     $url .= "&$key=$val";
                 }
-                NQ::simple('intern', INTERN_WARNING, 'The internship start date must be before the end date.');
-                NQ::close();
+                \NQ::simple('intern', INTERN_WARNING, 'The internship start date must be before the end date.');
+                \NQ::close();
                 return \PHPWS_Core::reroute($url);
             }
         }
-        
+
 		// Sanity check internship location zip
 		if((isset($_REQUEST['loc_zip']) && $_REQUEST['loc_zip'] != "") && (strlen($_REQUEST['loc_zip']) != 5 || !is_numeric($_REQUEST['loc_zip']))) {
 			$url = 'index.php?module=intern&action=edit_internship&missing=loc_zip';
@@ -97,11 +97,11 @@ class SaveInternship {
 			foreach ($_POST as $key => $val){
 				$url .= "&$key=$val";
 			}
-			NQ::simple('intern', INTERN_ERROR, "The internship location's zip code is invalid. No changes were saved. Zip codes should be 5 digits only (no letters, spaces, or punctuation).");
-			NQ::close();
+			\NQ::simple('intern', INTERN_ERROR, "The internship location's zip code is invalid. No changes were saved. Zip codes should be 5 digits only (no letters, spaces, or punctuation).");
+			\NQ::close();
 			return \PHPWS_Core::reroute($url);
 		}
-		
+
 		// Sanity check agency zip
 		if((isset($_REQUEST['agency_zip']) && $_REQUEST['agency_zip'] != "") && (strlen($_REQUEST['agency_zip']) != 5 || !is_numeric($_REQUEST['agency_zip']))) {
 			$url = 'index.php?module=intern&action=edit_internship&missing=agency_zip';
@@ -109,11 +109,11 @@ class SaveInternship {
 			foreach ($_POST as $key => $val){
 				$url .= "&$key=$val";
 			}
-			NQ::simple('intern', INTERN_ERROR, "The agency's zip code is invalid. No changes were saved. Zip codes should be 5 digits only (no letters, spaces, or punctuation).");
-			NQ::close();
+			\NQ::simple('intern', INTERN_ERROR, "The agency's zip code is invalid. No changes were saved. Zip codes should be 5 digits only (no letters, spaces, or punctuation).");
+			\NQ::close();
 			return \PHPWS_Core::reroute($url);
 		}
-        
+
 		// Sanity check supervisor's zip
 		if((isset($_REQUEST['agency_sup_zip']) && $_REQUEST['agency_sup_zip'] != "") && (strlen($_REQUEST['agency_sup_zip']) != 5 || !is_numeric($_REQUEST['agency_sup_zip']))) {
 			$url = 'index.php?module=intern&action=edit_internship&missing=agency_sup_zip';
@@ -121,11 +121,11 @@ class SaveInternship {
 			foreach ($_POST as $key => $val){
 				$url .= "&$key=$val";
 			}
-			NQ::simple('intern', INTERN_ERROR, "The agency supervisor's zip code is invalid. No changes were saved. Zip codes should be 5 digits only (no letters, spaces, or punctuation).");
-			NQ::close();
+			\NQ::simple('intern', INTERN_ERROR, "The agency supervisor's zip code is invalid. No changes were saved. Zip codes should be 5 digits only (no letters, spaces, or punctuation).");
+			\NQ::close();
 			return \PHPWS_Core::reroute($url);
 		}
-		
+
 		// Sanity check course number
 		if((isset($_REQUEST['course_no']) && $_REQUEST['course_no'] != '') && (strlen($_REQUEST['course_no']) > 20 || !is_numeric($_REQUEST['course_no']))) {
 			$url = 'index.php?module=intern&action=edit_internship&missing=course_no';
@@ -133,8 +133,8 @@ class SaveInternship {
 			foreach ($_POST as $key => $val){
 				$url .= "&$key=$val";
 			}
-			NQ::simple('intern', INTERN_ERROR, "The course number provided is invalid. No changes were saved. Course numbers should be less than 20 digits (no letters, spaces, or punctuation).");
-			NQ::close();
+			\NQ::simple('intern', INTERN_ERROR, "The course number provided is invalid. No changes were saved. Course numbers should be less than 20 digits (no letters, spaces, or punctuation).");
+			\NQ::close();
 			return \PHPWS_Core::reroute($url);
 		}
 
@@ -163,7 +163,7 @@ class SaveInternship {
             $agency->state = $_REQUEST['agency_state'];
             $agency->province = $_REQUEST['agency_province'];
             $agency->country = $_REQUEST['agency_country'];
-            
+
             $agency->supervisor_state = $_REQUEST['agency_sup_state'];
             $agency->supervisor_province = $_REQUEST['agency_sup_province'];
             $agency->supervisor_country = $_REQUEST['agency_sup_country'];
@@ -229,20 +229,20 @@ class SaveInternship {
         if(isset($_REQUEST['experience_type'])){
             $i->setExperienceType($_REQUEST['experience_type']);
         }
-        
+
         // Set fields depending on domestic/international
         if($_REQUEST['location'] == 'domestic'){
             // Set Flags
             $i->domestic      = 1;
             $i->international = 0;
-            
+
             // Set state
             if ($_POST['loc_state'] != '-1') {
                 $i->loc_state = strip_tags($_POST['loc_state']);
             } else {
                 $i->loc_state = null;
             }
-            
+
             // Clear province, country
             $i->loc_province  = '';
             $i->loc_country   = '';
@@ -250,11 +250,11 @@ class SaveInternship {
             // Set flags
             $i->domestic      = 0;
             $i->international = 1;
-            
+
             // Set province, country
             $i->loc_province = $_POST['loc_province'];
             $i->loc_country = strip_tags($_POST['loc_country']);
-            
+
             // Clear state
             $i->loc_state = null;
         }
@@ -274,25 +274,25 @@ class SaveInternship {
         $i->course_no = strip_tags($_POST['course_no']);
         $i->course_sect = strip_tags($_POST['course_sect']);
         $i->course_title = strip_tags($_POST['course_title']);
-        
+
         // Multipart course
         if(isset($_POST['multipart'])){
             $i->multi_part = 1;
         }else{
             $i->multi_part = 0;
         }
-        
+
         if(isset($_POST['multipart']) && isset($_POST['secondary_part'])){
             $i->secondary_part = 1;
         }else{
             $i->secondary_part = 0;
         }
-        
+
         // Corequisite Course Info
         if (isset($_POST['corequisite_course_num'])) {
         	$i->corequisite_number = $_POST['corequisite_course_num'];
         }
-        
+
         if (isset($_POST['corequisite_course_sect'])) {
         	$i->corequisite_section = $_POST['corequisite_course_sect'];
         }
@@ -301,10 +301,10 @@ class SaveInternship {
         $i->first_name = $_REQUEST['student_first_name'];
         $i->middle_name = $_REQUEST['student_middle_name'];
         $i->last_name = $_REQUEST['student_last_name'];
-        
+
         $i->setFirstNameMetaphone($_REQUEST['student_first_name']);
         $i->setLastNameMetaphone($_REQUEST['student_last_name']);
-        
+
         $i->banner = $_REQUEST['banner'];
         $i->phone = $_REQUEST['student_phone'];
         $i->email = $_REQUEST['student_email'];
@@ -320,7 +320,7 @@ class SaveInternship {
             $i->grad_prog = $_REQUEST['grad_prog'];
             $i->ugrad_major = null;
         }
-        
+
         $i->gpa = $_REQUEST['student_gpa'];
         $i->campus = $_REQUEST['campus'];
 
@@ -374,7 +374,7 @@ class SaveInternship {
         }
 
         PHPWS_DB::commit();
-        
+
         /***************************
          * State/Workflow Handling *
         ***************************/
@@ -383,8 +383,8 @@ class SaveInternship {
         try {
             $workflow->doTransition(isset($_POST['notes'])?$_POST['notes']:null);
         } catch (MissingDataException $e) {
-            NQ::simple('intern', INTERN_ERROR, $e->getMessage());
-            NQ::close();
+            \NQ::simple('intern', INTERN_ERROR, $e->getMessage());
+            \NQ::close();
             return \PHPWS_Core::reroute('index.php?module=intern&action=edit_internship&internship_id=' . $i->id);
         }
 
@@ -399,12 +399,12 @@ class SaveInternship {
 
         if (isset($_REQUEST['internship_id'])) {
             // Show message if user edited internship
-            NQ::simple('intern', INTERN_SUCCESS, 'Saved internship for ' . $i->getFullName());
-            NQ::close();
+            \NQ::simple('intern', INTERN_SUCCESS, 'Saved internship for ' . $i->getFullName());
+            \NQ::close();
             return \PHPWS_Core::reroute('index.php?module=intern&action=edit_internship&internship_id=' . $i->id);
         } else {
-            NQ::simple('intern', INTERN_SUCCESS, 'Added internship for ' . $i->getFullName());
-            NQ::close();
+            \NQ::simple('intern', INTERN_SUCCESS, 'Added internship for ' . $i->getFullName());
+            \NQ::close();
             return \PHPWS_Core::reroute('index.php?module=intern&action=edit_internship&internship_id=' . $i->id);
         }
     }
@@ -433,7 +433,7 @@ class SaveInternship {
         if(isset($_REQUEST['student_level']) && $_REQUEST['student_level'] == -1){
             $vals[] = 'student_level';
         }
-        
+
         if(isset($_REQUEST['student_level']) && $_REQUEST['student_level'] == 'ugrad' &&
                 (!isset($_REQUEST['ugrad_major']) || $_REQUEST['ugrad_major'] == -1)){
             $vals[] = 'ugrad_major';
