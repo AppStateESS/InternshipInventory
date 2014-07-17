@@ -1,4 +1,5 @@
 <?php
+namespace Intern\Command;
 
 /**
  * Controller class for manipulating a Faculty member's data through

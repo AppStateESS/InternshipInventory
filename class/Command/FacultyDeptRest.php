@@ -1,4 +1,5 @@
 <?php
+namespace Intern\Command;
 
 /**
  * REST-ful controller for creating/editing faculty to department associations.

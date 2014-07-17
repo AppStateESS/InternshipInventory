@@ -1,4 +1,5 @@
 <?php
+namespace Intern\Command;
 
 /**
  * Controller class for handling a request to remove an emergency contact

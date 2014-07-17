@@ -1,6 +1,7 @@
 <?php
 
 namespace Intern;
+use Intern\Department;
 
 /**
  * Factory for loading Department objects.
@@ -23,9 +24,9 @@ class DepartmentFactory {
         
         // Query
         $query = "SELECT * FROM intern_department WHERE id = $id";
-        $result = PHPWS_DB::getRow($query);
+        $result = \PHPWS_DB::getRow($query);
         
-        if (PHPWS_Error::isError($result)) {
+        if (\PHPWS_Error::isError($result)) {
             throw new DatabaseException($result->toString());
         }
         

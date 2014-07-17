@@ -8,7 +8,7 @@ class FacultyFactory {
     {
         $sql = "SELECT intern_faculty.* FROM intern_faculty WHERE intern_faculty.id = {$id}";
 
-        $row = PHPWS_DB::getRow($sql);
+        $row = \PHPWS_DB::getRow($sql);
          
         /*
          $faculty = new FacultyDB();
@@ -39,9 +39,9 @@ class FacultyFactory {
 
         $sql = "SELECT intern_faculty.* FROM intern_faculty WHERE intern_faculty.id = {$id}";
          
-        $row = PHPWS_DB::getRow($sql);
+        $row = \PHPWS_DB::getRow($sql);
 
-        if (PHPWS_Error::logIfError($row)) {
+        if (\PHPWS_Error::logIfError($row)) {
             throw new Exception($row);
         }
 
@@ -71,7 +71,7 @@ class FacultyFactory {
     {
         $sql = "SELECT intern_faculty.* FROM intern_faculty JOIN intern_faculty_department ON intern_faculty.id = intern_faculty_department.faculty_id WHERE intern_faculty_department.department_id = {$department->getId()} ORDER BY last_name ASC";
          
-        $result = PHPWS_DB::getAll($sql);
+        $result = \PHPWS_DB::getAll($sql);
 
         return $result;
     }

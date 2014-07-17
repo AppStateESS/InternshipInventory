@@ -1,4 +1,7 @@
 <?php
+namespace Intern\Command;
+use Intern\DepartmentFactory;
+use Intern\FacultyFactory;
 
 class GetFacultyListForDept {
     

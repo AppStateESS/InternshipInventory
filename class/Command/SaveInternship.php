@@ -1,4 +1,5 @@
 <?php
+namespace Intern\Command;
 
 /**
  * Controller class to save changes (on create or update) to an Internship

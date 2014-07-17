@@ -1,5 +1,7 @@
 <?php
 
+namespace Intern\Command;
+
 /**
  * Controller class for handling a request to add an emergency contact
  * to a particular internship.
