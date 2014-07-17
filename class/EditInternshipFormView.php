@@ -10,7 +10,7 @@ namespace Intern;
  * @see InternshipFormView
  * @author jbooker
  * @package intern
- *         
+ *
  */
 class EditInternshipFormView extends InternshipFormView {
 
@@ -30,14 +30,14 @@ class EditInternshipFormView extends InternshipFormView {
     {
         // Call parent constructor to setup form
         parent::__construct($pageTitle);
-        
+
         $this->intern = $i;
-        
+
         $this->agency = $this->intern->getAgency();
         $this->department = $this->intern->getDepartment();
 
         $this->formVals = array();
-        
+
         // Plug in the passed in Internship object (sets default/selected values)
         // $this->plugInternship();
     }
@@ -53,8 +53,8 @@ class EditInternshipFormView extends InternshipFormView {
         $this->plugFaculty();
         $this->plugAgency();
         $this->plugInternInfo();
-        $this->plugCourseInfo();        
-                
+        $this->plugCourseInfo();
+
         // Remove the term dropdown and repalce it
         $this->form->dropElement('term');
         $this->form->addSelect('term', array($this->intern->term => Term::rawToRead($this->intern->term)));
@@ -63,10 +63,10 @@ class EditInternshipFormView extends InternshipFormView {
         $this->form->setMatch('term', $this->intern->term);
 
         $this->form->setMatch('experience_type', $this->intern->getExperienceType());
-        
+
         // Plug
         $this->form->plugIn($this->formVals);
-        
+
         /**
          * *
          * Emergency Contacts
@@ -74,7 +74,7 @@ class EditInternshipFormView extends InternshipFormView {
         //javascript('jquery');
         $contacts = EmergencyContactFactory::getContactsForInternship($this->intern);
         $emgContactJson = json_encode($contacts);
-        Layout::add(javascriptMod('intern', 'emergencyContact', array('existing_contacts_json' => $emgContactJson)));
+        \Layout::add(javascriptMod('intern', 'emergencyContact', array('existing_contacts_json' => $emgContactJson)));
     }
 
     private function plugStudent()
@@ -91,7 +91,7 @@ class EditInternshipFormView extends InternshipFormView {
         $this->formVals['ugrad_major'] = $this->intern->ugrad_major;
         $this->formVals['student_gpa'] = $this->intern->gpa;
         $this->formVals['campus'] = $this->intern->campus;
-        
+
         // Student address
         $this->formVals['student_address'] = $this->intern->student_address;
         $this->formVals['student_city'] = $this->intern->student_city;
@@ -107,7 +107,7 @@ class EditInternshipFormView extends InternshipFormView {
         if (isset($facultyId) && $facultyId != 0) {
             $this->formVals['faculty_id'] = $facultyId;
         }
-    } 
+    }
 
     private function plugAgency()
     {
@@ -162,9 +162,9 @@ class EditInternshipFormView extends InternshipFormView {
         } else {
             $this->form->setMatch('payment', 'unpaid');
         }
-        
+
         $this->formVals['pay_rate'] = $this->intern->pay_rate;
-        
+
         if ($this->intern->oied_certified) {
             $this->form->setMatch('oied_certified', true);
             $this->form->setValue('oied_certified_hidden', 'true');
@@ -176,7 +176,7 @@ class EditInternshipFormView extends InternshipFormView {
     private function plugCourseInfo()
     {
         // Course Info
-        
+
         // Remove the subject field and re-add it
         $this->form->dropElement('course_subj');
         $this->form->addSelect('course_subj', Subject::getSubjects($this->intern->course_subj));
@@ -184,15 +184,15 @@ class EditInternshipFormView extends InternshipFormView {
         $this->formVals['course_no'] = $this->intern->course_no;
         $this->formVals['course_sect'] = $this->intern->course_sect;
         $this->formVals['course_title'] = $this->intern->course_title;
-        
+
         if ($this->intern->isMultipart()) {
             $this->form->setMatch('multipart', '1');
         }
-        
+
         if ($this->intern->isSecondaryPart()) {
             $this->form->setMatch('secondary_part', '1');
         }
-        
+
         $this->formVals['corequisite_course_num'] = $this->intern->getCorequisiteNum();
         $this->formVals['corequisite_course_sect'] = $this->intern->getCorequisiteSection();
 

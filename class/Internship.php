@@ -383,9 +383,9 @@ class Internship {
      */
     public function getDocuments()
     {
-        $db = Intern_Document::getDB();
+        $db = InternDocument::getDB();
         $db->addWhere('internship_id', $this->id);
-        return $db->getObjects('Intern_Document');
+        return $db->getObjects('\Intern\InternDocument');
     }
 
     /**

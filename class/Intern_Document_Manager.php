@@ -18,7 +18,7 @@ class Intern_Document_Manager extends FC_Document_Manager {
     /**
      * @Override FC_Document_Manager::edit()
      *
-     * This is a copy and paste of the overridden function 
+     * This is a copy and paste of the overridden function
      * except that the module for the form is set to intern.
      * Also, check if the folder has been set. If not create
      * one for the user and load it.
@@ -30,11 +30,11 @@ class Intern_Document_Manager extends FC_Document_Manager {
         }
 
         // If the folder ID is zero then it was not found
-        // when Intern_Folder::documentUpload() was called.
+        // when InternFolder::documentUpload() was called.
         // Create one and load it.
         if ($this->folder->id == 0) {
             PHPWS_Core::requireInc('filecabinet', 'defines.php');
-            $folder = new Intern_Folder();
+            $folder = new InternFolder();
             $folder->module_created = 'intern';
             $folder->title = 'intern documents';
             $folder->public_folder = FALSE;
@@ -112,7 +112,7 @@ class Intern_Document_Manager extends FC_Document_Manager {
      * @Override FC_Document_Manager::postDocumentUpload().
      *
      * This is a copy and past of the overriden function except
-     * that we now create a new Intern_Document object
+     * that we now create a new InternDocument object
      * and save it to databse.
      */
     public function postDocumentUpload()
@@ -142,11 +142,11 @@ class Intern_Document_Manager extends FC_Document_Manager {
             $this->document->moveToFolder();
 
             // If the document's id is set in the request
-            // then we are updating a file. Not need to insert 
+            // then we are updating a file. Not need to insert
             // it into database.
             if (!isset($_REQUEST['document_id'])) {
-                // Save Intern_Document in database.
-                $doc = new Intern_Document();
+                // Save InternDocument in database.
+                $doc = new InternDocument();
                 $doc->internship_id = $_REQUEST['internship'];
                 $doc->document_fc_id = $this->document->id;
                 $result = $doc->save();

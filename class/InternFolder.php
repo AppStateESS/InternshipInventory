@@ -1,6 +1,10 @@
 <?php
 
 namespace Intern;
+
+use PHPWS_Link;
+use PHPWS_Core;
+
   /**
    * Intern_Folder
    *
@@ -8,7 +12,7 @@ namespace Intern;
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
 PHPWS_Core::initModClass('filecabinet', 'Folder.php');
-class Intern_Folder extends Folder 
+class InternFolder extends \Folder
 {
     /**
      * Similar to Folder::uploadLink except this one takes a internship id as parameter
@@ -24,7 +28,7 @@ class Intern_Folder extends Folder
         $link->convertAmp(false);
         $link->setSalted();
         $vars['address'] = $link->getAddress();
-        
+
         $label = dgettext('filecabinet', 'Add document');
 
         javascript('open_window');

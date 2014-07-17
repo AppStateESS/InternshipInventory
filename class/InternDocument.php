@@ -3,22 +3,21 @@
 namespace Intern;
 
   /**
-   * Intern_Document
+   * InternDocument
    *
    * Manages documents and uploading documents for internships.
    *
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
 
-PHPWS_Core::initModClass('intern', 'Model.php');
-class Intern_Document extends Model
+class InternDocument extends Model
 {
     public $id;
     public $internship_id;
     public $document_fc_id; // File cabinet ID. References documents(id).
 
     public static function getDb(){
-        return new PHPWS_DB('intern_document');
+        return new \PHPWS_DB('intern_document');
     }
 
     /**
@@ -37,7 +36,7 @@ class Intern_Document extends Model
         $db->addWhere('id', $id);
         $db->loadObject($this);
     }
-    
+
     /**
      * Save row in database for this object.
      */
@@ -65,7 +64,7 @@ class Intern_Document extends Model
             PHPWS_DB::rollback();
             return FALSE;
         }
-        
+
         $doc = new PHPWS_Document($this->document_fc_id);
         $result = $doc->delete();
 
@@ -89,7 +88,7 @@ class Intern_Document extends Model
     }
 
     /**
-     * Get the icon link to edit this document. 
+     * Get the icon link to edit this document.
      */
     /* Commented out because it is unused.
     public function getEditLink()
@@ -123,7 +122,7 @@ class Intern_Document extends Model
         $vars['doc_id'] = $this->id;
         $vars['action'] = 'delete_document';
         $link = new PHPWS_Link(null, 'intern', $vars);
-        
+
         $jsVars = array();
         $jsVars['QUESTION'] = 'Are you sure you want to delete this document?';
         $jsVars['ADDRESS']  = $link->getAddress();
@@ -136,7 +135,7 @@ class Intern_Document extends Model
      */
     public static function getFolderId()
     {
-        $db = new PHPWS_DB('folders');
+        $db = new \PHPWS_DB('folders');
         $db->addWhere('module_created', 'intern');
         return $db->select('one');
     }

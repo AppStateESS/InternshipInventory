@@ -226,7 +226,7 @@ class InternshipInventory {
                 $docManager->postDocumentUpload();
                 break;
             case 'delete_document':
-                $doc = new Intern_Document($_REQUEST['doc_id']);
+                $doc = new InternDocument($_REQUEST['doc_id']);
                 $doc->delete();
                 NQ::simple('intern', INTERN_SUCCESS, 'Document deleted.');
                 NQ::close();
