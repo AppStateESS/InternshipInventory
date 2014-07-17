@@ -1,8 +1,15 @@
 <?php
 
 namespace Intern;
+use \PHPWS_Core;
+use \PHPWS_Error;
+use \PHPWS_DB;
+use \Icon;
+use \DBPager;
+use \PHPWS_Template;
 
-PHPWS_Core::initCoreClass('DBPager.php');
+
+\PHPWS_Core::initCoreClass('DBPager.php');
 
 // Defines are set in parent class
 
@@ -11,16 +18,16 @@ PHPWS_Core::initCoreClass('DBPager.php');
  *
  * @package Intern
  */
-class SubselectPager extends DBPager {
+class SubselectPager extends \DBPager {
 
     public function __construct($table, $class=null)
     {
         parent::__construct($table, $class);
-        
+
         // Replace the db instance with an instance of SubselectDatabase
         $this->db = new SubselectDatabase($table);
     }
-    
+
     /**
      * Returns the content of the the pager object
      */
@@ -31,7 +38,7 @@ class SubselectPager extends DBPager {
         if (empty($this->display_rows)) {
             $result = $this->initialize();
             if (PHPWS_Error::isError($result)) {
-                throw new Exception ($result->toString());
+                throw new \Exception ($result->toString());
                 return $result;
             }
         }
@@ -99,7 +106,7 @@ class SubselectPager extends DBPager {
         $this->final_template = & $template;
         return PHPWS_Template::process($template, $this->module, $this->template);
     }
-    
+
     /**
      * Pulls the appropriate rows from the database.
      *
@@ -111,7 +118,7 @@ class SubselectPager extends DBPager {
     {
         $order_set = false;
         $this->table_columns = $this->db->getTableColumns();
-        
+
         if (!empty($this->needed_columns)) {
             if(isset($this->table_columns)){
                 $this->table_columns = array_merge($this->table_columns, $this->needed_columns);
@@ -119,7 +126,7 @@ class SubselectPager extends DBPager {
                 $this->table_columns = $this->needed_columns;
             }
         }
-        
+
         // If true, determine which report type to use
         if ($this->report_type) {
             $report = true;
@@ -134,7 +141,7 @@ class SubselectPager extends DBPager {
             $full_report = false;
         }
 
-        
+
         if (empty($this->cache_identifier)) {
             $this->cache_identifier = $this->template;
         }
@@ -153,14 +160,14 @@ class SubselectPager extends DBPager {
         if (isset($this->error)) {
             return $this->error;
         }
-        
+
         // Repalce space characters in search string with pipes?
         if ($this->search) {
             $search = preg_replace('/\s/', '|', $this->search);
         } else {
             $search = null;
         }
-        
+
         /*
         if (!empty($this->sub_result)) {
             foreach ($this->sub_result as $sub_table => $sub) {
@@ -185,18 +192,18 @@ class SubselectPager extends DBPager {
                 $this->db->addWhere($column_name, $search, 'regexp', 'or', 1);
             }
         }
-        
+
         $count = $this->getTotalRows();
-        
-        //**************************************/ 
+
+        //**************************************/
         //$this->db->setTestMode();
     	//var_dump($this->db->select());exit;
     	//**************************************/
-        
+
         if (PHPWS_Error::isError($count)) {
             throw new Exception($count->toString());
         }
-        
+
         /*
         $this->db->setDistinct(true);
         if (!empty($this->sub_result)) {
@@ -233,9 +240,9 @@ class SubselectPager extends DBPager {
             }
         }
 
-        // If a column name to order by has been set, then add the 'order by' clause 
+        // If a column name to order by has been set, then add the 'order by' clause
         if (isset($this->orderby)) {
-            
+
             // Find the column name
             if ($pos = strpos($this->orderby, '.')) {
                 $col_name = substr($this->orderby, $pos + 1);
@@ -252,7 +259,7 @@ class SubselectPager extends DBPager {
             }
 
             $orderby = $this->orderby;
-            
+
             $this->db->resetOrder();
             $this->db->addOrder($orderby . ' ' . $this->orderby_dir);
             $order_set = true;
@@ -265,7 +272,7 @@ class SubselectPager extends DBPager {
         if (!$load_rows) {
             return true;
         }
-        
+
         if (empty($this->class)) {
             $result = $this->db->select();
         } else {
@@ -303,21 +310,21 @@ class SubselectPager extends DBPager {
             $order = $this->db->order;
             $columns = $this->db->columns;
             $group_by = $this->db->group_by;
-            
+
             // Reset them
             $this->db->group_by = null;
             $this->db->order    = null;
             $this->db->columns  = null;
-            
+
             // Add the $total_column and get a count
             $this->db->addColumn($this->total_column, null, null, true, true);
             $result = $this->db->count();
-            
+
             // Restore the columns, order, and groupby
             $this->db->columns = $columns;
             $this->db->order = $order;
             $this->db->group_by = $group_by;
-            
+
             return $result;
         } else {
             /**
@@ -436,7 +443,7 @@ class SubselectPager extends DBPager {
 
     public function loadLink()
     {
-        $this->link = PHPWS_Core::getCurrentUrl(true, false);
+        $this->link = \PHPWS_Core::getCurrentUrl(true, false);
     }
 
     public function setAnchor($anchor)
@@ -681,7 +688,7 @@ class SubselectPager extends DBPager {
         }
 
         $start = ($this->current_page - 1) * $this->limit;
-        
+
         return array((int) $this->limit, (int) $start);
     }
 
@@ -749,17 +756,17 @@ class SubselectPager extends DBPager {
         if ($current_page != 1) {
             if ($total_pages > 500 && $current_page > 50) {
                 $values['pg'] = $current_page - 50;
-                $pageList[] = PHPWS_Text::moduleLink('&lt;&lt;&lt;', $module, $values, null, _('Back 50 pages'));
+                $pageList[] = \PHPWS_Text::moduleLink('&lt;&lt;&lt;', $module, $values, null, _('Back 50 pages'));
             }
 
             if ($total_pages > 100 && $current_page > 10) {
                 $values['pg'] = $current_page - 10;
-                $pageList[] = PHPWS_Text::moduleLink('&lt;&lt;', $module, $values, null, _('Back 10 pages'));
+                $pageList[] = \PHPWS_Text::moduleLink('&lt;&lt;', $module, $values, null, _('Back 10 pages'));
             }
             $values['pg'] = $current_page - 1;
-            $pageList[] = PHPWS_Text::moduleLink('&lt;', $module, $values, null, _('Back one page'));
+            $pageList[] = \PHPWS_Text::moduleLink('&lt;', $module, $values, null, _('Back one page'));
             $values['pg'] = 1;
-            $pageList[] = PHPWS_Text::moduleLink('1', $module, $values, null, _('First page'));
+            $pageList[] = \PHPWS_Text::moduleLink('1', $module, $values, null, _('First page'));
         } else {
             $pageList[] = '[1]';
         }
@@ -775,7 +782,7 @@ class SubselectPager extends DBPager {
                     for ($i = 2; $i < $current_page; $i++) {
                         if ($i != $current_page) {
                             $values['pg'] = 1;
-                            $pageList[] = PHPWS_Text::moduleLink($i, $module, $values, null, sprintf(_('Go to page %s'), $i));
+                            $pageList[] = \PHPWS_Text::moduleLink($i, $module, $values, null, sprintf(_('Go to page %s'), $i));
                         } else {
                             $pageList[] = "[$current_page]";
                         }
@@ -787,7 +794,7 @@ class SubselectPager extends DBPager {
 
                 for ($i = 0, $j = $current_page + $skip; $i < $divider; $i++, $j += $skip) {
                     $values['pg'] = $j;
-                    $pageList[] = PHPWS_Text::moduleLink($j, $module, $values, null, sprintf(_('Go to page %s'), $j));
+                    $pageList[] = \PHPWS_Text::moduleLink($j, $module, $values, null, sprintf(_('Go to page %s'), $j));
                 }
             } else {
                 $beginning_pages = $current_page - 1;
@@ -809,7 +816,7 @@ class SubselectPager extends DBPager {
                 }
                 for ($i = 0, $j = 1 + $front_skip; $i < $divider - 1 && $j < $current_page; $i++, $j += $front_skip) {
                     $values['pg'] = $j;
-                    $pageList[] = PHPWS_Text::moduleLink($j, $module, $values, null, sprintf(_('Go to page %s'), $j));
+                    $pageList[] = \PHPWS_Text::moduleLink($j, $module, $values, null, sprintf(_('Go to page %s'), $j));
                 }
 
                 $pageList[] = "[$current_page]";
@@ -817,7 +824,7 @@ class SubselectPager extends DBPager {
                 if ($back_skip) {
                     for ($i = 0, $j = $current_page + $back_skip; $i < $divider - 1 && $j < $total_pages; $i++, $j += $back_skip) {
                         $values['pg'] = $j;
-                        $pageList[] = PHPWS_Text::moduleLink($j, $module, $values, null, sprintf(_('Go to page %s'), $j));
+                        $pageList[] = \PHPWS_Text::moduleLink($j, $module, $values, null, sprintf(_('Go to page %s'), $j));
                     }
                 }
             }
@@ -827,26 +834,26 @@ class SubselectPager extends DBPager {
                     $pageList[] = "[$i]";
                 } else {
                     $values['pg'] = $i;
-                    $pageList[] = PHPWS_Text::moduleLink($i, $module, $values, null, sprintf(_('Go to page %s'), $i));
+                    $pageList[] = \PHPWS_Text::moduleLink($i, $module, $values, null, sprintf(_('Go to page %s'), $i));
                 }
             }
         }
 
         if ($total_pages != $current_page) {
             $values['pg'] = $total_pages;
-            $pageList[] = PHPWS_Text::moduleLink($total_pages, $module, $values, null, _('Last page'));
+            $pageList[] = \PHPWS_Text::moduleLink($total_pages, $module, $values, null, _('Last page'));
 
             $values['pg'] = $current_page + 1;
-            $pageList[] = PHPWS_Text::moduleLink('&gt;', $module, $values, null, _('Forward one page'));
+            $pageList[] = \PHPWS_Text::moduleLink('&gt;', $module, $values, null, _('Forward one page'));
 
             if ($total_pages > 100 && ($total_pages - 10) >= $current_page) {
                 $values['pg'] = $current_page + 10;
-                $pageList[] = PHPWS_Text::moduleLink('&gt;&gt;', $module, $values, null, _('Forward 10 pages'));
+                $pageList[] = \PHPWS_Text::moduleLink('&gt;&gt;', $module, $values, null, _('Forward 10 pages'));
             }
 
             if ($total_pages > 500 && ($total_pages - 50) >= $current_page) {
                 $values['pg'] = $current_page + 50;
-                $pageList[] = PHPWS_Text::moduleLink('&gt;&gt;&gt;', $module, $values, null, _('Forward 50 pages'));
+                $pageList[] = \PHPWS_Text::moduleLink('&gt;&gt;&gt;', $module, $values, null, _('Forward 50 pages'));
             }
         } else {
             $pageList[] = "[$current_page]";
@@ -871,7 +878,7 @@ class SubselectPager extends DBPager {
         }
 
         //test($sort_columns);
-        
+
         foreach ($sort_columns as $varname) {
             $vars = array();
             $values = $this->getLinkValues();
@@ -933,13 +940,13 @@ class SubselectPager extends DBPager {
                 $button_string .= $this->sort_headers[$varname]['title'];
             }
 
-            $link = PHPWS_Text::moduleLink($button_string, $module, $values, null, $alt);
+            $link = \PHPWS_Text::moduleLink($button_string, $module, $values, null, $alt);
 
             $template[strtoupper($buttonname)] = $link;
         }
 
          //test($template,1);
-        
+
         return $template;
     }
 
@@ -982,7 +989,7 @@ class SubselectPager extends DBPager {
         }
 
         // pull any extra values in current url
-        $extra = PHPWS_Text::getGetValues();
+        $extra = \PHPWS_Text::getGetValues();
         $search_val = & $extra['search'];
         if (UTF8_MODE) {
             $preg = '/[^\w\s\pL]/u';
@@ -1034,15 +1041,15 @@ class SubselectPager extends DBPager {
 
         if ($this->allow_partial_report) {
             $values['dbprt'] = 'csva';
-            $all = PHPWS_Text::moduleLink(_('All'), $module, $values, null, _('Download a complete CSV file'));
+            $all = \PHPWS_Text::moduleLink(_('All'), $module, $values, null, _('Download a complete CSV file'));
 
             $values['dbprt'] = 'csvp';
-            $part = PHPWS_Text::moduleLink(_('Partial'), $module, $values, null, _('Download a partial CSV file'));
+            $part = \PHPWS_Text::moduleLink(_('Partial'), $module, $values, null, _('Download a partial CSV file'));
 
             return sprintf(_('CSV Report - %s | %s'), $all, $part);
         } else {
             $values['dbprt'] = 'csva';
-            return PHPWS_Text::moduleLink(_('CSV Report'), $module, $values, null, _('Download a complete CSV file'));
+            return \PHPWS_Text::moduleLink(_('CSV Report'), $module, $values, null, _('Download a complete CSV file'));
         }
     }
 
@@ -1068,7 +1075,7 @@ class SubselectPager extends DBPager {
                 $links[] = $limit;
             } else {
                 $values['limit'] = & $limit;
-                $links[] = PHPWS_Text::moduleLink($limit, $module, $values, null, sprintf(_('Limit results to %s rows'), $limit));
+                $links[] = \PHPWS_Text::moduleLink($limit, $module, $values, null, sprintf(_('Limit results to %s rows'), $limit));
             }
         }
 
@@ -1244,7 +1251,7 @@ class SubselectPager extends DBPager {
         }
 
         $index_set = false;
-        $tmp_file = PHPWS_Text::randomString(10) . time();
+        $tmp_file = \PHPWS_Text::randomString(10) . time();
         $directory = CACHE_DIRECTORY;
         $file_path = sprintf('%s/%s', $directory, $tmp_file);
         ;

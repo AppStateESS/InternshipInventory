@@ -1,6 +1,10 @@
 <?php
 
 namespace Intern;
+use \PHPWS_Core;
+use \PHPWS_Error;
+use \PHPWS_DB;
+use \PHPWS_DB_Where;
 
 PHPWS_Core::initCoreClass('PHPWS_DB.php');
 
@@ -366,17 +370,17 @@ class SubselectDatabase extends PHPWS_DB{
     {
         $this->tables = array(); // reset table list
         $this->table_as = array();
-         
+
         // Grab the SQL and throw parens around it
-         
+
         //$sql = '(' . $db->getTheQuery($type) . ') as ' . $as;
         $sql = '(' . $db->getTheQuery($type) . ')';
-         
+
         // brute force add it to the table list
         $this->table_as[$as] = $sql;
         //$this->tables[] = $sql;
     }
-    
+
     public function setIndex($index)
     {
         $this->index = $index;
@@ -505,20 +509,20 @@ class SubselectDatabase extends PHPWS_DB{
         if($format === false){
             return $this->getSourceTable(true);
         }
-        
+
         $tableList = array();
-        
+
         foreach($this->tables as $table){
             $tableList[] = $table;
         }
-        
+
         // Add aliased tables
         foreach($this->table_as as $alias=>$table){
             $tableList[] = "$table AS $alias";
         }
-        
+
         $join_info = $this->getJoin();
-        
+
         $joinList = array();
 
         if ($join_info) {
@@ -592,11 +596,11 @@ class SubselectDatabase extends PHPWS_DB{
     public function addWhere($column, $value = null, $operator = null, $conj = null, $group = null, $join = false)
     {
         PHPWS_DB::touchDB();
-        
+
         $where = new PHPWS_DB_Where;
         $where->setJoin($join);
         $operator = strtoupper($operator);
-        
+
         // If passed in value was an array, loop over the array and call this method once for each column name
         if (is_array($column)) {
             foreach ($column as $new_column => $new_value) {
@@ -669,7 +673,7 @@ class SubselectDatabase extends PHPWS_DB{
                     $source_table = $join_table;
                     /***
                      * Commented out because this is trying to work too hard.
-                     * If you (as a developer) haven't selected from or joined 
+                     * If you (as a developer) haven't selected from or joined
                      * the table you're trying to add a 'WHERE' expression for,
                      * then I can't help you. The query will fail, and you'll figure it out.
                      */
@@ -946,7 +950,7 @@ class SubselectDatabase extends PHPWS_DB{
                 'coalesce' => null,
                 'as' => null);
     }
-    
+
     public function getAllColumns()
     {
         $columns[] = $this->getColumn(true);
@@ -972,7 +976,7 @@ class SubselectDatabase extends PHPWS_DB{
                 foreach ($this->columns as $col) {
                     $as = null;
                     extract($col);
-                    
+
                     // Don't care if it's a table or not. If it's invalid, the database will tell us
                     $table = $this->checkTableAs($table);
 
@@ -1349,7 +1353,7 @@ class SubselectDatabase extends PHPWS_DB{
             throw new Exception('No "from" tables available.');
             //return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::select');
         }
-        
+
         $where = $this->getWhere(true);
         $order = $this->getOrder(true);
         $limit = $this->getLimit(true);
@@ -1367,21 +1371,21 @@ class SubselectDatabase extends PHPWS_DB{
 
     /**
      * Returns the SQL query string for this db object
-     * 
+     *
      * @param String $type
      * @return String string
      */
     public function getTheQuery($type){
         $sql_array = $this->getSelectSQL($type);
-        
+
         if (PHPWS_Error::isError($sql_array)) {
             throw new Exception($sql_array);
         }
-        
+
         // extract will get $columns, $table, $where, $group_by
         // $order, and $limit
         extract($sql_array);
-        
+
         if ($type == 'count' || $type == 'count_array') {
             if (empty($columns)) {
                 // order and group_by are not needed if count is
@@ -1392,28 +1396,28 @@ class SubselectDatabase extends PHPWS_DB{
             } else {
                 $add_group = $columns;
                 $columns .= ', COUNT(*)';
-        
+
                 if (empty($group_by)) {
                     $group_by = "GROUP BY $add_group";
                 }
             }
         }
-        
+
         if (!empty($where)) {
             $where = 'WHERE ' . $where;
         }
-        
+
         if ($this->isDistinct()) {
             $distinct = 'DISTINCT';
         } else {
             $distinct = null;
         }
-        
+
         $sql = "SELECT $distinct $columns FROM $table $where $group_by $order $limit";
-        
+
         return $sql;
     }
-    
+
     /**
      * Retrieves information from the database.
      * Select utilizes parameters set previously in the object
@@ -2165,7 +2169,7 @@ class SubselectDatabase extends PHPWS_DB{
 
         return $column_info;
     }
-    
+
 	public function quote($text)
     {
         return $GLOBALS['PHPWS_DB']['connection']->quote($text);
