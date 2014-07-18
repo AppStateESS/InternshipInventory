@@ -38,13 +38,20 @@ class InternshipInventory {
                 exit();
                 break;
 
-            case 'edit_internship':
+            case 'ShowInternship':
                 $view = new UI\InternshipUI();
                 $this->content = $view->display();
                 break;
             case 'ShowAddInternship':
-                $ctrl = new \Intern\Command\ShowAddInternship();
+                $ctrl = new Command\ShowAddInternship();
                 $response = $ctrl->execute();
+                break;
+            case 'AddInternship':
+                $ctrl = new Command\AddInternship();
+                $ctrl->execute();
+            case 'SaveInternship':
+                $ctrl = new Command\SaveInternship();
+                $ctrl->execute();
                 break;
             case 'search':
                 $view = new UI\SearchUI();

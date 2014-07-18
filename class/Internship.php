@@ -107,7 +107,7 @@ class Internship {
      */
     public function getDb()
     {
-        return new PHPWS_DB('intern_internship');
+        return new \PHPWS_DB('intern_internship');
     }
 
     /**
@@ -123,7 +123,7 @@ class Internship {
             exit($e->getMessage());
         }
 
-        if (PHPWS_Error::logIfError($result)) {
+        if (\PHPWS_Error::logIfError($result)) {
             throw new Exception($result->toString());
         }
 
@@ -142,7 +142,7 @@ class Internship {
         $db->addWhere('id', $this->id);
         $result = $db->delete();
 
-        if (PHPWS_Error::logIfError($result)) {
+        if (\PHPWS_Error::logIfError($result)) {
             throw new Exception($result->getMessage(), $result->getCode());
         }
 
@@ -486,28 +486,30 @@ class Internship {
         $a = $this->getAgency();
         $d = $this->getDepartment();
 
+        //TODO: Use a single $params array instead of making a new array for every call to PHPWS_Test::moduleLink
+
         // Student info.
-        $tags['STUDENT_NAME'] = PHPWS_Text::moduleLink($this->getFullName(), 'intern', array('action' => 'edit_internship', 'internship_id' => $this->id));
-        $tags['STUDENT_BANNER'] = PHPWS_Text::moduleLink($this->getBannerId(), 'intern', array('action' => 'edit_internship', 'internship_id' => $this->id));
+        $tags['STUDENT_NAME'] = PHPWS_Text::moduleLink($this->getFullName(), 'intern', array('action' => 'ShowInternship', 'internship_id' => $this->id));
+        $tags['STUDENT_BANNER'] = PHPWS_Text::moduleLink($this->getBannerId(), 'intern', array('action' => 'ShowInternship', 'internship_id' => $this->id));
 
         // Dept. info
-        $tags['DEPT_NAME'] = PHPWS_Text::moduleLink($d->name, 'intern', array('action' => 'edit_internship', 'internship_id' => $this->id));
+        $tags['DEPT_NAME'] = PHPWS_Text::moduleLink($d->name, 'intern', array('action' => 'ShowInternship', 'internship_id' => $this->id));
 
         // Faculty info.
         if(isset($this->faculty_id)){
             $f = $this->getFaculty();
             $facultyName = $f->getFullName();
-            $tags['FACULTY_NAME'] = PHPWS_Text::moduleLink($f->getFullName(), 'intern', array('action' => 'edit_internship', 'internship_id' => $this->id));
+            $tags['FACULTY_NAME'] = PHPWS_Text::moduleLink($f->getFullName(), 'intern', array('action' => 'ShowInternship', 'internship_id' => $this->id));
         }else{
             // Makes this cell in the table a clickable link, even if there's no faculty name
-            $tags['FACULTY_NAME'] = PHPWS_Text::moduleLink('&nbsp;', 'intern', array('action' => 'edit_internship', 'internship_id' => $this->id));
+            $tags['FACULTY_NAME'] = PHPWS_Text::moduleLink('&nbsp;', 'intern', array('action' => 'ShowInternship', 'internship_id' => $this->id));
         }
 
-        $tags['TERM'] = PHPWS_Text::moduleLink(Term::rawToRead($this->term), 'intern', array('action' => 'edit_internship', 'internship_id' => $this->id));
+        $tags['TERM'] = PHPWS_Text::moduleLink(Term::rawToRead($this->term), 'intern', array('action' => 'ShowInternship', 'internship_id' => $this->id));
 
-        $tags['WORKFLOW_STATE'] = PHPWS_Text::moduleLink($this->getWorkflowState()->getFriendlyName(), 'intern', array('action' => 'edit_internship', 'internship_id' => $this->id));
+        $tags['WORKFLOW_STATE'] = PHPWS_Text::moduleLink($this->getWorkflowState()->getFriendlyName(), 'intern', array('action' => 'ShowInternship', 'internship_id' => $this->id));
 
-        //$tags['EDIT'] = PHPWS_Text::moduleLink('Edit', 'intern', array('action' => 'edit_internship', 'internship_id' => $this->id));
+        //$tags['EDIT'] = PHPWS_Text::moduleLink('Edit', 'intern', array('action' => 'ShowInternship', 'internship_id' => $this->id));
         //$tags['PDF'] = PHPWS_Text::moduleLink('Generate Contract', 'intern', array('action' => 'pdf', 'id' => $this->id));
 
         return $tags;

@@ -14,7 +14,7 @@ class AddInternshipView {
     
     public function show()
     {
-        
+        $tpl['TITLE'] = 'Add Internship';
     }
 }
 ?>

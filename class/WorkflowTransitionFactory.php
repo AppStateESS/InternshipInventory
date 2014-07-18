@@ -37,7 +37,6 @@ class WorkflowTransitionFactory {
             throw new InvalidArgumentException('Missing transition name.');
         }
 
-        PHPWS_Core::initModClass('intern', self::$dir . '/' . $name . '.php');
         return new $name;
     }
 

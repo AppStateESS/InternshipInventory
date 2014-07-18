@@ -24,7 +24,7 @@ class SaveInternship {
         $missing = self::checkRequest();
         if (!is_null($missing) && !empty($missing)) {
             // checkRequest returned some missing fields.
-            $url = 'index.php?module=intern&action=edit_internship';
+            $url = 'index.php?module=intern&action=ShowInternship';
             $url .= '&missing=' . implode('+', $missing);
             // Restore the values in the fields the user already entered
             foreach ($_POST as $key => $val) {
@@ -37,7 +37,7 @@ class SaveInternship {
 
         // Sanity check the Banner ID
         if(!preg_match('/^\d{9}$/', $_REQUEST['banner'])){
-            $url = 'index.php?module=intern&action=edit_internship&missing=banner';
+            $url = 'index.php?module=intern&action=ShowInternship&missing=banner';
             // Restore the values in the fields the user already entered
             foreach ($_POST as $key => $val) {
                 $url .= "&$key=$val";
@@ -49,7 +49,7 @@ class SaveInternship {
 
         // Sanity check student email
         if(isset($_REQUEST['student_email']) && preg_match("/@/", $_REQUEST['student_email'])){
-            $url = 'index.php?module=intern&action=edit_internship&missing=student_email';
+            $url = 'index.php?module=intern&action=ShowInternship&missing=student_email';
             // Restore the values in the fields the user already entered
             foreach ($_POST as $key => $val) {
                 $url .= "&$key=$val";
@@ -61,7 +61,7 @@ class SaveInternship {
 
 		// Sanity check student zip
 		if((isset($_REQUEST['student_zip']) && $_REQUEST['student_zip'] != "") && (strlen($_REQUEST['student_zip']) != 5 || !is_numeric($_REQUEST['student_zip']))) {
-			$url = 'index.php?module=intern&action=edit_internship&missing=student_zip';
+			$url = 'index.php?module=intern&action=ShowInternship&missing=student_zip';
 			// Restore the values in the fields the user already entered
 			foreach ($_POST as $key => $val){
 				$url .= "&$key=$val";
@@ -77,7 +77,7 @@ class SaveInternship {
             $end   = strtotime($_REQUEST['end_date']);
 
             if ($start > $end) {
-                $url = 'index.php?module=intern&action=edit_internship&missing=start_date+end_date';
+                $url = 'index.php?module=intern&action=ShowInternship&missing=start_date+end_date';
                 // Restore the values in the fields the user already entered
                 unset($_POST['start_date']);
                 unset($_POST['end_date']);
@@ -92,7 +92,7 @@ class SaveInternship {
 
 		// Sanity check internship location zip
 		if((isset($_REQUEST['loc_zip']) && $_REQUEST['loc_zip'] != "") && (strlen($_REQUEST['loc_zip']) != 5 || !is_numeric($_REQUEST['loc_zip']))) {
-			$url = 'index.php?module=intern&action=edit_internship&missing=loc_zip';
+			$url = 'index.php?module=intern&action=ShowInternship&missing=loc_zip';
 			// Restore the values in the fields the user already entered
 			foreach ($_POST as $key => $val){
 				$url .= "&$key=$val";
@@ -104,7 +104,7 @@ class SaveInternship {
 
 		// Sanity check agency zip
 		if((isset($_REQUEST['agency_zip']) && $_REQUEST['agency_zip'] != "") && (strlen($_REQUEST['agency_zip']) != 5 || !is_numeric($_REQUEST['agency_zip']))) {
-			$url = 'index.php?module=intern&action=edit_internship&missing=agency_zip';
+			$url = 'index.php?module=intern&action=ShowInternship&missing=agency_zip';
 			// Restore the values in the fields the user already entered
 			foreach ($_POST as $key => $val){
 				$url .= "&$key=$val";
@@ -116,7 +116,7 @@ class SaveInternship {
 
 		// Sanity check supervisor's zip
 		if((isset($_REQUEST['agency_sup_zip']) && $_REQUEST['agency_sup_zip'] != "") && (strlen($_REQUEST['agency_sup_zip']) != 5 || !is_numeric($_REQUEST['agency_sup_zip']))) {
-			$url = 'index.php?module=intern&action=edit_internship&missing=agency_sup_zip';
+			$url = 'index.php?module=intern&action=ShowInternship&missing=agency_sup_zip';
 			// Restore the values in the fields the user already entered
 			foreach ($_POST as $key => $val){
 				$url .= "&$key=$val";
@@ -128,7 +128,7 @@ class SaveInternship {
 
 		// Sanity check course number
 		if((isset($_REQUEST['course_no']) && $_REQUEST['course_no'] != '') && (strlen($_REQUEST['course_no']) > 20 || !is_numeric($_REQUEST['course_no']))) {
-			$url = 'index.php?module=intern&action=edit_internship&missing=course_no';
+			$url = 'index.php?module=intern&action=ShowInternship&missing=course_no';
 			// Restore the values in the fields the user already entered
 			foreach ($_POST as $key => $val){
 				$url .= "&$key=$val";
@@ -138,20 +138,19 @@ class SaveInternship {
 			return \PHPWS_Core::reroute($url);
 		}
 
-        PHPWS_DB::begin();
+        \PHPWS_DB::begin();
 
         // Create/Save agency
-        $agency = new Agency();
-        if (isset($_REQUEST['agency_id'])) {
-            // User is editing internship
-            try {
-                $agency = new Agency($_REQUEST['agency_id']);
-            } catch (Exception $e) {
-                // Rollback and re-throw the exception so that admins gets an email
-                PHPWS_DB::rollback();
-                throw $e;
-            }
+        $agency = new \Intern\Agency();
+        // User is editing internship
+        try {
+            $agency = new \Intern\Agency($_REQUEST['agency_id']);
+        } catch (Exception $e) {
+            // Rollback and re-throw the exception so that admins gets an email
+            \PHPWS_DB::rollback();
+            throw $e;
         }
+
         $agency->name = $_REQUEST['agency_name'];
         $agency->address = $_REQUEST['agency_address'];
         $agency->city = $_REQUEST['agency_city'];
@@ -190,24 +189,20 @@ class SaveInternship {
             $agencyId = $agency->save();
         } catch (Exception $e) {
             // Rollback and re-throw the exception so that admins gets an email
-            PHPWS_DB::rollback();
+            \PHPWS_DB::rollback();
             throw $e;
         }
 
         /**********************************
          * Create and/or save the Internship
          */
-        if (isset($_REQUEST['internship_id']) && $_REQUEST['internship_id'] != '') {
-            // User is editing internship
-            try {
-                $i = InternshipFactory::getInternshipById($_REQUEST['internship_id']);
-            } catch (Exception $e) {
-                // Rollback and re-throw the exception so that admins gets an email
-                PHPWS_DB::rollback();
-                throw $e;
-            }
-        }else{
-            $i = new Internship();
+        // User is editing internship
+        try {
+            $i = \Intern\InternshipFactory::getInternshipById($_REQUEST['internship_id']);
+        } catch (Exception $e) {
+            // Rollback and re-throw the exception so that admins gets an email
+            \PHPWS_DB::rollback();
+            throw $e;
         }
 
         $i->term = $_REQUEST['term'];
@@ -369,44 +364,38 @@ class SaveInternship {
             $i->save();
         } catch (Exception $e) {
             // Rollback and re-throw the exception so that admins gets an email
-            PHPWS_DB::rollback();
+            \PHPWS_DB::rollback();
             throw $e;
         }
 
-        PHPWS_DB::commit();
+        \PHPWS_DB::commit();
 
         /***************************
          * State/Workflow Handling *
         ***************************/
-        $t = WorkflowTransitionFactory::getTransitionByName($_POST['workflow_action']);
-        $workflow = new WorkflowController($i, $t);
+        $t = \Intern\WorkflowTransitionFactory::getTransitionByName($_POST['workflow_action']);
+        $workflow = new \Intern\WorkflowController($i, $t);
         try {
             $workflow->doTransition(isset($_POST['notes'])?$_POST['notes']:null);
         } catch (MissingDataException $e) {
             \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, $e->getMessage());
             \NQ::close();
-            return \PHPWS_Core::reroute('index.php?module=intern&action=edit_internship&internship_id=' . $i->id);
+            return \PHPWS_Core::reroute('index.php?module=intern&action=ShowInternship&internship_id=' . $i->id);
         }
 
         // Create a ChangeHisotry for the OIED certification.
         if($oiedCertified){
             $currState = WorkflowStateFactory::getState($i->getStateName());
-            $ch = new ChangeHistory($i, Current_User::getUserObj(), time(), $currState, $currState, 'Certified by OIED');
+            $ch = new ChangeHistory($i, \Current_User::getUserObj(), time(), $currState, $currState, 'Certified by OIED');
             $ch->save();
         }
 
         $workflow->doNotification(isset($_POST['notes'])?$_POST['notes']:null);
 
-        if (isset($_REQUEST['internship_id'])) {
-            // Show message if user edited internship
-            \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, 'Saved internship for ' . $i->getFullName());
-            \NQ::close();
-            return \PHPWS_Core::reroute('index.php?module=intern&action=edit_internship&internship_id=' . $i->id);
-        } else {
-            \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, 'Added internship for ' . $i->getFullName());
-            \NQ::close();
-            return \PHPWS_Core::reroute('index.php?module=intern&action=edit_internship&internship_id=' . $i->id);
-        }
+        // Show message if user edited internship
+        \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, 'Saved internship for ' . $i->getFullName());
+        \NQ::close();
+        return \PHPWS_Core::reroute('index.php?module=intern&action=ShowInternship&internship_id=' . $i->id);
     }
 
     /**
@@ -416,7 +405,7 @@ class SaveInternship {
     {
         $vals = null;
 
-        foreach (InternshipUI::$requiredFields as $field) {
+        foreach (\Intern\UI\InternshipUI::$requiredFields as $field) {
             /* If not set or is empty (For text fields) */
             if (!isset($_REQUEST[$field]) || $_REQUEST[$field] == '') {
                 $vals[] = $field;

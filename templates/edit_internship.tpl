@@ -32,7 +32,7 @@
         <legend>Student</legend>
 
         <div class="form-group required">
-          <label class="col-lg-3 control-label" for="{BANNER_ID}"{AUTOFOCUS}>{BANNER_LABEL_TEXT}</label>
+          <label class="col-lg-3 control-label" for="{BANNER_ID}">{BANNER_LABEL_TEXT}</label>
           <div class="col-lg-6">{BANNER}</div>
         </div>
 
