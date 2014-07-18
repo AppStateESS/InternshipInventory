@@ -2,12 +2,6 @@
 
 namespace Intern\UI;
 
-
-define('INTERN_SUCCESS', 0);
-define('INTERN_ERROR',   1);
-define('INTERN_WARNING', 2);
-define('INTERN_UNKNOWN', 3);
-
 \PHPWS_Core::initModClass('notification', 'NQ.php');
 
 /**
@@ -19,6 +13,11 @@ define('INTERN_UNKNOWN', 3);
  */
 class NotifyUI implements UI
 {
+    const SUCCESS   = 0;
+    const ERROR     = 1;
+    const WARNING   = 2;
+    const UNKNOWN   = 3;
+
     /**
      * Pop all notifications from NQ. Get the type for use with CSS.
      * @return - Properly styled notifications.
@@ -35,18 +34,18 @@ class NotifyUI implements UI
         }
 
         $content = \PHPWS_Template::process($tags, 'intern', 'notification.tpl');
-        
+
         return $content;
     }
 
-    private static function getType(Notification $n)
+    private static function getType(\Notification $n)
     {
         switch($n->getType()){
-            case INTERN_SUCCESS:
+            case NotifyUI::SUCCESS:
                 return 'SUCCESS';
-            case INTERN_ERROR:
+            case NotifyUI::ERROR:
                 return 'ERROR';
-            case INTERN_WARNING:
+            case NotifyUI::WARNING:
                 return 'WARNING';
             default:
                 return 'UNKNOWN';

@@ -155,11 +155,11 @@ class Intern_Document_Manager extends FC_Document_Manager {
             // Choose the proper notification text...
             if (isset($_REQUEST['document_id']) &&
                     $_REQUEST['document_id'] && $result) {
-                \NQ::simple('intern', INTERN_SUCCESS, "File saved.");
+                \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, "File saved.");
             } else if ($result) {
-                \NQ::simple('intern', INTERN_SUCCESS, "File added.");
+                \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, "File added.");
             } else if (PHPWS_Error::logIfError($result)) {
-                \NQ::simple('intern', INTERN_ERROR, $result->toString());
+                \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, $result->toString());
             }
             \NQ::close();
             if (!isset($_POST['im'])) {

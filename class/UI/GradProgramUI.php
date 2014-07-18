@@ -9,7 +9,7 @@ class GradProgramUI implements UI
         /* Check if user can add/edit/hide/delete grad programs. */
         if(!\Current_User::allow('intern', 'edit_grad_prog') &&
            !\Current_User::allow('intern', 'delete_grad_prog')){
-            \NQ::simple('intern', INTERN_WARNING, 'You do not have permission to edit graduate programs.');
+            \NQ::simple('intern', NotifyUI::WARNING, 'You do not have permission to edit graduate programs.');
             return false;
         }
 

@@ -30,7 +30,7 @@ class SaveInternship {
             foreach ($_POST as $key => $val) {
                 $url .= "&$key=$val";
             }
-            \NQ::simple('intern', INTERN_ERROR, 'Please fill in the highlighted fields.');
+            \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, 'Please fill in the highlighted fields.');
             \NQ::close();
             return \PHPWS_Core::reroute($url);
         }
@@ -42,7 +42,7 @@ class SaveInternship {
             foreach ($_POST as $key => $val) {
                 $url .= "&$key=$val";
             }
-            \NQ::simple('intern', INTERN_ERROR, "The Banner ID you entered is not valid. No changes were saved. The student's Banner ID should be nine digits only (no letters, spaces, or punctuation).");
+            \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "The Banner ID you entered is not valid. No changes were saved. The student's Banner ID should be nine digits only (no letters, spaces, or punctuation).");
             \NQ::close();
             return \PHPWS_Core::reroute($url);
         }
@@ -54,7 +54,7 @@ class SaveInternship {
             foreach ($_POST as $key => $val) {
                 $url .= "&$key=$val";
             }
-            \NQ::simple('intern', INTERN_ERROR, "The student's email address is invalid. No changes were saved. Enter only the username portion of the student's email address. The '@appstate.edu' portion is not necessary.");
+            \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "The student's email address is invalid. No changes were saved. Enter only the username portion of the student's email address. The '@appstate.edu' portion is not necessary.");
             \NQ::close();
             return \PHPWS_Core::reroute($url);
         }
@@ -66,7 +66,7 @@ class SaveInternship {
 			foreach ($_POST as $key => $val){
 				$url .= "&$key=$val";
 			}
-			\NQ::simple('intern', INTERN_ERROR, "The student's zip code is invalid. No changes were saved. Zip codes should be 5 digits only (no letters, spaces, or punctuation).");
+			\NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "The student's zip code is invalid. No changes were saved. Zip codes should be 5 digits only (no letters, spaces, or punctuation).");
 			\NQ::close();
 			return \PHPWS_Core::reroute($url);
 		}
@@ -84,7 +84,7 @@ class SaveInternship {
                 foreach ($_POST as $key => $val) {
                     $url .= "&$key=$val";
                 }
-                \NQ::simple('intern', INTERN_WARNING, 'The internship start date must be before the end date.');
+                \NQ::simple('intern', Intern\NotifyUI::WARNING, 'The internship start date must be before the end date.');
                 \NQ::close();
                 return \PHPWS_Core::reroute($url);
             }
@@ -97,7 +97,7 @@ class SaveInternship {
 			foreach ($_POST as $key => $val){
 				$url .= "&$key=$val";
 			}
-			\NQ::simple('intern', INTERN_ERROR, "The internship location's zip code is invalid. No changes were saved. Zip codes should be 5 digits only (no letters, spaces, or punctuation).");
+			\NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "The internship location's zip code is invalid. No changes were saved. Zip codes should be 5 digits only (no letters, spaces, or punctuation).");
 			\NQ::close();
 			return \PHPWS_Core::reroute($url);
 		}
@@ -109,7 +109,7 @@ class SaveInternship {
 			foreach ($_POST as $key => $val){
 				$url .= "&$key=$val";
 			}
-			\NQ::simple('intern', INTERN_ERROR, "The agency's zip code is invalid. No changes were saved. Zip codes should be 5 digits only (no letters, spaces, or punctuation).");
+			\NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "The agency's zip code is invalid. No changes were saved. Zip codes should be 5 digits only (no letters, spaces, or punctuation).");
 			\NQ::close();
 			return \PHPWS_Core::reroute($url);
 		}
@@ -121,7 +121,7 @@ class SaveInternship {
 			foreach ($_POST as $key => $val){
 				$url .= "&$key=$val";
 			}
-			\NQ::simple('intern', INTERN_ERROR, "The agency supervisor's zip code is invalid. No changes were saved. Zip codes should be 5 digits only (no letters, spaces, or punctuation).");
+			\NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "The agency supervisor's zip code is invalid. No changes were saved. Zip codes should be 5 digits only (no letters, spaces, or punctuation).");
 			\NQ::close();
 			return \PHPWS_Core::reroute($url);
 		}
@@ -133,7 +133,7 @@ class SaveInternship {
 			foreach ($_POST as $key => $val){
 				$url .= "&$key=$val";
 			}
-			\NQ::simple('intern', INTERN_ERROR, "The course number provided is invalid. No changes were saved. Course numbers should be less than 20 digits (no letters, spaces, or punctuation).");
+			\NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "The course number provided is invalid. No changes were saved. Course numbers should be less than 20 digits (no letters, spaces, or punctuation).");
 			\NQ::close();
 			return \PHPWS_Core::reroute($url);
 		}
@@ -383,7 +383,7 @@ class SaveInternship {
         try {
             $workflow->doTransition(isset($_POST['notes'])?$_POST['notes']:null);
         } catch (MissingDataException $e) {
-            \NQ::simple('intern', INTERN_ERROR, $e->getMessage());
+            \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, $e->getMessage());
             \NQ::close();
             return \PHPWS_Core::reroute('index.php?module=intern&action=edit_internship&internship_id=' . $i->id);
         }
@@ -399,11 +399,11 @@ class SaveInternship {
 
         if (isset($_REQUEST['internship_id'])) {
             // Show message if user edited internship
-            \NQ::simple('intern', INTERN_SUCCESS, 'Saved internship for ' . $i->getFullName());
+            \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, 'Saved internship for ' . $i->getFullName());
             \NQ::close();
             return \PHPWS_Core::reroute('index.php?module=intern&action=edit_internship&internship_id=' . $i->id);
         } else {
-            \NQ::simple('intern', INTERN_SUCCESS, 'Added internship for ' . $i->getFullName());
+            \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, 'Added internship for ' . $i->getFullName());
             \NQ::close();
             return \PHPWS_Core::reroute('index.php?module=intern&action=edit_internship&internship_id=' . $i->id);
         }

@@ -72,10 +72,10 @@ class GradProgram extends Editable
     {
         return $this->hidden == 1;
     }
-    
+
     /**
      * Return an associative array {id => Grad. Prog. name } for all programs in DB
-     * that aren't hidden. 
+     * that aren't hidden.
      * @param $except - Always show the major with this ID. Used for students
      *                  with a hidden major. We still want to see it in the select box.
      */
@@ -89,7 +89,7 @@ class GradProgram extends Editable
         if(!is_null($except)){
             $db->addWhere('id', $except, '=', 'OR');
         }
-        
+
         $db->setIndexBy('id');
 
         $progs[-1] = 'Select Graduate Major or Certificate Program';
@@ -97,7 +97,7 @@ class GradProgram extends Editable
 
         return $progs;
     }
-    
+
     /**
      * Add a program to DB if it does not already exist.
      */
@@ -105,14 +105,15 @@ class GradProgram extends Editable
     {
         $name = trim($name);
         if($name == ''){
-            return \NQ::simple('intern', INTERN_ERROR, 'No name given for new graduate program. No graduate program added.');
+            \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, 'No name given for new graduate program. No graduate program added.');
+            return;
         }
 
         /* Search DB for program with matching name. */
         $db = self::getDb();
         $db->addWhere('name', $name);
         if($db->select('count') > 0){
-            \NQ::simple('intern', INTERN_WARNING, "The graduate program <i>$name</i> already exists.");
+            \NQ::simple('intern', \Intern\NotifyUI::WARNING, "The graduate program <i>$name</i> already exists.");
             return;
         }
 
@@ -122,12 +123,12 @@ class GradProgram extends Editable
         try{
             $prog->save();
         }catch(Exception $e){
-            \NQ::simple('intern', INTERN_ERROR, "Error adding graduate program <i>$name</i>.<br/>".$e->getMessage());
+            \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "Error adding graduate program <i>$name</i>.<br/>".$e->getMessage());
             return;
         }
 
         /* Program was successfully added. */
-        \NQ::simple('intern', INTERN_SUCCESS, "<i>$name</i> added as graduate program.");
+        \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, "<i>$name</i> added as graduate program.");
     }
 }
 

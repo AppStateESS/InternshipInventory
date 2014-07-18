@@ -12,7 +12,7 @@ class AdminUI implements UI {
     public static function display() {
         // permissions...
         if(!\Current_User::isDeity()) {
-            \NQ::simple('intern', INTERN_ERROR, 'You cannot edit administrators.');
+            \NQ::simple('intern', NotifyUI::ERROR, 'You cannot edit administrators.');
             return false;
         }
 

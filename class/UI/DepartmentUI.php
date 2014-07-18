@@ -8,7 +8,7 @@ class DepartmentUI implements UI
     {
         /* Permission check */
         if(!\Current_User::allow('intern', Department::getEditPermission())){
-            \NQ::simple('intern', INTERN_ERROR, "Uh Uh Uh! You didn't say the magic word!");
+            \NQ::simple('intern', NotifyUI::ERROR, "You do not have permission to edit departments.");
             return ;
         }
         javascript('/jquery/');

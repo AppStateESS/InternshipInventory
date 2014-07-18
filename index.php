@@ -33,7 +33,7 @@ if(DEBUG){
         $content = $inventory->getContent();
     }catch(Exception $e){
         try{
-            \NQ::simple('intern', INTERN_ERROR, 'The Intern Inventory has experienced an error. The software engineers have been notified about this problem. We apologize for the inconvenience.');
+            \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, 'The Intern Inventory has experienced an error. The software engineers have been notified about this problem. We apologize for the inconvenience.');
 
             $message = formatException($e);
             emailError($message);

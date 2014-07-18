@@ -87,7 +87,7 @@ class Term extends Model
                 return "Fall $year";
             default:
                 // Whaattt??
-                \NQ::simple('intern', INTERN_WARNING, 'Term error: '.$t);
+                \NQ::simple('intern', \Intern\NotifyUI::WARNING, 'Term error: '.$t);
                 return "$year";
         }
     }

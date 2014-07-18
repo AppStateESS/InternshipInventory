@@ -40,7 +40,7 @@ class InternshipUI implements UI {
             try{
                 $i = InternshipFactory::getInternshipById($_REQUEST['internship_id']);
             }catch(InternshipNotFoundException $e){
-                \NQ::simple('intern', INTERN_ERROR, 'Could not locate an internship with the given ID.');
+                \NQ::simple('intern', NotifyUI::ERROR, 'Could not locate an internship with the given ID.');
                 return;
             }
 
@@ -70,7 +70,7 @@ class InternshipUI implements UI {
 
 			if(($wfState instanceof SigAuthReadyState || $wfState instanceof SigAuthApprovedState || $wfState instanceof DeanApprovedState || $wfState instanceof RegisteredState) && ($docs < 1))
 			{
-	        	\NQ::simple('intern', INTERN_WARNING, "No documents have been uploaded yet. Usually a copy of the signed contract document should be uploaded.");
+	        	\NQ::simple('intern', NotifyUI::WARNING, "No documents have been uploaded yet. Usually a copy of the signed contract document should be uploaded.");
 			}
 
             /******************
@@ -83,22 +83,22 @@ class InternshipUI implements UI {
 
             // Show a warning if in SigAuthReadyState, is international, and not OIED approved
             if ($i->getWorkflowState() instanceof SigAuthReadyState && $i->isInternational() && !$i->isOiedCertified()) {
-                \NQ::simple('intern', INTERN_WARNING, 'This internship can not be approved by the Signature Authority bearer until the internship is certified by the Office of International Education and Development.');
+                \NQ::simple('intern', NotifyUI::WARNING, 'This internship can not be approved by the Signature Authority bearer until the internship is certified by the Office of International Education and Development.');
             }
 
             // Show a warning if in DeanApproved state and is distance_ed campus
             if ($i->getWorkflowState() == 'DeanApprovedState' && $i->isDistanceEd()) {
-                \NQ::simple('intern', INTERN_WARNING, 'This internship must be registered by Distance Education.');
+                \NQ::simple('intern', NotifyUI::WARNING, 'This internship must be registered by Distance Education.');
             }
 
             // Sanity check cource section #
             if ($i->isDistanceEd() && ($i->getCourseSection() < 300 || $i->getCourseSection() > 399)) {
-    			NQ::simple('intern', INTERN_WARNING, "This is a distance ed internship, so the course section number should be between 300 and 399.");
+    			NQ::simple('intern', NotifyUI::WARNING, "This is a distance ed internship, so the course section number should be between 300 and 399.");
             }
 
             // Sanity check distance ed radio
             if (!$i->isDistanceEd() && ($i->getCourseSection() > 300 && $i->getCourseSection() < 400)) {
-                \NQ::simple('intern', INTERN_WARNING, "The course section number you entered looks like a distance ed course. Be sure to check the Distance Ed option, or double check the section number.");
+                \NQ::simple('intern', NotifyUI::WARNING, "The course section number you entered looks like a distance ed course. Be sure to check the Distance Ed option, or double check the section number.");
             }
 
             $emgContactDialog = new EmergencyContactFormView($i);
@@ -111,7 +111,7 @@ class InternshipUI implements UI {
 
             // Check permissions
             if(!\Current_User::allow('intern', 'create_internship')){
-                \NQ::simple('intern', INTERN_ERROR, 'You do not have permission to create new internships.');
+                \NQ::simple('intern', NotifyUI::ERROR, 'You do not have permission to create new internships.');
                 \NQ::close();
                 \PHPWS_Core::home();
             }

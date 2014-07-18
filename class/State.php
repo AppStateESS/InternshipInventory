@@ -42,7 +42,7 @@ class State {
         $db->addOrder('full_name desc');
         $states = $db->select('col');
         if (empty($states)) {
-            \NQ::simple('intern', INTERN_ERROR, 'The list of allowed US states for internship locations has not been configured. Please use the administrative options to <a href="index.php?module=intern&action=edit_states">add allowed states.</a>');
+            \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, 'The list of allowed US states for internship locations has not been configured. Please use the administrative options to <a href="index.php?module=intern&action=edit_states">add allowed states.</a>');
             \NQ::close();
             PHPWS_Core::goBack();
         }
