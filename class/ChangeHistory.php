@@ -26,8 +26,11 @@ class ChangeHistory extends Model{
             $this->internship_id = $i->getId();
             $this->username = $phpwsUser->getUsername();
             $this->timestamp = $timestamp;
-            $this->from_state = $fromState->getName();
-            $this->to_state = $toState->getName();
+
+            // Strip namespace from start of from and to states, all four backspaces are required to escaping backslash
+            $this->from_state   = preg_replace("/Intern\\\\WorkflowState\\\\/", '', $fromState->getName());
+            $this->to_state     = preg_replace("/Intern\\\\WorkflowState\\\\/", '', $toState->getName());
+
             $this->note = $note;
         }
     }
