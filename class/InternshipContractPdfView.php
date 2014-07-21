@@ -50,7 +50,7 @@ class InternshipContractPdfView {
      */
     private function generatePdf()
     {
-        $this->pdf = new FPDI('P', 'mm', 'Letter');
+        $this->pdf = new \FPDI('P', 'mm', 'Letter');
         $a = $this->internship->getAgency();
         $d = $this->internship->getDepartment();
         $f = $this->internship->getFaculty();
@@ -179,13 +179,13 @@ class InternshipContractPdfView {
 
             $this->pdf->setXY(15, 132);
             $this->pdf->cell(81, 5, $f->getStreetAddress2());
-            
+
             $this->pdf->setXY(60, 132);
             $this->pdf->cell(81, 5, $f->getCity());
-            
+
             $this->pdf->setXY(88, 132);
             $this->pdf->cell(81, 5, $f->getState());
-            
+
             $this->pdf->setXY(95, 132);
             $this->pdf->cell(81, 5, $f->getZip());
 
