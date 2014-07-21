@@ -25,10 +25,10 @@ class EmergencyContactFactory {
         $db->addWhere('internship_id', $internshipId);
         $db->addOrder('id ASC'); // Get them in order of ID, so earliest contacts come first
 
-        $result = $db->getObjects('EmergencyContactDB');
+        $result = $db->getObjects('Intern\EmergencyContactDB');
 
         if(\PHPWS_Error::logIfError($result)){
-            throw new Exception($result->toString());
+            throw new \Exception($result->toString());
         }
 
         if(sizeof($result) <= 0){

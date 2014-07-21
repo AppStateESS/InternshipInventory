@@ -240,7 +240,7 @@ class InternshipInventory {
                 PHPWS_Core::goBack();
                 break;
             case 'addEmergencyContact':
-                $ctrl = new AddEmergencyContact();
+                $ctrl = new Command\AddEmergencyContact();
                 $ctrl->execute();
                 break;
             case 'removeEmergencyContact':
