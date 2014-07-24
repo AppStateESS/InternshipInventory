@@ -248,7 +248,7 @@ class InternshipInventory {
                 $ctrl->execute();
                 break;
             case 'edit_faculty':
-                $facultyUI = new FacultyUI();
+                $facultyUI = new UI\FacultyUI();
                 $this->content = $facultyUI->display();
                 break;
             case 'getFacultyListForDept':
@@ -256,11 +256,11 @@ class InternshipInventory {
                 $ctrl->execute();
                 break;
             case 'restFacultyById':
-                $ctrl = new RestFacultyById();
+                $ctrl = new Command\RestFacultyById();
                 $ctrl->execute();
                 break;
             case 'facultyDeptRest':
-                $ctrl = new FacultyDeptRest();
+                $ctrl = new Command\FacultyDeptRest();
                 $ctrl->execute();
                 break;
             default:

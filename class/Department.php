@@ -61,7 +61,7 @@ class Department extends Editable
      */
     public function del()
     {
-        if(!Current_User::allow('intern', $this->getDeletePermission())){
+        if(!\Current_User::allow('intern', $this->getDeletePermission())){
             return \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, 'You do not have permission to delete departments.');
         }
 
@@ -72,7 +72,7 @@ class Department extends Editable
         }
 
         $name = $this->getName();
-        
+
         try{
             // Try to delete item
             if(!$this->delete()){
@@ -92,7 +92,7 @@ class Department extends Editable
     }
 
     /**
-     * Return an associative array {id => dept. name} for all the 
+     * Return an associative array {id => dept. name} for all the
      * departments in database.
      * @param $except - Always show the department with this ID. Used for internships
      *                  with a hidden department. We still want to see it in  the select box.
@@ -112,7 +112,7 @@ class Department extends Editable
 
         $depts[-1] = 'Select Department';
         $depts += $db->select('col');
-        
+
         return $depts;
     }
 
@@ -120,7 +120,7 @@ class Department extends Editable
      * Return an associative array {id => dept. name} for all the departments
      * that the user with $username is allowed to see.
      * @param $includeHiddenDept - Include the department with this ID, even if it's hidden. Used for internships
-     *                  with a hidden department. We still want to see it in the select box. 
+     *                  with a hidden department. We still want to see it in the select box.
      */
     public static function getDepartmentsAssocForUsername($username, $includeHiddenDept = null)
     {
@@ -136,7 +136,7 @@ class Department extends Editable
 
         // If the user doesn't have the 'all_departments' permission,
         // then add a join to limit to specific departments
-        if(!Current_User::allow('intern', 'all_departments') && !Current_User::isDeity()){
+        if(!\Current_User::allow('intern', 'all_departments') && !\Current_User::isDeity()){
             $db->addJoin('LEFT', 'intern_department', 'intern_admin', 'id', 'department_id');
             $db->addWhere('intern_admin.username', $username);
         }
@@ -148,7 +148,7 @@ class Department extends Editable
 
         return $depts;
     }
-    
+
     /**
      * Add a department to database with the passed name.
      */
@@ -193,7 +193,7 @@ class Department extends Editable
         }
 
         $name = $dept->getName();
-        
+
         try{
             // Try to delete department.
             if(!$dept->delete()){
@@ -218,13 +218,13 @@ class Department extends Editable
     {
         return $this->hidden == 1;
     }
-    
+
     public function hasCorequisite()
     {
     	if ($this->corequisite == 1) {
     		return true;
     	}
-    	
+
     	return false;
     }
 }

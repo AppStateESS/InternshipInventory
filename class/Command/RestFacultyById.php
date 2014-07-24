@@ -1,6 +1,10 @@
 <?php
 namespace Intern\Command;
 
+use Intern\FacultyFactory;
+use Intern\FacultyDB;
+use Intern\DatabaseStorage;
+
 /**
  * Controller class for manipulating a Faculty member's data through
  * proper REST
@@ -54,7 +58,7 @@ class RestFacultyById {
     {
         //$postarray = json_decode(file_get_contents('php://input'), true);
 
-        $req = Server::getCurrentRequest();
+        $req = \Server::getCurrentRequest();
         $postarray = json_decode($req->getRawData(), true);
 
         $faculty = new FacultyDB();
@@ -75,7 +79,7 @@ class RestFacultyById {
 
         // Save the faculty object
         try {
-            Intern\DatabaseStorage::saveObject($faculty);
+            DatabaseStorage::saveObject($faculty);
         }
         catch(Exception $e) {
             header('HTTP/1.1 500 Internal Server Error');

@@ -26,28 +26,28 @@ class FacultyDeptRest {
     private function post()
     {
         $postArray = json_decode(file_get_contents('php://input'), true);
-        
+
         $facultyId       = $postArray['faculty_id'];
         $departmentId    = $postArray['department_id'];
-        
+
         $sql = "INSERT INTO intern_faculty_department VALUES ('$facultyId', '$departmentId')";
-        
-        $result = PHPWS_DB::query($sql);
-        
-        if(PHPWS_Error::logIfError($result)){
+
+        $result = \PHPWS_DB::query($sql);
+
+        if(\PHPWS_Error::logIfError($result)){
             header('HTTP/1.1 500 Internal Server Error');
             exit;
         }
 
-        $obj = new stdClass();
+        $obj = new \stdClass();
         $obj->faculty_id       = $facultyId;
         $obj->department_id    = $departmentId;
-        
+
         echo json_encode($obj);
-        
+
         exit;
     }
-    
+
     private function delete()
     {
         // Because we're halfway between an "old way" and a "new way", delete
@@ -55,16 +55,16 @@ class FacultyDeptRest {
         // is the quickest way to get this thing out the door.
         $facultyId       = $_REQUEST['faculty_id'];
         $departmentId    = $_REQUEST['department_id'];
-        
+
         $sql = "DELETE FROM intern_faculty_department WHERE faculty_id = $facultyId AND department_id = $departmentId";
 
-        $result = PHPWS_DB::query($sql);
-        
-        if(PHPWS_Error::logIfError($result)){
+        $result = \PHPWS_DB::query($sql);
+
+        if(\PHPWS_Error::logIfError($result)){
             header('HTTP/1.1 500 Internal Server Error');
             exit;
         }
-        
+
         header('HTTP/1.1 204 No Content');
         exit;
     }
