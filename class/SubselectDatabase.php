@@ -380,35 +380,6 @@ class SubselectDatabase extends PHPWS_DB{
         $this->index = $index;
     }
 
-/*
-    public function getIndex($table = null)
-    {
-        if (isset($this->index)) {
-            return $this->index;
-        }
-
-        if (empty($table)) {
-            $table = $this->getTable(false);
-        }
-
-        $table = $this->addPrefix($table);
-
-        $columns = $GLOBALS['PHPWS_DB']['connection']->tableInfo($table);
-
-        if (PHPWS_Error::isError($columns)) {
-            return $columns;
-        }
-
-        foreach ($columns as $colInfo) {
-            if ($colInfo['name'] == 'id' && preg_match('/primary/', $colInfo['flags']) && preg_match('/int/', $colInfo['type'])) {
-                return $colInfo['name'];
-            }
-        }
-
-        return null;
-    }
-*/
-
     public function _getJoinOn($join_on_1, $join_on_2, $table1, $table2, $ignore_tables = false)
     {
         if (empty($join_on_1) || empty($join_on_2)) {
@@ -2192,48 +2163,8 @@ class SubselectDatabase extends PHPWS_DB{
 
         return $column_info;
     }
-/*
-    public function export($structure = true, $contents = true)
-    {
-        PHPWS_DB::touchDB();
-        $table = $this->addPrefix($this->tables[0]);
-
-        if ($structure == true) {
-            $columns = $GLOBALS['PHPWS_DB']['connection']->tableInfo($table);
-            $column_info = $this->parseColumns($columns);
-            $index = $this->getIndex();
-
-            $sql[] = "CREATE TABLE $table ( " . implode(', ', $column_info['parameters']) . ' );';
-            if (isset($column_info['index'])) {
-                $sql = array_merge($sql, $column_info['index']);
-            }
-        }
-
-        if ($contents == true) {
-            if ($rows = $this->select()) {
-                if (PHPWS_Error::isError($rows)) {
-                    return $rows;
-                }
-                foreach ($rows as $dataRow) {
-                    foreach ($dataRow as $key => $value) {
-                        $allKeys[] = $key;
-                        $allValues[] = PHPWS_DB::escape($value);
-                    }
-
-                    $sql[] = "INSERT INTO $table (" . implode(', ', $allKeys) . ') VALUES (' . implode(', ', $allValues) . ');';
-                    $allKeys = $allValues = array();
-                }
-            }
-        }
-
-        if (!empty($sql)) {
-            return implode("\n", $sql);
-        } else {
-            return null;
-        }
-    }
-*/
-    public function quote($text)
+    
+	public function quote($text)
     {
         return $GLOBALS['PHPWS_DB']['connection']->quote($text);
     }

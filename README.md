@@ -9,7 +9,7 @@ Internship Inventory is a sleek, intunitive, and powerful web-application for tr
 
 
 ## Documentation
-The project's documentation is maintained in the [wiki](https://github.com/AppStateESS/InternshipInventory/wiki). It's a bit sparase so far, but we're working on that.
+The project's documentation is maintained in the [wiki](https://github.com/AppStateESS/InternshipInventory/wiki). It's a bit sparse so far, but we're working on that.
 
 
 ## Bugs and feature requests
