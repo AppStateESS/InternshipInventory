@@ -221,8 +221,8 @@ class SaveInternship {
         $i->department_id = $_REQUEST['department'];
         $i->start_date = !empty($_REQUEST['start_date']) ? strtotime($_REQUEST['start_date']) : 0;
         $i->end_date = !empty($_REQUEST['end_date']) ? strtotime($_REQUEST['end_date']) : 0;
-        $credits = (int) $_REQUEST['credits'];
-        $i->credits = $credits ? $credits : null;
+        //$credits = (int) $_REQUEST['credits'];
+        $i->credits = $_REQUEST['credits'] != '' ? $_REQUEST['credits'] : null;
         $avg_hours_week = (int) $_REQUEST['avg_hours_week'];
         $i->avg_hours_week = $avg_hours_week ? $avg_hours_week : null;
         $i->paid = $_REQUEST['payment'] == 'paid';
