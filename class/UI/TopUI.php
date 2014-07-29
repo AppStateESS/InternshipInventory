@@ -38,7 +38,7 @@ class TopUI implements UI
 
         // Edit departments
         if(\Current_User::allow('intern', 'edit_dept')){
-            $adminOptions['EDIT_DEPARTMENTS_LINK'] = \PHPWS_Text::secureLink('Edit Departments','intern',array('action' => 'edit_dept'));
+            $adminOptions['EDIT_DEPARTMENTS_LINK'] = \PHPWS_Text::secureLink('Edit Departments','intern',array('action' => 'showEditDept'));
         }
 
         // Edit list of states

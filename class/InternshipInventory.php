@@ -61,6 +61,10 @@ class InternshipInventory {
                 $view = new UI\ResultsUI();
                 $this->content = $view->display();
                 break;
+            case 'showEditDept':
+                $view = new UI\DepartmentUI();
+                $this->content = $view->display();
+                break;
             case 'edit_dept':
                 if (isset($_REQUEST['add'])) {
                     /* Add department with the name in REQUEST */
@@ -93,12 +97,8 @@ class InternshipInventory {
                     } else {
                         \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "No ID given. Cannot delete department.");
                     }
-                } else if (isset($_REQUEST['fDel'])) {
-                    /** for now... */
-                    \NQ::simple('intern', \Intern\NotifyUI::WARNING, 'Sorry, cannot forcefully delete a department.');
                 }
-                $view = new DepartmentUI();
-                $this->content = $view->display();
+                \PHPWS_Core::reroute('index.php?module=intern&action=showEditDept');
                 break;
             case 'showEditGradProgs':
                 $view = new UI\GradProgramUI();
