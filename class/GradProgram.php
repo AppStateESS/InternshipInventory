@@ -44,7 +44,7 @@ class GradProgram extends Editable
      */
     public static function getEditAction()
     {
-        return edit_grad;
+        return 'edit_grad';
     }
 
     /**

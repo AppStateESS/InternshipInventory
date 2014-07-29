@@ -33,7 +33,7 @@ class TopUI implements UI
 
         // Edit list grad programs
         if(\Current_User::allow('intern', 'edit_grad_prog')){
-            $adminOptions['EDIT_GRAD_LINK'] = \PHPWS_Text::secureLink('Edit Graduate Programs','intern',array('action' => 'edit_grad'));
+            $adminOptions['EDIT_GRAD_LINK'] = \PHPWS_Text::secureLink('Edit Graduate Programs','intern',array('action' => 'showEditGradProgs'));
         }
 
         // Edit departments

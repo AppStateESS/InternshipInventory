@@ -2,6 +2,8 @@
 
 namespace Intern\UI;
 
+use Intern\GradProgram;
+
 class GradProgramUI implements UI
 {
     public static function display()
@@ -19,7 +21,7 @@ class GradProgramUI implements UI
         javascriptMod('intern', 'editMajor', array('EDIT_ACTION' => GradProgram::getEditAction()));
 
         /* Form for adding new grad program */
-        $form = new PHPWS_Form('add_prog');
+        $form = new \PHPWS_Form('add_prog');
         $form->addText('name');
         $form->setLabel('name', 'Graduate Program Title');
         $form->addSubmit('submit','Add Graduate Program');

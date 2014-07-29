@@ -100,7 +100,12 @@ class InternshipInventory {
                 $view = new DepartmentUI();
                 $this->content = $view->display();
                 break;
+            case 'showEditGradProgs':
+                $view = new UI\GradProgramUI();
+                $this->content = $view->display();
+            break;
             case 'edit_grad':
+            //TODO Separate these into their own controllers
                 if (isset($_REQUEST['add'])) {
                     /* Add grad program with the name in REQUEST */
                     if (isset($_REQUEST['name'])) {
@@ -133,8 +138,7 @@ class InternshipInventory {
                         \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "No ID given. Cannot delete graduate program.");
                     }
                 }
-                $view = new GradProgramUI();
-                $this->content = $view->display();
+                \PHPWS_Core::reroute('index.php?module=intern&action=showEditGradProgs');
                 break;
             case 'showEditMajors':
                 $view = new UI\MajorUI();
