@@ -222,7 +222,7 @@ class Email {
         }
 
         if(!isset($to) || $to == null) {
-            throw new InvalidArgumentException('Missing configurating for email addresses (registrar)');
+            throw new \InvalidArgumentException('Missing configurating for email addresses (registrar)');
         }
 
         // CC the faculty members

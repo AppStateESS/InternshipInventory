@@ -9,7 +9,7 @@ class WorkflowStateFactory {
     public static function getState($className)
     {
         if(!isset($className) || empty($className)){
-            throw new InvalidArgumentException('Missing state name.');
+            throw new \InvalidArgumentException('Missing state name.');
         }
 
         $className = '\Intern\WorkflowState\\' . $className;

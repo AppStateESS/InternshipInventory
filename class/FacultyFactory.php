@@ -34,7 +34,7 @@ class FacultyFactory {
     {
 
         if(!isset($id)) {
-            throw new InvalidArgumentException('Missing faculty id.');
+            throw new \InvalidArgumentException('Missing faculty id.');
         }
 
         $sql = "SELECT intern_faculty.* FROM intern_faculty WHERE intern_faculty.id = {$id}";

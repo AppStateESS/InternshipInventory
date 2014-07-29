@@ -30,19 +30,19 @@ class AddEmergencyContact {
 
         // Sanity checking
         if (is_null($internshipId) || !isset($internshipId)) {
-            throw new InvalidArgumentException('Missing internship ID.');
+            throw new \InvalidArgumentException('Missing internship ID.');
         }
 
         if (is_null($name) || !isset($name)) {
-            throw new InvalidArgumentException('Missing contact name.');
+            throw new \InvalidArgumentException('Missing contact name.');
         }
 
         if (is_null($relation) || !isset($relation)) {
-            throw new InvalidArgumentException('Missing contact relationship.');
+            throw new \InvalidArgumentException('Missing contact relationship.');
         }
 
         if (is_null($phone) || !isset($phone)) {
-            throw new InvalidArgumentException('Missing contact phone number.');
+            throw new \InvalidArgumentException('Missing contact phone number.');
         }
 
         // Get an Internship object based on the ID

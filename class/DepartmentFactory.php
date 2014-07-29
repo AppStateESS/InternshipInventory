@@ -19,7 +19,7 @@ class DepartmentFactory {
     {
         // Sanity checking
         if (!isset($id) || $id === '') {
-           throw new InvalidArgumentException('Missing department ID.'); 
+           throw new \InvalidArgumentException('Missing department ID.'); 
         }
         
         // Query

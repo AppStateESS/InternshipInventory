@@ -39,7 +39,7 @@ class RestFacultyById {
         $id = $_GET['id'];
 
         if(!isset($id) || $id == '') {
-            throw new InvalidArgumentException('Missing faculty ID.');
+            throw new \InvalidArgumentException('Missing faculty ID.');
         }
 
         $faculty = FacultyFactory::getFacultyById($id);

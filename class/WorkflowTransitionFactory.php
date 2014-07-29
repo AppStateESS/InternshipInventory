@@ -48,7 +48,7 @@ class WorkflowTransitionFactory {
     public static function getTransitionByName($name)
     {
         if(!isset($name)){
-            throw new InvalidArgumentException('Missing transition name.');
+            throw new \InvalidArgumentException('Missing transition name.');
         }
 
         return new $name;

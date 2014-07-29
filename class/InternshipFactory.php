@@ -16,11 +16,11 @@ class InternshipFactory {
     public static function getInternshipById($id)
     {
         if(is_null($id) || !isset($id)){
-            throw new InvalidArgumentException('Internship ID is required.');
+            throw new \InvalidArgumentException('Internship ID is required.');
         }
 
         if($id <= 0){
-            throw new InvalidArgumentException('Internship ID must be greater than zero.');
+            throw new \InvalidArgumentException('Internship ID must be greater than zero.');
         }
 
         $internship = new Internship;

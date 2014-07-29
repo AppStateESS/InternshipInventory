@@ -22,7 +22,7 @@ class RemoveEmergencyContact {
         
         // Get the contactId parameter
         if(!isset($_REQUEST['contactId'])){
-            throw new InvalidArgumentException('Missing contact id.');
+            throw new \InvalidArgumentException('Missing contact id.');
         }
         
         $contactId = $_REQUEST['contactId'];
