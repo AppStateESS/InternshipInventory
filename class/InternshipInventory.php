@@ -136,8 +136,12 @@ class InternshipInventory {
                 $view = new GradProgramUI();
                 $this->content = $view->display();
                 break;
+            case 'showEditMajors':
+                $view = new UI\MajorUI();
+                $this->content = $view->display();
+                break;
             case 'edit_major':
-
+                // TODO: Break these into their own commands
                 if (isset($_REQUEST['add'])) {
                     /* Add major with the name passed in REQUEST. */
                     if (isset($_REQUEST['name'])) {
@@ -170,8 +174,7 @@ class InternshipInventory {
                         \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "No ID given. Cannot delete major.");
                     }
                 }
-                $view = new MajorUI();
-                $this->content = $view->display();
+                \PHPWS_Core::reroute('index.php?module=intern&action=showEditMajors');
                 break;
                 /**
                  * Matt additions!

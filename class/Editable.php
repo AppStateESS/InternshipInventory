@@ -23,7 +23,7 @@ abstract class Editable extends Model
      */
     static function getEditAction()
     {
-        throw new Exception('Not yet implemented.');
+        throw new \Exception('Not yet implemented.');
     }
 
     /**
@@ -31,7 +31,7 @@ abstract class Editable extends Model
      */
     static function getEditPermission()
     {
-        throw new Exception('Not yet implemented.');
+        throw new \Exception('Not yet implemented.');
     }
 
 
@@ -40,7 +40,7 @@ abstract class Editable extends Model
      */
     static function getDeletePermission()
     {
-        throw new Exception('Not yet implemented.');
+        throw new \Exception('Not yet implemented.');
     }
 
     /**
@@ -49,7 +49,7 @@ abstract class Editable extends Model
     public function rename($newName)
     {
         /* Permission check */
-        if(!Current_User::allow('intern', $this->getEditPermission())){
+        if(!\Current_User::allow('intern', $this->getEditPermission())){
             return \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, 'You do not have permission to rename this.');
         }
 
@@ -84,7 +84,7 @@ abstract class Editable extends Model
                 exit;
             }
             return \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, "<i>$old</i> renamed to <i>$newName</i>");
-        }catch(Exception $e){
+        }catch(\Exception $e){
             if(isset($_REQUEST['ajax'])){
                 \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, $e->getMessage());
                 \NQ::close();
@@ -101,7 +101,7 @@ abstract class Editable extends Model
     public function hide($hide=true)
     {
         /* Permission check */
-        if(!Current_User::allow('intern', $this->getEditPermission())){
+        if(!\Current_User::allow('intern', $this->getEditPermission())){
             return \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, 'You do not have permission to hide that.');
         }
 
@@ -126,7 +126,7 @@ abstract class Editable extends Model
             else{
                 \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, "<i>$this->name</i> is now visible.");
             }
-        }catch(Exception $e){
+        }catch(\Exception $e){
             return \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, $e->getMessage());
         }
     }
@@ -136,7 +136,7 @@ abstract class Editable extends Model
      */
     public function del()
     {
-        if(!Current_User::allow('intern', $this->getDeletePermission())){
+        if(!\Current_User::allow('intern', $this->getDeletePermission())){
             return \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, 'You do not have permission to delete that.');
         }
 
@@ -157,7 +157,7 @@ abstract class Editable extends Model
             }
             // Item deleted successfully.
             \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, "Deleted <i>$name</i>");
-        }catch(Exception $e){
+        }catch(\Exception $e){
             \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, $e->getMessage());
             return;
         }
@@ -176,19 +176,19 @@ abstract class Editable extends Model
             $tags['NAME'] = "<span id='$this->id' class='$this->id prog'>$this->name</span>";
         }
 
-        if(Current_User::allow('intern', $this->getEditPermission())){
+        if(\Current_User::allow('intern', $this->getEditPermission())){
             $tags['EDIT'] = "<span id='edit-$this->id' class='$this->id edit-prog'>Edit</span> | ";
             if($this->isHidden()){
-                $tags['HIDE'] = PHPWS_Text::moduleLink('Show', 'intern', array('action' => $this->getEditAction(), 'hide' => false, 'id'=>$this->getId()));
+                $tags['HIDE'] = \PHPWS_Text::moduleLink('Show', 'intern', array('action' => $this->getEditAction(), 'hide' => false, 'id'=>$this->getId()));
             }else{
-                $tags['HIDE'] = PHPWS_Text::moduleLink('Hide', 'intern', array('action' => $this->getEditAction(), 'hide' => true, 'id'=>$this->getId()));
+                $tags['HIDE'] = \PHPWS_Text::moduleLink('Hide', 'intern', array('action' => $this->getEditAction(), 'hide' => true, 'id'=>$this->getId()));
             }
         }
-        if(Current_User::allow('intern', $this->getDeletePermission())){
+        if(\Current_User::allow('intern', $this->getDeletePermission())){
             $div = null;
             if(isset($tags['HIDE']))
                 $div = ' | ';
-            $tags['DELETE'] = $div.PHPWS_Text::moduleLink('Delete','intern',array('action'=> $this->getEditAction(),'del'=>TRUE,'id'=>$this->getID()));
+            $tags['DELETE'] = $div.\PHPWS_Text::moduleLink('Delete','intern',array('action'=> $this->getEditAction(),'del'=>TRUE,'id'=>$this->getID()));
         }
 
         return $tags;
