@@ -22,10 +22,10 @@ class WorkflowController {
 
         if(is_array($sourceStateName)){
             if(!in_array($currStateName, $sourceStateName)){
-                throw new InvalidArgumentException('Invalid transition source state.');
+                throw new \InvalidArgumentException('Invalid transition source state.');
             }
         }else if($sourceStateName != '*' && $sourceStateName != $currStateName){
-            throw new InvalidArgumentException('Invalid transition source state.');
+            throw new \InvalidArgumentException('Invalid transition source state.');
         }
 
         if(!$this->t->allowed($this->internship)){
@@ -56,7 +56,7 @@ class WorkflowController {
         $this->internship->setState($destState);
         $this->internship->save();
 
-        $changeHistory = new ChangeHistory($this->internship, Current_User::getUserObj(), time(), $sourceState, $destState, $note);
+        $changeHistory = new ChangeHistory($this->internship, \Current_User::getUserObj(), time(), $sourceState, $destState, $note);
         $changeHistory->save();
     }
 

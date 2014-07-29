@@ -22,6 +22,7 @@ class WorkflowTransitionView {
         $this->form->addTplTag('WORKFLOW_STATE', $this->state->getFriendlyName());
 
         $transitions = $this->state->getTransitions($this->internship);
+        //var_dump($transitions);exit;
 
         // Generate the array of radio buttons to add (one for each possible transition)
         $radioButtons = array();

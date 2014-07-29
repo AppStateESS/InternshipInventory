@@ -615,7 +615,7 @@ class Internship {
      * @param WorkflowState $state
      */
     public function setState(WorkflowState $state){
-        $this->state = $state->getName();
+        $this->state = $state->getClassName();
     }
 
     /**

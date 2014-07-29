@@ -36,6 +36,16 @@ abstract class WorkflowState {
         return get_called_class();
     }
 
+    /**
+     * Returns the class name *without* the namespace
+     */
+    public function getClassName()
+    {
+        preg_match('/\w*$/', get_called_class(), $matches);
+
+        return $matches[0];
+    }
+
     public function getFriendlyName(){
         $class = $this->getName();
         return $class::friendlyName;

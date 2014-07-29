@@ -1,6 +1,9 @@
 <?php
 namespace Intern\Command;
 
+use \Intern\WorkflowStateFactory;
+use \Intern\ChangeHistory;
+
 /**
  * Controller class to save changes (on create or update) to an Internship
  *

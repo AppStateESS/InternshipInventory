@@ -3,6 +3,7 @@
 namespace Intern\WorkflowTransition;
 use Intern\WorkflowTransition;
 use Intern\Internship;
+use Intern\Email;
 
 class RegisteredCancelTransition extends WorkflowTransition {
     const sourceState = 'RegisteredState';

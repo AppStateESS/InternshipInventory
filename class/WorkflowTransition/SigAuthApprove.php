@@ -23,7 +23,7 @@ class SigAuthApprove extends WorkflowTransition {
         // Otherwise, check permissions as usual
         $perms = $this->getAllowedPermissionList();
         foreach($perms as $p){
-            if(Current_User::allow('intern', $p)){
+            if(\Current_User::allow('intern', $p)){
                 return true;
             }
         }

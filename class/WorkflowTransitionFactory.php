@@ -8,13 +8,27 @@ class WorkflowTransitionFactory {
 
     private static $dir = 'WorkflowTransition';
 
+    /**
+     * Get the list of transitions currently available for a given state
+     *
+     * @param WorkflowState $state State object to get transitions for
+     * @param Internship    $internship Internship object that this state applies to
+     * @returns Array   Array of available transitions
+     */
     public static function getTransitionsFromState(WorkflowState $state, Internship $i)
     {
         $stateName = $state->getName();
 
-        $transitions = self::getAllTransitions();
+        // Strip namespace from state name by matching the last word character in the path
+        preg_match('/\w*$/', $stateName, $matches);
+
+        $stateName = $matches[0];
+
+        $transitions = self::getAllTransitions(); // Get all transitions
         $outgoingTrans = array();
 
+        // Filter the list of all transitions by finding the transitions which have this state
+        // in their list of potential source states
         foreach($transitions as $t){
             // Set the actual source state
             $t->setSourceState($state);

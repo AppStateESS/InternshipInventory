@@ -3,6 +3,7 @@
 namespace Intern\WorkflowTransition;
 use Intern\WorkflowTransition;
 use Intern\Internship;
+use Intern\Email;
 
 class UndergradRegistration extends WorkflowTransition {
     const sourceState = 'DeanApprovedState';
@@ -21,11 +22,11 @@ class UndergradRegistration extends WorkflowTransition {
             return false;
         }
     }
-    
+
     public function allowed(Internship $i)
     {
         if($i->isDistanceEd()){
-            if(Current_User::allow('intern', 'distance_ed_register')){
+            if(\Current_User::allow('intern', 'distance_ed_register')){
                 return true;
             }else{
                 return false;
@@ -43,7 +44,7 @@ class UndergradRegistration extends WorkflowTransition {
 
         Email::sendRegistrationConfirmationEmail($i, $agency);
     }
-    
+
     public function checkRequiredFields(Internship $i)
     {
         if (!$i->isSecondaryPart()) {

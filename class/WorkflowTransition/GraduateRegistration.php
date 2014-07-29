@@ -3,17 +3,19 @@
 namespace Intern\WorkflowTransition;
 use Intern\WorkflowTransition;
 use Intern\Internship;
+use Intern\Exception\MissingDataException;
+use Intern\Email;
 
 class GraduateRegistration extends WorkflowTransition {
-    
+
     const sourceState = 'GradSchoolApprovedState';
     const destState   = 'RegisteredState';
     const actionName  = 'Mark as Registered / Enrollment Complete (grad)';
-    
+
     public function getAllowedPermissionList(){
         return array('register');
     }
-    
+
     public function isApplicable(Internship $i)
     {
         if($i->isGraduate()){
@@ -22,11 +24,11 @@ class GraduateRegistration extends WorkflowTransition {
             return false;
         }
     }
-    
+
     public function allowed(Internship $i)
     {
     	if($i->isDistanceEd()){
-    		if(Current_User::allow('intern', 'distance_ed_register')){
+    		if(\Current_User::allow('intern', 'distance_ed_register')){
     			return true;
     		}else{
     			return false;
@@ -34,17 +36,17 @@ class GraduateRegistration extends WorkflowTransition {
     	}else{
     		return parent::allowed($i);
     	}
-    
+
     	return false;
     }
-    
+
     public function doNotification(Internship $i, $note = null)
     {
         $agency = $i->getAgency();
-    
+
         Email::sendRegistrationConfirmationEmail($i, $agency);
     }
-    
+
     public function checkRequiredFields(Internship $i)
     {
         if (!$i->isSecondaryPart()) {

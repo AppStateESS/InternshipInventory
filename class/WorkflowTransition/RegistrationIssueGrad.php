@@ -3,6 +3,7 @@
 namespace Intern\WorkflowTransition;
 use Intern\WorkflowTransition;
 use Intern\Internship;
+use Intern\Email;
 
 class RegistrationIssueGrad extends WorkflowTransition {
     const sourceState = 'GradSchoolApprovedState';
