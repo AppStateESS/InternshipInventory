@@ -94,7 +94,7 @@ class ResultsUI implements UI {
             
             $url .= http_build_query($_REQUEST);
             
-            return PHPWS_Core::reroute($url);
+            //return PHPWS_Core::reroute($url);
         }
         
         return $pagerContent;
@@ -117,6 +117,8 @@ class ResultsUI implements UI {
         
         $pager->db->tables = array();
         $pager->db->addTable('intern_internship', 'fuzzy');
+        $pager->db->addColumn('intern_faculty.last_name');
+        $pager->db->addColumn('intern_department.name');
         
         // If the current user is not a deity and doesn't have the 'all_departments' permission,
         // then add a join to limit the results to just the allowed departments
@@ -203,6 +205,7 @@ class ResultsUI implements UI {
         }
         
         $pager->db->addJoin('LEFT OUTER', 'fuzzy', 'intern_faculty', 'faculty_id', 'id');
+        $pager->db->addJoin('LEFT OUTER', 'fuzzy', 'intern_department', 'department_id', 'id');
         
         // Student level
         if (isset($level)) {
@@ -277,20 +280,17 @@ class ResultsUI implements UI {
          */
         $pager->setAutoSort(false);
         $pager->addSortHeader('term', 'Term');
-        
-        // $pager->joinResult('student_id', 'intern_student', 'id', 'last_name', 'student_last_name');
         $pager->addSortHeader('last_name', 'Student\'s Name');
-        
-        // $pager->joinResult('student_id', 'intern_student', 'id', 'banner');
         $pager->addSortHeader('banner', 'Banner ID');
+        $pager->addSortHeader('state', 'Status');
         
         $pager->joinResult('department_id', 'intern_department', 'id', 'name');
-        $pager->addSortHeader('name', 'Department Name');
+        $pager->addSortHeader('intern_department.name', 'Department Name');
+        //var_dump($pager);exit;
         
-        // $pager->joinResult('faculty_id', 'intern_faculty', 'id', 'last_name', 'faculty_last_name');
+        $pager->joinResult('faculty_id', 'intern_faculty', 'id', 'last_name', 'faculty_last_name');
         $pager->addSortHeader('intern_faculty.last_name', 'Instructor');
         
-        $pager->addSortHeader('state', 'Status');
         
         /**
          * *** Row Background Color Toggles *****
