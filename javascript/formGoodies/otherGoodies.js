@@ -173,7 +173,7 @@ function initFacultySelector()
         $("#faculty_fax").html('');
         $("#faculty_address").html('');
 
-        if($("#internship_department").val() === -1){
+        if($("#internship_department").val() === '-1'){
             return;
         }
 
