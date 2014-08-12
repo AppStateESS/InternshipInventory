@@ -220,7 +220,7 @@ function initFacultySelector()
         $("#internship_faculty").prop('disabled', false);
 
         // If a banner id is already set in the hidden field, select it
-        if ($("#internship_faculty_id").val() !== null) {
+        if ($("#internship_faculty_id").val() !== '') {
             selectFaculty($("#internship_faculty_id").val());
         }
     }
