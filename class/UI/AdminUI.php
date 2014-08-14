@@ -1,6 +1,8 @@
 <?php
 
 namespace Intern\UI;
+use Intern\Admin;
+use Intern\Department;
 
 /**
  * Class for handling UI for Admin editing and creation
