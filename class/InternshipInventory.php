@@ -220,7 +220,7 @@ class InternshipInventory {
                     echo json_encode($users);
                     exit();
                 }
-                $view = new AdminUI();
+                $view = new UI\AdminUI();
                 $this->content = $view->display();
                 break;
             case 'pdf':
