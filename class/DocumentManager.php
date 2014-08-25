@@ -3,17 +3,18 @@
 namespace Intern;
 
 /**
- * Document_Manager
+ * DocumentManager
  *
  * A subclass is needed because we need to do a little
  * extra work when a file is submitted. Also, the ID
  * of the new file is necessary to insert a new line in intern_document.
  *
  * @author Robert Bost <bostrt at tux dot appstate dot edu>
+ * @author Jeremy Booker <jbooker at tux dot appstate dot edu>
  */
-PHPWS_Core::initModClass('filecabinet', 'Document_Manager.php');
+\PHPWS_Core::initModClass('filecabinet', 'Document_Manager.php');
 
-class Intern_Document_Manager extends FC_Document_Manager {
+class DocumentManager extends \FC_Document_Manager {
 
     /**
      * @Override FC_Document_Manager::edit()
@@ -33,7 +34,7 @@ class Intern_Document_Manager extends FC_Document_Manager {
         // when InternFolder::documentUpload() was called.
         // Create one and load it.
         if ($this->folder->id == 0) {
-            PHPWS_Core::requireInc('filecabinet', 'defines.php');
+            \PHPWS_Core::requireInc('filecabinet', 'defines.php');
             $folder = new InternFolder();
             $folder->module_created = 'intern';
             $folder->title = 'intern documents';
@@ -44,9 +45,9 @@ class Intern_Document_Manager extends FC_Document_Manager {
             $this->folder = $folder;
         }
 
-        PHPWS_Core::initCoreClass('File.php');
+        \PHPWS_Core::initCoreClass('File.php');
 
-        $form = new PHPWS_FORM;
+        $form = new \PHPWS_FORM;
         $form->addHidden('module', 'intern');
         $form->addHidden('internship', $_REQUEST['internship']);
         $form->addHidden('action', 'post_document_upload');
@@ -104,7 +105,7 @@ class Intern_Document_Manager extends FC_Document_Manager {
         if ($this->document->_errors) {
             $template['ERROR'] = $this->document->printErrors();
         }
-        return PHPWS_Template::process($template, 'filecabinet', 'document_edit.tpl');
+        return \PHPWS_Template::process($template, 'filecabinet', 'document_edit.tpl');
 //        Layout::add(PHPWS_Template::process($template, 'filecabinet', 'document_edit.tpl'));
     }
 
@@ -120,8 +121,8 @@ class Intern_Document_Manager extends FC_Document_Manager {
         // importPost in File_Common
         $result = $this->document->importPost('file_name');
 
-        if (PEAR::isError($result) || !$result) {
-            PHPWS_Error::log($result);
+        if (\PHPWS_Error::isError($result) || !$result) {
+            \PHPWS_Error::log($result);
             $vars['timeout'] = '3';
             $vars['refresh'] = 0;
             javascript('close_refresh', $vars);
@@ -129,15 +130,15 @@ class Intern_Document_Manager extends FC_Document_Manager {
         } elseif ($result) {
             $result = $this->document->save();
 
-            if (PHPWS_Error::logIfError($result)) {
+            if (\PHPWS_Error::logIfError($result)) {
                 $content = dgettext('filecabinet', '<p>Could not upload file to folder. Please check your directory permissions.</p>');
                 $content .= sprintf('<a href="#" onclick="window.close(); return false">%s</a>', dgettext('filecabinet', 'Close this window'));
                 Layout::nakedDisplay($content);
                 exit();
             }
 
-            PHPWS_Core::initModClass('filecabinet', 'File_Assoc.php');
-            FC_File_Assoc::updateTag(FC_DOCUMENT, $this->document->id, $this->document->getTag());
+            //\PHPWS_Core::initModClass('filecabinet', 'File_Assoc.php');
+            //\FC_File_Assoc::updateTag(\FC_DOCUMENT, $this->document->id, $this->document->getTag());
 
             $this->document->moveToFolder();
 
@@ -158,7 +159,7 @@ class Intern_Document_Manager extends FC_Document_Manager {
                 \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, "File saved.");
             } else if ($result) {
                 \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, "File added.");
-            } else if (PHPWS_Error::logIfError($result)) {
+            } else if (\PHPWS_Error::logIfError($result)) {
                 \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, $result->toString());
             }
             \NQ::close();

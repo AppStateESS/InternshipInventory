@@ -53,27 +53,27 @@ class InternDocument extends Model
      */
     public function delete()
     {
-        PHPWS_Core::initModClass('filecabinet', 'Document.php');
+        \PHPWS_Core::initModClass('filecabinet', 'Document.php');
 
-        PHPWS_DB::begin();
+        \PHPWS_DB::begin();
         $db = self::getDb();
         $db->addWhere('id',$this->id);
         $result = $db->delete();
 
-        if(PHPWS_Error::logIfError($result)){
-            PHPWS_DB::rollback();
+        if(\PHPWS_Error::logIfError($result)){
+            \PHPWS_DB::rollback();
             return FALSE;
         }
 
-        $doc = new PHPWS_Document($this->document_fc_id);
+        $doc = new \PHPWS_Document($this->document_fc_id);
         $result = $doc->delete();
 
-        if(PHPWS_Error::logIfError($result)){
-            PHPWS_DB::rollback();
+        if(\PHPWS_Error::logIfError($result)){
+            \PHPWS_DB::rollback();
             return FALSE;
         }
 
-        PHPWS_DB::commit();
+        \PHPWS_DB::commit();
         return TRUE;
     }
 
@@ -82,36 +82,10 @@ class InternDocument extends Model
      */
     public function getDownloadLink()
     {
-        PHPWS_Core::initModClass('filecabinet', 'Document.php');
-        $doc = new PHPWS_Document($this->document_fc_id);
-        return PHPWS_Text::moduleLink($doc->title, 'filecabinet', array('id' => $doc->id));
+        \PHPWS_Core::initModClass('filecabinet', 'Document.php');
+        $doc = new \PHPWS_Document($this->document_fc_id);
+        return \PHPWS_Text::moduleLink($doc->title, 'filecabinet', array('id' => $doc->id));
     }
-
-    /**
-     * Get the icon link to edit this document.
-     */
-    /* Commented out because it is unused.
-    public function getEditLink()
-    {
-        PHPWS_Core::initModClass('filecabinet', 'Document.php');
-        $doc = new PHPWS_Document($this->document_fc_id);
-
-        $vars['document_id'] = $doc->id;
-        $vars['folder_id']   = $doc->folder_id;
-        $vars['action'] = 'upload_document_form';
-        $vars['internship'] = $this->internship_id;
-        $link = new PHPWS_Link(null, 'intern', $vars, true);
-        $link->setSalted(1);
-
-        $js['address'] = $link->getAddress();
-        $js['width'] = 550;
-        $js['height'] = 500;
-
-        $js['label'] =sprintf('<img src="images/mod/filecabinet/edit.png" title="%s" />', dgettext('filecabinet', 'Edit document'));
-
-        return javascript('open_window', $js);
-    }
-    */
 
     /**
      * Get the link to delete this document.
@@ -121,7 +95,7 @@ class InternDocument extends Model
         $vars = array();
         $vars['doc_id'] = $this->id;
         $vars['action'] = 'delete_document';
-        $link = new PHPWS_Link(null, 'intern', $vars);
+        $link = new \PHPWS_Link(null, 'intern', $vars);
 
         $jsVars = array();
         $jsVars['QUESTION'] = 'Are you sure you want to delete this document?';

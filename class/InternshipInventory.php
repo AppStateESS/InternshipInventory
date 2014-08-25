@@ -34,7 +34,7 @@ class InternshipInventory {
         switch ($req) {
             case 'example_form':
                 header('Content-type: application/pdf');
-                readfile(PHPWS_SOURCE_DIR . 'mod/intern/pdf/Internship_Example.pdf');
+                readfile(\PHPWS_SOURCE_DIR . 'mod/intern/pdf/Internship_Example.pdf');
                 exit();
                 break;
 
@@ -231,12 +231,12 @@ class InternshipInventory {
                 $pdf->output();
                 exit;
             case 'upload_document_form':
-                $docManager = new Intern_Document_Manager();
+                $docManager = new DocumentManager();
                 echo $docManager->edit();
                 exit();
                 break;
             case 'post_document_upload':
-                $docManager = new Intern_Document_Manager();
+                $docManager = new DocumentManager();
                 $docManager->postDocumentUpload();
                 break;
             case 'delete_document':
@@ -244,7 +244,7 @@ class InternshipInventory {
                 $doc->delete();
                 \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, 'Document deleted.');
                 \NQ::close();
-                PHPWS_Core::goBack();
+                \PHPWS_Core::goBack();
                 break;
             case 'addEmergencyContact':
                 $ctrl = new Command\AddEmergencyContact();
