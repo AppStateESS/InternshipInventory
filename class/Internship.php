@@ -197,7 +197,7 @@ class Internship {
         $csv['Emergency Contact Name']     = $this->getEmergencyContactName();
         $csv['Emergency Contact Relation'] = $this->getEmergencyContactRelation();
         $csv['Emergency Contact Phone']    = $this->getEmergencyContactPhoneNumber();
-		
+
         // Internship Data
         $csv['Term']                   = Term::rawToRead($this->term, false);
         $csv['Start Date']             = $this->getStartDate(true);
@@ -246,7 +246,7 @@ class Internship {
 		{
 			$csv['Document Uploaded']  = 'No';
 		}
-		
+
         if ($f instanceof Faculty) {
             $csv = array_merge($csv, $f->getCSV());
         } else {
@@ -346,7 +346,7 @@ class Internship {
 			 return $name[0]->getName();
 		}
 	}
-	
+
 		/**
 	 * Get the Emergency Contact's Relationship
 	 */
@@ -359,7 +359,7 @@ class Internship {
 			 return $relationship[0]->getRelation();
 		}
 	}
-	
+
 		/**
 	 * Get the Emergency Contact's Phone Number
 	 */
@@ -372,7 +372,7 @@ class Internship {
 			 return $phone[0]->getPhone();
 		}
 	}
-	
+
     /**
      * Get the Department object associated with this internship.
      */
@@ -568,14 +568,14 @@ class Internship {
 	public function getStreetAddress(){
 		return $this->loc_address;
 	}
-	
+
     /**
      * Get the domestic looking address of agency.
      */
     public function getLocationAddress()
     {
         $add = array();
-        
+
         if (!empty($this->loc_address)) {
             $add[] = $this->loc_address . ',';
         }
@@ -592,14 +592,14 @@ class Internship {
         if(!empty($this->loc_province)){
             $add[] = $this->loc_province . ', ';
         }
-        
+
         if(!empty($this->loc_country)){
             $add[] = $this->loc_country;
         }
-        
+
         return implode(' ', $add);
     }
-    
+
     /**
      * Returns the Department's database id
      * @return integer department id
@@ -708,7 +708,7 @@ class Internship {
     public function getPhoneNumber(){
         return $this->phone;
     }
-	
+
     public function getStudentAddress()
     {
         $studentAddress = "";

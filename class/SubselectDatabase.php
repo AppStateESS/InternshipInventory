@@ -236,6 +236,7 @@ class SubselectDatabase extends PHPWS_DB{
 
             $table = $this->addPrefix($table);
 
+            $GLOBALS['PHPWS_DB']['connection']->loadModule('Reverse', null, true);
             $columns = $GLOBALS['PHPWS_DB']['connection']->tableInfo($table);
 
             if (PHPWS_Error::isError($columns)) {
@@ -888,13 +889,15 @@ class SubselectDatabase extends PHPWS_DB{
         }
 
         $table = $this->getSourceTable();
+        /*
         //$table = $this->tables[0];
         if (strpos($column, '.')) {
             list($table, $column) = explode('.', $column);
             if (!isset($this->table_as[$table])) {
-                $this->addTable($table);
+                //$this->addTable($table);
             }
         }
+        */
 
         if (!empty($as)) {
             if (!PHPWS_DB::allowed($as)) {
@@ -1446,7 +1449,8 @@ class SubselectDatabase extends PHPWS_DB{
         $sql = PHPWS_DB::prefixQuery($sql);
 
         if ($this->_test_mode) {
-            exit($sql);
+            var_dump($sql);
+            //exit($sql);
         }
 
         if ($this->return_query) {

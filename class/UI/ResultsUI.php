@@ -117,6 +117,7 @@ class ResultsUI implements UI {
 
         $pager->db->tables = array();
         $pager->db->addTable('intern_internship', 'fuzzy');
+        $pager->db->addColumn('fuzzy.*');
 
         // If the current user is not a deity and doesn't have the 'all_departments' permission,
         // then add a join to limit the results to just the allowed departments
@@ -203,6 +204,13 @@ class ResultsUI implements UI {
         }
 
         $pager->db->addJoin('LEFT OUTER', 'fuzzy', 'intern_faculty', 'faculty_id', 'id');
+        $pager->db->addColumn('intern_faculty.id', 'faculty_banner_id');
+        $pager->db->addColumn('intern_faculty.last_name');
+
+
+        $pager->db->addJoin('LEFT OUTER', 'fuzzy', 'intern_department', 'department_id', 'id');
+        $pager->db->addColumn('intern_department.id');
+        $pager->db->addColumn('intern_department.name');
 
         // Student level
         if (isset($level)) {
@@ -282,7 +290,7 @@ class ResultsUI implements UI {
         $pager->addSortHeader('state', 'Status');
 
         $pager->joinResult('department_id', 'intern_department', 'id', 'name');
-        $pager->addSortHeader('name', 'Department Name');
+        $pager->addSortHeader('intern_department.name', 'Department Name');
         //var_dump($pager);exit;
 
         //$pager->joinResult('faculty_id', 'intern_faculty', 'id', 'last_name', 'faculty_last_name');
