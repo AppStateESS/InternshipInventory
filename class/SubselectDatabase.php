@@ -19,41 +19,6 @@ class SubselectDatabase extends PHPWS_DB{
         parent::__construct($table);
     }
 
-    /**
-     * Lets you enter a raw select query
-     */
-    public function setSQLQuery($sql)
-    {
-        $this->sql = $sql;
-    }
-
-    public static function touchDB()
-    {
-        if (!PHPWS_DB::isConnected()) {
-            return PHPWS_DB::loadDB();
-        }
-    }
-
-    public function setTestMode($mode = true)
-    {
-        $this->_test_mode = (bool) $mode;
-    }
-
-    public static function isConnected()
-    {
-        if (!empty($GLOBALS['PHPWS_DB']['connection'])) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public static function getDbName($dsn)
-    {
-        $aDSN = explode('/', $dsn);
-        return array_pop($aDSN);
-    }
-
     public static function _updateCurrent($key)
     {
         $GLOBALS['PHPWS_DB']['lib'] = $GLOBALS['PHPWS_DB']['dbs'][$key]['lib'];
@@ -61,81 +26,6 @@ class SubselectDatabase extends PHPWS_DB{
         $GLOBALS['PHPWS_DB']['connection'] = $GLOBALS['PHPWS_DB']['dbs'][$key]['connection'];
         $GLOBALS['PHPWS_DB']['tbl_prefix'] = & $GLOBALS['PHPWS_DB']['dbs'][$key]['tbl_prefix'];
         $GLOBALS['PHPWS_DB']['type'] = & $GLOBALS['PHPWS_DB']['dbs'][$key]['type'];
-    }
-
-/*
-    public static function loadDB($dsn = null, $tbl_prefix = null, $force_reconnect = false, $show_error = true)
-    {
-        if (!isset($dsn)) {
-            if (!defined('PHPWS_DSN')) {
-                exit(_('Cannot load database. DSN not defined.'));
-            }
-
-            $dsn = PHPWS_DSN;
-            if (defined('PHPWS_TABLE_PREFIX')) {
-                $tbl_prefix = PHPWS_TABLE_PREFIX;
-            }
-        }
-
-        $key = substr(md5($dsn . $tbl_prefix), 0, 10);
-        $dbname = PHPWS_DB::getDbName($dsn);
-        $GLOBALS['PHPWS_DB']['key'] = $key;
-
-        if (!empty($GLOBALS['PHPWS_DB']['dbs'][$key]['connection']) && !$force_reconnect) {
-            PHPWS_DB::_updateCurrent($key);
-            return true;
-        }
-
-        $pear_db = new DB;
-        $connect = $pear_db->connect($dsn);
-
-        if (PHPWS_Error::isError($connect)) {
-            if (CLEAR_DSN) {
-                $connect->userinfo = str_replace($dsn, '-- DSN removed --', $connect->userinfo);
-            }
-            PHPWS_Error::log($connect);
-            if ($show_error) {
-                PHPWS_Core::errorPage();
-            } else {
-                return $connect;
-            }
-        }
-
-        PHPWS_DB::logDB(sprintf(_('Connected to database "%s"'), $dbname));
-
-        // Load the factory files
-        $type = $connect->dbsyntax;
-        $result = PHPWS_Core::initCoreClass('DB/' . $type . '.php');
-        if ($result == false) {
-            PHPWS_DB::logDB(_('Failed to connect.'));
-            PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'core', 'PHPWS_DB::loadDB', PHPWS_SOURCE_DIR . 'core/class/DB/' . $type . '.php');
-            PHPWS_Core::errorPage();
-        }
-
-        $class_name = $type . '_PHPWS_SQL';
-        $dblib = new $class_name;
-        if (!empty($dblib->portability)) {
-            $connect->setOption('portability', $dblib->portability);
-        }
-
-        $GLOBALS['PHPWS_DB']['dbs'][$key]['lib'] = $dblib;
-        $GLOBALS['PHPWS_DB']['dbs'][$key]['dsn'] = $dsn;
-        $GLOBALS['PHPWS_DB']['dbs'][$key]['connection'] = $connect;
-        $GLOBALS['PHPWS_DB']['dbs'][$key]['tbl_prefix'] = $tbl_prefix;
-        $GLOBALS['PHPWS_DB']['dbs'][$key]['type'] = $type;
-
-        PHPWS_DB::_updateCurrent($key);
-
-        return true;
-    }
-*/
-    public static function logDB($sql)
-    {
-        if (!defined('LOG_DB') || LOG_DB != true) {
-            return;
-        }
-
-        PHPWS_Core::log($sql, 'db.log');
     }
 
     public static function query($sql, $prefix = true)
@@ -166,51 +56,6 @@ class SubselectDatabase extends PHPWS_DB{
             return null;
         }
     }
-/*
-    public function inDatabase($table, $column = null)
-    {
-        $table = PHPWS_DB::addPrefix(strip_tags($table));
-
-        PHPWS_DB::touchDB();
-        static $database_info = null;
-
-        $column = trim($column);
-        $answer = false;
-
-        if (!empty($database_info[$table])) {
-            if (empty($column)) {
-                return true;
-            } else {
-                return in_array($column, $database_info[$table]);
-            }
-        }
-
-        $result = $GLOBALS['PHPWS_DB']['connection']->tableInfo($table);
-        if (PHPWS_Error::isError($result)) {
-            if ($result->getCode() == DB_ERROR_NEED_MORE_DATA) {
-                return false;
-            } else {
-                return $result;
-            }
-        }
-
-        if (empty($column)) {
-            return true;
-        }
-
-        foreach ($result as $colInfo) {
-            $list_columns[] = $colInfo['name'];
-
-            if ($colInfo['name'] == $column) {
-                $answer = true;
-            }
-        }
-
-        $database_info[$table] = $list_columns;
-
-        return $answer;
-    }
-*/
     /**
      * Gets information on all the columns in the current table
      */
@@ -307,14 +152,6 @@ class SubselectDatabase extends PHPWS_DB{
         $table = PHPWS_DB::addPrefix($table);
         return in_array($table, $tables);
     }
-
-/*
-    public static function listTables()
-    {
-        PHPWS_DB::touchDB();
-        return $GLOBALS['PHPWS_DB']['connection']->getlistOf('tables');
-    }
-*/
 
     public function listDatabases()
     {
@@ -1450,7 +1287,7 @@ class SubselectDatabase extends PHPWS_DB{
 
         if ($this->_test_mode) {
             var_dump($sql);
-            //exit($sql);
+            exit($sql);
         }
 
         if ($this->return_query) {
