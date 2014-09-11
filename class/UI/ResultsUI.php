@@ -204,12 +204,11 @@ class ResultsUI implements UI {
         }
 
         $pager->db->addJoin('LEFT OUTER', 'fuzzy', 'intern_faculty', 'faculty_id', 'id');
-        $pager->db->addColumn('intern_faculty.id', 'faculty_banner_id');
-        $pager->db->addColumn('intern_faculty.last_name');
+        //$pager->db->addColumn('intern_faculty.id', 'faculty_banner_id');
+        //$pager->db->addColumn('intern_faculty.last_name', 'faculty_last_name');
 
 
         $pager->db->addJoin('LEFT OUTER', 'fuzzy', 'intern_department', 'department_id', 'id');
-        $pager->db->addColumn('intern_department.id');
         $pager->db->addColumn('intern_department.name');
 
         // Student level
