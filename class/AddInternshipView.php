@@ -5,16 +5,29 @@ namespace Intern;
 /*
  * View for interface to Add an Internship
  */
-class AddInternshipView {
-    
-    public function __construct()
+class AddInternshipView implements \View {
+
+    private $terms;
+    private $departments;
+
+    public function __construct(Array $terms, Array $departments)
     {
-        
+        $this->terms = $terms;
+        $this->departments = $departments;
     }
-    
-    public function show()
+
+    public function render()
     {
-        $tpl['TITLE'] = 'Add Internship';
+        $tpl = array();
+
+        $tpl['DEPARTMENTS'] = $this->departments;
+
+        return \PHPWS_Template::process($tpl, 'intern', 'addInternship.tpl');
+    }
+
+    public function getContentType()
+    {
+        return 'text/html';
     }
 }
 ?>

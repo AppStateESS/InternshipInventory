@@ -1,7 +1,8 @@
 <?php
 
 namespace Intern\Command;
-use \Intern;
+use \Intern\Term;
+use \Intern\Department;
 
 /*
  * ShowAddInternship
@@ -24,10 +25,19 @@ class ShowAddInternship {
             \PHPWS_Core::home();
         }
 
-        $terms = Intern\Term::getFutureTermsAssoc();
-        $departments = array();
+        // Get list of available (future) terms
+        $terms = Term::getFutureTermsAssoc();
 
+        // Get list of departments for the current user
+        // If user is a Deity, then get all departments
+        if (\Current_User::isDeity()) {
+            $departments = \Intern\Department::getDepartmentsAssoc();
+        } else {
+            $departments = \Intern\Department::getDepartmentsAssocForUsername(\Current_User::getUsername());
+        }
 
-        $view = new \Intern\AddInternshipView();
+        $view = new \Intern\AddInternshipView($terms, $departments);
+
+        return new \Response($view);
     }
 }
