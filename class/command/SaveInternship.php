@@ -2,17 +2,17 @@
 
 /**
  * Controller class to save changes (on create or update) to an Internship
- * 
+ *
  * @author jbooker
  * @package intern
  */
 class SaveInternship {
-    
+
     public function __construct()
     {
-        
+
     }
-    
+
     public function execute()
     {
         PHPWS_Core::initModClass('intern', 'Internship.php');
@@ -50,7 +50,7 @@ class SaveInternship {
             NQ::close();
             return PHPWS_Core::reroute($url);
         }
-        
+
         // Sanity check student email
         if(isset($_REQUEST['student_email']) && preg_match("/@/", $_REQUEST['student_email'])){
             $url = 'index.php?module=intern&action=edit_internship&missing=student_email';
@@ -74,7 +74,7 @@ class SaveInternship {
 			NQ::close();
 			return PHPWS_Core::reroute($url);
 		}
-		
+
         // Course start date must be before end date
         if(!empty($_REQUEST['start_date']) && !empty($_REQUEST['end_date'])){
             $start = strtotime($_REQUEST['start_date']);
@@ -93,7 +93,7 @@ class SaveInternship {
                 return PHPWS_Core::reroute($url);
             }
         }
-        
+
 		// Sanity check internship location zip
 		if((isset($_REQUEST['loc_zip']) && $_REQUEST['loc_zip'] != "") && (strlen($_REQUEST['loc_zip']) != 5 || !is_numeric($_REQUEST['loc_zip']))) {
 			$url = 'index.php?module=intern&action=edit_internship&missing=loc_zip';
@@ -105,7 +105,7 @@ class SaveInternship {
 			NQ::close();
 			return PHPWS_Core::reroute($url);
 		}
-		
+
 		// Sanity check agency zip
 		if((isset($_REQUEST['agency_zip']) && $_REQUEST['agency_zip'] != "") && (strlen($_REQUEST['agency_zip']) != 5 || !is_numeric($_REQUEST['agency_zip']))) {
 			$url = 'index.php?module=intern&action=edit_internship&missing=agency_zip';
@@ -117,7 +117,7 @@ class SaveInternship {
 			NQ::close();
 			return PHPWS_Core::reroute($url);
 		}
-        
+
 		// Sanity check supervisor's zip
 		if((isset($_REQUEST['agency_sup_zip']) && $_REQUEST['agency_sup_zip'] != "") && (strlen($_REQUEST['agency_sup_zip']) != 5 || !is_numeric($_REQUEST['agency_sup_zip']))) {
 			$url = 'index.php?module=intern&action=edit_internship&missing=agency_sup_zip';
@@ -129,7 +129,7 @@ class SaveInternship {
 			NQ::close();
 			return PHPWS_Core::reroute($url);
 		}
-		
+
 		// Sanity check course number
 		if((isset($_REQUEST['course_no']) && $_REQUEST['course_no'] != '') && (strlen($_REQUEST['course_no']) > 20 || !is_numeric($_REQUEST['course_no']))) {
 			$url = 'index.php?module=intern&action=edit_internship&missing=course_no';
@@ -167,7 +167,7 @@ class SaveInternship {
             $agency->state = $_REQUEST['agency_state'];
             $agency->province = $_REQUEST['agency_province'];
             $agency->country = $_REQUEST['agency_country'];
-            
+
             $agency->supervisor_state = $_REQUEST['agency_sup_state'];
             $agency->supervisor_province = $_REQUEST['agency_sup_province'];
             $agency->supervisor_country = $_REQUEST['agency_sup_country'];
@@ -221,8 +221,13 @@ class SaveInternship {
         $i->department_id = $_REQUEST['department'];
         $i->start_date = !empty($_REQUEST['start_date']) ? strtotime($_REQUEST['start_date']) : 0;
         $i->end_date = !empty($_REQUEST['end_date']) ? strtotime($_REQUEST['end_date']) : 0;
-        $credits = (int) $_REQUEST['credits'];
-        $i->credits = $credits ? $credits : null;
+
+        // Credit hours must be an integer (because of database column type),
+        // so round the credit hours to nearest int
+        if (isset($_REQUEST['credits'])) {
+            $i->credits = round($_REQUEST['credits']);
+        }
+
         $avg_hours_week = (int) $_REQUEST['avg_hours_week'];
         $i->avg_hours_week = $avg_hours_week ? $avg_hours_week : null;
         $i->paid = $_REQUEST['payment'] == 'paid';
@@ -234,20 +239,20 @@ class SaveInternship {
         if(isset($_REQUEST['experience_type'])){
             $i->setExperienceType($_REQUEST['experience_type']);
         }
-        
+
         // Set fields depending on domestic/international
         if($_REQUEST['location'] == 'domestic'){
             // Set Flags
             $i->domestic      = 1;
             $i->international = 0;
-            
+
             // Set state
             if ($_POST['loc_state'] != '-1') {
                 $i->loc_state = strip_tags($_POST['loc_state']);
             } else {
                 $i->loc_state = null;
             }
-            
+
             // Clear province, country
             $i->loc_province  = '';
             $i->loc_country   = '';
@@ -255,11 +260,11 @@ class SaveInternship {
             // Set flags
             $i->domestic      = 0;
             $i->international = 1;
-            
+
             // Set province, country
             $i->loc_province = $_POST['loc_province'];
             $i->loc_country = strip_tags($_POST['loc_country']);
-            
+
             // Clear state
             $i->loc_state = null;
         }
@@ -279,25 +284,25 @@ class SaveInternship {
         $i->course_no = strip_tags($_POST['course_no']);
         $i->course_sect = strip_tags($_POST['course_sect']);
         $i->course_title = strip_tags($_POST['course_title']);
-        
+
         // Multipart course
         if(isset($_POST['multipart'])){
             $i->multi_part = 1;
         }else{
             $i->multi_part = 0;
         }
-        
+
         if(isset($_POST['multipart']) && isset($_POST['secondary_part'])){
             $i->secondary_part = 1;
         }else{
             $i->secondary_part = 0;
         }
-        
+
         // Corequisite Course Info
         if (isset($_POST['corequisite_course_num'])) {
         	$i->corequisite_number = $_POST['corequisite_course_num'];
         }
-        
+
         if (isset($_POST['corequisite_course_sect'])) {
         	$i->corequisite_section = $_POST['corequisite_course_sect'];
         }
@@ -306,10 +311,10 @@ class SaveInternship {
         $i->first_name = $_REQUEST['student_first_name'];
         $i->middle_name = $_REQUEST['student_middle_name'];
         $i->last_name = $_REQUEST['student_last_name'];
-        
+
         $i->setFirstNameMetaphone($_REQUEST['student_first_name']);
         $i->setLastNameMetaphone($_REQUEST['student_last_name']);
-        
+
         $i->banner = $_REQUEST['banner'];
         $i->phone = $_REQUEST['student_phone'];
         $i->email = $_REQUEST['student_email'];
@@ -325,7 +330,7 @@ class SaveInternship {
             $i->grad_prog = $_REQUEST['grad_prog'];
             $i->ugrad_major = null;
         }
-        
+
         $i->gpa = $_REQUEST['student_gpa'];
         $i->campus = $_REQUEST['campus'];
 
@@ -380,7 +385,7 @@ class SaveInternship {
         }
 
         PHPWS_DB::commit();
-        
+
         /***************************
          * State/Workflow Handling *
         ***************************/
@@ -442,7 +447,7 @@ class SaveInternship {
         if(isset($_REQUEST['student_level']) && $_REQUEST['student_level'] == -1){
             $vals[] = 'student_level';
         }
-        
+
         if(isset($_REQUEST['student_level']) && $_REQUEST['student_level'] == 'ugrad' &&
                 (!isset($_REQUEST['ugrad_major']) || $_REQUEST['ugrad_major'] == -1)){
             $vals[] = 'ugrad_major';
