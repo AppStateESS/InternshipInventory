@@ -20,7 +20,6 @@ class AddInternshipView implements \View {
     {
         $tpl = array();
 
-        $tpl['DEPARTMENTS'] = $this->departments;
 
         return \PHPWS_Template::process($tpl, 'intern', 'addInternship.tpl');
     }
