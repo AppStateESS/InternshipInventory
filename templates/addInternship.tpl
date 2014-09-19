@@ -30,7 +30,7 @@
             <div class="btn-group" data-toggle="buttons">
                 <!-- BEGIN TERMS -->
                 <label class="btn btn-default">
-                    <input type="radio" name="term" id="term">{TERM_TEXT}
+                    <input type="radio" name="term" value="{TERM}">{TERM_TEXT}
                 </label>
                 <!-- END TERMS -->
             </div>
