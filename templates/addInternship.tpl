@@ -1,4 +1,5 @@
-<form role="form">
+<form role="form" class="form-protected" autocomplete="off" action="index.php" method="post">
+<input type="hidden" name="action" value="createInternship">
 
 <div class="row">
     <div class="col-sm-12 col-md-6 col-md-push-3">
@@ -10,7 +11,7 @@
                     <div class="col-sm-12 col-md-10 col-md-push-1">
                         <div class="form-group">
                             <label for="student_id" class="sr-only">Banner ID, User name, or Full Name</label>
-                            <input type="text" id="student_id" class="form-control input-lg" placeholder="Banner ID, User name, or Full Name" autofocus>
+                            <input type="text" id="student_id" class="form-control input-lg" placeholder="Banner ID, User name, or Full Name" autocomplete="off" autofocus>
                         </div>
                     <div class="form-group">
                         <button type="button" id="student-search-btn" class="btn btn-default pull-right">Search</button>
