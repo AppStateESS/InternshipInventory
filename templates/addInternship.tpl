@@ -1,5 +1,6 @@
 <form role="form" class="form-protected" autocomplete="off" action="index.php" method="post">
-<input type="hidden" name="action" value="createInternship">
+<input type="hidden" name="module" value="intern">
+<input type="hidden" name="action" value="AddInternship">
 
 <div class="row">
     <div class="col-sm-12 col-md-6 col-md-push-3">
