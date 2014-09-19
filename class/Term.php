@@ -47,11 +47,10 @@ class Term extends Model
     {
 		$currentTerm = self::timeToTerm(time());
 		$db = self::getDb();
-		$db->addWhere('intern_term.term', $currentTerm, '>=');
-		$db->addOrder('term desc');
+		$db->addWhere('intern_term.term', $currentTerm, '>');
+		$db->addOrder('term asc');
         $terms = $db->getObjects('Intern\Term');
         $readables = array();
-        $readables[-1] = 'All';
 
         foreach($terms as $t){
             // Ex. array(20111 => "Spring 2011");

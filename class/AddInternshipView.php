@@ -20,6 +20,13 @@ class AddInternshipView implements \View {
     {
         $tpl = array();
 
+        $tpl['DEPARTMENTS'] = $this->departments;
+
+
+        // Translate terms into proper array format for template row repeat
+        foreach ($this->terms as $term => $text) {
+            $tpl['TERMS'][] = array('TERM' => $term, 'TERM_TEXT' => $text);
+        }
 
         return \PHPWS_Template::process($tpl, 'intern', 'addInternship.tpl');
     }
