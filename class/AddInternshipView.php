@@ -20,8 +20,10 @@ class AddInternshipView implements \View {
     {
         $tpl = array();
 
-        $tpl['DEPARTMENTS'] = $this->departments;
-
+        // Translate departments into proper array format for template row repeat
+        foreach ($this->departments as $id => $name) {
+            $tpl['DEPARTMENTS'][] = array('DEPT_ID' => $id, 'DEPT_NAME' => $name);
+        }
 
         // Translate terms into proper array format for template row repeat
         foreach ($this->terms as $term => $text) {

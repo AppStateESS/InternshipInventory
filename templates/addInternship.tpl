@@ -58,7 +58,9 @@
         <div class="form-group">
             <label for="department">Department</label>
             <select id="department" class="form-control">
-                <option>My Department</option>
+                <!-- BEGIN DEPARTMENTS -->
+                <option value="{DEPT_ID}">{DEPT_NAME}</option>
+                <!-- END DEPARTMENTS -->
             </select>
         </div>
     </div>
