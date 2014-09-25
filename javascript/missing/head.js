@@ -20,7 +20,6 @@ $(document).ready(function(){
     // Handler to un-highlight a highlighted field when it is updated
     function highlightHandler(field){
         if($(field).hasClass('has-error')){
-        	console.log('needs to be cleared');
             // Field is highlighted and not empty, so clear the error class
             clearHighlight(field);
         }
