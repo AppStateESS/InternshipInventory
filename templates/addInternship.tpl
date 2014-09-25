@@ -1,4 +1,4 @@
-<form role="form" class="form-protected" autocomplete="off" action="index.php" method="post">
+<form role="form" id="newInternshipForm" class="form-protected" autocomplete="off" action="index.php" method="post">
 <input type="hidden" name="module" value="intern">
 <input type="hidden" name="action" value="AddInternship">
 
@@ -82,3 +82,14 @@
     </div>
 </div>
 </form>
+<script type="text/javascript">
+$(document).ready(function(){
+	// Event handler for clicking the submit button
+    $('#newInternshipForm').submit(function(){
+        // Disable the button
+        $('button[type="submit"]').prop('disabled','disabled');
+
+        $('button[type="submit"]').html('<i class="fa fa-spinner fa-spin"></i> Saving...');
+    });
+});
+</script>
