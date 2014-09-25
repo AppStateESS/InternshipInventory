@@ -49,6 +49,7 @@ class InternshipInventory {
             case 'AddInternship':
                 $ctrl = new Command\AddInternship();
                 $ctrl->execute();
+                break;
             case 'SaveInternship':
                 $ctrl = new Command\SaveInternship();
                 $ctrl->execute();

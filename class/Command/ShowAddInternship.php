@@ -36,7 +36,11 @@ class ShowAddInternship {
             $departments = \Intern\Department::getDepartmentsAssocForUsername(\Current_User::getUsername());
         }
 
-        $view = new \Intern\AddInternshipView($terms, $departments);
+        $requestVars = $_GET;
+        unset($requestVars['module']);
+        unset($requestVars['action']);
+
+        $view = new \Intern\AddInternshipView($terms, $departments, $requestVars);
 
         return new \Response($view);
     }
