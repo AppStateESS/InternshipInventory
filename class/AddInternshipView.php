@@ -79,21 +79,6 @@ class AddInternshipView implements \View {
         return \PHPWS_Template::process($tpl, 'intern', 'addInternship.tpl');
     }
 
-    public function getPreviousValueTags()
-    {
-        $tags = array();
-
-        if (empty($this->previousValues)) {
-            return $tags;
-        }
-
-        foreach ($this->previousValues as $key => $value) {
-            $tags[$key . '_prev'] = $value;
-        }
-
-        return $tags;
-    }
-
     public function getContentType()
     {
         return 'text/html';
