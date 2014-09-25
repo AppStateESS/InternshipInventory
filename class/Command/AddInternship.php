@@ -26,23 +26,16 @@ class AddInternship {
             \PHPWS_Core::home();
         }
 
+        // Get a list of any missing input the user didn't fill in
         $missingFieldList = $this->checkForMissingInput();
 
         // If there are missing fields, redirect to the add internship interface
         // and highlight the fields
         if(!empty($missingFieldList)) {
-            $url = 'index.php?module=intern&action=ShowAddInternship&missing=' . implode('+', $missingFieldList);
-
-            // Restore the values in the fields the user already entered
-            foreach ($_POST as $key => $val){
-                if($key != 'module' && $key != 'action') {
-                    $url .= "&$key=$val";
-                }
-            }
-            \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "Please complete the highlighted fields.");
-            \NQ::close();
-            return \PHPWS_Core::reroute($url);
+            $this->redirectToForm($missingFieldList, $_POST);
         }
+
+        // Check that the BannerId exists
 
     }
 
@@ -86,17 +79,20 @@ class AddInternship {
     /**
      * Redirect to the add internship interface and highlight any missing fields
      */
-    private function redirectToForm($missingFields)
+    private function redirectToForm(Array $missingFields, Array $previousValues)
     {
         $url = 'index.php?module=intern&action=ShowAddInternship';
 
-        if(!empty($missingFieldList)) {
-            $url .= '&missing=' . implode('+', $missingFieldList);
+        if(!empty($missingFields)) {
+            $url .= '&missing=' . implode('+', $missingFields);
             \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "Please complete the highlighted fields.");
         }
 
+        unset($previousValues['module']);
+        unset($previousValues['action']);
+
         // Restore the values in the fields the user already entered
-        foreach ($_POST as $key => $val){
+        foreach ($previousValues as $key => $val){
             if($key != 'module' && $key != 'action') {
                 $url .= "&$key=$val";
             }
