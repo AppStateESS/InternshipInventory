@@ -36,7 +36,10 @@ class AddInternship {
         }
 
         // Check that the BannerId exists
-
+        // TODO
+        
+        // Create a new internship object
+        $intern = new Internship();
     }
 
     /**

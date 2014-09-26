@@ -98,8 +98,59 @@ class Internship {
     /**
      * Constructs a new Internship object.
      */
-    public function __construct(){
+    public function __construct(Student $student, $term, $location, Department $department, Agency $agency){
 
+        // Initialize student data
+        $this->initalizeStudentData($student);
+
+        // Initialize basic data
+        $this->term = $term;
+
+        // Set basic location data
+        // TODO
+
+        // Get department id
+        $this->department_id = $department->getId();
+
+        // Get agency id
+        $this->agency_id = $agency->getId();
+
+        // Set initial state
+        $this->setState(WorkflowStateFactory::getState('CreationState'));
+
+
+        // Set initial OIED certification
+        //TODO
+        //$this->setOiedCertified(false);
+
+    }
+
+    /**
+     * Copies student data from Student object to this Internship.
+     * @param Student $student
+     */
+    private function initalizeStudentData(Student $student)
+    {
+        $this->banner       = $student->getStudentId();
+        $this->first_name   = $student->getFirstName();
+        $this->last_name    = $student->getLastName();
+
+        // TODO
+        //$this->level = ;
+        //$this->grad_prog = ;
+        //$this->ugrad_major = ;
+        //$this->gpa = ;
+        //$this->campus = ;
+
+        // Contact Info
+        //$this->phone = ;
+        //$this->email = ;
+
+        // Student address
+        //$this->student_address = ;
+        //$this->student_city = ;
+        //$this->student_state = ;
+        //$this->student_zip = ;
     }
 
     /**
