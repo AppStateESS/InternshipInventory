@@ -205,7 +205,7 @@ class InternshipContractPdfView {
         $this->pdf->setXY(133, 116);
         $this->pdf->cell(71, 5, $a->getName());
 
-        $agency_address = $a->getAddress();
+        $agency_address = $a->getStreetAddress();
 
         //TODO: make this smarter so it adds the line break between words
         if(strlen($agency_address) < 49){

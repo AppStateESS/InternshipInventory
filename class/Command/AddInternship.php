@@ -2,6 +2,11 @@
 
 namespace Intern\Command;
 
+use Intern\DepartmentFactory;
+use Intern\Agency;
+
+use Intern\DatabaseStorage;
+
 /**
  * AddInternship Class
  *
@@ -35,11 +40,21 @@ class AddInternship {
             $this->redirectToForm($missingFieldList, $_POST);
         }
 
-        // Check that the BannerId exists
+        // Check that the BannerId looks valid
         // TODO
-        
+
+        // Create the student object
+        // TODO
+
+        // Get the department ojbect
+        $department = DepartmentFactory::getDepartmentById($_POST['department']);
+
+        // Create the agency object
+        $agency = new Agency($_POST['agency']);
+        DatabaseStorage::save($agency);
+
         // Create a new internship object
-        $intern = new Internship();
+        //$intern = new Internship($student, $term, $location, $department, $agencyName);
     }
 
     /**

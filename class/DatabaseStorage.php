@@ -14,7 +14,7 @@ class DatabaseStorage {
      * Saves the given object to the database.
      * @param Object $obj
      */
-    public static function save($obj)
+    public static function save(DbStorable $obj)
     {
         $db = new \PHPWS_DB($obj->getTableName());
 

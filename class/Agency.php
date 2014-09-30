@@ -10,7 +10,9 @@ namespace Intern;
  * @author Robert Bost <bostrt at tux dot appstate dot edu>
  * @package Intern
  */
-class Agency extends Model {
+class Agency implements DbStorable {
+
+    public $id;
 
     public $name;
 
@@ -37,16 +39,18 @@ class Agency extends Model {
     public $supervisor_country;
     public $address_same_flag;
 
-    /**
-     * @Override Model::getDb
-     */
-    public function getDb()
+    public function __construct($name)
     {
-        return new \PHPWS_DB('intern_agency');
+        $this->name = $name;
+    }
+
+    public static function getTableName()
+    {
+        return 'intern_agency';
     }
 
     /**
-     * @Override Model::getCSV
+     *
      */
     public function getCSV()
     {
@@ -96,7 +100,7 @@ class Agency extends Model {
     /**
      * Get the domestic looking address of agency.
      */
-    public function getAddress()
+    public function getStreetAddress()
     {
         $add = array();
 
@@ -124,14 +128,6 @@ class Agency extends Model {
         return implode(' ', $add);
     }
 
-
-    /**
-     * Get the street address of the agency
-     */
-    public function getStreetAddress()
-    {
-        return $this->address;
-    }
 
     /**
      * Get the domestic looking address of agency.
@@ -164,9 +160,79 @@ class Agency extends Model {
         }
     }
 
+    public function extractVars()
+    {
+        $vars = array();
+
+        $vars['id']         = $this->getId();
+        $vars['name']       = $this->getName();
+        $vars['address']    = $this->getAddress();
+        $vars['city']       = $this->getCity();
+        $vars['state']      = $this->getState();
+        $vars['zip']        = $this->getZip();
+        $vars['province']   = $this->getProvince();
+        $vars['country']    = $this->getCountry();
+        $vars['phone']      = $this->getPhoneNumber();
+        $vars['supervisor_first_name']  = $this->getSupervisorFirstName();
+        $vars['supervisor_last_name']   = $this->getSupervisorLastName();
+        $vars['supervisor_title']       = $this->getSupervisorTitle();
+        $vars['supervisor_phone']       = $this->getSupervisorPhoneNumber();
+        $vars['supervisor_email']       = $this->getSupervisorEmail();
+        $vars['supervisor_fax']         = $this->getSupervisorFaxNumber();
+        $vars['supervisor_address']     = $this->getSupervisorAddress();
+        $vars['supervisor_city']        = $this->getSupervisorCity();
+        $vars['supervisor_state']       = $this->getSupervisorState();
+        $vars['supervisor_zip']         = $this->getSupervisorZip();
+        $vars['supervisor_province']    = $this->getSupervisorProvince();
+        $vars['supervisor_country']     = $this->getSupervisorCountry();
+        $vars['address_same_flag']      = $this->getAddressSameFlag();
+
+        return $vars;
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
     public function getName()
     {
         return $this->name;
+    }
+
+    public function getAddress()
+    {
+        return $this->address;
+    }
+
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    public function getZip()
+    {
+        return $this->zip;
+    }
+
+    public function getProvince()
+    {
+        return $this->province;
+    }
+
+    public function getCountry()
+    {
+        return $this->country;
     }
 
     public function getPhoneNumber()
@@ -174,14 +240,19 @@ class Agency extends Model {
         return $this->phone;
     }
 
+    public function getSupervisorFirstName()
+    {
+        return $this->supervisor_first_name;
+    }
+
+    public function getSupervisorLastName()
+    {
+        return $this->supervisor_last_name;
+    }
+
     public function getSupervisorTitle()
     {
         return $this->supervisor_title;
-    }
-
-    public function getSupervisorEmail()
-    {
-        return $this->supervisor_email;
     }
 
     public function getSupervisorPhoneNumber()
@@ -189,11 +260,50 @@ class Agency extends Model {
         return $this->supervisor_phone;
     }
 
+    public function getSupervisorEmail()
+    {
+        return $this->supervisor_email;
+    }
+
     public function getSupervisorFaxNumber()
     {
         return $this->supervisor_fax;
     }
 
+    public function getSupervisorAddress()
+    {
+        return $this->supervisor_address;
+    }
+
+    public function getSupervisorCity()
+    {
+        return $this->supervisor_city;
+    }
+
+    public function getSupervisorState()
+    {
+        return $this->supervisor_state;
+    }
+
+    public function getSupervisorZip()
+    {
+        return $this->supervisor_zip;
+    }
+
+    public function getSupervisorProvince()
+    {
+        return $this->supervisor_province;
+    }
+
+    public function getSupervisorCountry()
+    {
+        return $this->supervisor_country;
+    }
+
+    public function getAddressSameFlag()
+    {
+        return $this->address_same_flag;
+    }
 }
 
 ?>
