@@ -35,6 +35,27 @@ class Student {
     private $address2;
 
     // City, state, zip?
+
+
+    public function setStudentId($studentId) {
+        $this->studentId = $studentId;
+    }
+
+    public function setUsername($username) {
+        $this->username = $username;
+    }
+
+    public function setFirstName($name) {
+        $this->firstName = $name;
+    }
+
+    public function setMiddleName($name) {
+        $this->middleName = $name;
+    }
+
+    public function setLastName($name) {
+        $this->lastName = $name;
+    }
 }
 
 ?>

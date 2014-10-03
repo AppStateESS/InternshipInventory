@@ -8,7 +8,8 @@ $settings = array('registrarEmail'              => null,
                   'internationalOfficeEmail'    => null,
                   'fromEmail'                   => null,
                   'emailDomain'                 => null,
-                  'systemName'                  => 'Internship Inventory'
+                  'systemName'                  => 'Internship Inventory',
+                  'wsdlUri'                     => ''
             );
 
 ?>
