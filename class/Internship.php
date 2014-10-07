@@ -107,7 +107,15 @@ class Internship {
         $this->term = $term;
 
         // Set basic location data
-        // TODO
+        if($location == 'domestic') {
+            $this->setDomestic(true);
+            $this->setInternational(false);
+        } else if($location == 'international') {
+            $this->setDomestic(false);
+            $this->setInternational(true);
+        } else {
+            throw new \InvalidArgumentException('Invalid location.');
+        }
 
         // Get department id
         $this->department_id = $department->getId();
@@ -118,11 +126,8 @@ class Internship {
         // Set initial state
         $this->setState(WorkflowStateFactory::getState('CreationState'));
 
-
         // Set initial OIED certification
-        //TODO
-        //$this->setOiedCertified(false);
-
+        $this->setOiedCertified(false);
     }
 
     /**
@@ -132,18 +137,20 @@ class Internship {
     private function initalizeStudentData(Student $student)
     {
         $this->banner       = $student->getStudentId();
+        $this->email        = $student->getUsername();
         $this->first_name   = $student->getFirstName();
+        $this->middle_name  = $student->getMiddleName();
         $this->last_name    = $student->getLastName();
 
         // TODO
-        //$this->level = ;
+        $this->level = $student->getLevel();
+        $this->campus = $student->getCampus();
         //$this->grad_prog = ;
         //$this->ugrad_major = ;
         //$this->gpa = ;
-        //$this->campus = ;
 
         // Contact Info
-        //$this->phone = ;
+        $this->phone = $student->getPhone();
         //$this->email = ;
 
         // Student address
@@ -490,6 +497,16 @@ class Internship {
     }
 
     /**
+     * Sets the domestic location flag.
+     *
+     * @param bool $domestic
+     */
+    public function setDomestic($domestic)
+    {
+        $this->domestic = $domestic;
+    }
+
+    /**
      * Is this internship International?
      *
      * @return bool True if this is an international internship, false otherwise.
@@ -499,12 +516,35 @@ class Internship {
         return $this->international;
     }
 
+    /**
+     * Sets the international flag.
+     *
+     * @param bool $international
+     */
+    public function setInternational($international)
+    {
+        $this->international = $international;
+    }
+
     public function isOiedCertified()
     {
         if($this->oied_certified == 1){
             return true;
         }else{
             return false;
+        }
+    }
+
+    /**
+     * Sets whether or not this internship is OIED certified
+     *
+     * @param boolean $certified
+     */
+    public function setOiedCertified($certified) {
+        if($certified){
+            $this->oied_certified = 1;
+        }else{
+            $this->oied_certified = 0;
         }
     }
 

@@ -2,6 +2,8 @@
 
 namespace Intern;
 
+use \Database;
+
 class InternshipFactory {
 
     /**
@@ -23,22 +25,14 @@ class InternshipFactory {
             throw new \InvalidArgumentException('Internship ID must be greater than zero.');
         }
 
-        $internship = new Internship;
+        $db = Database::newDB();
+        $pdo = $db->getPDO();
 
-        $db = new \PHPWS_DB('intern_internship');
-        $db->addWhere('id', $id);
-        $result = $db->loadObject($internship);
+        $stmt = $pdo->prepare("SELECT * FROM intern_internship WHERE id = :id");
+        $stmt->execute(array('id' => $id));
+        $stmt->setFetchMode(\PDO::FETCH_CLASS, 'Intern\InternshipRestored');
 
-        if (\PHPWS_Error::logIfError($result)) {
-            throw new \Exception($result->toString());
-        }
-
-        if($internship->getId() == 0){
-            \PHPWS_Core::initModClass('intern', 'exception/InternshipNotFoundException.php');
-            throw new InternshipNotFoundException('Could not locate the requested internship.');
-        }
-
-        return $internship;
+        return $stmt->fetch();
     }
 }
 

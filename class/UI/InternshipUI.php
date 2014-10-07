@@ -36,6 +36,11 @@ class InternshipUI implements UI {
         $tpl = array();
 
         // TODO: Make sure an 'internship_id' key is set on the request
+        if(!isset($_REQUEST['internship_id'])) {
+            \NQ::simple('intern', NotifyUI::ERROR, 'No internship ID was given.');
+            \NQ::close();
+            \PHPWS_Core::reroute('index.php');
+        }
 
         /* Attempting to edit internship */
         try{

@@ -45,13 +45,8 @@ class AddInternship {
         // Check that the student Id looks valid
         $studentId = $_POST['studentId'];
 
-        //$student = StudentProviderFactory::getProvider()->getStudent($studentId);
-        $student = StudentProviderFactory::getProvider()->getStudent($studentId);
-
-        var_dump($student);exit;
-
         // Create the student object
-        // TODO
+        $student = StudentProviderFactory::getProvider()->getStudent($studentId);
 
         // Get the department ojbect
         $department = DepartmentFactory::getDepartmentById($_POST['department']);
@@ -60,8 +55,25 @@ class AddInternship {
         $agency = new Agency($_POST['agency']);
         DatabaseStorage::save($agency);
 
+        // Get the term
+        // TODO Double check that this is set and that it is reasonable
+        $term = $_POST['term'];
+
+        // Get the location
+        //TODO double check that this is set and is reasonable
+        $location = $_POST['location'];
+
         // Create a new internship object
         $intern = new Internship($student, $term, $location, $department, $agency);
+
+        // Save it!!
+        $intern->save();
+
+        // Show a success notice and redirect to the edit page
+        \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, "Created internship for {$intern->getFullName()}");
+        \NQ::close();
+
+        return \PHPWS_Core::reroute('index.php?module=intern&action=ShowInternship&internship_id=' . $intern->getId());
     }
 
     /**
@@ -84,7 +96,7 @@ class AddInternship {
         }
 
         // Check Locations
-        if (!isset($_POST['location'])) {
+        if (!isset($_POST['location']) || ($_POST['location'] != 'domestic' && $_POST['location'] != 'international')) {
             $missingFieldList[] = 'location';
         }
 

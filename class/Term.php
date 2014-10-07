@@ -67,8 +67,9 @@ class Term extends Model
      */
     public static function rawToRead($t, $super=false)
     {
-        $semester = $t[strlen($t)-1];// Get last char
-        $year = substr($t, 0, strlen($t)-1);
+        $semester   = substr($t, strlen($t) - 1, 1);
+        $year       = substr($t, 0, strlen($t)-1);
+
         switch($semester){
             case '1':
                 return "Spring $year";
@@ -86,7 +87,7 @@ class Term extends Model
                 return "Fall $year";
             default:
                 // Whaattt??
-                \NQ::simple('intern', \Intern\NotifyUI::WARNING, 'Term error: '.$t);
+                \NQ::simple('intern', \Intern\UI\NotifyUI::WARNING, 'Term error: '.$t);
                 return "$year";
         }
     }

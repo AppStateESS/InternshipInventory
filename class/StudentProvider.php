@@ -31,9 +31,19 @@ abstract class StudentProvider {
         $student->setStudentId($data->banner_id);
         $student->setUsername($data->user_name);
 
+        // Basic demographics
         $student->setFirstName($data->first_name);
         $student->setLastName($data->last_name);
         $student->setMiddleName($data->middle_name);
+
+        // Contact info
+        $student->setPhone($data->phone);
+
+        // Academic info
+        $student->setLevel($data->level);
+        $student->setCampus($data->campus);
+
+
 
         //TODO more here as it bcomes available
     }
