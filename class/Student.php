@@ -96,6 +96,14 @@ class Student {
         $this->level = $level;
     }
 
+    public function getGpa() {
+        return $this->gpa;
+    }
+
+    public function setGpa($gpa) {
+        $this->gpa = $gpa;
+    }
+
     public function getPhone() {
         return $this->phone;
     }

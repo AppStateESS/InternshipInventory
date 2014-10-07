@@ -42,8 +42,7 @@ abstract class StudentProvider {
         // Academic info
         $student->setLevel($data->level);
         $student->setCampus($data->campus);
-
-
+        $student->setGpa($data->gpa);
 
         //TODO more here as it bcomes available
     }

@@ -44,8 +44,9 @@ class TestStudentProvider extends StudentProvider {
         $obj->phone = '9192748035';
 
         // Academic Info
-        $obj->level = 'grad'; // TODO verify values provided by SOAP
-        $obj->campus = 'main_campus'; // TODO verify values in SOAP
+        $obj->level     = 'grad'; // TODO verify values provided by SOAP
+        $obj->campus    = 'main_campus'; // TODO verify values in SOAP
+        $obj->gpa       = '3.75';
 
         return $obj;
     }

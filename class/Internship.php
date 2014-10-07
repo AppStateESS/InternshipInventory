@@ -147,7 +147,7 @@ class Internship {
         $this->campus = $student->getCampus();
         //$this->grad_prog = ;
         //$this->ugrad_major = ;
-        //$this->gpa = ;
+        $this->gpa = $student->getGpa();
 
         // Contact Info
         $this->phone = $student->getPhone();
