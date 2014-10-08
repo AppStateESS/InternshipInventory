@@ -25,7 +25,7 @@ class FacultyUI implements UI
 	 * (non-PHPdoc)
 	 * @see UI::display()
 	 */
-	public static function display()
+	public function display()
 	{
 		// Get the list of departments the current user has access to
 		$departments = Department::getDepartmentsAssocForUsername(\Current_User::getUsername());

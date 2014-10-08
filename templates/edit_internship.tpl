@@ -31,8 +31,8 @@
       <fieldset>
         <legend>Student</legend>
 
-        <div class="form-group required">
-          <label class="col-lg-3 control-label" for="{BANNER_ID}">{BANNER_LABEL_TEXT}</label>
+        <div class="form-group">
+          <label class="col-lg-3 control-label" for="{BANNER_ID}">Banner Id</label>
           <div class="col-lg-6">{BANNER}</div>
         </div>
 

@@ -8,8 +8,6 @@ use Intern\AgencyFactory;
 use Intern\EditInternshipFormView;
 use Intern\InternFolder;
 use Intern\InternDocument;
-use Intern\ChangeHistoryView;
-use Intern\EmergencyContactFormView;
 
 use \PHPWS_DB;
 
@@ -20,7 +18,6 @@ class InternshipUI implements UI {
 
     public static $requiredFields = array('student_first_name',
             'student_last_name',
-            'banner',
             'student_phone',
             'student_email',
             'student_gpa',
@@ -32,89 +29,46 @@ class InternshipUI implements UI {
             'campus',
             'location');
 
-    public static function display()
+    private $intern;
+    private $wfstate;
+
+    public function display()
     {
         $tpl = array();
+        $tpl['TITLE'] = 'Edit Internship';
 
-        // TODO: Make sure an 'internship_id' key is set on the request
+        // Make sure an 'internship_id' key is set on the request
         if(!isset($_REQUEST['internship_id'])) {
             \NQ::simple('intern', NotifyUI::ERROR, 'No internship ID was given.');
             \NQ::close();
             \PHPWS_Core::reroute('index.php');
         }
 
-        /* Attempting to edit internship */
+        // Load the Internship
         try{
-            $i = InternshipFactory::getInternshipById($_REQUEST['internship_id']);
+            $this->intern = InternshipFactory::getInternshipById($_REQUEST['internship_id']);
         }catch(InternshipNotFoundException $e){
             \NQ::simple('intern', NotifyUI::ERROR, 'Could not locate an internship with the given ID.');
             return;
         }
 
-        // Get the agency
-        $agency = AgencyFactory::getAgencyById($i->getAgencyId());
+        // Load the agency
+        $agency = AgencyFactory::getAgencyById($this->intern->getAgencyId());
 
-        $internshipForm = new EditInternshipFormView('Edit Internship', $i, $agency);
-        $internshipForm->buildInternshipForm();
-        $internshipForm->plugInternship();
+        // Load the documents
+        $docs = $this->intern->getDocuments();
+        if($docs === null) {
+            $docs = array(); // if no docs, setup an empty array
+        }
 
-        $tpl['TITLE'] = 'Edit Internship';
+        // Load the WorkflowState
+        $this->wfState = $this->intern->getWorkflowState();
 
+        // Setup the form
+        $internshipForm = new EditInternshipFormView('Edit Internship', $this->intern, $agency, $docs);
+
+        // Get the Form object
         $form = $internshipForm->getForm();
-
-        /*** 'Generate Contract' Button ***/
-        $tpl['PDF'] = \PHPWS_Text::linkAddress('intern', array('action' => 'pdf', 'id' => $i->id));
-
-        /*** Document List ***/
-        $docs = $i->getDocuments();
-        if (!is_null($docs)) {
-            foreach ($docs as $doc) {
-                $tpl['docs'][] = array('DOWNLOAD' => $doc->getDownloadLink('blah'),
-                        'DELETE' => $doc->getDeleteLink());
-            }
-        }
-        $folder = new InternFolder(InternDocument::getFolderId());
-        $tpl['UPLOAD_DOC'] = $folder->documentUpload($i->id);
-
-        $wfState = $i->getWorkflowState();
-
-		if(($wfState instanceof SigAuthReadyState || $wfState instanceof SigAuthApprovedState || $wfState instanceof DeanApprovedState || $wfState instanceof RegisteredState) && ($docs < 1))
-		{
-        	\NQ::simple('intern', NotifyUI::WARNING, "No documents have been uploaded yet. Usually a copy of the signed contract document should be uploaded.");
-		}
-
-        /******************
-         * Change History *
-        */
-        if (!is_null($i->id)) {
-            $historyView = new ChangeHistoryView($i);
-            $tpl['CHANGE_LOG'] = $historyView->show();
-        }
-
-        // Show a warning if in SigAuthReadyState, is international, and not OIED approved
-        if ($i->getWorkflowState() instanceof SigAuthReadyState && $i->isInternational() && !$i->isOiedCertified()) {
-            \NQ::simple('intern', NotifyUI::WARNING, 'This internship can not be approved by the Signature Authority bearer until the internship is certified by the Office of International Education and Development.');
-        }
-
-        // Show a warning if in DeanApproved state and is distance_ed campus
-        if ($i->getWorkflowState() == 'DeanApprovedState' && $i->isDistanceEd()) {
-            \NQ::simple('intern', NotifyUI::WARNING, 'This internship must be registered by Distance Education.');
-        }
-
-        // Sanity check cource section #
-        if ($i->isDistanceEd() && ($i->getCourseSection() < 300 || $i->getCourseSection() > 399)) {
-			NQ::simple('intern', NotifyUI::WARNING, "This is a distance ed internship, so the course section number should be between 300 and 399.");
-        }
-
-        // Sanity check distance ed radio
-        if (!$i->isDistanceEd() && ($i->getCourseSection() > 300 && $i->getCourseSection() < 400)) {
-            \NQ::simple('intern', NotifyUI::WARNING, "The course section number you entered looks like a distance ed course. Be sure to check the Distance Ed option, or double check the section number.");
-        }
-
-        $emgContactDialog = new EmergencyContactFormView($i);
-
-        $tpl['ADD_EMERGENCY_CONTACT'] = '<button type="button" class="btn btn-default btn-sm" id="add-ec-button"><i class="fa fa-plus"></i> Add Contact</button>';
-        $tpl['EMERGENCY_CONTACT_DIALOG'] = $emgContactDialog->getHtml();
 
         /*
          * If 'missing' is set then we have been redirected
@@ -139,16 +93,45 @@ class InternshipUI implements UI {
 
             /* Re-add hidden fields with object ID's */
             $i = InternshipFactory::getInternshipById($_GET['internship_id']);
-            $a = $i->getAgency();
-            //$f = $i->getFacultySupervisor();
+            $a = $this->intern->getAgency();
+            //$f = $this->intern->getFacultySupervisor();
             $form->addHidden('agency_id', $a->id);
             //$form->addHidden('supervisor_id', $f->id);
-            $form->addHidden('id', $i->id);
+            $form->addHidden('id', $this->intern->id);
         }
 
         $form->mergeTemplate($tpl);
 
         return \PHPWS_Template::process($form->getTemplate(), 'intern', 'edit_internship.tpl');
+    }
+
+    private function showWarnings()
+    {
+        // Show warning if no documents uploaded but workflow state suggests there should be documents
+        if(($this->wfState instanceof SigAuthReadyState || $this->wfState instanceof SigAuthApprovedState || $this->wfState instanceof DeanApprovedState || $this->wfState instanceof RegisteredState) && ($docs < 1))
+        {
+            \NQ::simple('intern', NotifyUI::WARNING, "No documents have been uploaded yet. Usually a copy of the signed contract document should be uploaded.");
+        }
+
+        // Show a warning if in SigAuthReadyState, is international, and not OIED approved
+        if ($this->wfState instanceof SigAuthReadyState && $this->intern->isInternational() && !$this->intern->isOiedCertified()) {
+            \NQ::simple('intern', NotifyUI::WARNING, 'This internship can not be approved by the Signature Authority bearer until the internship is certified by the Office of International Education and Development.');
+        }
+
+        // Show a warning if in DeanApproved state and is distance_ed campus
+        if ($this->wfState == 'DeanApprovedState' && $this->intern->isDistanceEd()) {
+            \NQ::simple('intern', NotifyUI::WARNING, 'This internship must be registered by Distance Education.');
+        }
+
+        // Show warning & sanity check cource section #
+        if ($this->intern->isDistanceEd() && ($this->intern->getCourseSection() < 300 || $this->intern->getCourseSection() > 399)) {
+            NQ::simple('intern', NotifyUI::WARNING, "This is a distance ed internship, so the course section number should be between 300 and 399.");
+        }
+
+        // Show warning & Sanity check distance ed radio
+        if (!$this->intern->isDistanceEd() && ($this->intern->getCourseSection() > 300 && $this->intern->getCourseSection() < 400)) {
+            \NQ::simple('intern', NotifyUI::WARNING, "The course section number you entered looks like a distance ed course. Be sure to check the Distance Ed option, or double check the section number.");
+        }
     }
 
 }

@@ -7,6 +7,6 @@ namespace Intern\UI;
  */
 interface UI
 {
-    public static function display();
+    public function display();
 }
 ?>

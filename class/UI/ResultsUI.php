@@ -15,7 +15,7 @@ use Intern\SubselectDatabase;
  */
 class ResultsUI implements UI {
 
-    public static function display()
+    public function display()
     {
         javascript('jquery');
 

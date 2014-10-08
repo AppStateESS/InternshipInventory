@@ -2,6 +2,10 @@
 
 namespace Intern;
 
+
+use Intern\EmergencyContactFormView;
+use Intern\ChangeHistoryView;
+
 /**
  * View class for showing the big internship form for
  * editing an existing internship.
@@ -15,6 +19,7 @@ class EditInternshipFormView {
 
     private $form;
     private $intern;
+    private $tpl;
 
     private $agency;
     private $department;
@@ -27,7 +32,7 @@ class EditInternshipFormView {
      * @param string $pagetitle
      * @param Internship $i
      */
-    public function __construct($pageTitle, Internship $i, Agency $agency)
+    public function __construct($pageTitle, Internship $i, Agency $agency, Array $docs)
     {
         // Call parent constructor to setup form
         //parent::__construct($pageTitle);
@@ -38,19 +43,35 @@ class EditInternshipFormView {
 
         $this->agency = $agency;
         $this->department = $this->intern->getDepartment();
+        $this->docs = $docs;
 
         $this->form = new \PHPWS_Form('internship');
         $this->formVals = array();
 
-        // Plug in the passed in Internship object (sets default/selected values)
-        // $this->plugInternship();
+        // Build all the form fields
+        $this->buildInternshipForm();
 
+        // Plug in the existing values from Internship object (sets default/selected values)
+        $this->plugInternship();
+
+        $this->setupContractButton();
+        $this->setupDocumentList();
+        $this->setupEmergencyContact();
+        $this->setupChangeHistory();
+
+        // Set a page title
         \Layout::addPageTitle($pageTitle);
     }
 
     public function getForm()
     {
+        $this->form->mergeTemplate($this->getTemplateTags());
         return $this->form;
+    }
+
+    public function getTemplateTags()
+    {
+        return $this->tpl;
     }
 
     /**
@@ -115,9 +136,9 @@ class EditInternshipFormView {
         $this->form->setLabel('student_last_name', 'Last Name');
         $this->form->addCssClass('student_last_name', 'form-control');
 
-        $this->form->addText('banner');
-        $this->form->setLabel('banner', 'Banner ID'); // Digits only
-        $this->form->addCssClass('banner', 'form-control');
+        //$this->form->addText('banner');
+        //$this->form->setLabel('banner', 'Banner ID'); // Digits only
+        //$this->form->addCssClass('banner', 'form-control');
 
         $this->form->addText('student_phone');
         $this->form->setLabel('student_phone', 'Phone');
@@ -496,10 +517,11 @@ class EditInternshipFormView {
     private function plugStudent()
     {
         // Student
+        $this->tpl['BANNER'] = $this->intern->getBannerId();
+
         $this->formVals['student_first_name'] = $this->intern->first_name;
         $this->formVals['student_middle_name'] = $this->intern->middle_name;
         $this->formVals['student_last_name'] = $this->intern->last_name;
-        $this->formVals['banner'] = $this->intern->banner;
         $this->formVals['student_phone'] = $this->intern->phone;
         $this->formVals['student_email'] = $this->intern->email;
         $this->formVals['student_level'] = $this->intern->level;
@@ -617,7 +639,41 @@ class EditInternshipFormView {
     private function plugDept()
     {
         // Department
-        $this->formVals['department'] = $this->intern->department_id;
+        $this->formVals['department'] = $this->intern->getDepartment()->getId();
+    }
+
+    private function setupContractButton()
+    {
+        $this->tpl['PDF'] = \PHPWS_Text::linkAddress('intern', array('action' => 'pdf', 'id' => $this->intern->getId()));
+    }
+
+    private function setupDocumentList()
+    {
+        // Document list
+        if (!is_null($this->docs)) {
+            foreach ($this->docs as $doc) {
+                $this->tpl['docs'][] = array('DOWNLOAD' => $doc->getDownloadLink('blah'),
+                                             'DELETE' => $doc->getDeleteLink());
+            }
+        }
+
+        // Document upload button
+        $folder = new InternFolder(InternDocument::getFolderId());
+        $this->tpl['UPLOAD_DOC'] = $folder->documentUpload($this->intern->id);
+    }
+
+    private function setupEmergencyContact()
+    {
+        $emgContactDialog = new EmergencyContactFormView($this->intern);
+
+        $this->tpl['ADD_EMERGENCY_CONTACT'] = '<button type="button" class="btn btn-default btn-sm" id="add-ec-button"><i class="fa fa-plus"></i> Add Contact</button>';
+        $this->tpl['EMERGENCY_CONTACT_DIALOG'] = $emgContactDialog->getHtml();
+    }
+
+    private function setupChangeHistory()
+    {
+        $historyView = new ChangeHistoryView($this->intern);
+        $tpl['CHANGE_LOG'] = $historyView->show();
     }
 }
 

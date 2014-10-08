@@ -38,18 +38,6 @@ class SaveInternship {
             return \PHPWS_Core::reroute($url);
         }
 
-        // Sanity check the Banner ID
-        if(!preg_match('/^\d{9}$/', $_REQUEST['banner'])){
-            $url = 'index.php?module=intern&action=ShowInternship&missing=banner';
-            // Restore the values in the fields the user already entered
-            foreach ($_POST as $key => $val) {
-                $url .= "&$key=$val";
-            }
-            \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "The Banner ID you entered is not valid. No changes were saved. The student's Banner ID should be nine digits only (no letters, spaces, or punctuation).");
-            \NQ::close();
-            return \PHPWS_Core::reroute($url);
-        }
-
         // Sanity check student email
         if(isset($_REQUEST['student_email']) && preg_match("/@/", $_REQUEST['student_email'])){
             $url = 'index.php?module=intern&action=ShowInternship&missing=student_email';
@@ -303,7 +291,6 @@ class SaveInternship {
         $i->setFirstNameMetaphone($_REQUEST['student_first_name']);
         $i->setLastNameMetaphone($_REQUEST['student_last_name']);
 
-        $i->banner = $_REQUEST['banner'];
         $i->phone = $_REQUEST['student_phone'];
         $i->email = $_REQUEST['student_email'];
         $i->level = $_REQUEST['student_level'];

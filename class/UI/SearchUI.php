@@ -20,7 +20,7 @@ use Intern\WorkflowStateFactory;
    */
 class SearchUI implements UI
 {
-    public static function display()
+    public function display()
     {
         // Set up search fields
         $form = new \PHPWS_Form();

@@ -9,7 +9,7 @@ namespace Intern\UI;
  */
 class TopUI implements UI
 {
-    public static function display(){
+    public function display(){
     }
 
     public static function plug()
