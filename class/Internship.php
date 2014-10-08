@@ -366,12 +366,16 @@ class Internship {
         }
     }
 
+    public function getAgencyId() {
+        return $this->agency_id;
+    }
+
     /**
      * Get the Agency object associated with this internship.
      */
     public function getAgency()
     {
-        return new Agency($this->agency_id);
+        return AgencyFactory::getAgencyById($this->getAgencyId());
     }
 
     /**

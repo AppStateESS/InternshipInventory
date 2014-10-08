@@ -4,6 +4,7 @@ namespace Intern\UI;
 
 use Intern\InternshipFormView;
 use Intern\InternshipFactory;
+use Intern\AgencyFactory;
 use Intern\EditInternshipFormView;
 use Intern\InternFolder;
 use Intern\InternDocument;
@@ -50,7 +51,10 @@ class InternshipUI implements UI {
             return;
         }
 
-        $internshipForm = new EditInternshipFormView('Edit Internship', $i);
+        // Get the agency
+        $agency = AgencyFactory::getAgencyById($i->getAgencyId());
+
+        $internshipForm = new EditInternshipFormView('Edit Internship', $i, $agency);
         $internshipForm->buildInternshipForm();
         $internshipForm->plugInternship();
 

@@ -24,10 +24,10 @@ class EditInternshipFormView {
     /**
      * Constructor for the big Internship form.
      *
+     * @param string $pagetitle
      * @param Internship $i
-     * @param Agency $a
      */
-    public function __construct($pageTitle, Internship $i)
+    public function __construct($pageTitle, Internship $i, Agency $agency)
     {
         // Call parent constructor to setup form
         //parent::__construct($pageTitle);
@@ -36,7 +36,7 @@ class EditInternshipFormView {
 
         $this->intern = $i;
 
-        $this->agency = $this->intern->getAgency();
+        $this->agency = $agency;
         $this->department = $this->intern->getDepartment();
 
         $this->form = new \PHPWS_Form('internship');
