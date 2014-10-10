@@ -3,6 +3,8 @@ namespace Intern\Command;
 
 use \Intern\WorkflowStateFactory;
 use \Intern\ChangeHistory;
+use \Intern\AgencyFactory;
+use \Intern\DatabaseStorage;
 
 /**
  * Controller class to save changes (on create or update) to an Internship
@@ -132,10 +134,8 @@ class SaveInternship {
         \PHPWS_DB::begin();
 
         // Create/Save agency
-        $agency = new \Intern\Agency();
-        // User is editing internship
         try {
-            $agency = new \Intern\Agency($_REQUEST['agency_id']);
+            $agency = AgencyFactory::getAgencyById($_REQUEST['agency_id']);
         } catch (Exception $e) {
             // Rollback and re-throw the exception so that admins gets an email
             \PHPWS_DB::rollback();
@@ -177,7 +177,7 @@ class SaveInternship {
         $agency->address_same_flag = isset($_REQUEST['copy_address']) ? 't' : 'f';
 
         try {
-            $agencyId = $agency->save();
+            DatabaseStorage::save($agency);
         } catch (Exception $e) {
             // Rollback and re-throw the exception so that admins gets an email
             \PHPWS_DB::rollback();
@@ -185,7 +185,7 @@ class SaveInternship {
         }
 
         /**********************************
-         * Create and/or save the Internship
+         * Save the Internship
          */
         // User is editing internship
         try {
@@ -197,7 +197,7 @@ class SaveInternship {
         }
 
         $i->term = $_REQUEST['term'];
-        $i->agency_id = $agencyId;
+        //$i->agency_id = $agencyId;
         $i->faculty_id = $_REQUEST['faculty_id'] > 0 ? $_REQUEST['faculty_id'] : null;
         $i->department_id = $_REQUEST['department'];
         $i->start_date = !empty($_REQUEST['start_date']) ? strtotime($_REQUEST['start_date']) : 0;
