@@ -56,6 +56,32 @@
 
 <div class="row">
     <div class="col-sm-12 col-md-4 col-md-push-3">
+        <div class="form-group">
+            <label for="state" class="control-label">State</label>
+            <select id="state" name="state" class="form-control">
+                <!-- BEGIN STATES -->
+                <option value="{ABBR}" {SELECTED}>{STATE_NAME}</option>
+                <!-- END STATES -->
+            </select>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12 col-md-4 col-md-push-3">
+        <div class="form-group">
+            <label for="county" class="control-label">Country</label>
+            <select id="country" name="country" class="form-control">
+                <!-- BEGIN COUNTRIES -->
+                <option value="{COUNTRY_NAME}" {SELECTED}>{COUNTRY_NAME}</option>
+                <!-- END COUNTRIES -->
+            </select>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12 col-md-4 col-md-push-3">
         <div class="form-group" id="department">
             <label for="department2" class="control-label">Department</label>
             <select id="department2" name="department" class="form-control">

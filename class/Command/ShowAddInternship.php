@@ -3,6 +3,7 @@
 namespace Intern\Command;
 use \Intern\Term;
 use \Intern\Department;
+use \Intern\State;
 
 /*
  * ShowAddInternship
@@ -36,11 +37,14 @@ class ShowAddInternship {
             $departments = \Intern\Department::getDepartmentsAssocForUsername(\Current_User::getUsername());
         }
 
+        // Get the list of allowed US states
+        $states = State::getAllowedStates();
+
         $requestVars = $_GET;
         unset($requestVars['module']);
         unset($requestVars['action']);
 
-        $view = new \Intern\AddInternshipView($terms, $departments, $requestVars);
+        $view = new \Intern\AddInternshipView($terms, $departments, $states, $requestVars);
 
         return new \Response($view);
     }

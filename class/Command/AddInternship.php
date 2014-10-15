@@ -100,6 +100,14 @@ class AddInternship {
             $missingFieldList[] = 'location';
         }
 
+        // Check state, if domestic
+        if ($_POST['location'] == 'domestic' && !isset($_POST['state']) || $_POST['state'] == '-1') {
+            $missingFieldList[] = 'state';
+        }
+
+        // Check county, if international
+        // TODO
+
         // Check Department
         if (!isset($_POST['department']) || (isset($_POST['department']) && $_POST['department'] === '-1')) {
             $missingFieldList[] = 'department';

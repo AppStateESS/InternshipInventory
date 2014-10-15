@@ -9,13 +9,15 @@ class AddInternshipView implements \View {
 
     private $terms;
     private $departments;
+    private $states;
 
     private $previousValues; // Values from a previously submitted version of the form
 
-    public function __construct(Array $terms, Array $departments, Array $previousValues)
+    public function __construct(Array $terms, Array $departments, Array $states, Array $previousValues)
     {
         $this->terms = $terms;
         $this->departments = $departments;
+        $this->states = $states;
         $this->previousValues = $previousValues;
     }
 
@@ -61,6 +63,19 @@ class AddInternshipView implements \View {
                                     'LOCATION_TEXT' => $text,
                                     'SELECTED' => $selected ? 'checked' : '',
                                     'ACTIVE'   => $selected ? 'active' : '');
+        }
+
+        // Dynamically generate the list of approved US states
+        foreach ($this->states as $abbr => $stateName)
+        {
+            $selected = false;
+            if(isset($this->previousValues['state']) && $abbr == $this->previousValues['state']) {
+                $selected = true;
+            }
+
+            $tpl['STATES'][] = array('ABBR' => $abbr,
+                                     'STATE_NAME' => $stateName,
+                                     'SELECTED' => $selected ? 'selected' : '');
         }
 
         // Set previous data for student id field
