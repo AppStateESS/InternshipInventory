@@ -26,8 +26,7 @@ class InternshipUI implements UI {
             'agency_name',
             'term',
             'department',
-            'campus',
-            'location');
+            'campus');
 
     private $intern;
     private $wfstate;

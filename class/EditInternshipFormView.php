@@ -357,10 +357,17 @@ class EditInternshipFormView {
         /***********************
          * Internship location *
          */
-        $loc = array('domestic' => 'Domestic', 'internat' => 'International');
-        $this->form->addRadioAssoc('location', $loc);
+        //$loc = array('domestic' => 'Domestic', 'internat' => 'International');
+        //$this->form->addRadioAssoc('location', $loc);
         //$this->form->setMatch('location', 'domestic'); // Default to domestic
         //$this->form->setRequired('location');
+        if($this->intern->isDomestic() && !$this->intern->isInternational()) {
+            $this->tpl['LOCATION'] = 'Domestic';
+            $this->form->addHidden('location', 'domestic');
+        } else if (!$this->intern->isDomestic() && $this->intern->isInternational()) {
+            $this->tpl['LOCATION'] = 'International';
+            $this->form->addHidden('location', 'international');
+        }
 
         // Domestic fields
         $this->form->addText('loc_address');

@@ -130,11 +130,12 @@
           <span class="help-block">Physical Location of Internship</span>
         </p>
 
-        <div class="form-group required">
-          <div class="col-lg-6 col-lg-offset-3">
-            <!-- BEGIN location_repeat -->
-            <label class="radio-inline control-label"> {LOCATION}{LOCATION_LABEL_TEXT} </label>
-            <!-- END location_repeat -->
+        <div class="form-group">
+          <div class="col-lg-3 control-label">
+            <label>Location</label>
+          </div>
+          <div class="col-lg-6">
+            {LOCATION}
           </div>
         </div>
 

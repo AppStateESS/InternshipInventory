@@ -216,10 +216,11 @@ class SaveInternship {
             $i->setExperienceType($_REQUEST['experience_type']);
         }
 
-        // Set fields depending on domestic/international
+        // Set ields depending on domestic/international
+        /*
         if($_REQUEST['location'] == 'domestic'){
             // Set Flags
-            $i->domestic      = 1;
+            //$i->domestic      = 1;
             $i->international = 0;
 
             // Set state
@@ -232,17 +233,19 @@ class SaveInternship {
             // Clear province, country
             $i->loc_province  = '';
             $i->loc_country   = '';
-        }else if($_REQUEST['location'] == 'internat'){
+        }else
+        */
+        if($_REQUEST['location'] == 'internat'){
             // Set flags
-            $i->domestic      = 0;
-            $i->international = 1;
+            //$i->domestic      = 0;
+            //$i->international = 1;
 
             // Set province, country
             $i->loc_province = $_POST['loc_province'];
             $i->loc_country = strip_tags($_POST['loc_country']);
 
             // Clear state
-            $i->loc_state = null;
+            //$i->loc_state = null;
         }
 
         // Address, city, zip are always set (no matter domestic or international)
@@ -426,39 +429,6 @@ class SaveInternship {
         if (!isset($_REQUEST['term']) ||
                 $_REQUEST['term'] == -1) {
             $vals[] = 'term';
-        }
-
-        // Make sure a location (domestic vs. intl) is set
-        if(!isset($_REQUEST['location'])){
-            // If not, make the user select it
-            $vals[] = 'location';
-        }else{
-            // If so, check the state/country appropriately
-            if($_REQUEST['location'] == 'domestic'){
-                // Check internshp state
-                if ($_REQUEST['loc_state'] == -1) {
-                    $vals[] = 'loc_state';
-                }
-            }else{
-                if($_REQUEST['loc_country'] == ''){
-                    $vals[] = 'loc_country';
-                }
-            }
-        }
-
-
-        /**
-         * Funky stuff here for location.
-         * If location is DOMESTIC then State and Zip are required.
-         * If location is INTERNATIONAL then state and zip are not required
-         * and are set to null though Country is required.
-         */
-        /**
-         * Updated 7/26/2011 - several requirements loosened
-         */
-        if (!isset($_REQUEST['location'])) {
-            $vals[] = 'location';
-        } elseif ($_REQUEST['location'] == 'domestic') {
         }
 
         return $vals;
