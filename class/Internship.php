@@ -98,7 +98,7 @@ class Internship {
     /**
      * Constructs a new Internship object.
      */
-    public function __construct(Student $student, $term, $location, Department $department, Agency $agency){
+    public function __construct(Student $student, $term, $location, $state, $country, Department $department, Agency $agency){
 
         // Initialize student data
         $this->initalizeStudentData($student);
@@ -110,9 +110,13 @@ class Internship {
         if($location == 'domestic') {
             $this->setDomestic(true);
             $this->setInternational(false);
+
+            $this->setLocationState($state);
         } else if($location == 'international') {
             $this->setDomestic(false);
             $this->setInternational(true);
+
+            $this->setCountry($country);
         } else {
             throw new \InvalidArgumentException('Invalid location.');
         }
@@ -870,6 +874,14 @@ class Internship {
 
     public function setExperienceType($type){
         $this->experience_type = $type;
+    }
+
+    /**
+     * Sets the location state (i.e. One of the 50 states of the USA, not the approval status)
+     */
+    public function setLocationState($state)
+    {
+        $this->loc_state = $state;
     }
 
     /***********************

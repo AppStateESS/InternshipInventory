@@ -56,15 +56,18 @@ class AddInternship {
         DatabaseStorage::save($agency);
 
         // Get the term
-        // TODO Double check that this is set and that it is reasonable
+        // TODO Double check that this is reasonable
         $term = $_POST['term'];
 
         // Get the location
-        //TODO double check that this is set and is reasonable
+        //TODO double check that this is reasonable
         $location = $_POST['location'];
 
+        $state = $_POST['state'];
+        $country = $_POST['country'];
+
         // Create a new internship object
-        $intern = new Internship($student, $term, $location, $department, $agency);
+        $intern = new Internship($student, $term, $location, $state, $country, $department, $agency);
 
         // Save it!!
         $intern->save();
