@@ -10,14 +10,16 @@ class AddInternshipView implements \View {
     private $terms;
     private $departments;
     private $states;
+    private $countries;
 
     private $previousValues; // Values from a previously submitted version of the form
 
-    public function __construct(Array $terms, Array $departments, Array $states, Array $previousValues)
+    public function __construct(Array $terms, Array $departments, Array $states, Array $countries, Array $previousValues)
     {
         $this->terms = $terms;
         $this->departments = $departments;
         $this->states = $states;
+        $this->countries = $countries;
         $this->previousValues = $previousValues;
     }
 
@@ -66,8 +68,7 @@ class AddInternshipView implements \View {
         }
 
         // Dynamically generate the list of approved US states
-        foreach ($this->states as $abbr => $stateName)
-        {
+        foreach ($this->states as $abbr => $stateName) {
             $selected = false;
             if(isset($this->previousValues['state']) && $abbr == $this->previousValues['state']) {
                 $selected = true;
@@ -75,6 +76,18 @@ class AddInternshipView implements \View {
 
             $tpl['STATES'][] = array('ABBR' => $abbr,
                                      'STATE_NAME' => $stateName,
+                                     'SELECTED' => $selected ? 'selected' : '');
+        }
+
+        // Dynamically generate the list of countries
+        foreach ($this->countries as $country) {
+            $selected = false;
+            if(isset($this->previousValues['country']) && $country['id'] == $this->previousValues['country']) {
+                $selected = true;
+            }
+
+            $tpl['COUNTRIES'][] = array('ABBR' => $country['id'],
+                                     'COUNTRY_NAME' => $country['name'],
                                      'SELECTED' => $selected ? 'selected' : '');
         }
 

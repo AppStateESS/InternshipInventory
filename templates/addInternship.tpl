@@ -54,11 +54,11 @@
     </div>
 </div>
 
-<div class="row">
+<div class="row" id="state-row">
     <div class="col-sm-12 col-md-4 col-md-push-3">
-        <div class="form-group">
+        <div class="form-group" id="state">
             <label for="state" class="control-label">State</label>
-            <select id="state" name="state" class="form-control">
+            <select id="state-control" name="state" class="form-control">
                 <!-- BEGIN STATES -->
                 <option value="{ABBR}" {SELECTED}>{STATE_NAME}</option>
                 <!-- END STATES -->
@@ -67,11 +67,12 @@
     </div>
 </div>
 
-<div class="row">
+<div class="row" id="country-row">
     <div class="col-sm-12 col-md-4 col-md-push-3">
-        <div class="form-group">
+        <div class="form-group" id="country">
             <label for="county" class="control-label">Country</label>
-            <select id="country" name="country" class="form-control">
+            <select id="country-control" name="country" class="form-control">
+                <option value="-1">Select a Country</option>
                 <!-- BEGIN COUNTRIES -->
                 <option value="{COUNTRY_NAME}" {SELECTED}>{COUNTRY_NAME}</option>
                 <!-- END COUNTRIES -->
@@ -108,6 +109,7 @@
     </div>
 </div>
 </form>
+
 <script type="text/javascript">
 $(document).ready(function(){
 	// Event handler for clicking the submit button
@@ -116,6 +118,32 @@ $(document).ready(function(){
         $('button[type="submit"]').prop('disabled','disabled');
 
         $('button[type="submit"]').html('<i class="fa fa-spinner fa-spin"></i> Saving...');
+    });
+	
+	
+	// Hide the state and country fields initially
+	$('#state-row').hide();
+	$('#country-row').hide();
+	
+	// Determines which location radio button is selected and
+	// shows/hides the dropdowns accordingly
+	function updateDropDowns() {
+		if($('#location input[type=radio]:checked').val() == 'domestic') {
+	        $('#country-row').hide();
+	        $('#state-row').fadeIn(200);
+	    }
+	    if($('#location input[type=radio]:checked').val() == 'international') {
+	        $('#state-row').hide();
+	        $('#country-row').fadeIn(200);
+	    }
+	}
+	
+	// If domestic or international is selected, then show the corresponding drop-down
+    updateDropDowns();
+    
+    // Event handler to show/hide boxes as location radio buttons are changed
+    $('#location input').change(function(){
+    	updateDropDowns();
     });
 });
 </script>

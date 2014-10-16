@@ -4,6 +4,7 @@ namespace Intern\Command;
 use \Intern\Term;
 use \Intern\Department;
 use \Intern\State;
+use \Intern\CountryFactory;
 
 /*
  * ShowAddInternship
@@ -40,11 +41,14 @@ class ShowAddInternship {
         // Get the list of allowed US states
         $states = State::getAllowedStates();
 
+        // Get a list of the countries
+        $countries = CountryFactory::getCountries();
+
         $requestVars = $_GET;
         unset($requestVars['module']);
         unset($requestVars['action']);
 
-        $view = new \Intern\AddInternshipView($terms, $departments, $states, $requestVars);
+        $view = new \Intern\AddInternshipView($terms, $departments, $states, $countries, $requestVars);
 
         return new \Response($view);
     }
