@@ -94,7 +94,7 @@ class InternshipUI implements UI {
             $i = InternshipFactory::getInternshipById($_GET['internship_id']);
             $a = $this->intern->getAgency();
             //$f = $this->intern->getFacultySupervisor();
-            $form->addHidden('agency_id', $a->id);
+            //$form->addHidden('agency_id', $a->id);
             //$form->addHidden('supervisor_id', $f->id);
             $form->addHidden('id', $this->intern->id);
         }
