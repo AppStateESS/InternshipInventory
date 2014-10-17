@@ -378,10 +378,22 @@ class EditInternshipFormView {
         // State or Country & Province
         if ($this->intern->isDomestic()) {
             $states = State::getAllowedStates();
-            $this->tpl['LOC_STATE'] = $states[$this->intern->getLocationState()];
+
+            $locationState = $this->intern->getLocationState();
+            if($locationState === null) {
+                throw new \InvalidArgumentException('Domestic internship with null value for state.');
+            }
+
+            $this->tpl['LOC_STATE'] = $states[$locationState];
         } else {
-            $countres = CountryFactory::getCountries();
-            $this->tpl['LOC_COUNTRY'] = $countries[$this->intern->getLocationCountry()];
+            $countries = CountryFactory::getCountries();
+
+            $locationCountry = $this->intern->getLocationCountry();
+            if($locationCountry === null) {
+                throw new \InvalidArgumentException('International internship with null value for country.');
+            }
+
+            $this->tpl['LOC_COUNTRY'] = $countries[$locationCountry];
 
             // Itn'l location fields
             $this->form->addText('loc_province');
