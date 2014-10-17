@@ -80,14 +80,14 @@ class AddInternshipView implements \View {
         }
 
         // Dynamically generate the list of countries
-        foreach ($this->countries as $country) {
+        foreach ($this->countries as $countryCode => $country) {
             $selected = false;
             if(isset($this->previousValues['country']) && $country['id'] == $this->previousValues['country']) {
                 $selected = true;
             }
 
-            $tpl['COUNTRIES'][] = array('ABBR' => $country['id'],
-                                     'COUNTRY_NAME' => $country['name'],
+            $tpl['COUNTRIES'][] = array('ABBR' => $countryCode,
+                                     'COUNTRY_NAME' => $country,
                                      'SELECTED' => $selected ? 'selected' : '');
         }
 
