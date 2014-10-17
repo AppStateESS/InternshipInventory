@@ -16,7 +16,14 @@ class CountryFactory {
         $stmt->execute();
         $stmt->setFetchMode(\PDO::FETCH_ASSOC);
 
-        return $stmt->fetchAll();
+        $rows = $stmt->fetchAll();
+
+        $countries = array();
+        foreach($rows as $row) {
+            $countries[$row['id']] = $row['name'];
+        }
+
+        return $countries;
     }
 }
 
