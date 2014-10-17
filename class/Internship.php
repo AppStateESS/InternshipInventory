@@ -116,7 +116,7 @@ class Internship {
             $this->setDomestic(false);
             $this->setInternational(true);
 
-            $this->setCountry($country);
+            $this->setLocationCountry($country);
         } else {
             throw new \InvalidArgumentException('Invalid location.');
         }
@@ -542,6 +542,22 @@ class Internship {
     public function getLocationCountry()
     {
         return $this->loc_country;
+    }
+
+    /**
+     * Sets the country code for this internship. Should be a two letter abbreviation.
+     */
+    public function setLocationCountry($country)
+    {
+        if(!isset($country) || $country == '') {
+            throw new \InvalidArgumentException('Empty country code');
+        }
+
+        if(strlen($country) > 2) {
+            throw new \InvalidArgumentException('Country code is too long');
+        }
+
+        $this->loc_country = $country;
     }
 
     public function getLocationProvince()
