@@ -105,7 +105,7 @@ class ResultsUI implements UI {
      */
     private static function getPager($name = null, $deptId = null, $term = null, $ugradMajor = null, $gradProg = null, $level = null, $type = null, $campus = null, $loc = null, $state = null, $prov = null, $workflowState = null, $courseSubject = null, $courseNum = null, $courseSect = null)
     {
-        $pager = new SubselectPager('intern_internship', '\Intern\Internship');
+        $pager = new SubselectPager('intern_internship', '\Intern\InternshipRestored');
 
         // Pager Settings
         $pager->setModule('intern');
