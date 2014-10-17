@@ -151,10 +151,14 @@
         <div class="col-lg-6">{LOC_CITY}</div>
       </div>
 
-      <div class="form-group required">
-        <label class="col-lg-3 control-label" for="{LOC_STATE_ID}">{LOC_STATE_LABEL_TEXT}</label>
+      <!-- BEGIN loc_state -->
+      <div class="form-group">
+        <div class="col-lg-3 control-label">
+          <label>State</label>
+        </div>
         <div class="col-lg-6">{LOC_STATE}</div>
       </div>
+      <!-- END loc_state -->
 
       <div class="form-group">
         <label class="col-lg-3 control-label" for="{LOC_ZIP_ID}" id="internship_loc_zip-label">{LOC_ZIP_LABEL_TEXT}</label>
@@ -166,10 +170,14 @@
         <div class="col-lg-6">{LOC_PROVINCE}</div>
       </div>
 
-      <div class="form-group required">
-        <label class="col-lg-3 control-label" for="LOC_COUNTRY_ID}">{LOC_COUNTRY_LABEL_TEXT}</label>
+      <!-- BEGIN loc_country -->
+      <div class="form-group">
+        <div class="col-lg-3 control-label">
+          <label>Country</label>
+        </div>
         <div class="col-lg-6">{LOC_COUNTRY}</div>
       </div>
+      <!-- END loc_country -->
 
       <h4>Term Information</h4>
       <div class="form-group required">
@@ -379,7 +387,7 @@
           <label class="col-lg-3 control-label" for="{AGENCY_PHONE_ID}">{AGENCY_PHONE_LABEL_TEXT}</label>
           <div class="col-lg-6">{AGENCY_PHONE}</div>
         </div>
-        
+
         <div class="checkbox">
           <label> {COPY_ADDRESS_AGENCY} {COPY_ADDRESS_AGENCY_LABEL_TEXT} </label>
         </div>
@@ -509,7 +517,7 @@
           <div class="col-lg-3">{AVG_HOURS_WEEK}</div>
         </div>
       </fieldset>
-      
+
       <div class="form-group">
         <button type="submit" class="btn btn-primary pull-right" id="{SUBMIT_ID}">{SUBMIT_VALUE}</button>
       </div>

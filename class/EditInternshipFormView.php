@@ -357,10 +357,6 @@ class EditInternshipFormView {
         /***********************
          * Internship location *
          */
-        //$loc = array('domestic' => 'Domestic', 'internat' => 'International');
-        //$this->form->addRadioAssoc('location', $loc);
-        //$this->form->setMatch('location', 'domestic'); // Default to domestic
-        //$this->form->setRequired('location');
         if($this->intern->isDomestic() && !$this->intern->isInternational()) {
             $this->tpl['LOCATION'] = 'Domestic';
             $this->form->addHidden('location', 'domestic');
@@ -374,26 +370,29 @@ class EditInternshipFormView {
         $this->form->setLabel('loc_address', 'Address');
         $this->form->addCssClass('loc_address', 'form-control');
 
+        // City
         $this->form->addText('loc_city');
         $this->form->setLabel('loc_city', 'City');
         $this->form->addCssClass('loc_city', 'form-control');
 
-        $this->form->addSelect('loc_state', State::getAllowedStates());
-        $this->form->setLabel('loc_state', 'State');
-        $this->form->addCssClass('loc_state', 'form-control');
+        // State or Country & Province
+        if ($this->intern->isDomestic()) {
+            $states = State::getAllowedStates();
+            $this->tpl['LOC_STATE'] = $states[$this->intern->getLocationState()];
+        } else {
+            $countres = CountryFactory::getCountries();
+            $this->tpl['LOC_COUNTRY'] = $countries[$this->intern->getLocationCountry()];
 
+            // Itn'l location fields
+            $this->form->addText('loc_province');
+            $this->form->setLabel('loc_province', 'Province/Territory');
+            $this->form->addCssClass('loc_province', 'form-control');
+        }
+
+        // Zip
         $this->form->addText('loc_zip');
         $this->form->setLabel('loc_zip', 'Zip');
         $this->form->addCssClass('loc_zip', 'form-control');
-
-        // Itn'l location fields
-        $this->form->addText('loc_province');
-        $this->form->setLabel('loc_province', 'Province/Territory');
-        $this->form->addCssClass('loc_province', 'form-control');
-
-        $this->form->addText('loc_country');
-        $this->form->setLabel('loc_country', 'Country');
-        $this->form->addCssClass('loc_country', 'form-control');
 
         /*************
          * Term Info *

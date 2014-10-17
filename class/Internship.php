@@ -534,6 +534,21 @@ class Internship {
         $this->international = $international;
     }
 
+    public function getLocationState()
+    {
+        return $this->loc_state;
+    }
+
+    public function getLocationCountry()
+    {
+        return $this->loc_country;
+    }
+
+    public function getLocationProvince()
+    {
+        return $this->loc_province;
+    }
+
     public function isOiedCertified()
     {
         if($this->oied_certified == 1){
