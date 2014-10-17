@@ -74,7 +74,7 @@
             <select id="country-control" name="country" class="form-control">
                 <option value="-1">Select a Country</option>
                 <!-- BEGIN COUNTRIES -->
-                <option value="{COUNTRY_NAME}" {SELECTED}>{COUNTRY_NAME}</option>
+                <option value="{ABBR}" {SELECTED}>{COUNTRY_NAME}</option>
                 <!-- END COUNTRIES -->
             </select>
         </div>
