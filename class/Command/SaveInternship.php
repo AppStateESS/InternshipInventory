@@ -133,7 +133,7 @@ class SaveInternship {
 
         \PHPWS_DB::begin();
 
-        // Create/Save agency
+        // Update agency
         try {
             $agency = AgencyFactory::getAgencyById($_REQUEST['agency_id']);
         } catch (Exception $e) {
@@ -142,29 +142,18 @@ class SaveInternship {
             throw $e;
         }
 
+        // Agency Info
         $agency->name = $_REQUEST['agency_name'];
         $agency->address = $_REQUEST['agency_address'];
         $agency->city = $_REQUEST['agency_city'];
         $agency->zip = $_REQUEST['agency_zip'];
         $agency->phone = $_REQUEST['agency_phone'];
 
-        if ($_REQUEST['location'] == 'internat') {
-            /* Location is INTERNATIONAL. Country is required. Province was typed in. */
-            $agency->state = $_REQUEST['agency_state'];
-            $agency->province = $_REQUEST['agency_province'];
-            $agency->country = $_REQUEST['agency_country'];
+        $agency->state = $_REQUEST['agency_state'] == '-1' ? null : $_REQUEST['agency_state'];
+        $agency->province = $_REQUEST['agency_province'];
+        $agency->country = $_REQUEST['agency_country']== '-1' ? null : $_REQUEST['agency_country'];
 
-            $agency->supervisor_state = $_REQUEST['agency_sup_state'];
-            $agency->supervisor_province = $_REQUEST['agency_sup_province'];
-            $agency->supervisor_country = $_REQUEST['agency_sup_country'];
-        } else {
-            /* Location is DOMESTIC. Country is U.S. State was chosen from drop down */
-            $agency->state = $_REQUEST['agency_state'] == -1 ? null : $_REQUEST['agency_state'];
-            $agency->country = 'United States';
-            $agency->supervisor_state = $_REQUEST['agency_sup_state'] == -1 ? null : $_REQUEST['agency_sup_state'];
-            $agency->supervisor_country = 'United States';
-        }
-
+        // Agency Supervisor Info
         $agency->supervisor_first_name = $_REQUEST['agency_sup_first_name'];
         $agency->supervisor_last_name = $_REQUEST['agency_sup_last_name'];
         $agency->supervisor_title = $_REQUEST['agency_sup_title'];
@@ -173,7 +162,10 @@ class SaveInternship {
         $agency->supervisor_fax = $_REQUEST['agency_sup_fax'];
         $agency->supervisor_address = $_REQUEST['agency_sup_address'];
         $agency->supervisor_city = $_REQUEST['agency_sup_city'];
+        $agency->supervisor_state = $_REQUEST['agency_sup_state'];
         $agency->supervisor_zip = $_REQUEST['agency_sup_zip'];
+        $agency->supervisor_province = $_REQUEST['agency_sup_province'];
+        $agency->supervisor_country = $_REQUEST['agency_sup_country'] == '-1' ? null : $_REQUEST['agency_sup_country'];
         $agency->address_same_flag = isset($_REQUEST['copy_address']) ? 't' : 'f';
 
         try {

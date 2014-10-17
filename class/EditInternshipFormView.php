@@ -287,7 +287,9 @@ class EditInternshipFormView {
         $this->form->setLabel('agency_province', 'Province/Territory');
         $this->form->addCssClass('agency_province', 'form-control');
 
-        $this->form->addText('agency_country');
+        $countries = CountryFactory::getCountries();
+        $countries = array('-1' => 'Select Country') + $countries;
+        $this->form->addSelect('agency_country', $countries);
         $this->form->setLabel('agency_country', 'Country');
         $this->form->addCssClass('agency_country', 'form-control');
 
@@ -341,7 +343,7 @@ class EditInternshipFormView {
         $this->form->setLabel('agency_sup_province', 'Province');
         $this->form->addCssClass('agency_sup_province', 'form-control');
 
-        $this->form->addText('agency_sup_country');
+        $this->form->addSelect('agency_sup_country', $countries);
         $this->form->setLabel('agency_sup_country', 'Country');
         $this->form->addCssClass('agency_sup_country', 'form-control');
 
@@ -575,7 +577,8 @@ class EditInternshipFormView {
         $this->formVals['agency_state']           = $this->agency->state;
         $this->formVals['agency_zip']             = $this->agency->zip;
         $this->formVals['agency_province']        = $this->agency->province;
-        $this->formVals['agency_country']         = $this->agency->country;
+        //$this->formVals['agency_country']         = $this->agency->country;
+        $this->form->setMatch('agency_country', $this->agency->country);
         $this->formVals['agency_phone']           = $this->agency->phone;
         $this->formVals['agency_sup_first_name']  = $this->agency->supervisor_first_name;
         $this->formVals['agency_sup_last_name']   = $this->agency->supervisor_last_name;
@@ -588,7 +591,8 @@ class EditInternshipFormView {
         $this->formVals['agency_sup_state']       = $this->agency->supervisor_state;
         $this->formVals['agency_sup_zip']         = $this->agency->supervisor_zip;
         $this->formVals['agency_sup_province']    = $this->agency->supervisor_province;
-        $this->formVals['agency_sup_country']     = $this->agency->supervisor_country;
+        //$this->formVals['agency_sup_country']     = $this->agency->supervisor_country;
+        $this->form->setMatch('agency_sup_country', $this->agency->supervisor_country);
         $this->formVals['copy_address']           = $this->agency->address_same_flag == 't';
     }
 
