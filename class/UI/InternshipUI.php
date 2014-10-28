@@ -16,7 +16,8 @@ use \PHPWS_DB;
  */
 class InternshipUI implements UI {
 
-    public static $requiredFields = array('student_first_name',
+    public static $requiredFields = array(
+            'student_first_name',
             'student_last_name',
             'student_phone',
             'student_email',
@@ -24,7 +25,6 @@ class InternshipUI implements UI {
             'campus',
             'student_level',
             'agency_name',
-            'term',
             'department',
             'campus');
 

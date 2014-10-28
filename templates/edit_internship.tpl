@@ -180,9 +180,13 @@
       <!-- END loc_country -->
 
       <h4>Term Information</h4>
-      <div class="form-group required">
-        <label class="col-lg-3 control-label" for="{TERM_ID}">{TERM_LABEL_TEXT}</label>
-        <div class="col-lg-6">{TERM}</div>
+      <div class="form-group">
+        <div class="col-lg-3 control-label">
+            <label>Term</label>
+          </div>
+          <div class="col-lg-6">
+            {TERM}
+          </div>
       </div>
 
       <div class="form-group">

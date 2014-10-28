@@ -188,8 +188,6 @@ class SaveInternship {
             throw $e;
         }
 
-        $i->term = $_REQUEST['term'];
-        //$i->agency_id = $agencyId;
         $i->faculty_id = $_REQUEST['faculty_id'] > 0 ? $_REQUEST['faculty_id'] : null;
         $i->department_id = $_REQUEST['department'];
         $i->start_date = !empty($_REQUEST['start_date']) ? strtotime($_REQUEST['start_date']) : 0;
@@ -416,11 +414,6 @@ class SaveInternship {
         if(isset($_REQUEST['student_level']) && $_REQUEST['student_level'] == 'grad' &&
                 (!isset($_REQUEST['grad_prog']) || $_REQUEST['grad_prog'] == -1)){
             $vals[] = 'grad_prog';
-        }
-
-        if (!isset($_REQUEST['term']) ||
-                $_REQUEST['term'] == -1) {
-            $vals[] = 'term';
         }
 
         return $vals;

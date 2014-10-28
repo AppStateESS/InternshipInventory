@@ -411,11 +411,13 @@ class EditInternshipFormView {
         /*************
          * Term Info *
          */
-        $terms = Term::getFutureTermsAssoc();
-        $terms[-1] = 'Select Term';
-        $this->form->addSelect('term', $terms);
-        $this->form->setLabel('term', 'Select Term');
-        $this->form->addCssClass('term', 'form-control');
+        //$terms = Term::getFutureTermsAssoc();
+        //$terms[-1] = 'Select Term';
+        //$this->form->addSelect('term', $terms);
+        //$this->form->setLabel('term', 'Select Term');
+        //$this->form->addCssClass('term', 'form-control');
+
+        $this->tpl['TERM'] = Term::rawToRead($this->intern->term);
 
         $this->form->addText('start_date');
         $this->form->setLabel('start_date', 'Start Date');
@@ -511,13 +513,6 @@ class EditInternshipFormView {
         $this->plugAgency();
         $this->plugInternInfo();
         $this->plugCourseInfo();
-
-        // Remove the term dropdown and repalce it
-        $this->form->dropElement('term');
-        $this->form->addSelect('term', array($this->intern->term => Term::rawToRead($this->intern->term)));
-        $this->form->setLabel('term', 'Select Term');
-        $this->form->addCssClass('term', 'form-control');
-        $this->form->setMatch('term', $this->intern->term);
 
         $this->form->setMatch('experience_type', $this->intern->getExperienceType());
 
