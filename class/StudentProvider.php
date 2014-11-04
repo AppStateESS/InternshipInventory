@@ -35,6 +35,7 @@ abstract class StudentProvider {
         $student->setFirstName($data->first_name);
         $student->setLastName($data->last_name);
         $student->setMiddleName($data->middle_name);
+        $student->setBirthDateFromString($data->birth_date);
 
         // Contact info
         $student->setPhone($data->phone);

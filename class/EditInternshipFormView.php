@@ -533,6 +533,7 @@ class EditInternshipFormView {
     {
         // Student
         $this->tpl['BANNER'] = $this->intern->getBannerId();
+        $this->tpl['BIRTH_DATE'] = $this->intern->getBirthDateFormatted();
 
         $this->formVals['student_first_name'] = $this->intern->first_name;
         $this->formVals['student_middle_name'] = $this->intern->middle_name;

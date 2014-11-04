@@ -15,6 +15,10 @@ alter table intern_internship alter column secondary_part drop not null;
 alter table intern_internship alter column experience_type drop not null;
 alter table intern_internship alter column experience_type set default 'internship';
 
+alter table intern_internship add column birth_date integer;
+update intern_internship set birth_date = 0;
+alter table intern_internship alter column birth_date set not null;
+
 
 
 CREATE TABLE intern_country (id VARCHAR(2) NOT NULL, name VARCHAR(64) NOT NULL, PRIMARY KEY(id));
