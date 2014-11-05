@@ -32,8 +32,8 @@
         <legend>Student</legend>
 
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{BANNER_ID}">Banner Id</label>
-          <div class="col-lg-6">{BANNER}</div>
+          <label class="col-lg-3 control-label" for="bannerid}">Banner Id</label>
+          <div id="bannerid" class="col-lg-6">{BANNER}</div>
         </div>
 
         <div class="form-group required">
@@ -61,8 +61,8 @@
         </div>
         
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{BANNER_ID}">Birth date</label>
-          <div class="col-lg-6">{BIRTH_DATE}</div>
+          <label class="col-lg-3 control-label" for="birthdate">Birth date</label>
+          <div id="birthdate" class="col-lg-6">{BIRTH_DATE}</div>
         </div>
 
         <div class="form-group">
