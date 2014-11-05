@@ -26,27 +26,7 @@ abstract class StudentProvider {
      * @param Student $student
      * @param stdClass $data
      */
-    protected function plugValues(&$student, \stdClass $data)
-    {
-        $student->setStudentId($data->banner_id);
-        $student->setUsername($data->user_name);
-
-        // Basic demographics
-        $student->setFirstName($data->first_name);
-        $student->setLastName($data->last_name);
-        $student->setMiddleName($data->middle_name);
-        $student->setBirthDateFromString($data->birth_date);
-
-        // Contact info
-        $student->setPhone($data->phone);
-
-        // Academic info
-        $student->setLevel($data->level);
-        $student->setCampus($data->campus);
-        $student->setGpa($data->gpa);
-
-        //TODO more here as it bcomes available
-    }
+    protected abstract function plugValues(&$student, \stdClass $data);
 }
 
 ?>

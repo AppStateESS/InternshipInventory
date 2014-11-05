@@ -16,6 +16,10 @@ class BannerStudentProvider extends StudentProvider {
 
     private $soapClient;
 
+    // Campus main campus, distance ed
+    const MAIN_CAMPUS = 'MC';
+    const DISTANCE_ED = 'DE';
+
     /**
      * @param string $currentUserName - Username of the user currently logged in. Will be sent to web service
      */
@@ -40,7 +44,7 @@ class BannerStudentProvider extends StudentProvider {
             throw new InvalidArgumentException('Missing student ID.');
         }
 
-        $params = array('BannerID' => $bannerId,
+        $params = array('BannerID' => $studentId,
                         'UserName' => $this->username);
 
         try {
@@ -54,6 +58,43 @@ class BannerStudentProvider extends StudentProvider {
         $this->plugValues($student);
 
         return $student;
+    }
+
+    /**
+     * Takes a reference to a Student object and a SOAP response,
+     * Plugs the SOAP values into Student object.
+     *
+     * @param Student $student
+     * @param stdClass $data
+     */
+    protected function plugValues(&$student, \stdClass $data)
+    {
+        $student->setStudentId($data->banner_id);
+        $student->setUsername($data->user_name);
+
+        // Basic demographics
+        $student->setFirstName($data->first_name);
+        $student->setLastName($data->last_name);
+        $student->setMiddleName($data->middle_name);
+        $student->setBirthDateFromString($data->birth_date);
+
+        // Contact info
+        $student->setPhone($data->phone);
+
+        // Level (grad vs undergrad)
+        $student->setLevel($data->level);
+
+        // Campus
+        if($data->campus == BannerStudentProvider::MAIN_CAMPUS) {
+            $student->setCampus('main_campus');
+        } else if ($data->campus == BannerStudentProvider::DISTANCE_ED) {
+            $student->setCampus('distance_ed');
+        } else {
+            throw \InvalidArgumentException("Unrecognized campus ({$data->campus}) for {$data->banner_id}.");
+        }
+        $student->setGpa($data->gpa);
+
+        //TODO more here as it bcomes available
     }
 
     /**

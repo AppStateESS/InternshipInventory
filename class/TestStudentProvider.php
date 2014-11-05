@@ -8,7 +8,7 @@ namespace Intern;
  * @author Jeremy Booker
  * @package Intern
  */
-class TestStudentProvider extends StudentProvider {
+class TestStudentProvider extends BannerStudentProvider {
 
     /**
      * Returns a Student object with hard-coded data
@@ -46,7 +46,7 @@ class TestStudentProvider extends StudentProvider {
 
         // Academic Info
         $obj->level     = 'U'; // 'U' or 'G'
-        $obj->campus    = 'MC'; // TODO verify values in SOAP
+        $obj->campus    = BannerStudentProvider::MAIN_CAMPUS; // TODO verify values in SOAP
         $obj->gpa       = '3.75';
 
         return $obj;
