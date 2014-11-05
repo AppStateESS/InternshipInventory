@@ -22,11 +22,9 @@ class InternshipUI implements UI {
             'student_phone',
             'student_email',
             'student_gpa',
-            'campus',
             'student_level',
             'agency_name',
-            'department',
-            'campus');
+            'department');
 
     private $intern;
     private $wfstate;

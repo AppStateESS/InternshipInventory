@@ -783,6 +783,18 @@ class Internship {
         return $this->campus;
     }
 
+    // TODO - Get rid of the magic values, use constants
+    public function getCampusFormatted()
+    {
+        if($this->getCampus() == 'main_campus') {
+            return 'Main campus';
+        } else if ($this->getCampus() == 'distance_ed') {
+            return 'Distance Ed';
+        } else {
+            return 'Unknown campus';
+        }
+    }
+
     /**
      * Returns true if this is a Distance Ed internship, false otherwise.
      *

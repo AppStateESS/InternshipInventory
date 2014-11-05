@@ -300,7 +300,7 @@ class SaveInternship {
         }
 
         $i->gpa = $_REQUEST['student_gpa'];
-        $i->campus = $_REQUEST['campus'];
+        //$i->campus = $_REQUEST['campus'];
 
         $i->student_address = $_REQUEST['student_address'];
         $i->student_city = $_REQUEST['student_city'];

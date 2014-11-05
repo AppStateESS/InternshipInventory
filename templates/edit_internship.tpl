@@ -96,11 +96,8 @@
         </div>
 
         <div class="form-group">
-          <div class="col-lg-6 col-lg-offset-3">
-            <!-- BEGIN campus_repeat -->
-            <label class="radio-inline"> {CAMPUS} {CAMPUS_LABEL_TEXT} </label>
-            <!-- END campus_repeat -->
-          </div>
+          <label class="col-lg-3 control-label" for="campus">Campus</label>
+          <div id="campus" class="col-lg-6">{CAMPUS}</div>
         </div>
 
         <div class="form-group required">
