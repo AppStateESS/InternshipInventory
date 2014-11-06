@@ -105,6 +105,7 @@ class Student {
         return $this->level;
     }
 
+    // TODO: test for valid values ('grad', 'ugrad')
     public function setLevel($level) {
         $this->level = $level;
     }

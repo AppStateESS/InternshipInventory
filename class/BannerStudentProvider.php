@@ -16,9 +16,14 @@ class BannerStudentProvider extends StudentProvider {
 
     private $soapClient;
 
-    // Campus main campus, distance ed
+    // Campus: main campus, distance ed
     const MAIN_CAMPUS = 'MC';
     const DISTANCE_ED = 'DE';
+
+    // Student level: grad, undergrad
+    const UNDERGRAD = 'U';
+    const GRADUATE  = 'G'; // todo verify
+
 
     /**
      * @param string $currentUserName - Username of the user currently logged in. Will be sent to web service
@@ -82,7 +87,13 @@ class BannerStudentProvider extends StudentProvider {
         $student->setPhone($data->phone);
 
         // Level (grad vs undergrad)
-        $student->setLevel($data->level);
+        if($data->level == self::UNDERGRAD) {
+            $student->setLevel('ugrad'); // TODO get rid of magic value
+        } else if ($data->level == self::GRADUATE) {
+            $student->setLevel('grad');  // TODO get rid of magic value
+        } else {
+            throw \InvalidArgumentException("Unrecognized student level ({$data->level}) for {$data->banner_id}.");
+        }
 
         // Campus
         if($data->campus == BannerStudentProvider::MAIN_CAMPUS) {

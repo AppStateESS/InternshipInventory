@@ -837,6 +837,17 @@ class Internship {
         return $this->level;
     }
 
+    public function getLevelFormatted()
+    {
+        if($this->getLevel() == 'ugrad') {
+            return 'Undergraduate';
+        } else if ($this->getLvel() == 'grad') {
+            return 'Graduate';
+        } else {
+            return 'Unknown level';
+        }
+    }
+
     public function getGpa(){
         return $this->gpa;
     }

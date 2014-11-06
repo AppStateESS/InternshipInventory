@@ -22,7 +22,6 @@ class InternshipUI implements UI {
             'student_phone',
             'student_email',
             'student_gpa',
-            'student_level',
             'agency_name',
             'department');
 

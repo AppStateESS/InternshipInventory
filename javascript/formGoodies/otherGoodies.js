@@ -315,44 +315,6 @@ function initFacultySelector()
     }
 }
 
-// Event handler for student level drop down
-function handleLevelChange()
-{
-    if ($("#internship_student_level").val() === 'ugrad') {
-        $("#internship_ugrad_major").show();
-        $("#internship_grad_prog").hide();
-        $("#internship_student_major").hide();
-    } else if ($("#internship_student_level").val() === 'grad') {
-        $("#internship_ugrad_major").hide();
-        $("#internship_grad_prog").show();
-        $("#internship_student_major").hide();
-    } else {
-        $("#internship_ugrad_major").hide();
-        $("#internship_grad_prog").hide();
-        $("#internship_student_major").show();
-    }
-}
-
-function initStudentLevel()
-{
-    /******************************************
-     * Undergraduate Level and Major handling *
-     ******************************************/
-
-    // Set initial state
-    $("#internship_ugrad_major").hide();
-    $("#internship_grad_prog").hide();
-
-    // Set initial state for student level drop down by calling the
-    // usual event handler if needed
-    if($("#internship_student_level").val() !== -1){
-        handleLevelChange();
-    }
-
-    // Bind event handler for drop down change
-    $("#internship_student_level").change(handleLevelChange);
-}
-
 function otherStuff()
 {
     
@@ -363,7 +325,6 @@ function otherStuff()
     initMultiPart();
     initSecondaryPart();
     initFacultySelector();
-    initStudentLevel();
 
     setupFormSubmit();
 }

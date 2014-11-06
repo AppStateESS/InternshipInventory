@@ -286,18 +286,6 @@ class SaveInternship {
 
         $i->phone = $_REQUEST['student_phone'];
         $i->email = $_REQUEST['student_email'];
-        $i->level = $_REQUEST['student_level'];
-
-        // Check the level and record the major/program for this level.
-        // Be sure to set/clear the other leve's major/program to null
-        // in case the user is switching levels.
-        if($i->getLevel() == 'ugrad'){
-            $i->ugrad_major = $_REQUEST['ugrad_major'];
-            $i->grad_prog = null;
-        }else if($i->getLevel() == 'grad'){
-            $i->grad_prog = $_REQUEST['grad_prog'];
-            $i->ugrad_major = null;
-        }
 
         $i->gpa = $_REQUEST['student_gpa'];
         //$i->campus = $_REQUEST['campus'];
@@ -400,20 +388,6 @@ class SaveInternship {
         if (!isset($_REQUEST['department']) ||
                 $_REQUEST['department'] == -1) {
             $vals[] = 'department';
-        }
-
-        if(isset($_REQUEST['student_level']) && $_REQUEST['student_level'] == -1){
-            $vals[] = 'student_level';
-        }
-
-        if(isset($_REQUEST['student_level']) && $_REQUEST['student_level'] == 'ugrad' &&
-                (!isset($_REQUEST['ugrad_major']) || $_REQUEST['ugrad_major'] == -1)){
-            $vals[] = 'ugrad_major';
-        }
-
-        if(isset($_REQUEST['student_level']) && $_REQUEST['student_level'] == 'grad' &&
-                (!isset($_REQUEST['grad_prog']) || $_REQUEST['grad_prog'] == -1)){
-            $vals[] = 'grad_prog';
         }
 
         return $vals;

@@ -171,47 +171,43 @@ class EditInternshipFormView {
         $this->form->addCssClass('student_gpa', 'form-control');
 
         // Campus
-        $this->form->addRadioAssoc('campus', array('main_campus'=>'Main Campus', 'distance_ed'=>'Distance Ed'));
-        $this->form->setMatch('campus', 'main_campus');
+        //$this->form->addRadioAssoc('campus', array('main_campus'=>'Main Campus', 'distance_ed'=>'Distance Ed'));
+        //$this->form->setMatch('campus', 'main_campus');
 
         // Student level
-        $levels = array('-1' => 'Choose level', 'ugrad' => 'Undergraduate', 'grad' => 'Graduate');
-        $this->form->addDropBox('student_level', $levels);
-        $this->form->setLabel('student_level', 'Level');
-        $this->form->addCssClass('student_level', 'form-control');
+        //$levels = array('-1' => 'Choose level', 'ugrad' => 'Undergraduate', 'grad' => 'Graduate');
+        //$this->form->addDropBox('student_level', $levels);
+        //$this->form->setLabel('student_level', 'Level');
+        //$this->form->addCssClass('student_level', 'form-control');
 
         // Student Major dummy box (gets replaced by dropdowns below using JS when student_level is selected)
-        $levels = array('-1' => 'Choose student level first');
-        $this->form->addDropBox('student_major', $levels);
-        $this->form->setLabel('student_major', 'Major / Program');
-        $this->form->addCssClass('student_major', 'form-control');
+        //$levels = array('-1' => 'Choose student level first');
+        //$this->form->addDropBox('student_major', $levels);
+        //$this->form->setLabel('student_major', 'Major / Program');
+        //$this->form->addCssClass('student_major', 'form-control');
 
         /*****************************
          * Undergrad Major Drop Down *
          */
-        if (isset($this->intern)){
-            $majors = Major::getMajorsAssoc($this->intern->ugrad_major);
-        }else{
-            $majors = Major::getMajorsAssoc();
+
+        /*
+        // TODO get rid of magic values
+        if($this->intern->getLevel() == 'ugrad') {
+            $majors = Major::getMajorsAssoc($this->intern->ugrad_major); //TODO use accessor
+
+            $this->form->addSelect('ugrad_major', $majors);
+            $this->form->setLabel('ugrad_major', 'Undergraduate Majors &amp; Certificate Programs');
+            $this->form->addCssClass('ugrad_major', 'form-control');
+        } else if ($this->intern->getLevel() == 'grad') {
+            $progs = GradProgram::getGradProgsAssoc($this->intern->grad_prog); // TODO use accessor
+
+            $this->form->addSelect('grad_prog', $progs);
+            $this->form->setLabel('grad_prog', 'Graduate Majors &amp; Certificate Programs');
+            $this->form->addCssClass('grad_prog', 'form-control');
+        } else {
+            throw new \InvalidArgumentException("Unrecognized level ({$this->intern->getLevel()}) for {$this->intern->getBannerId()}");
         }
-
-        $this->form->addSelect('ugrad_major', $majors);
-        $this->form->setLabel('ugrad_major', 'Undergraduate Majors &amp; Certificate Programs');
-        $this->form->addCssClass('ugrad_major', 'form-control');
-
-
-        /****************************
-         * Graduate Major Drop Down *
-         */
-        if (isset($this->intern)){
-            $progs = GradProgram::getGradProgsAssoc($this->intern->grad_prog);
-        }else{
-            $progs = GradProgram::getGradProgsAssoc();
-        }
-
-        $this->form->addSelect('grad_prog', $progs);
-        $this->form->setLabel('grad_prog', 'Graduate Majors &amp; Certificate Programs');
-        $this->form->addCssClass('grad_prog', 'form-control');
+        */
 
 
         /************************
@@ -535,15 +531,25 @@ class EditInternshipFormView {
         $this->tpl['BANNER'] = $this->intern->getBannerId();
         $this->tpl['BIRTH_DATE'] = $this->intern->getBirthDateFormatted();
         $this->tpl['CAMPUS'] = $this->intern->getCampusFormatted();
+        $this->tpl['LEVEL'] = $this->intern->getLevelFormatted();
+
+        if($this->intern->getLevel() == 'ugrad') {
+            //$majors = Major::getMajorsAssoc($this->intern->ugrad_major);
+            $this->tpl['UGRAD_MAJOR'] = $this->intern->getUgradMajor()->getName();
+        } else if($this->intern->getLevel() == 'grad') {
+            //$progs = GradProgram::getGradProgsAssoc($this->intern->grad_prog); // TODO use accessor
+            $this->tpl['GRAD_PROG'] = $this->intern->getGradProg()->getName();
+        } else {
+            $this->tpl['GRAD_PROG'] = 'Unrecognized level';
+        }
 
         $this->formVals['student_first_name'] = $this->intern->first_name;
         $this->formVals['student_middle_name'] = $this->intern->middle_name;
         $this->formVals['student_last_name'] = $this->intern->last_name;
         $this->formVals['student_phone'] = $this->intern->phone;
         $this->formVals['student_email'] = $this->intern->email;
-        $this->formVals['student_level'] = $this->intern->level;
-        $this->formVals['grad_prog'] = $this->intern->grad_prog;
-        $this->formVals['ugrad_major'] = $this->intern->ugrad_major;
+        //$this->formVals['grad_prog'] = $this->intern->grad_prog;
+        //$this->formVals['ugrad_major'] = $this->intern->ugrad_major;
         $this->formVals['student_gpa'] = $this->intern->gpa;
         $this->formVals['campus'] = $this->intern->campus;
 
