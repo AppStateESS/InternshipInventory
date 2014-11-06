@@ -698,7 +698,7 @@ class EditInternshipFormView {
     private function setupChangeHistory()
     {
         $historyView = new ChangeHistoryView($this->intern);
-        $tpl['CHANGE_LOG'] = $historyView->show();
+        $this->tpl['CHANGE_LOG'] = $historyView->show();
     }
 }
 
