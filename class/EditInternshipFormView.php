@@ -153,6 +153,10 @@ class EditInternshipFormView {
         $this->form->setLabel('student_address','Address');
         $this->form->addCssClass('student_address', 'form-control');
 
+        $this->form->addText('student_address2');
+        $this->form->setLabel('student_address2','Address 2');
+        $this->form->addCssClass('student_address2', 'form-control');
+
         $this->form->addText('student_city');
         $this->form->setLabel('student_city','City');
         $this->form->addCssClass('student_city', 'form-control');
@@ -555,6 +559,7 @@ class EditInternshipFormView {
 
         // Student address
         $this->formVals['student_address'] = $this->intern->student_address;
+        $this->formVals['student_address2'] = $this->intern->student_address2;
         $this->formVals['student_city'] = $this->intern->student_city;
         $this->formVals['student_state'] = $this->intern->student_state;
         $this->formVals['student_zip'] = $this->intern->student_zip;

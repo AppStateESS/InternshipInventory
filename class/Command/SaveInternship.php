@@ -291,6 +291,7 @@ class SaveInternship {
         //$i->campus = $_REQUEST['campus'];
 
         $i->student_address = $_REQUEST['student_address'];
+        $i->student_address2 = $_REQUEST['student_address2'];
         $i->student_city = $_REQUEST['student_city'];
         if($_REQUEST['student_state'] != '-1'){
             $i->student_state = $_REQUEST['student_state'];

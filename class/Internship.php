@@ -54,6 +54,7 @@ class Internship {
 
     // Student address
     public $student_address;
+    public $student_address2;
     public $student_city;
     public $student_state;
     public $student_zip;
