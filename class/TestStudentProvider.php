@@ -10,6 +10,10 @@ namespace Intern;
  */
 class TestStudentProvider extends BannerStudentProvider {
 
+    public function __construct($currentUserName) {
+        $this->currentUserName = $currentUserName;
+    }
+
     /**
      * Returns a Student object with hard-coded data
      * @return Student
@@ -48,8 +52,8 @@ class TestStudentProvider extends BannerStudentProvider {
 
         // Contact info
         $obj->phone = '9192748035';
-        $ojb->addr1 = 'ASU Box 12345';
-        $ojb->addr2 = 'Boone NC 28608';
+        $obj->addr1 = 'ASU Box 12345';
+        $obj->addr2 = 'Boone NC 28608';
 
         // Academic Info
         $obj->level     = BannerStudentProvider::UNDERGRAD;   // 'U' or 'G'

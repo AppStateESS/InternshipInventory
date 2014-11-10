@@ -19,12 +19,12 @@ class StudentProviderFactory {
     public static function getProvider()
     {
         if(STUDENT_DATA_TEST){
-            return new TestStudentProvider();
+            return new TestStudentProvider(\Current_User::getUsername());
         }
 
         // Other data providers could be used here..
 
-        return new BannerStudentProvider(Current_User::getUsername());
+        return new BannerStudentProvider(\Current_User::getUsername());
     }
 }
 

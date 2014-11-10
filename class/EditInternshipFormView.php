@@ -537,14 +537,14 @@ class EditInternshipFormView {
         $this->tpl['CAMPUS'] = $this->intern->getCampusFormatted();
         $this->tpl['LEVEL'] = $this->intern->getLevelFormatted();
 
-        if($this->intern->getLevel() == 'ugrad') {
+        if($this->intern->getLevel() == 'ugrad' && $this->intern->getUgradMajor() !== null) {
             //$majors = Major::getMajorsAssoc($this->intern->ugrad_major);
             $this->tpl['UGRAD_MAJOR'] = $this->intern->getUgradMajor()->getName();
-        } else if($this->intern->getLevel() == 'grad') {
+        } else if($this->intern->getLevel() == 'grad' && $this->intern->getGradProgram() !== null) {
             //$progs = GradProgram::getGradProgsAssoc($this->intern->grad_prog); // TODO use accessor
             $this->tpl['GRAD_PROG'] = $this->intern->getGradProg()->getName();
         } else {
-            $this->tpl['GRAD_PROG'] = 'Unrecognized level';
+            $this->tpl['GRAD_PROG'] = 'Unknown major/program';
         }
 
         $this->formVals['student_first_name'] = $this->intern->first_name;

@@ -36,7 +36,7 @@ class BannerStudentProvider extends StudentProvider {
         $wsdlUri = \PHPWS_Settings::get('intern', 'wsdlUri');
 
         // Create the SOAP instance
-        $this->client = new SoapClient($wsdlUri);
+        $this->client = new \SoapClient($wsdlUri);
     }
 
     /**
@@ -103,7 +103,7 @@ class BannerStudentProvider extends StudentProvider {
         } else {
             throw \InvalidArgumentException("Unrecognized campus ({$data->campus}) for {$data->banner_id}.");
         }
-        $student->setGpa($data->gpa);
+        $student->setGpa(round($data->gpa, 3));
 
         //TODO more here as it bcomes available
     }
