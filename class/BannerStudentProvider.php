@@ -18,7 +18,7 @@ class BannerStudentProvider extends StudentProvider {
 
     // Campus: main campus, distance ed
     const MAIN_CAMPUS = 'MC';
-    const DISTANCE_ED = 'DE';
+    const DISTANCE_ED = 'DE'; //todo verify this
 
     // Student level: grad, undergrad
     const UNDERGRAD = 'U';

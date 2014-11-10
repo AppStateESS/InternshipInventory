@@ -29,9 +29,14 @@ class TestStudentProvider extends BannerStudentProvider {
     {
         $obj = new \stdClass();
 
+        // ID & email
         $obj->banner_id = '900123456';
         $obj->user_name = 'jb67803';
         $obj->email = 'jb67803@appstate.edu';
+
+        // Person type
+        $obj->isstaff = '';
+        $obj->isstudent = '1';
 
         // Basic demographics
         $obj->first_name = 'Jeremy';
@@ -43,11 +48,17 @@ class TestStudentProvider extends BannerStudentProvider {
 
         // Contact info
         $obj->phone = '9192748035';
+        $ojb->addr1 = 'ASU Box 12345';
+        $ojb->addr2 = 'Boone NC 28608';
 
         // Academic Info
-        $obj->level     = 'U'; // 'U' or 'G'
+        $obj->level     = BannerStudentProvider::UNDERGRAD;   // 'U' or 'G'
         $obj->campus    = BannerStudentProvider::MAIN_CAMPUS; // TODO verify values in SOAP
-        $obj->gpa       = '3.75';
+        $obj->gpa       = '3.8129032260';
+        $obj->grad_date = ''; // TODO test this
+
+        // Confidential flag
+        $obj->confid = ''; //TODO test this
 
         return $obj;
     }
