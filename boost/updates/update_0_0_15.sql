@@ -1,1 +1,0 @@
-ALTER TABLE intern_major ADD COLUMN hidden SMALLINT DEFAULT 0;

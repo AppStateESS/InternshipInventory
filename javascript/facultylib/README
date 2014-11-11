@@ -1,5 +1,0 @@
-This does nothing on its own.
-
-To use it, make your own javascriptMod thing, and in default.php, say:
-
-javascriptMod('intern', 'facultylib');

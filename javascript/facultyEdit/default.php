@@ -1,5 +1,0 @@
-<?php
-
-javascriptMod('intern', 'facultylib');
-
-?>
