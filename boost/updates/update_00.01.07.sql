@@ -1,1 +1,0 @@
-alter table intern_subject add column active smallint default 1;

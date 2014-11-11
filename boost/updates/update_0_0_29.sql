@@ -1,1 +1,0 @@
-ALTER TABLE intern_internship RENAME special_topic TO special_topics;

@@ -1,1 +1,0 @@
-ALTER TABLE intern_student DROP COLUMN graduated;

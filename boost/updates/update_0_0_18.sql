@@ -1,2 +1,0 @@
-ALTER TABLE intern_major ALTER COLUMN hidden DROP NOT NULL;
-ALTER TABLE intern_grad_prog ALTER COLUMN hidden DROP NOT NULL;
