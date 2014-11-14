@@ -6290,4 +6290,7 @@ button.close {
   }
 }
 /* LESS Document */
+.nav li a {
+  color: black;
+}
 /*# sourceMappingURL=bootstrap.css.map */
