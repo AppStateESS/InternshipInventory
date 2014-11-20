@@ -6292,6 +6292,7 @@ button.close {
 /* LESS Document */
 .nav li a {
   color: black;
+  algin-content: right;
 }
 .homepage1 {
   text-align: center;
@@ -6316,5 +6317,11 @@ button.close {
 }
 .image {
   margin: 0 auto;
+}
+.headerimage {
+  margin-right: auto;
+}
+.nav-bg {
+  background: white;
 }
 /*# sourceMappingURL=bootstrap.css.map */
