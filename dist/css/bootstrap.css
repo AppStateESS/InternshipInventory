@@ -6301,7 +6301,7 @@ button.close {
 }
 .homepage2 {
   text-align: center;
-  background-color: #D9D9D9;
+  background-color: white;
   padding-top: 50px;
   padding-bottom: 50px;
 }
@@ -6340,11 +6340,12 @@ body {
 }
 /* give the wrapper a padding-bottom and negative margin-bottom equal to the footer height */
 .wrapper {
-  min-height: 20%;
+  min-height: 11%;
   height: 10px;
   margin: 0 auto -100px;
   padding-bottom: 10px;
   text-align: center;
+  background-color: white;
 }
 .footer {
   height: 20px;
