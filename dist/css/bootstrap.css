@@ -6290,6 +6290,21 @@ button.close {
   }
 }
 /* LESS Document */
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  font-family: "Open Sans", Helvetica, Arial, sans-serif;
+}
 .nav li a {
   color: black;
   algin-content: right;
@@ -6310,17 +6325,13 @@ button.close {
 }
 .homepage2 {
   text-align: center;
-  background-color: white;
   padding-top: 50px;
-  padding-bottom: 50px;
 }
 .homepage3 {
   padding-top: 50px;
-  padding-bottom: 50px;
 }
 .homepage4 {
   padding-top: 50px;
-  padding-bottom: 50px;
 }
 .homepage5 {
   text-align: left;
@@ -6331,7 +6342,13 @@ button.close {
   text-align: left;
   padding-top: 50px;
   padding-bottom: 50px;
-  background-color: #D9D9D9;
+}
+.homepage7 {
+  text-align: center;
+  margin-top: 100px;
+  margin-bottom: 100px;
+  padding-top: 50px;
+  padding-bottom: 50px;
 }
 .image {
   margin: 0 auto;
@@ -6378,6 +6395,11 @@ body {
   z-index: -1;
 }
 .hr {
+  width: 60%;
   color: black;
+  height: 1px;
+  margin-left: auto;
+  margin-right: auto;
+  opacity: 1;
 }
 /*# sourceMappingURL=bootstrap.css.map */
