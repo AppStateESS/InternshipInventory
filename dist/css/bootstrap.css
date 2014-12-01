@@ -6315,7 +6315,6 @@ button.close {
   padding-bottom: 50px;
 }
 .homepage3 {
-  background-color: #D9D9D9;
   padding-top: 50px;
   padding-bottom: 50px;
 }
@@ -6377,5 +6376,8 @@ body {
   top: 0;
   left: 0;
   z-index: -1;
+}
+.hr {
+  color: black;
 }
 /*# sourceMappingURL=bootstrap.css.map */
