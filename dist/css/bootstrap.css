@@ -6312,7 +6312,7 @@ h6,
 .homepage1 {
   text-align: center;
   margin-top: 100px;
-  margin-bottom: 100px;
+  margin-bottom: 50px;
 }
 .homepageimage {
   text-align: center;
@@ -6335,20 +6335,11 @@ h6,
 }
 .homepage5 {
   text-align: left;
-  padding-top: 50px;
-  padding-bottom: 50px;
 }
 .homepage6 {
-  text-align: left;
-  padding-top: 50px;
-  padding-bottom: 50px;
-}
-.homepage7 {
   text-align: center;
-  margin-top: 100px;
-  margin-bottom: 100px;
-  padding-top: 50px;
-  padding-bottom: 50px;
+  padding-top: 100px;
+  padding-bottom: 100px;
 }
 .image {
   margin: 0 auto;
