@@ -271,6 +271,9 @@ class InternshipInventory {
                 $ctrl = new Command\FacultyDeptRest();
                 $ctrl->execute();
                 break;
+            case 'GetSearchSuggestions':
+                $ctrl = new Command\GetSearchSuggestions();
+                $ctrl->execute();
             default:
                 $menu = new UI\InternMenu();
                 $this->content = $menu->display();

@@ -57,6 +57,10 @@ class Student {
         $this->username = $username;
     }
 
+    public function getLegalName() {
+        return $this->getFirstName() . ' ' . $this->getLastName();
+    }
+
     public function getFirstName() {
         return $this->firstName;
     }
@@ -103,6 +107,10 @@ class Student {
 
     public function getLevel() {
         return $this->level;
+    }
+
+    public function getMajor() {
+        return $this->major;
     }
 
     // TODO: test for valid values ('grad', 'ugrad')

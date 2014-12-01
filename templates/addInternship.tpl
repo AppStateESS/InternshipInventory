@@ -1,3 +1,7 @@
+<script src="http://fb.me/react-with-addons-0.12.1.js"></script>
+<script src="http://fb.me/JSXTransformer-0.12.0.js"></script>
+<script type="text/jsx" src="{source_http}mod/intern/javascript/createInterface/create.jsx"></script>
+
 <form role="form" id="newInternshipForm" class="form-protected" autocomplete="off" action="index.php" method="post">
 <input type="hidden" name="module" value="intern">
 <input type="hidden" name="action" value="AddInternship">
@@ -9,15 +13,7 @@
             <div class="panel-body">
                 <h3 style="margin-top:0"><i class="fa fa-user"></i> Student</h3>
                 <div class="row">
-                    <div class="col-sm-12 col-md-10 col-md-push-1">
-                        <div class="form-group" id="studentId">
-                            <label for="studentId2" class="sr-only">Banner ID, User name, or Full Name</label>
-                            <input type="text" id="studentId2" name="studentId" class="form-control input-lg" placeholder="Banner ID, User name, or Full Name" value="{PREV_STUDENTID}" autocomplete="off" autofocus>
-                        </div>
-                    <div class="form-group">
-                        <button type="button" id="student-search-btn" class="btn btn-default pull-right">Search</button>
-                    </div>
-                  </div>
+                    <div id="searchform"></div>
                 </div>
             </div>
         </div>
@@ -105,12 +101,13 @@
 
 <div class="row">
     <div class="col-sm-12 col-md-6 col-md-push-3">
-    <button type="submit" class="btn btn-lg btn-primary pull-right" id="create-btn">Create Internship</button>
+        <button type="submit" class="btn btn-lg btn-primary pull-right" id="create-btn">Create Internship</button>
     </div>
 </div>
 </form>
 
 <script type="text/javascript">
+/*
 $(document).ready(function(){
 	// Event handler for clicking the submit button
     $('#newInternshipForm').submit(function(){
@@ -146,4 +143,5 @@ $(document).ready(function(){
     	updateDropDowns();
     });
 });
+*/
 </script>
