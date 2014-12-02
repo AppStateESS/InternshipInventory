@@ -6324,10 +6324,10 @@ h6,
   text-align: center;
   margin-top: 100px;
   height: 400px;
-  background-image: url(http://placehold.it/1920x500);
+  background-image: url(http://placehold.it/1920x600);
   background-repeat: no-repeat;
-  background-size: contain;
-  display: compact;
+  background-size: cover;
+  /*display: compact;*/
 }
 .homepage2 {
   text-align: center;
@@ -6349,6 +6349,7 @@ h6,
 }
 .image {
   margin: 0 auto;
+  margin-top: 20px;
 }
 .headerimage {
   margin-right: auto;
@@ -6367,7 +6368,7 @@ body {
   margin: 0 auto -100px;
   padding-bottom: 10px;
   text-align: center;
-  background-color: white;
+  background-color: #ECB11F;
 }
 .footer {
   height: 20px;
