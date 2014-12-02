@@ -6309,6 +6309,12 @@ h6,
   color: black;
   algin-content: right;
 }
+.navbar {
+  min-height: 80px;
+}
+.navbar-brand {
+  padding: 10px 10px;
+}
 .homepage1 {
   text-align: center;
   margin-top: 100px;
