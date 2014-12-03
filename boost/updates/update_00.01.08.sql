@@ -21,6 +21,23 @@ alter table intern_internship alter column birth_date set not null;
 
 alter table intern_internship add column student_address2 character varying;
 
+create table intern_student_autocomplete (
+    banner_id           integer NOT NULL,
+    username            character varying,
+    first_name          character varying,
+    middle_name         character varying,
+    last_name           character varying,
+    first_name_lower    character varying,
+    middle_name_lower   character varying,
+    last_name_lower     character varying,
+    first_name_meta     character varying,
+    middle_name_meta    character varying,
+    last_name_meta      character varying,
+    start_term          integer,
+    end_term            integer,
+    PRIMARY KEY(banner_id)
+);
+
 
 CREATE TABLE intern_country (id VARCHAR(2) NOT NULL, name VARCHAR(64) NOT NULL, PRIMARY KEY(id));
 
