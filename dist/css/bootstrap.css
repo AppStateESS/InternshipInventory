@@ -6316,7 +6316,7 @@ h6,
 }
 .homepage1 {
   text-align: center;
-  margin-top: 100px;
+  margin-top: 125px;
   margin-bottom: 50px;
 }
 .homepageimage {
@@ -6353,16 +6353,19 @@ h6,
   padding-top: 50px;
 }
 .homepage5 {
+  padding-top: 50px;
+  padding-bottom: 50px;
   text-align: left;
+  background-color: #EFEFEF;
 }
 .homepage6 {
   text-align: center;
   background-color: #EFEFEF;
 }
 .homepage7 {
-  text-align: center;
   padding-top: 50px;
-  color: white;
+  padding-bottom: 50px;
+  text-align: left;
 }
 .image {
   margin: 0 auto;
@@ -6384,7 +6387,7 @@ body {
   text-align: center;
   padding-top: 30px;
   padding-bottom: 50px;
-  background-color: #AEADAD;
+  background-color: #323232;
 }
 .homepagerows {
   padding-bottom: 50px;
