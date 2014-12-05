@@ -1,10 +1,3 @@
-var students = [
-                {name: "Jeremy Booker", studentId: "900325006", email: "jb67803@appstate.edu", major: "Computer Science"},
-                {name: "John Doe", studentId: "900654321", email: "jdoe@appstate.edu", major: "Accounting"}
-    ];
-
-var testStudent = {name: "John Doe", studentId: "900123456", email: "jb67803@appstate.edu", major: "Accounting"};
-
 // Student Search Parent Component
 var StudentSearch = React.createClass({
     getInitialState: function() {
@@ -39,19 +32,6 @@ var StudentSearch = React.createClass({
             }.bind(this)
         });
     },
-    // Handles keyPress events, triggers handleSearch() on 'enter' key
-    handleKey: function(e) {
-        if(e.charCode == 13) {
-            e.preventDefault();
-            this.handleSearch(e);
-        }
-    },
-    // Handle changes to search field
-    handleChange: function(e) {
-        if(this.state.studentFound) {
-            this.resetPreview();
-        }
-    },
     // Clears results from current state, resets for next search
     resetPreview: function() {
         this.setState({student: null, studentFound: false});
@@ -67,7 +47,7 @@ var StudentSearch = React.createClass({
             <div className="col-sm-12 col-md-10 col-md-push-1">
                 <div className={fgClasses} id="studentId">
                     <label htmlFor="studentId2" className="sr-only">Banner ID, User name, or Full Name</label>
-                    <input type="text" id="studentId2" name="studentId" className="form-control input-lg" placeholder="Banner ID, User name, or Full Name" ref="searchString" onKeyPress={this.handleKey} onChange={this.handleChange} autoComplete="off" autofocus/>
+                    <SearchBox/>
                     {this.state.studentFound ? <span className="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span> : null }
                     {this.state.studentFound ? <span id="inputSuccess2Status" className="sr-only">(success)</span> : null }
                 </div>
@@ -82,7 +62,45 @@ var StudentSearch = React.createClass({
     }
 });
 
-
+var SearchBox = React.createClass({
+    componentDidMount: function() {
+    	
+    	var bh = new Bloodhound({
+    		datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+    		queryTokenizer: Bloodhound.tokenizers.whitespace,
+    		remote: 'index.php?module=intern&action=GetSearchSuggestions&searchString=%QUERY',
+    		limit: 10,
+    	});
+    	bh.initialize();
+    	
+        var element = this.getDOMNode();
+        $(element).typeahead({
+            minLength: 3,
+            highlight: true
+        },
+        {
+        	name: 'students',
+        	displayKey: 'studentId',
+        	source: bh.ttAdapter(),
+        	templates: {
+        		suggestion: function(row) {
+        			return ('<p>'+row.name+' &middot; ' + row.studentId + '</p>')
+        		}
+        	}
+        });
+        
+        console.log(element);
+    },
+    componentWillUnmount: function() {
+        var element = this.getDOMNode();
+        $(element).typeahead('destory');
+    },
+    render: function() {
+        return (
+            <input type="search" name="studentId" className="form-control typeahead input-lg" placeholder="Banner ID, User name, or Full Name" ref="searchString" autoComplete="off" autofocus/>
+        );
+    }
+});
 
 // Student Preview
 var StudentPreview = React.createClass({

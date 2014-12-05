@@ -1,5 +1,6 @@
-<script src="http://fb.me/react-with-addons-0.12.1.js"></script>
-<script src="http://fb.me/JSXTransformer-0.12.0.js"></script>
+<script src="{source_http}mod/intern/javascript/typeahead/typeahead.bundle.js"></script>
+<script src="//fb.me/react-with-addons-0.12.1.js"></script>
+<script src="//fb.me/JSXTransformer-0.12.0.js"></script>
 <script type="text/jsx" src="{source_http}mod/intern/javascript/createInterface/create.jsx"></script>
 
 <form role="form" id="newInternshipForm" class="form-protected" autocomplete="off" action="index.php" method="post">
