@@ -6357,14 +6357,17 @@ h6,
 .homepage4 {
   padding-top: 50px;
   padding-bottom: 50px;
+  background-color: #B0B0B0;
+  text-align: right;
 }
 .homepage5 {
   padding-top: 50px;
   padding-bottom: 50px;
   text-align: left;
-  background-color: #EFEFEF;
+  background-color: #B0B0B0;
 }
 .homepage6 {
+  padding-top: 50px;
   text-align: center;
   background-color: #EFEFEF;
 }
@@ -6372,6 +6375,7 @@ h6,
   padding-top: 50px;
   padding-bottom: 50px;
   text-align: left;
+  background-color: #efefef;
 }
 .image {
   margin: 0 auto;
@@ -6386,10 +6390,8 @@ body {
 }
 /* give the wrapper a padding-bottom and negative margin-bottom equal to the footer height */
 .footer {
-  height: 20px;
   text-align: center;
   padding-top: 30px;
-  padding-bottom: 50px;
   background-color: #323232;
 }
 .homepagerows {
@@ -6410,11 +6412,12 @@ body {
   left: 0;
   z-index: -1;
 }
-.hr {
-  width: 60%;
-  height: 1px;
-  margin-left: auto;
-  margin-right: auto;
-  opacity: 0;
+.footertext {
+  color: #BDBDBD;
+  line-height: 1em;
+  padding-bottom: 20px;
+}
+.fonticons {
+  padding-bottom: 15px;
 }
 /*# sourceMappingURL=bootstrap.css.map */
