@@ -6308,6 +6308,9 @@ h6,
 .nav li a {
   /*color: black;*/
 }
+.nav-bg {
+  background: white;
+}
 .navbar-header {
   min-height: 80px;
 }
@@ -6376,9 +6379,6 @@ h6,
 }
 .headerimage {
   margin-right: auto;
-}
-.nav-bg {
-  background: white;
 }
 html,
 body {
