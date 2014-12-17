@@ -355,11 +355,6 @@ function handleDomesticClick()
     // Change the postal code label to 'zip'
     $("#internship_agency_sup_zip-label").text("Zip");
 
-    /****** Other Fields ********/
-    // Disable the OIED checkbox
-    $("#internship_oied_certified").prop('disabled', true);
-    $("#internship_oied_certified-label").addClass('text-muted');
-
     // Re-add handlers for copying state info. <mod/intern/javascript/copyAddress>
     //sameAddressState($("input:checkbox[name='copy_address']").attr('checked'));
 
@@ -405,11 +400,6 @@ function handleIntlClick()
 
     // Change the zip code label to 'postal code'
     $("#internship_agency_sup_zip-label").text("Postal Code");
-
-    /****** Other Fields ********/
-    // Enable the OIED checkbox
-    $("#internship_oied_certified").prop('disabled', false);
-    $("#internship_oied_certified-label").removeClass('text-muted');
 
     //sameAddressState($("input:checkbox[name='copy_address']").attr('checked'));
 
