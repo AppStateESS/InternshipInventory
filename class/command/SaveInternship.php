@@ -352,6 +352,18 @@ class SaveInternship {
         /************
          * OIED Certification
         */
+        // If OIED certification has changed, then double check permissions
+        $cert = $i->oied_certified == 1 ? true : false;
+        $certSubmitted = $_POST['oied_certified_hidden'] == 'true' ? true : false;
+        $certChanged = $cert != $certSubmitted;
+
+        if($certChanged && !Current_User::allow('intern', 'oied_certify')){
+            $url = "index.php?module=intern&action=edit_internship&internship_id={$i->getId()}";
+            NQ::simple('intern', INTERN_ERROR, "You do not have permission to change the OIED certification checkbox. No changes were saved.");
+            NQ::close();
+            return PHPWS_Core::reroute($url);
+        }
+
         // Check if this has changed from non-certified->certified so we can log it later
         if($i->oied_certified == 0 && $_POST['oied_certified_hidden'] == 'true'){
             // note the change for later
