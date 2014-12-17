@@ -842,7 +842,7 @@ class Internship {
     {
         if($this->getLevel() == 'ugrad') {
             return 'Undergraduate';
-        } else if ($this->getLvel() == 'grad') {
+        } else if ($this->getLevel() == 'grad') {
             return 'Graduate';
         } else {
             return 'Unknown level';
