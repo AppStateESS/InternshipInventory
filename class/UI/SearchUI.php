@@ -43,7 +43,7 @@ class SearchUI implements UI
         if(\Current_User::isDeity()){
             $depts = Department::getDepartmentsAssoc();
         }else{
-            $depts = Department::getDepartmentsAssocForUsername(Current_User::getUsername());
+            $depts = Department::getDepartmentsAssocForUsername(\Current_User::getUsername());
         }
         $form->addSelect('dept', $depts);
         $form->setLabel('dept', 'Department');
