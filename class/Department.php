@@ -74,7 +74,7 @@ class Department extends Editable
         }
 
         $name = $this->getName();
-        
+
         try{
             // Try to delete item
             if(!$this->delete()){
@@ -94,7 +94,7 @@ class Department extends Editable
     }
 
     /**
-     * Return an associative array {id => dept. name} for all the 
+     * Return an associative array {id => dept. name} for all the
      * departments in database.
      * @param $except - Always show the department with this ID. Used for internships
      *                  with a hidden department. We still want to see it in  the select box.
@@ -114,7 +114,7 @@ class Department extends Editable
 
         $depts[-1] = 'Select Department';
         $depts += $db->select('col');
-        
+
         return $depts;
     }
 
@@ -122,7 +122,7 @@ class Department extends Editable
      * Return an associative array {id => dept. name} for all the departments
      * that the user with $username is allowed to see.
      * @param $includeHiddenDept - Include the department with this ID, even if it's hidden. Used for internships
-     *                  with a hidden department. We still want to see it in the select box. 
+     *                  with a hidden department. We still want to see it in the select box.
      */
     public static function getDepartmentsAssocForUsername($username, $includeHiddenDept = null)
     {
@@ -133,7 +133,7 @@ class Department extends Editable
         $db->addWhere('hidden', 0, '=', 'OR', 'grp');
 
         if(!is_null($includeHiddenDept)){
-            $db->addWhere('id', $except, '=', 'OR', 'grp');
+            $db->addWhere('id', $includeHiddenDept, '=', 'OR', 'grp');
         }
 
         // If the user doesn't have the 'all_departments' permission,
@@ -150,7 +150,7 @@ class Department extends Editable
 
         return $depts;
     }
-    
+
     /**
      * Add a department to database with the passed name.
      */
@@ -195,7 +195,7 @@ class Department extends Editable
         }
 
         $name = $dept->getName();
-        
+
         try{
             // Try to delete department.
             if(!$dept->delete()){
@@ -220,13 +220,13 @@ class Department extends Editable
     {
         return $this->hidden == 1;
     }
-    
+
     public function hasCorequisite()
     {
     	if ($this->corequisite == 1) {
     		return true;
     	}
-    	
+
     	return false;
     }
 }
@@ -237,27 +237,27 @@ class Department extends Editable
  * @package intern
  */
 class DepartmentDB extends Department {
-    
+
     /**
      * Empty constructor for restoring object from database
      */
     public function __construct(){}
-    
+
     public function setId($id)
     {
         $this->id = $id;
     }
-    
+
     public function setName($name)
     {
         $this->name = $name;
     }
-    
+
     public function setHidden($hide)
     {
         $this->hidden = $hide;
     }
-    
+
     public function setCorequisite($coreq)
     {
         $this->corequisite = $coreq;
