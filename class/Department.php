@@ -131,7 +131,7 @@ class Department extends Editable
         $db->addWhere('hidden', 0, '=', 'OR', 'grp');
 
         if(!is_null($includeHiddenDept)){
-            $db->addWhere('id', $except, '=', 'OR', 'grp');
+            $db->addWhere('id', $includeHiddenDept, '=', 'OR', 'grp');
         }
 
         // If the user doesn't have the 'all_departments' permission,
