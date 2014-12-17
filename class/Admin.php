@@ -23,7 +23,7 @@ class Admin extends Model
     /**
      * @Override Model::getDb
      */
-    public function getDb()
+    public static function getDb()
     {
         return new \PHPWS_DB('intern_admin');
     }
