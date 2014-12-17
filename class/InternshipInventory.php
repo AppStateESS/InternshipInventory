@@ -209,6 +209,10 @@ class InternshipInventory {
                 $view = new StateUI();
                 $this->content = $view->display();
                 break;
+            case 'showEditAdmins':
+                $view = new UI\AdminUI();
+                $this->content = $view->display();
+                break;
             case 'edit_admins':
                 if (isset($_REQUEST['add'])) {
                     // Add user in REQUEST to administrator list for the department in REQUEST.
