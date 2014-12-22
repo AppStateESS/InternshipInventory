@@ -6317,6 +6317,18 @@ h6,
 .navbar-brand {
   padding: 10px 10px;
 }
+a {
+  color: white;
+  text-decoration: none;
+}
+a:hover {
+  color: #00A79D;
+  text-decoration: none;
+}
+a:active {
+  color: #464646;
+  text-decoration: none;
+}
 .homepage1 {
   text-align: center;
   margin-top: 125px;
@@ -6342,8 +6354,7 @@ h6,
   color: white;
   /*display: compact;*/
 }
-.homepage2 {
-  margin-top: 25px;
+.iconrow {
   text-align: center;
   padding-top: 50px;
   background-color: rgba(236, 178, 31, 0.8);
@@ -6368,6 +6379,7 @@ h6,
 }
 .homepage6 {
   padding-top: 50px;
+  padding-bottom: 50px;
   text-align: center;
   background-color: #EFEFEF;
 }
@@ -6376,6 +6388,37 @@ h6,
   padding-bottom: 50px;
   text-align: left;
   background-color: #efefef;
+}
+.bglightgray {
+  background-color: #e6e7e8;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+.bgmiddlegray {
+  background-color: #808284;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+.bgdarkgray {
+  background-color: #454547;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+.bgyellow {
+  background-color: #ecb11f;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+.homecenter {
+  margin-top: 75px;
+  text-align: center;
+  /*height: 800px;*/
+  background-size: cover;
+  color: black;
+  /*display: compact;*/
+}
+.center {
+  text-align: center;
 }
 .image {
   margin: 0 auto;
@@ -6419,5 +6462,12 @@ body {
 }
 .fonticons {
   padding-bottom: 15px;
+}
+.boxed {
+  border: 2px solid black;
+  padding: 10px 200px 10px 200px;
+  margin-left: 75px;
+  margin-right: 75px;
+  text-align: center;
 }
 /*# sourceMappingURL=bootstrap.css.map */
