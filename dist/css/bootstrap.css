@@ -6290,9 +6290,7 @@ button.close {
   }
 }
 /* LESS Document */
-body,
-h1,
-h2,
+bod h1 h2,
 h3,
 h4,
 h5,
@@ -6304,6 +6302,18 @@ h6,
 .h5,
 .h6 {
   font-family: "Open Sans", Helvetica, Arial, sans-serif;
+}
+.whitetext {
+  color: white;
+}
+.lightgraytext {
+  color: #e6e7e8;
+}
+.yellowtext {
+  color: #ecb11f;
+}
+.darkgraytext {
+  color: #454547;
 }
 .nav li a {
   /*color: black;*/
@@ -6318,7 +6328,7 @@ h6,
   padding: 10px 10px;
 }
 a {
-  color: white;
+  color: black;
   text-decoration: none;
 }
 a:hover {
@@ -6328,11 +6338,6 @@ a:hover {
 a:active {
   color: #464646;
   text-decoration: none;
-}
-.homepage1 {
-  text-align: center;
-  margin-top: 125px;
-  margin-bottom: 50px;
 }
 .homepageimage {
   text-align: center;
@@ -6358,36 +6363,6 @@ a:active {
   text-align: center;
   padding-top: 50px;
   background-color: rgba(236, 178, 31, 0.8);
-  color: white;
-}
-.homepage3 {
-  padding-top: 50px;
-  padding-bottom: 50px;
-  background-color: #EFEFEF;
-}
-.homepage4 {
-  padding-top: 50px;
-  padding-bottom: 50px;
-  background-color: #B0B0B0;
-  text-align: right;
-}
-.homepage5 {
-  padding-top: 50px;
-  padding-bottom: 50px;
-  text-align: left;
-  background-color: #B0B0B0;
-}
-.homepage6 {
-  padding-top: 50px;
-  padding-bottom: 50px;
-  text-align: center;
-  background-color: #EFEFEF;
-}
-.homepage7 {
-  padding-top: 50px;
-  padding-bottom: 50px;
-  text-align: left;
-  background-color: #efefef;
 }
 .bglightgray {
   background-color: #e6e7e8;
@@ -6464,7 +6439,7 @@ body {
   padding-bottom: 15px;
 }
 .boxed {
-  border: 2px solid black;
+  border: 2px solid white;
   padding: 10px 150px 10px 150px;
   margin-left: 75px;
   margin-right: 75px;
