@@ -6290,9 +6290,7 @@ button.close {
   }
 }
 /* LESS Document */
-body,
-h1,
-h2,
+bod h1 h2,
 h3,
 h4,
 h5,
@@ -6304,6 +6302,18 @@ h6,
 .h5,
 .h6 {
   font-family: "Open Sans", Helvetica, Arial, sans-serif;
+}
+.whitetext {
+  color: white;
+}
+.lightgraytext {
+  color: #e6e7e8;
+}
+.yellowtext {
+  color: #ecb11f;
+}
+.darkgraytext {
+  color: #454547;
 }
 .nav li a {
   /*color: black;*/
@@ -6317,10 +6327,17 @@ h6,
 .navbar-brand {
   padding: 10px 10px;
 }
-.homepage1 {
-  text-align: center;
-  margin-top: 125px;
-  margin-bottom: 50px;
+a {
+  color: black;
+  text-decoration: none;
+}
+a:hover {
+  color: #808284;
+  text-decoration: none;
+}
+a:active {
+  color: #464646;
+  text-decoration: none;
 }
 .homepageimage {
   text-align: center;
@@ -6342,40 +6359,41 @@ h6,
   color: white;
   /*display: compact;*/
 }
-.homepage2 {
-  margin-top: 25px;
+.iconrow {
   text-align: center;
   padding-top: 50px;
   background-color: rgba(236, 178, 31, 0.8);
-  color: white;
 }
-.homepage3 {
+.bglightgray {
+  background-color: #e6e7e8;
   padding-top: 50px;
   padding-bottom: 50px;
-  background-color: #EFEFEF;
 }
-.homepage4 {
+.bgmiddlegray {
+  background-color: #808284;
   padding-top: 50px;
   padding-bottom: 50px;
-  background-color: #B0B0B0;
-  text-align: right;
 }
-.homepage5 {
+.bgdarkgray {
+  background-color: #454547;
   padding-top: 50px;
   padding-bottom: 50px;
-  text-align: left;
-  background-color: #B0B0B0;
 }
-.homepage6 {
+.bgyellow {
+  background-color: #ecb11f;
   padding-top: 50px;
+  padding-bottom: 50px;
+}
+.homecenter {
+  margin-top: 75px;
   text-align: center;
-  background-color: #EFEFEF;
+  /*height: 800px;*/
+  background-size: cover;
+  color: black;
+  /*display: compact;*/
 }
-.homepage7 {
-  padding-top: 50px;
-  padding-bottom: 50px;
-  text-align: left;
-  background-color: #efefef;
+.center {
+  text-align: center;
 }
 .image {
   margin: 0 auto;
@@ -6419,5 +6437,12 @@ body {
 }
 .fonticons {
   padding-bottom: 15px;
+}
+.boxed {
+  border: 2px solid white;
+  padding: 10px 150px 10px 150px;
+  margin-left: 75px;
+  margin-right: 75px;
+  text-align: center;
 }
 /*# sourceMappingURL=bootstrap.css.map */
