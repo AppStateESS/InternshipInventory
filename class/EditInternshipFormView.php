@@ -60,11 +60,18 @@ class EditInternshipFormView extends InternshipFormView {
         $this->plugInternInfo();
         $this->plugCourseInfo();
 
-        // Remove the term dropdown and repalce it
-        $this->form->dropElement('term');
-        $this->form->addSelect('term', array($this->intern->term => Term::rawToRead($this->intern->term)));
-        $this->form->setLabel('term', 'Select Term');
-        $this->form->addCssClass('term', 'form-control');
+        // We're editing an internship...
+        // If this internship's term is in the past, then replace the term list with just that term
+        if(!in_array($this->intern->term, array_keys(Term::getFutureTermsAssoc())))
+        {
+            // Remove the term dropdown and repalce it
+            $this->form->dropElement('term');
+            $this->form->addSelect('term', array($this->intern->term => Term::rawToRead($this->intern->term)));
+            $this->form->setLabel('term', 'Select Term');
+            $this->form->addCssClass('term', 'form-control');
+        }
+
+
         $this->form->setMatch('term', $this->intern->term);
 
         $this->form->setMatch('experience_type', $this->intern->getExperienceType());
