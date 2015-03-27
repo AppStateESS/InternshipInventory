@@ -179,13 +179,13 @@ class InternshipContractPdfView {
 
             $this->pdf->setXY(15, 132);
             $this->pdf->cell(81, 5, $f->getStreetAddress2());
-            
+
             $this->pdf->setXY(60, 132);
             $this->pdf->cell(81, 5, $f->getCity());
-            
+
             $this->pdf->setXY(88, 132);
             $this->pdf->cell(81, 5, $f->getState());
-            
+
             $this->pdf->setXY(95, 132);
             $this->pdf->cell(81, 5, $f->getZip());
 
@@ -258,7 +258,7 @@ class InternshipContractPdfView {
         $agencyAddress = trim($a->getStreetAddress());
 
         if($internshipAddress != '' && $agencyAddress != '' && $internshipAddress != $agencyAddress) {
-            $this->pdf->setXY(110, 154);
+            $this->pdf->setXY(110, 163);
             $this->pdf->cell(52, 5, $this->internship->getLocationAddress());
         }
 
