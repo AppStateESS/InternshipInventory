@@ -219,7 +219,7 @@ class InternshipFormView {
          * Agency info *
          */
         $this->form->addText('agency_name');
-        $this->form->setLabel('agency_name', 'Name');
+        $this->form->setLabel('agency_name', 'Agency Name');
         $this->form->addCssClass('agency_name', 'form-control');
 
         $this->form->addCheck('copy_address_agency');
