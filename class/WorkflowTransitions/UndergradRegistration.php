@@ -67,10 +67,12 @@ class UndergradRegistration extends WorkflowTransition {
             if (!isset($creditHours) || $creditHours == '') {
                 throw new MissingDataException("Please enter the number of course credit hours.");
             }
-
+            
+            /*
             if(!\Current_User::isDeity() && $creditHours <= 0){
                 throw new MissingDataException("The number of course credit hours should be greater than zero.");
             }
+            */
         }
     }
 }
