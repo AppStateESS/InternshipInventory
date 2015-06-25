@@ -17,7 +17,7 @@ class UndergradRegistration extends WorkflowTransition {
             return false;
         }
     }
-    
+
     public function allowed(Internship $i)
     {
         if($i->isDistanceEd()){
@@ -40,7 +40,7 @@ class UndergradRegistration extends WorkflowTransition {
         PHPWS_Core::initModClass('intern', 'Email.php');
         Email::sendRegistrationConfirmationEmail($i, $agency);
     }
-    
+
     public function checkRequiredFields(Internship $i)
     {
         if (!$i->isSecondaryPart()) {
@@ -64,7 +64,7 @@ class UndergradRegistration extends WorkflowTransition {
 
             // Check the course credit hours field
             $creditHours = $i->getCreditHours();
-            if (!isset($creditHours) || $creditHours == '') {
+            if (!isset($creditHours) || $creditHours === '') {
                 throw new MissingDataException("Please enter the number of course credit hours.");
             }
 
