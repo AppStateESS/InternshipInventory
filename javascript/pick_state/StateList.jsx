@@ -15,6 +15,7 @@ var States = React.createClass({
 			type: 'GET',
 			dataType: 'json',
 			success: function(data) {
+				// Adds Select a State to the data array.
 				data.unshift({full_name: "Select a State", abbr: "AA"});			
 				this.setState({mainData: data, dropData: data});
 			}.bind(this),
@@ -25,8 +26,10 @@ var States = React.createClass({
 		});
 	},
 	handleDrop: function(e){
+		//Event handler for the dropdown box.
 		if (e.target.value != 'AA')
 		{
+			// Determines the text value (not abbr) of the selected state.
 			var options = e.target.options;
 			var val = '';
 			for (var i = 0, l = options.length; i < l; i++)
@@ -36,6 +39,7 @@ var States = React.createClass({
 				}
 			}
 
+			// Activating the selected state
 			for (var j = 0, k = this.state.dropData.length; j < k; j++)
 			{
 				if (this.state.dropData[j].abbr == e.target.value)
@@ -43,8 +47,11 @@ var States = React.createClass({
 					this.state.dropData[j].active = this.state.dropData[j].active + 1;
 				}
 			}
+
+			// updating the new state for optimization (snappy response on the client)
 			var newVal = this.state.dropData;
 			this.setState({dropData: newVal});
+
 
 			$.ajax({
 			url: 'index.php?module=intern&action=stateRest&abbr='+e.target.value,
@@ -60,6 +67,7 @@ var States = React.createClass({
 		}
 	},
 	onStateDelete: function(abbr){
+		// No longer makes the state active
 		for (var j = 0, k = this.state.dropData.length; j < k; j++)
 		{
 			if (this.state.dropData[j].abbr == abbr)
@@ -67,6 +75,8 @@ var States = React.createClass({
 				this.state.dropData[j].active = this.state.dropData[j].active - 1;
 			}
 		}
+
+		// updating the new state for optimization (snappy response on the client)
 		var newVal = this.state.dropData;
 		this.setState({dropData: newVal});
 
@@ -150,6 +160,7 @@ var States = React.createClass({
 });
 
 var StateList = React.createClass({
+	// Disables/Enables the state in the dropdown
   render: function() {  
   	if (this.props.active == 1)
   	{
@@ -170,6 +181,7 @@ var TableStates = React.createClass({
 	handleClick: function(){
 		this.props.onStateDelete(this.props.sAbbr);
 	},
+	// If the state is active rendering the html elements otherwise do nothing.
 	render: function() {
 		if (this.props.active == 1)
 		{

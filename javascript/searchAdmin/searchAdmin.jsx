@@ -12,6 +12,7 @@ var SearchAdmin = React.createClass({
 		};
 	},
 	componentWillMount: function(){
+		// Grabs the department data and admin data
 		this.getData();
 		this.getDept();
 	},
@@ -46,7 +47,8 @@ var SearchAdmin = React.createClass({
 		});
 	},
 	onAdminDelete: function(idNum){
-		
+		// Updating the new state for optimization (snappy response on the client)
+		// When a value is being deleted
 		var newVal = this.state.displayData.filter(function(el){
 			return el.id !== idNum;
 		});
@@ -92,6 +94,7 @@ var SearchAdmin = React.createClass({
 			}
 		}
 
+		// Updating the new state for optimization (snappy response on the client)
 		var newVal = this.state.displayData;
 		this.setState({displayData: newVal});
 		
@@ -111,6 +114,7 @@ var SearchAdmin = React.createClass({
 	searchList: function(e)
 	{
 		try {
+			// Saves the phrase that the user is looking for.
 			var phrase = e.target.value.toLowerCase();
 			this.setState({searchPhrase: phrase});
 		}
@@ -120,6 +124,8 @@ var SearchAdmin = React.createClass({
 		}
 
 		var filtered = [];
+
+		// Looks for the phrase by filtering the mainData
 		for (var i = 0; i < this.state.mainData.length; i++) {
 			var item = this.state.mainData[i];
 
@@ -140,7 +146,6 @@ var SearchAdmin = React.createClass({
 		var username = React.findDOMNode(this.refs.username).value.trim();
 		var deptNum = this.state.dropData;
 
-		//This method is redudant- what to do?
 		this.onAdminCreate(username, deptNum);
 	},
 	render: function() {

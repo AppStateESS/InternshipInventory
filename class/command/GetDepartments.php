@@ -5,7 +5,6 @@ class GetDepartments
 
 	public function getData()
 	{
-		//Call method here
 		$data = $this->getDeptData();
 		echo (json_encode($data));
 		exit;

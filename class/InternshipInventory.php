@@ -221,9 +221,9 @@ class InternshipInventory {
                 $this->content = $view->display();
                 break;
             case 'edit_admins':
-                PHPWS_Core::initModClass('intern', 'GetAdminView.php');
+                PHPWS_Core::initModClass('intern', 'UI/AdminUI.php');
                 
-                $view = new GetAdminView();
+                $view = new AdminUI();
                 $this->content = $view->display();
                 break;           
             case 'get_dept':

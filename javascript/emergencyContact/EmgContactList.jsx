@@ -1,3 +1,8 @@
+// !!The internshipId variable is important!!
+
+// It's being used as a global variable from the head.js where this file is located
+// to determine which internship is loaded so it can grab the emergency contacts.
+
 
 var EmergencyContactList = React.createClass({
     getInitialState: function() {
@@ -11,13 +16,12 @@ var EmergencyContactList = React.createClass({
         this.getData();
     },
     getData: function(){
-        // 
+        // Grabs the emergency contact data
         $.ajax({
             url: 'index.php?module=intern&action=emergencyContactRest&internshipid='+internshipId,
             type: 'GET',
             dataType: 'json',
             success: function(data) {      
-
                 this.setState({emgConData: data});
             }.bind(this),
             error: function(xhr, status, err) {
@@ -26,25 +30,8 @@ var EmergencyContactList = React.createClass({
             }.bind(this)                
         });
     },
-    getDeptFaculty: function(department_id){
-        
-        /*
-        $.ajax({
-            url: 'index.php?module=intern&action=getFacultyListForDept&department='+department_id,
-            type: 'GET',
-            dataType: 'json',
-            success: function(data) {                   
-                this.setState({facultyData: data, deptNum: department_id});
-            }.bind(this),
-            error: function(xhr, status, err) {
-                alert("Failed to grab data.")
-                console.error(this.props.url, status, err.toString());
-            }.bind(this)                
-        });
-        */
-    },
     onContactRemove: function(contactId){
-        
+        // Deletes the emergency contact.
         $.ajax({
             url: 'index.php?module=intern&action=emergencyContactRest&contactId='+contactId,
             type: 'DELETE',
@@ -56,10 +43,7 @@ var EmergencyContactList = React.createClass({
                 console.error(this.props.url, status, err.toString());
             }.bind(this)                
         });
-        
-
     },
-
     render: function() {
         if (this.state.emgConData != null)
         {       
@@ -82,7 +66,6 @@ var EmergencyContactList = React.createClass({
         {
             var eData = "";
         }
-
         return (
             <div className="form-horizontal">
                 <ul className="list-group">
@@ -104,9 +87,10 @@ var EmergencyContactList = React.createClass({
 
 var EmergencyList = React.createClass({
     handleRemove: function(event) {
+        // Prevents the modal trigger from occuring when presing
+        // the remove button.
         event.stopPropagation();
-        this.props.onContactRemove(this.props.id);
-        
+        this.props.onContactRemove(this.props.id);      
     },
     render: function() {
         var contactInfo = this.props.name +" "+"\u2022"+" "+ 
@@ -134,7 +118,7 @@ var EmergencyList = React.createClass({
 });
 
 
-// !This uses ReactBoostrap!
+// !!This uses ReactBoostrap!!
 var ModalForm = React.createClass({
     getInitialState: function() {
         return {
@@ -157,7 +141,7 @@ var ModalForm = React.createClass({
         }
     },
     handleSave: function() {
- 
+        // Event handler to help save the comments.
 
         var url = '&internshipId='              +internshipId+
                   '&contactId= '                +this.state.id+
@@ -166,24 +150,19 @@ var ModalForm = React.createClass({
                   '&emergency_contact_phone='   +this.state.phone+
                   '&emergency_contact_email='   +this.state.email;
 
-        console.log(this.state.showError);
-
         if (this.state.name == '' || this.state.relation == '' ||  this.state.phone == '' || this.state.email == '')
-        {
-            
+        {  
+            // If any field is left empty, it will display an error message in the modal form.
             this.setState({showError: true});
-            console.log(this.state.name);
-            console.log(this.state.relation);
-            console.log(this.state.phone);
-            console.log(this.state.email);
-            console.log(this.state.showError);
         }
         else
         {
+            // Updates or adds a new emergency contact
             $.ajax({
                 url: 'index.php?module=intern&action=emergencyContactRest'+ url,
                 type: 'POST',
-                success: function() {      
+                success: function() {    
+                    // Grabs the new data and hides the form  
                     this.props.getData();
                     this.props.onRequestHide();
                 }.bind(this),
@@ -195,6 +174,7 @@ var ModalForm = React.createClass({
         }
     },
     handleChangeForm: function(event) {
+        // Event handler for each of the textboxes.
         switch(event.target.id) {
             case "emg-name":
                 this.setState({name: event.target.value});

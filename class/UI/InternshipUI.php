@@ -103,13 +103,7 @@ class InternshipUI implements UI {
             // Sanity check distance ed radio
             if (!$i->isDistanceEd() && ($i->getCourseSection() > 300 && $i->getCourseSection() < 400)) {
                 NQ::simple('intern', INTERN_WARNING, "The course section number you entered looks like a distance ed course. Be sure to check the Distance Ed option, or double check the section number.");
-            }
-            
-            //PHPWS_Core::initModClass('intern', 'EmergencyContactFormView.php');
-            //$emgContactDialog = new EmergencyContactFormView($i);
-            
-            //$tpl['ADD_EMERGENCY_CONTACT'] = '<button type="button" class="btn btn-default btn-sm" id="add-ec-button"><i class="fa fa-plus"></i> Add Contact</button>';
-            //$tpl['EMERGENCY_CONTACT_DIALOG'] = $emgContactDialog->getHtml(); 
+            }         
 
             //Used for Emergency Contact React
             javascriptMod('intern', 'emergencyContact', array('INTERN_ID'=>$i->getId()));

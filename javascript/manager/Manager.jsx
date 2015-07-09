@@ -8,12 +8,14 @@ var Manager = React.createClass({
 		};
 	},
 	componentWillMount: function(){
+		this.getData();
+	},
+	getData: function(){
 		$.ajax({
 			url: 'index.php?module=intern&action='+this.props.ajaxURL,
 			type: 'GET',
 			dataType: 'json',
-			success: function(data) {		
-				//alert("test passed")				
+			success: function(data) {					
 				this.setState({mainData: data});
 			}.bind(this),
 			error: function(xhr, status, err) {
@@ -23,6 +25,7 @@ var Manager = React.createClass({
 		});
 	},
 	onHidden: function(val, id){
+		// Hides the selected value
 		if (val == 0)
 		{
 			var val = val + 1;
@@ -35,21 +38,8 @@ var Manager = React.createClass({
 		$.ajax({
 			url: 'index.php?module=intern&action='+this.props.ajaxURL+'&val='+val+'&id='+id,
 			type: 'PUT',
-			success: function(data) {		
-				//alert("test passed")				
-				$.ajax({
-					url: 'index.php?module=intern&action='+this.props.ajaxURL,
-					type: 'GET',
-					dataType: 'json',
-					success: function(data) {		
-						//alert("test passed")				
-						this.setState({mainData: data});
-					}.bind(this),
-					error: function(xhr, status, err) {
-						alert("test failed")
-						console.error(this.props.url, status, err.toString());
-					}.bind(this)				
-				});
+			success: function() {						
+				this.getData();
 			}.bind(this),
 			error: function(xhr, status, err) {
 				alert("test failed")
@@ -58,29 +48,20 @@ var Manager = React.createClass({
 		});
 	},
 	onSave: function(orgName, newName, id){
+		// Saves the value into the database
 		$.ajax({
 			url: 'index.php?module=intern&action='+this.props.ajaxURL+'&name='+newName+'&id='+id,
 			type: 'PUT',
 			success: function(data) {	
+				// Determines if the values have changed and if so, continues
+				// with the changes.
 				if (orgName != newName)
 				{	
 					$("#success").show();
 					var added = 'Updated '+orgName+ " to " +newName+'.';
 					this.setState({success: added});
 				}				
-				$.ajax({
-					url: 'index.php?module=intern&action='+this.props.ajaxURL,
-					type: 'GET',
-					dataType: 'json',
-					success: function(data) {		
-						//alert("test passed")				
-						this.setState({mainData: data});
-					}.bind(this),
-					error: function(xhr, status, err) {
-						alert("test failed")
-						console.error(this.props.url, status, err.toString());
-					}.bind(this)				
-				});
+				this.getData();
 			}.bind(this),
 			error: function(xhr, status, err) {
 				alert("test failed")
@@ -89,25 +70,16 @@ var Manager = React.createClass({
 		});
 	},
 	onCreate: function(name) {
+		// Creates a new value
 		$.ajax({
 			url: 'index.php?module=intern&action='+this.props.ajaxURL+'&create='+name,
 			type: 'POST',		
 			success: function(data) {	
+				// Shows a success message for the new value being added.
 				$("#success").show();
 				var added = 'Added '+name+'.';
 				this.setState({success: added});
-				$.ajax({
-					url: 'index.php?module=intern&action='+this.props.ajaxURL,
-					type: 'GET',
-					dataType: 'json',
-					success: function(data) {		
-						this.setState({mainData: data});
-					}.bind(this),
-					error: function(xhr, status, err) {
-						alert("test failed")
-						console.error(this.props.url, status, err.toString());
-					}.bind(this)				
-				});
+				this.getData();
 			}.bind(this),
 			error: function(http) {
 				var errorMessage = http.responseText;
@@ -185,7 +157,6 @@ var DisplayData = React.createClass({
 		};
 	},
 	handleEdit: function() {
-
 		this.setState({editMode: true});
 
 	},
@@ -195,6 +166,7 @@ var DisplayData = React.createClass({
 	handleSave: function() {
 		this.setState({editMode: false});
 
+		// Grabs the value in the textbox
 		var newName = React.findDOMNode(this.refs.savedData).value.trim();
 		if (newName == '')
 		{
@@ -205,7 +177,7 @@ var DisplayData = React.createClass({
 		this.props.onSave(originalName, newName, this.props.id);
 	},
 	render: function() {  
-
+		// Determines which element to show on the page (hide/show and Save/Edit)
 		if (this.props.hidden == 0)
 		{
 			var name = this.props.name;

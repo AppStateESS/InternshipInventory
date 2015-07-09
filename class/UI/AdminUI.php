@@ -1,7 +1,5 @@
 <?php
 
-//                                                                          !!OVERIDING FILE WITH GetAdmin.php!!
-
 /**
  * Class for handling UI for Admin editing and creation
  * @author Micah Carter <mcarter at tux dot appstate dot edu>
@@ -20,7 +18,7 @@ class AdminUI implements UI {
         $tpl = array();
 
         javascript('jquery');
-        javascriptMod('intern', 'admin');
+        javascriptMod('intern', 'searchAdmin');
 
 
         return PHPWS_Template::process($tpl, 'intern','edit_admin.tpl');
