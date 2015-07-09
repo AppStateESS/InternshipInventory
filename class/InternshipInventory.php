@@ -29,12 +29,17 @@ class InternshipInventory {
             Term::doTermUpdate();
         }
 
+
+
         // Fetch the action from the REQUEST.
+        
         if (!isset($_REQUEST['action'])) {
             $req = "";
         } else {
             $req = $_REQUEST['action'];
         }
+        
+
 
         // Show requested page.
         switch ($req) {
@@ -106,18 +111,18 @@ class InternshipInventory {
                 $view = new DepartmentUI();
                 $this->content = $view->display();
                 break;
-            case GRAD_PROG_EDIT:
-                PHPWS_Core::initModClass('intern', 'GradProgram.php');
+            
+            case GRAD_PROG_EDIT:            
                 PHPWS_Core::initModClass('intern', 'UI/GradProgramUI.php');
                 if (isset($_REQUEST['add'])) {
-                    /* Add grad program with the name in REQUEST */
+                    // Add grad program with the name in REQUEST 
                     if (isset($_REQUEST['name'])) {
                         GradProgram::add($_REQUEST['name']);
                     } else {
                         NQ::simple('intern', INTERN_ERROR, "Grad Program must have name.");
                     }
                 } else if (isset($_REQUEST['rename'])) {
-                    /* Rename program with ID to new name that was passed in REQUEST */
+                    // Rename program with ID to new name that was passed in REQUEST 
                     if (isset($_REQUEST['id'])) {
                         $g = new GradProgram($_REQUEST['id']);
                         $g->rename($_REQUEST['rename']);
@@ -125,7 +130,7 @@ class InternshipInventory {
                         NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot rename graduate program.");
                     }
                 } else if (isset($_REQUEST['hide'])) {
-                    /* Hide/Show program with ID passed in REQUEST. */
+                    // Hide/Show program with ID passed in REQUEST. 
                     if (isset($_REQUEST['id'])) {
                         $g = new GradProgram($_REQUEST['id']);
                         $g->hide($_REQUEST['hide'] == 1);
@@ -133,7 +138,7 @@ class InternshipInventory {
                         NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot hide graduate program.");
                     }
                 } else if (isset($_REQUEST['del'])) {
-                    /* Delete program with same ID passed in REQUEST. */
+                    // Delete program with same ID passed in REQUEST. 
                     if (isset($_REQUEST['id'])) {
                         $g = new GradProgram($_REQUEST['id']);
                         $g->del();
@@ -144,6 +149,7 @@ class InternshipInventory {
                 $view = new GradProgramUI();
                 $this->content = $view->display();
                 break;
+            
             case MAJOR_EDIT:
                 PHPWS_Core::initModClass('intern', 'UI/MajorUI.php');
 
@@ -182,6 +188,7 @@ class InternshipInventory {
                 $view = new MajorUI();
                 $this->content = $view->display();
                 break;
+            
                 /**
                  * Matt additions!
                  */
@@ -214,22 +221,15 @@ class InternshipInventory {
                 $this->content = $view->display();
                 break;
             case 'edit_admins':
-                PHPWS_Core::initModClass('intern', 'UI/AdminUI.php');
-                PHPWS_Core::initModClass('intern', 'Admin.php');
-                PHPWS_Core::initModClass('intern', 'Department.php');
-                if (isset($_REQUEST['add'])) {
-                    // Add user in REQUEST to administrator list for the department in REQUEST.
-                    Admin::add($_REQUEST['username'], $_REQUEST['department_id']);
-                } else if (isset($_REQUEST['del'])) {
-                    // Delete the user in REQUEST from department in REQUEST.
-                    Admin::del($_REQUEST['username'], $_REQUEST['department_id']);
-                } else if (isset($_REQUEST['user_complete'])) {
-                    $users = Admin::searchUsers($_REQUEST['term']);
-                    echo json_encode($users);
-                    exit();
-                }
-                $view = new AdminUI();
+                PHPWS_Core::initModClass('intern', 'GetAdminView.php');
+                
+                $view = new GetAdminView();
                 $this->content = $view->display();
+                break;           
+            case 'get_dept':
+                PHPWS_Core::initModClass('intern','command/GetDepartments.php');
+                $deptData = new GetDepartments();
+                $deptData->getData();
                 break;
             case 'pdf':
                 PHPWS_Core::initModClass('intern', 'InternshipFactory.php');
@@ -288,6 +288,36 @@ class InternshipInventory {
             case 'facultyDeptRest':
                 PHPWS_Core::initModClass('intern', 'command/FacultyDeptRest.php');
                 $ctrl = new FacultyDeptRest();
+                $ctrl->execute();
+                break;
+            case 'adminRest':
+                PHPWS_Core::initModClass('intern', 'command/AdminRest.php');
+                $ctrl = new AdminRest();
+                $ctrl->execute();
+                break;
+            case 'majorRest':
+                PHPWS_Core::initModClass('intern', 'command/MajorRest.php');
+                $ctrl = new MajorRest();
+                $ctrl->execute();
+                break;
+            case 'gradRest':
+                PHPWS_Core::initModClass('intern', 'command/GradRest.php');
+                $ctrl = new GradRest();
+                $ctrl->execute();
+                break;
+            case 'deptRest':
+                PHPWS_Core::initModClass('intern', 'command/DeptRest.php');
+                $ctrl = new DeptRest();
+                $ctrl->execute();
+                break;
+            case 'stateRest':
+                PHPWS_Core::initModClass('intern', 'command/StateRest.php');
+                $ctrl = new StateRest();
+                $ctrl->execute();
+                break;
+            case 'emergencyContactRest':
+                PHPWS_Core::initModClass('intern', 'command/EmergencyContactRest.php');
+                $ctrl = new EmergencyContactRest();
                 $ctrl->execute();
                 break;
             default:

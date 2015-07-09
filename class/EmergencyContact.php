@@ -15,6 +15,7 @@ class EmergencyContact implements DbStorable {
     public $name;
     public $relation;
     public $phone;
+    public $email;
 
     private $internship;
     
@@ -25,7 +26,7 @@ class EmergencyContact implements DbStorable {
      * @param String $relation
      * @param String $phone
      */
-    public function __construct(Internship $i, $name, $relation, $phone)
+    public function __construct(Internship $i, $name, $relation, $phone, $email)
     {
         $this->internship     = $i;
         
@@ -33,6 +34,7 @@ class EmergencyContact implements DbStorable {
         $this->name           = $name;
         $this->relation       = $relation;
         $this->phone          = $phone;
+        $this->email          = $email;
     }
 
     /**
@@ -53,6 +55,7 @@ class EmergencyContact implements DbStorable {
         $vars['name']         = $this->getName();
         $vars['relation']     = $this->getRelation();
         $vars['phone']        = $this->getPhone();
+        $vars['email']        = $this->getEmail();
         
         return $vars;
     }
@@ -80,6 +83,31 @@ class EmergencyContact implements DbStorable {
     public function getPhone()
     {
         return $this->phone;
+    }
+
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+    
+    public function setRelation($relation)
+    {
+        $this->relation = $relation;
+    }
+    
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+    }
+
+    public function setEmail($email)
+    {
+        $this->email = $email;
     }
 }
 

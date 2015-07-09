@@ -1,5 +1,4 @@
 <?php
-
   /**
    * GradProgram
    *
@@ -8,14 +7,12 @@
    *
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
-
 PHPWS_Core::initModClass('intern', 'Editable.php');
 define('GRAD_PROG_EDIT', 'edit_grad');
 class GradProgram extends Editable
 {
     public $name;
     public $hidden;
-
     /**
      * @Override Model::getDb
      */
@@ -24,7 +21,6 @@ class GradProgram extends Editable
         $db = new PHPWS_DB('intern_grad_prog');
         return $db;
     }
-
     /**
      * @Override Model::getCSV
      */
@@ -32,14 +28,12 @@ class GradProgram extends Editable
     {
         return array('Graduate Program' => $this->name);
     }
-
     /**
      * Get an empty CSV to fill in fields.
      */
     public static function getEmptyCSV(){
         return array('Graduate Program' => '');
     }
-
     /**
      * @Override Editable::getEditAction
      */
@@ -47,7 +41,6 @@ class GradProgram extends Editable
     {
         return GRAD_PROG_EDIT;
     }
-
     /**
      * @Override Editable::getEditPermission
      */
@@ -55,7 +48,6 @@ class GradProgram extends Editable
     {
         return 'edit_grad_prog';
     }
-
     /**
      * @Override Editable::getDeletePermission
      */
@@ -63,12 +55,10 @@ class GradProgram extends Editable
     {
         return 'delete_grad_prog';
     }
-
     public function getName()
     {
         return $this->name;
     }
-
     public function isHidden()
     {
         return $this->hidden == 1;
@@ -92,10 +82,8 @@ class GradProgram extends Editable
         }
         
         $db->setIndexBy('id');
-
         $progs[-1] = 'Select Graduate Major or Certificate Program';
         $progs += $db->select('col');
-
         return $progs;
     }
     
@@ -108,7 +96,6 @@ class GradProgram extends Editable
         if($name == ''){
             return NQ::simple('intern', INTERN_ERROR, 'No name given for new graduate program. No graduate program added.');
         }
-
         /* Search DB for program with matching name. */
         $db = self::getDb();
         $db->addWhere('name', $name);
@@ -116,7 +103,6 @@ class GradProgram extends Editable
             NQ::simple('intern', INTERN_WARNING, "The graduate program <i>$name</i> already exists.");
             return;
         }
-
         /* Program does not exist...keep going */
         $prog = new GradProgram();
         $prog->name = $name;
@@ -126,10 +112,8 @@ class GradProgram extends Editable
             NQ::simple('intern', INTERN_ERROR, "Error adding graduate program <i>$name</i>.<br/>".$e->getMessage());
             return;
         }
-
         /* Program was successfully added. */
         NQ::simple('intern', INTERN_SUCCESS, "<i>$name</i> added as graduate program.");
     }
 }
-
 ?>

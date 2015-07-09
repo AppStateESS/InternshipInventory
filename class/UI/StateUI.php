@@ -9,19 +9,9 @@ class StateUI implements UI {
 
     public static function display()
     {
+        $tpl = array();       
+        javascript('/jquery/');
         javascriptMod('intern', 'pick_state');
-        $db = new PHPWS_DB('intern_state');
-        $db->addOrder('full_name');
-        $states = $db->select();
-        foreach ($states as $state) {
-            extract($state); //abbr, full_name, active
-            $row = array('ABBR' => $abbr, 'NAME' => $full_name);
-            if (!$active) {
-                $tpl['state_row'][] = $row;
-            } else {
-                $tpl['active_row'][] = $row;
-            }
-        }
 
         return PHPWS_Template::process($tpl, 'intern', 'state_list.tpl');
     }

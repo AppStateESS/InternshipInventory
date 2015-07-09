@@ -311,6 +311,7 @@ CREATE TABLE intern_emergency_contact (
     name        character varying,
     relation    character varying,
     phone       character varying,
+    email       character varying,
     PRIMARY KEY (id)
 );
 

@@ -43,7 +43,7 @@ class Admin extends Model
             $dept = $dept->id;
         }
 
-        $db = self::getDb();
+        $db = new PHPWS_DB('intern_admin');
         $db->addWhere('username', $username);
         $db->addWhere('department_id', $dept);
         $db->addColumn('id', $count=true);
