@@ -32,13 +32,13 @@ class InternshipInventory {
 
 
         // Fetch the action from the REQUEST.
-        
+
         if (!isset($_REQUEST['action'])) {
             $req = "";
         } else {
             $req = $_REQUEST['action'];
         }
-        
+
 
 
         // Show requested page.
@@ -111,18 +111,18 @@ class InternshipInventory {
                 $view = new DepartmentUI();
                 $this->content = $view->display();
                 break;
-            
-            case GRAD_PROG_EDIT:            
+
+            case GRAD_PROG_EDIT:
                 PHPWS_Core::initModClass('intern', 'UI/GradProgramUI.php');
                 if (isset($_REQUEST['add'])) {
-                    // Add grad program with the name in REQUEST 
+                    // Add grad program with the name in REQUEST
                     if (isset($_REQUEST['name'])) {
                         GradProgram::add($_REQUEST['name']);
                     } else {
                         NQ::simple('intern', INTERN_ERROR, "Grad Program must have name.");
                     }
                 } else if (isset($_REQUEST['rename'])) {
-                    // Rename program with ID to new name that was passed in REQUEST 
+                    // Rename program with ID to new name that was passed in REQUEST
                     if (isset($_REQUEST['id'])) {
                         $g = new GradProgram($_REQUEST['id']);
                         $g->rename($_REQUEST['rename']);
@@ -130,7 +130,7 @@ class InternshipInventory {
                         NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot rename graduate program.");
                     }
                 } else if (isset($_REQUEST['hide'])) {
-                    // Hide/Show program with ID passed in REQUEST. 
+                    // Hide/Show program with ID passed in REQUEST.
                     if (isset($_REQUEST['id'])) {
                         $g = new GradProgram($_REQUEST['id']);
                         $g->hide($_REQUEST['hide'] == 1);
@@ -138,7 +138,7 @@ class InternshipInventory {
                         NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot hide graduate program.");
                     }
                 } else if (isset($_REQUEST['del'])) {
-                    // Delete program with same ID passed in REQUEST. 
+                    // Delete program with same ID passed in REQUEST.
                     if (isset($_REQUEST['id'])) {
                         $g = new GradProgram($_REQUEST['id']);
                         $g->del();
@@ -149,7 +149,7 @@ class InternshipInventory {
                 $view = new GradProgramUI();
                 $this->content = $view->display();
                 break;
-            
+
             case MAJOR_EDIT:
                 PHPWS_Core::initModClass('intern', 'UI/MajorUI.php');
 
@@ -188,7 +188,18 @@ class InternshipInventory {
                 $view = new MajorUI();
                 $this->content = $view->display();
                 break;
-            
+
+                /**
+                 * Chris additions
+                 */
+            case 'AFFIL_AGREE_EDIT':
+                PHPWS_Core::initModClass('intern', 'UI/AffiliateAgreementUI.php');
+                $this->content = AffiliateAgreementUI::display();
+                break;
+            case 'add_agreement_view':
+                PHPWS_Core::initModClass('intern', 'UI/AddAgreementUI.php');
+                $this->content = AddAgreementUI::display();
+                break;
                 /**
                  * Matt additions!
                  */
@@ -222,10 +233,10 @@ class InternshipInventory {
                 break;
             case 'edit_admins':
                 PHPWS_Core::initModClass('intern', 'UI/AdminUI.php');
-                
+
                 $view = new AdminUI();
                 $this->content = $view->display();
-                break;           
+                break;
             case 'get_dept':
                 PHPWS_Core::initModClass('intern','command/GetDepartments.php');
                 $deptData = new GetDepartments();

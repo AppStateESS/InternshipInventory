@@ -109,6 +109,7 @@ CREATE TABLE intern_subject (
     id INT NOT NULL,
     abbreviation character varying(10) NOT NULL,
     description character varying(128) NOT NULL,
+    active smallint not null default 1,
     PRIMARY KEY(id)
 );
 
@@ -211,7 +212,7 @@ INSERT INTO intern_subject (id, abbreviation, description) VALUES (nextval('inte
 
 CREATE TABLE intern_agency (
        id INT NOT NULL,
-       name VARCHAR NOT NULL,  
+       name VARCHAR NOT NULL,
        address VARCHAR NULL,
        city VARCHAR NULL,
        state VARCHAR,
@@ -238,28 +239,28 @@ CREATE TABLE intern_agency (
 -- Term format YYYY# (e.g. 20111 is Spring 2011, 20113 is Fall 2011)
 CREATE TABLE intern_term (
        id INT NOT NULL,
-       term INT NOT NULL UNIQUE, 
+       term INT NOT NULL UNIQUE,
        PRIMARY KEY (id)
 );
 
 CREATE TABLE intern_internship (
        id INT NOT NULL,
        term INT NOT NULL REFERENCES intern_term(term),
-       
+
        agency_id INT NOT NULL REFERENCES intern_agency(id),
        faculty_id integer REFERENCES intern_faculty(id),
        department_id INT NOT NULL,
-       
+
        start_date INT NOT NULL default 0,
        end_date INT NOT NULL default 0,
-       
+
        internship SMALLINT NOT NULL,
        student_teaching SMALLINT NOT NULL,
        clinical_practica SMALLINT NOT NULL,
-       
+
        state varchar(128) NOT NULL,
        oied_certified smallint not null default 0,
-       
+
        banner VARCHAR NOT NULL,
        first_name VARCHAR NOT NULL,
        middle_name VARCHAR,
@@ -278,7 +279,7 @@ CREATE TABLE intern_internship (
        first_name_meta character varying,
        middle_name_meta character varying,
        last_name_meta character varying,
-       
+
        loc_address varchar NULL,
        loc_city varchar NULL,
        loc_state varchar NULL,
@@ -293,10 +294,10 @@ CREATE TABLE intern_internship (
        corequisite_number character varying,
        corequisite_section character varying,
        avg_hours_week INT NULL,
-       domestic SMALLINT NOT NULL, 
+       domestic SMALLINT NOT NULL,
        international SMALLINT NOT NULL,
-       paid SMALLINT NOT NULL,    
-       stipend SMALLINT NOT NULL, 
+       paid SMALLINT NOT NULL,
+       stipend SMALLINT NOT NULL,
        unpaid SMALLINT NOT NULL,
        pay_rate VARCHAR NULL,
        multi_part SMALLINT NOT NULL,

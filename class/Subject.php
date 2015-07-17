@@ -20,34 +20,39 @@ class Subject extends Model {
     {
         return $this->abbreviation;
     }
-    
+
     public function getName(){
         return $this->description;
     }
-    
+
     public function getActive()
     {
     	return $this->active;
     }
-    
+
     public static function getSubjects($mustIncludeId = null)
     {
-        $subjects = array('-1'=>'Select a subject...');
+        $db = PdoFactory::getPdoInstance();
 
-        $db = new PHPWS_DB('intern_subject');
-        $db->addWhere('active', 1, '=', 'OR');
+        $params = array();
+
+        $query = 'SELECT * from intern_subject WHERE active = 1';
+
         if(!is_null($mustIncludeId)) {
-            $db->addWhere('id', $mustIncludeId, '=', 'OR');
+            $query .=' OR id = :mustIncludeId';
+            $params['mustIncludeId'] = $mustIncludeId;
         }
-        
-        $db->addOrder('abbreviation ASC');
-        
-        $results = $db->select();
+
+        $query .= ' ORDER BY abbreviation ASC';
+
+        $stmt = $db->prepare($query);
+        $stmt->execute($params);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         foreach($results as $row){
             $subjects[$row['id']] = $row['abbreviation'] . ' - ' . $row['description'];
         }
-        
+
         return $subjects;
     }
 }

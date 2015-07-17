@@ -6,7 +6,7 @@
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
 PHPWS_Core::initModClass('filecabinet', 'Folder.php');
-class Intern_Folder extends Folder 
+class Intern_Folder extends Folder
 {
     /**
      * Similar to Folder::uploadLink except this one takes a internship id as parameter
@@ -22,12 +22,11 @@ class Intern_Folder extends Folder
         $link->convertAmp(false);
         $link->setSalted();
         $vars['address'] = $link->getAddress();
-        
+
+
         $label = dgettext('filecabinet', 'Add document');
 
         javascript('open_window');
         return '<button type="button" class="btn btn-default btn-sm" onClick="javascript:open_window(\'' . $link->getAddress() . '\', 600, 600, \'default970975506\', 1); return false;"><i class="fa fa-upload"></i> ' . $label . '</button>';
     }
 }
-
-?>
