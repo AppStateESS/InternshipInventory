@@ -16,6 +16,14 @@ CREATE TABLE intern_agreement_department(
 
 CREATE TABLE intern_agreement_location(
   agreement_id int NOT NULL REFERENCES intern_affiliation_agreement(id),
-  location varchar NOT NULL REFERENCES intern_state(id),
+  location varchar NOT NULL REFERENCES intern_state(abbr),
   PRIMARY KEY(agreement_id, location)
 );
+
+CREATE TABLE intern_agreement_documents(
+  agreement_id int NOT NULL REFERENCES intern_affiliation_agreement(id),
+  document_id int NOT NULL REFERENCES documents(id),
+  PRIMARY KEY(agreement_id, document_id)
+);
+
+CREATE SEQUENCE intern_affiliation_agreement_seq;

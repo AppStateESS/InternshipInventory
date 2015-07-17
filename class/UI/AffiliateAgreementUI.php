@@ -4,19 +4,20 @@ class AffiliateAgreementUI implements UI
 {
     public static function display()
     {
+
         /* Check if user should have access to Affiliate Agreement page */
         if(!Current_User::allow('intern', 'affiliate_agreement')){
             NQ::simple('intern', INTERN_WARNING, 'You do not have permission to edit graduate programs.');
             return false;
         }
 
-        $tpl['PAGER'] = self::doPager();
+        $tpl['PAGER'] = AffiliateAgreementUI::doPager();
+        $tpl['ADD_LINK'] = "index.php?module=intern&action=add_agreement_view";
 
         javascript('/jquery/');
-        javascriptMod('intern', 'editMajor', array('EDIT_ACTION' => GradProgram::getEditAction()));
 
         /* Form for adding new grad program */
-        // $form = new PHPWS_Form('add_prog');
+        $form = new PHPWS_Form('add_prog');
         // $form->addText('name');
         // $form->setLabel('name', 'Graduate Program Title');
         // $form->addSubmit('submit','Add Graduate Program');
@@ -24,16 +25,18 @@ class AffiliateAgreementUI implements UI
         // $form->addHidden('add',TRUE);
 
         $form->mergeTemplate($tpl);
-        return PHPWS_Template::process($form->getTemplate(), 'intern', 'edit_grad.tpl');
+        $v = PHPWS_Template::process($tpl, 'intern', 'affiliate_list.tpl');
+
+        return $v;
     }
 
     public static function doPager()
     {
         PHPWS_Core::initCoreClass('DBPager.php');
-        PHPWS_Core::initModClass('intern','AffiliateAgreement.php');
+        PHPWS_Core::initModClass('intern','AffiliationAgreement.php');
 
-        $pager = new DBPager('intern_affiliate_agreement', 'AffiliateAgreement');
-        $pager->db->addOrder('endDate asc');
+        $pager = new DBPager('intern_affiliation_agreement', 'AffiliationAgreement');
+        $pager->db->addOrder('end_date asc');
         $pager->setModule('intern');
         $pager->setTemplate('affiliate_pager.tpl');
         $pager->setEmptyMessage('No Affiliate Agreements Found.');

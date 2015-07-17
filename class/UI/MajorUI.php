@@ -5,7 +5,7 @@ class MajorUI implements UI
     public static function display()
     {
         /* Check if user can add/edit/hide/delete majors. */
-        if(!Current_User::allow('intern', 'edit_major') && 
+        if(!Current_User::allow('intern', 'edit_major') &&
            !Current_User::allow('intern', 'delete_major')){
             NQ::simple('intern', INTERN_WARNING, 'You do not have permission to edit undergraduate majors.');
             return false;
@@ -13,9 +13,10 @@ class MajorUI implements UI
 
         $tpl['PAGER'] = MajorUI::doPager();
 
+
         javascript('/jquery/');
         javascriptMod('intern', 'editMajor', array('EDIT_ACTION' => Major::getEditAction()));
-        
+
         /* Form for adding new major */
         $form = new PHPWS_Form('add_major');
         $form->addText('name');
@@ -28,7 +29,7 @@ class MajorUI implements UI
         return PHPWS_Template::process($form->getTemplate(), 'intern', 'edit_major.tpl');
     }
 
-    public static function doPager() 
+    public static function doPager()
     {
         PHPWS_Core::initCoreClass('DBPager.php');
         PHPWS_Core::initModClass('intern','Major.php');

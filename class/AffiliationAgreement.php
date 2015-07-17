@@ -13,12 +13,9 @@ class AffiliationAgreement
 {
     public $id;
     public $name;
-    public $beginDate;
-    public $endDate;
-    public $autoRenew;
-    public $departments;
-    public $contractId;
-    public $locations;
+    public $begin_date;
+    public $end_date;
+    public $auto_renew;
     public $notes;
 
 
@@ -32,6 +29,11 @@ class AffiliationAgreement
     /**
      * Getters
      */
+    public function getId()
+    {
+      return $this->id;
+    }
+
     public function getName()
     {
       return $this->name;
@@ -39,32 +41,17 @@ class AffiliationAgreement
 
     public function getBeginDate()
     {
-      return $this->beginDate;
+      return $this->begin_date;
     }
 
     public function getEndDate()
     {
-      return $this->endDate;
+      return $this->end_date;
     }
 
     public function getAutoRenew()
     {
-      return $this->autoRenew;
-    }
-
-    public function getDepartments()
-    {
-      return $this->departments;
-    }
-
-    public function getContractId()
-    {
-      return $this->contractId;
-    }
-
-    public function getLocations()
-    {
-      return $this->locations;
+      return $this->auto_renew;
     }
 
     public function getNotes()
@@ -72,9 +59,32 @@ class AffiliationAgreement
       return $this->notes;
     }
 
+    public function getDepartments()
+    {
+      PHPWS_Core::initModClass('intern', 'AffiliationAgreement.php');
+      $db = new PHPWS_DB('intern_affiliation_agreement');
+      $db->addWhere('agreement_id', $this->id);
+
+      //TODO Further code once the other sections of this project are further along
+    }
+
+    public function getLocations()
+    {
+      PHPWS_Core::initModClass('intern', 'AffiliationAgreement.php');
+      $db = new PHPWS_DB('intern_affiliation_location');
+      $db->addWhere('agreement_id', $this->id);
+
+      //TODO Further code once the other sections of this project are further along
+    }
+
     /**
      * Setters
      */
+    public function setId($id)
+    {
+      $this->id = $id;
+    }
+
     public function setName($name)
     {
       $this->name = $name;
@@ -82,32 +92,17 @@ class AffiliationAgreement
 
     public function setBeginDate($beginDate)
     {
-      $this->beginDate = $beginDate;
+      $this->begin_date = $beginDate;
     }
 
     public function setEndDate($endDate)
     {
-      $this->endDate = $endDate;
+      $this->end_date = $endDate;
     }
 
     public function setAutoRenew($autoRenew)
     {
-      $this->autoRenew = $autoRenew;
-    }
-
-    public function setDepartments($departments)
-    {
-      $this->departments = $departments;
-    }
-
-    public function setContractId($contractId)
-    {
-      $this->contractId = $contractId;
-    }
-
-    public function setLocations($locations)
-    {
-      $this->locations = $locations;
+      $this->auto_renew = $autoRenew;
     }
 
     public function setNotes($notes)

@@ -183,6 +183,17 @@ class InternshipInventory {
                 $this->content = $view->display();
                 break;
                 /**
+                 * Chris additions
+                 */
+            case 'AFFIL_AGREE_EDIT':
+                PHPWS_Core::initModClass('intern', 'UI/AffiliateAgreementUI.php');
+                $this->content = AffiliateAgreementUI::display();
+                break;
+            case 'add_agreement_view':
+                PHPWS_Core::initModClass('intern', 'UI/AddAgreementUI.php');
+                $this->content = AddAgreementUI::display();
+                break;
+                /**
                  * Matt additions!
                  */
             case 'add_state':
@@ -290,6 +301,7 @@ class InternshipInventory {
                 $ctrl = new FacultyDeptRest();
                 $ctrl->execute();
                 break;
+
             default:
                 PHPWS_Core::initModClass('intern', 'UI/InternMenu.php');
                 $menu = new InternMenu();
