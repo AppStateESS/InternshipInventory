@@ -1,0 +1,5 @@
+{
+    "require": {
+        "setasign/fpdi-fpdf": "^1.5"
+    }
+}
