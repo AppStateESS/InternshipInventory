@@ -1,5 +1,5 @@
 {
-  "name": "internshipInventory",
+  "name": "intern",
   "version": "0.1.8",
   "homepage": "https://github.com/AppStateESS/InternshipInventory",
   "authors": [
@@ -11,6 +11,13 @@
     "es6"
   ],
   "license": "GPLv3",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
   "dependencies": {
     "typeahead.js": "~0.11.1"
   }
