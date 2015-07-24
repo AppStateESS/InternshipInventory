@@ -20,9 +20,9 @@ var StudentSearch = React.createClass({
             success: function(data) {
                 console.log(data);
                 console.log(data.length);
-                
+
                 if(data.length == 1) {
-                    this.setState({student:data[0], studentFound: true});
+                    //this.setState({student:data[0], studentFound: true});
                 } else {
                     // TODO
                 }
@@ -51,11 +51,11 @@ var StudentSearch = React.createClass({
                     {this.state.studentFound ? <span className="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span> : null }
                     {this.state.studentFound ? <span id="inputSuccess2Status" className="sr-only">(success)</span> : null }
                 </div>
-                
+
                 <div className="form-group">
                     <button type="button" id="student-search-btn" onClick={this.handleSearch} className="btn btn-default pull-right">Search</button>
                 </div>
-                
+
                 {this.state.studentFound ? <StudentPreview student={this.state.student}/> : null }
             </div>
         );
@@ -64,32 +64,39 @@ var StudentSearch = React.createClass({
 
 var SearchBox = React.createClass({
     componentDidMount: function() {
-    	
-    	var bh = new Bloodhound({
-    		datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+
+    	var searchSuggestions = new Bloodhound({
+            datumTokenizer: function(datum){
+                var nameTokens      = Bloodhound.tokenizers.obj.whitespace('name');
+                var studentIdTokens = Bloodhound.tokenizers.obj.whitespace('studentId');
+                var usernameTokens  = Bloodhound.tokenizers.obj.whitespace('email');
+
+                return nameTokens.concat(studentIdTokens).concat(usernameToekns);
+            },
     		queryTokenizer: Bloodhound.tokenizers.whitespace,
-    		remote: 'index.php?module=intern&action=GetSearchSuggestions&searchString=%QUERY',
-    		limit: 10,
+    		remote: {
+                url: 'index.php?module=intern&action=GetSearchSuggestions&searchString=%QUERY',
+                wildcard: '%QUERY'
+            }
     	});
-    	bh.initialize();
-    	
+
         var element = this.getDOMNode();
         $(element).typeahead({
             minLength: 3,
-            highlight: true
+            highlight: true,
+            hint: true
         },
         {
         	name: 'students',
-        	displayKey: 'studentId',
-        	source: bh.ttAdapter(),
+        	display: 'studentId',
+        	source: searchSuggestions.ttAdapter(),
+            limit: 15,
         	templates: {
         		suggestion: function(row) {
-        			return ('<p>'+row.name+' &middot; ' + row.studentId + '</p>')
+        			return ('<p>'+row.name+' &middot; ' + row.studentId + '</p>');
         		}
         	}
         });
-        
-        console.log(element);
     },
     componentWillUnmount: function() {
         var element = this.getDOMNode();
@@ -115,23 +122,6 @@ var StudentPreview = React.createClass({
         );
     }
 });
-
-/*
-var ResultsList = React.createClass({
-    render: function() {
-        var resultNodes = this.props.results.map(function(student) {
-                return (
-                    <ResultRow key={student.studentId} student={student} />
-                    );
-            });
-        return (
-            <div className="resultsList">
-                {resultNodes}
-            </div>
-        );
-    }
-});
-*/
 
 // Result Row
 var ResultRow = React.createClass({

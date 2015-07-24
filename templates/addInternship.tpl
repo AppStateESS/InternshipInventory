@@ -1,6 +1,6 @@
-<script src="{source_http}mod/intern/javascript/typeahead/typeahead.bundle.js"></script>
-<script src="//fb.me/react-with-addons-0.12.1.js"></script>
-<script src="//fb.me/JSXTransformer-0.12.0.js"></script>
+<script src="{source_http}mod/intern/bower_components/typeahead.js/dist/typeahead.bundle.min.js"></script>
+<script src="https://fb.me/react-with-addons-0.13.3.js"></script>
+<script src="https://fb.me/JSXTransformer-0.13.3.js"></script>
 <script type="text/jsx" src="{source_http}mod/intern/javascript/createInterface/create.jsx"></script>
 
 <form role="form" id="newInternshipForm" class="form-protected" autocomplete="off" action="index.php" method="post">
@@ -117,12 +117,12 @@ $(document).ready(function(){
 
         $('button[type="submit"]').html('<i class="fa fa-spinner fa-spin"></i> Saving...');
     });
-	
-	
+
+
 	// Hide the state and country fields initially
 	$('#state-row').hide();
 	$('#country-row').hide();
-	
+
 	// Determines which location radio button is selected and
 	// shows/hides the dropdowns accordingly
 	function updateDropDowns() {
@@ -135,10 +135,10 @@ $(document).ready(function(){
 	        $('#country-row').fadeIn(200);
 	    }
 	}
-	
+
 	// If domestic or international is selected, then show the corresponding drop-down
     updateDropDowns();
-    
+
     // Event handler to show/hide boxes as location radio buttons are changed
     $('#location input').change(function(){
     	updateDropDowns();
