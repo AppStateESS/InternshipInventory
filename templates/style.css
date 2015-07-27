@@ -84,12 +84,12 @@ form .required label:after {
 }
 
 /****** Search Results Styles **************/
-#search-results tr.result-row td {
+tr.result-row td {
   padding: 0px;
   white-space: nowrap;
 }
 
-#search-results tr.result-row td a {
+tr.result-row td a {
 	display:block;
 	height:100%;
 	width:100%;

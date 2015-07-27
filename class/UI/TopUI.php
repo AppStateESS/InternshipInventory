@@ -48,7 +48,7 @@ class TopUI implements UI
 
         // Link to the Affiliation Agreements
         if(Current_User::allow('intern', 'affiliate_agreement')){
-            $adminOptions['AFFIL_AGREE_LINK'] = PHPWS_Text::secureLink('Affiliation Agreements','intern',array('action' => AFFIL_AGREE_EDIT));
+            $adminOptions['AFFIL_AGREE_LINK'] = PHPWS_Text::secureLink('Affiliation Agreements','intern',array('action' => AFFIL_AGREE_LIST));
         }
 
         if(Current_User::isDeity()){

@@ -13,6 +13,10 @@ DROP TABLE intern_department CASCADE;
 DROP TABLE intern_student CASCADE;
 DROP TABLE intern_admin CASCADE;
 DROP TABLE intern_state CASCADE;
+DROP TABLE intern_agreement_documents CASCADE;
+DROP TABLE intern_agreement_location CASCADE;
+DROP TABLE intern_agreement_department CASCADE;
+DROP TABLE intern_affiliation_agreement CASCADE;
 
 DROP SEQUENCE intern_admin_seq;
 DROP SEQUENCE intern_student_seq;
@@ -25,5 +29,6 @@ DROP SEQUENCE intern_term_seq;
 DROP SEQUENCE intern_major_seq;
 DROP SEQUENCE intern_grad_prog_seq;
 DROP SEQUENCE intern_state_seq;
+DROP SEQUENCE intern_affiliation_agreement_seq;
 
 COMMIT;

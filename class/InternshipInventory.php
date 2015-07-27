@@ -192,14 +192,67 @@ class InternshipInventory {
                 /**
                  * Chris additions
                  */
-            case 'AFFIL_AGREE_EDIT':
+            case 'AFFIL_AGREE_LIST':
                 PHPWS_Core::initModClass('intern', 'UI/AffiliateAgreementUI.php');
                 $this->content = AffiliateAgreementUI::display();
+                break;
+            case 'AFFIL_AGREE_ADD':
+                PHPWS_Core::initModClass('intern', 'command/SaveAffiliate.php');
+                $ctrl = new SaveAffiliate();
+                $ctrl->execute();
+                test('finished execute',1);
+                break;
+            case 'AFFIL_AGREE_TERMINATE':
+                PHPWS_CORE::initModClass('intern', 'command/TerminateAffiliate.php');
+                $ctrl = new TerminateAffiliate();
+                $ctrl->execute();
                 break;
             case 'add_agreement_view':
                 PHPWS_Core::initModClass('intern', 'UI/AddAgreementUI.php');
                 $this->content = AddAgreementUI::display();
                 break;
+            case 'affil_agree_edit_view':
+                PHPWS_Core::initModClass('intern', 'UI/EditAgreementUI.php');
+                $this->content = EditAgreementUI::display();
+                break;
+            case 'AffiliateRest':
+                PHPWS_Core::initModClass('intern', 'command/AffiliateRest.php');
+                $ctrl = new AffiliateRest();
+                $ctrl->execute();
+                break;
+            case 'AffiliateDeptRest':
+                PHPWS_Core::initModClass('intern', 'command/AffiliateDeptRest.php');
+                $ctrl = new AffiliateDeptRest();
+                $ctrl->execute();
+                break;
+            case 'AffiliateStateRest':
+                PHPWS_CORE::initModClass('intern', 'command/AffiliateStateRest.php');
+                $ctrl = new AffiliateStateRest();
+                $ctrl->execute();
+                break;
+            case 'AFFIL_AGREE_EDIT':
+                PHPWS_CORE::initModClass('intern', 'command/SaveAffiliate.php');
+                $ctrl = new SaveAffiliate();
+                $ctrl->execute();
+                break;
+            case 'upload_contract_form':
+                    PHPWS_Core::initModClass('intern', 'Contract_Document_Manager.php');
+                    $docManager = new Contract_Document_Manager();
+                    echo $docManager->edit();
+                    exit();
+                    break;
+            case 'post_contract_upload':
+                    PHPWS_Core::initModClass('intern', 'Contract_Document_Manager.php');
+                    $docManager = new Contract_Document_Manager();
+                    $docManager->postDocumentUpload();
+                    break;
+            case 'delete_document':
+                    PHPWS_Core::initModClass('intern', 'AffiliationContractFactory.php');
+                    AffiliationContractFactory::deleteByDocId($_REQUEST['doc_id']);
+                    NQ::simple('intern', INTERN_SUCCESS, 'Document deleted.');
+                    NQ::close();
+                    PHPWS_Core::goBack();
+                    break;
                 /**
                  * Matt additions!
                  */
@@ -331,6 +384,7 @@ class InternshipInventory {
                 $ctrl = new EmergencyContactRest();
                 $ctrl->execute();
                 break;
+
             default:
                 PHPWS_Core::initModClass('intern', 'UI/InternMenu.php');
                 $menu = new InternMenu();

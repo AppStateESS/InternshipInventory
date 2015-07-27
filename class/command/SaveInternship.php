@@ -15,11 +15,6 @@ class SaveInternship {
 
     public function execute()
     {
-        PHPWS_Core::initModClass('intern', 'Internship.php');
-        PHPWS_Core::initModClass('intern', 'Agency.php');
-        PHPWS_Core::initModClass('intern', 'Department.php');
-        PHPWS_Core::initModClass('intern', 'Faculty.php');
-
         /**************
          * Sanity Checks
          */

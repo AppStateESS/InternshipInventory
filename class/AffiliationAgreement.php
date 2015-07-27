@@ -17,6 +17,7 @@ class AffiliationAgreement
     public $end_date;
     public $auto_renew;
     public $notes;
+    public $terminated;
 
 
     /**
@@ -57,6 +58,11 @@ class AffiliationAgreement
     public function getNotes()
     {
       return $this->notes;
+    }
+
+    public function getTerminated()
+    {
+      return $this->terminated;
     }
 
     public function getDepartments()
@@ -110,13 +116,44 @@ class AffiliationAgreement
       $this->notes = $notes;
     }
 
-    public function rowTags()
+    public function setTerminated($terminated)
+    {
+      $this->terminated = $terminated;
+    }
+
+    /**
+     * Get Document objects associated with this internship.
+     */
+    public function getDocuments()
+    {
+        $db = new PHPWS_DB('intern_agreement_documents');
+        $db->addWhere('agreement_id', $this->id);
+        return $db->getObjects('AffiliationContract');
+    }
+
+    public function getRowTags()
     {
           $tpl             = array();
-          $tpl['NAME']     = $this->getName();
-          $tpl['EXPIRES']   = $this->getEndDate();
+          $tpl['NAME']     = PHPWS_Text::moduleLink($this->getName(), 'intern',
+                              array('action' => 'affil_agree_edit_view', 'affiliation_agreement_id' => $this->getId()));
+          $tpl['EXPIRES']  = PHPWS_Text::moduleLink(date('m/d/Y', $this->getEndDate()), 'intern',
+                              array('action' => 'affil_agree_edit_view', 'affiliation_agreement_id' => $this->getId()));
+          $expirationTime = ((int)$this->getEndDate() - time());
+          if($expirationTime < 0)
+          {
+            $tpl['STATUS'] = "danger";
+          }
+          else if($expirationTime < 7884000)
+          {
+            $tpl['STATUS'] = "warning";
+          }
+          else
+          {
+            $tpl['STATUS'] = "active";
+          }
           return $tpl;
     }
+
 }
 
 /**

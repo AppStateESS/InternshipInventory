@@ -10,9 +10,9 @@
 <!-- END empty_table -->
 
 <!-- BEGIN listrows -->
-<tr>
+<tr class="result-row {STATUS}">
     <td>{NAME}</td>
-    <td>{EXPIRES}</span></td>
+    <td>{EXPIRES}</td>
 </tr>
 <!-- END listrows -->
 </table>

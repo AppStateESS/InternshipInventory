@@ -3,8 +3,9 @@ CREATE TABLE intern_affiliation_agreement(
   name varchar NOT NULL,
   begin_date int NOT NULL,
   end_date int NOT NULL,
-  auto_renew int NOT NULL,
+  auto_renew int NOT NULL DEFAULT 0,
   notes varchar,
+  terminated smallint NOT NULL DEFAULT 0,
   PRIMARY KEY(id)
 );
 
