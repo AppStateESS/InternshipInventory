@@ -123,6 +123,7 @@ class Intern_Document_Manager extends FC_Document_Manager {
 
         if (PEAR::isError($result) || !$result) {
             PHPWS_Error::log($result);
+            $vars = array();
             $vars['timeout'] = '3';
             $vars['refresh'] = 0;
             javascript('close_refresh', $vars);
@@ -176,5 +177,3 @@ class Intern_Document_Manager extends FC_Document_Manager {
     }
 
 }
-
-?>

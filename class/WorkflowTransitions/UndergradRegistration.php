@@ -20,17 +20,22 @@ class UndergradRegistration extends WorkflowTransition {
 
     public function allowed(Internship $i)
     {
-        if($i->isDistanceEd()){
-            if(Current_User::allow('intern', 'distance_ed_register')){
+        if($i->isDistanceEd())
+        {
+            if(Current_User::allow('intern', 'distance_ed_register'))
+            {
                 return true;
-            }else{
+            }
+            else
+            {
                 return false;
             }
-        }else{
+        }
+        else
+        {
             return parent::allowed($i);
         }
 
-        return false;
     }
 
     public function doNotification(Internship $i, $note = null)
@@ -67,7 +72,7 @@ class UndergradRegistration extends WorkflowTransition {
             if (!isset($creditHours) || $creditHours === '') {
                 throw new MissingDataException("Please enter the number of course credit hours.");
             }
-            
+
             /*
             if(!\Current_User::isDeity() && $creditHours <= 0){
                 throw new MissingDataException("The number of course credit hours should be greater than zero.");

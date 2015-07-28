@@ -23,7 +23,7 @@ class State {
         $db->addWhere('abbr', $this->abbr);
         return $db->saveObject($this);
     }
-    
+
     public function setActive($active)
     {
         $this->active = (bool)$active;
@@ -46,11 +46,11 @@ class State {
         }
         $states[-1] = 'Select a state';
         $states = array_reverse($states, true);
-        
+
         return $states;
     }
-    
-    /* http://www.bytemycode.com/snippets/snippet/454/ */    
+
+    /* http://www.bytemycode.com/snippets/snippet/454/ */
     public static $UNITED_STATES = array(-1 => 'Select State',
             'AL' => "Alabama",
             'AK' => "Alaska",
@@ -103,7 +103,5 @@ class State {
             'WV' => "West Virginia",
             'WI' => "Wisconsin",
             'WY' => "Wyoming");
-    
-}
 
-?>
+}

@@ -39,7 +39,7 @@ if(DEBUG){
 
             $message = formatException($e);
             emailError($message);
-            
+
             NQ::close();
             Intern_NotifyUI::display();
 
@@ -122,4 +122,3 @@ function emailError($message)
     $tags = array('MESSAGE' => $message);
     Email::sendTemplateMessage($to, 'Uncaught Exception', 'email/UncaughtException.tpl', $tags);
 }
-?>

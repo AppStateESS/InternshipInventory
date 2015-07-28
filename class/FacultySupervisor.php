@@ -5,7 +5,7 @@
    *
    * Represents a faculty supervisor for an academic department.
    *
-   * @deprecated 
+   * @deprecated
    * @see Faculty
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    * @author Jeremy Booker <jbooker at tux dot appstate dot edu>
@@ -20,10 +20,10 @@ class FacultySupervisor extends Model
     public $phone;
     public $email;
     public $department_id;
-    
+
     // For db page, doesn't actually exist in db
     public $faculty_last_name;
-    
+
     /**
      * @Override Model::getDb
      */
@@ -49,24 +49,22 @@ class FacultySupervisor extends Model
 
     public function getFullName()
     {
-        
+
         // If there's no first name and no last name, be sure to return a compltely empty string
         if(empty($this->first_name) && empty($this->last_name)){
             return '';
         }
-        
+
         return "$this->first_name $this->last_name";
     }
-    
+
     public function getPhone()
     {
         return $this->phone;
     }
-    
+
     public function getEmail()
     {
         return $this->email;
     }
 }
-
-?>

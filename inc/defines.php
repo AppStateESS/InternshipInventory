@@ -5,7 +5,3 @@
 // file is in subversion is inc/hms_defines.php, and should live in phpWebSite's
 // root as /inc/hms_defines.php.
 require_once(PHPWS_SOURCE_DIR . 'inc/intern_defines.php');
-
-
-
-?>

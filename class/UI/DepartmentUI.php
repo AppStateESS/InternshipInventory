@@ -10,7 +10,7 @@ class DepartmentUI implements UI
             return ;
         }
 
-        $tpl = array();       
+        $tpl = array();
         javascript('/jquery/');
         javascriptMod('intern', 'manager');
         javascriptMod('intern', 'editDepartment');
@@ -21,5 +21,3 @@ class DepartmentUI implements UI
     }
 
 }
-
-?>

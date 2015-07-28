@@ -316,4 +316,3 @@ class ResultsUI implements UI {
         return $pager;
     }
 }
-?>

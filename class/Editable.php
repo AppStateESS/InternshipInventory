@@ -3,8 +3,8 @@
  * Editable
  *
  * This abstract class makes things easier for building
- * the UI used for editing majors, grad programs, and 
- * departments. Anything else that needs to be 
+ * the UI used for editing majors, grad programs, and
+ * departments. Anything else that needs to be
  * hidden, renamed, or deleted can extend this abstract class
  * and be easily plugged into the javascript (edit).
  *
@@ -16,10 +16,10 @@ abstract class Editable extends Model
     /**
      * This should return a string that corresponds
      * the the case statement in index.php
-     * Ex. Major implements Editable and it's 
+     * Ex. Major implements Editable and it's
      *     getEditAction method returns 'edit_major'.
      */
-    static function getEditAction()
+    public static function getEditAction()
     {
         throw new Exception('Not yet implemented.');
     }
@@ -27,16 +27,16 @@ abstract class Editable extends Model
     /**
      * Get the name of the permission needed to edit the item.
      */
-    static function getEditPermission()
+    public static function getEditPermission()
     {
         throw new Exception('Not yet implemented.');
     }
-    
+
 
     /**
      * Get the name of the permission needed to delete the item.
      */
-    static function getDeletePermission()
+    public static function getDeletePermission()
     {
         throw new Exception('Not yet implemented.');
     }
@@ -56,7 +56,7 @@ abstract class Editable extends Model
         if($newName == ''){
             return NQ::simple('intern', INTERN_WARNING, 'No name was given. Nothing were changed.');
         }
-       
+
         /* Check ID */
         if($this->id == 0){
             // Editable wasn't loaded correctly
@@ -102,7 +102,7 @@ abstract class Editable extends Model
         if(!Current_User::allow('intern', $this->getEditPermission())){
             return NQ::simple('intern', INTERN_ERROR, 'You do not have permission to hide that.');
         }
-        
+
         if($this->id == 0 || !is_numeric($this->id)){
             // Program wasn't loaded correctly
             NQ::simple('intern', INTERN_ERROR, "Error occurred while loading information from database.");
@@ -145,7 +145,7 @@ abstract class Editable extends Model
         }
 
         $name = $this->getName();
-        
+
         try{
             // Try to delete item
             if(!$this->delete()){
@@ -192,5 +192,3 @@ abstract class Editable extends Model
         return $tags;
     }
 }
-
-?>

@@ -4,13 +4,13 @@ class RegistrationIssueGrad extends WorkflowTransition {
     const sourceState = 'GradSchoolApprovedState';
     const destState   = 'RegistrationIssueState';
     const actionName  = 'Mark as Registration Issue';
-    
+
     const sortIndex = 6;
-    
+
     public function getAllowedPermissionList(){
         return array('register');
     }
-    
+
     public function isApplicable(Internship $i)
     {
         if($i->isGraduate()){
@@ -19,14 +19,12 @@ class RegistrationIssueGrad extends WorkflowTransition {
             return false;
         }
     }
-    
+
     public function doNotification(Internship $i, $note = null)
     {
         $agency = $i->getAgency();
-    
+
         PHPWS_Core::initModClass('intern', 'Email.php');
         Email::sendRegistrationIssueEmail($i, $agency, $note);
     }
 }
-
-?>

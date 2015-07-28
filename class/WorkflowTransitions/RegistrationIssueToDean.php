@@ -6,10 +6,8 @@ class RegistrationIssueToDean extends WorkflowTransition {
     const actionName  = 'Return for Dean Approval';
 
     const sortIndex = 6;
-    
+
     public function getAllowedPermissionList(){
         return array('register');
     }
 }
-
-?>

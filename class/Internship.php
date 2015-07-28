@@ -113,7 +113,7 @@ class Internship {
 
     /**
      * Save model to database
-     * @return - new ID of model.
+     * @return new ID of model.
      */
     public function save()
     {
@@ -496,7 +496,6 @@ class Internship {
         $tags = array();
 
         // Get objects associated with this internship.
-        $a = $this->getAgency();
         $d = $this->getDepartment();
 
         // Student info.
@@ -510,7 +509,7 @@ class Internship {
         if(isset($this->faculty_id)){
             $f = $this->getFaculty();
             $facultyName = $f->getFullName();
-            $tags['FACULTY_NAME'] = PHPWS_Text::moduleLink($f->getFullName(), 'intern', array('action' => 'edit_internship', 'internship_id' => $this->id));
+            $tags['FACULTY_NAME'] = PHPWS_Text::moduleLink($facultyName, 'intern', array('action' => 'edit_internship', 'internship_id' => $this->id));
         }else{
             // Makes this cell in the table a clickable link, even if there's no faculty name
             $tags['FACULTY_NAME'] = PHPWS_Text::moduleLink('&nbsp;', 'intern', array('action' => 'edit_internship', 'internship_id' => $this->id));
@@ -800,5 +799,3 @@ class Internship {
                 'clinical'         => 'Clinical');
     }
 }
-
-?>

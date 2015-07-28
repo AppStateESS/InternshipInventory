@@ -29,7 +29,6 @@ class EditInternshipFormView extends InternshipFormView {
      * Constructor for the big Internship form.
      *
      * @param Internship $i
-     * @param Agency $a
      */
     public function __construct($pageTitle, Internship $i)
     {
@@ -218,5 +217,3 @@ class EditInternshipFormView extends InternshipFormView {
         $this->formVals['department'] = $this->intern->department_id;
     }
 }
-
-?>

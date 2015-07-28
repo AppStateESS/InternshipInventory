@@ -437,5 +437,3 @@ class InternshipFormView {
         $this->form->addCssClass('notes', 'form-control');
     }
 }
-
-?>

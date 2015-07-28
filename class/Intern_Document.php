@@ -35,7 +35,7 @@ class Intern_Document extends Model
         $db->addWhere('id', $id);
         $db->loadObject($this);
     }
-    
+
     /**
      * Save row in database for this object.
      */
@@ -63,7 +63,7 @@ class Intern_Document extends Model
             PHPWS_DB::rollback();
             return FALSE;
         }
-        
+
         $doc = new PHPWS_Document($this->document_fc_id);
         $result = $doc->delete();
 
@@ -87,7 +87,7 @@ class Intern_Document extends Model
     }
 
     /**
-     * Get the icon link to edit this document. 
+     * Get the icon link to edit this document.
      */
     /* Commented out because it is unused.
     public function getEditLink()
@@ -121,7 +121,7 @@ class Intern_Document extends Model
         $vars['doc_id'] = $this->id;
         $vars['action'] = 'delete_document';
         $link = new PHPWS_Link(null, 'intern', $vars);
-        
+
         $jsVars = array();
         $jsVars['QUESTION'] = 'Are you sure you want to delete this document?';
         $jsVars['ADDRESS']  = $link->getAddress();
@@ -139,4 +139,3 @@ class Intern_Document extends Model
         return $db->select('one');
     }
 }
-?>

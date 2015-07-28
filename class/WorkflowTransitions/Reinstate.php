@@ -9,5 +9,3 @@ class Reinstate extends WorkflowTransition {
         return array('dept_approve', 'sig_auth_approve');
     }
 }
-
-?>

@@ -28,7 +28,7 @@ class ChangeHistoryView {
             $changeFields['RELATIVE_DATE'] = $change->getRelativeDate();
             $changeFields['EXACT_DATE'] = $change->getFormattedDate();
             $changeFields['USERNAME'] = $change->getUsername();
-            
+
             if($change->getFromStateFriendlyname() != $change->getToStateFriendlyName()){
                 $changeFields['FROM_STATE'] = $change->getFromStateFriendlyName();
                 $changeFields['TO_STATE'] = $change->getToStateFriendlyName();
@@ -45,5 +45,3 @@ class ChangeHistoryView {
         return PHPWS_Template::process($tpl, 'intern', 'changeHistory.tpl');
     }
 }
-
-?>

@@ -20,7 +20,7 @@ class Intern_NotifyUI implements UI
 {
     /**
      * Pop all notifications from NQ. Get the type for use with CSS.
-     * @return - Properly styled notifications.
+     * @return Properly styled notifications.
      */
     public static function display()
     {
@@ -34,7 +34,7 @@ class Intern_NotifyUI implements UI
         }
 
         $content = PHPWS_Template::process($tags, 'intern', 'notification.tpl');
-        
+
         return $content;
     }
 
@@ -52,4 +52,3 @@ class Intern_NotifyUI implements UI
         }
     }
 }
-?>

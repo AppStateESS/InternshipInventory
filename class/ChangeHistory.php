@@ -38,13 +38,13 @@ class ChangeHistory extends Model{
     {
         return array();
     }
-    
+
     public function getRelativeDate($now = NULL)
     {
         $time = $this->timestamp;
         $curr = !is_null($now) ? $now : time();
         $shift = $curr - $time;
-        
+
         if ($shift < 45){
             $diff = $shift;
             $term = "second";
@@ -58,39 +58,37 @@ class ChangeHistory extends Model{
             $diff = round($shift / 60 / 60 / 24);
             $term = "day";
         }
-        
+
         if ($diff > 1){
             $term .= "s";
         }
-        
+
         return "$diff $term";
     }
-    
+
     public function getFormattedDate(){
         return date("M j, Y h:i", $this->timestamp);
     }
-    
+
     public function getFromStateFriendlyName()
     {
         $fromState = WorkflowStateFactory::getState($this->from_state);
         return $fromState->getFriendlyName();
     }
-    
+
     public function getToStateFriendlyName()
     {
         $toState = WorkflowStateFactory::getState($this->to_state);
         return $toState->getFriendlyName();
     }
-    
+
     public function getUsername()
     {
         return $this->username;
     }
-    
+
     public function getNote()
     {
         return $this->note;
     }
 }
-
-?>

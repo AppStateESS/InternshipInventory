@@ -6,4 +6,3 @@ interface UI
 {
     public static function display();
 }
-?>

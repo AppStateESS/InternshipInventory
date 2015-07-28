@@ -10,5 +10,3 @@ $settings = array('registrarEmail'              => null,
                   'emailDomain'                 => null,
                   'systemName'                  => 'Internship Inventory'
             );
-
-?>

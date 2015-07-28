@@ -16,7 +16,7 @@ class Admin extends Model
 
     // For DBPager join
     public $department_name; // Department name, when joined to intern_department table
-    
+
     /**
      * @Override Model::getDb
      */
@@ -63,21 +63,21 @@ class Admin extends Model
     {
         PHPWS_Core::initModClass('intern', 'Department.php');
         //$d = new Department($this->department_id);
-        
+
         /*
         $link = PHPWS_Text::secureLink('Delete', 'intern', array('action' => 'edit_admins',
                                                                  'del' => true,
                                                                  'username' => $this->username,
                                                                  'department_id' => $this->department_id));
         */
-        
+
         //test($this,1);
-        
+
         return array('USERNAME' => $this->username,
                      'DEPARTMENT' => $this->department_name,
                      'DELETE' => '');
     }
-    
+
     /**
      * Grant user access to search and manage Department.
      */
@@ -108,7 +108,7 @@ class Admin extends Model
             // Is a deity.
             return NQ::simple('intern', INTERN_WARNING, "<i>$username</i> can view all internships in all departments.");
         }
-        
+
         PHPWS_Core::initModClass('intern', 'Department.php');
         $d = new Department($departmentId);
 
@@ -149,7 +149,7 @@ class Admin extends Model
         $pager->setTemplate('admin_pager.tpl');
         $pager->setEmptyMessage('No admins found.');
         $pager->addRowTags('rowTags');
-        
+
         $pager->joinResult('department_id', 'intern_department', 'id', 'name', 'department_name');
         //$pager->db->setTestMode();
 
@@ -157,14 +157,14 @@ class Admin extends Model
         if(!isset($_REQUEST['orderby'])){
             $pager->setOrder('department_name');
         }
-        
+
         /***** Row Background Color Toggles ******/
         $pager->addToggle('tablerow-bg-color1');
         $pager->addToggle('tablerow-bg-color2');
-        
+
         // Search
         $pager->setSearch('username');
-        
+
         return $pager->get();
     }
 
@@ -177,5 +177,3 @@ class Admin extends Model
         return $db->select('col');
     }
 }
-
-?>

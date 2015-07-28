@@ -40,7 +40,7 @@ class MajorRest {
 				VALUES (nextval('intern_major_seq'), :major, :hidden)";
 
 		$sth = $pdo->prepare($sql);
-		
+
 		$sth->execute(array('major'=>$major, 'hidden'=>0));
 
 	}
@@ -53,26 +53,26 @@ class MajorRest {
 		{
 			$hVal = $_REQUEST['val'];
 			$id = $_REQUEST['id'];
-		
+
 			$sql = "UPDATE intern_major
 					SET hidden=:val
 					WHERE id=:id";
-		
+
 			$sth = $pdo->prepare($sql);
-			
+
 			$sth->execute(array('val'=>$hVal, 'id'=>$id));
 		}
 		else if(isset($_REQUEST['name']))
 		{
 			$mname = $_REQUEST['name'];
 			$id = $_REQUEST['id'];
-		
+
 			$sql = "UPDATE intern_major
 					SET name=:mname
 					WHERE id=:id";
-		
+
 			$sth = $pdo->prepare($sql);
-			
+
 			$sth->execute(array('mname'=>$mname, 'id'=>$id));
 		}
 	}
@@ -82,16 +82,15 @@ class MajorRest {
 		$db = \Database::newDB();
 		$pdo = $db->getPDO();
 
-		$sql = "SELECT id, name, hidden 
+		$sql = "SELECT id, name, hidden
 				FROM intern_major
 				ORDER BY name ASC";
-		
+
 		$sth = $pdo->prepare($sql);
-		
+
 		$sth->execute();
 		$result = $sth->fetchAll(PDO::FETCH_ASSOC);
 
 		return $result;
 	}
 }
-?>

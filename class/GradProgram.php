@@ -63,10 +63,10 @@ class GradProgram extends Editable
     {
         return $this->hidden == 1;
     }
-    
+
     /**
      * Return an associative array {id => Grad. Prog. name } for all programs in DB
-     * that aren't hidden. 
+     * that aren't hidden.
      * @param $except - Always show the major with this ID. Used for students
      *                  with a hidden major. We still want to see it in the select box.
      */
@@ -80,13 +80,14 @@ class GradProgram extends Editable
         if(!is_null($except)){
             $db->addWhere('id', $except, '=', 'OR');
         }
-        
+
         $db->setIndexBy('id');
+        $progs = array();
         $progs[-1] = 'Select Graduate Major or Certificate Program';
         $progs += $db->select('col');
         return $progs;
     }
-    
+
     /**
      * Add a program to DB if it does not already exist.
      */
@@ -116,4 +117,3 @@ class GradProgram extends Editable
         NQ::simple('intern', INTERN_SUCCESS, "<i>$name</i> added as graduate program.");
     }
 }
-?>

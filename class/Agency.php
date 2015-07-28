@@ -11,16 +11,16 @@
 class Agency extends Model {
 
     public $name;
-    
+
     public $address;
     public $city;
     public $state;
     public $zip;
     public $province;
     public $country;
-    
+
     public $phone;
-    
+
     public $supervisor_first_name;
     public $supervisor_last_name;
     public $supervisor_title;
@@ -57,7 +57,7 @@ class Agency extends Model {
         $csv['Agency Zip Code']          = $this->zip == null ? '' : $this->zip;
         $csv['Agency Phone']             = $this->phone;
         $csv['Agency Country']           = $this->country;
-        
+
         $csv['Agency Super. First Name'] = $this->supervisor_first_name;
         $csv['Agency Super. Last Name']  = $this->supervisor_last_name;
         $csv['Agency Super. Title']      = $this->supervisor_title;
@@ -83,11 +83,11 @@ class Agency extends Model {
         if(isset($this->supervisor_first_name)){
             $name .= $this->supervisor_first_name . " ";
         }
-        
+
         if(isset($this->supervisor_last_name)){
             $name .= $this->supervisor_last_name;
         }
-        
+
         return $name;
     }
 
@@ -97,7 +97,7 @@ class Agency extends Model {
     public function getAddress()
     {
         $add = array();
-        
+
         if (!empty($this->address)) {
             $add[] = $this->address . ',';
         }
@@ -114,11 +114,11 @@ class Agency extends Model {
         if(!empty($this->province)){
             $add[] = $this->province . ', ';
         }
-        
+
         if(!empty($this->country)){
             $add[] = $this->country;
         }
-        
+
         return implode(' ', $add);
     }
 
@@ -157,41 +157,39 @@ class Agency extends Model {
             if(!empty($this->supervisor_country)){
                 $add[] = $this->supervisor_country;
             }
-            
+
             return implode(' ', $add);
         }
     }
-    
+
     public function getName()
     {
         return $this->name;
     }
-    
+
     public function getPhoneNumber()
     {
         return $this->phone;
     }
-    
+
     public function getSupervisorTitle()
     {
         return $this->supervisor_title;
     }
-    
+
     public function getSupervisorEmail()
     {
         return $this->supervisor_email;
     }
-    
+
     public function getSupervisorPhoneNumber()
     {
         return $this->supervisor_phone;
     }
-    
+
     public function getSupervisorFaxNumber()
     {
         return $this->supervisor_fax;
     }
-    
-}
 
-?>
+}

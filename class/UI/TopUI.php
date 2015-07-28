@@ -66,5 +66,3 @@ class TopUI implements UI
         Layout::plug(PHPWS_Template::process($tpl, 'intern', 'top.tpl'), 'NAV_LINKS');
     }
 }
-
-?>
