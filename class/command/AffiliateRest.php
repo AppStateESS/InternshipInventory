@@ -43,6 +43,9 @@ class AffiliateRest {
 
 		$affiliation = AffiliationAgreementFactory::getAffiliationById($affiliationId);
 
+		if (is_null($affiliation) || !isset($affiliation)) {
+			throw new Exception('Affiliation returned as null.');
+		}
 
 		if($affiliation->getTerminated() == 1)
 		{

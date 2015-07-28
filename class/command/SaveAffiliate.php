@@ -77,6 +77,10 @@ class SaveAffiliate {
         {
           $affiliate_agreement = AffiliationAgreementFactory::getAffiliationById($id);
 
+          if (is_null($affiliate_agreement) || !isset($affiliate_agreement)) {
+      			throw new Exception('Bad Affiliation ID, returned null.');
+      		}
+
           $affiliate_agreement->setName($_POST['name']);
           $affiliate_agreement->setBeginDate(strtotime($_POST['begin_date']));
           $affiliate_agreement->setEndDate(strtotime($_POST['end_date']));

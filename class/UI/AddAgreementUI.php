@@ -32,6 +32,8 @@ class AddAgreementUI implements UI
         $form->setLabel('auto_renew', 'Auto-Renew');
         $form->addCssClass('auto_renew', 'form-control');
 
+        $tpl = array();
+
         /*
          * If 'missing' is set then we have been redirected
          * back to the form because the user didn't type in something and
