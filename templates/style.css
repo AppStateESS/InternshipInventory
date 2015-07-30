@@ -29,6 +29,10 @@
   line-height: 24px;
 }
 
+.tt-suggestion:hover {
+  background-color: #ddd;
+}
+
 .tt-suggestion p {
   margin: 0;
 }

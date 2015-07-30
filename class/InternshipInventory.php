@@ -278,6 +278,23 @@ class InternshipInventory {
             case 'GetSearchSuggestions':
                 $ctrl = new Command\GetSearchSuggestions();
                 $ctrl->execute();
+                break;
+            case 'GetAvailableStates':
+                $ctrl = new Command\GetAvailableStates();
+                $ctrl->execute();
+                break;
+            case 'GetAvailableCountries':
+                $ctrl = new Command\GetAvailableCountries();
+                $ctrl->execute();
+                break;
+            case 'GetDepartments':
+                $ctrl = new Command\GetDepartments();
+                $ctrl->execute();
+                break;
+            case 'GetAvailableTerms':
+            $ctrl = new Command\GetAvailableTerms();
+            $ctrl->execute();
+            break;
             default:
                 $menu = new UI\InternMenu();
                 $this->content = $menu->display();

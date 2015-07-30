@@ -27,28 +27,8 @@ class ShowAddInternship {
             \PHPWS_Core::home();
         }
 
-        // Get list of available (future) terms
-        $terms = Term::getFutureTermsAssoc();
 
-        // Get list of departments for the current user
-        // If user is a Deity, then get all departments
-        if (\Current_User::isDeity()) {
-            $departments = \Intern\Department::getDepartmentsAssoc();
-        } else {
-            $departments = \Intern\Department::getDepartmentsAssocForUsername(\Current_User::getUsername());
-        }
-
-        // Get the list of allowed US states
-        $states = State::getAllowedStates();
-
-        // Get a list of the countries
-        $countries = CountryFactory::getCountries();
-
-        $requestVars = $_GET;
-        unset($requestVars['module']);
-        unset($requestVars['action']);
-
-        $view = new \Intern\AddInternshipView($terms, $departments, $states, $countries, $requestVars);
+        $view = new \Intern\AddInternshipView();
 
         return new \Response($view);
     }

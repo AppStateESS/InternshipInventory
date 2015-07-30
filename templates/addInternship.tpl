@@ -21,44 +21,17 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-sm-12 col-md-6 col-md-push-3">
-        <div class="form-group" id="term">
-        <label for="term" class="control-label">Term</label><br>
-            <div class="btn-group" data-toggle="buttons">
-                <!-- BEGIN TERMS -->
-                <label class="btn btn-default {ACTIVE}">
-                    <input type="radio" name="term" value="{TERM}" {SELECTED}>{TERM_TEXT}
-                </label>
-                <!-- END TERMS -->
-            </div>
-        </div>
-    </div>
-</div>
+<div id="termBlock"></div>
 
-<div class="row">
-    <div class="col-sm-12 col-md-6 col-md-push-3">
-        <div class="form-group" id="location">
-            <label for="location" class="control-label">Location</label><br>
-            <div class="btn-group" data-toggle="buttons">
-                <!-- BEGIN LOCATIONS -->
-                <label class="btn btn-default {ACTIVE}">
-                    <input type="radio" name="location" value="{LOCATION}" {SELECTED}>{LOCATION_TEXT}
-                </label>
-                <!-- END LOCATIONS -->
-            </div>
-        </div>
-    </div>
-</div>
+<div id="locationBlock"></div>
 
+<!--
 <div class="row" id="state-row">
     <div class="col-sm-12 col-md-4 col-md-push-3">
         <div class="form-group" id="state">
             <label for="state" class="control-label">State</label>
             <select id="state-control" name="state" class="form-control">
-                <!-- BEGIN STATES -->
                 <option value="{ABBR}" {SELECTED}>{STATE_NAME}</option>
-                <!-- END STATES -->
             </select>
         </div>
     </div>
@@ -70,41 +43,18 @@
             <label for="county" class="control-label">Country</label>
             <select id="country-control" name="country" class="form-control">
                 <option value="-1">Select a Country</option>
-                <!-- BEGIN COUNTRIES -->
                 <option value="{ABBR}" {SELECTED}>{COUNTRY_NAME}</option>
-                <!-- END COUNTRIES -->
             </select>
         </div>
     </div>
 </div>
+-->
 
-<div class="row">
-    <div class="col-sm-12 col-md-4 col-md-push-3">
-        <div class="form-group" id="department">
-            <label for="department2" class="control-label">Department</label>
-            <select id="department2" name="department" class="form-control">
-                <!-- BEGIN DEPARTMENTS -->
-                <option value="{DEPT_ID}" {SELECTED}>{DEPT_NAME}</option>
-                <!-- END DEPARTMENTS -->
-            </select>
-        </div>
-    </div>
-</div>
+<div id="department"></div>
 
-<div class="row">
-    <div class="col-sm-12 col-md-4 col-md-push-3">
-        <div class="form-group" id="agency">
-            <label for="agency2" class="control-label">Host Agency</label>
-            <input type="text" id="agency2" name="agency" class="form-control" value="{PREV_AGENCY}" placeholder="Acme, Inc.">
-        </div>
-    </div>
-</div>
+<div id="hostAgency"></div>
 
-<div class="row">
-    <div class="col-sm-12 col-md-6 col-md-push-3">
-        <button type="submit" class="btn btn-lg btn-primary pull-right" id="create-btn">Create Internship</button>
-    </div>
-</div>
+<div id="submitButton"></div>
 </form>
 
 <script type="text/javascript">
@@ -117,32 +67,5 @@ $(document).ready(function(){
 
         $('button[type="submit"]').html('<i class="fa fa-spinner fa-spin"></i> Saving...');
     });
-
-
-	// Hide the state and country fields initially
-	$('#state-row').hide();
-	$('#country-row').hide();
-
-	// Determines which location radio button is selected and
-	// shows/hides the dropdowns accordingly
-	function updateDropDowns() {
-		if($('#location input[type=radio]:checked').val() == 'domestic') {
-	        $('#country-row').hide();
-	        $('#state-row').fadeIn(200);
-	    }
-	    if($('#location input[type=radio]:checked').val() == 'international') {
-	        $('#state-row').hide();
-	        $('#country-row').fadeIn(200);
-	    }
-	}
-
-	// If domestic or international is selected, then show the corresponding drop-down
-    updateDropDowns();
-
-    // Event handler to show/hide boxes as location radio buttons are changed
-    $('#location input').change(function(){
-    	updateDropDowns();
-    });
-});
 */
 </script>
