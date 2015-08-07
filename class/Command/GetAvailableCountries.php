@@ -7,7 +7,9 @@ class getAvailableCountries {
 
     public function execute()
     {
-        echo json_encode(CountryFactory::getCountries());
+        $countries = CountryFactory::getCountries();
+        $countries = array('-1' => 'Select a Country') + $countries;
+        echo json_encode($countries);
         exit;
     }
 }

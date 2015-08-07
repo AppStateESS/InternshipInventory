@@ -13,13 +13,14 @@ class getDepartments {
             $departments = \Intern\Department::getDepartmentsAssocForUsername(\Current_User::getUsername());
         }
 
-        $newDepts = array();
+        $departments = array('-1' => 'Select a Department') + $departments;
 
         /*
          * NB: Javascript objects are unordered. When the JSON data is
-         * decode, numeric keys may be re-arraged. Making the keys into strings
+         * decoded, numeric keys may be re-arraged. Making the keys into strings
          * (by pre-pending an underscore) will prevent the re-ordering.
          */
+        $newDepts = array();
         foreach($departments as $key=>$value){
             $newDepts['_' . $key] = $value;
         }
