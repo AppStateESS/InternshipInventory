@@ -38,16 +38,13 @@ class State {
         $db->addColumn('abbr');
         $db->addColumn('full_name');
         $db->setIndexBy('abbr');
-        // get backwards because we flip it
-        $db->addOrder('full_name desc');
+        $db->addOrder('full_name ASC');
         $states = $db->select('col');
         if (empty($states)) {
             \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, 'The list of allowed US states for internship locations has not been configured. Please use the administrative options to <a href="index.php?module=intern&action=edit_states">add allowed states.</a>');
             \NQ::close();
             PHPWS_Core::goBack();
         }
-        $states[-1] = 'Select a state';
-        $states = array_reverse($states, true);
 
         return $states;
     }
