@@ -36,22 +36,25 @@ class TestStudentProvider extends BannerStudentProvider {
         // ID & email
         $obj->banner_id = '900123456';
         $obj->user_name = 'jb67803';
-        $obj->email = 'jb67803@appstate.edu';
+        $obj->email     = 'jb67803@appstate.edu';
 
         // Person type
-        $obj->isstaff = '';
+        $obj->isstaff   = '';
         $obj->isstudent = '1';
+        $obj->type      = 'Student';
+        $obj->department = '';
 
         // Basic demographics
-        $obj->first_name = 'Jeremy';
-        $obj->last_name = 'Booker';
-        $obj->middle_name = 'Awesome';
+        $obj->first_name    = 'Jeremy';
+        $obj->middle_name   = 'Awesome';
+        $obj->last_name     = 'Booker';
         $obj->preferred_name = 'j-dogg';
-        $obj->gender = 'M';
-        $obj->birth_date = '6/20/1995';
+        $obj->title         = 'Senior';
+        $obj->gender        = 'M';
+        $obj->birth_date    = '6/20/1995';
 
         // Contact info
-        $obj->phone = '9192748035';
+        $obj->phone = '828 123 4567';
         $obj->addr1 = 'ASU Box 12345';
         $obj->addr2 = 'Boone NC 28608';
 
@@ -59,13 +62,25 @@ class TestStudentProvider extends BannerStudentProvider {
         $obj->level     = BannerStudentProvider::UNDERGRAD;   // 'U' or 'G'
         $obj->campus    = BannerStudentProvider::MAIN_CAMPUS; // TODO verify values in SOAP
         $obj->gpa       = '3.8129032260';
-        $obj->grad_date = ''; // TODO test this
+        $obj->grad_date = ''; // TODO test this or 12/12/2015
+        $obj->term_code = '201540';
+
+        // Majors
+        $major = new \stdClass();
+        $major->major_code = '281A';
+        $major->major_desc = 'Social Work';
+        $major->program_admit = '';
+
+        $obj->majors = $major;
+
+        // Holds
+        $obj->holds = '';
 
         // Confidential flag
-        $obj->confid = ''; //TODO test this
+        $obj->confid = 'N'; //TODO test this
+
+        var_dump($obj);exit;
 
         return $obj;
     }
 }
-
-?>

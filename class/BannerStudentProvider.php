@@ -17,7 +17,7 @@ class BannerStudentProvider extends StudentProvider {
     private $soapClient;
 
     // Campus: main campus, distance ed
-    const MAIN_CAMPUS = 'MC';
+    const MAIN_CAMPUS = 'Main Campus';
     const DISTANCE_ED = 'DE'; //todo verify this
 
     // Student level: grad, undergrad

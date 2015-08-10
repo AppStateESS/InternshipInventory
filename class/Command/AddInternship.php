@@ -37,9 +37,8 @@ class AddInternship {
         $missingFieldList = $this->checkForMissingInput();
 
         // If there are missing fields, redirect to the add internship interface
-        // and highlight the fields
         if(!empty($missingFieldList)) {
-            $this->redirectToForm($missingFieldList, $_POST);
+            $this->redirectToForm();
         }
 
         // Check that the student Id looks valid
@@ -49,7 +48,8 @@ class AddInternship {
         $student = StudentProviderFactory::getProvider()->getStudent($studentId);
 
         // Get the department ojbect
-        $department = DepartmentFactory::getDepartmentById($_POST['department']);
+        $departmentId = preg_replace("/^_/", '', $_POST['department']); // Remove leading underscore in department id
+        $department = DepartmentFactory::getDepartmentById($departmentId);
 
         // Create and save the agency object
         $agency = new Agency($_POST['agency']);
@@ -60,11 +60,15 @@ class AddInternship {
         $term = $_POST['term'];
 
         // Get the location
-        //TODO double check that this is reasonable
         $location = $_POST['location'];
 
-        $state = $_POST['state'];
-        $country = $_POST['country'];
+        if($location == 'domestic') {
+            $state = $_POST['state'];
+            $country = null;
+        } else if ($location == 'international'){
+            $state = null;
+            $country = $_POST['country'];
+        }
 
         // Create a new internship object
         $intern = new Internship($student, $term, $location, $state, $country, $department, $agency);
@@ -129,28 +133,10 @@ class AddInternship {
     /**
      * Redirect to the add internship interface and highlight any missing fields
      */
-    private function redirectToForm(Array $missingFields, Array $previousValues)
+    private function redirectToForm()
     {
-        $url = 'index.php?module=intern&action=ShowAddInternship';
-
-        if(!empty($missingFields)) {
-            $url .= '&missing=' . implode('+', $missingFields);
-            \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "Please complete the highlighted fields.");
-        }
-
-        unset($previousValues['module']);
-        unset($previousValues['action']);
-
-        // Restore the values in the fields the user already entered
-        foreach ($previousValues as $key => $val){
-            if($key != 'module' && $key != 'action') {
-                $url .= "&$key=$val";
-            }
-        }
-
+        \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "Please complete the highlighted fields.");
         \NQ::close();
-        return \PHPWS_Core::reroute($url);
+        return \PHPWS_Core::reroute('index.php?module=intern&action=ShowAddInternship');
     }
 }
-
-?>

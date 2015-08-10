@@ -27,5 +27,3 @@ class StudentProviderFactory {
         return new BannerStudentProvider(\Current_User::getUsername());
     }
 }
-
-?>
