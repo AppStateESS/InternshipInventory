@@ -526,7 +526,6 @@ var CreateInternshipInterface = React.createClass({
             }
 
             // If we get here, then validation was successful
-            console.log("Everything looks good!");
             formElement.submit();
         });
     },
