@@ -45,6 +45,9 @@ class SearchUI implements UI
         }else{
             $depts = Department::getDepartmentsAssocForUsername(\Current_User::getUsername());
         }
+
+        $depts = array('-1' => 'Select Department') + $depts;
+
         $form->addSelect('dept', $depts);
         $form->setLabel('dept', 'Department');
         //$form->setClass('', 'form-control');
