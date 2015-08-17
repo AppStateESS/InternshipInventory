@@ -16,13 +16,14 @@ class Intern_Document_Manager extends FC_Document_Manager {
     /**
      * @Override FC_Document_Manager::edit()
      *
-     * This is a copy and paste of the overridden function 
+     * This is a copy and paste of the overridden function
      * except that the module for the form is set to intern.
      * Also, check if the folder has been set. If not create
      * one for the user and load it.
      */
     public function edit()
     {
+
         if (empty($this->document)) {
             $this->loadDocument();
         }
@@ -103,7 +104,8 @@ class Intern_Document_Manager extends FC_Document_Manager {
         if ($this->document->_errors) {
             $template['ERROR'] = $this->document->printErrors();
         }
-        return PHPWS_Template::process($template, 'filecabinet', 'document_edit.tpl');
+        return PHPWS_Template::process($template, 'filecabinet', 'Forms/document_edit.tpl');
+
 //        Layout::add(PHPWS_Template::process($template, 'filecabinet', 'document_edit.tpl'));
     }
 
@@ -136,12 +138,13 @@ class Intern_Document_Manager extends FC_Document_Manager {
             }
 
             PHPWS_Core::initModClass('filecabinet', 'File_Assoc.php');
-            FC_File_Assoc::updateTag(FC_DOCUMENT, $this->document->id, $this->document->getTag());
+            //According to the superclass this no longer does anything and causes an error
+            // FC_File_Assoc::updateTag(FC_DOCUMENT, $this->document->id, $this->document->getTag());
 
             $this->document->moveToFolder();
 
             // If the document's id is set in the request
-            // then we are updating a file. Not need to insert 
+            // then we are updating a file. Not need to insert
             // it into database.
             if (!isset($_REQUEST['document_id'])) {
                 // Save Intern_Document in database.
