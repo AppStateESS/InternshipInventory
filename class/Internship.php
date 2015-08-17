@@ -43,10 +43,21 @@ class Internship {
 
     // Academic info
     public $level;
-    public $grad_prog;
-    public $ugrad_major;
     public $gpa;
     public $campus;
+    public $major_code;
+    public $major_description;
+
+    /**
+     * @deprecated
+     * @see $major_code
+     */
+    public $grad_prog;
+    /**
+     * @deprecated
+     * @see $major_code
+     */
+    public $ugrad_major;
 
     // Contact Info
     public $phone;
@@ -54,7 +65,6 @@ class Internship {
 
     // Student address
     public $student_address;
-    public $student_address2;
     public $student_city;
     public $student_state;
     public $student_zip;
@@ -142,6 +152,7 @@ class Internship {
      */
     private function initalizeStudentData(Student $student)
     {
+        // Basic student demographics
         $this->banner       = $student->getStudentId();
         $this->email        = $student->getUsername();
         $this->first_name   = $student->getFirstName();
@@ -149,22 +160,29 @@ class Internship {
         $this->last_name    = $student->getLastName();
         $this->birth_date   = $student->getBirthDate();
 
-        // TODO
+        // Academic info
         $this->level = $student->getLevel();
         $this->campus = $student->getCampus();
-        //$this->grad_prog = ;
-        //$this->ugrad_major = ;
         $this->gpa = $student->getGpa();
+
+        // Majors - If double major, just take index 0
+        $majors = $student->getMajors();
+        if(is_array($majors)) {
+            $this->major_code = $majors[0]->getCode();
+            $this->major_description = $majors[0]->getDescription();
+        } else if (is_object($majors)) {
+            $this->major_code = $majors->getCode();
+            $this->major_description = $majors->getDescription();
+        } // Else, there were no majors set in the Student object
 
         // Contact Info
         $this->phone = $student->getPhone();
-        //$this->email = ;
 
         // Student address
-        //$this->student_address = ;
-        //$this->student_city = ;
-        //$this->student_state = ;
-        //$this->student_zip = ;
+        $this->student_address  = $student->getAddress();
+        $this->student_city = $student->getCity();
+        $this->student_state = $student->getState();
+        $this->student_zip = $student->getZip();
     }
 
     /**
@@ -847,6 +865,10 @@ class Internship {
         } else {
             return 'Unknown level';
         }
+    }
+
+    public function getMajorDescription() {
+        return $this->major_description;
     }
 
     public function getGpa(){

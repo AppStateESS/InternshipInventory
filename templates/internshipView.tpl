@@ -33,7 +33,7 @@
 
         <div class="form-group">
           <label class="col-lg-3 control-label" for="bannerid}">Banner Id</label>
-          <div id="bannerid" class="col-lg-6">{BANNER}</div>
+          <div id="bannerid" class="col-lg-6"><p class="form-control-static">{BANNER}</p></div>
         </div>
 
         <div class="form-group required">
@@ -59,20 +59,15 @@
             </div>
           </div>
         </div>
-        
+
         <div class="form-group">
           <label class="col-lg-3 control-label" for="birthdate">Birth date</label>
-          <div id="birthdate" class="col-lg-6">{BIRTH_DATE}</div>
+          <div id="birthdate" class="col-lg-6"><p class="form-control-static">{BIRTH_DATE}</p></div>
         </div>
 
         <div class="form-group">
           <label class="col-lg-3 control-label" for="{STUDENT_ADDRESS_ID}">{STUDENT_ADDRESS_LABEL_TEXT}</label>
           <div class="col-lg-6">{STUDENT_ADDRESS}</div>
-        </div>
-        
-        <div class="form-group">
-          <label class="col-lg-3 control-label" for="{STUDENT_ADDRESS2_ID}">{STUDENT_ADDRESS2_LABEL_TEXT}</label>
-          <div class="col-lg-6">{STUDENT_ADDRESS2}</div>
         </div>
 
         <div class="form-group">
@@ -90,29 +85,29 @@
           <div class="col-lg-6">{STUDENT_ZIP}</div>
         </div>
 
-        <div class="form-group required">
+        <div class="form-group">
           <label class="col-lg-3 control-label" for="{STUDENT_PHONE_ID}">{STUDENT_PHONE_LABEL_TEXT}</label>
           <div class="col-lg-6">{STUDENT_PHONE}</div>
         </div>
 
-        <div class="form-group required">
-          <label class="col-lg-3 control-label" for="{STUDENT_GPA_ID}">{STUDENT_GPA_LABEL_TEXT}</label>
-          <div class="col-lg-6">{STUDENT_GPA}</div>
+        <div class="form-group">
+          <label class="col-lg-3 control-label" for="{STUDENT_GPA_ID}">GPA</label>
+          <div class="col-lg-6"><p class="form-control-static">{STUDENT_GPA}</p></div>
         </div>
 
         <div class="form-group">
           <label class="col-lg-3 control-label" for="campus">Campus</label>
-          <div id="campus" class="col-lg-6">{CAMPUS}</div>
+          <div id="campus" class="col-lg-6"><p class="form-control-static">{CAMPUS}</p></div>
         </div>
 
         <div class="form-group">
           <label class="col-lg-3 control-label" for="level">Level</label>
-          <div id="level" class="col-lg-6">{LEVEL}</div>
+          <div id="level" class="col-lg-6"><p class="form-control-static">{LEVEL}</p></div>
         </div>
 
-        <div class="form-group required">
+        <div class="form-group">
           <label class="col-lg-3 control-label" for="{UGRAD_MAJOR_ID}{GRAD_MAJOR_ID}">Major / Program</label>
-          <div class="col-lg-8">{UGRAD_MAJOR}{GRAD_PROG}</div>
+          <div class="col-lg-8"><p class="form-control-static">{MAJOR}</p></div>
         </div>
 
       </fieldset>
@@ -142,7 +137,7 @@
             <label>Location</label>
           </div>
           <div class="col-lg-6">
-            {LOCATION}
+            <p class="form-control-static">{LOCATION}</p>
           </div>
         </div>
 
@@ -163,7 +158,7 @@
         <div class="col-lg-3 control-label">
           <label>State</label>
         </div>
-        <div class="col-lg-6">{LOC_STATE}</div>
+        <div class="col-lg-6"><p class="form-control-static">{LOC_STATE}</p></div>
       </div>
       <!-- END loc_state -->
 
@@ -182,7 +177,7 @@
         <div class="col-lg-3 control-label">
           <label>Country</label>
         </div>
-        <div class="col-lg-6">{LOC_COUNTRY}</div>
+        <div class="col-lg-6"><p class="form-control-static">{LOC_COUNTRY}</p></div>
       </div>
       <!-- END loc_country -->
 
@@ -192,7 +187,7 @@
             <label>Term</label>
           </div>
           <div class="col-lg-6">
-            {TERM}
+            <p class="form-control-static">{TERM}</p>
           </div>
       </div>
 

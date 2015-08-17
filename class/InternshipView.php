@@ -1,67 +1,39 @@
 <?php
 
-namespace Intern\UI;
-
-use Intern\InternshipFormView;
-use Intern\InternshipFactory;
-use Intern\AgencyFactory;
-use Intern\EditInternshipFormView;
-use Intern\InternFolder;
-use Intern\InternDocument;
-
-use \PHPWS_DB;
+namespace Intern;
 
 /**
  * This class holds the form for adding/editing an internship.
  */
-class InternshipUI implements UI {
+class InternshipView {
 
     public static $requiredFields = array(
             'student_first_name',
             'student_last_name',
-            'student_phone',
             'student_email',
-            'student_gpa',
             'agency_name',
             'department');
 
     private $intern;
-    private $wfstate;
+    private $wfState;
+    private $agency;
+    private $docs;
+
+    public function __construct(Internship $internship, WorkflowState $wfState, Agency $agency, Array $docs)
+    {
+        $this->intern = $internship;
+        $this->wfState = $wfState;
+        $this->agency = $agency;
+        $this->docs = $docs;
+    }
 
     public function display()
     {
         $tpl = array();
         $tpl['TITLE'] = 'Edit Internship';
 
-        // Make sure an 'internship_id' key is set on the request
-        if(!isset($_REQUEST['internship_id'])) {
-            \NQ::simple('intern', NotifyUI::ERROR, 'No internship ID was given.');
-            \NQ::close();
-            \PHPWS_Core::reroute('index.php');
-        }
-
-        // Load the Internship
-        try{
-            $this->intern = InternshipFactory::getInternshipById($_REQUEST['internship_id']);
-        }catch(InternshipNotFoundException $e){
-            \NQ::simple('intern', NotifyUI::ERROR, 'Could not locate an internship with the given ID.');
-            return;
-        }
-
-        // Load the agency
-        $agency = AgencyFactory::getAgencyById($this->intern->getAgencyId());
-
-        // Load the documents
-        $docs = $this->intern->getDocuments();
-        if($docs === null) {
-            $docs = array(); // if no docs, setup an empty array
-        }
-
-        // Load the WorkflowState
-        $this->wfState = $this->intern->getWorkflowState();
-
         // Setup the form
-        $internshipForm = new EditInternshipFormView('Edit Internship', $this->intern, $agency, $docs);
+        $internshipForm = new EditInternshipFormView('Edit Internship', $this->intern, $this->agency, $this->docs);
 
         // Get the Form object
         $form = $internshipForm->getForm();
@@ -74,7 +46,6 @@ class InternshipUI implements UI {
         if (isset($_REQUEST['missing'])) {
             $missing = explode(' ', $_REQUEST['missing']);
 
-            //javascriptMod('intern', 'missing');
             /*
              * Set classes on field we are missing.
             */
@@ -88,17 +59,12 @@ class InternshipUI implements UI {
             $form->plugIn($_GET);
 
             /* Re-add hidden fields with object ID's */
-            $i = InternshipFactory::getInternshipById($_GET['internship_id']);
-            $a = $this->intern->getAgency();
-            //$f = $this->intern->getFacultySupervisor();
-            //$form->addHidden('agency_id', $a->id);
-            //$form->addHidden('supervisor_id', $f->id);
             $form->addHidden('id', $this->intern->id);
         }
 
         $form->mergeTemplate($tpl);
 
-        return \PHPWS_Template::process($form->getTemplate(), 'intern', 'edit_internship.tpl');
+        return \PHPWS_Template::process($form->getTemplate(), 'intern', 'internshipView.tpl');
     }
 
     private function showWarnings()

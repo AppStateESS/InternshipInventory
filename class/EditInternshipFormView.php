@@ -153,10 +153,6 @@ class EditInternshipFormView {
         $this->form->setLabel('student_address','Address');
         $this->form->addCssClass('student_address', 'form-control');
 
-        $this->form->addText('student_address2');
-        $this->form->setLabel('student_address2','Address 2');
-        $this->form->addCssClass('student_address2', 'form-control');
-
         $this->form->addText('student_city');
         $this->form->setLabel('student_city','City');
         $this->form->addCssClass('student_city', 'form-control');
@@ -168,50 +164,6 @@ class EditInternshipFormView {
         $this->form->addText('student_zip');
         $this->form->setLabel('student_zip','Zip Code');
         $this->form->addCssClass('student_zip', 'form-control');
-
-        // GPA
-        $this->form->addText('student_gpa');
-        $this->form->setLabel('student_gpa', 'GPA');
-        $this->form->addCssClass('student_gpa', 'form-control');
-
-        // Campus
-        //$this->form->addRadioAssoc('campus', array('main_campus'=>'Main Campus', 'distance_ed'=>'Distance Ed'));
-        //$this->form->setMatch('campus', 'main_campus');
-
-        // Student level
-        //$levels = array('-1' => 'Choose level', 'ugrad' => 'Undergraduate', 'grad' => 'Graduate');
-        //$this->form->addDropBox('student_level', $levels);
-        //$this->form->setLabel('student_level', 'Level');
-        //$this->form->addCssClass('student_level', 'form-control');
-
-        // Student Major dummy box (gets replaced by dropdowns below using JS when student_level is selected)
-        //$levels = array('-1' => 'Choose student level first');
-        //$this->form->addDropBox('student_major', $levels);
-        //$this->form->setLabel('student_major', 'Major / Program');
-        //$this->form->addCssClass('student_major', 'form-control');
-
-        /*****************************
-         * Undergrad Major Drop Down *
-         */
-
-        /*
-        // TODO get rid of magic values
-        if($this->intern->getLevel() == 'ugrad') {
-            $majors = Major::getMajorsAssoc($this->intern->ugrad_major); //TODO use accessor
-
-            $this->form->addSelect('ugrad_major', $majors);
-            $this->form->setLabel('ugrad_major', 'Undergraduate Majors &amp; Certificate Programs');
-            $this->form->addCssClass('ugrad_major', 'form-control');
-        } else if ($this->intern->getLevel() == 'grad') {
-            $progs = GradProgram::getGradProgsAssoc($this->intern->grad_prog); // TODO use accessor
-
-            $this->form->addSelect('grad_prog', $progs);
-            $this->form->setLabel('grad_prog', 'Graduate Majors &amp; Certificate Programs');
-            $this->form->addCssClass('grad_prog', 'form-control');
-        } else {
-            throw new \InvalidArgumentException("Unrecognized level ({$this->intern->getLevel()}) for {$this->intern->getBannerId()}");
-        }
-        */
 
 
         /************************
@@ -534,32 +486,23 @@ class EditInternshipFormView {
         // Student
         $this->tpl['BANNER'] = $this->intern->getBannerId();
         $this->tpl['BIRTH_DATE'] = $this->intern->getBirthDateFormatted();
+        $this->tpl['STUDENT_GPA'] = $this->intern->getGpa();
         $this->tpl['CAMPUS'] = $this->intern->getCampusFormatted();
         $this->tpl['LEVEL'] = $this->intern->getLevelFormatted();
 
-        if($this->intern->getLevel() == 'ugrad' && $this->intern->getUgradMajor() !== null) {
-            //$majors = Major::getMajorsAssoc($this->intern->ugrad_major);
-            $this->tpl['UGRAD_MAJOR'] = $this->intern->getUgradMajor()->getName();
-        } else if($this->intern->getLevel() == 'grad' && $this->intern->getGradProgram() !== null) {
-            //$progs = GradProgram::getGradProgsAssoc($this->intern->grad_prog); // TODO use accessor
-            $this->tpl['GRAD_PROG'] = $this->intern->getGradProg()->getName();
-        } else {
-            $this->tpl['GRAD_PROG'] = 'Unknown major/program';
-        }
+        $this->tpl['MAJOR'] = $this->intern->getMajorDescription();
 
         $this->formVals['student_first_name'] = $this->intern->first_name;
         $this->formVals['student_middle_name'] = $this->intern->middle_name;
         $this->formVals['student_last_name'] = $this->intern->last_name;
         $this->formVals['student_phone'] = $this->intern->phone;
         $this->formVals['student_email'] = $this->intern->email;
-        //$this->formVals['grad_prog'] = $this->intern->grad_prog;
-        //$this->formVals['ugrad_major'] = $this->intern->ugrad_major;
+
         $this->formVals['student_gpa'] = $this->intern->gpa;
         $this->formVals['campus'] = $this->intern->campus;
 
         // Student address
         $this->formVals['student_address'] = $this->intern->student_address;
-        $this->formVals['student_address2'] = $this->intern->student_address2;
         $this->formVals['student_city'] = $this->intern->student_city;
         $this->formVals['student_state'] = $this->intern->student_state;
         $this->formVals['student_zip'] = $this->intern->student_zip;

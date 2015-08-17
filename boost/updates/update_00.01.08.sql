@@ -19,7 +19,8 @@ alter table intern_internship add column birth_date integer;
 update intern_internship set birth_date = 0;
 alter table intern_internship alter column birth_date set not null;
 
-alter table intern_internship add column student_address2 character varying;
+alter table intern_internship add column major_code character varying;
+alter table intern_internship add column major_description character varying;
 
 create table intern_student_autocomplete (
     banner_id           integer NOT NULL,

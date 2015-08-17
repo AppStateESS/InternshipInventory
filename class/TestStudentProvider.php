@@ -62,24 +62,31 @@ class TestStudentProvider extends BannerStudentProvider {
         $obj->level     = BannerStudentProvider::UNDERGRAD;   // 'U' or 'G'
         $obj->campus    = BannerStudentProvider::MAIN_CAMPUS; // TODO verify values in SOAP
         $obj->gpa       = '3.8129032260';
-        $obj->grad_date = ''; // TODO test this or 12/12/2015
+
+        //$obj->grad_date = '';
+        $obj->grad_date = '12/12/2015'; // Can be empty, or format 12/12/2015 (MM/DD/YYYY)
+
         $obj->term_code = '201540';
 
-        // Majors
-        $major = new \stdClass();
-        $major->major_code = '281A';
-        $major->major_desc = 'Social Work';
-        $major->program_admit = '';
+        // Majors - Can be an arry of objects, or a single object
+        $major1 = new \stdClass();
+        $major1->major_code = '355*';
+        $major1->major_desc = 'Management';
+        $major1->program_admit = '';
 
-        $obj->majors = $major;
+        $major2 = new \stdClass();
+        $major2->major_code = '224A';
+        $major2->major_desc = 'Computer Science';
+        $major2->program_admit = '';
+
+        $obj->majors = array($major1, $major2);
 
         // Holds
+        // TODO verify what is returned
         $obj->holds = '';
 
         // Confidential flag
-        $obj->confid = 'N'; //TODO test this
-
-        var_dump($obj);exit;
+        $obj->confid = 'N'; //TODO verify this is 'N' or 'Y'
 
         return $obj;
     }

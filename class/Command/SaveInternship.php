@@ -206,36 +206,9 @@ class SaveInternship {
             $i->setExperienceType($_REQUEST['experience_type']);
         }
 
-        // Set ields depending on domestic/international
-        /*
-        if($_REQUEST['location'] == 'domestic'){
-            // Set Flags
-            //$i->domestic      = 1;
-            $i->international = 0;
-
-            // Set state
-            if ($_POST['loc_state'] != '-1') {
-                $i->loc_state = strip_tags($_POST['loc_state']);
-            } else {
-                $i->loc_state = null;
-            }
-
-            // Clear province, country
-            $i->loc_province  = '';
-            $i->loc_country   = '';
-        }else
-        */
-        if($_REQUEST['location'] == 'internat'){
-            // Set flags
-            //$i->domestic      = 0;
-            //$i->international = 1;
-
-            // Set province, country
+        if($i->isInternational()){
+            // Set province
             $i->loc_province = $_POST['loc_province'];
-            $i->loc_country = strip_tags($_POST['loc_country']);
-
-            // Clear state
-            //$i->loc_state = null;
         }
 
         // Address, city, zip are always set (no matter domestic or international)
@@ -287,11 +260,7 @@ class SaveInternship {
         $i->phone = $_REQUEST['student_phone'];
         $i->email = $_REQUEST['student_email'];
 
-        $i->gpa = $_REQUEST['student_gpa'];
-        //$i->campus = $_REQUEST['campus'];
-
         $i->student_address = $_REQUEST['student_address'];
-        $i->student_address2 = $_REQUEST['student_address2'];
         $i->student_city = $_REQUEST['student_city'];
         if($_REQUEST['student_state'] != '-1'){
             $i->student_state = $_REQUEST['student_state'];
@@ -299,12 +268,6 @@ class SaveInternship {
             $i->student_state = "";
         }
         $i->student_zip = $_REQUEST['student_zip'];
-
-        /*
-        $i->emergency_contact_name = $_REQUEST['emergency_contact_name'];
-        $i->emergency_contact_relation = $_REQUEST['emergency_contact_relation'];
-        $i->emergency_contact_phone = $_REQUEST['emergency_contact_phone'];
-        */
 
         /************
          * OIED Certification
@@ -377,7 +340,7 @@ class SaveInternship {
     {
         $vals = null;
 
-        foreach (\Intern\UI\InternshipUI::$requiredFields as $field) {
+        foreach (\Intern\InternshipView::$requiredFields as $field) {
             /* If not set or is empty (For text fields) */
             if (!isset($_REQUEST[$field]) || $_REQUEST[$field] == '') {
                 $vals[] = $field;
