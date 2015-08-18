@@ -208,9 +208,6 @@ class EditInternshipFormView {
         /***************
          * Agency info *
          */
-        $this->form->addText('agency_name');
-        $this->form->setLabel('agency_name', 'Name');
-        $this->form->addCssClass('agency_name', 'form-control');
 
         $this->form->addCheck('copy_address_agency');
         $this->form->setLabel('copy_address_agency', "Agency's address is same as Internship's");
@@ -520,7 +517,9 @@ class EditInternshipFormView {
     {
         // Agency
         $this->form->addHidden('agency_id', $this->agency->id);
-        $this->formVals['agency_name']            = $this->agency->name;
+
+        $this->tpl['AGENCY_NAME']                 = $this->agency->name;
+
         $this->formVals['agency_address']         = $this->agency->address;
         $this->formVals['agency_city']            = $this->agency->city;
         $this->formVals['agency_state']           = $this->agency->state;

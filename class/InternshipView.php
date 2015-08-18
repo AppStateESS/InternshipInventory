@@ -11,7 +11,6 @@ class InternshipView {
             'student_first_name',
             'student_last_name',
             'student_email',
-            'agency_name',
             'department');
 
     private $intern;
@@ -98,6 +97,18 @@ class InternshipView {
         }
     }
 
+    private function showStudentWarnings()
+    {
+        // Show warning if graduation date is prior to start date
+        //TODO
+
+        // Show warning if graduation date is prior to end date
+        //TODO
+
+        // Show warning if student is enrolled for more than the credit hour limit for the term
+        // TODO
+
+    }
 }
 
 ?>

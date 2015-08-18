@@ -389,9 +389,10 @@
       <!-- Agency info -->
       <fieldset>
         <legend>Agency Details</legend>
-        <div class="form-group required">
-          <label class="col-lg-3 control-label" for="{AGENCY_NAME_ID}">{AGENCY_NAME_LABEL_TEXT}</label>
-          <div class="col-lg-6">{AGENCY_NAME}</div>
+
+        <div class="form-group">
+          <label class="col-lg-3 control-label" for="{STUDENT_GPA_ID}">Agency Name</label>
+          <div class="col-lg-6"><p class="form-control-static">{AGENCY_NAME}</p></div>
         </div>
 
         <div class="form-group">
