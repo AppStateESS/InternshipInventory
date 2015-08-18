@@ -255,6 +255,7 @@ class SaveInternship {
         $i->last_name = $_REQUEST['student_last_name'];
 
         $i->setFirstNameMetaphone($_REQUEST['student_first_name']);
+        $i->setMiddleNameMetaphone($_REQUEST['student_middle_name']);
         $i->setLastNameMetaphone($_REQUEST['student_last_name']);
 
         $i->phone = $_REQUEST['student_phone'];

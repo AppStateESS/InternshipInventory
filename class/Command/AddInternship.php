@@ -6,6 +6,8 @@ use Intern\Internship;
 use Intern\DepartmentFactory;
 use Intern\Agency;
 use Intern\StudentProviderFactory;
+use Intern\WorkflowStateFactory;
+use Intern\ChangeHistory;
 
 use Intern\DatabaseStorage;
 
@@ -75,6 +77,11 @@ class AddInternship {
 
         // Save it!!
         $intern->save();
+
+        $t = \Intern\WorkflowTransitionFactory::getTransitionByName('Intern\WorkflowTransition\CreationTransition');
+        $workflow = new \Intern\WorkflowController($intern, $t);
+        $workflow->doTransition(null);
+        $workflow->doNotification(null);
 
         // Show a success notice and redirect to the edit page
         \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, "Created internship for {$intern->getFullName()}");

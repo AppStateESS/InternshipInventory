@@ -180,6 +180,11 @@ class Student {
         $this->gradDate = strtotime($date);
     }
 
+    public function getGradDate()
+    {
+        return $this->gradDate;
+    }
+
     /**
      * @param $flag bool
      */

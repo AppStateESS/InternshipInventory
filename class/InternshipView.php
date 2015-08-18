@@ -15,13 +15,15 @@ class InternshipView {
             'department');
 
     private $intern;
+    private $student;
     private $wfState;
     private $agency;
     private $docs;
 
-    public function __construct(Internship $internship, WorkflowState $wfState, Agency $agency, Array $docs)
+    public function __construct(Internship $internship, Student $student, WorkflowState $wfState, Agency $agency, Array $docs)
     {
         $this->intern = $internship;
+        $this->student = $student;
         $this->wfState = $wfState;
         $this->agency = $agency;
         $this->docs = $docs;
@@ -33,7 +35,7 @@ class InternshipView {
         $tpl['TITLE'] = 'Edit Internship';
 
         // Setup the form
-        $internshipForm = new EditInternshipFormView('Edit Internship', $this->intern, $this->agency, $this->docs);
+        $internshipForm = new EditInternshipFormView($this->intern, $this->student, $this->agency, $this->docs);
 
         // Get the Form object
         $form = $internshipForm->getForm();

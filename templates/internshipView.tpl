@@ -110,6 +110,11 @@
           <div class="col-lg-8"><p class="form-control-static">{MAJOR}</p></div>
         </div>
 
+        <div class="form-group">
+          <label class="col-lg-3 control-label" for="gradDate">Graduation Date</label>
+          <div id="gradDate" class="col-lg-6"><p class="form-control-static">{GRAD_DATE}</p></div>
+        </div>
+
       </fieldset>
 
       <!-- Emergency Contact Info -->

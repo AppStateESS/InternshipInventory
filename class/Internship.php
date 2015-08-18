@@ -160,6 +160,10 @@ class Internship {
         $this->last_name    = $student->getLastName();
         $this->birth_date   = $student->getBirthDate();
 
+        $this->setFirstNameMetaphone($student->getFirstName());
+        $this->setMiddleNameMetaphone($student->getMiddleName());
+        $this->setLastNameMetaphone($student->getLastName());
+
         // Academic info
         $this->level = $student->getLevel();
         $this->campus = $student->getCampus();
@@ -839,6 +843,15 @@ class Internship {
     }
 
     /**
+     * Calculates and sets the metaphone value for this student's middle name.
+     *
+     * @param string $firstName
+     */
+    public function setMiddleNameMetaphone($middleName){
+        $this->middle_name_meta = metaphone($middleName);
+    }
+
+    /**
      * Calculates and sets the metaphone value for this student's last name.
      *
      * @param string $lastName
@@ -969,14 +982,12 @@ class Internship {
 
     /***********************
      * Static Methods
-    ***********************/
+     ***********************/
     public static function getTypesAssoc()
     {
         return array('internship'       => 'Internship',
-                'student_teaching' => 'Student Teaching',
-                'practicum'        => 'Practicum',
-                'clinical'         => 'Clinical');
+                     'student_teaching' => 'Student Teaching',
+                     'practicum'        => 'Practicum',
+                     'clinical'         => 'Clinical');
     }
 }
-
-?>

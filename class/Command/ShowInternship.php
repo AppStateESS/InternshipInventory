@@ -4,6 +4,7 @@ namespace Intern\Command;
 use \Intern\InternshipFactory;
 use \Intern\AgencyFactory;
 use \Intern\InternshipView;
+use \Intern\StudentProviderFactory;
 
 class ShowInternship {
 
@@ -20,9 +21,18 @@ class ShowInternship {
         try{
             $intern = InternshipFactory::getInternshipById($_REQUEST['internship_id']);
         }catch(InternshipNotFoundException $e){
-            \NQ::simple('intern', NotifyUI::ERROR, 'Could not locate an internship with the given ID.');
+            \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, 'Could not locate an internship with the given ID.');
             return;
         }
+
+        if($intern === false) {
+            \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, 'Could not locate an internship with the given ID.');
+            //TODO redirect to the search interface
+            return;
+        }
+
+        // Load a fresh copy of the student data from the web service
+        $student = StudentProviderFactory::getProvider()->getStudent($intern->getBannerId());
 
         // Load the WorkflowState
         $wfState = $intern->getWorkflowState();
@@ -36,7 +46,7 @@ class ShowInternship {
             $docs = array(); // if no docs, setup an empty array
         }
 
-        $view = new InternshipView($intern, $wfState, $agency, $docs);
+        $view = new InternshipView($intern, $student, $wfState, $agency, $docs);
 
         return $view->display();
     }

@@ -173,5 +173,3 @@ class BannerStudentProvider extends StudentProvider {
         \PHPWS_Core::log($msg, 'soap.log', 'SOAP');
     }
 }
-
-?>

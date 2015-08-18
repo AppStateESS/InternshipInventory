@@ -19,6 +19,7 @@ class EditInternshipFormView {
 
     private $form;
     private $intern;
+    private $student;
     private $tpl;
 
     private $agency;
@@ -32,14 +33,12 @@ class EditInternshipFormView {
      * @param string $pagetitle
      * @param Internship $i
      */
-    public function __construct($pageTitle, Internship $i, Agency $agency, Array $docs)
+    public function __construct(Internship $i, Student $student, Agency $agency, Array $docs)
     {
-        // Call parent constructor to setup form
-        //parent::__construct($pageTitle);
-
-        \Layout::addPageTitle($pageTitle);
+        \Layout::addPageTitle('Edit Internship');
 
         $this->intern = $i;
+        $this->student = $student;
 
         $this->agency = $agency;
         $this->department = $this->intern->getDepartment();
@@ -58,9 +57,6 @@ class EditInternshipFormView {
         $this->setupDocumentList();
         $this->setupEmergencyContact();
         $this->setupChangeHistory();
-
-        // Set a page title
-        \Layout::addPageTitle($pageTitle);
     }
 
     public function getForm()
@@ -492,6 +488,8 @@ class EditInternshipFormView {
 
         $this->tpl['MAJOR'] = $this->intern->getMajorDescription();
 
+        $this->tpl['GRAD_DATE'] = date('n/j/Y', $this->student->getGradDate());
+
         $this->formVals['student_first_name'] = $this->intern->first_name;
         $this->formVals['student_middle_name'] = $this->intern->middle_name;
         $this->formVals['student_last_name'] = $this->intern->last_name;
@@ -649,5 +647,3 @@ class EditInternshipFormView {
         $this->tpl['CHANGE_LOG'] = $historyView->show();
     }
 }
-
-?>
