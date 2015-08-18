@@ -219,8 +219,8 @@ class SaveInternship {
         $i->agency_id = $agencyId;
         $i->faculty_id = $_REQUEST['faculty_id'] > 0 ? $_REQUEST['faculty_id'] : null;
         $i->department_id = $_REQUEST['department'];
-        $i->start_date = !empty($_REQUEST['start_date']) ? strtotime($_REQUEST['start_date']) : 0;
-        $i->end_date = !empty($_REQUEST['end_date']) ? strtotime($_REQUEST['end_date']) : 0;
+        $i->start_date = !empty($_REQUEST['start_date']) ? strtotime($_REQUEST['start_date']) : null;
+        $i->end_date = !empty($_REQUEST['end_date']) ? strtotime($_REQUEST['end_date']) : null;
 
         // Credit hours must be an integer (because of database column type),
         // so round the credit hours to nearest int
