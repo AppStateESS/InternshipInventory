@@ -92,6 +92,68 @@
         </div>
 
       </fieldset>
+
+      <!-- Faculty info -->
+      <fieldset>
+        <legend>Faculty Advisor</legend>
+        <div id="faculty_selector">
+          <div class="form-group">
+            <label class="col-lg-3 control-label" for="{DEPARTMENT_ID}">{DEPARTMENT_LABEL_TEXT}</label>
+            <div class="col-lg-8">{DEPARTMENT}</div>
+          </div>
+          <div class="form-group">
+            <label class="col-lg-3 control-label" for="{FACULTY_ID}">{FACULTY_LABEL_TEXT}</label>
+            <div class="col-lg-8">{FACULTY}</div>
+          </div>
+        </div>
+        <div id="faculty_details">
+
+          <div class="row">
+            <div id="faculty_change" class="col-lg-2">
+              <button id="faculty-change" type="button" class="btn btn-default btn-xs">
+                <i class="fa fa-chevron-left"></i> change
+              </button>
+            </div>
+            <div id="faculty_name" class="col-lg-10 lead"></div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-5 col-lg-offset-2">
+
+              <div class="row">
+                <div class="col-lg-12">
+                  <p>
+                    <abbr title="Email address"><i class="fa fa-envelope"></i></abbr> &nbsp;<span id="faculty_email"></span>
+                  </p>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-12">
+                  <p>
+                    <abbr title="Phone"><i class="fa fa-phone"></i></abbr> &nbsp;<span id="faculty_phone"></span>
+                  </p>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-12">
+                  <p>
+                    <abbr title="Fax"><i class="fa fa-print"></i></abbr> &nbsp;<span id="faculty_fax"></span>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-5">
+              <abbr title="Address"><i class="fa fa-map-marker"></i></abbr> &nbsp;
+              <address id="faculty_address"></address>
+            </div>
+          </div>
+
+        </div>
+      </fieldset>
+
       <fieldset class="search-fieldset">
         <legend>Location</legend>
 

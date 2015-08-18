@@ -39,6 +39,8 @@ class ResultsUI implements UI {
         $courseSubject = null;
         $courseNum = null;
         $courseSect = null;
+        $faculty = null;
+
 
 
         /**
@@ -76,9 +78,11 @@ class ResultsUI implements UI {
             $courseNum = $_REQUEST['course_no'];
         if (isset($_REQUEST['course_sect']))
             $courseSect = $_REQUEST['course_sect'];
+        if (isset($_REQUEST['faculty_id']))
+            $faculty = $_REQUEST['faculty_id'];
 
             /* Get Pager */
-        $pager = self::getPager($name, $dept, $term, $ugradMajor, $gradProg, $level, $type, $campus, $loc, $state, $prov, $workflowState, $courseSubject, $courseNum, $courseSect);
+        $pager = self::getPager($name, $dept, $term, $ugradMajor, $gradProg, $level, $type, $campus, $loc, $state, $prov, $workflowState, $courseSubject, $courseNum, $courseSect, $faculty);
 
         $pagerContent = $pager->get();
 
@@ -104,8 +108,10 @@ class ResultsUI implements UI {
      * Get the DBPager object.
      * Search strings can be passed in too.
      */
-    private static function getPager($name = null, $deptId = null, $term = null, $ugradMajor = null, $gradProg = null, $level = null, $type = null, $campus = null, $loc = null, $state = null, $prov = null, $workflowState = null, $courseSubject = null, $courseNum = null, $courseSect = null)
+    private static function getPager($name = null, $deptId = null, $term = null, $ugradMajor = null, $gradProg = null, $level = null, $type = null, $campus = null, $loc = null, $state = null, $prov = null,
+                                      $workflowState = null, $courseSubject = null, $courseNum = null, $courseSect = null, $faculty = null)
     {
+
         $pager = new SubselectPager('intern_internship', 'Internship');
 
         // Pager Settings
@@ -273,6 +279,11 @@ class ResultsUI implements UI {
             foreach ($workflowState as $s) {
                 $pager->db->addWhere('state', $s, '=', 'OR', 'workflow_group');
             }
+        }
+
+        if (!empty($faculty))
+        {
+            $pager->addWhere('faculty_id', $faculty);
         }
 
         //$pager->db->setTable(array('fuzzy'));
