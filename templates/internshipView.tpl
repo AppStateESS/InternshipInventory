@@ -107,7 +107,20 @@
 
         <div class="form-group">
           <label class="col-lg-3 control-label" for="{UGRAD_MAJOR_ID}{GRAD_MAJOR_ID}">Major / Program</label>
+
+          <!-- BEGIN oneMajor -->
           <div class="col-lg-8"><p class="form-control-static">{MAJOR}</p></div>
+          <!-- END oneMajor -->
+
+          <div class="col-lg-8">
+            <div class="btn-group-vertical" data-toggle="buttons" role="group" aria-label="major selector">
+              <!-- BEGIN majors_repeat -->
+              <label class="btn btn-default {ACTIVE}">
+                <input type="radio" name="major_code" autocomplete="off" value="{CODE}" {CHECKED}> {DESC}
+              </label>
+              <!-- END majors_repeat -->
+            </div>
+          </div>
         </div>
 
         <div class="form-group">

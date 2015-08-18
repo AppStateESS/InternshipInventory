@@ -132,10 +132,6 @@ class EditInternshipFormView {
         $this->form->setLabel('student_last_name', 'Last Name');
         $this->form->addCssClass('student_last_name', 'form-control');
 
-        //$this->form->addText('banner');
-        //$this->form->setLabel('banner', 'Banner ID'); // Digits only
-        //$this->form->addCssClass('banner', 'form-control');
-
         $this->form->addText('student_phone');
         $this->form->setLabel('student_phone', 'Phone');
         $this->form->addCssClass('student_phone', 'form-control');
@@ -482,10 +478,24 @@ class EditInternshipFormView {
         $this->tpl['STUDENT_GPA'] = $this->intern->getGpa();
         $this->tpl['CAMPUS'] = $this->intern->getCampusFormatted();
         $this->tpl['LEVEL'] = $this->intern->getLevelFormatted();
-
-        $this->tpl['MAJOR'] = $this->intern->getMajorDescription();
-
         $this->tpl['GRAD_DATE'] = date('n/j/Y', $this->student->getGradDate());
+
+        // Major handling -- Shows a selector if there's more than one major
+        $majors = $this->student->getMajors();
+        $majorsCount = sizeof($majors);
+        if($majorsCount == 1) {
+            // Only one major, so display it
+            $this->tpl['MAJOR'] = $this->intern->getMajorDescription();
+        } else if($majorsCount > 1) {
+            // Add a repeat for each major
+            foreach($majors as $m) {
+                if($this->intern->getMajorCode() == $m->getCode()){
+                    $this->tpl['majors_repeat'][] = array('CODE' => $m->getCode(), 'DESC' => $m->getDescription(), 'ACTIVE' => 'active', 'CHECKED' => 'checked');
+                } else {
+                    $this->tpl['majors_repeat'][] = array('CODE' => $m->getCode(), 'DESC' => $m->getDescription(), 'ACTIVE' => '', 'CHECKED' => '');
+                }
+            }
+        }
 
         $this->formVals['student_first_name'] = $this->intern->first_name;
         $this->formVals['student_middle_name'] = $this->intern->middle_name;

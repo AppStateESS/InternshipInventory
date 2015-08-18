@@ -5,6 +5,7 @@ use \Intern\WorkflowStateFactory;
 use \Intern\ChangeHistory;
 use \Intern\AgencyFactory;
 use \Intern\DatabaseStorage;
+use \Intern\StudentProviderFactory;
 
 /**
  * Controller class to save changes (on create or update) to an Internship
@@ -175,10 +176,9 @@ class SaveInternship {
             throw $e;
         }
 
-        /**********************************
-         * Save the Internship
+        /***********************
+         * Save the Internship *
          */
-        // User is editing internship
         try {
             $i = \Intern\InternshipFactory::getInternshipById($_REQUEST['internship_id']);
         } catch (Exception $e) {
@@ -186,6 +186,9 @@ class SaveInternship {
             \PHPWS_DB::rollback();
             throw $e;
         }
+
+        // Load the student object
+        $student = StudentProviderFactory::getProvider()->getStudent($i->getBannerId());
 
         $i->faculty_id = $_REQUEST['faculty_id'] > 0 ? $_REQUEST['faculty_id'] : null;
         $i->department_id = $_REQUEST['department'];
@@ -268,6 +271,21 @@ class SaveInternship {
             $i->student_state = "";
         }
         $i->student_zip = $_REQUEST['student_zip'];
+
+        // Student major handling, if more than one major
+        $majors = $student->getMajors();
+        if(sizeof($majors) > 1) {
+            $code = $_POST['major_code'];
+            foreach($majors as $m){
+                if($m->getCode() == $code){
+                    $major = $m;
+                    break;
+                }
+            }
+
+            $i->major_code = $major->getCode();
+            $i->major_description = $major->getDescription();
+        }
 
         /************
          * OIED Certification

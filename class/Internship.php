@@ -880,6 +880,10 @@ class Internship {
         }
     }
 
+    public function getMajorCode() {
+        return $this->major_code;
+    }
+
     public function getMajorDescription() {
         return $this->major_description;
     }
