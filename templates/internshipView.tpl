@@ -128,6 +128,11 @@
           <div id="gradDate" class="col-lg-6"><p class="form-control-static">{GRAD_DATE}</p></div>
         </div>
 
+        <div class="form-group">
+          <label class="col-lg-3 control-label" for="credit-hours">Credit Hours</label>
+          <div id="credit-hours" class="col-lg-6"><p class="form-control-static">{ENROLLED_CREDIT_HORUS}</p></div>
+        </div>
+
       </fieldset>
 
       <!-- Emergency Contact Info -->

@@ -32,7 +32,7 @@ class ShowInternship {
         }
 
         // Load a fresh copy of the student data from the web service
-        $student = StudentProviderFactory::getProvider()->getStudent($intern->getBannerId());
+        $student = StudentProviderFactory::getProvider()->getStudent($intern->getBannerId(), $intern->getTerm());
 
         // Load the WorkflowState
         $wfState = $intern->getWorkflowState();

@@ -7,6 +7,11 @@ namespace Intern;
    */
 class Term extends Model
 {
+    const SPRING    = 1;
+    const SUMMER1   = 2;
+    const SUMMER2   = 3;
+    const FALL      = 4;
+
     public $term;
 
     public static function getDb()
@@ -209,6 +214,11 @@ class Term extends Model
         }
 
         return intval($term);
+    }
+
+    public static function getSemester($term)
+    {
+        return substr($term, 4, 1);
     }
 }
 

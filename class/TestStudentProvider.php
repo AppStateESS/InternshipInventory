@@ -18,15 +18,22 @@ class TestStudentProvider extends BannerStudentProvider {
      * Returns a Student object with hard-coded data
      * @return Student
      */
-    public function getStudent($studentId)
+    public function getStudent($studentId, $term)
     {
         $student = new Student();
 
         $response = $this->getFakeResponse();
 
+        $response->creditHours = $this->getCreditHours($studentId, $term);
+
         $this->plugValues($student, $response);
 
         return $student;
+    }
+
+    public function getCreditHours($studentId, $term)
+    {
+        return 16;
     }
 
     private function getFakeResponse()

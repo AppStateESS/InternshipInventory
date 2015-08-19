@@ -17,7 +17,7 @@ abstract class StudentProvider {
      * @param string StudentId
      * @return Student
      */
-    public abstract function getStudent($studentId);
+    public abstract function getStudent($studentId, $term);
 
     /**
      * Takes a reference to a Student object and a SOAP response,

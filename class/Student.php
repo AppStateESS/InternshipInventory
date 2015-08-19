@@ -10,6 +10,12 @@ class Student {
     const MAIN_CAMPUS = 'main_campus';
     const DISTANCE_ED = 'distance_ed';
 
+    const HOURS_LIMIT_UNDERGRAD_REG = 18;
+    const HOURS_LIMIT_UNDERGRAD_SUMMER = 7;
+
+    const HOURS_LIMIT_GRADUATE_REG = 12;
+    const HOURS_LIMIT_GRADUATE_SUMMER = 6;
+
     // Basic demographics
     private $studentId;
     private $username;
@@ -32,6 +38,7 @@ class Student {
     private $gpa;
     private $gradDate;
     private $holds;
+    private $creditHours;
 
     // Person type flags
     private $isStaff;
@@ -47,6 +54,37 @@ class Student {
     public function __construct()
     {
         $this->majors = array();
+    }
+
+    public function isCreditHourLimited($internHours, $term)
+    {
+        if(!isset($this->creditHours)){
+            return;
+        }
+
+        $totalHours = $this->creditHours + $internHours;
+
+        $semester = Term::getSemester($term);
+        $level = $this->getLevel();
+        if(($semester == Term::FALL || $semester == Term::SPRING)) {
+            if($level == self::UNDERGRAD){
+                $limit = self::HOURS_LIMIT_UNDERGRAD_REG;
+            } else if($level == self::GRADUATE) {
+                $limit = self::HOURS_LIMIT_GRADUATE_REG;
+            }
+        } else if (($semester == Term::SUMMER1 || $semester == Term::SUMMER2)) {
+            if($level == self::UNDERGRAD){
+                $limit = self::HOURS_LIMIT_UNDERGRAD_SUMMER;
+            } else if($level == self::GRADUATE) {
+                $limit = self::HOURS_LIMIT_GRADUATE_SUMMER;
+            }
+        }
+
+        if($totalHours > $limit){
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /*****
@@ -183,6 +221,14 @@ class Student {
     public function getGradDate()
     {
         return $this->gradDate;
+    }
+
+    public function getCreditHours() {
+        return $this->creditHours;
+    }
+
+    public function setCreditHours($hours) {
+        $this->creditHours = $hours;
     }
 
     /**

@@ -188,7 +188,7 @@ class SaveInternship {
         }
 
         // Load the student object
-        $student = StudentProviderFactory::getProvider()->getStudent($i->getBannerId());
+        $student = StudentProviderFactory::getProvider()->getStudent($i->getBannerId(), $i->getTerm());
 
         $i->faculty_id = $_REQUEST['faculty_id'] > 0 ? $_REQUEST['faculty_id'] : null;
         $i->department_id = $_REQUEST['department'];

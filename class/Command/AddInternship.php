@@ -46,8 +46,12 @@ class AddInternship {
         // Check that the student Id looks valid
         $studentId = $_POST['studentId'];
 
+        // Get the term
+        // TODO Double check that this is reasonable
+        $term = $_POST['term'];
+
         // Create the student object
-        $student = StudentProviderFactory::getProvider()->getStudent($studentId);
+        $student = StudentProviderFactory::getProvider()->getStudent($studentId, $term);
 
         // Get the department ojbect
         $departmentId = preg_replace("/^_/", '', $_POST['department']); // Remove leading underscore in department id
@@ -56,10 +60,6 @@ class AddInternship {
         // Create and save the agency object
         $agency = new Agency($_POST['agency']);
         DatabaseStorage::save($agency);
-
-        // Get the term
-        // TODO Double check that this is reasonable
-        $term = $_POST['term'];
 
         // Get the location
         $location = $_POST['location'];

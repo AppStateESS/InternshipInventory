@@ -479,6 +479,13 @@ class EditInternshipFormView {
         $this->tpl['CAMPUS'] = $this->intern->getCampusFormatted();
         $this->tpl['LEVEL'] = $this->intern->getLevelFormatted();
 
+        $creditHours = $this->student->getCreditHours();
+        if(isset($creditHours)) {
+            $this->tpl['ENROLLED_CREDIT_HORUS'] = $creditHours;
+        } else {
+            $this->tpl['ENROLLED_CREDIT_HORUS'] = '<span class="text-muted"><em>Not Available</em></span>';
+        }
+
         $gradDate = $this->student->getGradDate();
         if(isseT($gradDate)) {
             $this->tpl['GRAD_DATE'] = date('n/j/Y', $this->student->getGradDate());

@@ -43,7 +43,7 @@ class BannerStudentProvider extends StudentProvider {
      * Returns a Student object with hard-coded data
      * @return Student
      */
-    public function getStudent($studentId)
+    public function getStudent($studentId, $term)
     {
         if($studentId === null || $studentId == ''){
             throw new InvalidArgumentException('Missing student ID.');
@@ -58,11 +58,35 @@ class BannerStudentProvider extends StudentProvider {
             throw $e;
         }
 
+        $response->creditHours = $this->getCreditHours($studentId, $term);
+
         // Create the Student object and plugin the values
         $student = new Student();
-        $this->plugValues($student);
+        $this->plugValues($student, $response);
 
         return $student;
+    }
+
+    public function getCreditHours($studentId, $term)
+    {
+        if($studentId === null || $studentId == ''){
+            throw new InvalidArgumentException('Missing student ID.');
+        }
+
+        if($term === null || $term == ''){
+            throw new InvalidArgumentException('Missing student term.');
+        }
+
+        $params = array('BannerID'  => $studentId,
+                        'Term'      => $term);
+
+        try {
+            $response = $this->client->GetCreditHours($params);
+        } catch (SoapFault $e){
+            throw $e;
+        }
+
+        return $response->GetCreditHoursResponse;
     }
 
     /**
@@ -131,6 +155,9 @@ class BannerStudentProvider extends StudentProvider {
         } else {
             throw \InvalidArgumentException("Unrecognized student level ({$data->level}) for {$data->banner_id}.");
         }
+
+        // Credit Hours
+        $student->setCreditHours($data->creditHours);
 
         // Majors - Can be an array of objects, or just a single object
         if(is_array($data->majors)) {
