@@ -55,6 +55,11 @@ class InternshipInventory {
                 $ctrl->execute();
                 test('finished execute',1);
                 break;
+            case 'copy_internship':
+                PHPWS_Core::initModClass('intern', 'command/CopyInternship.php');
+                $ctrl = new CopyInternship();
+                $ctrl->execute();
+                break;
             case 'search':
                 PHPWS_Core::initModClass('intern', 'UI/SearchUI.php');
                 $view = new SearchUI();

@@ -71,8 +71,8 @@ class Internship {
 
     // Term Info
     public $term;
-    public $start_date = 0;
-    public $end_date = 0;
+    public $start_date;
+    public $end_date;
     public $credits;
     public $avg_hours_week;
     public $paid;
@@ -788,6 +788,63 @@ class Internship {
     public function setExperienceType($type){
         $this->experience_type = $type;
     }
+
+    public function setId($id)
+    {
+      $this->id = $id;
+    }
+
+    public function setStartDate($startDate)
+    {
+      $this->start_date = $startDate;
+    }
+
+    public function setEndDate($endDate)
+    {
+      $this->end_date = $endDate;
+    }
+
+    public function advanceTerm()
+    {
+
+      $currTerm = $this->term;
+      if($currTerm % 10 == 4)
+      {
+        $currTerm = $currTerm - 3;
+        $newTerm = $currTerm + 10;
+      }
+      else
+      {
+        $newTerm = $currTerm + 1;
+      }
+
+      if($this->checkValidTerm($newTerm))
+      {
+
+        $this->term = $newTerm;
+        return true;
+      }
+      else {
+        return false;
+      }
+
+    }
+
+    public function checkValidTerm($termToCheck)
+    {
+
+      $futureTerms = Term::getFutureTermsAssoc();
+
+      foreach ($futureTerms as $validTerm)
+      {
+        if($termToCheck == $validTerm)
+        {
+          return true;
+        }
+      }
+      return false;
+    }
+
 
     /***********************
      * Static Methods

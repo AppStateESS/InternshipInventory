@@ -14,15 +14,24 @@
   {HIDDEN_FIELDS}
 
   <div class="form-group">
-    <div class="col-lg-1 col-lg-offset-8">
+    <div class="col-lg-1">
       <button type="submit" class="btn btn-primary" id="{SUBMIT_ID}">{SUBMIT_VALUE}</button>
     </div>
+    <!-- BEGIN copy_for_next_term -->
+    <div class="col-lg-2 col-lg-offset-6">
+      <a href="index.php?module=intern&action=copy_internship&internship_id={INTERNSHIP_ID}" class="btn btn-md btn-info">
+        <i class="fa fa-copy"></i>
+        Continue in next term
+      </a>
+    </div>
+    <!-- END copy_for_next_term -->
     <div class="col-lg-1 col-lg-offset-1">
       <!-- BEGIN generate_contract -->
       <a href="{PDF}" id="contract-button" class="btn btn-default"><i class="fa fa-file"></i> Generate Contract</a>
       <!-- END generate_contract -->
     </div>
   </div>
+
 
   <div class="row">
     <!-- Left column -->
@@ -380,7 +389,7 @@
           <label class="col-lg-3 control-label" for="{AGENCY_PHONE_ID}">{AGENCY_PHONE_LABEL_TEXT}</label>
           <div class="col-lg-6">{AGENCY_PHONE}</div>
         </div>
-        
+
         <div class="checkbox">
           <label> {COPY_ADDRESS_AGENCY} {COPY_ADDRESS_AGENCY_LABEL_TEXT} </label>
         </div>
@@ -510,7 +519,7 @@
           <div class="col-lg-3">{AVG_HOURS_WEEK}</div>
         </div>
       </fieldset>
-      
+
       <div class="form-group">
         <button type="submit" class="btn btn-primary pull-right" id="{SUBMIT_ID}">{SUBMIT_VALUE}</button>
       </div>
