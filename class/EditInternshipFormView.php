@@ -478,7 +478,13 @@ class EditInternshipFormView {
         $this->tpl['STUDENT_GPA'] = $this->intern->getGpa();
         $this->tpl['CAMPUS'] = $this->intern->getCampusFormatted();
         $this->tpl['LEVEL'] = $this->intern->getLevelFormatted();
-        $this->tpl['GRAD_DATE'] = date('n/j/Y', $this->student->getGradDate());
+
+        $gradDate = $this->student->getGradDate();
+        if(isseT($gradDate)) {
+            $this->tpl['GRAD_DATE'] = date('n/j/Y', $this->student->getGradDate());
+        } else {
+            $this->tpl['GRAD_DATE'] = '<span class="text-muted"><em>Not Available</em></span>';
+        }
 
         // Major handling -- Shows a selector if there's more than one major
         $majors = $this->student->getMajors();
