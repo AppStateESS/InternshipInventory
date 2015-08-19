@@ -15,6 +15,8 @@ use \PHPWS_Text;
  */
 class Internship {
 
+    const GPA_MINIMUM = 2.0;
+
     public $id;
 
     // Agency

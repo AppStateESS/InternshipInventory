@@ -65,6 +65,9 @@ class InternshipView {
 
         $form->mergeTemplate($tpl);
 
+        $this->showWarnings();
+        $this->showStudentWarnings();
+
         return \PHPWS_Template::process($form->getTemplate(), 'intern', 'internshipView.tpl');
     }
 
@@ -73,42 +76,53 @@ class InternshipView {
         // Show warning if no documents uploaded but workflow state suggests there should be documents
         if(($this->wfState instanceof SigAuthReadyState || $this->wfState instanceof SigAuthApprovedState || $this->wfState instanceof DeanApprovedState || $this->wfState instanceof RegisteredState) && ($docs < 1))
         {
-            \NQ::simple('intern', NotifyUI::WARNING, "No documents have been uploaded yet. Usually a copy of the signed contract document should be uploaded.");
+            \NQ::simple('intern', UI\NotifyUI::WARNING, "No documents have been uploaded yet. Usually a copy of the signed contract document should be uploaded.");
         }
 
         // Show a warning if in SigAuthReadyState, is international, and not OIED approved
         if ($this->wfState instanceof SigAuthReadyState && $this->intern->isInternational() && !$this->intern->isOiedCertified()) {
-            \NQ::simple('intern', NotifyUI::WARNING, 'This internship can not be approved by the Signature Authority bearer until the internship is certified by the Office of International Education and Development.');
+            \NQ::simple('intern', UI\NotifyUI::WARNING, 'This internship can not be approved by the Signature Authority bearer until the internship is certified by the Office of International Education and Development.');
         }
 
         // Show a warning if in DeanApproved state and is distance_ed campus
         if ($this->wfState == 'DeanApprovedState' && $this->intern->isDistanceEd()) {
-            \NQ::simple('intern', NotifyUI::WARNING, 'This internship must be registered by Distance Education.');
+            \NQ::simple('intern', UI\NotifyUI::WARNING, 'This internship must be registered by Distance Education.');
         }
 
         // Show warning & sanity check cource section #
         if ($this->intern->isDistanceEd() && ($this->intern->getCourseSection() < 300 || $this->intern->getCourseSection() > 399)) {
-            NQ::simple('intern', NotifyUI::WARNING, "This is a distance ed internship, so the course section number should be between 300 and 399.");
+            NQ::simple('intern', UI\NotifyUI::WARNING, "This is a distance ed internship, so the course section number should be between 300 and 399.");
         }
 
         // Show warning & Sanity check distance ed radio
         if (!$this->intern->isDistanceEd() && ($this->intern->getCourseSection() > 300 && $this->intern->getCourseSection() < 400)) {
-            \NQ::simple('intern', NotifyUI::WARNING, "The course section number you entered looks like a distance ed course. Be sure to check the Distance Ed option, or double check the section number.");
+            \NQ::simple('intern', UI\NotifyUI::WARNING, "The course section number you entered looks like a distance ed course. Be sure to check the Distance Ed option, or double check the section number.");
         }
     }
 
     private function showStudentWarnings()
     {
         // Show warning if graduation date is prior to start date
-        //TODO
+        $gradDate = $this->student->getGradDate();
+        if(isset($gradDate) && $gradDate < $this->intern->getStartDate())
+        {
+            \NQ::simple('intern', UI\NotifyUI::WARNING, 'This student\'s graduation date is prior to the internship\'s start date.');
+        }
 
         // Show warning if graduation date is prior to end date
-        //TODO
+        if(isset($gradDate) && $gradDate < $this->intern->getEndDate())
+        {
+            \NQ::simple('intern', UI\NotifyUI::WARNING, 'This student\'s graduation date is prior to the internship\'s completion date.');
+        }
 
         // Show warning if student is enrolled for more than the credit hour limit for the term
         // TODO
 
+        // Show warning if GPA is below the minimum
+        if($this->student->getGpa() < Internship::GPA_MINIMUM) {
+            $minGpa = sprintf('%.2f', Internship::GPA_MINIMUM);
+            \NQ::simple('intern', UI\NotifyUI::WARNING, "This student's GPA is less than the required minimum of {$minGpa}.");
+        }
+
     }
 }
-
-?>

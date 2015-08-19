@@ -61,10 +61,11 @@ class TestStudentProvider extends BannerStudentProvider {
         // Academic Info
         $obj->level     = BannerStudentProvider::UNDERGRAD;   // 'U' or 'G'
         $obj->campus    = BannerStudentProvider::MAIN_CAMPUS; // TODO verify values in SOAP
-        $obj->gpa       = '3.8129032260';
+        //$obj->gpa       = '3.8129032260';
+        $obj->gpa       = '1.8129032260';
 
-        //$obj->grad_date = '';
-        $obj->grad_date = '12/23/2015'; // Can be empty, or format 12/12/2015 (MM/DD/YYYY)
+        $obj->grad_date = '';
+        //$obj->grad_date = '12/23/2015'; // Can be empty, or format 12/12/2015 (MM/DD/YYYY)
 
         $obj->term_code = '201540';
 
