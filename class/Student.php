@@ -56,6 +56,16 @@ class Student {
         $this->majors = array();
     }
 
+    /**
+     * Determines if a student will be over the semester credit hour limit
+     * Returns true if this internship's credit hours, plus the student's existing
+     * credit hours would put them over the semester's limit. Limits vary for regular
+     * terms (i.e. Fall/Spring) vs Summer terms, and Undergraduate vs Graduate levels.
+     *
+     * @param $internHours integer Number of credit hours the internship will be worth
+     * @param $term integer The term the internship will be in. Used to check existing credit hours.
+     * @return boolean
+     */
     public function isCreditHourLimited($internHours, $term)
     {
         if(!isset($this->creditHours)){
