@@ -3,6 +3,7 @@
 namespace Intern\Command;
 
 use Intern\StudentProviderFactory;
+use Intern\Term;
 
 
 /**
@@ -50,7 +51,7 @@ class GetSearchSuggestions {
     private function studentIdSearch($studentId)
     {
         // TODO try/catch
-        $student = StudentProviderFactory::getProvider()->getStudent($studentId);
+        $student = StudentProviderFactory::getProvider()->getStudent($studentId, Term::timeToTerm(time()));
 
         return $student;
     }
