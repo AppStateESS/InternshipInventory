@@ -28,5 +28,3 @@ abstract class StudentProvider {
      */
     protected abstract function plugValues(&$student, \stdClass $data);
 }
-
-?>

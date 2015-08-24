@@ -64,10 +64,7 @@ class SearchUI implements UI
         // Student level radio button
         javascript('jquery');
         javascriptMod('intern', 'majorSelector', array('form_id'=>$form->id));
-        $levels = array('-1' =>'Any Level', 'ugrad' => 'Undergraduate', 'grad' => 'Graduate');
-        $form->addSelect('student_level', $levels);
-        $form->setLabel('student_level', 'Level');
-        $form->setClass('student_level', 'form-control');
+
 
         // Student Major dummy box (gets replaced by dropdowns below using JS when student_level is selected)
         $levels = array('-1' => 'Choose student level first');
@@ -97,13 +94,6 @@ class SearchUI implements UI
         $form->setLabel('grad_prog', 'Graduate Majors &amp; Certificate Programs');
         $form->setClass('grad_prog', 'form-control');
 
-
-
-        // Campus
-        $campuses = array('main_campus'=>'Main Campus',
-        		'distance_ed'=>'Distance Ed');
-        $form->addRadioAssoc('campus', $campuses);
-
         /***************
          * Course Info *
          ***************/
@@ -123,16 +113,6 @@ class SearchUI implements UI
         $form->setSize('course_sect', 6);
         $form->setMaxSize('course_sect', 4);
         $form->setClass('course_sect', 'form-control');
-
-
-        // Internship types.
-        $types = Internship::getTypesAssoc();
-        $form->addRadioAssoc('type', $types);
-
-        // Location
-        $loc = array('domestic' => 'Domestic',
-                     'internat' => 'International');
-        $form->addRadioAssoc('loc',$loc);
 
         /* State search */
         $db = new \PHPWS_DB('intern_state');

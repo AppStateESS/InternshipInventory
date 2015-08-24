@@ -14,7 +14,7 @@ class BannerStudentProvider extends StudentProvider {
 
     private $currentUserName;
 
-    private $soapClient;
+    private $client;
 
     // Campus: main campus, distance ed
     const MAIN_CAMPUS = 'Main Campus';
@@ -46,11 +46,11 @@ class BannerStudentProvider extends StudentProvider {
     public function getStudent($studentId, $term)
     {
         if($studentId === null || $studentId == ''){
-            throw new InvalidArgumentException('Missing student ID.');
+            throw new \InvalidArgumentException('Missing student ID.');
         }
 
         $params = array('BannerID' => $studentId,
-                        'UserName' => $this->username);
+                        'UserName' => $this->currentUserName);
 
         try {
             $response = $this->client->GetInternInfo($params);
@@ -70,11 +70,11 @@ class BannerStudentProvider extends StudentProvider {
     public function getCreditHours($studentId, $term)
     {
         if($studentId === null || $studentId == ''){
-            throw new InvalidArgumentException('Missing student ID.');
+            throw new \InvalidArgumentException('Missing student ID.');
         }
 
         if($term === null || $term == ''){
-            throw new InvalidArgumentException('Missing student term.');
+            throw new \InvalidArgumentException('Missing student term.');
         }
 
         $params = array('BannerID'  => $studentId,

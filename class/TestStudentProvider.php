@@ -66,7 +66,8 @@ class TestStudentProvider extends BannerStudentProvider {
         $obj->addr2 = 'Boone NC 28608';
 
         // Academic Info
-        $obj->level     = BannerStudentProvider::UNDERGRAD;   // 'U' or 'G'
+        //$obj->level     = BannerStudentProvider::UNDERGRAD;   // 'U' or 'G'
+        $obj->level     = BannerStudentProvider::GRADUATE;
         $obj->campus    = BannerStudentProvider::MAIN_CAMPUS; // TODO verify values in SOAP
         //$obj->gpa       = '3.8129032260';
         $obj->gpa       = '1.8129032260';
