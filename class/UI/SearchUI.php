@@ -32,13 +32,6 @@ class SearchUI implements UI
         $form->addText('name');
         $form->setLabel('name', "Name or Banner ID");
 
-        $terms = Term::getTermsAssoc();
-        //$thisTerm = Term::timeToTerm(time());
-        $form->addSelect('term_select', $terms);
-        $form->setLabel('term_select', 'Term');
-        $form->setClass('term_select', 'form-control');
-        //$form->setMatch('term_select', $thisTerm);
-
         // Deity can search for any department. Other users are restricted.
         if(\Current_User::isDeity()){
             $depts = Department::getDepartmentsAssoc();
@@ -97,6 +90,11 @@ class SearchUI implements UI
         /***************
          * Course Info *
          ***************/
+        $terms = Term::getTermsAssoc();
+        $form->addSelect('term_select', $terms);
+        $form->setLabel('term_select', 'Term');
+        $form->setClass('term_select', 'form-control');
+
         $subjects = Subject::getSubjects();
         $form->addSelect('course_subj', $subjects);
         $form->setLabel('course_subj', 'Subject');

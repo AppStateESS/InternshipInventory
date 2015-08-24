@@ -126,7 +126,6 @@ class ResultsUI implements UI {
 
         // Limit to requested department
         if (!is_null($deptId) && $deptId != -1) {
-
             $pager->addWhere('department_id', $deptId);
         }
 
@@ -245,7 +244,7 @@ class ResultsUI implements UI {
         }
 
         // Campus
-        if (isset($campus)) {
+        if (isset($campus) && $campus != '-1') {
             $pager->addWhere('campus', $campus);
         }
 
