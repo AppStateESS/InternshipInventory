@@ -162,10 +162,10 @@ class BannerStudentProvider extends StudentProvider {
         // Majors - Can be an array of objects, or just a single object
         if(is_array($data->majors)) {
             foreach($data->majors as $major){
-                $student->addMajor(new AcademicMajor($major->major_code, $major->major_desc));
+                $student->addMajor(new AcademicMajor($major->major_code, $major->major_desc, 'U'));
             }
         } else if(is_object($data->majors)){
-            $student->addMajor(new AcademicMajor($data->majors->major_code, $data->majors->major_desc));
+            $student->addMajor(new AcademicMajor($data->majors->major_code, $data->majors->major_desc, 'U'));
         }
 
         // GPA - Rounded to 4 decimial places
