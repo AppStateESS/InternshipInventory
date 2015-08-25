@@ -71,13 +71,13 @@ class DocumentManager extends \FC_Document_Manager {
             $form->addSubmit('submit', dgettext('filecabinet', 'Update'));
         } else {
             $form->addTplTag('FORM_TITLE', dgettext('filecabinet', 'Upload new file'));
-            $form->addSubmit('submit', dgettext('filecabinet', 'Upload'));
+            $form->addSubmit('upload', dgettext('filecabinet', 'Upload'));
         }
 
         $form->addButton('cancel', dgettext('filecabinet', 'Cancel'));
         $form->setExtra('cancel', 'onclick="window.close()"');
 
-        $form->setExtra('submit', 'onclick="this.style.display=\'none\'"');
+        $form->setExtra('upload', 'onclick="this.style.display=\'none\'"');
 
         if ($this->document->id && Current_User::allow('filecabinet', 'edit_folders', $this->folder->id, 'folder', true)) {
             Cabinet::moveToForm($form, $this->folder);
@@ -105,7 +105,7 @@ class DocumentManager extends \FC_Document_Manager {
         if ($this->document->_errors) {
             $template['ERROR'] = $this->document->printErrors();
         }
-        return \PHPWS_Template::process($template, 'filecabinet', 'document_edit.tpl');
+        return \PHPWS_Template::process($template, 'filecabinet', 'Forms/document_edit.tpl');
 //        Layout::add(PHPWS_Template::process($template, 'filecabinet', 'document_edit.tpl'));
     }
 
