@@ -290,12 +290,6 @@ class ResultsUI implements UI {
         $pager->addSortHeader('state', 'Status');
 
         /**
-         * *** Row Background Color Toggles *****
-         */
-        $pager->addToggle('tablerow-bg-color1');
-        $pager->addToggle('tablerow-bg-color2');
-
-        /**
          * *** Other Page Tags *****
          */
         $pageTags = array();
