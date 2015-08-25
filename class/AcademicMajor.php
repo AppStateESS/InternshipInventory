@@ -11,11 +11,13 @@ class AcademicMajor {
 
     private $code;
     private $description;
+    private $level;
 
-    public function __construct($code, $description)
+    public function __construct($code, $description, $level)
     {
         $this->code = $code;
         $this->description = $description;
+        $this->level = $level;
     }
 
     public function getCode()
@@ -26,5 +28,10 @@ class AcademicMajor {
     public function getDescription()
     {
         return $this->description;
+    }
+
+    public function getLevel()
+    {
+        return $this->level;
     }
 }

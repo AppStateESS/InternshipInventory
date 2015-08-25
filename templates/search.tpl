@@ -63,21 +63,21 @@
           <div class="col-lg-8">
             <div class="btn-group" data-toggle="buttons">
               <label class="btn btn-default active">Any Level
-                <input type="radio" name="student_level" value="-1" checked>
+                <input type="radio" class="student_level" name="student_level" value="-1" checked>
               </label>
               <label class="btn btn-default">Undergraduate
-                <input type="radio" name="student_level" value="ugrad">
+                <input type="radio" class="student_level" name="student_level" value="ugrad">
               </label>
               <label class="btn btn-default">Graduate
-                <input type="radio" name="student_level" value="grad">
+                <input type="radio" class="student_level" name="student_level" value="grad">
               </label>
             </div>
           </div>
         </div>
 
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{UGRAD_MAJOR_ID}">Major / Program</label>
-          <div class="col-lg-8">{STUDENT_MAJOR}{UGRAD_MAJOR}{GRAD_PROG}</div>
+          <label class="col-lg-3 control-label" for="{MAJOR_ID}">Major / Program</label>
+          <div class="col-lg-8">{STUDENT_MAJOR}{UNDERGRAD_MAJOR}{GRADUATE_MAJOR}</div>
         </div>
       </fieldset>
 

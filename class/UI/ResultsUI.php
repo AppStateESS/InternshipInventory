@@ -28,7 +28,6 @@ class ResultsUI implements UI {
         $ugradMajor = null;
         $gradProg = null;
         $level = null;
-        $major = null;
         $campus = null;
         $type = null;
         $loc = null;
@@ -51,10 +50,10 @@ class ResultsUI implements UI {
             $term = $_REQUEST['term_select'];
         if (isset($_REQUEST['name']))
             $name = $_REQUEST['name'];
-        if (isset($_REQUEST['ugrad_major']))
-            $ugradMajor = $_REQUEST['ugrad_major'];
-        if (isset($_REQUEST['grad_prog']))
-            $gradProg = $_REQUEST['grad_prog'];
+        if (isset($_REQUEST['undergrad_major']))
+            $ugradMajor = $_REQUEST['undergrad_major'];
+        if (isset($_REQUEST['graduate_major']))
+            $gradProg = $_REQUEST['graduate_major'];
         if (isset($_REQUEST['student_level']) && $_REQUEST['student_level'] != '-1')
             $level = $_REQUEST['student_level'];
         if (isset($_REQUEST['type']))
@@ -209,10 +208,10 @@ class ResultsUI implements UI {
             // Major
             if ($level == 'ugrad' && isset($ugradMajor) && $ugradMajor != -1) {
                 // Undergrad major
-                $pager->addWhere('ugrad_major', $ugradMajor);
+                $pager->addWhere('major_code', $ugradMajor);
             } else if ($level == 'grad' && isset($gradProg) && $gradProg != -1) {
                 // Graduate program
-                $pager->addWhere('grad_prog', $gradProg);
+                $pager->addWhere('major_code', $gradProg);
             }
         }
 

@@ -21,7 +21,7 @@ class MajorsProviderFactory {
         if(STUDENT_DATA_TEST){
             return new TestMajorsProvider(\Current_User::getUsername());
         }
-        
+
         return new BannerMajorsProvider(\Current_User::getUsername());
     }
 }
