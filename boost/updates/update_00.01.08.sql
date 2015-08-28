@@ -9,6 +9,8 @@ alter table intern_internship alter column paid drop not null;
 alter table intern_internship alter column stipend drop not null;
 alter table intern_internship drop column unpaid;
 
+alter table intern_internship alter column phone drop not null;
+
 alter table intern_internship alter column multi_part drop not null;
 alter table intern_internship alter column secondary_part drop not null;
 
