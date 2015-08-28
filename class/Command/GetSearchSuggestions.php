@@ -48,9 +48,15 @@ class GetSearchSuggestions {
         exit;
     }
 
+    /**
+     * Attempts to find a student by their student ID. Throws an exception if the student
+     * cannot be located.
+     *
+     * @param $studentId The student's ID number.
+     * @throws StudentNotFoundException
+     */
     private function studentIdSearch($studentId)
     {
-        // TODO try/catch
         $student = StudentProviderFactory::getProvider()->getStudent($studentId, Term::timeToTerm(time()));
 
         return $student;
@@ -85,7 +91,13 @@ class GetSearchSuggestions {
         $students = array();
 
         foreach($results as $result) {
-            $students[] = $this->studentIdSearch($result['banner_id']);
+            try {
+                $students[] = $this->studentIdSearch($result['banner_id']);
+            }catch(\Intern\Exception\StudentNotFoundException $e){
+                // Skip any students that are returned from the database, but don't exist
+                // in the student info web service
+                continue;
+            }
         }
 
         return $students;
@@ -139,11 +151,25 @@ class GetSearchSuggestions {
      */
     private function encodeStudents(Array $students) {
         $studentArray = array();
+
         foreach($students as $student) {
+
+            // Get the students list of majors
+            $majors = $student->getMajors();
+            $majorNames = array();
+            if(!empty($majors)) {
+                foreach($majors as $m) {
+                    $majorNames[] = $m->getDescription();
+                }
+                $major = implode(', ', $majorNames);
+            } else {
+                $major = 'Unknown Major';
+            }
+
             $studentArray[] = array(
                                    'name' => $student->getLegalName(),
                                    'email' => $student->getUsername() . '@appstate.edu',
-                                   'major' => 'Computer Science', // TODO: $student->getMajor(),
+                                   'major' => $major,
                                    'studentId' => $student->getStudentId()
                                  );
         }

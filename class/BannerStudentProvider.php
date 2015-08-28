@@ -45,6 +45,8 @@ class BannerStudentProvider extends StudentProvider {
      */
     public function getStudent($studentId, $term)
     {
+        $term .= "0";
+
         if($studentId === null || $studentId == ''){
             throw new \InvalidArgumentException('Missing student ID.');
         }
@@ -56,6 +58,12 @@ class BannerStudentProvider extends StudentProvider {
             $response = $this->client->GetInternInfo($params);
         } catch (SoapFault $e){
             throw $e;
+        }
+
+        $response = $response->GetInternInfoResult->DirectoryInfo;
+
+        if(!isset($response->banner_id)){
+            throw new \Intern\Exception\StudentNotFoundException("Could not locate student: $studentId");
         }
 
         $response->creditHours = $this->getCreditHours($studentId, $term);
@@ -144,7 +152,7 @@ class BannerStudentProvider extends StudentProvider {
             $student->setCampus(Student::DISTANCE_ED);
         } else {
             // If the campus isn't set, then throw an exception
-            throw new \InvalidArgumentException("Unrecognized campus ({$data->campus}) for {$data->banner_id}.");
+            //throw new \InvalidArgumentException("Unrecognized campus ({$data->campus}) for {$data->banner_id}.");
         }
 
         // Level (grad vs undergrad)
@@ -153,7 +161,7 @@ class BannerStudentProvider extends StudentProvider {
         } else if ($data->level == self::GRADUATE) {
             $student->setLevel(Student::GRADUATE);
         } else {
-            throw new \InvalidArgumentException("Unrecognized student level ({$data->level}) for {$data->banner_id}.");
+            //throw new \InvalidArgumentException("Unrecognized student level ({$data->level}) for {$data->banner_id}.");
         }
 
         // Credit Hours
