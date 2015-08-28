@@ -194,6 +194,12 @@ class Student {
         return $this->level;
     }
 
+    /**
+     * Returns an array of AcademicMajor objects corresponding to this
+     * student's majors.
+     *
+     * @return Array<AcademicMajor> Array of AcademicMajor objects for this student's majors.
+     */
     public function getMajors() {
         return $this->majors;
     }

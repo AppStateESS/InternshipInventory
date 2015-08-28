@@ -144,7 +144,7 @@ class BannerStudentProvider extends StudentProvider {
             $student->setCampus(Student::DISTANCE_ED);
         } else {
             // If the campus isn't set, then throw an exception
-            throw \InvalidArgumentException("Unrecognized campus ({$data->campus}) for {$data->banner_id}.");
+            throw new \InvalidArgumentException("Unrecognized campus ({$data->campus}) for {$data->banner_id}.");
         }
 
         // Level (grad vs undergrad)
@@ -153,7 +153,7 @@ class BannerStudentProvider extends StudentProvider {
         } else if ($data->level == self::GRADUATE) {
             $student->setLevel(Student::GRADUATE);
         } else {
-            throw \InvalidArgumentException("Unrecognized student level ({$data->level}) for {$data->banner_id}.");
+            throw new \InvalidArgumentException("Unrecognized student level ({$data->level}) for {$data->banner_id}.");
         }
 
         // Credit Hours
