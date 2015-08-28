@@ -208,12 +208,12 @@ class Internship {
         $db = $this->getDb();
         try {
             $result = $db->saveObject($this);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             exit($e->getMessage());
         }
 
         if (\PHPWS_Error::logIfError($result)) {
-            throw new Exception($result->toString());
+            throw new \Exception($result->toString());
         }
 
         return $this->id;
@@ -232,7 +232,7 @@ class Internship {
         $result = $db->delete();
 
         if (\PHPWS_Error::logIfError($result)) {
-            throw new Exception($result->getMessage(), $result->getCode());
+            throw new \Exception($result->getMessage(), $result->getCode());
         }
 
         return true;
