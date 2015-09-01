@@ -261,10 +261,11 @@ class ResultsUI implements UI {
         // Workflow state/status
         if (isset($workflowState)) {
             foreach ($workflowState as $s) {
-                $pager->db->addWhere('state', $s, '=', 'OR', 'workflow_group');
+                $path = explode('\\', $s);
+                $pager->db->addWhere('state', $path[2], '=', 'OR', 'workflow_group');
             }
         }
-
+        
         //var_dump($pager);exit;
         //$pager->db->setTestMode();
 		//$pager->db->select();
