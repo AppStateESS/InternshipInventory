@@ -1004,7 +1004,7 @@ class SubselectPager extends \DBPager {
         // ignore matches in the output and other values
         if (!empty($extra)) {
             if ($output) {
-                $diff = array_diff_assoc($extra, $output);
+                $diff = array_diff_key($extra, $output);
             } else {
                 $diff = $extra;
             }
