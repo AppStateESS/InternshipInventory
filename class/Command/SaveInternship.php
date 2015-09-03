@@ -275,17 +275,31 @@ class SaveInternship {
         // Student major handling, if more than one major
         $majors = $student->getMajors();
         if(sizeof($majors) > 1) {
-            $code = $_POST['major_code'];
-            foreach($majors as $m){
-                if($m->getCode() == $code){
-                    $major = $m;
-                    break;
-                }
-            }
 
-            $i->major_code = $major->getCode();
-            $i->major_description = $major->getDescription();
+            if(!isset($_POST['major_code'])){
+                // Student has multiple majors, but user didn't choose one, so just take the first one
+                $i->major_code = $majors[0]->getCode();
+                $i->major_description = $majors[0]->getDescription();
+            }else{
+                // User choose a major, so loop over the set of majors until we find the matching major code
+                $code = $_POST['major_code'];
+                foreach($majors as $m){
+                    if($m->getCode() == $code){
+                        $major = $m;
+                        break;
+                    }
+                }
+                
+                $i->major_code = $major->getCode();
+                $i->major_description = $major->getDescription();
+            }
+        } else if(sizeof($majors) == 1){
+            // Student has exactly one major
+            $i->major_code = $majors[0]->getCode();
+            $i->major_description = $majors[0]->getDescription();
+
         }
+        // TODO: handle one major
 
         /************
          * OIED Certification
