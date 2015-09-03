@@ -304,69 +304,6 @@ var LocationBlock = React.createClass({
     }
 });
 
-var StateDropDown = React.createClass({
-    getInitialState: function(){
-        return ({hasError: false});
-    },
-    setError: function(status){
-        this.setState({hasError: status});
-    },
-    render: function() {
-        var fgClasses = classNames({
-                        'form-group': true,
-                        'has-error': this.state.hasError
-                    });
-
-        var states = this.props.states;
-        return (
-            <div className="row">
-                <div className="col-sm-12 col-md-4 col-md-push-3">
-                    <div className={fgClasses} id="state">
-                        <label htmlFor="state" className="control-label">State</label>
-                        <select id="state" name="state" className="form-control">
-                            {Object.keys(states).map(function(key) {
-                                return <option key={key} value={key}>{states[key]}</option>;
-                            })}
-                        </select>
-                    </div>
-                </div>
-            </div>
-        );
-    }
-});
-
-
-var InternationalDropDown = React.createClass({
-    getInitialState: function(){
-        return ({hasError: false});
-    },
-    setError: function(status){
-        this.setState({hasError: status});
-    },
-    render: function() {
-        var fgClasses = classNames({
-                        'form-group': true,
-                        'has-error': this.state.hasError
-                    });
-
-        var countries = this.props.countries;
-        return (
-            <div className="row">
-                <div className="col-sm-12 col-md-4 col-md-push-3">
-                    <div className={fgClasses} id="country">
-                        <label htmlFor="country" className="control-label">Country</label>
-                        <select id="country" name="country" className="form-control">
-                            {Object.keys(countries).map(function(key) {
-                                return <option key={key} value={key}>{countries[key]}</option>;
-                            })}
-                        </select>
-                    </div>
-                </div>
-            </div>
-        );
-    }
-});
-
 
 /***********************
  * Department Dropdown *

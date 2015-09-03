@@ -128,34 +128,17 @@
           </div>
         </div>
 
-        <div class="form-group">
-          <label class="col-lg-3 control-label" for="location">Location</label>
-          <div class="col-lg-8">
-              <div class="btn-group" data-toggle="buttons">
-                <label class="btn btn-default active">Any Location
-                  <input type="radio" name="location" value="-1" checked>
-                </label>
-                <label class="btn btn-default">Domestic
-                  <input type="radio" name="location" value="domestic">
-                </label>
-                <label class="btn btn-default">International
-                  <input type="radio" name="location" value="internat">
-                </label>
-              </div>
-          </div>
-        </div>
+        <div id="LocationSelector"></div>
 
+
+<!--
+        <div class="form-group">
+          <label class="col-lg-3 control-label" for="{STATE_ID}">{STATE_LABEL_TEXT}</label>
+          <div class="col-lg-4">{STATE}</div>
+        </div>
+-->
       </fieldset>
 
-      <div class="form-group">
-        <label class="col-lg-3 control-label" for="{STATE_ID}">{STATE_LABEL_TEXT}</label>
-        <div class="col-lg-4">{STATE}</div>
-      </div>
-
-      <div class="form-group">
-        <label class="col-lg-3 control-label" for="{PROV_ID}">{PROV_LABEL_TEXT}</label>
-        <div class="col-lg-6 controls">{PROV}</div>
-      </div>
 
       <fieldset>
         <legend>Status</legend>
@@ -184,3 +167,10 @@
     </div>
   </div>
 </form>
+
+<script type="text/jsx" src="{source_http}mod/intern/bower_components/classnames/index.js"></script>
+<script src="https://fb.me/react-with-addons-0.13.3.js"></script>
+<script src="https://fb.me/JSXTransformer-0.13.3.js"></script>
+<script type="text/jsx" src="{source_http}mod/intern/javascript/createInterface/StateDropDown.jsx"></script>
+<script type="text/jsx" src="{source_http}mod/intern/javascript/createInterface/InternationalDropDown.jsx"></script>
+<script type="text/jsx" src="{source_http}mod/intern/javascript/searchInterface/search.jsx"></script>

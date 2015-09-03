@@ -32,7 +32,7 @@ class ResultsUI implements UI {
         $type = null;
         $loc = null;
         $state = null;
-        $prov = null;
+        $country = null;
         $workflowState = null;
         $courseSubject = null;
         $courseNum = null;
@@ -43,7 +43,6 @@ class ResultsUI implements UI {
          * Check if any search fields are set.
          * This is a pretty nasty block of code...
          */
-
         if (isset($_REQUEST['dept']))
             $dept = $_REQUEST['dept'];
         if (isset($_REQUEST['term_select']))
@@ -60,12 +59,12 @@ class ResultsUI implements UI {
             $type = $_REQUEST['type'];
         if (isset($_REQUEST['campus']))
             $campus = $_REQUEST['campus'];
-        if (isset($_REQUEST['loc']))
-            $loc = $_REQUEST['loc'];
+        if (isset($_REQUEST['location']))
+            $loc = $_REQUEST['location'];
         if (isset($_REQUEST['state']))
             $state = $_REQUEST['state'];
-        if (isset($_REQUEST['prov']))
-            $prov = $_REQUEST['prov'];
+        if (isset($_REQUEST['country']))
+            $country = $_REQUEST['country'];
         if (isset($_REQUEST['workflow_state']))
             $workflowState = $_REQUEST['workflow_state'];
         if (isset($_REQUEST['course_subj']))
@@ -76,7 +75,7 @@ class ResultsUI implements UI {
             $courseSect = $_REQUEST['course_sect'];
 
             /* Get Pager */
-        $pager = self::getPager($name, $dept, $term, $ugradMajor, $gradProg, $level, $type, $campus, $loc, $state, $prov, $workflowState, $courseSubject, $courseNum, $courseSect);
+        $pager = self::getPager($name, $dept, $term, $ugradMajor, $gradProg, $level, $type, $campus, $loc, $state, $country, $workflowState, $courseSubject, $courseNum, $courseSect);
 
         $pagerContent = $pager->get();
 
@@ -102,7 +101,7 @@ class ResultsUI implements UI {
      * Get the DBPager object.
      * Search strings can be passed in too.
      */
-    private static function getPager($name = null, $deptId = null, $term = null, $ugradMajor = null, $gradProg = null, $level = null, $type = null, $campus = null, $loc = null, $state = null, $prov = null, $workflowState = null, $courseSubject = null, $courseNum = null, $courseSect = null)
+    private static function getPager($name = null, $deptId = null, $term = null, $ugradMajor = null, $gradProg = null, $level = null, $type = null, $campus = null, $loc = null, $state = null, $country = null, $workflowState = null, $courseSubject = null, $courseNum = null, $courseSect = null)
     {
         $pager = new SubselectPager('intern_internship', '\Intern\InternshipRestored');
 
@@ -253,9 +252,8 @@ class ResultsUI implements UI {
         }
 
         // International
-        if (!is_null($prov) && $prov != '') {
-            $pager->addWhere('loc_country', "%$prov%", 'ILIKE', 'OR', 'intl_loc');
-            $pager->addWhere('loc_province', "%$prov%", 'ILIKE', 'OR', 'intl_loc');
+        if (!is_null($country) && $country != '-1') {
+            $pager->addWhere('loc_country', $country);
         }
 
         // Workflow state/status
@@ -265,7 +263,7 @@ class ResultsUI implements UI {
                 $pager->db->addWhere('state', $path[2], '=', 'OR', 'workflow_group');
             }
         }
-        
+
         //var_dump($pager);exit;
         //$pager->db->setTestMode();
 		//$pager->db->select();
@@ -302,4 +300,3 @@ class ResultsUI implements UI {
         return $pager;
     }
 }
-?>

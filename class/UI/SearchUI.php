@@ -125,29 +125,7 @@ class SearchUI implements UI
         // International vs Domestic - Handeled directly in the html template
 
         // State search
-        $db = new \PHPWS_DB('intern_state');
-        $db->addWhere('active', 1);
-        $db->addColumn('abbr');
-        $db->addColumn('full_name');
-        $db->setIndexBy('abbr');
-        $db->addOrder('full_name asc');
-        $states = $db->select('col');
 
-        if (empty($states)) {
-        	\NQ::simple('intern', NotifyUI::ERROR, 'The list of allowed US states for internship locations has not been configured. Please use the administrative options to <a href="index.php?module=intern&action=edit_states">add allowed states.</a>');
-        	\NQ::close();
-        	\PHPWS_Core::goBack();
-        }
-
-        $states = array('-1' => 'Select state') + $states;
-        $form->addSelect('state', $states);
-        $form->setLabel('state', 'State');
-        $form->setClass('state', 'form-control');
-
-        // Province search
-        $form->addText('prov');
-        $form->setLabel('prov', 'Province/Territory');
-        $form->setClass('prov', 'form-control');
 
         /*******************
          * Workflow States *
@@ -166,5 +144,3 @@ class SearchUI implements UI
     }
 
 }
-
-?>

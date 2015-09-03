@@ -2,6 +2,8 @@
 <script src="{source_http}mod/intern/bower_components/typeahead.js/dist/typeahead.bundle.min.js"></script>
 <script src="https://fb.me/react-with-addons-0.13.3.js"></script>
 <script src="https://fb.me/JSXTransformer-0.13.3.js"></script>
+<script type="text/jsx" src="{source_http}mod/intern/javascript/createInterface/StateDropDown.jsx"></script>
+<script type="text/jsx" src="{source_http}mod/intern/javascript/createInterface/InternationalDropDown.jsx"></script>
 <script type="text/jsx" src="{source_http}mod/intern/javascript/createInterface/create.jsx"></script>
 
 <div class="row" style="margin-bottom:2em;">
