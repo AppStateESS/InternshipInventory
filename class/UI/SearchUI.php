@@ -131,7 +131,7 @@ class SearchUI implements UI
          * Workflow States *
          *******************/
         $workflowStates = WorkflowStateFactory::getStatesAssoc();
-        unset($workflowStates['CreationState']); // Remove this state, since it's not valid (internal only state for initial creation)
+        unset($workflowStates['Intern\WorkflowState\CreationState']); // Remove this state, since it's not valid (internal only state for initial creation)
         $form->addCheckAssoc('workflow_state', $workflowStates);
 
 
