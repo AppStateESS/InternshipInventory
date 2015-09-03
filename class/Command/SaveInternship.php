@@ -289,7 +289,7 @@ class SaveInternship {
                         break;
                     }
                 }
-                
+
                 $i->major_code = $major->getCode();
                 $i->major_description = $major->getDescription();
             }
@@ -299,7 +299,6 @@ class SaveInternship {
             $i->major_description = $majors[0]->getDescription();
 
         }
-        // TODO: handle one major
 
         /************
          * OIED Certification
