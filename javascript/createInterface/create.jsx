@@ -135,7 +135,7 @@ var SearchBox = React.createClass({
     },
     componentWillUnmount: function() {
         var element = this.getDOMNode();
-        $(element).typeahead('destory');
+        $(element).typeahead('destroy');
     },
     render: function() {
         return (
