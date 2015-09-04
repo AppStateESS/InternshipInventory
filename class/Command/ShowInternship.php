@@ -37,6 +37,7 @@ class ShowInternship {
         } catch(\Intern\Exception\StudentNotFoundException $e) {
             $studentId = $intern->getBannerId();
             \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "We couldn't find a student with an ID of {$studentId} in Banner. The student ID may have been removed, or this may be an incorrect ID.");
+            \NQ::close();
             \PHPWS_Core::goBack();
         }
 
