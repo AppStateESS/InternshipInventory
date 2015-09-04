@@ -34,6 +34,6 @@ class BannerMajorsProvider extends MajorsProvider {
             throw $e;
         }
 
-        return new AcademicMajorList($response->GetMajorInfoResult);
+        return new AcademicMajorList($response->GetMajorInfoResult->MajorInfo);
     }
 }

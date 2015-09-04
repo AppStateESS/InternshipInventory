@@ -40,6 +40,9 @@ class AcademicMajorList {
         foreach($graduateMajors as $major){
             $this->graduateMajors[] = new AcademicMajor($major->major_code, $major->major_desc, $major->levl);
         }
+
+        $this->sortList($this->undergradMajors);
+        $this->sortList($this->graduateMajors);
     }
 
     public function getUndergradMajorsAssoc()
@@ -82,5 +85,15 @@ class AcademicMajorList {
 
         // If we didn't find any duplicates (i.e. $major did not exist in $destArray), then add it
         $destArray[] = $major;
+    }
+
+    private function sortList(&$list)
+    {
+        usort($list, array('self', 'compareFunc'));
+    }
+
+    public static function compareFunc($a, $b)
+    {
+        return strcasecmp($a->getDescription(), $b->getDescription());
     }
 }
