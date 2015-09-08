@@ -12,14 +12,14 @@
   <div class="col-lg-4">
     <h2>Faculty</h2>
     <p>Add, remove, and update information for faculty supervisors.</p>
-    <p><a class="btn btn-primary btn-large" href="index.php?module=intern&action=edit_faculty"><i class="fa fa-edit"></i> Edit Faculty</a></p>
-    
-    
+    <p><a class="btn btn-primary btn-large" href="index.php?module=intern&action=edit_faculty"><i class="fa fa-edit"></i> Add &amp; Update Faculty</a></p>
+
+
   </div>
 </div>
 
 
 
   {EXAMPLE_LINK}
-  
+
 <div id="intern-totals">{GRAND_TOTAL_LABEL}{GRAND_TOTAL}</div>
