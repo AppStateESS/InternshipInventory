@@ -542,7 +542,7 @@ var CreateInternshipInterface = React.createClass({
 
         return valid;
     },
-    setErrorMessages(messages) {
+    setErrorMessages: function(messages) {
         this.setState({errorMessages: messages});
     },
     render: function() {
