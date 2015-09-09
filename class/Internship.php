@@ -707,6 +707,10 @@ class Internship {
     }
 
     public function getBirthDateFormatted() {
+        if(!isset($this->birth_date) || $this->birth_date === 0){
+            return null;
+        }
+
         return date('n/j/Y', $this->birth_date);
     }
 
