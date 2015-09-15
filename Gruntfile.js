@@ -3,9 +3,15 @@ module.exports = function(grunt) {
     require("load-grunt-tasks")(grunt);
 
     grunt.initConfig({
+        modList: ['createInterface', 'searchInterface'],
+        currMod: '',
+
         clean: {
             all: {
-                src: ['javascript/createInterface/dist']
+                src: ['javascript/dist', 'javascript/**/build', 'javascript/**/dist']
+            },
+            one: {
+                src: ['javascript/dist/<%= currMod %>.min.*.js', 'javascript/<%= currMod %>/build', 'javascript/<%= currMod %>/dist']
             }
         },
         "babel": {
@@ -16,9 +22,9 @@ module.exports = function(grunt) {
                 files: [
                     {
                         expand: true,
-                        cwd: 'javascript/createInterface/',
+                        cwd: 'javascript/<%= currMod %>/',
                         src: ['**/*.jsx'],
-                        dest: 'javascript/createInterface/dist/',
+                        dest: 'javascript/<%= currMod %>/dist/',
                         ext: '.js'
                     }
                 ]
@@ -30,13 +36,13 @@ module.exports = function(grunt) {
                     mangle: false
                 },
                 files: {
-                    'javascript/createInterface/dist/CreateInterface.min.js': [ 'javascript/createInterface/dist/**/*.js' ]
+                    'javascript/<%= currMod %>/dist/<%= currMod %>.min.js': [ 'javascript/<%= currMod %>/dist/**/*.js' ]
                 }
             }
         },
         hash: {
             options: {
-                mapping: 'javascript/createInterface/dist/assets.json', //mapping file so your server can serve the right files
+                mapping: 'javascript/<%= currMod %>/dist/assets.json', //mapping file so your server can serve the right files
                 //srcBasePath: 'examples/', // the base Path you want to remove from the `key` string in the mapping file
                 //destBasePath: 'out/', // the base Path you want to remove from the `value` string in the mapping file
                 //flatten: false, // Set to true if you don't want to keep folder structure in the `key` value in the mapping file
@@ -46,8 +52,8 @@ module.exports = function(grunt) {
                 }
             },
             js: {
-                src: 'javascript/createInterface/dist/*.min.js',  //all your js that needs a hash appended to it
-                dest: 'javascript/createInterface/dist/' //where the new files will be created
+                src: 'javascript/<%= currMod %>/dist/*.min.js',  //all your js that needs a hash appended to it
+                dest: 'javascript/<%= currMod %>/dist/' //where the new files will be created
             }
         }
     });
@@ -56,7 +62,11 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-hash');
 
-    //grunt.registerTask('clean', 'all');
+    if(!grunt.option('module')){
+        grunt.fail.fatal('Missing "module" command line paramter. Use --module=yourMoudleName');
+    }
+
+    grunt.config.set('currMod', grunt.option('module'));
 
     grunt.registerTask("default", ['clean', 'babel', 'uglify', 'hash']);
 }
