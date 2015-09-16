@@ -30,7 +30,13 @@ class GetSearchSuggestions {
         // If search string is exactly 9 digits, it must be a student id
         // Do an exact lookup and see if we can find the requested student
         if(preg_match('/^([0-9]){9}$/', $searchString)) {
-            echo $this->encodeStudents(array($this->studentIdSearch($searchString)));
+            try {
+                echo $this->encodeStudents(array($this->studentIdSearch($searchString)));
+            } catch(\Intern\StudentNotFoundException $e){
+                // TODO Return something more useful here, that says we couldn't find that banner ID.
+                echo json_encode(array());
+            }
+
             exit;
         }
 
