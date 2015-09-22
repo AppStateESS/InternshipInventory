@@ -6,6 +6,10 @@
     });
 </script>
 
+<script type="text/javascript">
+    var internship = {INTERNSHIP_JSON};
+</script>
+
 <h1>
   <i class="fa fa-edit"></i> {TITLE}
 </h1>
@@ -432,16 +436,19 @@
           <div class="col-lg-6">{AGENCY_CITY}</div>
         </div>
 
+        <!-- BEGIN agency-state -->
         <div class="form-group">
           <label class="col-lg-3 control-label" for="{AGENCY_STATE_ID}">{AGENCY_STATE_LABEL_TEXT}</label>
           <div class="col-lg-6">{AGENCY_STATE}</div>
         </div>
+        <!-- END agency-state -->
 
         <div class="form-group">
           <label class="col-lg-3 control-label" for="{AGENCY_ZIP_ID}" id="internship_agency_zip-label">{AGENCY_ZIP_LABEL_TEXT}</label>
           <div class="col-lg-6">{AGENCY_ZIP}</div>
         </div>
 
+        <!-- BEGIN agency-intl -->
         <div class="form-group">
           <label class="col-lg-3 control-label" for="{AGENCY_PROVINCE_ID}">{AGENCY_PROVINCE_LABEL_TEXT}</label>
           <div class="col-lg-6">{AGENCY_PROVINCE}</div>
@@ -451,6 +458,7 @@
           <label class="col-lg-3 control-label" for="{AGENCY_COUNTRY_ID}">{AGENCY_COUNTRY_LABEL_TEXT}</label>
           <div class="col-lg-6">{AGENCY_COUNTRY}</div>
         </div>
+        <!-- END agency-intl -->
 
       </fieldset>
 
@@ -501,20 +509,24 @@
           <div class="col-lg-6">{AGENCY_SUP_CITY}</div>
         </div>
 
+        <!-- BEGIN agency sup-state -->
         <div class="form-group">
           <label class="col-lg-3 control-label" for="{AGENCY_SUP_STATE_ID}">{AGENCY_SUP_STATE_LABEL_TEXT}</label>
           <div class="col-lg-6">{AGENCY_SUP_STATE}</div>
         </div>
+        <!-- END agency sup-state -->
 
         <div class="form-group">
           <label class="col-lg-3 control-label" for="{AGENCY_SUP_ZIP_ID}" id="internship_agency_sup_zip-label">{AGENCY_SUP_ZIP_LABEL_TEXT}</label>
           <div class="col-lg-6">{AGENCY_SUP_ZIP}</div>
         </div>
 
+        <!-- BEGIN agency-sup-intl -->
         <div class="form-group">
           <label class="col-lg-3 control-label" for="{AGENCY_SUP_PROVINCE_ID}">{AGENCY_SUP_PROVINCE_LABEL_TEXT}</label>
           <div class="col-lg-6">{AGENCY_SUP_PROVINCE}</div>
         </div>
+        <!-- END agency-sup-intl -->
 
         <div class="form-group">
           <label class="col-lg-3 control-label" for="{AGENCY_SUP_COUNTRY_ID}">{AGENCY_SUP_COUNTRY_LABEL_TEXT}</label>

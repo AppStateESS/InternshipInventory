@@ -85,7 +85,7 @@ class SaveInternship {
         }
 
 		// Sanity check internship location zip
-		if((isset($_REQUEST['loc_zip']) && $_REQUEST['loc_zip'] != "") && (strlen($_REQUEST['loc_zip']) != 5 || !is_numeric($_REQUEST['loc_zip']))) {
+		if((isset($_REQUEST['loc_zip']) && $_REQUEST['loc_zip'] != "") && !is_numeric($_REQUEST['loc_zip'])) {
 			$url = 'index.php?module=intern&action=ShowInternship&missing=loc_zip';
 			// Restore the values in the fields the user already entered
 			foreach ($_POST as $key => $val){
@@ -97,7 +97,7 @@ class SaveInternship {
 		}
 
 		// Sanity check agency zip
-		if((isset($_REQUEST['agency_zip']) && $_REQUEST['agency_zip'] != "") && (strlen($_REQUEST['agency_zip']) != 5 || !is_numeric($_REQUEST['agency_zip']))) {
+		if((isset($_REQUEST['agency_zip']) && $_REQUEST['agency_zip'] != "") && !is_numeric($_REQUEST['agency_zip'])) {
 			$url = 'index.php?module=intern&action=ShowInternship&missing=agency_zip';
 			// Restore the values in the fields the user already entered
 			foreach ($_POST as $key => $val){
@@ -109,7 +109,7 @@ class SaveInternship {
 		}
 
 		// Sanity check supervisor's zip
-		if((isset($_REQUEST['agency_sup_zip']) && $_REQUEST['agency_sup_zip'] != "") && (strlen($_REQUEST['agency_sup_zip']) != 5 || !is_numeric($_REQUEST['agency_sup_zip']))) {
+		if((isset($_REQUEST['agency_sup_zip']) && $_REQUEST['agency_sup_zip'] != "") && !is_numeric($_REQUEST['agency_sup_zip'])) {
 			$url = 'index.php?module=intern&action=ShowInternship&missing=agency_sup_zip';
 			// Restore the values in the fields the user already entered
 			foreach ($_POST as $key => $val){
@@ -133,48 +133,6 @@ class SaveInternship {
 		}
 
         \PHPWS_DB::begin();
-
-        // Update agency
-        try {
-            $agency = AgencyFactory::getAgencyById($_REQUEST['agency_id']);
-        } catch (Exception $e) {
-            // Rollback and re-throw the exception so that admins gets an email
-            \PHPWS_DB::rollback();
-            throw $e;
-        }
-
-        // Agency Info
-        $agency->address = $_REQUEST['agency_address'];
-        $agency->city = $_REQUEST['agency_city'];
-        $agency->zip = $_REQUEST['agency_zip'];
-        $agency->phone = $_REQUEST['agency_phone'];
-
-        $agency->state = $_REQUEST['agency_state'] == '-1' ? null : $_REQUEST['agency_state'];
-        $agency->province = $_REQUEST['agency_province'];
-        $agency->country = $_REQUEST['agency_country']== '-1' ? null : $_REQUEST['agency_country'];
-
-        // Agency Supervisor Info
-        $agency->supervisor_first_name = $_REQUEST['agency_sup_first_name'];
-        $agency->supervisor_last_name = $_REQUEST['agency_sup_last_name'];
-        $agency->supervisor_title = $_REQUEST['agency_sup_title'];
-        $agency->supervisor_phone = $_REQUEST['agency_sup_phone'];
-        $agency->supervisor_email = $_REQUEST['agency_sup_email'];
-        $agency->supervisor_fax = $_REQUEST['agency_sup_fax'];
-        $agency->supervisor_address = $_REQUEST['agency_sup_address'];
-        $agency->supervisor_city = $_REQUEST['agency_sup_city'];
-        $agency->supervisor_state = $_REQUEST['agency_sup_state'];
-        $agency->supervisor_zip = $_REQUEST['agency_sup_zip'];
-        $agency->supervisor_province = $_REQUEST['agency_sup_province'];
-        $agency->supervisor_country = $_REQUEST['agency_sup_country'] == '-1' ? null : $_REQUEST['agency_sup_country'];
-        $agency->address_same_flag = isset($_REQUEST['copy_address']) ? 't' : 'f';
-
-        try {
-            DatabaseStorage::save($agency);
-        } catch (Exception $e) {
-            // Rollback and re-throw the exception so that admins gets an email
-            \PHPWS_DB::rollback();
-            throw $e;
-        }
 
         /***********************
          * Save the Internship *
@@ -334,7 +292,53 @@ class SaveInternship {
             throw $e;
         }
 
-        \PHPWS_DB::commit();
+        // Update agency
+        try {
+            $agency = AgencyFactory::getAgencyById($_REQUEST['agency_id']);
+        } catch (Exception $e) {
+            // Rollback and re-throw the exception so that admins gets an email
+            \PHPWS_DB::rollback();
+            throw $e;
+        }
+
+        // Agency Info
+        $agency->address = $_REQUEST['agency_address'];
+        $agency->city = $_REQUEST['agency_city'];
+        $agency->zip = $_REQUEST['agency_zip'];
+        $agency->phone = $_REQUEST['agency_phone'];
+
+        if($i->isDomestic()){
+            $agency->state = $_REQUEST['agency_state'] == '-1' ? null : $_REQUEST['agency_state'];
+        } else {
+            $agency->province = $_REQUEST['agency_province'];
+            $agency->country = $_REQUEST['agency_country']== '-1' ? null : $_REQUEST['agency_country'];
+        }
+
+        // Agency Supervisor Info
+        $agency->supervisor_first_name = $_REQUEST['agency_sup_first_name'];
+        $agency->supervisor_last_name = $_REQUEST['agency_sup_last_name'];
+        $agency->supervisor_title = $_REQUEST['agency_sup_title'];
+        $agency->supervisor_phone = $_REQUEST['agency_sup_phone'];
+        $agency->supervisor_email = $_REQUEST['agency_sup_email'];
+        $agency->supervisor_fax = $_REQUEST['agency_sup_fax'];
+        $agency->supervisor_address = $_REQUEST['agency_sup_address'];
+        $agency->supervisor_city = $_REQUEST['agency_sup_city'];
+        $agency->supervisor_zip = $_REQUEST['agency_sup_zip'];
+        if($i->isDomestic()){
+            $agency->supervisor_state = $_REQUEST['agency_sup_state'];
+        } else {
+            $agency->supervisor_province = $_REQUEST['agency_sup_province'];
+            $agency->supervisor_country = $_REQUEST['agency_sup_country'] == '-1' ? null : $_REQUEST['agency_sup_country'];
+        }
+        $agency->address_same_flag = isset($_REQUEST['copy_address']) ? 't' : 'f';
+
+        try {
+            DatabaseStorage::save($agency);
+        } catch (Exception $e) {
+            // Rollback and re-throw the exception so that admins gets an email
+            \PHPWS_DB::rollback();
+            throw $e;
+        }
 
         /***************************
          * State/Workflow Handling *
@@ -355,6 +359,8 @@ class SaveInternship {
             $ch = new ChangeHistory($i, \Current_User::getUserObj(), time(), $currState, $currState, 'Certified by OIED');
             $ch->save();
         }
+
+        \PHPWS_DB::commit();
 
         $workflow->doNotification(isset($_POST['notes'])?$_POST['notes']:null);
 

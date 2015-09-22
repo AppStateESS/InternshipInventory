@@ -87,15 +87,7 @@ class EditInternshipFormView {
 
         /*********************
          * Workflow / Status *
-        */
-        // Check the Internship's state, and set a default state if it's a new internship
-        /*
-        $workflowState = $this->intern->getWorkflowState();
-        if(is_null($workflowState)){
-            $state = WorkflowStateFactory::getState('Intern\WorkflowState\CreationState');
-            $this->intern->setState($state); // Set this initial value
-        }
-        */
+         */
 
         // Workflow Transitions View, adds fields to the form by reference
         $transView = new WorkflowTransitionView($this->intern, $this->form);
@@ -216,23 +208,29 @@ class EditInternshipFormView {
         $this->form->setLabel('agency_city', 'City');
         $this->form->addCssClass('agency_city', 'form-control');
 
-        $this->form->addSelect('agency_state', State::$UNITED_STATES);
-        $this->form->setLabel('agency_state', 'State');
-        $this->form->addCssClass('agency_state', 'form-control');
-
         $this->form->addText('agency_zip');
-        $this->form->setLabel('agency_zip', 'Zip Code');
         $this->form->addCssClass('agency_zip', 'form-control');
-
-        $this->form->addText('agency_province');
-        $this->form->setLabel('agency_province', 'Province/Territory');
-        $this->form->addCssClass('agency_province', 'form-control');
 
         $countries = CountryFactory::getCountries();
         $countries = array('-1' => 'Select Country') + $countries;
-        $this->form->addSelect('agency_country', $countries);
-        $this->form->setLabel('agency_country', 'Country');
-        $this->form->addCssClass('agency_country', 'form-control');
+
+        if($this->intern->domestic) {
+            $this->form->addSelect('agency_state', State::$UNITED_STATES);
+            $this->form->setLabel('agency_state', 'State');
+            $this->form->addCssClass('agency_state', 'form-control');
+
+            $this->form->setLabel('agency_zip', 'Zip Code');
+        } else {
+            $this->form->addText('agency_province');
+            $this->form->setLabel('agency_province', 'Province/Territory');
+            $this->form->addCssClass('agency_province', 'form-control');
+
+            $this->form->addSelect('agency_country', $countries);
+            $this->form->setLabel('agency_country', 'Country');
+            $this->form->addCssClass('agency_country', 'form-control');
+
+            $this->form->setLabel('agency_zip', 'Postal Code');
+        }
 
         $this->form->addText('agency_phone');
         $this->form->setLabel('agency_phone', 'Phone');
@@ -272,21 +270,26 @@ class EditInternshipFormView {
         $this->form->setLabel('agency_sup_city', 'City');
         $this->form->addCssClass('agency_sup_city', 'form-control');
 
-        $this->form->addSelect('agency_sup_state', State::$UNITED_STATES);
-        $this->form->setLabel('agency_sup_state', 'State');
-        $this->form->addCssClass('agency_sup_state', 'form-control');
-
         $this->form->addText('agency_sup_zip');
-        $this->form->setLabel('agency_sup_zip', 'Zip Code');
         $this->form->addCssClass('agency_sup_zip', 'form-control');
 
-        $this->form->addText('agency_sup_province');
-        $this->form->setLabel('agency_sup_province', 'Province');
-        $this->form->addCssClass('agency_sup_province', 'form-control');
+        if($this->intern->domestic) {
+            $this->form->addSelect('agency_sup_state', State::$UNITED_STATES);
+            $this->form->setLabel('agency_sup_state', 'State');
+            $this->form->addCssClass('agency_sup_state', 'form-control');
 
-        $this->form->addSelect('agency_sup_country', $countries);
-        $this->form->setLabel('agency_sup_country', 'Country');
-        $this->form->addCssClass('agency_sup_country', 'form-control');
+            $this->form->setLabel('agency_sup_zip', 'Zip Code');
+        } else {
+            $this->form->addText('agency_sup_province');
+            $this->form->setLabel('agency_sup_province', 'Province');
+            $this->form->addCssClass('agency_sup_province', 'form-control');
+
+            $this->form->addSelect('agency_sup_country', $countries);
+            $this->form->setLabel('agency_sup_country', 'Country');
+            $this->form->addCssClass('agency_sup_country', 'form-control');
+
+            $this->form->setLabel('agency_sup_zip', 'Postal Code');
+        }
 
         $this->form->addText('agency_sup_fax');
         $this->form->setLabel('agency_sup_fax', 'Fax');
@@ -318,6 +321,10 @@ class EditInternshipFormView {
         $this->form->setLabel('loc_city', 'City');
         $this->form->addCssClass('loc_city', 'form-control');
 
+        // Zip or postal code
+        $this->form->addText('loc_zip');
+        $this->form->addCssClass('loc_zip', 'form-control');
+
         // State or Country & Province
         if ($this->intern->isDomestic()) {
             $states = State::getAllowedStates();
@@ -328,6 +335,8 @@ class EditInternshipFormView {
             }
 
             $this->tpl['LOC_STATE'] = $states[$locationState];
+
+            $this->form->setLabel('loc_zip', 'Zip');
         } else {
             $countries = CountryFactory::getCountries();
 
@@ -342,12 +351,9 @@ class EditInternshipFormView {
             $this->form->addText('loc_province');
             $this->form->setLabel('loc_province', 'Province/Territory');
             $this->form->addCssClass('loc_province', 'form-control');
-        }
 
-        // Zip
-        $this->form->addText('loc_zip');
-        $this->form->setLabel('loc_zip', 'Zip');
-        $this->form->addCssClass('loc_zip', 'form-control');
+            $this->form->setLabel('loc_zip', 'Postal Code');
+        }
 
         /*************
          * Term Info *
@@ -457,6 +463,8 @@ class EditInternshipFormView {
 
         $this->form->setMatch('experience_type', $this->intern->getExperienceType());
 
+        $this->tpl['INTERNSHIP_JSON'] = json_encode($this->intern);
+
         // Plug
         $this->form->plugIn($this->formVals);
 
@@ -483,7 +491,7 @@ class EditInternshipFormView {
         } else {
             $this->tpl['BIRTH_DATE'] = $this->intern->getBirthDateFormatted();
         }
-        
+
         $this->tpl['STUDENT_GPA'] = $this->intern->getGpa();
         $this->tpl['CAMPUS'] = $this->intern->getCampusFormatted();
         $this->tpl['LEVEL'] = $this->intern->getLevelFormatted();
@@ -554,11 +562,16 @@ class EditInternshipFormView {
 
         $this->formVals['agency_address']         = $this->agency->address;
         $this->formVals['agency_city']            = $this->agency->city;
-        $this->formVals['agency_state']           = $this->agency->state;
         $this->formVals['agency_zip']             = $this->agency->zip;
-        $this->formVals['agency_province']        = $this->agency->province;
+
+        if($this->intern->domestic) {
+            $this->formVals['agency_state']           = $this->agency->state;
+        } else {
+            $this->formVals['agency_province']        = $this->agency->province;
+            $this->form->setMatch('agency_country', $this->agency->country);
+        }
+
         //$this->formVals['agency_country']         = $this->agency->country;
-        $this->form->setMatch('agency_country', $this->agency->country);
         $this->formVals['agency_phone']           = $this->agency->phone;
         $this->formVals['agency_sup_first_name']  = $this->agency->supervisor_first_name;
         $this->formVals['agency_sup_last_name']   = $this->agency->supervisor_last_name;
@@ -568,11 +581,13 @@ class EditInternshipFormView {
         $this->formVals['agency_sup_fax']         = $this->agency->supervisor_fax;
         $this->formVals['agency_sup_address']     = $this->agency->supervisor_address;
         $this->formVals['agency_sup_city']        = $this->agency->supervisor_city;
-        $this->formVals['agency_sup_state']       = $this->agency->supervisor_state;
         $this->formVals['agency_sup_zip']         = $this->agency->supervisor_zip;
-        $this->formVals['agency_sup_province']    = $this->agency->supervisor_province;
-        //$this->formVals['agency_sup_country']     = $this->agency->supervisor_country;
-        $this->form->setMatch('agency_sup_country', $this->agency->supervisor_country);
+        if($this->intern->domestic) {
+            $this->formVals['agency_sup_state']       = $this->agency->supervisor_state;
+        } else {
+            $this->formVals['agency_sup_province']    = $this->agency->supervisor_province;
+            $this->form->setMatch('agency_sup_country', $this->agency->supervisor_country);
+        }
         $this->formVals['copy_address']           = $this->agency->address_same_flag == 't';
     }
 
@@ -586,16 +601,15 @@ class EditInternshipFormView {
         $this->formVals['avg_hours_week'] = $this->intern->avg_hours_week;
         $this->formVals['loc_address'] = $this->intern->loc_address;
         $this->formVals['loc_city'] = $this->intern->loc_city;
-        $this->formVals['loc_state'] = $this->intern->loc_state;
         $this->formVals['loc_zip'] = $this->intern->loc_zip;
-        $this->formVals['loc_province'] = $this->intern->loc_province;
 
         // Other internship details
         if ($this->intern->domestic) {
-            $this->form->setMatch('location', 'domestic');
+            $this->formVals['loc_state'] = $this->intern->loc_state;
         } else {
-            $this->form->setMatch('location', 'internat');
+            $this->formVals['loc_province'] = $this->intern->loc_province;
         }
+
         if ($this->intern->paid) {
             $this->form->setMatch('payment', 'paid');
             $this->form->setMatch('stipend', $this->intern->stipend);
