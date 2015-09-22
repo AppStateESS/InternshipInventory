@@ -22,6 +22,11 @@ class AcademicMajorList {
         // Check for duplicate majors while sorting the majors into undergrad vs grad
         foreach($majorsArray as $major)
         {
+            // Skip majors/programs in University College
+            if($major->college_code === 'GC'){
+                continue;
+            }
+
             if($major->levl == MajorsProvider::LEVEL_UNDERGRAD) {
                 $this->addIfNotDuplicate($major, $undergradMajors);
             } else if($major->levl == MajorsProvider::LEVEL_GRADUATE) {
