@@ -4,6 +4,7 @@ namespace Intern\Command;
 
 use Intern\StudentProviderFactory;
 use Intern\Term;
+use Intern\Exception\StudentNotFoundException;
 
 
 /**
@@ -32,7 +33,7 @@ class GetSearchSuggestions {
         if(preg_match('/^([0-9]){9}$/', $searchString)) {
             try {
                 echo $this->encodeStudents(array($this->studentIdSearch($searchString)));
-            } catch(\Intern\StudentNotFoundException $e){
+            } catch(StudentNotFoundException $e){
                 // TODO Return something more useful here, that says we couldn't find that banner ID.
                 echo json_encode(array());
             }
