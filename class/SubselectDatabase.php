@@ -1,5 +1,11 @@
 <?php
 
+namespace Intern;
+use \PHPWS_Core;
+use \PHPWS_Error;
+use \PHPWS_DB;
+use \PHPWS_DB_Where;
+
 PHPWS_Core::initCoreClass('PHPWS_DB.php');
 
 /**
@@ -2005,7 +2011,7 @@ class SubselectDatabase extends PHPWS_DB{
         return $column_info;
     }
 
-    public function quote($text)
+	public function quote($text)
     {
         return $GLOBALS['PHPWS_DB']['connection']->quote($text);
     }

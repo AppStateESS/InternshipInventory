@@ -1,10 +1,10 @@
 <?php
 
-PHPWS_Core::initModClass('intern', 'DbStorable.php');
+namespace Intern;
 
 /**
  * Model object to represent an emergency contact.
- * 
+ *
  * @author jbooker
  * @package intern
  */
@@ -17,7 +17,7 @@ class EmergencyContact implements DbStorable {
     public $phone;
 
     private $internship;
-    
+
     /**
      * Constructor.
      * @param Internship $internship
@@ -28,7 +28,7 @@ class EmergencyContact implements DbStorable {
     public function __construct(Internship $i, $name, $relation, $phone)
     {
         $this->internship     = $i;
-        
+
         $this->internship_id  = $i->getId();
         $this->name           = $name;
         $this->relation       = $relation;
@@ -43,50 +43,47 @@ class EmergencyContact implements DbStorable {
     {
         return 'intern_emergency_contact';
     }
-    
+
     public function extractVars()
     {
         $vars = array();
-        
+
         $vars['id']           = $this->getId();
         $vars['intership_id'] = $this->getInternshipId();
         $vars['name']         = $this->getName();
         $vars['relation']     = $this->getRelation();
         $vars['phone']        = $this->getPhone();
-        
+
         return $vars;
     }
-    
+
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
     public function getId()
     {
         return $this->id;
     }
-    
+
     public function getInternshipId()
     {
         return $this->internship_id;
     }
-    
+
     public function getName()
     {
         return $this->name;
     }
-    
+
     public function getRelation()
     {
         return $this->relation;
     }
-    
+
     public function getPhone()
     {
         return $this->phone;
     }
 }
-
-class EmergencyContactDB extends EmergencyContact {
-    public function __construct(){
-        // override parent and don't call parent::__construct(), so we can have an empty constructor for loading from DB
-    }
-}
-
-?>

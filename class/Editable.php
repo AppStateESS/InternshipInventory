@@ -1,27 +1,29 @@
 <?php
+
+namespace Intern;
+
 /**
  * Editable
  *
  * This abstract class makes things easier for building
- * the UI used for editing majors, grad programs, and 
- * departments. Anything else that needs to be 
+ * the UI used for editing majors, grad programs, and
+ * departments. Anything else that needs to be
  * hidden, renamed, or deleted can extend this abstract class
  * and be easily plugged into the javascript (edit).
  *
  *@author Robert Bost <bostrt at tux dot appstate dot edu>
  */
-PHPWS_Core::initModClass('intern', 'Model.php');
 abstract class Editable extends Model
 {
     /**
      * This should return a string that corresponds
      * the the case statement in index.php
-     * Ex. Major implements Editable and it's 
+     * Ex. Major implements Editable and it's
      *     getEditAction method returns 'edit_major'.
      */
     static function getEditAction()
     {
-        throw new Exception('Not yet implemented.');
+        throw new \Exception('Not yet implemented.');
     }
 
     /**
@@ -29,16 +31,16 @@ abstract class Editable extends Model
      */
     static function getEditPermission()
     {
-        throw new Exception('Not yet implemented.');
+        throw new \Exception('Not yet implemented.');
     }
-    
+
 
     /**
      * Get the name of the permission needed to delete the item.
      */
     static function getDeletePermission()
     {
-        throw new Exception('Not yet implemented.');
+        throw new \Exception('Not yet implemented.');
     }
 
     /**
@@ -47,26 +49,26 @@ abstract class Editable extends Model
     public function rename($newName)
     {
         /* Permission check */
-        if(!Current_User::allow('intern', $this->getEditPermission())){
-            return NQ::simple('intern', INTERN_ERROR, 'You do not have permission to rename this.');
+        if(!\Current_User::allow('intern', $this->getEditPermission())){
+            return \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, 'You do not have permission to rename this.');
         }
 
         /* Must be valid name */
         $newName = trim($newName);
         if($newName == ''){
-            return NQ::simple('intern', INTERN_WARNING, 'No name was given. Nothing were changed.');
+            return \NQ::simple('intern', \Intern\NotifyUI::WARNING, 'No name was given. Nothing were changed.');
         }
-       
+
         /* Check ID */
         if($this->id == 0){
             // Editable wasn't loaded correctly
             if(isset($_REQUEST['ajax'])){
-                NQ::simple('intern', INTERN_ERROR, "Error occurred while loading information from database.");
-                NQ::close();
+                \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "Error occurred while loading information from database.");
+                \NQ::close();
                 echo true;
                 exit;
             }
-            NQ::simple('intern', INTERN_ERROR, "Error occurred while loading information from database.");
+            \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "Error occurred while loading information from database.");
             return;
         }
         /* Keep old name around for NQ */
@@ -76,20 +78,20 @@ abstract class Editable extends Model
             $this->name = $newName;
             $this->save();
             if(isset($_REQUEST['ajax'])){
-                NQ::simple('intern', INTERN_SUCCESS, "<i>$old</i> renamed to <i>$newName</i>");
-                NQ::close();
+                \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, "<i>$old</i> renamed to <i>$newName</i>");
+                \NQ::close();
                 echo true;
                 exit;
             }
-            return NQ::simple('intern', INTERN_SUCCESS, "<i>$old</i> renamed to <i>$newName</i>");
-        }catch(Exception $e){
+            return \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, "<i>$old</i> renamed to <i>$newName</i>");
+        }catch(\Exception $e){
             if(isset($_REQUEST['ajax'])){
-                NQ::simple('intern', INTERN_ERROR, $e->getMessage());
-                NQ::close();
+                \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, $e->getMessage());
+                \NQ::close();
                 echo false;
                 exit;
             }
-            return NQ::simple('intern', INTERN_ERROR, $e->getMessage());
+            return \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, $e->getMessage());
         }
     }
 
@@ -99,13 +101,13 @@ abstract class Editable extends Model
     public function hide($hide=true)
     {
         /* Permission check */
-        if(!Current_User::allow('intern', $this->getEditPermission())){
-            return NQ::simple('intern', INTERN_ERROR, 'You do not have permission to hide that.');
+        if(!\Current_User::allow('intern', $this->getEditPermission())){
+            return \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, 'You do not have permission to hide that.');
         }
-        
+
         if($this->id == 0 || !is_numeric($this->id)){
             // Program wasn't loaded correctly
-            NQ::simple('intern', INTERN_ERROR, "Error occurred while loading information from database.");
+            \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "Error occurred while loading information from database.");
             return;
         }
 
@@ -119,13 +121,13 @@ abstract class Editable extends Model
         try{
             $this->save();
             if($this->hidden == 1){
-                NQ::simple('intern', INTERN_SUCCESS, "<i>$this->name</i> is now hidden.");
+                \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, "<i>$this->name</i> is now hidden.");
             }
             else{
-                NQ::simple('intern', INTERN_SUCCESS, "<i>$this->name</i> is now visible.");
+                \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, "<i>$this->name</i> is now visible.");
             }
-        }catch(Exception $e){
-            return NQ::simple('intern', INTERN_ERROR, $e->getMessage());
+        }catch(\Exception $e){
+            return \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, $e->getMessage());
         }
     }
 
@@ -134,29 +136,29 @@ abstract class Editable extends Model
      */
     public function del()
     {
-        if(!Current_User::allow('intern', $this->getDeletePermission())){
-            return NQ::simple('intern', INTERN_ERROR, 'You do not have permission to delete that.');
+        if(!\Current_User::allow('intern', $this->getDeletePermission())){
+            return \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, 'You do not have permission to delete that.');
         }
 
         if($this->id == 0){
             // Item wasn't loaded correctly
-            NQ::simple('intern', INTERN_ERROR, "Error occurred while loading information from database.");
+            \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "Error occurred while loading information from database.");
             return;
         }
 
         $name = $this->getName();
-        
+
         try{
             // Try to delete item
             if(!$this->delete()){
                 // Something bad happend. This should have been caught in the check above...
-                NQ::simple('intern', INTERN_SUCCESS, "Error occurred removing <i>$name</i> from database.");
+                \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, "Error occurred removing <i>$name</i> from database.");
                 return;
             }
             // Item deleted successfully.
-            NQ::simple('intern', INTERN_SUCCESS, "Deleted <i>$name</i>");
-        }catch(Exception $e){
-            NQ::simple('intern', INTERN_ERROR, $e->getMessage());
+            \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, "Deleted <i>$name</i>");
+        }catch(\Exception $e){
+            \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, $e->getMessage());
             return;
         }
     }
@@ -174,19 +176,19 @@ abstract class Editable extends Model
             $tags['NAME'] = "<span id='$this->id' class='$this->id prog'>$this->name</span>";
         }
 
-        if(Current_User::allow('intern', $this->getEditPermission())){
+        if(\Current_User::allow('intern', $this->getEditPermission())){
             $tags['EDIT'] = "<span id='edit-$this->id' class='$this->id edit-prog'>Edit</span> | ";
             if($this->isHidden()){
-                $tags['HIDE'] = PHPWS_Text::moduleLink('Show', 'intern', array('action' => $this->getEditAction(), 'hide' => false, 'id'=>$this->getId()));
+                $tags['HIDE'] = \PHPWS_Text::moduleLink('Show', 'intern', array('action' => $this->getEditAction(), 'hide' => false, 'id'=>$this->getId()));
             }else{
-                $tags['HIDE'] = PHPWS_Text::moduleLink('Hide', 'intern', array('action' => $this->getEditAction(), 'hide' => true, 'id'=>$this->getId()));
+                $tags['HIDE'] = \PHPWS_Text::moduleLink('Hide', 'intern', array('action' => $this->getEditAction(), 'hide' => true, 'id'=>$this->getId()));
             }
         }
-        if(Current_User::allow('intern', $this->getDeletePermission())){
+        if(\Current_User::allow('intern', $this->getDeletePermission())){
             $div = null;
             if(isset($tags['HIDE']))
                 $div = ' | ';
-            $tags['DELETE'] = $div.PHPWS_Text::moduleLink('Delete','intern',array('action'=> $this->getEditAction(),'del'=>TRUE,'id'=>$this->getID()));
+            $tags['DELETE'] = $div.\PHPWS_Text::moduleLink('Delete','intern',array('action'=> $this->getEditAction(),'del'=>TRUE,'id'=>$this->getID()));
         }
 
         return $tags;

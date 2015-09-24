@@ -1,12 +1,14 @@
 <?php
 
+namespace Intern;
+
 class Email {
 
     public static function sendTemplateMessage($to, $subject, $tpl, $tags, $cc = null)
     {
         $settings = InternSettings::getInstance();
-        
-        $content = PHPWS_Template::process($tags, 'intern', $tpl);
+
+        $content = \PHPWS_Template::process($tags, 'intern', $tpl);
 
         self::sendEmail($to, $settings->getEmailFromAddress(), $subject, $content, $cc);
     }
@@ -14,7 +16,7 @@ class Email {
     public static function sendEmail($to, $from, $subject, $content, $cc = NULL, $bcc = NULL)
     {
         $settings = InternSettings::getInstance();
-        
+
         // Sanity checking
         if(!isset($to) || is_null($to)){
             return false;
@@ -33,9 +35,9 @@ class Email {
         }
 
         // Create a Mail object and set it up
-        PHPWS_Core::initCoreClass('Mail.php');
-        $message = new PHPWS_Mail;
-		
+        \PHPWS_Core::initCoreClass('Mail.php');
+        $message = new \PHPWS_Mail;
+
         $message->addSendTo($to);
         $message->setFrom($from);
         $message->setSubject($subject);
@@ -56,13 +58,12 @@ class Email {
             $result = $message->send();
         }
 
-        if(PEAR::isError($result)){
-            PHPWS_Error::log($result);
+        if(\PHPWS_Error::logIfError($result)){
             return false;
         }
 
         self::logEmail($message);
-        
+
         return true;
     }
 
@@ -73,7 +74,7 @@ class Email {
     {
         // Log the message to a text file
         $fd = fopen(PHPWS_SOURCE_DIR . 'logs/email.log',"a");
-        
+
         fprintf($fd, "=======================\n");
 
         foreach($message->send_to as $recipient){
@@ -109,10 +110,8 @@ class Email {
      */
     public static function sendRegistrarEmail(Internship $i, Agency $a)
     {
-        PHPWS_Core::initModClass('intern', 'Subject.php');
-
         $settings = InternSettings::getInstance();
-        
+
         $subjects = Subject::getSubjects();
 
         $faculty = $i->getFaculty();
@@ -124,7 +123,7 @@ class Email {
         $tpl['PHONE'] = $i->phone;
 
         $term = Term::rawToRead($i->term, false);
-        
+
         $tpl['TERM'] = $term;
         if(isset($i->course_subj)){
             $tpl['SUBJECT'] = $subjects[$i->course_subj];
@@ -200,7 +199,7 @@ class Email {
             $tpl['INTERNATIONAL'] = 'No';
             $intlSubject = '';
         }
-        
+
         /**** Multi-part checking ***/
         if ($i->isMultipart() && $i->isSecondaryPart()) {
             $tpl['SECONDARY_PART'] = '';
@@ -221,9 +220,9 @@ class Email {
         } else {
             $to = $settings->getRegistrarEmail();
         }
-        
+
         if(!isset($to) || $to == null) {
-            throw new InvalidArgumentException('Missing configurating for email addresses (registrar)');
+            throw new \InvalidArgumentException('Missing configurating for email addresses (registrar)');
         }
 
         // CC the faculty members
@@ -246,8 +245,6 @@ class Email {
      */
     public static function sendGradSchoolNotification(Internship $i, Agency $a)
     {
-        PHPWS_Core::initModClass('intern', 'Subject.php');
-        
         $settings = InternSettings::getInstance();
 
         $subjects = Subject::getSubjects();
@@ -328,7 +325,7 @@ class Email {
         }
 
         $emails = $settings->getGradSchoolEmail(); // To Holly Hirst, for now
-        
+
         $to = explode(',', $emails);
 
         $subject = 'Internship Approval Needed: ' . $intlSubject . '[' . $i->getBannerId() . '] ' . $i->getFullName();
@@ -339,7 +336,7 @@ class Email {
     public static function sendIntlInternshipCreateNotice(Internship $i)
     {
         $settings = InternSettings::getInstance();
-        
+
         $tpl = array();
 
         $tpl['NAME'] = $i->getFullName();
@@ -358,11 +355,11 @@ class Email {
 
         Email::sendTemplateMessage($to, $subject, 'email/IntlInternshipCreateNotice.tpl', $tpl);
     }
-    
+
     public static function sendIntlInternshipCreateNoticeStudent(Internship $i)
     {
         $settings = InternSettings::getInstance();
-        
+
         $tpl = array();
 
         $tpl['NAME'] = $i->getFullName();
@@ -381,13 +378,13 @@ class Email {
 
         Email::sendTemplateMessage($to, $subject, 'email/IntStudentInternshipOIEDNotice.tpl', $tpl);
     }
-    
+
     public static function sendInternshipCancelNotice(Internship $i)
     {
         $settings = InternSettings::getInstance();
-        
+
         $tpl = array();
-        
+
 
         $tpl['NAME'] = $i->getFullName();
         $tpl['BANNER'] = $i->banner;
@@ -398,7 +395,7 @@ class Email {
         $tpl['DEPARTMENT'] = $dept->getName();
 
         $to = $i->email . '@appstate.edu';
-        
+
         $faculty = $i->getFaculty();
         if ($faculty instanceof Faculty) {
             $cc = array($faculty->getUsername() . '@' . $settings->getEmailDomain(), $settings->getRegistrarEmail());
@@ -410,14 +407,12 @@ class Email {
 
         Email::sendTemplateMessage($to, $subject, 'email/StudentCancellationNotice.tpl', $tpl, $cc);
     }
-    
+
     public static function sendRegistrationConfirmationEmail(Internship $i, Agency $a)
     {
         $settings = InternSettings::getInstance();
-        
-        $tpl = array();
 
-        PHPWS_Core::initModClass('intern', 'Subject.php');
+        $tpl = array();
 
         $subjects = Subject::getSubjects();
 
@@ -508,9 +503,8 @@ class Email {
     {
         $tpl = array();
 
-        PHPWS_Core::initModClass('intern', 'Subject.php');
         $subjects = Subject::getSubjects();
-        
+
         $settings = InternSettings::getInstance();
 
         $faculty = $i->getFaculty();

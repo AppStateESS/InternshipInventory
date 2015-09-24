@@ -1,5 +1,14 @@
 <?php
 
+namespace Intern;
+use \PHPWS_Core;
+use \PHPWS_Error;
+use \PHPWS_DB;
+use \Icon;
+use \DBPager;
+use \PHPWS_Template;
+
+
 \PHPWS_Core::initCoreClass('DBPager.php');
 
 // Defines are set in parent class
@@ -188,8 +197,8 @@ class SubselectPager extends \DBPager {
 
         //**************************************/
         //$this->db->setTestMode();
-        //var_dump($this->db->select());exit;
-        //**************************************/
+    	//var_dump($this->db->select());exit;
+    	//**************************************/
 
         if (PHPWS_Error::isError($count)) {
             throw new Exception($count->toString());
@@ -994,7 +1003,7 @@ class SubselectPager extends \DBPager {
         // ignore matches in the output and other values
         if (!empty($extra)) {
             if ($output) {
-                $diff = array_diff_assoc($extra, $output);
+                $diff = array_diff_key($extra, $output);
             } else {
                 $diff = $extra;
             }

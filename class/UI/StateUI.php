@@ -1,13 +1,15 @@
 <?php
 
+namespace Intern\UI;
+
 /**
- * 
+ *
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @license http://opensource.org/licenses/gpl-3.0.html
  */
 class StateUI implements UI {
 
-    public static function display()
+    public function display()
     {
         javascriptMod('intern', 'pick_state');
         $db = new PHPWS_DB('intern_state');

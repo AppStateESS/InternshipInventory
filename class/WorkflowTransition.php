@@ -1,5 +1,7 @@
 <?php
 
+namespace Intern;
+
 abstract class WorkflowTransition {
     const sourceState = ''; // Name of Source/Dest states
     const destState   = '';
@@ -35,7 +37,7 @@ abstract class WorkflowTransition {
         $perms = $this->getAllowedPermissionList();
         
         foreach($perms as $p){
-            if(Current_User::allow('intern', $p)){
+            if(\Current_User::allow('intern', $p)){
                 return true;
             }
         }

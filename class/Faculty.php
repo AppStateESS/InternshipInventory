@@ -1,6 +1,6 @@
 <?php
 
-PHPWS_Core::initModClass('intern', 'DbStorable.php');
+namespace Intern;
 
 /**
  * Faculty
@@ -323,11 +323,5 @@ class Faculty implements DbStorable {
         $csv['Faculty Super. Email']      = '';
         
         return $csv;        
-    }
-}
-
-class FacultyDB extends Faculty {
-    public function __construct(){
-        // override parent and don't call parent::__construct(), so we can have an empty constructor for loading from DB
     }
 }

@@ -1,5 +1,9 @@
 <?php
 
+namespace Intern;
+
+use \PHPWS_Text;
+
 /**
  * Internship
  *
@@ -9,12 +13,9 @@
  * @author Jeremy Booker <jbooker at tux dot appstate dot edu>
  * @package Intern
  */
-PHPWS_Core::initModClass('intern', 'Email.php');
-PHPWS_Core::initModClass('intern', 'Term.php');
-PHPWS_Core::initModClass('intern', 'Major.php');
-PHPWS_Core::initModClass('intern', 'Faculty.php');
-
 class Internship {
+
+    const GPA_MINIMUM = 2.0;
 
     public $id;
 
@@ -36,6 +37,7 @@ class Internship {
     public $first_name;
     public $middle_name;
     public $last_name;
+    public $birth_date;
 
     // Metaphones for fuzzy search
     public $first_name_meta;
@@ -43,10 +45,21 @@ class Internship {
 
     // Academic info
     public $level;
-    public $grad_prog;
-    public $ugrad_major;
     public $gpa;
     public $campus;
+    public $major_code;
+    public $major_description;
+
+    /**
+     * @deprecated
+     * @see $major_code
+     */
+    public $grad_prog;
+    /**
+     * @deprecated
+     * @see $major_code
+     */
+    public $ugrad_major;
 
     // Contact Info
     public $phone;
@@ -99,8 +112,83 @@ class Internship {
     /**
      * Constructs a new Internship object.
      */
-    public function __construct(){
+    public function __construct(Student $student, $term, $location, $state, $country, Department $department, Agency $agency){
 
+        // Initialize student data
+        $this->initalizeStudentData($student);
+
+        // Initialize basic data
+        $this->term = $term;
+
+        // Set basic location data
+        if($location == 'domestic') {
+            $this->setDomestic(true);
+            $this->setInternational(false);
+
+            $this->setLocationState($state);
+        } else if($location == 'international') {
+            $this->setDomestic(false);
+            $this->setInternational(true);
+
+            $this->setLocationCountry($country);
+        } else {
+            throw new \InvalidArgumentException('Invalid location.');
+        }
+
+        // Get department id
+        $this->department_id = $department->getId();
+
+        // Get agency id
+        $this->agency_id = $agency->getId();
+
+        // Set initial state
+        $this->setState(WorkflowStateFactory::getState('CreationState'));
+
+        // Set initial OIED certification
+        $this->setOiedCertified(false);
+    }
+
+    /**
+     * Copies student data from Student object to this Internship.
+     * @param Student $student
+     */
+    private function initalizeStudentData(Student $student)
+    {
+        // Basic student demographics
+        $this->banner       = $student->getStudentId();
+        $this->email        = $student->getUsername();
+        $this->first_name   = $student->getFirstName();
+        $this->middle_name  = $student->getMiddleName();
+        $this->last_name    = $student->getLastName();
+        $this->birth_date   = $student->getBirthDate();
+
+        $this->setFirstNameMetaphone($student->getFirstName());
+        $this->setMiddleNameMetaphone($student->getMiddleName());
+        $this->setLastNameMetaphone($student->getLastName());
+
+        // Academic info
+        $this->level = $student->getLevel();
+        $this->campus = $student->getCampus();
+        $this->gpa = $student->getGpa();
+
+        // Majors - If double major, just take index 0
+        $majors = $student->getMajors();
+        if(is_array($majors)) {
+            $this->major_code = $majors[0]->getCode();
+            $this->major_description = $majors[0]->getDescription();
+        } else if (is_object($majors)) {
+            $this->major_code = $majors->getCode();
+            $this->major_description = $majors->getDescription();
+        } // Else, there were no majors set in the Student object
+
+        // Contact Info
+        $this->phone = $student->getPhone();
+
+        // Student address
+        $this->student_address  = $student->getAddress();
+        $this->student_city = $student->getCity();
+        $this->student_state = $student->getState();
+        $this->student_zip = $student->getZip();
     }
 
     /**
@@ -108,7 +196,7 @@ class Internship {
      */
     public function getDb()
     {
-        return new PHPWS_DB('intern_internship');
+        return new \PHPWS_DB('intern_internship');
     }
 
     /**
@@ -120,12 +208,12 @@ class Internship {
         $db = $this->getDb();
         try {
             $result = $db->saveObject($this);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             exit($e->getMessage());
         }
 
-        if (PHPWS_Error::logIfError($result)) {
-            throw new Exception($result->toString());
+        if (\PHPWS_Error::logIfError($result)) {
+            throw new \Exception($result->toString());
         }
 
         return $this->id;
@@ -143,8 +231,8 @@ class Internship {
         $db->addWhere('id', $this->id);
         $result = $db->delete();
 
-        if (PHPWS_Error::logIfError($result)) {
-            throw new Exception($result->getMessage(), $result->getCode());
+        if (\PHPWS_Error::logIfError($result)) {
+            throw new \Exception($result->getMessage(), $result->getCode());
         }
 
         return true;
@@ -290,7 +378,6 @@ class Internship {
      */
     public function getUgradMajor()
     {
-        PHPWS_Core::initModClass('intern', 'Major.php');
         if(!is_null($this->ugrad_major) && $this->ugrad_major != 0){
             return new Major($this->ugrad_major);
         }else{
@@ -303,7 +390,6 @@ class Internship {
      */
     public function getGradProgram()
     {
-        PHPWS_Core::initModClass('intern', 'GradProgram.php');
         if(!is_null($this->grad_prog) && $this->grad_prog != 0){
             return new GradProgram($this->grad_prog);
         }else{
@@ -311,13 +397,16 @@ class Internship {
         }
     }
 
+    public function getAgencyId() {
+        return $this->agency_id;
+    }
+
     /**
      * Get the Agency object associated with this internship.
      */
     public function getAgency()
     {
-        PHPWS_Core::initModClass('intern', 'Agency.php');
-        return new Agency($this->agency_id);
+        return AgencyFactory::getAgencyById($this->getAgencyId());
     }
 
     /**
@@ -330,7 +419,6 @@ class Internship {
             return null;
         }
 
-        PHPWS_Core::initModClass('intern', 'FacultyFactory.php');
         return FacultyFactory::getFacultyObjectById($this->faculty_id);
     }
 
@@ -339,7 +427,6 @@ class Internship {
 	 */
 	public function getEmergencyContactName()
 	{
-		PHPWS_Core::initModClass('intern', 'EmergencyContactFactory.php');
 		$name = EmergencyContactFactory::getContactsForInternship($this);
 		if(!empty($name))
 		{
@@ -352,7 +439,6 @@ class Internship {
 	 */
 	public function getEmergencyContactRelation()
 	{
-		PHPWS_Core::initModClass('intern', 'EmergencyContactFactory.php');
 		$relationship = EmergencyContactFactory::getContactsForInternship($this);
 		if(!empty($relationship))
 		{
@@ -365,7 +451,6 @@ class Internship {
 	 */
 	public function getEmergencyContactPhoneNumber()
 	{
-		PHPWS_Core::initModClass('intern', 'EmergencyContactFactory.php');
 		$phone = EmergencyContactFactory::getContactsForInternship($this);
 		if(!empty($phone))
 		{
@@ -378,13 +463,11 @@ class Internship {
      */
     public function getDepartment()
     {
-        PHPWS_Core::initModClass('intern', 'Department.php');
         return new Department($this->department_id);
     }
 
     public function getSubject()
     {
-        PHPWS_Core::initModClass('intern', 'Subject.php');
         return new Subject($this->course_subj);
     }
 
@@ -393,10 +476,9 @@ class Internship {
      */
     public function getDocuments()
     {
-        PHPWS_Core::initModClass('intern', 'Intern_Document.php');
-        $db = Intern_Document::getDB();
+        $db = InternDocument::getDB();
         $db->addWhere('internship_id', $this->id);
-        return $db->getObjects('Intern_Document');
+        return $db->getObjects('\Intern\InternDocument');
     }
 
     /**
@@ -450,6 +532,16 @@ class Internship {
     }
 
     /**
+     * Sets the domestic location flag.
+     *
+     * @param bool $domestic
+     */
+    public function setDomestic($domestic)
+    {
+        $this->domestic = $domestic;
+    }
+
+    /**
      * Is this internship International?
      *
      * @return bool True if this is an international internship, false otherwise.
@@ -459,12 +551,66 @@ class Internship {
         return $this->international;
     }
 
+    /**
+     * Sets the international flag.
+     *
+     * @param bool $international
+     */
+    public function setInternational($international)
+    {
+        $this->international = $international;
+    }
+
+    public function getLocationState()
+    {
+        return $this->loc_state;
+    }
+
+    public function getLocationCountry()
+    {
+        return $this->loc_country;
+    }
+
+    /**
+     * Sets the country code for this internship. Should be a two letter abbreviation.
+     */
+    public function setLocationCountry($country)
+    {
+        if(!isset($country) || $country == '') {
+            throw new \InvalidArgumentException('Empty country code');
+        }
+
+        if(strlen($country) > 2) {
+            throw new \InvalidArgumentException('Country code is too long');
+        }
+
+        $this->loc_country = $country;
+    }
+
+    public function getLocationProvince()
+    {
+        return $this->loc_province;
+    }
+
     public function isOiedCertified()
     {
         if($this->oied_certified == 1){
             return true;
         }else{
             return false;
+        }
+    }
+
+    /**
+     * Sets whether or not this internship is OIED certified
+     *
+     * @param boolean $certified
+     */
+    public function setOiedCertified($certified) {
+        if($certified){
+            $this->oied_certified = 1;
+        }else{
+            $this->oied_certified = 0;
         }
     }
 
@@ -491,36 +637,36 @@ class Internship {
      */
     public function getRowTags()
     {
-        PHPWS_Core::initModClass('intern', 'Term.php');
-
         $tags = array();
 
         // Get objects associated with this internship.
         $a = $this->getAgency();
         $d = $this->getDepartment();
 
+        //TODO: Use a single $params array instead of making a new array for every call to PHPWS_Test::moduleLink
+
         // Student info.
-        $tags['STUDENT_NAME'] = PHPWS_Text::moduleLink($this->getFullName(), 'intern', array('action' => 'edit_internship', 'internship_id' => $this->id));
-        $tags['STUDENT_BANNER'] = PHPWS_Text::moduleLink($this->getBannerId(), 'intern', array('action' => 'edit_internship', 'internship_id' => $this->id));
+        $tags['STUDENT_NAME'] = PHPWS_Text::moduleLink($this->getFullName(), 'intern', array('action' => 'ShowInternship', 'internship_id' => $this->id));
+        $tags['STUDENT_BANNER'] = PHPWS_Text::moduleLink($this->getBannerId(), 'intern', array('action' => 'ShowInternship', 'internship_id' => $this->id));
 
         // Dept. info
-        $tags['DEPT_NAME'] = PHPWS_Text::moduleLink($d->name, 'intern', array('action' => 'edit_internship', 'internship_id' => $this->id));
+        $tags['DEPT_NAME'] = PHPWS_Text::moduleLink($d->name, 'intern', array('action' => 'ShowInternship', 'internship_id' => $this->id));
 
         // Faculty info.
         if(isset($this->faculty_id)){
             $f = $this->getFaculty();
             $facultyName = $f->getFullName();
-            $tags['FACULTY_NAME'] = PHPWS_Text::moduleLink($f->getFullName(), 'intern', array('action' => 'edit_internship', 'internship_id' => $this->id));
+            $tags['FACULTY_NAME'] = PHPWS_Text::moduleLink($f->getFullName(), 'intern', array('action' => 'ShowInternship', 'internship_id' => $this->id));
         }else{
             // Makes this cell in the table a clickable link, even if there's no faculty name
-            $tags['FACULTY_NAME'] = PHPWS_Text::moduleLink('&nbsp;', 'intern', array('action' => 'edit_internship', 'internship_id' => $this->id));
+            $tags['FACULTY_NAME'] = PHPWS_Text::moduleLink('&nbsp;', 'intern', array('action' => 'ShowInternship', 'internship_id' => $this->id));
         }
 
-        $tags['TERM'] = PHPWS_Text::moduleLink(Term::rawToRead($this->term), 'intern', array('action' => 'edit_internship', 'internship_id' => $this->id));
+        $tags['TERM'] = PHPWS_Text::moduleLink(Term::rawToRead($this->term), 'intern', array('action' => 'ShowInternship', 'internship_id' => $this->id));
 
-        $tags['WORKFLOW_STATE'] = PHPWS_Text::moduleLink($this->getWorkflowState()->getFriendlyName(), 'intern', array('action' => 'edit_internship', 'internship_id' => $this->id));
+        $tags['WORKFLOW_STATE'] = PHPWS_Text::moduleLink($this->getWorkflowState()->getFriendlyName(), 'intern', array('action' => 'ShowInternship', 'internship_id' => $this->id));
 
-        //$tags['EDIT'] = PHPWS_Text::moduleLink('Edit', 'intern', array('action' => 'edit_internship', 'internship_id' => $this->id));
+        //$tags['EDIT'] = PHPWS_Text::moduleLink('Edit', 'intern', array('action' => 'ShowInternship', 'internship_id' => $this->id));
         //$tags['PDF'] = PHPWS_Text::moduleLink('Generate Contract', 'intern', array('action' => 'pdf', 'id' => $this->id));
 
         return $tags;
@@ -558,6 +704,14 @@ class Internship {
 
     public function getEmailAddress(){
         return $this->email;
+    }
+
+    public function getBirthDateFormatted() {
+        if(!isset($this->birth_date) || $this->birth_date === 0){
+            return null;
+        }
+
+        return date('n/j/Y', $this->birth_date);
     }
 
     public function getFacultyId()
@@ -626,7 +780,7 @@ class Internship {
      * @param WorkflowState $state
      */
     public function setState(WorkflowState $state){
-        $this->state = $state->getName();
+        $this->state = $state->getClassName();
     }
 
     /**
@@ -643,7 +797,6 @@ class Internship {
             return null;
         }
 
-        PHPWS_Core::initModClass('intern', 'WorkflowStateFactory.php');
         return WorkflowStateFactory::getState($stateName);
     }
 
@@ -657,6 +810,18 @@ class Internship {
     public function getCampus()
     {
         return $this->campus;
+    }
+
+    // TODO - Get rid of the magic values, use constants
+    public function getCampusFormatted()
+    {
+        if($this->getCampus() == 'main_campus') {
+            return 'Main campus';
+        } else if ($this->getCampus() == 'distance_ed') {
+            return 'Distance Ed';
+        } else {
+            return 'Unknown campus';
+        }
     }
 
     /**
@@ -684,6 +849,15 @@ class Internship {
     }
 
     /**
+     * Calculates and sets the metaphone value for this student's middle name.
+     *
+     * @param string $firstName
+     */
+    public function setMiddleNameMetaphone($middleName){
+        $this->middle_name_meta = metaphone($middleName);
+    }
+
+    /**
      * Calculates and sets the metaphone value for this student's last name.
      *
      * @param string $lastName
@@ -699,6 +873,25 @@ class Internship {
      */
     public function getLevel(){
         return $this->level;
+    }
+
+    public function getLevelFormatted()
+    {
+        if($this->getLevel() == 'ugrad') {
+            return 'Undergraduate';
+        } else if ($this->getLevel() == 'grad') {
+            return 'Graduate';
+        } else {
+            return 'Unknown level';
+        }
+    }
+
+    public function getMajorCode() {
+        return $this->major_code;
+    }
+
+    public function getMajorDescription() {
+        return $this->major_description;
     }
 
     public function getGpa(){
@@ -789,16 +982,22 @@ class Internship {
         $this->experience_type = $type;
     }
 
+    /**
+     * Sets the location state (i.e. One of the 50 states of the USA, not the approval status)
+     */
+    public function setLocationState($state)
+    {
+        $this->loc_state = $state;
+    }
+
     /***********************
      * Static Methods
-    ***********************/
+     ***********************/
     public static function getTypesAssoc()
     {
         return array('internship'       => 'Internship',
-                'student_teaching' => 'Student Teaching',
-                'practicum'        => 'Practicum',
-                'clinical'         => 'Clinical');
+                     'student_teaching' => 'Student Teaching',
+                     'practicum'        => 'Practicum',
+                     'clinical'         => 'Clinical');
     }
 }
-
-?>

@@ -1,5 +1,7 @@
 <?php
 
+namespace Intern;
+
 /**
  * @author Micah Carter <mcarter at tux dot appstate dot edu>
  */
@@ -12,14 +14,10 @@ if (!defined('PHPWS_SOURCE_DIR')) {
 require_once(PHPWS_SOURCE_DIR . 'mod/intern/inc/defines.php');
 
 // Check some permissions
-if (!Current_User::isLogged()) {
+if (!\Current_User::isLogged()) {
     // Fix by replacing the Users module
-    PHPWS_Core::reroute('../secure');
+    \PHPWS_Core::reroute('../secure');
 }
-
-PHPWS_Core::initModClass('intern', 'InternshipInventory.php');
-PHPWS_Core::initModClass('intern', 'UI/Intern_NotifyUI.php');
-PHPWS_Core::initModClass('intern', 'UI/TopUI.php');
 
 // This is wrong, but it'll have to do for now.
 // TODO: some sort of command pattern
@@ -35,15 +33,15 @@ if(DEBUG){
         $content = $inventory->getContent();
     }catch(Exception $e){
         try{
-            NQ::simple('intern', INTERN_ERROR, 'The Intern Inventory has experienced an error. The software engineers have been notified about this problem. We apologize for the inconvenience.');
+            \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, 'The Intern Inventory has experienced an error. The software engineers have been notified about this problem. We apologize for the inconvenience.');
 
             $message = formatException($e);
             emailError($message);
-            
-            NQ::close();
+
+            \NQ::close();
             Intern_NotifyUI::display();
 
-            PHPWS_Core::goBack();
+            \PHPWS_Core::goBack();
         }catch(Exception $e){
             $message2 = formatException($e);
             echo "The Intern Inventory has experienced a major internal error.  Attempting to email an admin and then exit.";
@@ -59,25 +57,26 @@ if(DEBUG){
  */
 if (isset($content)) {
     if ($content === false) {
-        NQ::close();
-        PHPWS_Core::reroute('index.php?module=intern');
+        \NQ::close();
+        \PHPWS_Core::reroute('index.php?module=intern');
     }
 }
 
 // Add top menu bar to theme
-TopUI::plug();
+\PHPWS_Core::initModClass('intern', 'UI/TopUI.php');
+UI\TopUI::plug();
 
 
 // Get Notifications, add to layout
-$nv = new Intern_NotifyUI();
+$nv = new UI\NotifyUI();
 $notifications = $nv->display();
-Layout::add($notifications);
+\Layout::add($notifications);
 
 
 // Add content to Layout
-Layout::addStyle('intern', 'style.css');
-Layout::addStyle('intern', 'tango-icons.css');
-Layout::add($content);
+\Layout::addStyle('intern', 'style.css');
+\Layout::addStyle('intern', 'tango-icons.css');
+\Layout::add($content);
 
 function formatException(Exception $e)
 {
@@ -92,7 +91,7 @@ function formatException(Exception $e)
     }
     echo "Remote addr: {$_SERVER['REMOTE_ADDR']}\n\n";
 
-    $user = Current_User::getUserObj();
+    $user = \Current_User::getUserObj();
     if(isset($user) && !is_null($user)){
         echo "User name: {$user->getUsername()}\n\n";
     }else{
@@ -106,7 +105,7 @@ function formatException(Exception $e)
     print_r($_REQUEST);
 
     echo "\n\nHere is CurrentUser:\n\n";
-    print_r(Current_User::getUserObj());
+    print_r(\Current_User::getUserObj());
 
     $message = ob_get_contents();
     ob_end_clean();
@@ -116,7 +115,6 @@ function formatException(Exception $e)
 
 function emailError($message)
 {
-    PHPWS_Core::initModClass('intern', 'Email.php');
     $to = array('jb67803@appstate.edu', 'ticklejw@appstate.edu');
 
     $tags = array('MESSAGE' => $message);

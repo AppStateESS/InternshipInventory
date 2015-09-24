@@ -1,5 +1,7 @@
 <?php
 
+namespace Intern;
+
 /**
  * InternshipContractPdfView
  *
@@ -30,8 +32,6 @@ class InternshipContractPdfView {
         require_once(PHPWS_SOURCE_DIR . 'mod/intern/pdf/fpdf.php');
         require_once(PHPWS_SOURCE_DIR . 'mod/intern/pdf/fpdi.php');
 
-        PHPWS_Core::initModClass('intern', 'Term.php');
-
         $this->generatePdf();
     }
 
@@ -50,7 +50,7 @@ class InternshipContractPdfView {
      */
     private function generatePdf()
     {
-        $this->pdf = new FPDI('P', 'mm', 'Letter');
+        $this->pdf = new \FPDI('P', 'mm', 'Letter');
         $a = $this->internship->getAgency();
         $d = $this->internship->getDepartment();
         $f = $this->internship->getFaculty();
@@ -205,7 +205,7 @@ class InternshipContractPdfView {
         $this->pdf->setXY(133, 116);
         $this->pdf->cell(71, 5, $a->getName());
 
-        $agency_address = $a->getAddress();
+        $agency_address = $a->getStreetAddress();
 
         //TODO: make this smarter so it adds the line break between words
         if(strlen($agency_address) < 49){

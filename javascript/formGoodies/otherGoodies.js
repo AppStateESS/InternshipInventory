@@ -26,7 +26,7 @@ function addFormErrors()
 
 function initPayment()
 {
-    /* PAYMENT 
+    /* PAYMENT
      * If Paid is selected then make stipend selectable.
      */
     $("input:radio[value='paid']").click(function(){
@@ -295,7 +295,7 @@ function initFacultySelector()
                 address += faculty.street_address1;
 
                 if (faculty.street_address2 !== '') {
-                    address += ("<br />" + faculty.street_address2); 
+                    address += ("<br />" + faculty.street_address2);
                 }
             } else {
                 address += ('<small class="text-muted">Address has not been set</small>');
@@ -315,159 +315,9 @@ function initFacultySelector()
     }
 }
 
-function handleDomesticClick()
-{
-    /**** Internship Location ****/
-    // Show the state dropdown, add require field class
-    $("#internship_loc_state").parent().parent().fadeIn('fast');
-    $("#internship_loc_state").addClass('input-required');
-
-    // Hide the province and country fields
-    $("#internship_loc_province").parent().parent().fadeOut('fast');
-    $("#internship_loc_country").parent().parent().fadeOut('fast');
-
-    // Remove required class to country (internship location)
-    $("#internship_loc_country").removeClass('input-required');
-
-    // Change the postal code label to 'zip'
-    $("#internship_loc_zip-label").text("Zip");
-
-
-    /****** Agency Location ********/
-    // Show the state dropdown
-    $("#internship_agency_state").parent().parent().fadeIn('fast');
-
-    // Hide the province and country fields
-    $("#internship_agency_province").parent().parent().fadeOut('fast');
-    $("#internship_agency_country").parent().parent().fadeOut('fast');
-
-    // Change the postal code label to 'zip code'
-    $("#internship_agency_zip-label").text("Zip");
-
-    /****** Agency Supervisor ******/
-    // Show the state dropdown
-    $("#internship_agency_sup_state").parent().parent().fadeIn('fast');
-
-    // Hide the province and country fields
-    $("#internship_agency_sup_province").parent().parent().fadeOut('fast');
-    $("#internship_agency_sup_country").parent().parent().fadeOut('fast');
-
-    // Change the postal code label to 'zip'
-    $("#internship_agency_sup_zip-label").text("Zip");
-
-    // Re-add handlers for copying state info. <mod/intern/javascript/copyAddress>
-    //sameAddressState($("input:checkbox[name='copy_address']").attr('checked'));
-
-}
-
-function handleIntlClick()
-{
-    /**** Internship Location ****/
-    // Hide state dropdown, remove required field class
-    $("#internship_loc_state").removeClass('input-required');
-    $("#internship_loc_state").parent().parent().fadeOut('fast');
-
-    // Show the province and country fields
-    $("#internship_loc_province").parent().parent().fadeIn('fast');
-    $("#internship_loc_country").parent().parent().fadeIn('fast');
-
-    // Add required class to country (internship location)
-    $("#internship_loc_country").addClass('input-required');
-
-    // Change the zip code label to 'postal code'
-    $("#internship_loc_zip-label").text("Postal Code");
-
-
-    /********** Agency Location *******************/
-    // Hide the state dropdown
-    $("#internship_agency_state").parent().parent().fadeOut('fast');
-
-    // Show the province and country fields
-    $("#internship_agency_province").parent().parent().fadeIn('fast');
-    $("#internship_agency_country").parent().parent().fadeIn('fast');
-
-    // Change the zip code label to 'postal code'
-    $("#internship_agency_zip-label").text("Postal Code");
-
-
-    /********* Agency Supervisor Location ***********/
-    // Hide the state dropdown
-    $("#internship_agency_sup_state").parent().parent().fadeOut('fast');
-
-    // Show the province and country fields
-    $("#internship_agency_sup_province").parent().parent().fadeIn('fast');
-    $("#internship_agency_sup_country").parent().parent().fadeIn('fast');
-
-    // Change the zip code label to 'postal code'
-    $("#internship_agency_sup_zip-label").text("Postal Code");
-
-    //sameAddressState($("input:checkbox[name='copy_address']").attr('checked'));
-
-}
-
-function initIntlHandlers()
-{
-    /***********************************************
-     * Location Domestic vs International handling *
-     ***********************************************/
-    // Attach above function to click event
-    $("input:radio[name=location][value=domestic]").click(function(){ handleDomesticClick(); });
-
-    // Attach above function to click event
-    $("input:radio[name=location][value=internat]").click(function(){ handleIntlClick(); });
-
-    // If domestic is checked initially then do setup...
-    if($("input:radio[name=location][value=domestic]").attr('checked')){
-        handleDomesticClick();
-    }
-
-    // If internat is checked initially then do setup...
-    if($("input:radio[name=location][value=internat]").attr('checked')){
-        handleIntlClick();
-    }
-}
-
-// Event handler for student level drop down
-function handleLevelChange()
-{
-    if ($("#internship_student_level").val() === 'ugrad') {
-        $("#internship_ugrad_major").show();
-        $("#internship_grad_prog").hide();
-        $("#internship_student_major").hide();
-    } else if ($("#internship_student_level").val() === 'grad') {
-        $("#internship_ugrad_major").hide();
-        $("#internship_grad_prog").show();
-        $("#internship_student_major").hide();
-    } else {
-        $("#internship_ugrad_major").hide();
-        $("#internship_grad_prog").hide();
-        $("#internship_student_major").show();
-    }
-}
-
-function initStudentLevel()
-{
-    /******************************************
-     * Undergraduate Level and Major handling *
-     ******************************************/
-
-    // Set initial state
-    $("#internship_ugrad_major").hide();
-    $("#internship_grad_prog").hide();
-
-    // Set initial state for student level drop down by calling the
-    // usual event handler if needed
-    if($("#internship_student_level").val() !== -1){
-        handleLevelChange();
-    }
-
-    // Bind event handler for drop down change
-    $("#internship_student_level").change(handleLevelChange);
-}
-
 function otherStuff()
 {
-    
+
     addFormErrors();
     initPayment();
     initOIED();
@@ -475,8 +325,6 @@ function otherStuff()
     initMultiPart();
     initSecondaryPart();
     initFacultySelector();
-    initIntlHandlers();
-    initStudentLevel();
 
     setupFormSubmit();
 }

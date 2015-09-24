@@ -1,5 +1,7 @@
 <?php
 
+namespace Intern;
+
 class Subject extends Model {
 
     public $id;
@@ -8,7 +10,7 @@ class Subject extends Model {
     public $active;
 
     public function getDB(){
-        return new PHPWS_DB('intern_subject');
+        return new \PHPWS_DB('intern_subject');
     }
 
     public function getCSV()

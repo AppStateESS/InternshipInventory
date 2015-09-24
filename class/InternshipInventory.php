@@ -1,12 +1,6 @@
 <?php
 
-PHPWS_Core::initModClass('intern', 'Term.php');
-PHPWS_Core::initModClass('intern', 'Major.php');
-PHPWS_Core::initModClass('intern', 'State.php');
-PHPWS_Core::initModClass('intern', 'GradProgram.php');
-PHPWS_Core::initModClass('intern', 'Department.php');
-
-define('STATE_EDIT', 'edit_states');
+namespace Intern;
 
 class InternshipInventory {
 
@@ -40,40 +34,45 @@ class InternshipInventory {
         switch ($req) {
             case 'example_form':
                 header('Content-type: application/pdf');
-                readfile(PHPWS_SOURCE_DIR . 'mod/intern/pdf/Internship_Example.pdf');
+                readfile(\PHPWS_SOURCE_DIR . 'mod/intern/pdf/Internship_Example.pdf');
                 exit();
                 break;
 
-            case 'edit_internship':
-                PHPWS_Core::initModClass('intern', 'UI/InternshipUI.php');
-                $view = new InternshipUI();
-                $this->content = $view->display();
+            case 'ShowInternship':
+                $ctrl = new Command\ShowInternship();
+                $this->content = $ctrl->execute();
                 break;
-            case 'add_internship':
-                PHPWS_Core::initModClass('intern', 'command/SaveInternship.php');
-                $ctrl = new SaveInternship();
+            case 'ShowAddInternship':
+                $ctrl = new Command\ShowAddInternship();
+                $this->content = $ctrl->execute()->getView()->render();
+                break;
+            case 'AddInternship':
+                $ctrl = new Command\AddInternship();
                 $ctrl->execute();
-                test('finished execute',1);
+                break;
+            case 'SaveInternship':
+                $ctrl = new Command\SaveInternship();
+                $ctrl->execute();
                 break;
             case 'search':
-                PHPWS_Core::initModClass('intern', 'UI/SearchUI.php');
-                $view = new SearchUI();
+                $view = new UI\SearchUI();
                 $this->content = $view->display();
                 break;
             case 'results':
-                PHPWS_Core::initModClass('intern', 'UI/ResultsUI.php');
-                $view = new ResultsUI();
+                $view = new UI\ResultsUI();
                 $this->content = $view->display();
                 break;
-            case DEPT_EDIT:
-                PHPWS_Core::initModClass('intern', 'UI/DepartmentUI.php');
-                PHPWS_Core::initModClass('intern', 'Department.php');
+            case 'showEditDept':
+                $view = new UI\DepartmentUI();
+                $this->content = $view->display();
+                break;
+            case 'edit_dept':
                 if (isset($_REQUEST['add'])) {
                     /* Add department with the name in REQUEST */
                     if (isset($_REQUEST['name'])) {
                         Department::add($_REQUEST['name']);
                     } else {
-                        NQ::simple('intern', INTERN_ERROR, "Department must have name.");
+                        \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "Department must have name.");
                     }
                 } else if (isset($_REQUEST['rename'])) {
                     /* Rename dept with ID to new name that was passed in REQUEST */
@@ -81,7 +80,7 @@ class InternshipInventory {
                         $d = new Department($_REQUEST['id']);
                         $d->rename($_REQUEST['rename']);
                     } else {
-                        NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot rename department.");
+                        \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "No ID given. Cannot rename department.");
                     }
                 } else if (isset($_REQUEST['hide'])) {
                     /* Hide/Show department with ID passed in REQUEST. */
@@ -89,7 +88,7 @@ class InternshipInventory {
                         $d = new Department($_REQUEST['id']);
                         $d->hide($_REQUEST['hide'] == 1);
                     } else {
-                        NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot hide department.");
+                        \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "No ID given. Cannot hide department.");
                     }
                 } else if (isset($_REQUEST['del'])) {
                     /* Delete department with same ID passed in REQUEST. */
@@ -97,24 +96,23 @@ class InternshipInventory {
                         $d = new Department($_REQUEST['id']);
                         $d->del();
                     } else {
-                        NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot delete department.");
+                        \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "No ID given. Cannot delete department.");
                     }
-                } else if (isset($_REQUEST['fDel'])) {
-                    /** for now... */
-                    NQ::simple('intern', INTERN_WARNING, 'Sorry, cannot forcefully delete a department.');
                 }
-                $view = new DepartmentUI();
-                $this->content = $view->display();
+                \PHPWS_Core::reroute('index.php?module=intern&action=showEditDept');
                 break;
-            case GRAD_PROG_EDIT:
-                PHPWS_Core::initModClass('intern', 'GradProgram.php');
-                PHPWS_Core::initModClass('intern', 'UI/GradProgramUI.php');
+            case 'showEditGradProgs':
+                $view = new UI\GradProgramUI();
+                $this->content = $view->display();
+            break;
+            case 'edit_grad':
+            //TODO Separate these into their own controllers
                 if (isset($_REQUEST['add'])) {
                     /* Add grad program with the name in REQUEST */
                     if (isset($_REQUEST['name'])) {
                         GradProgram::add($_REQUEST['name']);
                     } else {
-                        NQ::simple('intern', INTERN_ERROR, "Grad Program must have name.");
+                        \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "Grad Program must have name.");
                     }
                 } else if (isset($_REQUEST['rename'])) {
                     /* Rename program with ID to new name that was passed in REQUEST */
@@ -122,7 +120,7 @@ class InternshipInventory {
                         $g = new GradProgram($_REQUEST['id']);
                         $g->rename($_REQUEST['rename']);
                     } else {
-                        NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot rename graduate program.");
+                        \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "No ID given. Cannot rename graduate program.");
                     }
                 } else if (isset($_REQUEST['hide'])) {
                     /* Hide/Show program with ID passed in REQUEST. */
@@ -130,7 +128,7 @@ class InternshipInventory {
                         $g = new GradProgram($_REQUEST['id']);
                         $g->hide($_REQUEST['hide'] == 1);
                     } else {
-                        NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot hide graduate program.");
+                        \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "No ID given. Cannot hide graduate program.");
                     }
                 } else if (isset($_REQUEST['del'])) {
                     /* Delete program with same ID passed in REQUEST. */
@@ -138,21 +136,23 @@ class InternshipInventory {
                         $g = new GradProgram($_REQUEST['id']);
                         $g->del();
                     } else {
-                        NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot delete graduate program.");
+                        \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "No ID given. Cannot delete graduate program.");
                     }
                 }
-                $view = new GradProgramUI();
+                \PHPWS_Core::reroute('index.php?module=intern&action=showEditGradProgs');
+                break;
+            case 'showEditMajors':
+                $view = new UI\MajorUI();
                 $this->content = $view->display();
                 break;
-            case MAJOR_EDIT:
-                PHPWS_Core::initModClass('intern', 'UI/MajorUI.php');
-
+            case 'edit_major':
+                // TODO: Break these into their own commands
                 if (isset($_REQUEST['add'])) {
                     /* Add major with the name passed in REQUEST. */
                     if (isset($_REQUEST['name'])) {
                         Major::add($_REQUEST['name']);
                     } else {
-                        NQ::simple('intern', INTERN_ERROR, "Major must have name.");
+                        \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "Major must have name.");
                     }
                 } else if (isset($_REQUEST['rename'])) {
                     /* Rename major with ID to new name that was passed in REQUEST */
@@ -160,7 +160,7 @@ class InternshipInventory {
                         $m = new Major($_REQUEST['id']);
                         $m->rename($_REQUEST['rename']);
                     } else {
-                        NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot rename major.");
+                        \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "No ID given. Cannot rename major.");
                     }
                 } else if (isset($_REQUEST['hide'])) {
                     /* Hide major with ID passed in REQUEST. */
@@ -168,7 +168,7 @@ class InternshipInventory {
                         $m = new Major($_REQUEST['id']);
                         $m->hide($_REQUEST['hide'] == 1);
                     } else {
-                        NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot hide major.");
+                        \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "No ID given. Cannot hide major.");
                     }
                 } else if (isset($_REQUEST['del'])) {
                     /* Delete major with same ID passed in REQUEST. */
@@ -176,11 +176,10 @@ class InternshipInventory {
                         $m = new Major($_REQUEST['id']);
                         $m->del();
                     } else {
-                        NQ::simple('intern', INTERN_ERROR, "No ID given. Cannot delete major.");
+                        \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "No ID given. Cannot delete major.");
                     }
                 }
-                $view = new MajorUI();
-                $this->content = $view->display();
+                \PHPWS_Core::reroute('index.php?module=intern&action=showEditMajors');
                 break;
                 /**
                  * Matt additions!
@@ -189,7 +188,6 @@ class InternshipInventory {
                 if (!Current_User::allow('intern', 'edit_state')) {
                     disallow();
                 }
-                PHPWS_Core::initModClass('intern', 'State.php');
                 $state = new State($_GET['abbr']);
                 $state->setActive(true);
                 $state->save();
@@ -199,24 +197,23 @@ class InternshipInventory {
                 if (!Current_User::allow('intern', 'edit_state')) {
                     disallow();
                 }
-                PHPWS_Core::initModClass('intern', 'State.php');
                 $state = new State($_GET['abbr']);
                 $state->setActive(false);
                 $state->save();
                 exit();
                 break;
-            case STATE_EDIT:
+            case 'edit_states':
                 if (!Current_User::allow('intern', 'edit_state')) {
                     disallow();
                 }
-                PHPWS_Core::initModClass('intern', 'UI/StateUI.php');
                 $view = new StateUI();
                 $this->content = $view->display();
                 break;
+            case 'showEditAdmins':
+                $view = new UI\AdminUI();
+                $this->content = $view->display();
+                break;
             case 'edit_admins':
-                PHPWS_Core::initModClass('intern', 'UI/AdminUI.php');
-                PHPWS_Core::initModClass('intern', 'Admin.php');
-                PHPWS_Core::initModClass('intern', 'Department.php');
                 if (isset($_REQUEST['add'])) {
                     // Add user in REQUEST to administrator list for the department in REQUEST.
                     Admin::add($_REQUEST['username'], $_REQUEST['department_id']);
@@ -228,13 +225,10 @@ class InternshipInventory {
                     echo json_encode($users);
                     exit();
                 }
-                $view = new AdminUI();
+                $view = new UI\AdminUI();
                 $this->content = $view->display();
                 break;
             case 'pdf':
-                PHPWS_Core::initModClass('intern', 'InternshipFactory.php');
-                PHPWS_Core::initModClass('intern', 'InternshipContractPdfView.php');
-                PHPWS_Core::initModClass('intern', 'EmergencyContactFactory.php');
                 $i = InternshipFactory::getInternshipById($_REQUEST['id']);
                 $emgContacts = EmergencyContactFactory::getContactsForInternship($i);
                 $pdfView = new InternshipContractPdfView($i, $emgContacts);
@@ -242,57 +236,67 @@ class InternshipInventory {
                 $pdf->output();
                 exit;
             case 'upload_document_form':
-                PHPWS_Core::initModClass('intern', 'Intern_Document_Manager.php');
-                $docManager = new Intern_Document_Manager();
+                $docManager = new DocumentManager();
                 echo $docManager->edit();
                 exit();
                 break;
             case 'post_document_upload':
-                PHPWS_Core::initModClass('intern', 'Intern_Document_Manager.php');
-                $docManager = new Intern_Document_Manager();
+                $docManager = new DocumentManager();
                 $docManager->postDocumentUpload();
                 break;
             case 'delete_document':
-                PHPWS_Core::initModClass('intern', 'Intern_Document.php');
-                $doc = new Intern_Document($_REQUEST['doc_id']);
+                $doc = new InternDocument($_REQUEST['doc_id']);
                 $doc->delete();
-                NQ::simple('intern', INTERN_SUCCESS, 'Document deleted.');
-                NQ::close();
-                PHPWS_Core::goBack();
+                \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, 'Document deleted.');
+                \NQ::close();
+                \PHPWS_Core::goBack();
                 break;
             case 'addEmergencyContact':
-                PHPWS_Core::initModClass('intern', 'command/AddEmergencyContact.php');
-                $ctrl = new AddEmergencyContact();
+                $ctrl = new Command\AddEmergencyContact();
                 $ctrl->execute();
                 break;
             case 'removeEmergencyContact':
-                PHPWS_Core::initModClass('intern', 'command/RemoveEmergencyContact.php');
                 $ctrl = new RemoveEmergencyContact();
                 $ctrl->execute();
                 break;
             case 'edit_faculty':
-                PHPWS_Core::initModClass('intern', 'FacultyUI.php');
-                $facultyUI = new FacultyUI();
+                $facultyUI = new UI\FacultyUI();
                 $this->content = $facultyUI->display();
                 break;
             case 'getFacultyListForDept':
-                PHPWS_Core::initModClass('intern', 'command/GetFacultyListForDept.php');
-                $ctrl = new GetFacultyListForDept();
+                $ctrl = new Command\GetFacultyListForDept();
                 $ctrl->execute();
                 break;
             case 'restFacultyById':
-                PHPWS_Core::initModClass('intern', 'command/RestFacultyById.php');
-                $ctrl = new RestFacultyById();
+                $ctrl = new Command\RestFacultyById();
                 $ctrl->execute();
                 break;
             case 'facultyDeptRest':
-                PHPWS_Core::initModClass('intern', 'command/FacultyDeptRest.php');
-                $ctrl = new FacultyDeptRest();
+                $ctrl = new Command\FacultyDeptRest();
                 $ctrl->execute();
                 break;
+            case 'GetSearchSuggestions':
+                $ctrl = new Command\GetSearchSuggestions();
+                $ctrl->execute();
+                break;
+            case 'GetAvailableStates':
+                $ctrl = new Command\GetAvailableStates();
+                $ctrl->execute();
+                break;
+            case 'GetAvailableCountries':
+                $ctrl = new Command\GetAvailableCountries();
+                $ctrl->execute();
+                break;
+            case 'GetDepartments':
+                $ctrl = new Command\GetDepartments();
+                $ctrl->execute();
+                break;
+            case 'GetAvailableTerms':
+            $ctrl = new Command\GetAvailableTerms();
+            $ctrl->execute();
+            break;
             default:
-                PHPWS_Core::initModClass('intern', 'UI/InternMenu.php');
-                $menu = new InternMenu();
+                $menu = new UI\InternMenu();
                 $this->content = $menu->display();
                 break;
         }

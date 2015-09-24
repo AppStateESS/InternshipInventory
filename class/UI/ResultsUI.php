@@ -1,5 +1,10 @@
 <?php
 
+namespace Intern\UI;
+
+use Intern\SubselectPager;
+use Intern\SubselectDatabase;
+
 /**
  * ResultsUI
  *
@@ -8,19 +13,13 @@
  *
  * @author Robert Bost <bostrt at tux dot appstate dot edu>
  */
-PHPWS_Core::initModClass('intern', 'UI/UI.php');
-
-
 class ResultsUI implements UI {
 
-    public static function display()
+    public function display()
     {
         javascript('jquery');
 
-        PHPWS_Core::initModClass('intern', 'SubselectPager.php');
-        PHPWS_Core::initModClass('intern', 'Internship.php');
-
-        Layout::addPageTitle('Search Results');
+        \Layout::addPageTitle('Search Results');
 
         // Initalize variables
         $dept = null;
@@ -29,12 +28,11 @@ class ResultsUI implements UI {
         $ugradMajor = null;
         $gradProg = null;
         $level = null;
-        $major = null;
         $campus = null;
         $type = null;
         $loc = null;
         $state = null;
-        $prov = null;
+        $country = null;
         $workflowState = null;
         $courseSubject = null;
         $courseNum = null;
@@ -45,29 +43,28 @@ class ResultsUI implements UI {
          * Check if any search fields are set.
          * This is a pretty nasty block of code...
          */
-
         if (isset($_REQUEST['dept']))
             $dept = $_REQUEST['dept'];
         if (isset($_REQUEST['term_select']))
             $term = $_REQUEST['term_select'];
         if (isset($_REQUEST['name']))
             $name = $_REQUEST['name'];
-        if (isset($_REQUEST['ugrad_major']))
-            $ugradMajor = $_REQUEST['ugrad_major'];
-        if (isset($_REQUEST['grad_prog']))
-            $gradProg = $_REQUEST['grad_prog'];
+        if (isset($_REQUEST['undergrad_major']))
+            $ugradMajor = $_REQUEST['undergrad_major'];
+        if (isset($_REQUEST['graduate_major']))
+            $gradProg = $_REQUEST['graduate_major'];
         if (isset($_REQUEST['student_level']) && $_REQUEST['student_level'] != '-1')
             $level = $_REQUEST['student_level'];
         if (isset($_REQUEST['type']))
             $type = $_REQUEST['type'];
         if (isset($_REQUEST['campus']))
             $campus = $_REQUEST['campus'];
-        if (isset($_REQUEST['loc']))
-            $loc = $_REQUEST['loc'];
+        if (isset($_REQUEST['location']))
+            $loc = $_REQUEST['location'];
         if (isset($_REQUEST['state']))
             $state = $_REQUEST['state'];
-        if (isset($_REQUEST['prov']))
-            $prov = $_REQUEST['prov'];
+        if (isset($_REQUEST['country']))
+            $country = $_REQUEST['country'];
         if (isset($_REQUEST['workflow_state']))
             $workflowState = $_REQUEST['workflow_state'];
         if (isset($_REQUEST['course_subj']))
@@ -78,14 +75,14 @@ class ResultsUI implements UI {
             $courseSect = $_REQUEST['course_sect'];
 
             /* Get Pager */
-        $pager = self::getPager($name, $dept, $term, $ugradMajor, $gradProg, $level, $type, $campus, $loc, $state, $prov, $workflowState, $courseSubject, $courseNum, $courseSect);
+        $pager = self::getPager($name, $dept, $term, $ugradMajor, $gradProg, $level, $type, $campus, $loc, $state, $country, $workflowState, $courseSubject, $courseNum, $courseSect);
 
         $pagerContent = $pager->get();
 
         // If there were no results, send the user back to the search interface
         if ($pager->total_rows == 0) {
-            NQ::simple('intern', INTERN_WARNING, "There were no internships that matched your search criteria. If you're looking for a specific student double check the student's name, id number, or email address. Otherwise, try selecting less search criteria and then search again.");
-            NQ::close();
+            \NQ::simple('intern', NotifyUI::WARNING, "There were no internships that matched your search criteria. If you're looking for a specific student double check the student's name, id number, or email address. Otherwise, try selecting less search criteria and then search again.");
+            \NQ::close();
 
             // Rebuild the URL
             $url = 'index.php?module=intern&action=search&';
@@ -94,7 +91,7 @@ class ResultsUI implements UI {
 
             $url .= http_build_query($_REQUEST);
 
-            //return PHPWS_Core::reroute($url);
+            return \PHPWS_Core::reroute($url);
         }
 
         return $pagerContent;
@@ -104,9 +101,9 @@ class ResultsUI implements UI {
      * Get the DBPager object.
      * Search strings can be passed in too.
      */
-    private static function getPager($name = null, $deptId = null, $term = null, $ugradMajor = null, $gradProg = null, $level = null, $type = null, $campus = null, $loc = null, $state = null, $prov = null, $workflowState = null, $courseSubject = null, $courseNum = null, $courseSect = null)
+    private static function getPager($name = null, $deptId = null, $term = null, $ugradMajor = null, $gradProg = null, $level = null, $type = null, $campus = null, $loc = null, $state = null, $country = null, $workflowState = null, $courseSubject = null, $courseNum = null, $courseSect = null)
     {
-        $pager = new SubselectPager('intern_internship', 'Internship');
+        $pager = new SubselectPager('intern_internship', '\Intern\InternshipRestored');
 
         // Pager Settings
         $pager->setModule('intern');
@@ -117,18 +114,18 @@ class ResultsUI implements UI {
 
         $pager->db->tables = array();
         $pager->db->addTable('intern_internship', 'fuzzy');
-        $pager->db->addColumnRaw('fuzzy.*');
+
+        //$pager->db->addColumnRaw('fuzzy.*');
 
         // If the current user is not a deity and doesn't have the 'all_departments' permission,
         // then add a join to limit the results to just the allowed departments
-        if (!Current_User::isDeity() && !Current_User::allow('intern', 'all_departments')) {
+        if (!\Current_User::isDeity() && !\Current_User::allow('intern', 'all_departments')) {
             $pager->db->addJoin('', 'fuzzy', 'intern_admin', 'department_id', 'department_id');
-            $pager->addWhere('intern_admin.username', Current_User::getUsername());
+            $pager->addWhere('intern_admin.username', \Current_User::getUsername());
         }
 
         // Limit to requested department
         if (!is_null($deptId) && $deptId != -1) {
-
             $pager->addWhere('department_id', $deptId);
         }
 
@@ -204,12 +201,12 @@ class ResultsUI implements UI {
         }
 
         $pager->db->addJoin('LEFT OUTER', 'fuzzy', 'intern_faculty', 'faculty_id', 'id');
-        $pager->db->addColumnRaw('intern_faculty.id as faculty_banner_id');
-        $pager->db->addColumnRaw('intern_faculty.last_name as faculty_last_name');
-
-
-        $pager->db->addJoin('LEFT OUTER', 'fuzzy', 'intern_department', 'department_id', 'id');
-        $pager->db->addColumnRaw('intern_department.name as department_name');
+        // $pager->db->addColumnRaw('intern_faculty.id as faculty_banner_id');
+        // $pager->db->addColumnRaw('intern_faculty.last_name as faculty_last_name');
+        //
+        //
+        // $pager->db->addJoin('LEFT OUTER', 'fuzzy', 'intern_department', 'department_id', 'id');
+        // $pager->db->addColumnRaw('intern_department.name as department_name');
 
         // Student level
         if (isset($level)) {
@@ -218,10 +215,10 @@ class ResultsUI implements UI {
             // Major
             if ($level == 'ugrad' && isset($ugradMajor) && $ugradMajor != -1) {
                 // Undergrad major
-                $pager->addWhere('ugrad_major', $ugradMajor);
+                $pager->addWhere('major_code', $ugradMajor);
             } else if ($level == 'grad' && isset($gradProg) && $gradProg != -1) {
                 // Graduate program
-                $pager->addWhere('grad_prog', $gradProg);
+                $pager->addWhere('major_code', $gradProg);
             }
         }
 
@@ -253,7 +250,7 @@ class ResultsUI implements UI {
         }
 
         // Campus
-        if (isset($campus)) {
+        if (isset($campus) && $campus != '-1') {
             $pager->addWhere('campus', $campus);
         }
 
@@ -263,19 +260,17 @@ class ResultsUI implements UI {
         }
 
         // International
-        if (!is_null($prov) && $prov != '') {
-            $pager->addWhere('loc_country', "%$prov%", 'ILIKE', 'OR', 'intl_loc');
-            $pager->addWhere('loc_province', "%$prov%", 'ILIKE', 'OR', 'intl_loc');
+        if (!is_null($country) && $country != '-1') {
+            $pager->addWhere('loc_country', $country);
         }
 
         // Workflow state/status
         if (isset($workflowState)) {
             foreach ($workflowState as $s) {
-                $pager->db->addWhere('state', $s, '=', 'OR', 'workflow_group');
+                $path = explode('\\', $s);
+                $pager->db->addWhere('state', $path[2], '=', 'OR', 'workflow_group');
             }
         }
-
-        //$pager->db->setTable(array('fuzzy'));
 
         //var_dump($pager);exit;
         //$pager->db->setTestMode();
@@ -286,29 +281,26 @@ class ResultsUI implements UI {
          */
         $pager->setAutoSort(false);
         $pager->addSortHeader('term', 'Term');
+
+        // $pager->joinResult('student_id', 'intern_student', 'id', 'last_name', 'student_last_name');
         $pager->addSortHeader('last_name', 'Student\'s Name');
+
+        // $pager->joinResult('student_id', 'intern_student', 'id', 'banner');
         $pager->addSortHeader('banner', 'Banner ID');
-        $pager->addSortHeader('state', 'Status');
 
         $pager->joinResult('department_id', 'intern_department', 'id', 'name');
         $pager->addSortHeader('intern_department.name', 'Department Name');
-        //var_dump($pager);exit;
 
-        //$pager->joinResult('faculty_id', 'intern_faculty', 'id', 'last_name', 'faculty_last_name');
+        // $pager->joinResult('faculty_id', 'intern_faculty', 'id', 'last_name', 'faculty_last_name');
         $pager->addSortHeader('intern_faculty.last_name', 'Instructor');
 
-
-        /**
-         * *** Row Background Color Toggles *****
-         */
-        $pager->addToggle('tablerow-bg-color1');
-        $pager->addToggle('tablerow-bg-color2');
+        $pager->addSortHeader('state', 'Status');
 
         /**
          * *** Other Page Tags *****
          */
         $pageTags = array();
-        $pageTags['BACK_LINK_URI'] = PHPWS_Text::linkAddress('intern', array('action' => 'search'));
+        $pageTags['BACK_LINK_URI'] = \PHPWS_Text::linkAddress('intern', array('action' => 'search'));
 
 
         $pager->addPageTags($pageTags);
@@ -316,4 +308,3 @@ class ResultsUI implements UI {
         return $pager;
     }
 }
-?>

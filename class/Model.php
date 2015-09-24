@@ -1,5 +1,11 @@
 <?php
 
+namespace Intern;
+
+use \PHPWS_Error;
+use \PHPWS_DB;
+use \Current_User;
+
 /**
  * Model
  *
@@ -58,7 +64,7 @@ abstract class Model {
     }
 
     /**
-     * Save model to database 
+     * Save model to database
      * @return - new ID of model.
      */
     public function save()

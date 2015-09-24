@@ -3,7 +3,7 @@
 /**
  *
  * @author Micah Carter <mcarter at tux dot appstate dot edu>
- *        
+ *
  */
 function intern_update(&$content, $currentVersion)
 {
@@ -11,9 +11,9 @@ function intern_update(&$content, $currentVersion)
         case version_compare($currentVersion, '0.0.2', '<') :
             $files = array();
             $files[] = 'templates/add_system.tpl';
-            
+
             PHPWS_Boost::updateFiles($files, 'intern');
-        
+
         case version_compare($currentVersion, '0.0.3', '<') :
             $db = new PHPWS_DB();
             $result = $db->importFile(PHPWS_SOURCE_DIR . 'mod/intern/boost/updates/update_0_0_03.sql');
@@ -26,7 +26,7 @@ function intern_update(&$content, $currentVersion)
             if (PEAR::isError($result)) {
                 return $result;
             }
-        
+
         case version_compare($currentVersion, '0.0.6', '<') :
             $db = new PHPWS_DB();
             $result = $db->importFile(PHPWS_SOURCE_DIR . 'mod/intern/boost/updates/update_0_0_06.sql');
@@ -186,11 +186,11 @@ function intern_update(&$content, $currentVersion)
             }
             PHPWS_Core::initModClass('users', 'Permission.php');
             Users_Permission::registerPermissions('intern', $content);
-        
+
         case version_compare($currentVersion, '0.0.33', '<') :
             PHPWS_Core::initModClass('users', 'Permission.php');
             Users_Permission::registerPermissions('intern', $content);
-        
+
         case version_compare($currentVersion, '0.0.35', '<') :
             $db = new PHPWS_DB();
             $result = $db->importFile(PHPWS_SOURCE_DIR . 'mod/intern/boost/updates/update_0_0_35.sql');
@@ -200,17 +200,17 @@ function intern_update(&$content, $currentVersion)
         case version_compare($currentVersion, '0.0.36', '<') :
             PHPWS_Core::initModClass('users', 'Permission.php');
             Users_Permission::registerPermissions('intern', $content);
-        
+
         case version_compare($currentVersion, '0.0.37', '<') :
             $db = new PHPWS_DB();
             $result = $db->importFile(PHPWS_SOURCE_DIR . 'mod/intern/boost/updates/update_0_0_37.sql');
             if (PEAR::isError($result)) {
                 return $result;
             }
-        
+
         case version_compare($currentVersion, '0.1.0', '<') :
             Users_Permission::registerPermissions('intern', $content);
-        
+
         case version_compare($currentVersion, '0.1.1', '<') :
             $db = new PHPWS_DB();
             $result = $db->importFile(PHPWS_SOURCE_DIR . 'mod/intern/boost/updates/update_00.01.01.sql');
@@ -253,7 +253,13 @@ function intern_update(&$content, $currentVersion)
             if (PEAR::isError($result)) {
                 return $result;
             }
+        case version_compare($currentVersion, '0.1.8', '<') :
+            $db = new PHPWS_DB();
+            $result = $db->importFile(PHPWS_SOURCE_DIR . 'mod/intern/boost/updates/update_00.01.08.sql');
+            if (PEAR::isError($result)) {
+                return $result;
+            }
     }
-    
+
     return TRUE;
 }

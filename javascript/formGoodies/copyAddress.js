@@ -8,7 +8,7 @@ function copyAddress(){
         $("#internship_agency_sup_province").val($("#internship_agency_province").val());
         $("#internship_agency_sup_country").val($("#internship_agency_country").val());
     }
-    
+
     function addHandlersSupervisor(){
         $("#internship_agency_address").keyup(doCopySupervisor);
         $("#internship_agency_city").keyup(doCopySupervisor);
@@ -17,9 +17,9 @@ function copyAddress(){
         $("#internship_agency_province").keyup(doCopySupervisor);
         $("#internship_agency_country").keyup(doCopySupervisor);
     }
-    
+
     function removeHandlersSupervisor(){
-        /* Remove handlers */
+        // Remove handlers
         $("#internship_agency_address").unbind('keyup');
         $("#internship_agency_city").unbind('keyup');
         $("#internship_agency_state").unbind('change');
@@ -31,12 +31,12 @@ function copyAddress(){
     function doCopyAgency(){
         $("#internship_agency_address").val($("#internship_loc_address").val());
         $("#internship_agency_city").val($("#internship_loc_city").val());
-        $("#internship_agency_state").val($("#internship_loc_state").val());
+        $("#internship_agency_state").val(internship.loc_state);
         $("#internship_agency_zip").val($("#internship_loc_zip").val());
         $("#internship_agency_province").val($("#internship_loc_province").val());
-        $("#internship_agency_country").val($("#internship_loc_country").val());
+        $("#internship_agency_country").val(internship.loc_country);
     }
-    
+
     function addHandlersAgency(){
         $("#internship_loc_address").keyup(doCopyAgency);
         $("#internship_loc_city").keyup(doCopyAgency);
@@ -45,9 +45,9 @@ function copyAddress(){
         $("#internship_loc_province").keyup(doCopyAgency);
         $("#internship_loc_country").keyup(doCopyAgency);
     }
-    
+
     function removeHandlersAgency(){
-        /* Remove handlers */
+        // Remove handlers
         $("#internship_loc_address").unbind('keyup');
         $("#internship_loc_city").unbind('keyup');
         $("#internship_loc_state").unbind('change');
@@ -55,7 +55,7 @@ function copyAddress(){
         $("#internship_loc_province").unbind('keyup');
         $("#internship_loc_country").unbind('keyup');
     }
-    
+
     // Bind event handler for "same address" checkbox
     $("#internship_copy_address").change(function(){
         if($("#internship_copy_address").prop('checked')){
@@ -68,7 +68,7 @@ function copyAddress(){
             removeHandlersSupervisor();
         }
     });
-    
+
     // Bind event handler for "same address" checkbox
     $("#internship_copy_address_agency").change(function(){
         if($("#internship_copy_address_agency").prop('checked')){
@@ -81,12 +81,12 @@ function copyAddress(){
             removeHandlersAgency();
         }
     });
-    
+
     // Set initial state
     if($("#internship_copy_address").prop('checked')){
         addHandlersSupervisor();
     }
-    
+
     // Set initial state
     if($("#internship_copy_address_agency").prop('checked')){
         addHandlersAgency()();

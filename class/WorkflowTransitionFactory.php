@@ -1,48 +1,63 @@
 <?php
 
-PHPWS_Core::initModClass('intern', 'WorkflowTransition.php');
+namespace Intern;
+
+use \PHPWS_Core;
 
 class WorkflowTransitionFactory {
-    
-    private static $dir = 'WorkflowTransitions';
-    
+
+    private static $dir = 'WorkflowTransition';
+
+    /**
+     * Get the list of transitions currently available for a given state
+     *
+     * @param WorkflowState $state State object to get transitions for
+     * @param Internship    $internship Internship object that this state applies to
+     * @returns Array   Array of available transitions
+     */
     public static function getTransitionsFromState(WorkflowState $state, Internship $i)
     {
         $stateName = $state->getName();
-        
-        $transitions = self::getAllTransitions();
+
+        // Strip namespace from state name by matching the last word character in the path
+        preg_match('/\w*$/', $stateName, $matches);
+
+        $stateName = $matches[0];
+
+        $transitions = self::getAllTransitions(); // Get all transitions
         $outgoingTrans = array();
-        
+
+        // Filter the list of all transitions by finding the transitions which have this state
+        // in their list of potential source states
         foreach($transitions as $t){
             // Set the actual source state
             $t->setSourceState($state);
-            
+
             if(is_array($t->getSourceState()) && in_array($stateName, $t->getSourceState()) && $t->isApplicable($i)){
                 $outgoingTrans[] = $t;
             }else if(($t->getSourceState() == $stateName || $t->getSourceState() == '*') && $t->isApplicable($i)){
                 $outgoingTrans[] = $t;
             }
         }
-        
+
         uasort($outgoingTrans, array('self', 'sortTransitions'));
-        
+
         return $outgoingTrans;
     }
-    
+
     public static function getTransitionByName($name)
     {
         if(!isset($name)){
-            throw new InvalidArgumentException('Missing transition name.');
+            throw new \InvalidArgumentException('Missing transition name.');
         }
-        
-        PHPWS_Core::initModClass('intern', self::$dir . '/' . $name . '.php');
+
         return new $name;
     }
-    
+
     public static function getAllTransitions()
     {
         $dir = PHPWS_SOURCE_DIR . 'mod/intern/class/' . self::$dir;
-        
+
         // Get the directory listing and filter out anything that doesn't look right
         $files = scandir("{$dir}/");
         $transitions = array();
@@ -53,16 +68,18 @@ class WorkflowTransitionFactory {
                 PHPWS_Core::initModClass('intern', self::$dir . '/' . $f);
                 $className = preg_replace('/\.php/', '', $f);
 
+                $className = '\Intern\WorkflowTransition\\' . $className;
+
                 // Instanciate each one
                 $transitions[] = new $className;
             }
         }
-        
+
         return $transitions;
     }
 
     /**
-     * Call-back function for sorting transitions by their priority. Lower sort index => lower priority. 
+     * Call-back function for sorting transitions by their priority. Lower sort index => lower priority.
      * @param WorkflowTransition $a
      * @param WorkflowTransition $b
      */

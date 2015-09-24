@@ -1,5 +1,7 @@
 <?php
 
+namespace Intern;
+
   /**
    * Major
    *
@@ -8,21 +10,17 @@
    *
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
-
-PHPWS_Core::initModClass('intern', 'Model.php');
-PHPWS_Core::initModClass('intern', 'Editable.php');
-define('MAJOR_EDIT', 'edit_major');
 class Major extends Editable
 {
     public $name;
     public $hidden;
-    
+
     /**
      * @Override Model::getDb
      */
     public static function getDb()
     {
-        return new PHPWS_DB('intern_major');
+        return new \PHPWS_DB('intern_major');
     }
 
     /**
@@ -45,7 +43,7 @@ class Major extends Editable
      */
     public static function getEditAction()
     {
-        return MAJOR_EDIT;
+        return 'edit_major';
     }
 
     /**
@@ -72,12 +70,12 @@ class Major extends Editable
     {
         return $this->hidden == 1;
     }
-    
+
     /**
      * Return an associative array {id => Major name } for all majors in DB
      * that aren't hidden.
      * @param $except - Always show the major with this ID. Used for students
-     *                  with a hidden major. We still want to see it in the select box. 
+     *                  with a hidden major. We still want to see it in the select box.
      */
     public static function getMajorsAssoc($except=null)
     {
@@ -98,7 +96,7 @@ class Major extends Editable
 
         return $majors;
     }
-    
+
     /**
      * Add a major to DB if it does not already exist.
      */
@@ -106,13 +104,13 @@ class Major extends Editable
     {
         $name = trim($name);
         if($name == ''){
-            return NQ::simple('intern', INTERN_WARNING, 'No name given for new major. No major was added.');
+            return \NQ::simple('intern', \Intern\NotifyUI::WARNING, 'No name given for new major. No major was added.');
         }
         /* Search DB for major with matching name. */
         $db = self::getDb();
         $db->addWhere('name', $name);
         if($db->select('count') > 0){
-            NQ::simple('intern', INTERN_WARNING, "The major <i>$name</i> already exists.");
+            \NQ::simple('intern', \Intern\NotifyUI::WARNING, "The major <i>$name</i> already exists.");
             return;
         }
 
@@ -120,16 +118,16 @@ class Major extends Editable
         $major = new Major();
         $major->name = $name;
         $major->hidden = 0;
-        
+
         try{
             $major->save();
         }catch(Exception $e){
-            NQ::simple('intern', INTERN_ERROR, "Error adding major <i>$name</i>.<br/>".$e->getMessage());
+            \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "Error adding major <i>$name</i>.<br/>".$e->getMessage());
             return;
         }
 
         /* Major was successfully added. */
-        NQ::simple('intern', INTERN_SUCCESS, "<i>$name</i> added as undergraduate major.");
+        \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, "<i>$name</i> added as undergraduate major.");
     }
 }
 

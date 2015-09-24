@@ -1,16 +1,22 @@
 <?php
 
+namespace Intern;
+
   /**
    * Term...
    */
-PHPWS_Core::initModClass('intern', 'Model.php');
 class Term extends Model
 {
+    const SPRING    = 1;
+    const SUMMER1   = 2;
+    const SUMMER2   = 3;
+    const FALL      = 4;
+
     public $term;
 
     public static function getDb()
     {
-        return new PHPWS_DB('intern_term');
+        return new \PHPWS_DB('intern_term');
     }
 
     public function getCSV()
@@ -26,10 +32,10 @@ class Term extends Model
     {
         $db = self::getDb();
         $db->addOrder('term desc');
-        $terms = $db->getObjects('Term');
+        $terms = $db->getObjects('Intern\Term');
         $readables = array();
         $readables[-1] = 'All';
-        
+
         foreach($terms as $t){
             // Ex. array(20111 => "Spring 2011");
             $readables[$t->term] = self::rawToRead($t->term);
@@ -37,8 +43,8 @@ class Term extends Model
 
         return $readables;
     }
-    
-        /**
+
+    /**
      * Get an associative array of terms > current term
      * in the database. Looks like: { raw_term => readable_string }
      */
@@ -46,12 +52,11 @@ class Term extends Model
     {
 		$currentTerm = self::timeToTerm(time());
 		$db = self::getDb();
-		$db->addWhere('intern_term.term', $currentTerm, '>=');
-		$db->addOrder('term desc');
-        $terms = $db->getObjects('Term');
+		$db->addWhere('intern_term.term', $currentTerm, '>');
+		$db->addOrder('term asc');
+        $terms = $db->getObjects('Intern\Term');
         $readables = array();
-        $readables[-1] = 'All';
-        
+
         foreach($terms as $t){
             // Ex. array(20111 => "Spring 2011");
             $readables[$t->term] = self::rawToRead($t->term);
@@ -67,15 +72,16 @@ class Term extends Model
      */
     public static function rawToRead($t, $super=false)
     {
-        $semester = $t[strlen($t)-1];// Get last char
-        $year = substr($t, 0, strlen($t)-1);
+        $semester   = substr($t, strlen($t) - 1, 1);
+        $year       = substr($t, 0, strlen($t)-1);
+
         switch($semester){
             case '1':
                 return "Spring $year";
             case '2':
                 if($super)
                     return "1<sup>st</sup> Summer $year";
-                else 
+                else
                     return "1st Summer $year";
             case '3':
                 if($super)
@@ -86,15 +92,15 @@ class Term extends Model
                 return "Fall $year";
             default:
                 // Whaattt??
-                NQ::simple('intern', INTERN_WARNING, 'Term error: '.$t);
+                \NQ::simple('intern', \Intern\UI\NotifyUI::WARNING, 'Term error: '.$t);
                 return "$year";
         }
     }
-    
+
     /**
      * Figure out if it is time to add new terms to the database.
      * Get lastest term. If it is NOT at least 3 ahead of NOW
-     * it's time to add new terms 
+     * it's time to add new terms
      */
     public static function isTimeToUpdate()
     {
@@ -103,18 +109,18 @@ class Term extends Model
         $db = self::getDb();
         $db->addOrder('term desc');
         $result = $db->select();
-        
+
         /* Just log if it's an error. User can resume their work.*/
-        if(PHPWS_Error::logIfError($result))
+        if(\PHPWS_Error::logIfError($result))
             return null;// Be quiet.
-        /* 
+        /*
          * If there aren't at least three elements in the result return true.
          * This will cause terms to be inserted.
          */
         if(sizeof($result) < 3)
             return true;
-        
-        /* 
+
+        /*
          * If the CURRENT date/term is greater than the third to newest term/date
          * in database then we need to create a new one. This will keep the intern
          * module ahead by two terms. That may have been confusing but that's just
@@ -129,8 +135,8 @@ class Term extends Model
 
     /**
      * Update term in database.
-     * The DB needs to be kept two terms ahead 
-     * of the current term. 
+     * The DB needs to be kept two terms ahead
+     * of the current term.
      */
     public static function doTermUpdate()
     {
@@ -142,9 +148,9 @@ class Term extends Model
             $result = $db->select('row');// Get first row (Max).
 
             /* Just log if it's an error. User can resume their work.*/
-            if(PHPWS_Error::logIfError($result))
+            if(\PHPWS_Error::logIfError($result))
                 return null;// Be quiet.
-            
+
             if(sizeof($result) == 0){
                 /* If there is nothing in database insert the current Term! */
                 $term = new Term();
@@ -178,7 +184,7 @@ class Term extends Model
      *
      * These ranges for terms are GUESSES.
      * TODO: Might need to add some config
-     * view so admins can change them up. 
+     * view so admins can change them up.
      *
      * Ex. April 9th, 2011 is in 20101 term.
      * @param $time - unix time
@@ -204,10 +210,15 @@ class Term extends Model
         }
         /* Fall:  Sept 1 -- Dec 31 */
         else if($m >= 9 || $m <= 12){
-            $term .= '4';            
+            $term .= '4';
         }
 
         return intval($term);
+    }
+
+    public static function getSemester($term)
+    {
+        return substr($term, 4, 1);
     }
 }
 

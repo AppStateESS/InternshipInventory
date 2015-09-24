@@ -21,10 +21,34 @@
     <!-- Left Column -->
     <div class="col-lg-6">
 
-      <div class="form-group">
-        <label class="col-lg-3 control-label" for="{TERM_SELECT_ID}">{TERM_SELECT_LABEL_TEXT}</label>
-        <div class="col-lg-5">{TERM_SELECT}</div>
-      </div>
+        <fieldset class="search-fieldset">
+          <legend>Course</legend>
+
+          <div class="form-group">
+            <label class="col-lg-3 control-label" for="{TERM_SELECT_ID}">{TERM_SELECT_LABEL_TEXT}</label>
+            <div class="col-lg-5">{TERM_SELECT}</div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-lg-3 control-label" for="{COURSE_SUBJ_ID}">Subject</label>
+            <div class="col-lg-8">{COURSE_SUBJ}</div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-lg-3 control-label" for="{COURSE_NO_ID}">{COURSE_NO_LABEL_TEXT}</label>
+            <div class="col-lg-3">{COURSE_NO}</div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-lg-3 control-label" for="{COURSE_SECT_ID}">{COURSE_SECT_LABEL_TEXT}</label>
+            <div class="col-lg-3">{COURSE_SECT}</div>
+          </div>
+
+        </fieldset>
+
+        <fieldset class="search-fieldset">
+            <legend>Faculty</legend>
+        </fieldset>
 
       <div class="form-group">
         <label class="col-lg-3 control-label" for="{TERM_SELECT_ID}">{DEPT_LABEL_TEXT}</label>
@@ -35,36 +59,47 @@
       <fieldset>
         <legend>Level &amp; Major/Program</legend>
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{STUDENT_LEVEL_ID}">{STUDENT_LEVEL_LABEL_TEXT}</label>
-          <div class="col-lg-4">{STUDENT_LEVEL}</div>
-        </div>
-
-        <div class="form-group">
-          <label class="col-lg-3 control-label" for="{UGRAD_MAJOR_ID}">Major / Program</label>
-          <div class="col-lg-8">{STUDENT_MAJOR}{UGRAD_MAJOR}{GRAD_PROG}</div>
-        </div>
-      </fieldset>
-
-      <fieldset>
-        <legend>Campus</legend>
-        <div class="form-group">
-          <div class="col-lg-6 col-lg-offset-3">
-            <!-- BEGIN campus_repeat -->
-            <label class="radio-inline"> {CAMPUS} {CAMPUS_LABEL_TEXT} </label>
-            <!-- END campus_repeat -->
+          <label class="col-lg-3 control-label" for="student_level">Level</label>
+          <div class="col-lg-8">
+            <div class="btn-group" data-toggle="buttons">
+              <label class="btn btn-default active">Any Level
+                <input type="radio" class="student_level" name="student_level" value="-1" checked>
+              </label>
+              <label class="btn btn-default">Undergraduate
+                <input type="radio" class="student_level" name="student_level" value="ugrad">
+              </label>
+              <label class="btn btn-default">Graduate
+                <input type="radio" class="student_level" name="student_level" value="grad">
+              </label>
+            </div>
           </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-lg-3 control-label" for="{MAJOR_ID}">Major / Program</label>
+          <div class="col-lg-8">{STUDENT_MAJOR}{UNDERGRAD_MAJOR}{GRADUATE_MAJOR}</div>
         </div>
       </fieldset>
 
       <fieldset>
         <legend>Internship Type</legend>
         <div class="form-group">
-          <div class="col-lg-6 col-lg-offset-3">
-            <!-- BEGIN type_repeat -->
-            <div class="radio">
-              <label> {TYPE} {TYPE_LABEL_TEXT} </label>
-            </div>
-            <!-- END type_repeat -->
+          <label class="col-lg-3 control-label" for="type">Location</label>
+          <div class="col-lg-9">
+              <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-default">Internship
+                  <input type="radio" name="type" value="internship">
+                </label>
+                <label class="btn btn-default">Student Teaching
+                  <input type="radio" name="type" value="student_teaching">
+                </label>
+                <label class="btn btn-default">Practicum
+                  <input type="radio" name="type" value="practicum">
+                </label>
+                <label class="btn btn-default">Clinical
+                  <input type="radio" name="type" value="clinical">
+                </label>
+              </div>
           </div>
         </div>
       </fieldset>
@@ -73,47 +108,37 @@
 
     <!-- Right Column -->
     <div class="col-lg-6">
-
-      <fieldset class="search-fieldset">
-        <legend>Course</legend>
-
-        <div class="form-group">
-          <div class="col-lg-8 col-lg-offset-3">{COURSE_SUBJ}</div>
-        </div>
-
-        <div class="form-group">
-          <label class="col-lg-3 control-label" for="{COURSE_NO_ID}">{COURSE_NO_LABEL_TEXT}</label>
-          <div class="col-lg-3">{COURSE_NO}</div>
-        </div>
-
-        <div class="form-group">
-          <label class="col-lg-3 control-label" for="{COURSE_SECT_ID}">{COURSE_SECT_LABEL_TEXT}</label>
-          <div class="col-lg-3">{COURSE_SECT}</div>
-        </div>
-
-      </fieldset>
       <fieldset class="search-fieldset">
         <legend>Location</legend>
 
         <div class="form-group">
-          <div class="col-lg-6 col-lg-offset-3">
-            <!-- BEGIN loc_repeat -->
-            <label class="radio-inline"> {LOC} {LOC_LABEL_TEXT}</label>
-            <!-- END loc_repeat -->
+          <label class="col-lg-3 control-label" for="campus">Campus</label>
+          <div class="col-lg-8">
+              <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-default active">Any Campus
+                  <input type="radio" name="campus" value="-1" checked>
+                </label>
+                <label class="btn btn-default">Main Campus
+                  <input type="radio" name="campus" value="main_campus">
+                </label>
+                <label class="btn btn-default">Distance Ed
+                  <input type="radio" name="campus" value="distance_ed">
+                </label>
+              </div>
           </div>
         </div>
 
+        <div id="LocationSelector"></div>
+
+
+<!--
+        <div class="form-group">
+          <label class="col-lg-3 control-label" for="{STATE_ID}">{STATE_LABEL_TEXT}</label>
+          <div class="col-lg-4">{STATE}</div>
+        </div>
+-->
       </fieldset>
 
-      <div class="form-group">
-        <label class="col-lg-3 control-label" for="{STATE_ID}">{STATE_LABEL_TEXT}</label>
-        <div class="col-lg-4">{STATE}</div>
-      </div>
-
-      <div class="form-group">
-        <label class="col-lg-3 control-label" for="{PROV_ID}">{PROV_LABEL_TEXT}</label>
-        <div class="col-lg-6 controls">{PROV}</div>
-      </div>
 
       <fieldset>
         <legend>Status</legend>
@@ -142,3 +167,10 @@
     </div>
   </div>
 </form>
+
+<script type="text/jsx" src="{source_http}mod/intern/bower_components/classnames/index.js"></script>
+<script src="https://fb.me/react-with-addons-0.13.3.js"></script>
+<script src="https://fb.me/JSXTransformer-0.13.3.js"></script>
+<script type="text/jsx" src="{source_http}mod/intern/javascript/createInterface/StateDropDown.jsx"></script>
+<script type="text/jsx" src="{source_http}mod/intern/javascript/createInterface/InternationalDropDown.jsx"></script>
+<script type="text/jsx" src="{source_http}mod/intern/javascript/searchInterface/search.jsx"></script>
