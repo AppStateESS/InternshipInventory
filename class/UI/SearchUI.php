@@ -42,7 +42,7 @@ class SearchUI implements UI
         $form->setLabel('term_select', 'Term');
         $form->setClass('term_select', 'form-control');
 
-        $subjects = Subject::getSubjects();
+        $subjects = array('-1' => 'Select subject ') + Subject::getSubjects();
         $form->addSelect('course_subj', $subjects);
         $form->setLabel('course_subj', 'Subject');
         $form->setClass('course_subj', 'form-control');

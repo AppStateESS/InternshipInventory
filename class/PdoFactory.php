@@ -1,4 +1,7 @@
 <?php
+namespace Intern;
+
+use \PDO;
 
 /**
  * Singleton Factory class for creating PDO objects based on
@@ -64,4 +67,3 @@ class PdoFactory {
         return "$dbType:" . ($host != '' ? "host=$host" : '') . ";dbname=$dbName";
     }
 }
-

@@ -115,8 +115,6 @@ class ResultsUI implements UI {
         $pager->db->tables = array();
         $pager->db->addTable('intern_internship', 'fuzzy');
 
-        //$pager->db->addColumnRaw('fuzzy.*');
-
         // If the current user is not a deity and doesn't have the 'all_departments' permission,
         // then add a join to limit the results to just the allowed departments
         if (!\Current_User::isDeity() && !\Current_User::allow('intern', 'all_departments')) {
@@ -177,7 +175,7 @@ class ResultsUI implements UI {
             }
 
             $fuzzyDb = new SubselectDatabase('intern_internship');
-            $fuzzyDb->addColumnRaw('intern_internship.*');
+            $fuzzyDb->addColumn('intern_internship.*');
 
             // Foreach token
             for ($i = 0; $i < $tokenCount; $i++) {
@@ -201,12 +199,6 @@ class ResultsUI implements UI {
         }
 
         $pager->db->addJoin('LEFT OUTER', 'fuzzy', 'intern_faculty', 'faculty_id', 'id');
-        // $pager->db->addColumnRaw('intern_faculty.id as faculty_banner_id');
-        // $pager->db->addColumnRaw('intern_faculty.last_name as faculty_last_name');
-        //
-        //
-        // $pager->db->addJoin('LEFT OUTER', 'fuzzy', 'intern_department', 'department_id', 'id');
-        // $pager->db->addColumnRaw('intern_department.name as department_name');
 
         // Student level
         if (isset($level)) {
@@ -289,7 +281,7 @@ class ResultsUI implements UI {
         $pager->addSortHeader('banner', 'Banner ID');
 
         $pager->joinResult('department_id', 'intern_department', 'id', 'name');
-        $pager->addSortHeader('intern_department.name', 'Department Name');
+        $pager->addSortHeader('name', 'Department Name');
 
         // $pager->joinResult('faculty_id', 'intern_faculty', 'id', 'last_name', 'faculty_last_name');
         $pager->addSortHeader('intern_faculty.last_name', 'Instructor');

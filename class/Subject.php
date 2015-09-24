@@ -49,7 +49,7 @@ class Subject extends Model {
 
         $stmt = $db->prepare($query);
         $stmt->execute($params);
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $results = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
         foreach($results as $row){
             $subjects[$row['id']] = $row['abbreviation'] . ' - ' . $row['description'];
