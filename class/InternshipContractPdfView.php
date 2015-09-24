@@ -258,7 +258,7 @@ class InternshipContractPdfView {
         $agencyAddress = trim($a->getStreetAddress());
 
         if($internshipAddress != '' && $agencyAddress != '' && $internshipAddress != $agencyAddress) {
-            $this->pdf->setXY(110, 154);
+            $this->pdf->setXY(110, 163);
             $this->pdf->cell(52, 5, $this->internship->getLocationAddress());
         }
 

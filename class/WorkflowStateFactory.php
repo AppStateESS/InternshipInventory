@@ -33,7 +33,7 @@ class WorkflowStateFactory {
 
                 $className = 'Intern\WorkflowState\\' . $className;
 
-                // Instanciate each one
+                // Instantiate each one
                 $states[] = new $className;
             }
         }

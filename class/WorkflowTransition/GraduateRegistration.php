@@ -70,7 +70,7 @@ class GraduateRegistration extends WorkflowTransition {
 
             // Check the course credit hours field
             $creditHours = $i->getCreditHours();
-            if (!isset($creditHours) || $creditHours == '') {
+            if (!isset($creditHours) || $creditHours === '') {
                 throw new MissingDataException("Please enter the number of course credit hours.");
             }
         }

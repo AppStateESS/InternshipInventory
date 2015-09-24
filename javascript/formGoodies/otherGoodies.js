@@ -26,7 +26,7 @@ function addFormErrors()
 
 function initPayment()
 {
-    /* PAYMENT 
+    /* PAYMENT
      * If Paid is selected then make stipend selectable.
      */
     $("input:radio[value='paid']").click(function(){
@@ -173,7 +173,7 @@ function initFacultySelector()
         $("#faculty_fax").html('');
         $("#faculty_address").html('');
 
-        if($("#internship_department").val() === -1){
+        if($("#internship_department").val() === '-1'){
             return;
         }
 
@@ -220,7 +220,7 @@ function initFacultySelector()
         $("#internship_faculty").prop('disabled', false);
 
         // If a banner id is already set in the hidden field, select it
-        if ($("#internship_faculty_id").val() !== null) {
+        if ($("#internship_faculty_id").val() !== '') {
             selectFaculty($("#internship_faculty_id").val());
         }
     }
@@ -295,7 +295,7 @@ function initFacultySelector()
                 address += faculty.street_address1;
 
                 if (faculty.street_address2 !== '') {
-                    address += ("<br />" + faculty.street_address2); 
+                    address += ("<br />" + faculty.street_address2);
                 }
             } else {
                 address += ('<small class="text-muted">Address has not been set</small>');
@@ -317,7 +317,7 @@ function initFacultySelector()
 
 function otherStuff()
 {
-    
+
     addFormErrors();
     initPayment();
     initOIED();

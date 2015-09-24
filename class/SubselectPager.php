@@ -251,9 +251,8 @@ class SubselectPager extends \DBPager {
             }
 
             // Check for "sub order" (??)
-            $sub_order = @$this->sub_order[$col_name];
-            if (!empty($sub_order)) {
-                $orderby = implode('.', $sub_order);
+            if (isset($this->sub_order[$col_name]) && !empty($this->sub_order[$col_name])) {
+                $orderby = implode('.', $this->sub_order[$col_name]);
             } else {
                 $orderby = $this->orderby;
             }
@@ -299,7 +298,7 @@ class SubselectPager extends \DBPager {
         return true;
     }
 
-	//TODO: Why is this recursive?
+    //TODO: Why is this recursive?
     public function getTotalRows()
     {
         /**
@@ -349,7 +348,7 @@ class SubselectPager extends \DBPager {
                  */
                 return $this->fullRowCount();
             } else {
-            	return $this->fullRowCount();
+                return $this->fullRowCount();
             }
         }
     }
@@ -945,7 +944,7 @@ class SubselectPager extends \DBPager {
             $template[strtoupper($buttonname)] = $link;
         }
 
-         //test($template,1);
+        //var_dump($template);exit;
 
         return $template;
     }

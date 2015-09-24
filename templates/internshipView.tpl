@@ -261,7 +261,9 @@
 
       <div class="form-group">
         <label class="col-lg-3 control-label" for="{CREDITS_ID}">{CREDITS_LABEL_TEXT}</label>
-        <div class="col-lg-6">{CREDITS}</div>
+        <div class="col-lg-6">
+          {CREDITS} <span class="help-block"><small class="text-muted">Decimal values will be rounded.</small></span>
+        </div>
       </div>
 
       <div class="form-group">

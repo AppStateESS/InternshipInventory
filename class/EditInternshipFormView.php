@@ -624,7 +624,7 @@ class EditInternshipFormView {
             $this->form->setValue('oied_certified_hidden', 'true');
         } else {
             $this->form->setValue('oied_certified_hidden', 'false');
-        }       $this->formVals['loc_country'] = $this->intern->loc_country;
+        }
     }
 
     private function plugCourseInfo()
