@@ -486,7 +486,6 @@ class EditInternshipFormView {
         $birthday = $this->intern->getBirthDateFormatted();
 
         if(is_null($birthday)) {
-            var_dump('in here');
             $this->tpl['BIRTH_DATE'] = '<span class="text-muted"><em>Not available</em></span>';
         } else {
             $this->tpl['BIRTH_DATE'] = $this->intern->getBirthDateFormatted();
