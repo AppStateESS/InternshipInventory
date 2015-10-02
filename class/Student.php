@@ -76,6 +76,7 @@ class Student {
 
         $semester = Term::getSemester($term);
         $level = $this->getLevel();
+        $limit = 0;
         if(($semester == Term::FALL || $semester == Term::SPRING)) {
             if($level == self::UNDERGRAD){
                 $limit = self::HOURS_LIMIT_UNDERGRAD_REG;
