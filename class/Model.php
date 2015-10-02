@@ -57,7 +57,7 @@ abstract class Model {
         $result = $db->loadObject($this);
 
         if (PHPWS_Error::logIfError($result)) {
-            throw new Exception($result->toString());
+            throw new \Exception($result->toString());
         }
 
         return $result;
@@ -72,13 +72,13 @@ abstract class Model {
         $db = $this->getDb();
         try {
             $result = $db->saveObject($this);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // rethrow any exceptions
             throw $e->getMessage();
         }
 
         if (PHPWS_Error::logIfError($result)) {
-            throw new Exception($result->toString());
+            throw new \Exception($result->toString());
         }
 
         return $this->id;
@@ -97,7 +97,7 @@ abstract class Model {
         $result = $db->delete();
 
         if (PHPWS_Error::logIfError($result)) {
-            throw new Exception($result->getMessage(), $result->getCode());
+            throw new \Exception($result->getMessage(), $result->getCode());
         }
 
         return true;
