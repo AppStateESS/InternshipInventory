@@ -139,7 +139,7 @@ class SaveInternship {
          */
         try {
             $i = \Intern\InternshipFactory::getInternshipById($_REQUEST['internship_id']);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // Rollback and re-throw the exception so that admins gets an email
             \PHPWS_DB::rollback();
             throw $e;
@@ -286,7 +286,7 @@ class SaveInternship {
 
         try {
             $i->save();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // Rollback and re-throw the exception so that admins gets an email
             \PHPWS_DB::rollback();
             throw $e;
@@ -295,7 +295,7 @@ class SaveInternship {
         // Update agency
         try {
             $agency = AgencyFactory::getAgencyById($_REQUEST['agency_id']);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // Rollback and re-throw the exception so that admins gets an email
             \PHPWS_DB::rollback();
             throw $e;
@@ -334,7 +334,7 @@ class SaveInternship {
 
         try {
             DatabaseStorage::save($agency);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // Rollback and re-throw the exception so that admins gets an email
             \PHPWS_DB::rollback();
             throw $e;
@@ -347,7 +347,7 @@ class SaveInternship {
         $workflow = new \Intern\WorkflowController($i, $t);
         try {
             $workflow->doTransition(isset($_POST['notes'])?$_POST['notes']:null);
-        } catch (MissingDataException $e) {
+        } catch (\Intern\Exception\MissingDataException $e) {
             \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, $e->getMessage());
             \NQ::close();
             return \PHPWS_Core::reroute('index.php?module=intern&action=ShowInternship&internship_id=' . $i->id);
