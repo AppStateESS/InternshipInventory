@@ -20,13 +20,13 @@ class DatabaseStorage {
 
         try {
             $result = $db->saveObject($obj);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // rethrow any exceptions
             throw $e;
         }
 
         if (\PHPWS_Error::logIfError($result)) {
-            throw new Exception($result->toString());
+            throw new \Exception($result->toString());
         }
 
         return $obj->id;
@@ -52,7 +52,7 @@ class DatabaseStorage {
         $result = $db->loadObject($instance);
 
         if (\PHPWS_Error::logIfError($result)) {
-            throw new Exception($result->toString());
+            throw new \Exception($result->toString());
         }
 
         return $result;
@@ -87,7 +87,7 @@ class DatabaseStorage {
         }
 
         if(\PHPWS_Error::logIfError($result)) {
-            throw new Exception($result->toString());
+            throw new \Exception($result->toString());
         }
     }
 
