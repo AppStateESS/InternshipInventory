@@ -8,6 +8,7 @@ use Intern\Agency;
 use Intern\StudentProviderFactory;
 use Intern\WorkflowStateFactory;
 use Intern\ChangeHistory;
+use Intern\Department;
 
 use Intern\DatabaseStorage;
 
@@ -57,6 +58,10 @@ class AddInternship {
         $departmentId = preg_replace("/^_/", '', $_POST['department']); // Remove leading underscore in department id
         $department = DepartmentFactory::getDepartmentById($departmentId);
 
+        if(!($department instanceof Department)){
+            throw new \Exception('Could not load department.');
+        }
+
         // Create and save the agency object
         $agency = new Agency($_POST['agency']);
         DatabaseStorage::save($agency);
@@ -64,12 +69,12 @@ class AddInternship {
         // Get the location
         $location = $_POST['location'];
 
-        if($location == 'domestic') {
-            $state = $_POST['state'];
-            $country = null;
-        } else if ($location == 'international'){
+        if ($location == 'international'){
             $state = null;
             $country = $_POST['country'];
+        } else {
+            $state = $_POST['state'];
+            $country = null;
         }
 
         // Create a new internship object
