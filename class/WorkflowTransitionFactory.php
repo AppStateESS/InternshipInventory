@@ -12,8 +12,8 @@ class WorkflowTransitionFactory {
      * Get the list of transitions currently available for a given state
      *
      * @param WorkflowState $state State object to get transitions for
-     * @param Internship    $internship Internship object that this state applies to
-     * @returns Array   Array of available transitions
+     * @param Internship    $i Internship object that this state applies to
+     * @return Array   Array of available transitions
      */
     public static function getTransitionsFromState(WorkflowState $state, Internship $i)
     {
