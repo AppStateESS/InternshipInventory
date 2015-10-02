@@ -20,7 +20,7 @@ class ShowInternship {
         // Load the Internship
         try{
             $intern = InternshipFactory::getInternshipById($_REQUEST['internship_id']);
-        }catch(InternshipNotFoundException $e){
+        }catch(\Intern\Exception\InternshipNotFoundException $e){
             \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, 'Could not locate an internship with the given ID.');
             return;
         }
