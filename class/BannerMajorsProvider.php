@@ -6,7 +6,7 @@ use \SoapFault;
 
 class BannerMajorsProvider extends MajorsProvider {
 
-    private $currentUserName;
+    protected $currentUserName;
 
     private $client;
 
