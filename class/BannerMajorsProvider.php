@@ -2,6 +2,8 @@
 
 namespace Intern;
 
+use \SoapFault;
+
 class BannerMajorsProvider extends MajorsProvider {
 
     private $currentUserName;
