@@ -2,6 +2,8 @@
 
 namespace Intern;
 
+use \SoapFault;
+
 /**
  * BannerStudentProvider
  *
@@ -66,6 +68,9 @@ class BannerStudentProvider extends StudentProvider {
             throw new \Intern\Exception\StudentNotFoundException("Could not locate student: $studentId");
         }
 
+        // Log the request
+        $this->logRequest('getStudent', 'success', $params);
+
         $response->creditHours = $this->getCreditHours($studentId, $term);
 
         // Create the Student object and plugin the values
@@ -93,6 +98,9 @@ class BannerStudentProvider extends StudentProvider {
         } catch (SoapFault $e){
             throw $e;
         }
+
+        // Log the request
+        $this->logRequest('getCreditHours', 'success', $params);
 
         return $response->GetCreditHoursResponse;
     }
@@ -204,7 +212,7 @@ class BannerStudentProvider extends StudentProvider {
     private function logRequest($functionName, $result, Array $params)
     {
         $args = implode(', ', $params);
-        $msg = "$function($args) result: $result";
+        $msg = "$functionName($args) result: $result";
         \PHPWS_Core::log($msg, 'soap.log', 'SOAP');
     }
 }
