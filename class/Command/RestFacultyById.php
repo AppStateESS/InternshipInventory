@@ -81,7 +81,7 @@ class RestFacultyById {
         try {
             DatabaseStorage::saveObject($faculty);
         }
-        catch(Exception $e) {
+        catch(\Exception $e) {
             header('HTTP/1.1 500 Internal Server Error');
             exit;
         }
