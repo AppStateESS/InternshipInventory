@@ -11,7 +11,8 @@ class InternshipView {
             'student_first_name',
             'student_last_name',
             'student_email',
-            'department');
+            'department',
+            'agency_name');
 
     private $intern;
     private $student;

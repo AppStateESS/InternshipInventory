@@ -302,6 +302,7 @@ class SaveInternship {
         }
 
         // Agency Info
+        $agency->name = $_REQUEST['agency_name'];
         $agency->address = $_REQUEST['agency_address'];
         $agency->city = $_REQUEST['agency_city'];
         $agency->zip = $_REQUEST['agency_zip'];
