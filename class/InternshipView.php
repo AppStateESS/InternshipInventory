@@ -92,7 +92,7 @@ class InternshipView {
 
         // Show warning & sanity check cource section #
         if ($this->intern->isDistanceEd() && ($this->intern->getCourseSection() < 300 || $this->intern->getCourseSection() > 399)) {
-            NQ::simple('intern', UI\NotifyUI::WARNING, "This is a distance ed internship, so the course section number should be between 300 and 399.");
+            \NQ::simple('intern', UI\NotifyUI::WARNING, "This is a distance ed internship, so the course section number should be between 300 and 399.");
         }
 
         // Show warning & Sanity check distance ed radio
