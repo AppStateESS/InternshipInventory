@@ -54,13 +54,13 @@ class SaveInternship {
         }
 
 		// Sanity check student zip
-		if((isset($_REQUEST['student_zip']) && $_REQUEST['student_zip'] != "") && (strlen($_REQUEST['student_zip']) != 5 || !is_numeric($_REQUEST['student_zip']))) {
+		if(isset($_REQUEST['student_zip']) && $_REQUEST['student_zip'] != "" && !preg_match('/^[\d]{5}$|^[\d]{5}-[\d]{4}$/', $_REQUEST['student_zip'])) {
 			$url = 'index.php?module=intern&action=ShowInternship&missing=student_zip';
 			// Restore the values in the fields the user already entered
 			foreach ($_POST as $key => $val){
 				$url .= "&$key=$val";
 			}
-			\NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "The student's zip code is invalid. No changes were saved. Zip codes should be 5 digits only (no letters, spaces, or punctuation).");
+			\NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "The student's zip code is invalid. No changes were saved. The zip code should be 5 digits (no letters, spaces, or punctuation), OR use the extended nine digit form (e.g. 28608-1234).");
 			\NQ::close();
 			return \PHPWS_Core::reroute($url);
 		}
