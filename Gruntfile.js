@@ -55,12 +55,17 @@ module.exports = function(grunt) {
                 src: 'javascript/<%= currMod %>/dist/*.min.js',  //all your js that needs a hash appended to it
                 dest: 'javascript/<%= currMod %>/dist/' //where the new files will be created
             }
+        },
+        watch: {
+            files: ['javascript/<%= currMod %>/*.jsx'],
+            tasks: ['default']
         }
     });
 
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-hash');
+    grunt.loadNpmTasks('grunt-contrib-watch');
 
     if(!grunt.option('module')){
         grunt.fail.fatal('Missing "module" command line paramter. Use --module=yourMoudleName');
