@@ -83,7 +83,7 @@ var SearchBox = React.createClass({
             }
     	});
 
-        var element = this.getDOMNode();
+        var element = ReactDOM.findDOMNode(this);
         $(element).typeahead({
             minLength: 3,
             highlight: true,
@@ -134,7 +134,7 @@ var SearchBox = React.createClass({
         });
     },
     componentWillUnmount: function() {
-        var element = this.getDOMNode();
+        var element = ReactDOM.findDOMNode(this);
         $(element).typeahead('destroy');
     },
     render: function() {
@@ -296,7 +296,7 @@ var LocationBlock = React.createClass({
                     </div>
                 </div>
 
-                <ReactCSSTransitionGroup transitionName="example" transitionLeave={false}>
+                <ReactCSSTransitionGroup transitionName="example" transitionLeave={false} transitionEnterTimeout={500} >
                     {dropdown}
                 </ReactCSSTransitionGroup>
             </div>
@@ -469,8 +469,8 @@ var CreateInternshipInterface = React.createClass({
     validate: function(form, thisComponent) {
 
         // Assume everything is valid, change this if we detect otherwise
-        valid = true;
-        errors = [];
+        var valid = true;
+        var errors = [];
 
         // Check the student Component
         if(form.elements.studentId.value === '' || !thisComponent.refs.studentSearch.studentFound()){
@@ -546,7 +546,6 @@ var CreateInternshipInterface = React.createClass({
         this.setState({errorMessages: messages});
     },
     render: function() {
-
         var errors;
         if(this.state.errorMessages == null){
             errors = '';
@@ -555,11 +554,12 @@ var CreateInternshipInterface = React.createClass({
         }
 
         return (
+
             <form role="form" id="newInternshipForm" className="form-protected" autoComplete="off" action="index.php" method="post" onSubmit={this.handleSubmit}>
                 <input type="hidden" name="module" value="intern"/>
                 <input type="hidden" name="action" value="AddInternship"/>
 
-                <ReactCSSTransitionGroup transitionName="example">
+                <ReactCSSTransitionGroup transitionName="example" transitionEnterTimeout={500} transitionLeaveTimeout={500}>
                     {errors}
                 </ReactCSSTransitionGroup>
 
@@ -579,6 +579,6 @@ var CreateInternshipInterface = React.createClass({
     }
 });
 
-React.render(
+ReactDOM.render(
     <CreateInternshipInterface />, document.getElementById('createInternshipInterface')
 );
