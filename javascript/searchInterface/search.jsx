@@ -36,11 +36,9 @@ var LocationSelector = React.createClass({
         });
     },
     domestic: function() {
-        console.log('Domestic');
         this.setState({domestic: true, international: false});
     },
     international: function() {
-        console.log('International');
         this.setState({domestic: false, international: true});
     },
     anyLocation: function() {
@@ -61,10 +59,6 @@ var LocationSelector = React.createClass({
             dropdown = <InternationalDropDown key="countries" ref="country" countries={this.state.availableCountries} formStyle='horizontal'/>;
         }
 
-        console.log("Domestic:" + this.state.domestic);
-        console.log("International:" + this.state.international);
-
-        console.log(this.state.domestic?"active":'not active');
         var anyLabelClass = classNames({
             'btn': true,
             'btn-default': true,
@@ -102,7 +96,7 @@ var LocationSelector = React.createClass({
                   </div>
                 </div>
 
-                <ReactCSSTransitionGroup transitionName="example" transitionLeave={false}>
+                <ReactCSSTransitionGroup transitionName="example" transitionLeave={false} transitionEnterTimeout={500}>
                     {dropdown}
                 </ReactCSSTransitionGroup>
             </div>
@@ -110,6 +104,6 @@ var LocationSelector = React.createClass({
     }
 });
 
-React.render(
+ReactDOM.render(
     <LocationSelector />, document.getElementById('LocationSelector')
 );
