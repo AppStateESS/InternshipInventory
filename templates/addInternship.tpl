@@ -7,7 +7,7 @@
 <div id="createInternshipInterface"></div>
 
 
-<script type="text/javascript" src="{source_http}mod/intern/bower_components/classnames/index.js"></script>
+<script type="text/javascript" src="{source_http}mod/intern/node_modules/classnames/index.js"></script>
 <script type="text/javascript" src="{source_http}mod/intern/bower_components/typeahead.js/dist/typeahead.bundle.min.js"></script>
 
 <!-- <script src="https://fb.me/react-with-addons-0.13.3.js"></script> -->
