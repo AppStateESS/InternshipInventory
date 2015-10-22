@@ -62,10 +62,16 @@ class BannerStudentProvider extends StudentProvider {
             throw $e;
         }
 
-        $response = $response->GetInternInfoResult->DirectoryInfo;
+        //var_dump($response->GetInternInfoResult);exit;
 
-        if(!isset($response->banner_id)){
+        if(isset($response->GetInternInfoResult->DirectoryInfo)) {
+            $response = $response->GetInternInfoResult->DirectoryInfo;
+        } else {
             throw new \Intern\Exception\StudentNotFoundException("Could not locate student: $studentId");
+        }
+
+        if(is_array($response)){
+            $response = $response[0];
         }
 
         // Log the request
@@ -102,7 +108,11 @@ class BannerStudentProvider extends StudentProvider {
         // Log the request
         $this->logRequest('getCreditHours', 'success', $params);
 
-        return $response->GetCreditHoursResponse;
+        if(isset($response->GetCreditHoursResponse)){
+            return $response->GetCreditHoursResponse;
+        }else{
+            return null;
+        }
     }
 
     /**
@@ -202,8 +212,14 @@ class BannerStudentProvider extends StudentProvider {
         $student->setAddress($data->addr1);
         $addrParts = explode(" ", $data->addr2);
         $student->setCity($addrParts[0]);
-        $student->setState($addrParts[1]);
-        $student->setZip($addrParts[2]);
+
+        if(sizeof($addrParts) > 1) {
+            $student->setState($addrParts[1]);
+        }
+
+        if(sizeof($addrParts) > 2) {
+            $student->setZip($addrParts[2]);
+        }
     }
 
     /**
