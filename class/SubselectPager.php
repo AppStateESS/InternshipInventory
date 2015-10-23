@@ -7,6 +7,7 @@ use \PHPWS_DB;
 use \Icon;
 use \DBPager;
 use \PHPWS_Template;
+use \Exception;
 
 
 \PHPWS_Core::initCoreClass('DBPager.php');

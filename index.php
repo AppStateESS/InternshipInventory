@@ -31,7 +31,7 @@ if(DEBUG){
         $inventory = new InternshipInventory();
         $inventory->handleRequest();
         $content = $inventory->getContent();
-    }catch(Exception $e){
+    }catch(\Exception $e){
         try{
             \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, 'The Intern Inventory has experienced an error. The software engineers have been notified about this problem. We apologize for the inconvenience.');
 
@@ -39,7 +39,7 @@ if(DEBUG){
             emailError($message);
 
             \NQ::close();
-            Intern_NotifyUI::display();
+            \Intern\UI\NotifyUI::display();
 
             \PHPWS_Core::goBack();
         }catch(Exception $e){
