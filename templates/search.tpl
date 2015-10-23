@@ -161,7 +161,7 @@
   </div>
 </form>
 
-<script type="text/javascript" src="{source_http}mod/intern/bower_components/classnames/index.js"></script>
+<script type="text/javascript" src="{source_http}mod/intern/node_modules/classnames/index.js"></script>
 <script type="text/javascript" src="{source_http}mod/intern/node_modules/react/dist/react-with-addons.js"></script>
 <script type="text/javascript" src="{source_http}mod/intern/node_modules/react-dom/dist/react-dom.js"></script>
 
