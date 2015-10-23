@@ -175,7 +175,7 @@ class ResultsUI implements UI {
             }
 
             $fuzzyDb = new SubselectDatabase('intern_internship');
-            $fuzzyDb->addColumn('intern_internship.*');
+            $fuzzyDb->addColumnRaw('intern_internship.*');
 
             // Foreach token
             for ($i = 0; $i < $tokenCount; $i++) {
