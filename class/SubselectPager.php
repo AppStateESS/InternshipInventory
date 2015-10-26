@@ -61,7 +61,7 @@ class SubselectPager extends \DBPager {
         $rows = $this->getPageRows();
 
         if (PHPWS_Error::isError($rows)) {
-            throw new Exception($rows);
+            throw new \Exception($rows);
             return $rows;
         }
 
@@ -202,7 +202,7 @@ class SubselectPager extends \DBPager {
     	//**************************************/
 
         if (PHPWS_Error::isError($count)) {
-            throw new Exception($count->toString());
+            throw new \Exception($count->toString());
         }
 
         /*
@@ -1203,7 +1203,7 @@ class SubselectPager extends \DBPager {
             $id_count++;
         }
 
-        $form = new PHPWS_Form($id);
+        $form = new \PHPWS_Form($id);
         $form->setMethod('get');
         $values = $this->getLinkValues();
         unset($values['pager_search']);
@@ -1284,7 +1284,7 @@ class SubselectPager extends \DBPager {
 
         $new_file = time() . '_pager.csv';
         require_once 'HTTP/Download.php';
-        $dl = new HTTP_Download;
+        $dl = new \HTTP_Download;
         $dl->setFile($file_path);
         $dl->setContentDisposition(HTTP_DOWNLOAD_ATTACHMENT, $new_file);
         $dl->setContentType('text/csv');
