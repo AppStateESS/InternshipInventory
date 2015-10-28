@@ -89,7 +89,6 @@ class Internship {
     public $credits;
     public $avg_hours_week;
     public $paid;
-    public $unpaid;
     public $stipend;
     public $pay_rate;
 
@@ -294,7 +293,6 @@ class Internship {
         $csv['Average Hours Per Week'] = $this->avg_hours_week;
         $csv['Paid']                   = $this->paid == 1 ? 'Yes' : 'No';
         $csv['Stipend']                = $this->stipend == 1 ? 'Yes' : 'No';
-        $csv['Unpaid']                 = $this->unpaid == 1 ? 'Yes' : 'No';
 
         // Internship Type
         $csv['Experience Type']          = $this->getExperienceType();
@@ -960,14 +958,6 @@ class Internship {
 
     public function isPaid(){
         if($this->paid == 1){
-            return true;
-        }
-
-        return false;
-    }
-
-    public function isUnPaid(){
-        if($this->unpaid == 1){
             return true;
         }
 

@@ -139,9 +139,7 @@ class InternshipContractPdfView {
         if($this->internship->isPaid()){
             $this->pdf->setXY(160, 92);
             $this->pdf->cell(10,5, 'X');
-        }
-
-        if($this->internship->isUnPaid()){
+        }else {
             $this->pdf->setXY(190, 92);
             $this->pdf->cell(10,5,'X');
         }

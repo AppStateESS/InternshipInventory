@@ -158,7 +158,6 @@ class SaveInternship {
         $i->avg_hours_week = $avg_hours_week ? $avg_hours_week : null;
         $i->paid = $_REQUEST['payment'] == 'paid';
         $i->stipend = isset($_REQUEST['stipend']) && $i->paid;
-        $i->unpaid = $_REQUEST['payment'] == 'unpaid';
         $i->pay_rate = $_REQUEST['pay_rate'];
 
         // Internship experience type
