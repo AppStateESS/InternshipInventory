@@ -63,7 +63,10 @@ class TestStudentProvider extends BannerStudentProvider {
         // Contact info
         $obj->phone = '828 123 4567';
         $obj->addr1 = 'ASU Box 12345';
-        $obj->addr2 = 'Boone NC 28608';
+        $obj->addr2 = 'Boone NC 28608-1234';
+
+        //$obj->addr1 = '175 Birchwood Lane';
+        //$obj->addr2 = 'West Jefferson NC 28694';
 
         // Academic Info
         //$obj->level     = BannerStudentProvider::UNDERGRAD;   // 'U' or 'G'
