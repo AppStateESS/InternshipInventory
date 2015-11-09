@@ -254,11 +254,11 @@ class Internship {
         // Academic Info
         $csv['Level']           = $this->getLevel();
         if($this->getLevel() == 'ugrad'){
-            $csv['Undergrad Major'] = $this->getUgradMajor()->getName();
+            //$csv['Undergrad Major'] = $this->getUgradMajor()->getName();
             $csv['Grduate Program'] = '';
         }else if($this->getLevel() == 'grad'){
             $csv['Undergrad Major'] = '';
-            $csv['Graduate Program'] = $this->getGradProgram()->getName();
+            //$csv['Graduate Program'] = $this->getGradProgram()->getName();
         }else{
             $csv['Undergrad Major'] = '';
             $csv['Grduate Program'] = '';
