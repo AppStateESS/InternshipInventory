@@ -256,7 +256,7 @@ class InternshipInventory {
                 $ctrl->execute();
                 break;
             case 'removeEmergencyContact':
-                $ctrl = new RemoveEmergencyContact();
+                $ctrl = new Command\RemoveEmergencyContact();
                 $ctrl->execute();
                 break;
             case 'edit_faculty':

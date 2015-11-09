@@ -4,6 +4,7 @@ namespace Intern\WorkflowTransition;
 use Intern\WorkflowTransition;
 use Intern\Internship;
 use Intern\Email;
+use Intern\Exception\MissingDataException;
 
 class UndergradRegistration extends WorkflowTransition {
     const sourceState = 'DeanApprovedState';
