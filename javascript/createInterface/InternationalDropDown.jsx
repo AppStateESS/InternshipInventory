@@ -32,7 +32,7 @@ var InternationalDropDown = React.createClass({
 
         if(this.props.formStyle === 'horizontal') {
             var output = (
-                <div class="form-group">
+                <div className="form-group">
                     <label htmlFor="country" className="col-lg-3 control-label">Country</label>
                     <div className="col-lg-8">
                         <select id="country" name="country" className="form-control">
