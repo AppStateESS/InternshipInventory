@@ -483,11 +483,6 @@
         </div>
 
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{AGENCY_SUP_PHONE_ID}">{AGENCY_SUP_PHONE_LABEL_TEXT}</label>
-          <div class="col-lg-6">{AGENCY_SUP_PHONE}</div>
-        </div>
-
-        <div class="form-group">
           <label class="col-lg-3 control-label" for="{AGENCY_SUP_EMAIL_ID}">{AGENCY_SUP_EMAIL_LABEL_TEXT}</label>
           <div class="col-lg-6">{AGENCY_SUP_EMAIL}</div>
         </div>
@@ -499,6 +494,11 @@
 
         <div class="checkbox">
           <label> {COPY_ADDRESS} {COPY_ADDRESS_LABEL_TEXT} </label>
+        </div>
+
+        <div class="form-group">
+          <label class="col-lg-3 control-label" for="{AGENCY_SUP_PHONE_ID}">{AGENCY_SUP_PHONE_LABEL_TEXT}</label>
+          <div class="col-lg-6">{AGENCY_SUP_PHONE}</div>
         </div>
 
         <div class="form-group">

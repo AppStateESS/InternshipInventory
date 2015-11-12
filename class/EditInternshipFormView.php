@@ -263,7 +263,7 @@ class EditInternshipFormView {
         $this->form->addCssClass('agency_sup_email', 'form-control');
 
         $this->form->addCheck('copy_address');
-        $this->form->setLabel('copy_address', "Supervisor's address is same as agency's");
+        $this->form->setLabel('copy_address', "Supervisor's information is same as agency's");
 
         $this->form->addText('agency_sup_address');
         $this->form->setLabel('agency_sup_address', 'Address');
