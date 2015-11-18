@@ -185,6 +185,7 @@ class Internship {
 
         // Student address
         $this->student_address  = $student->getAddress();
+        $this->student_address2 = $student->getAddress2();
         $this->student_city = $student->getCity();
         $this->student_state = $student->getState();
         $this->student_zip = $student->getZip();
@@ -276,6 +277,7 @@ class Internship {
 
         // Student Address
         $csv['Student Address']        = $this->student_address;
+        $csv['Student Address 2']      = $this->student_address2;
         $csv['Student City']           = $this->student_city;
         $csv['Student State']          = $this->student_state;
         $csv['Student Zip']            = $this->student_zip;

@@ -60,13 +60,16 @@ class TestStudentProvider extends BannerStudentProvider {
         $obj->gender        = 'M';
         $obj->birth_date    = '6/20/1995';
 
-        // Contact info
+        // Phone number
         $obj->phone = '828 123 4567';
-        $obj->addr1 = 'ASU Box 12345';
-        $obj->addr2 = 'Boone NC 28608-1234';
 
-        //$obj->addr1 = '175 Birchwood Lane';
-        //$obj->addr2 = 'West Jefferson NC 28694';
+        // Address
+        $obj->addr1 = '123 Rivers Street';
+        $obj->addr2 = 'John Thomas Hall';
+
+        $obj->city  = 'Hickory';
+        $obj->state = 'NC';
+        $obj->zip   = '28602';
 
         // Academic Info
         //$obj->level     = BannerStudentProvider::UNDERGRAD;   // 'U' or 'G'

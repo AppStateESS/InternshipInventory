@@ -210,22 +210,10 @@ class BannerStudentProvider extends StudentProvider {
 
         // Address info
         $student->setAddress($data->addr1);
-        $addrParts = explode(" ", $data->addr2);
-        $addrCount = sizeof($addrParts);
-
-        if($addrCount > 2 && preg_match("/[\d\-]{5,10}/", $addrParts[$addrCount - 1])){
-            $student->setZip($addrParts[$addrCount - 1]);
-            $addrCount--;
-        }
-
-        if($addrCount > 1 && preg_match("/[[:upper:]]{2}/", $addrParts[$addrCount - 1])){
-            $student->setState($addrParts[$addrCount - 1]);
-            $addrCount--;
-        }
-
-        if($addrCount > 0){
-            $student->setCity(implode(array_slice($addrParts, 0, $addrCount), " "));
-        }
+        $student->setAddress2($data->addr2);
+        $student->setCity($data->city);
+        $student->setState($data->state);
+        $student->setZip($data->zip);
     }
 
     /**

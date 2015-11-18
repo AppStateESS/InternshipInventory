@@ -47,6 +47,7 @@ class Student {
     // Contact info
     private $phone;
     private $address;
+    private $address2;
     private $city;
     private $state;
     private $zip;
@@ -277,6 +278,15 @@ class Student {
 
     public function setAddress($address) {
         $this->address = $address;
+    }
+
+    public function getAddress2()
+    {
+        return $this->address2;
+    }
+
+    public function setAddress2($address) {
+        $this->address2 = $address;
     }
 
     public function getCity() {
