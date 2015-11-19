@@ -555,7 +555,7 @@ var CreateInternshipInterface = React.createClass({
 
         return (
 
-            <form role="form" id="newInternshipForm" className="form-protected" autoComplete="off" action="index.php" method="post" onSubmit={this.handleSubmit}>
+            <form role="form" id="newInternshipForm" className="form-protected" action="index.php" method="post" onSubmit={this.handleSubmit}>
                 <input type="hidden" name="module" value="intern"/>
                 <input type="hidden" name="action" value="AddInternship"/>
 

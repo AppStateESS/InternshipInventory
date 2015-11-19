@@ -683,7 +683,7 @@ var CreateInternshipInterface = React.createClass({
 
         return React.createElement(
             'form',
-            { role: 'form', id: 'newInternshipForm', className: 'form-protected', autoComplete: 'off', action: 'index.php', method: 'post', onSubmit: this.handleSubmit },
+            { role: 'form', id: 'newInternshipForm', className: 'form-protected', action: 'index.php', method: 'post', onSubmit: this.handleSubmit },
             React.createElement('input', { type: 'hidden', name: 'module', value: 'intern' }),
             React.createElement('input', { type: 'hidden', name: 'action', value: 'AddInternship' }),
             React.createElement(
