@@ -18,7 +18,7 @@ class BannerMajorsProvider extends MajorsProvider {
         $wsdlUri = \PHPWS_Settings::get('intern', 'wsdlUri');
 
         // Create the SOAP instance
-        $this->client = new \SoapClient($wsdlUri);
+        $this->client = new \SoapClient($wsdlUri, array('WSDL_CACHE_MEMORY'));
     }
 
     public function getMajors($term)
