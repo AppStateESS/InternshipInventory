@@ -24,7 +24,8 @@ class BannerStudentProvider extends StudentProvider {
     // Student level: grad, undergrad
     const UNDERGRAD = 'U';
     const GRADUATE  = 'G';
-    // TODO: level 'D'??
+    const DOCTORAL  = 'D';
+
 
 
     /**
@@ -178,8 +179,10 @@ class BannerStudentProvider extends StudentProvider {
             $student->setLevel(Student::UNDERGRAD);
         } else if ($data->level == self::GRADUATE) {
             $student->setLevel(Student::GRADUATE);
+        }else if ($data->level == self::DOCTORAL) {
+            $student->setLevel(Student::DOCTORAL);
         } else {
-            //throw new \InvalidArgumentException("Unrecognized student level ({$data->level}) for {$data->banner_id}.");
+            throw new \InvalidArgumentException("Unrecognized student level ({$data->level}) for {$data->banner_id}.");
         }
 
         // Credit Hours

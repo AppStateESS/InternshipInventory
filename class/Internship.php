@@ -1,6 +1,7 @@
 <?php
-
 namespace Intern;
+
+use \Intern\Student;
 
 use \PHPWS_Text;
 
@@ -877,10 +878,12 @@ class Internship {
 
     public function getLevelFormatted()
     {
-        if($this->getLevel() == 'ugrad') {
+        if($this->getLevel() == Student::UNDERGRAD) {
             return 'Undergraduate';
-        } else if ($this->getLevel() == 'grad') {
+        } else if ($this->getLevel() == Student::GRADUATE) {
             return 'Graduate';
+        }else if ($this->getLevel() == Student::DOCTORAL) {
+            return 'Doctoral';
         } else {
             return 'Unknown level';
         }
