@@ -1247,13 +1247,15 @@ class SubselectDatabase extends PHPWS_DB{
             $where = 'WHERE ' . $where;
         }
 
+        /*
         if ($this->isDistinct()) {
             $distinct = 'DISTINCT';
         } else {
             $distinct = null;
         }
+        */
 
-        $sql = "SELECT $distinct $columns FROM $table $where $group_by $order $limit";
+        $sql = "SELECT $columns FROM $table $where $group_by $order $limit";
 
         return $sql;
     }
@@ -1292,7 +1294,6 @@ class SubselectDatabase extends PHPWS_DB{
         $sql = PHPWS_DB::prefixQuery($sql);
 
         if ($this->_test_mode) {
-            var_dump($sql);
             exit($sql);
         }
 
