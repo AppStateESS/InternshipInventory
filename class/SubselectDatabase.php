@@ -1308,7 +1308,6 @@ class SubselectDatabase extends PHPWS_DB{
             case 'assoc':
                 PHPWS_DB::logDB($sql);
                 return $GLOBALS['PHPWS_DB']['connection']->getAssoc($sql, null, null, $mode);
-                break;
 
             case 'col':
                 if (empty($sql) && empty($this->columns)) {
@@ -1326,19 +1325,16 @@ class SubselectDatabase extends PHPWS_DB{
                 }
                 PHPWS_DB::logDB($sql);
                 return $GLOBALS['PHPWS_DB']['connection']->queryCol($sql);
-                break;
 
             case 'min':
             case 'max':
             case 'one':
                 PHPWS_DB::logDB($sql);
                 return $GLOBALS['PHPWS_DB']['connection']->queryOne($sql, null, $mode);
-                break;
 
             case 'row':
                 PHPWS_DB::logDB($sql);
                 return $GLOBALS['PHPWS_DB']['connection']->queryRow($sql, null, $mode);
-                break;
 
             case 'count':
                 PHPWS_DB::logDB($sql);
@@ -1365,7 +1361,6 @@ class SubselectDatabase extends PHPWS_DB{
                     return $result;
                 }
                 return $result;
-                break;
 
 
             case 'all':
@@ -1381,7 +1376,6 @@ class SubselectDatabase extends PHPWS_DB{
                 }
 
                 return $result;
-                break;
         }
     }
 
@@ -2538,7 +2532,6 @@ class SubselectDatabase extends PHPWS_DB{
                 $tables = explode(' ', $table);
 
                 return $tables;
-                break;
 
             case 'update':
                 $aTable = explode(' ', $sql);
