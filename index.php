@@ -115,7 +115,7 @@ function formatException(Exception $e)
 
 function emailError($message)
 {
-    $to = array('jb67803@appstate.edu', 'ticklejw@appstate.edu');
+    $to = array('jb67803@appstate.edu');
 
     $tags = array('MESSAGE' => $message);
     Email::sendTemplateMessage($to, 'Uncaught Exception', 'email/UncaughtException.tpl', $tags);
