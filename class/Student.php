@@ -7,6 +7,7 @@ class Student {
     const UNDERGRAD = 'ugrad';
     const GRADUATE  = 'grad';
     const DOCTORAL  = 'doctoral';
+    const POSTDOC   = 'postdoc';
 
     const MAIN_CAMPUS = 'main_campus';
     const DISTANCE_ED = 'distance_ed';

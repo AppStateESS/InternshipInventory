@@ -884,6 +884,8 @@ class Internship {
             return 'Graduate';
         }else if ($this->getLevel() == Student::DOCTORAL) {
             return 'Doctoral';
+        } else if ($this->getLevel() == Student::POSTDOC) {
+            return 'Postdoctoral';
         } else {
             return 'Unknown level';
         }

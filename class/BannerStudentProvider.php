@@ -25,6 +25,7 @@ class BannerStudentProvider extends StudentProvider {
     const UNDERGRAD = 'U';
     const GRADUATE  = 'G';
     const DOCTORAL  = 'D';
+    const POSTDOC   = 'P'; // Guessing at the name here, not sure what 'P' really is
 
 
 
@@ -179,8 +180,10 @@ class BannerStudentProvider extends StudentProvider {
             $student->setLevel(Student::UNDERGRAD);
         } else if ($data->level == self::GRADUATE) {
             $student->setLevel(Student::GRADUATE);
-        }else if ($data->level == self::DOCTORAL) {
+        } else if ($data->level == self::DOCTORAL) {
             $student->setLevel(Student::DOCTORAL);
+        } else if ($data->level == self::POSTDOC) {
+            $student->setLevel(Student::POSTDOC);
         } else {
             throw new \InvalidArgumentException("Unrecognized student level ({$data->level}) for {$data->banner_id}.");
         }
