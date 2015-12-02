@@ -1352,7 +1352,6 @@ class SubselectDatabase extends PHPWS_DB{
 
                     return count($result);
                 }
-                break;
 
             case 'count_array':
                 PHPWS_DB::logDB($sql);
@@ -2036,25 +2035,20 @@ class SubselectDatabase extends PHPWS_DB{
                 } else {
                     return preg_replace('/\(+.*$/', '', str_replace('`', '', $format[1]));
                 }
-                break;
 
             case 'update':
                 return preg_replace('/\(+.*$/', '', str_replace('`', '', $format[1]));
-                break;
 
             case 'select':
             case 'show':
                 return preg_replace('/\(+.*$/', '', str_replace('`', '', $format[3]));
-                break;
 
             case 'drop':
             case 'alter':
                 return preg_replace('/;/', '', str_replace('`', '', $format[2]));
-                break;
 
             default:
                 return preg_replace('/\W/', '', $format[2]);
-                break;
         }
     }
 
