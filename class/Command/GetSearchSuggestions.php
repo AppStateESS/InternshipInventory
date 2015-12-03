@@ -87,7 +87,16 @@ class GetSearchSuggestions {
             return false;
         }
 
-        return $this->studentIdSearch($result['banner_id']);
+        $students = array();
+
+        try {
+            $students = $this->studentIdSearch($result['banner_id']);
+        }catch(\Intern\Exception\StudentNotFoundException $e){
+            // Skip any students that are returned from the database, but don't exist
+            // in the student info web service
+        }
+        
+        return $students;
     }
 
     private function fullNameSearch($string)
