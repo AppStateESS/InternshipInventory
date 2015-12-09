@@ -113,7 +113,6 @@ var SearchBox = React.createClass({
         // Event handler for selecting a suggestion
         var handleSearch = this.props.onSelect;
         $(element).bind('typeahead:select', function(obj, datum, name) {
-            console.log('selected');
             if(datum.error === undefined){
                 handleSearch(datum.studentId);
             }
