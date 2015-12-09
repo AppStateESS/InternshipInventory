@@ -14,7 +14,7 @@ use \SoapFault;
  */
 class BannerStudentProvider extends StudentProvider {
 
-    private $currentUserName;
+    protected $currentUserName;
 
     private $client;
 
@@ -26,8 +26,6 @@ class BannerStudentProvider extends StudentProvider {
     const GRADUATE  = 'G';
     const DOCTORAL  = 'D';
     const POSTDOC   = 'P'; // Guessing at the name here, not sure what 'P' really is
-
-
 
     /**
      * @param string $currentUserName - Username of the user currently logged in. Will be sent to web service
@@ -59,17 +57,32 @@ class BannerStudentProvider extends StudentProvider {
                         'UserName' => $this->currentUserName);
 
         try {
-            $response = $this->client->GetInternInfo($params);
+            $response = $this->sendRequest($params);
         } catch (SoapFault $e){
             throw $e;
         }
 
         //var_dump($response->GetInternInfoResult);exit;
 
+        // Check for an empty response
         if(isset($response->GetInternInfoResult->DirectoryInfo)) {
             $response = $response->GetInternInfoResult->DirectoryInfo;
         } else {
             throw new \Intern\Exception\StudentNotFoundException("Could not locate student: $studentId");
+        }
+
+        // Check for an InvalidUsername error (i.e. the user doesn't have banner permissions)
+        if($response->error_num == 1002 && $response->error_desc == 'InvalidUserName'){
+            throw new \Intern\Exception\BannerPermissionException("No banner permissions for {$this->currentUserName}");
+        }
+
+        // Check for a web service system error
+        if($response->error_num == 1 && $response->error_desc == 'SYSTEM'){
+            throw new \Intern\Exception\WebServiceException("Web service system error while looking up {$studentId}");
+        }
+
+        if($response->error_num == 1101 && $response->error_desc == 'LookupBannerID'){
+            throw new \Intern\Exception\StudentNotFoundException("Invalid banner id: {$studentId}");
         }
 
         if(is_array($response)){
@@ -86,6 +99,11 @@ class BannerStudentProvider extends StudentProvider {
         $this->plugValues($student, $response);
 
         return $student;
+    }
+
+    protected function sendRequest(Array $params)
+    {
+        return $this->client->GetInternInfo($params);
     }
 
     public function getCreditHours($studentId, $term)

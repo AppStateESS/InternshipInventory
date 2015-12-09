@@ -51,7 +51,7 @@ var InternationalDropDown = React.createClass({
         if (this.props.formStyle === 'horizontal') {
             var output = React.createElement(
                 'div',
-                { 'class': 'form-group' },
+                { className: 'form-group' },
                 React.createElement(
                     'label',
                     { htmlFor: 'country', className: 'col-lg-3 control-label' },

@@ -4,7 +4,9 @@ namespace Intern\Command;
 
 use Intern\StudentProviderFactory;
 use Intern\Term;
+
 use Intern\Exception\StudentNotFoundException;
+use Intern\Exception\BannerPermissionException;
 
 
 /**
@@ -31,12 +33,22 @@ class GetSearchSuggestions {
         // If search string is exactly 9 digits, it must be a student id
         // Do an exact lookup and see if we can find the requested student
         if(preg_match('/^([0-9]){9}$/', $searchString)) {
+            $students = array();
+
             try {
-                echo $this->encodeStudents(array($this->studentIdSearch($searchString)));
-            } catch(StudentNotFoundException $e){
+                $students = array($this->studentIdSearch($searchString));
+            } catch(StudentNotFoundException $e) {
                 // TODO Return something more useful here, that says we couldn't find that banner ID.
-                echo json_encode(array());
+                $error = array('studentId'=>$searchString, 'error'=>'No matching student found. This student ID may not be valid.');
+                echo json_encode(array($error));
+                exit;
+            } catch(BannerPermissionException $e){
+                $error = array('studentId'=>$searchString, 'error'=>'You do not have Banner student data permissions. Please click the \'Get Help\' button in the top navigation bar to open a support request.');
+                echo json_encode(array($error));
+                exit;
             }
+
+            echo $this->encodeStudents($students);
 
             exit;
         }
@@ -95,7 +107,7 @@ class GetSearchSuggestions {
             // Skip any students that are returned from the database, but don't exist
             // in the student info web service
         }
-        
+
         return $students;
     }
 

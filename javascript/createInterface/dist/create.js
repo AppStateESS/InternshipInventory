@@ -16,7 +16,7 @@ var StudentSearch = React.createClass({
             dataType: 'json',
             data: { searchString: searchString },
             success: (function (data) {
-                if (data.length == 1) {
+                if (data.length == 1 && data[0].error === undefined) {
                     this.setState({ student: data[0], studentFound: true, hasError: false });
                 }
             }).bind(this),
@@ -95,6 +95,9 @@ var StudentSearch = React.createClass({
 var SearchBox = React.createClass({
     displayName: 'SearchBox',
 
+    getInitialState: function getInitialState() {
+        return { dataError: null };
+    },
     componentDidMount: function componentDidMount() {
 
         var searchSuggestions = new Bloodhound({
@@ -112,7 +115,8 @@ var SearchBox = React.createClass({
             }
         });
 
-        var element = ReactDOM.findDOMNode(this);
+        var myComponent = this;
+        var element = this.refs.typeahead;
         $(element).typeahead({
             minLength: 3,
             highlight: true,
@@ -124,7 +128,12 @@ var SearchBox = React.createClass({
             limit: 15,
             templates: {
                 suggestion: function suggestion(row) {
-                    return '<p>' + row.name + ' &middot; ' + row.studentId + '</p>';
+                    if (row.error === undefined) {
+                        return '<p>' + row.name + ' &middot; ' + row.studentId + '</p>';
+                    } else {
+                        myComponent.setState({ dataError: row.error });
+                        return '<p></p>';
+                    }
                 }
             }
         });
@@ -132,8 +141,10 @@ var SearchBox = React.createClass({
         // Event handler for selecting a suggestion
         var handleSearch = this.props.onSelect;
         $(element).bind('typeahead:select', function (obj, datum, name) {
-            // Redirect to the student profile the user selected
-            handleSearch(datum.studentId);
+            console.log('selected');
+            if (datum.error === undefined) {
+                handleSearch(datum.studentId);
+            }
         });
 
         // Event handler for enter key.. Search with whatever the person put in the box
@@ -166,7 +177,26 @@ var SearchBox = React.createClass({
         $(element).typeahead('destroy');
     },
     render: function render() {
-        return React.createElement('input', { type: 'search', name: 'studentId', id: 'studentSearch', className: 'form-control typeahead input-lg', placeholder: 'Banner ID, User name, or Full Name', ref: 'searchString', autoComplete: 'off', autofocus: true });
+        var errorNotice = null;
+
+        if (this.state.dataError !== null) {
+            errorNotice = React.createElement(
+                'div',
+                { style: { marginTop: "1em" }, className: 'alert alert-danger' },
+                React.createElement(
+                    'p',
+                    null,
+                    this.state.dataError
+                )
+            );
+        }
+
+        return React.createElement(
+            'div',
+            null,
+            React.createElement('input', { type: 'search', name: 'studentId', id: 'studentSearch', className: 'form-control typeahead input-lg', placeholder: 'Banner ID, User name, or Full Name', ref: 'typeahead', autoComplete: 'off', autofocus: true }),
+            errorNotice
+        );
     }
 });
 
