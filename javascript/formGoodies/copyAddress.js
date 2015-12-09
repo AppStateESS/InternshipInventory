@@ -7,6 +7,7 @@ function copyAddress(){
         $("#internship_agency_sup_zip").val($("#internship_agency_zip").val());
         $("#internship_agency_sup_province").val($("#internship_agency_province").val());
         $("#internship_agency_sup_country").val($("#internship_agency_country").val());
+        $("#internship_agency_sup_phone").val($("#internship_agency_phone").val());
     }
 
     function addHandlersSupervisor(){
