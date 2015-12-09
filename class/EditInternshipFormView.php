@@ -394,7 +394,7 @@ class EditInternshipFormView {
         /***************
          * Course Info *
          */
-        $subjects = Subject::getSubjects();
+        $subjects = array("-1" => "Select subject...") + Subject::getSubjects();
         $this->form->addSelect('course_subj', $subjects);
         $this->form->setLabel('course_subj', 'Subject');
         $this->form->addCssClass('course_subj', 'form-control');
@@ -635,7 +635,7 @@ class EditInternshipFormView {
 
         // Remove the subject field and re-add it
         $this->form->dropElement('course_subj');
-        $this->form->addSelect('course_subj', Subject::getSubjects($this->intern->course_subj));
+        $this->form->addSelect('course_subj', array('-1' => 'Select Subject...') + Subject::getSubjects($this->intern->course_subj));
         $this->form->addCssClass('course_subj', 'form-control');
         $this->form->setMatch('course_subj', $this->intern->course_subj);
         $this->formVals['course_no'] = $this->intern->course_no;

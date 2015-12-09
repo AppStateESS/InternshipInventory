@@ -16,8 +16,8 @@ class TestStudentProvider extends BannerStudentProvider {
 
     protected function sendRequest(Array $params)
     {
-        //return $this->getFakeResponse();
-        return $this->getFakeErrorResponse();
+        return $this->getFakeResponse();
+        //return $this->getFakeErrorResponse();
     }
 
     public function getCreditHours($studentId, $term)
