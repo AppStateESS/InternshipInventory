@@ -4,7 +4,7 @@
  */
 function setupFormSubmit()
 {
-    $("#internship").submit(formSubmitHandler);
+    $('#internship').submit(formSubmitHandler);
 }
 
 function formSubmitHandler()
@@ -13,6 +13,26 @@ function formSubmitHandler()
     $('button[type="submit"]').prop('disabled','disabled');
 
     $('button[type="submit"]').html('Saving... <i class="fa fa-spinner fa-spin"></i>');
+}
+
+function setupContractButton()
+{
+    $('.generateContract').click(generateContractHandler);
+}
+
+function generateContractHandler()
+{
+    // Diable the button
+    $('.generateContract').prop('disabled', 'disabled');
+
+    // Change the button text
+    $('.generateContract').html('<i class="fa fa-spinner fa-spin"></i> Generating...');
+
+    $.post('index.php?module=intern&action=SaveInternship', $('#internship').serialize() + '&generateContract=true',
+            function(data){
+                window.location = 'index.php?module=intern&action=pdf&internship_id=' + data.id;
+            },
+        'json');
 }
 
 function addFormErrors()
@@ -327,4 +347,5 @@ function otherStuff()
     initFacultySelector();
 
     setupFormSubmit();
+    setupContractButton();
 }

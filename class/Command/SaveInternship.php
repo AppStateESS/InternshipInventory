@@ -363,10 +363,22 @@ class SaveInternship {
 
         $workflow->doNotification(isset($_POST['notes'])?$_POST['notes']:null);
 
-        // Show message if user edited internship
-        \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, 'Saved internship for ' . $i->getFullName());
-        \NQ::close();
-        return \PHPWS_Core::reroute('index.php?module=intern&action=ShowInternship&internship_id=' . $i->id);
+        //var_dump($_POST['generateContract']);exit;
+
+        // If the user clicked the 'Generate Contract' button, then redirect to the PDF view
+        if(isset($_POST['generateContract']) && $_POST['generateContract'] == 'true'){
+            //return \PHPWS_Core::reroute('index.php?module=intern&action=pdf&internship_id=' . $i->id);
+            echo json_encode($i);
+            exit;
+        } else {
+            // Otherwise, redirect to the internship edit view
+
+            // Show message if user edited internship
+            \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, 'Saved internship for ' . $i->getFullName());
+            \NQ::close();
+
+            return \PHPWS_Core::reroute('index.php?module=intern&action=ShowInternship&internship_id=' . $i->id);
+        }
     }
 
     /**

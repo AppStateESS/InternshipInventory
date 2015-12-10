@@ -22,9 +22,7 @@
       <button type="submit" class="btn btn-primary" id="{SUBMIT_ID}">{SUBMIT_VALUE}</button>
     </div>
     <div class="col-lg-1 col-lg-offset-1">
-      <!-- BEGIN generate_contract -->
-      <a href="{PDF}" id="contract-button" class="btn btn-default"><i class="fa fa-file"></i> Generate Contract</a>
-      <!-- END generate_contract -->
+      <button id="contract-button" class="btn btn-default generateContract"><i class="fa fa-file"></i> Generate Contract</button>
     </div>
   </div>
 
