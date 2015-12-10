@@ -229,7 +229,7 @@ class InternshipInventory {
                 $this->content = $view->display();
                 break;
             case 'pdf':
-                $i = InternshipFactory::getInternshipById($_REQUEST['id']);
+                $i = InternshipFactory::getInternshipById($_REQUEST['internship_id']);
                 $emgContacts = EmergencyContactFactory::getContactsForInternship($i);
                 $pdfView = new InternshipContractPdfView($i, $emgContacts);
                 $pdf = $pdfView->getPdf();

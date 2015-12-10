@@ -53,7 +53,6 @@ class EditInternshipFormView {
         // Plug in the existing values from Internship object (sets default/selected values)
         $this->plugInternship();
 
-        $this->setupContractButton();
         $this->setupDocumentList();
         $this->setupEmergencyContact();
         $this->setupChangeHistory();
@@ -83,7 +82,6 @@ class EditInternshipFormView {
         // Form Submission setup
         $this->form->setAction('index.php?module=intern&action=SaveInternship');
         $this->form->addSubmit('submit', 'Save');
-
 
         /*********************
          * Workflow / Status *
@@ -659,11 +657,6 @@ class EditInternshipFormView {
     {
         // Department
         $this->formVals['department'] = $this->intern->getDepartment()->getId();
-    }
-
-    private function setupContractButton()
-    {
-        $this->tpl['PDF'] = \PHPWS_Text::linkAddress('intern', array('action' => 'pdf', 'id' => $this->intern->getId()));
     }
 
     private function setupDocumentList()
