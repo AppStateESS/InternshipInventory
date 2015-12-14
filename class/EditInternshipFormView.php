@@ -33,7 +33,7 @@ class EditInternshipFormView {
      * @param string $pagetitle
      * @param Internship $i
      */
-    public function __construct(Internship $i, Student $student, Agency $agency, Array $docs)
+    public function __construct(Internship $i, Student $student = null, Agency $agency, Array $docs)
     {
         \Layout::addPageTitle('Edit Internship');
 
@@ -496,35 +496,50 @@ class EditInternshipFormView {
         $this->tpl['CAMPUS'] = $this->intern->getCampusFormatted();
         $this->tpl['LEVEL'] = $this->intern->getLevelFormatted();
 
-        $creditHours = $this->student->getCreditHours();
-        if(isset($creditHours)) {
-            $this->tpl['ENROLLED_CREDIT_HORUS'] = $creditHours;
+        // Student object can be null, so be sure we actually have a student first
+        // TODO: newer PHP versions provide syntax to clean up this logic
+        if(isset($this->student)){
+            // Credit Hours
+            $creditHours = $this->student->getCreditHours();
+            if(isset($creditHours)) {
+                $this->tpl['ENROLLED_CREDIT_HORUS'] = $creditHours;
+            } else {
+                $this->tpl['ENROLLED_CREDIT_HORUS'] = '<span class="text-muted"><em>Not Available</em></span>';
+            }
+
+            // Grad date
+            $gradDate = $this->student->getGradDate();
+            if(isset($gradDate)) {
+                $this->tpl['GRAD_DATE'] = date('n/j/Y', $this->student->getGradDate());
+            } else {
+                $this->tpl['GRAD_DATE'] = '<span class="text-muted"><em>Not Available</em></span>';
+            }
+
+
         } else {
             $this->tpl['ENROLLED_CREDIT_HORUS'] = '<span class="text-muted"><em>Not Available</em></span>';
-        }
-
-        $gradDate = $this->student->getGradDate();
-        if(isseT($gradDate)) {
-            $this->tpl['GRAD_DATE'] = date('n/j/Y', $this->student->getGradDate());
-        } else {
             $this->tpl['GRAD_DATE'] = '<span class="text-muted"><em>Not Available</em></span>';
         }
 
         // Major handling -- Shows a selector if there's more than one major
-        $majors = $this->student->getMajors();
-        $majorsCount = sizeof($majors);
-        if($majorsCount == 1) {
-            // Only one major, so display it
-            $this->tpl['MAJOR'] = $this->intern->getMajorDescription();
-        } else if($majorsCount > 1) {
-            // Add a repeat for each major
-            foreach($majors as $m) {
-                if($this->intern->getMajorCode() == $m->getCode()){
-                    $this->tpl['majors_repeat'][] = array('CODE' => $m->getCode(), 'DESC' => $m->getDescription(), 'ACTIVE' => 'active', 'CHECKED' => 'checked');
-                } else {
-                    $this->tpl['majors_repeat'][] = array('CODE' => $m->getCode(), 'DESC' => $m->getDescription(), 'ACTIVE' => '', 'CHECKED' => '');
+        if(isset($this->student)){
+            $majors = $this->student->getMajors();
+            $majorsCount = sizeof($majors);
+            if($majorsCount == 1) {
+                // Only one major, so display it
+                $this->tpl['MAJOR'] = $this->intern->getMajorDescription();
+            } else if($majorsCount > 1) {
+                // Add a repeat for each major
+                foreach($majors as $m) {
+                    if($this->intern->getMajorCode() == $m->getCode()){
+                        $this->tpl['majors_repeat'][] = array('CODE' => $m->getCode(), 'DESC' => $m->getDescription(), 'ACTIVE' => 'active', 'CHECKED' => 'checked');
+                    } else {
+                        $this->tpl['majors_repeat'][] = array('CODE' => $m->getCode(), 'DESC' => $m->getDescription(), 'ACTIVE' => '', 'CHECKED' => '');
+                    }
                 }
             }
+        } else {
+            $this->tpl['MAJOR'] = '<span class="text-muted"><em>Not Available</em></span>';
         }
 
         $this->formVals['student_first_name'] = $this->intern->first_name;
