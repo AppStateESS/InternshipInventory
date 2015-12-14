@@ -148,6 +148,7 @@ var SearchBox = React.createClass({
 
         // Event handler for enter key.. Search with whatever the person put in the box
         var handleReset = this.props.onReset;
+        var thisElement = this;
         $(element).keydown(function (e) {
 
             // Look for the enter key
@@ -163,6 +164,7 @@ var SearchBox = React.createClass({
             }
 
             // For any other key, reset the search results because the input box has changed
+            thisElement.setState({ dataError: null });
             handleReset();
         });
 

@@ -85,6 +85,11 @@ class BannerStudentProvider extends StudentProvider {
             throw new \Intern\Exception\StudentNotFoundException("Invalid banner id: {$studentId}");
         }
 
+        if($response->error_num == 1001 && $response->error_desc == 'InvalidBannerID'){
+            throw new \Intern\Exception\StudentNotFoundException("Invalid banner id: {$studentId}");
+
+        }
+
         if(is_array($response)){
             $response = $response[0];
         }
