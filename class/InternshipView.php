@@ -20,7 +20,7 @@ class InternshipView {
     private $agency;
     private $docs;
 
-    public function __construct(Internship $internship, Student $student, WorkflowState $wfState, Agency $agency, Array $docs)
+    public function __construct(Internship $internship, Student $student = null, WorkflowState $wfState, Agency $agency, Array $docs)
     {
         $this->intern = $internship;
         $this->student = $student;
@@ -103,6 +103,11 @@ class InternshipView {
 
     private function showStudentWarnings()
     {
+        // Check if we have a student object. If we don't, then bail immediately.
+        if(!isset($this->student)){
+            return;
+        }
+
         // Show warning if graduation date is prior to start date
         $gradDate = $this->student->getGradDate();
         if(isset($gradDate) && $gradDate < $this->intern->getStartDate())

@@ -62,8 +62,6 @@ class BannerStudentProvider extends StudentProvider {
             throw $e;
         }
 
-        //var_dump($response->GetInternInfoResult);exit;
-
         // Check for an empty response
         if(isset($response->GetInternInfoResult->DirectoryInfo)) {
             $response = $response->GetInternInfoResult->DirectoryInfo;
