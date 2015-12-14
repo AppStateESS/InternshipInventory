@@ -2,6 +2,8 @@
 
 namespace Intern;
 
+require_once PHPWS_SOURCE_DIR . 'mod/intern/vendor/autoload.php';
+
 /**
  * InternshipContractPdfView
  *
@@ -28,9 +30,6 @@ class InternshipContractPdfView {
     {
         $this->internship = $i;
         $this->emergencyContacts = $emergencyContacts;
-
-        require_once(PHPWS_SOURCE_DIR . 'mod/intern/pdf/fpdf.php');
-        require_once(PHPWS_SOURCE_DIR . 'mod/intern/pdf/fpdi.php');
 
         $this->generatePdf();
     }
