@@ -11,7 +11,7 @@
     </div>
 
     <div class="col-lg-4">
-      <button class="btn btn-primary pull-right btn-lg" id="{SUBMIT_ID}">Search</button>
+      <button type="submit" class="btn btn-primary pull-right btn-lg" id="{SUBMIT_ID}">Search</button>
     </div>
   </div>
 

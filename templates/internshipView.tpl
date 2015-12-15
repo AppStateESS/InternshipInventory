@@ -349,7 +349,7 @@
 
           <div class="row">
             <div id="faculty_change" class="col-lg-2">
-              <button id="faculty-change" type="button" class="btn btn-default btn-xs">
+              <button type="button" id="faculty-change" class="btn btn-default btn-xs">
                 <i class="fa fa-chevron-left"></i> change
               </button>
             </div>
