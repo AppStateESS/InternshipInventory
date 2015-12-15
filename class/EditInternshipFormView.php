@@ -76,7 +76,6 @@ class EditInternshipFormView {
     {
         javascript('jquery');
         javascript('jquery_ui');
-        javascriptMod('intern', 'spinner');
         javascriptMod('intern', 'formGoodies');
 
         // Form Submission setup
