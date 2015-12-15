@@ -22,7 +22,7 @@
       <button type="submit" class="btn btn-primary" id="{SUBMIT_ID}">{SUBMIT_VALUE}</button>
     </div>
     <div class="col-lg-1 col-lg-offset-1">
-      <button id="contract-button" class="btn btn-default generateContract"><i class="fa fa-file"></i> Generate Contract</button>
+      <button type="button" id="contract-button" class="btn btn-default generateContract"><i class="fa fa-file"></i> Generate Contract</button>
     </div>
   </div>
 
@@ -349,7 +349,7 @@
 
           <div class="row">
             <div id="faculty_change" class="col-lg-2">
-              <button id="faculty-change" type="button" class="btn btn-default btn-xs">
+              <button type="button" id="faculty-change" class="btn btn-default btn-xs">
                 <i class="fa fa-chevron-left"></i> change
               </button>
             </div>
