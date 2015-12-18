@@ -972,6 +972,14 @@ class Internship {
         return false;
     }
 
+    public function hasStipend() {
+        if($this->stipend == 1){
+            return true;
+        }
+
+        return false;
+    }
+
     public function getExperienceType(){
         return $this->experience_type;
     }
