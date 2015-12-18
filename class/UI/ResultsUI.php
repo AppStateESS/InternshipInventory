@@ -4,6 +4,7 @@ namespace Intern\UI;
 
 use Intern\SubselectPager;
 use Intern\SubselectDatabase;
+use Intern\Student;
 
 /**
  * ResultsUI
@@ -203,7 +204,14 @@ class ResultsUI implements UI {
 
         // Student level
         if (isset($level)) {
-            $pager->addWhere('level', $level);
+
+            if($level == Student::UNDERGRAD){
+                $pager->addWhere('level', Student::UNDERGRAD);
+            } else if ($level == Student::GRADUATE || $level == Student::DOCTORAL || $level == Student::POSTDOC) {
+                $pager->addWhere('level', Student::GRADUATE, null, 'OR', 'grad_level');
+                $pager->addWhere('level', Student::DOCTORAL, null, 'OR', 'grad_level');
+                $pager->addWhere('level', Student::POSTDOC, null, 'OR', 'grad_level');
+            }
 
             // Major
             if ($level == 'ugrad' && isset($ugradMajor) && $ugradMajor != -1) {
