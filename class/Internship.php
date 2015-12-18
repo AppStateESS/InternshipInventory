@@ -368,7 +368,8 @@ class Internship {
      */
     public function isGraduate()
     {
-        if($this->getLevel() == 'grad'){
+        $level = $this->getLevel();
+        if($level == Student::GRADUATE || $level == Student::DOCTORAL || $level == Student::POSTDOC) {
             return true;
         }
 
