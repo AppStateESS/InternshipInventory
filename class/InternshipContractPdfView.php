@@ -70,11 +70,9 @@ class InternshipContractPdfView {
         */
 
         /* Department */
-        //$this->pdf->setFont('Times', null, 10);
         $this->pdf->setXY(138, 40);
         $this->pdf->MultiCell(31, 3, $subject->getName());
 
-        //$this->pdf->setFont('Times', null, 10);
         $this->pdf->setXY(140, 52);
         $this->pdf->cell(73, 6, $this->internship->getCourseTitle());
 
@@ -109,7 +107,6 @@ class InternshipContractPdfView {
 
 
         /* Payment */
-        //TODO Stipend? (56,99)
         if($this->internship->isPaid()){
             $this->pdf->setXY(25, 99);
             $this->pdf->cell(10,5, 'X');
@@ -118,13 +115,13 @@ class InternshipContractPdfView {
             $this->pdf->cell(10,5,'X');
         }
 
+        // Stipend
         if($this->internship->hasStipend()) {
             $this->pdf->setXY(56, 99);
             $this->pdf->cell(10,5, 'X');
         }
 
         /* Start/end dates */
-        //$this->pdf->setFont('Times', null, 10);
         $this->pdf->setXY(50, 106);
         $this->pdf->cell(25, 5, $this->internship->getStartDate(true));
         $this->pdf->setXY(93, 106);
@@ -133,16 +130,10 @@ class InternshipContractPdfView {
         /* Hours */
         $this->pdf->setXY(193, 106);
         $this->pdf->cell(12, 5, $this->internship->getCreditHours());
-        $this->pdf->setXY(157, 106);
-        $this->pdf->cell(12, 5, $this->internship->getAvgHoursPerWeek()); // hours per week
 
-        //        $this->pdf->cell(35, 5, 'Graduate Program:', 'LTB');
-        //        if (!is_null($g)) {
-        //            $this->pdf->cell(155, 5, $g->getName(), 'RTB');
-        //        } else {
-        //            $this->pdf->cell(155, 5, 'N/A', 'RTB');
-        //        }
-        //
+        // Hours per week
+        $this->pdf->setXY(157, 106);
+        $this->pdf->cell(12, 5, $this->internship->getAvgHoursPerWeek());
 
         /***
          * Faculty supervisor information.
