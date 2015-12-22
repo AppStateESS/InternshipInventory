@@ -185,7 +185,7 @@ class InternshipInventory {
                  * Matt additions!
                  */
             case 'add_state':
-                if (!Current_User::allow('intern', 'edit_state')) {
+                if (!\Current_User::allow('intern', 'edit_state')) {
                     disallow();
                 }
                 $state = new State($_GET['abbr']);
@@ -194,7 +194,7 @@ class InternshipInventory {
                 exit();
                 break;
             case 'remove_state':
-                if (!Current_User::allow('intern', 'edit_state')) {
+                if (!\Current_User::allow('intern', 'edit_state')) {
                     disallow();
                 }
                 $state = new State($_GET['abbr']);
@@ -203,10 +203,10 @@ class InternshipInventory {
                 exit();
                 break;
             case 'edit_states':
-                if (!Current_User::allow('intern', 'edit_state')) {
+                if (!\Current_User::allow('intern', 'edit_state')) {
                     disallow();
                 }
-                $view = new StateUI();
+                $view = new UI\StateUI();
                 $this->content = $view->display();
                 break;
             case 'showEditAdmins':

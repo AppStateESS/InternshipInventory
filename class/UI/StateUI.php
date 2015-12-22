@@ -12,7 +12,7 @@ class StateUI implements UI {
     public function display()
     {
         javascriptMod('intern', 'pick_state');
-        $db = new PHPWS_DB('intern_state');
+        $db = new \PHPWS_DB('intern_state');
         $db->addOrder('full_name');
         $states = $db->select();
         foreach ($states as $state) {
@@ -25,7 +25,7 @@ class StateUI implements UI {
             }
         }
 
-        return PHPWS_Template::process($tpl, 'intern', 'state_list.tpl');
+        return \PHPWS_Template::process($tpl, 'intern', 'state_list.tpl');
     }
 
 }
