@@ -6,6 +6,7 @@ class Student {
     // Defines for Internship Inventory student Data
     const UNDERGRAD = 'ugrad';
     const GRADUATE  = 'grad';
+    const GRADUATE2 = 'grad2';
     const DOCTORAL  = 'doctoral';
     const POSTDOC   = 'postdoc';
 
