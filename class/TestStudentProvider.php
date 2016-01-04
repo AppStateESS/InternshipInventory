@@ -62,7 +62,7 @@ class TestStudentProvider extends BannerStudentProvider {
 
         // Academic Info
         //$obj->level     = BannerStudentProvider::UNDERGRAD;   // 'U' or 'G'
-        $obj->level     = BannerStudentProvider::GRADUATE;
+        $obj->level     = BannerStudentProvider::GRADUATE2;
         $obj->campus    = BannerStudentProvider::MAIN_CAMPUS; // TODO verify values in SOAP
         //$obj->gpa       = '3.8129032260';
         $obj->gpa       = '1.8129032260';
