@@ -82,6 +82,12 @@ class EditInternshipFormView {
         $this->form->setAction('index.php?module=intern&action=SaveInternship');
         $this->form->addSubmit('submit', 'Save');
 
+        // Delete button setup
+        if (\Current_User::isDeity())
+        {
+            $this->tpl['delete_btn'][] = array('DELETE_URL' => 'index.php?module=intern&action=DeleteInternship&internship_id=' . $this->intern->getId());
+        }
+
         /*********************
          * Workflow / Status *
          */

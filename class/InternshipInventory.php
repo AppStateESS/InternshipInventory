@@ -54,6 +54,10 @@ class InternshipInventory {
                 $ctrl = new Command\SaveInternship();
                 $ctrl->execute();
                 break;
+            case 'DeleteInternship':
+                $ctrl = new Command\DeleteInternship();
+                $ctrl->execute();
+                break;
             case 'search':
                 $view = new UI\SearchUI();
                 $this->content = $view->display();
