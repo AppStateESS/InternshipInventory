@@ -21,15 +21,15 @@
     <div class="col-lg-1 col-lg-offset-8">
       <button type="submit" class="btn btn-primary" id="{SUBMIT_ID}">{SUBMIT_VALUE}</button>
     </div>
-
-    <!-- BEGIN delete_btn -->
+  
     <div class="col-lg-1">
+      <!-- BEGIN delete_btn -->
       <a href={DELETE_URL} class="btn btn-danger">Delete</a>
+      <!-- END delete_btn -->
     </div>
-    <!-- END delete_btn -->
-
-    <div class="col-lg-1">
-      <button type="button" id="contract-button" class="btn btn-default generateContract"><i class="fa fa-file"></i> Generate Contract</button>
+    
+    <div class="col-lg-1 col-lg-offset-1">
+      <button type="button" id="contract-button" class="btn btn-default pull-right generateContract"><i class="fa fa-file"></i> Generate Contract</button>
     </div>
   </div>
 
