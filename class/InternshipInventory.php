@@ -228,6 +228,13 @@ class InternshipInventory {
                 $view = new UI\AdminUI();
                 $this->content = $view->display();
                 break;
+            case 'edit_courses':
+                if (!\Current_User::allow('intern', 'edit_courses')) {
+                    disallow();
+                }
+                $view = new UI\CoursesUI();
+                $this->content = $view->display();
+                break;
             case 'pdf':
                 $i = InternshipFactory::getInternshipById($_REQUEST['internship_id']);
                 $emgContacts = EmergencyContactFactory::getContactsForInternship($i);
@@ -292,9 +299,13 @@ class InternshipInventory {
                 $ctrl->execute();
                 break;
             case 'GetAvailableTerms':
-            $ctrl = new Command\GetAvailableTerms();
-            $ctrl->execute();
-            break;
+                $ctrl = new Command\GetAvailableTerms();
+                $ctrl->execute();
+                break;
+            case 'GetNormCourses':
+                $ctrl = new Command\GetNormCourses();
+                $ctrl->execute();
+                break;   
             default:
                 $menu = new UI\InternMenu();
                 $this->content = $menu->display();

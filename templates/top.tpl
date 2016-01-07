@@ -41,6 +41,9 @@
           <!-- BEGIN states -->
           <li>{EDIT_STATES_LINK}</li>
           <!-- END states -->
+          <!-- BEGIN courses -->
+          <li>{EDIT_COURSES_LINK}</li>
+          <!-- END courses -->
           <!-- BEGIN ctrl_panel -->
           <li>{CONTROL_PANEL}</li>
           <!-- END ctrl_panel -->

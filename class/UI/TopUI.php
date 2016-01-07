@@ -46,6 +46,11 @@ class TopUI implements UI
             $adminOptions['EDIT_STATES_LINK'] = \PHPWS_Text::secureLink('Edit States','intern',array('action' => 'edit_states'));
         }
 
+        // Edit list of 'normal' courses
+        if(\Current_User::allow('intern', 'edit_courses')){
+            $adminOptions['EDIT_COURSES_LINK'] = \PHPWS_Text::secureLink('Edit Courses','intern',array('action' => 'edit_courses'));
+        }
+
         if(\Current_User::isDeity()){
             $adminOptions['CONTROL_PANEL']         = \PHPWS_Text::secureLink('Control Panel','controlpanel');
             $adminOptions['EDIT_ADMINS_LINK']      = \PHPWS_Text::secureLink('Edit Administrators','intern',array('action' => 'showEditAdmins'));
