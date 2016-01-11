@@ -6,6 +6,7 @@ use \Intern\ChangeHistory;
 use \Intern\AgencyFactory;
 use \Intern\DatabaseStorage;
 use \Intern\StudentProviderFactory;
+use \Intern\Exception\StudentNotFoundException;
 
 /**
  * Controller class to save changes (on create or update) to an Internship
@@ -134,8 +135,8 @@ class SaveInternship {
 
         \PHPWS_DB::begin();
 
-        /***********************
-         * Save the Internship *
+        /********************************
+         * Load the existing internship *
          */
         try {
             $i = \Intern\InternshipFactory::getInternshipById($_REQUEST['internship_id']);
@@ -146,7 +147,14 @@ class SaveInternship {
         }
 
         // Load the student object
-        $student = StudentProviderFactory::getProvider()->getStudent($i->getBannerId(), $i->getTerm());
+        try {
+            $student = StudentProviderFactory::getProvider()->getStudent($i->getBannerId(), $i->getTerm());
+        } catch (StudentNotFoundException $e){
+            $student = null;
+
+            \NQ::simple('intern', \Intern\UI\NotifyUI::WARNING, "We couldn't find a matching student in Banner. Your changes were saved, but this student probably needs to contact the Registrar's Office to re-enroll.");
+			\NQ::close();
+        }
 
         $i->faculty_id = $_REQUEST['faculty_id'] > 0 ? $_REQUEST['faculty_id'] : null;
         $i->department_id = $_REQUEST['department'];
@@ -229,7 +237,13 @@ class SaveInternship {
         $i->student_zip = $_REQUEST['student_zip'];
 
         // Student major handling, if more than one major
-        $majors = $student->getMajors();
+        // Make sure we have a student object, since it could be null if the Banner lookup failed
+        if(isset($student) && $student != null) {
+            $majors = $student->getMajors();
+        } else {
+            $majors = array();
+        }
+
         if(sizeof($majors) > 1) {
 
             if(!isset($_POST['major_code'])){
