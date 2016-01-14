@@ -302,8 +302,8 @@ class InternshipInventory {
                 $ctrl = new Command\GetAvailableTerms();
                 $ctrl->execute();
                 break;
-            case 'GetNormCourses':
-                $ctrl = new Command\GetNormCourses();
+            case 'NormalCoursesRest':
+                $ctrl = new Command\NormalCoursesRest();
                 $ctrl->execute();
                 break;   
             default:

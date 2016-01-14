@@ -20,10 +20,21 @@ class CoursesUI implements UI {
         // set up some stuff for the page template
         $tpl                     = array();
 
+        // Grab subjects to be loaded with the page
+        $internSubjects =  array("-1" => "Select subject...") + \Intern\Subject::getSubjects();
+
+        foreach($internSubjects as $key => $value)
+        {
+            // Needed for re-ordering in Chrome
+            $internSubjects["_" . $key] = $value;
+            unset($internSubjects[$key]);
+        }
+
+        $subjects = json_encode($internSubjects);
+
         // TODO: Add Javascript autocomplete for usernames.
         javascript('jquery');
-        javascriptMod('intern', 'editCourses');
-
+        javascriptMod('intern', 'editCourses', array('SUBJECTS'=>$subjects));
 
         return \PHPWS_Template::process($tpl, 'intern','edit_courses.tpl');
 
