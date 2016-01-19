@@ -282,6 +282,16 @@ class SaveInternship {
             $i->setState($state); // Set this initial value
         }
 
+        if($i->form_token == $_REQUEST['form_token'])
+        {
+            $i->form_token = uniqid();
+        }
+        else
+        {
+            //TODO Make error
+            var_dump("Error");exit;
+        }
+
         try {
             $i->save();
         } catch (\Exception $e) {

@@ -449,6 +449,11 @@ class EditInternshipFormView {
         $this->form->addTextArea('notes');
         $this->form->setLabel('notes', 'Notes');
         $this->form->addCssClass('notes', 'form-control');
+
+        /*******************
+         * Form Token *
+         */
+        $this->form->addHidden('form_token', $this->intern->getFormToken());
     }
 
     /**

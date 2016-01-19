@@ -108,10 +108,13 @@ class Internship {
     // Type
     public $experience_type;
 
+    // Form token
+    public $form_token;
+
     /**
      * Constructs a new Internship object.
      */
-    public function __construct(Student $student, $term, $location, $state, $country, Department $department, Agency $agency){
+    public function __construct(Student $student, $term, $location, $state, $country, Department $department, Agency $agency, $form_token){
 
         // Initialize student data
         $this->initalizeStudentData($student);
@@ -145,6 +148,9 @@ class Internship {
 
         // Set initial OIED certification
         $this->setOiedCertified(false);
+
+        // Set Form Token
+        $this->form_token = uniqid();
     }
 
     /**
@@ -978,6 +984,11 @@ class Internship {
     public function setLocationState($state)
     {
         $this->loc_state = $state;
+    }
+
+    public function getFormToken()
+    {
+        return $this->form_token;
     }
 
     /***********************
