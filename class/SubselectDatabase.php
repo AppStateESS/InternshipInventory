@@ -1247,13 +1247,15 @@ class SubselectDatabase extends PHPWS_DB{
             $where = 'WHERE ' . $where;
         }
 
+        /*
         if ($this->isDistinct()) {
             $distinct = 'DISTINCT';
         } else {
             $distinct = null;
         }
+        */
 
-        $sql = "SELECT $distinct $columns FROM $table $where $group_by $order $limit";
+        $sql = "SELECT $columns FROM $table $where $group_by $order $limit";
 
         return $sql;
     }
@@ -1292,7 +1294,6 @@ class SubselectDatabase extends PHPWS_DB{
         $sql = PHPWS_DB::prefixQuery($sql);
 
         if ($this->_test_mode) {
-            var_dump($sql);
             exit($sql);
         }
 
@@ -1307,7 +1308,6 @@ class SubselectDatabase extends PHPWS_DB{
             case 'assoc':
                 PHPWS_DB::logDB($sql);
                 return $GLOBALS['PHPWS_DB']['connection']->getAssoc($sql, null, null, $mode);
-                break;
 
             case 'col':
                 if (empty($sql) && empty($this->columns)) {
@@ -1325,19 +1325,16 @@ class SubselectDatabase extends PHPWS_DB{
                 }
                 PHPWS_DB::logDB($sql);
                 return $GLOBALS['PHPWS_DB']['connection']->queryCol($sql);
-                break;
 
             case 'min':
             case 'max':
             case 'one':
                 PHPWS_DB::logDB($sql);
                 return $GLOBALS['PHPWS_DB']['connection']->queryOne($sql, null, $mode);
-                break;
 
             case 'row':
                 PHPWS_DB::logDB($sql);
                 return $GLOBALS['PHPWS_DB']['connection']->queryRow($sql, null, $mode);
-                break;
 
             case 'count':
                 PHPWS_DB::logDB($sql);
@@ -1355,7 +1352,6 @@ class SubselectDatabase extends PHPWS_DB{
 
                     return count($result);
                 }
-                break;
 
             case 'count_array':
                 PHPWS_DB::logDB($sql);
@@ -1364,7 +1360,6 @@ class SubselectDatabase extends PHPWS_DB{
                     return $result;
                 }
                 return $result;
-                break;
 
 
             case 'all':
@@ -1380,7 +1375,6 @@ class SubselectDatabase extends PHPWS_DB{
                 }
 
                 return $result;
-                break;
         }
     }
 
@@ -2041,25 +2035,20 @@ class SubselectDatabase extends PHPWS_DB{
                 } else {
                     return preg_replace('/\(+.*$/', '', str_replace('`', '', $format[1]));
                 }
-                break;
 
             case 'update':
                 return preg_replace('/\(+.*$/', '', str_replace('`', '', $format[1]));
-                break;
 
             case 'select':
             case 'show':
                 return preg_replace('/\(+.*$/', '', str_replace('`', '', $format[3]));
-                break;
 
             case 'drop':
             case 'alter':
                 return preg_replace('/;/', '', str_replace('`', '', $format[2]));
-                break;
 
             default:
                 return preg_replace('/\W/', '', $format[2]);
-                break;
         }
     }
 
@@ -2537,7 +2526,6 @@ class SubselectDatabase extends PHPWS_DB{
                 $tables = explode(' ', $table);
 
                 return $tables;
-                break;
 
             case 'update':
                 $aTable = explode(' ', $sql);

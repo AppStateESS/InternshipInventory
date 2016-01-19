@@ -14,7 +14,7 @@ use \SoapFault;
  */
 class BannerStudentProvider extends StudentProvider {
 
-    private $currentUserName;
+    protected $currentUserName;
 
     private $client;
 
@@ -24,8 +24,9 @@ class BannerStudentProvider extends StudentProvider {
     // Student level: grad, undergrad
     const UNDERGRAD = 'U';
     const GRADUATE  = 'G';
-    // TODO: level 'D'??
-
+    const GRADUATE2 = 'G2';
+    const DOCTORAL  = 'D';
+    const POSTDOC   = 'P'; // Guessing at the name here, not sure what 'P' really is
 
     /**
      * @param string $currentUserName - Username of the user currently logged in. Will be sent to web service
@@ -38,7 +39,7 @@ class BannerStudentProvider extends StudentProvider {
         $wsdlUri = \PHPWS_Settings::get('intern', 'wsdlUri');
 
         // Create the SOAP instance
-        $this->client = new \SoapClient($wsdlUri);
+        $this->client = new \SoapClient($wsdlUri, array('WSDL_CACHE_MEMORY'));
     }
 
     /**
@@ -57,17 +58,35 @@ class BannerStudentProvider extends StudentProvider {
                         'UserName' => $this->currentUserName);
 
         try {
-            $response = $this->client->GetInternInfo($params);
+            $response = $this->sendRequest($params);
         } catch (SoapFault $e){
             throw $e;
         }
 
-        //var_dump($response->GetInternInfoResult);exit;
-
+        // Check for an empty response
         if(isset($response->GetInternInfoResult->DirectoryInfo)) {
             $response = $response->GetInternInfoResult->DirectoryInfo;
         } else {
             throw new \Intern\Exception\StudentNotFoundException("Could not locate student: $studentId");
+        }
+
+        // Check for an InvalidUsername error (i.e. the user doesn't have banner permissions)
+        if($response->error_num == 1002 && $response->error_desc == 'InvalidUserName'){
+            throw new \Intern\Exception\BannerPermissionException("No banner permissions for {$this->currentUserName}");
+        }
+
+        // Check for a web service system error
+        if($response->error_num == 1 && $response->error_desc == 'SYSTEM'){
+            throw new \Intern\Exception\WebServiceException("Web service system error while looking up {$studentId}");
+        }
+
+        if($response->error_num == 1101 && $response->error_desc == 'LookupBannerID'){
+            throw new \Intern\Exception\StudentNotFoundException("Invalid banner id: {$studentId}");
+        }
+
+        if($response->error_num == 1001 && $response->error_desc == 'InvalidBannerID'){
+            throw new \Intern\Exception\StudentNotFoundException("Invalid banner id: {$studentId}");
+
         }
 
         if(is_array($response)){
@@ -84,6 +103,11 @@ class BannerStudentProvider extends StudentProvider {
         $this->plugValues($student, $response);
 
         return $student;
+    }
+
+    protected function sendRequest(Array $params)
+    {
+        return $this->client->GetInternInfo($params);
     }
 
     public function getCreditHours($studentId, $term)
@@ -178,8 +202,14 @@ class BannerStudentProvider extends StudentProvider {
             $student->setLevel(Student::UNDERGRAD);
         } else if ($data->level == self::GRADUATE) {
             $student->setLevel(Student::GRADUATE);
+        } else if ($data->level == self::GRADUATE2) {
+            $student->setLevel(Student::GRADUATE2);
+        } else if ($data->level == self::DOCTORAL) {
+            $student->setLevel(Student::DOCTORAL);
+        } else if ($data->level == self::POSTDOC) {
+            $student->setLevel(Student::POSTDOC);
         } else {
-            //throw new \InvalidArgumentException("Unrecognized student level ({$data->level}) for {$data->banner_id}.");
+            throw new \InvalidArgumentException("Unrecognized student level ({$data->level}) for {$data->banner_id}.");
         }
 
         // Credit Hours
@@ -210,22 +240,10 @@ class BannerStudentProvider extends StudentProvider {
 
         // Address info
         $student->setAddress($data->addr1);
-        $addrParts = explode(" ", $data->addr2);
-        $addrCount = sizeof($addrParts);
-
-        if($addrCount > 2 && preg_match("/[\d\-]{5,10}/", $addrParts[$addrCount - 1])){
-            $student->setZip($addrParts[$addrCount - 1]);
-            $addrCount--;
-        }
-
-        if($addrCount > 1 && preg_match("/[[:upper:]]{2}/", $addrParts[$addrCount - 1])){
-            $student->setState($addrParts[$addrCount - 1]);
-            $addrCount--;
-        }
-
-        if($addrCount > 0){
-            $student->setCity(implode(array_slice($addrParts, 0, $addrCount), " "));
-        }
+        $student->setAddress2($data->addr2);
+        $student->setCity($data->city);
+        $student->setState($data->state);
+        $student->setZip($data->zip);
     }
 
     /**

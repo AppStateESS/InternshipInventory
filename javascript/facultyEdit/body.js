@@ -5,7 +5,7 @@
 
 <div class="row">
   <div class="col-lg-3 col-lg-push-5">
-    <button id="faculty-new" class="btn btn-primary"><i class="fa fa-plus"></i> Add a Faculty Member to this Department</button>
+    <button type="button" id="faculty-new" class="btn btn-primary"><i class="fa fa-plus"></i> Add a Faculty Member to this Department</button>
   </div>
   <div class="col-lg-4 col-lg-pull-3">
     <div class="form-group">

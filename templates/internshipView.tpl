@@ -22,9 +22,7 @@
       <button type="submit" class="btn btn-primary" id="{SUBMIT_ID}">{SUBMIT_VALUE}</button>
     </div>
     <div class="col-lg-1 col-lg-offset-1">
-      <!-- BEGIN generate_contract -->
-      <a href="{PDF}" id="contract-button" class="btn btn-default"><i class="fa fa-file"></i> Generate Contract</a>
-      <!-- END generate_contract -->
+      <button type="button" id="contract-button" class="btn btn-default generateContract"><i class="fa fa-file"></i> Generate Contract</button>
     </div>
   </div>
 
@@ -351,7 +349,7 @@
 
           <div class="row">
             <div id="faculty_change" class="col-lg-2">
-              <button id="faculty-change" type="button" class="btn btn-default btn-xs">
+              <button type="button" id="faculty-change" class="btn btn-default btn-xs">
                 <i class="fa fa-chevron-left"></i> change
               </button>
             </div>
@@ -483,11 +481,6 @@
         </div>
 
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{AGENCY_SUP_PHONE_ID}">{AGENCY_SUP_PHONE_LABEL_TEXT}</label>
-          <div class="col-lg-6">{AGENCY_SUP_PHONE}</div>
-        </div>
-
-        <div class="form-group">
           <label class="col-lg-3 control-label" for="{AGENCY_SUP_EMAIL_ID}">{AGENCY_SUP_EMAIL_LABEL_TEXT}</label>
           <div class="col-lg-6">{AGENCY_SUP_EMAIL}</div>
         </div>
@@ -499,6 +492,11 @@
 
         <div class="checkbox">
           <label> {COPY_ADDRESS} {COPY_ADDRESS_LABEL_TEXT} </label>
+        </div>
+
+        <div class="form-group">
+          <label class="col-lg-3 control-label" for="{AGENCY_SUP_PHONE_ID}">{AGENCY_SUP_PHONE_LABEL_TEXT}</label>
+          <div class="col-lg-6">{AGENCY_SUP_PHONE}</div>
         </div>
 
         <div class="form-group">

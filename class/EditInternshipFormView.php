@@ -33,7 +33,7 @@ class EditInternshipFormView {
      * @param string $pagetitle
      * @param Internship $i
      */
-    public function __construct(Internship $i, Student $student, Agency $agency, Array $docs)
+    public function __construct(Internship $i, Student $student = null, Agency $agency, Array $docs)
     {
         \Layout::addPageTitle('Edit Internship');
 
@@ -53,7 +53,6 @@ class EditInternshipFormView {
         // Plug in the existing values from Internship object (sets default/selected values)
         $this->plugInternship();
 
-        $this->setupContractButton();
         $this->setupDocumentList();
         $this->setupEmergencyContact();
         $this->setupChangeHistory();
@@ -77,13 +76,11 @@ class EditInternshipFormView {
     {
         javascript('jquery');
         javascript('jquery_ui');
-        javascriptMod('intern', 'spinner');
         javascriptMod('intern', 'formGoodies');
 
         // Form Submission setup
         $this->form->setAction('index.php?module=intern&action=SaveInternship');
         $this->form->addSubmit('submit', 'Save');
-
 
         /*********************
          * Workflow / Status *
@@ -263,7 +260,7 @@ class EditInternshipFormView {
         $this->form->addCssClass('agency_sup_email', 'form-control');
 
         $this->form->addCheck('copy_address');
-        $this->form->setLabel('copy_address', "Supervisor's address is same as agency's");
+        $this->form->setLabel('copy_address', "Supervisor's information is same as agency's");
 
         $this->form->addText('agency_sup_address');
         $this->form->setLabel('agency_sup_address', 'Address');
@@ -394,7 +391,7 @@ class EditInternshipFormView {
         /***************
          * Course Info *
          */
-        $subjects = Subject::getSubjects();
+        $subjects = array("-1" => "Select subject...") + Subject::getSubjects();
         $this->form->addSelect('course_subj', $subjects);
         $this->form->setLabel('course_subj', 'Subject');
         $this->form->addCssClass('course_subj', 'form-control');
@@ -503,35 +500,50 @@ class EditInternshipFormView {
         $this->tpl['CAMPUS'] = $this->intern->getCampusFormatted();
         $this->tpl['LEVEL'] = $this->intern->getLevelFormatted();
 
-        $creditHours = $this->student->getCreditHours();
-        if(isset($creditHours)) {
-            $this->tpl['ENROLLED_CREDIT_HORUS'] = $creditHours;
+        // Student object can be null, so be sure we actually have a student first
+        // TODO: newer PHP versions provide syntax to clean up this logic
+        if(isset($this->student)){
+            // Credit Hours
+            $creditHours = $this->student->getCreditHours();
+            if(isset($creditHours)) {
+                $this->tpl['ENROLLED_CREDIT_HORUS'] = $creditHours;
+            } else {
+                $this->tpl['ENROLLED_CREDIT_HORUS'] = '<span class="text-muted"><em>Not Available</em></span>';
+            }
+
+            // Grad date
+            $gradDate = $this->student->getGradDate();
+            if(isset($gradDate)) {
+                $this->tpl['GRAD_DATE'] = date('n/j/Y', $this->student->getGradDate());
+            } else {
+                $this->tpl['GRAD_DATE'] = '<span class="text-muted"><em>Not Available</em></span>';
+            }
+
+
         } else {
             $this->tpl['ENROLLED_CREDIT_HORUS'] = '<span class="text-muted"><em>Not Available</em></span>';
-        }
-
-        $gradDate = $this->student->getGradDate();
-        if(isseT($gradDate)) {
-            $this->tpl['GRAD_DATE'] = date('n/j/Y', $this->student->getGradDate());
-        } else {
             $this->tpl['GRAD_DATE'] = '<span class="text-muted"><em>Not Available</em></span>';
         }
 
         // Major handling -- Shows a selector if there's more than one major
-        $majors = $this->student->getMajors();
-        $majorsCount = sizeof($majors);
-        if($majorsCount == 1) {
-            // Only one major, so display it
-            $this->tpl['MAJOR'] = $this->intern->getMajorDescription();
-        } else if($majorsCount > 1) {
-            // Add a repeat for each major
-            foreach($majors as $m) {
-                if($this->intern->getMajorCode() == $m->getCode()){
-                    $this->tpl['majors_repeat'][] = array('CODE' => $m->getCode(), 'DESC' => $m->getDescription(), 'ACTIVE' => 'active', 'CHECKED' => 'checked');
-                } else {
-                    $this->tpl['majors_repeat'][] = array('CODE' => $m->getCode(), 'DESC' => $m->getDescription(), 'ACTIVE' => '', 'CHECKED' => '');
+        if(isset($this->student)){
+            $majors = $this->student->getMajors();
+            $majorsCount = sizeof($majors);
+            if($majorsCount == 1) {
+                // Only one major, so display it
+                $this->tpl['MAJOR'] = $this->intern->getMajorDescription();
+            } else if($majorsCount > 1) {
+                // Add a repeat for each major
+                foreach($majors as $m) {
+                    if($this->intern->getMajorCode() == $m->getCode()){
+                        $this->tpl['majors_repeat'][] = array('CODE' => $m->getCode(), 'DESC' => $m->getDescription(), 'ACTIVE' => 'active', 'CHECKED' => 'checked');
+                    } else {
+                        $this->tpl['majors_repeat'][] = array('CODE' => $m->getCode(), 'DESC' => $m->getDescription(), 'ACTIVE' => '', 'CHECKED' => '');
+                    }
                 }
             }
+        } else {
+            $this->tpl['MAJOR'] = '<span class="text-muted"><em>Not Available</em></span>';
         }
 
         $this->formVals['student_first_name'] = $this->intern->first_name;
@@ -640,7 +652,7 @@ class EditInternshipFormView {
 
         // Remove the subject field and re-add it
         $this->form->dropElement('course_subj');
-        $this->form->addSelect('course_subj', Subject::getSubjects($this->intern->course_subj));
+        $this->form->addSelect('course_subj', array('-1' => 'Select Subject...') + Subject::getSubjects($this->intern->course_subj));
         $this->form->addCssClass('course_subj', 'form-control');
         $this->form->setMatch('course_subj', $this->intern->course_subj);
         $this->formVals['course_no'] = $this->intern->course_no;
@@ -664,11 +676,6 @@ class EditInternshipFormView {
     {
         // Department
         $this->formVals['department'] = $this->intern->getDepartment()->getId();
-    }
-
-    private function setupContractButton()
-    {
-        $this->tpl['PDF'] = \PHPWS_Text::linkAddress('intern', array('action' => 'pdf', 'id' => $this->intern->getId()));
     }
 
     private function setupDocumentList()

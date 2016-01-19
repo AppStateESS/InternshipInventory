@@ -4,6 +4,7 @@ namespace Intern\UI;
 
 use Intern\SubselectPager;
 use Intern\SubselectDatabase;
+use Intern\Student;
 
 /**
  * ResultsUI
@@ -199,10 +200,18 @@ class ResultsUI implements UI {
         }
 
         $pager->db->addJoin('LEFT OUTER', 'fuzzy', 'intern_faculty', 'faculty_id', 'id');
+        $pager->db->addJOIN('LEFT OUTER', 'fuzzy', 'intern_department', 'department_id', 'id');
 
         // Student level
         if (isset($level)) {
-            $pager->addWhere('level', $level);
+
+            if($level == Student::UNDERGRAD){
+                $pager->addWhere('level', Student::UNDERGRAD);
+            } else if ($level == Student::GRADUATE || $level == Student::DOCTORAL || $level == Student::POSTDOC) {
+                $pager->addWhere('level', Student::GRADUATE, null, 'OR', 'grad_level');
+                $pager->addWhere('level', Student::DOCTORAL, null, 'OR', 'grad_level');
+                $pager->addWhere('level', Student::POSTDOC, null, 'OR', 'grad_level');
+            }
 
             // Major
             if ($level == 'ugrad' && isset($ugradMajor) && $ugradMajor != -1) {
@@ -281,9 +290,9 @@ class ResultsUI implements UI {
         $pager->addSortHeader('banner', 'Banner ID');
 
         $pager->joinResult('department_id', 'intern_department', 'id', 'name');
-        $pager->addSortHeader('name', 'Department Name');
+        $pager->addSortHeader('intern_department.name', 'Department Name');
 
-        // $pager->joinResult('faculty_id', 'intern_faculty', 'id', 'last_name', 'faculty_last_name');
+        //$pager->joinResult('faculty_id', 'intern_faculty', 'id', 'last_name', 'faculty_last_name');
         $pager->addSortHeader('intern_faculty.last_name', 'Instructor');
 
         $pager->addSortHeader('state', 'Status');

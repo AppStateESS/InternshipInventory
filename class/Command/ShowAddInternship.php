@@ -5,6 +5,7 @@ use \Intern\Term;
 use \Intern\Department;
 use \Intern\State;
 use \Intern\CountryFactory;
+use \Intern\UI\NotifyUI;
 
 /*
  * ShowAddInternship

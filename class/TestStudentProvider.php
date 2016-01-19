@@ -14,21 +14,10 @@ class TestStudentProvider extends BannerStudentProvider {
         $this->currentUserName = $currentUserName;
     }
 
-    /**
-     * Returns a Student object with hard-coded data
-     * @return Student
-     */
-    public function getStudent($studentId, $term)
+    protected function sendRequest(Array $params)
     {
-        $student = new Student();
-
-        $response = $this->getFakeResponse();
-
-        $response->creditHours = $this->getCreditHours($studentId, $term);
-
-        $this->plugValues($student, $response);
-
-        return $student;
+        return $this->getFakeResponse();
+        //return $this->getFakeErrorResponse();
     }
 
     public function getCreditHours($studentId, $term)
@@ -60,17 +49,20 @@ class TestStudentProvider extends BannerStudentProvider {
         $obj->gender        = 'M';
         $obj->birth_date    = '6/20/1995';
 
-        // Contact info
+        // Phone number
         $obj->phone = '828 123 4567';
-        $obj->addr1 = 'ASU Box 12345';
-        $obj->addr2 = 'Boone NC 28608-1234';
 
-        //$obj->addr1 = '175 Birchwood Lane';
-        //$obj->addr2 = 'West Jefferson NC 28694';
+        // Address
+        $obj->addr1 = '123 Rivers Street';
+        $obj->addr2 = 'John Thomas Hall';
+
+        $obj->city  = 'Hickory';
+        $obj->state = 'NC';
+        $obj->zip   = '28602';
 
         // Academic Info
         //$obj->level     = BannerStudentProvider::UNDERGRAD;   // 'U' or 'G'
-        $obj->level     = BannerStudentProvider::GRADUATE;
+        $obj->level     = BannerStudentProvider::GRADUATE2;
         $obj->campus    = BannerStudentProvider::MAIN_CAMPUS; // TODO verify values in SOAP
         //$obj->gpa       = '3.8129032260';
         $obj->gpa       = '1.8129032260';
@@ -100,6 +92,40 @@ class TestStudentProvider extends BannerStudentProvider {
         // Confidential flag
         $obj->confid = 'N'; //TODO verify this is 'N' or 'Y'
 
-        return $obj;
+        // Assume there was no error
+        $obj->error_num = 0;
+
+        $parentObj = new \stdClass();
+        $parentObj->GetInternInfoResult = new \stdClass();
+        $parentObj->GetInternInfoResult->DirectoryInfo = $obj;
+
+        return $parentObj;
+    }
+
+    private function getFakeErrorResponse()
+    {
+        $obj = new \stdClass();
+
+        $obj->banner_id = '900123456';
+
+        // User does not have Banner permissions
+        //$obj->error_num = 1002;
+        //$obj->error_desc = 'InvalidUserName';
+
+        // Web service had an unknown error
+        //$obj->error_num = 1;
+        //$obj->error_desc = 'SYSTEM';
+
+        // Student was not found
+        $obj->error_num = 1101;
+        $obj->error_desc = 'LookupBannerID';
+
+        // No data?
+        //$obj = new \stdClass();
+
+        $parentObj = new \stdClass();
+        $parentObj->GetInternInfoResult = new \stdClass();
+        $parentObj->GetInternInfoResult->DirectoryInfo = $obj;
+        return $parentObj;
     }
 }

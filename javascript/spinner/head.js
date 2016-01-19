@@ -1,1 +1,0 @@
-<script type="text/javascript" src="{source_http}mod/intern/javascript/spinner/spin.min.js"></script>

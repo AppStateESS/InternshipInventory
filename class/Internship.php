@@ -1,6 +1,7 @@
 <?php
-
 namespace Intern;
+
+use \Intern\Student;
 
 use \PHPWS_Text;
 
@@ -67,6 +68,7 @@ class Internship {
 
     // Student address
     public $student_address;
+    public $student_address2;
     public $student_city;
     public $student_state;
     public $student_zip;
@@ -191,6 +193,7 @@ class Internship {
 
         // Student address
         $this->student_address  = $student->getAddress();
+        $this->student_address2 = $student->getAddress2();
         $this->student_city = $student->getCity();
         $this->student_state = $student->getState();
         $this->student_zip = $student->getZip();
@@ -282,6 +285,7 @@ class Internship {
 
         // Student Address
         $csv['Student Address']        = $this->student_address;
+        $csv['Student Address 2']      = $this->student_address2;
         $csv['Student City']           = $this->student_city;
         $csv['Student State']          = $this->student_state;
         $csv['Student Zip']            = $this->student_zip;
@@ -370,7 +374,8 @@ class Internship {
      */
     public function isGraduate()
     {
-        if($this->getLevel() == 'grad'){
+        $level = $this->getLevel();
+        if($level == Student::GRADUATE || $level == Student::GRADUATE2 || $level == Student::DOCTORAL || $level == Student::POSTDOC) {
             return true;
         }
 
@@ -881,10 +886,16 @@ class Internship {
 
     public function getLevelFormatted()
     {
-        if($this->getLevel() == 'ugrad') {
+        if($this->getLevel() == Student::UNDERGRAD) {
             return 'Undergraduate';
-        } else if ($this->getLevel() == 'grad') {
+        } else if ($this->getLevel() == Student::GRADUATE) {
             return 'Graduate';
+        } else if ($this->getLevel() == Student::GRADUATE2) {
+            return 'Graduate 2';
+        }else if ($this->getLevel() == Student::DOCTORAL) {
+            return 'Doctoral';
+        } else if ($this->getLevel() == Student::POSTDOC) {
+            return 'Postdoctoral';
         } else {
             return 'Unknown level';
         }
@@ -964,6 +975,14 @@ class Internship {
 
     public function isPaid(){
         if($this->paid == 1){
+            return true;
+        }
+
+        return false;
+    }
+
+    public function hasStipend() {
+        if($this->stipend == 1){
             return true;
         }
 

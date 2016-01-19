@@ -6,6 +6,9 @@ class Student {
     // Defines for Internship Inventory student Data
     const UNDERGRAD = 'ugrad';
     const GRADUATE  = 'grad';
+    const GRADUATE2 = 'grad2';
+    const DOCTORAL  = 'doctoral';
+    const POSTDOC   = 'postdoc';
 
     const MAIN_CAMPUS = 'main_campus';
     const DISTANCE_ED = 'distance_ed';
@@ -47,6 +50,7 @@ class Student {
     // Contact info
     private $phone;
     private $address;
+    private $address2;
     private $city;
     private $state;
     private $zip;
@@ -277,6 +281,15 @@ class Student {
 
     public function setAddress($address) {
         $this->address = $address;
+    }
+
+    public function getAddress2()
+    {
+        return $this->address2;
+    }
+
+    public function setAddress2($address) {
+        $this->address2 = $address;
     }
 
     public function getCity() {
