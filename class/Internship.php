@@ -116,7 +116,7 @@ class Internship {
     /**
      * Constructs a new Internship object.
      */
-    public function __construct(Student $student, $term, $location, $state, $country, Department $department, Agency $agency, $form_token){
+    public function __construct(Student $student, $term, $location, $state, $country, Department $department, Agency $agency){
 
         // Initialize student data
         $this->initalizeStudentData($student);
