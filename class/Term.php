@@ -193,24 +193,24 @@ class Term extends Model
     public static function timeToTerm($time)
     {
         //TODO These are hard-coded dates for 2016 semesters. Fix this before 2017.
-        /* Fall 2015:  - Jan 15 */
-        if($time < 1452920400) {
+        /* Fall 2015:  - Jan 25 */
+        if($time < 1453784400) {
             $term = 20154;
         }
-        /* Spring: Jan 16 - May 25 */
-        else if($time >= 1452920400 && $time < 1464235200){
+        /* Spring: Jan 26 - May 25 */
+        else if($time >= 1453784400 && $time < 1464235200){
             $term = 20161;
         }
         /* Summer 1: May 26 - July 1 */
         else if($time >= 1464235200 && $time < 1467432000){
             $term = 20162;
         }
-        /* Summer 2: July 2 -  Aug 22 */
-        else if($time >= 1467432000 && $time < 1471924800){
+        /* Summer 2: July 2 -  Aug 29 */
+        else if($time >= 1467432000 && $time < 1472529600){
             $term = 20163;
         }
-        /* Fall:  Aug 23 -- Jan  13, 2017*/
-        else if($time >= 1471924800 || $time < 1484370000){
+        /* Fall:  Aug 30 -- Jan  13, 2017*/
+        else if($time >= 1472529600 || $time < 1484370000){
             $term = 20164;
         }
 
