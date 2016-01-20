@@ -57,7 +57,7 @@ class InternshipContractPdfView {
         $g = $this->internship->getGradProgram();
         $subject = $this->internship->getSubject();
 
-        $pagecount = $this->pdf->setSourceFile(PHPWS_SOURCE_DIR . 'mod/intern/pdf/AppStateInternshipContract-20151217-flattened.pdf');
+        $pagecount = $this->pdf->setSourceFile(PHPWS_SOURCE_DIR . 'mod/intern/pdf/AppStateInternship_Contract_StartEndDates-flat.pdf');
         $tplidx = $this->pdf->importPage(1);
         $this->pdf->addPage();
         $this->pdf->useTemplate($tplidx);
@@ -124,15 +124,15 @@ class InternshipContractPdfView {
         /* Start/end dates */
         $this->pdf->setXY(50, 106);
         $this->pdf->cell(25, 5, $this->internship->getStartDate(true));
-        $this->pdf->setXY(93, 106);
+        $this->pdf->setXY(114, 106);
         $this->pdf->cell(25, 5, $this->internship->getEndDate(true));
 
         /* Hours */
-        $this->pdf->setXY(193, 106);
+        $this->pdf->setXY(190, 100);
         $this->pdf->cell(12, 5, $this->internship->getCreditHours());
 
         // Hours per week
-        $this->pdf->setXY(157, 106);
+        $this->pdf->setXY(147, 100);
         $this->pdf->cell(12, 5, $this->internship->getAvgHoursPerWeek());
 
         /***
