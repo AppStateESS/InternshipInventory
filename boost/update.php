@@ -265,6 +265,13 @@ function intern_update(&$content, $currentVersion)
             if (PEAR::isError($result)) {
                 return $result;
             }
+        case version_compare($currentVersion, '0.1.10', '<') :
+            $db = new PHPWS_DB();
+            $result = $db->importFile(PHPWS_SOURCE_DIR . 'mod/intern/boost/updates/update_00.01.10.sql');
+            if (PEAR::isError($result)) {
+                return $result;
+            }
+            Users_Permission::registerPermissions('intern', $content);
     }
 
     return TRUE;

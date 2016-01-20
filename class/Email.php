@@ -585,6 +585,53 @@ class Email {
 
         email::sendTemplateMessage($to, $subject, 'email/RegistrationIssue.tpl', $tpl, $cc);
     }
+
+    /**
+     * Sends an email to the registrar notifying them that there is
+     * an unusual course number in an internship.
+     *
+     * @param Internship $i
+     * @param Agency $a
+     */
+    public static function sendUnusualCourseEmail(Internship $i, Agency $a)
+    {
+        
+        $settings = InternSettings::getInstance();
+
+        $subjects = Subject::getSubjects();
+
+        $faculty = $i->getFaculty();
+
+        $tpl = array();
+        $tpl['NAME'] = $i->getFullName();
+        $tpl['BANNER'] = $i->banner;
+        $tpl['USER'] = $i->email;
+        $tpl['PHONE'] = $i->phone;
+
+        $term = Term::rawToRead($i->term, false);
+
+        $tpl['TERM'] = $term;
+        if(isset($i->course_subj)){
+            $tpl['SUBJECT'] = $subjects[$i->course_subj];
+        }else{
+            $tpl['SUBJECT'] = '(No course subject provided)';
+        }
+        $tpl['COURSE_NUM'] = $i->course_no;
+
+        if(isset($i->course_title)){
+            $tpl['COURSE_TITLE'] = $i->course_title;
+        }
+        
+        $to = $settings->getUnusualCourseEmail();
+
+        if(!isset($to) || $to == null) {
+            throw new \InvalidArgumentException('Missing configurating for email addresses (unsuaulCourseEmail)');
+        }
+
+        $subject = "Unusual course number - InternshipInventory";
+
+        Email::sendTemplateMessage($to, $subject, 'email/UnusualCourseRegistration.tpl', $tpl);
+    }
 }
 
 ?>

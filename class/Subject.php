@@ -13,6 +13,11 @@ class Subject extends Model {
         return new \PHPWS_DB('intern_subject');
     }
 
+    public function getId()
+    {
+        return $this->id;
+    }
+
     public function getCSV()
     {
         return array();
