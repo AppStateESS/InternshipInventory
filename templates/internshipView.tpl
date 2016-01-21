@@ -24,7 +24,7 @@
   
     <div class="col-lg-1">
       <!-- BEGIN delete_btn -->
-      <a href={DELETE_URL} class="btn btn-danger">Delete</a>
+      <a href={DELETE_URL} class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this internship?');">Delete</a>
       <!-- END delete_btn -->
     </div>
     
