@@ -2,6 +2,8 @@ var CourseSelector = React.createClass({
 	getInitialState: function() {
 		return {
 			subjectData: null,
+			msgNotification: '',
+            msgType: ''
 		};
 	},
 	componentWillMount: function(){
@@ -27,29 +29,43 @@ var CourseSelector = React.createClass({
 			type: 'POST',
 			success: function() {					
 				this.getCourseData();
+
+				// Create success message.
+				var msg = 'Successfully added '+subjects[subjectId]+' '+course_num;
+				this.setState({msgNotification:msg, msgType:'success'})
 			}.bind(this),
-			error: function(xhr, status, err) {
-				alert("Failed to post subject data.")
-				console.error(this.props.url, status, err.toString());
-			}.bind(this)				
+			error: function(http) {
+				// Create error message.
+				var msg = 'Could not add ' + subjects[subjectId] + " " + course_num + " because ";
+				this.setState({msgNotification:msg + http.responseText, msgType:'error'})
+			}.bind(this)
 		});
 	},
-	deleteCourse: function(id){
+	deleteCourse: function(id, name, course_num){
 		$.ajax({
 			url: 'index.php?module=intern&action=NormalCoursesRest&courseId='+id,
 			type: 'DELETE',
-			success: function() {					
+			success: function() {
 				this.getCourseData();
+
+				// Create success message.
+				var msg = 'Successfully deleted '+ name + " " + course_num;
+				this.setState({msgNotification:msg, msgType:'success'})
 			}.bind(this),
-			error: function(xhr, status, err) {
-				alert("Failed to delete course data.")
-				console.error(this.props.url, status, err.toString());
-			}.bind(this)				
+			error: function(http) {
+
+				// Create error message.
+				var msg = 'Could not delete ' + name + " " + course_num + " because ";
+				this.setState({msgNotification:msg + http.responseText, msgType:'error'})
+			}.bind(this)
 		});
 	},
 	render: function() {
 		return (
 			<div>
+				<Notifications msg = {this.state.msgNotification}
+                               msgType = {this.state.msgType} />
+
 				<div className="row">
 					<div className="col-lg-5">
 						<h1> Courses </h1>
@@ -72,10 +88,44 @@ var CourseSelector = React.createClass({
 	}
 });
 
+/**
+    Notification component used for adding or delete courses.
+**/
+var Notifications = React.createClass({
+    render: function(){
+        var notification;
+        // Determine if the screen should render a notification.
+        if (this.props.msg != '')
+        {
+            if (this.props.msgType == 'success')
+            { 
+                notification = <div className="alert alert-success" role="alert">
+                                <i className="fa fa-check fa-2x pull-left"></i> {this.props.msg}
+                            </div>        
+            }
+            else if (this.props.msgType == 'error')
+            {
+                notification = <div className="alert alert-danger" role="alert">
+                                	<i className="fa fa-times fa-2x pull-left"></i> {this.props.msg}
+                               </div>
+            }
+        }
+        else
+        {
+            notification = '';
+        }
+        return (
+            <div>{notification}</div>
+        );
+    }
+});
+
+
+// Component helps create the table
 var CourseList = React.createClass({
 	render: function() {  
 		var deleteCourse = this.props.deleteCourse;
-
+		// Determines if it needs to create a row.
 		if (this.props.subjectData != null){
 			var cRow = this.props.subjectData.map(function(sub) {
 				return (
@@ -87,7 +137,6 @@ var CourseList = React.createClass({
 							   deleteCourse = {deleteCourse} />
 				);
 			});
-			
 		}
 		else{
 			var cRow = "";
@@ -108,9 +157,11 @@ var CourseList = React.createClass({
 	}
 });
 
+// Component creates a row for the courses
 var CourseRow = React.createClass({
 	handleChange: function(e) {
-		this.props.deleteCourse(this.props.id);
+		var name = this.props.abbr + " - " + this.props.name;
+		this.props.deleteCourse(this.props.id, name, this.props.cnum);
 	},
 	render: function() {
 		return (
@@ -122,6 +173,7 @@ var CourseRow = React.createClass({
 	}
 });
 
+// Component used to create a course
 var CreateCourse = React.createClass({
 	getInitialState: function() {
 		return {subject: "_-1"};
@@ -130,6 +182,7 @@ var CreateCourse = React.createClass({
 		this.setState({subject: e.target.value});
 	},
 	handleSubmit: function(){
+		// Trims the value and then determines if its length is = 4 and if it's all numbers.
 		var courseNum = React.findDOMNode(this.refs.courseNum).value.trim();
 		if (courseNum.length == 4 && /^\d+$/.test(courseNum) && this.state.subject != '_-1')
 		{

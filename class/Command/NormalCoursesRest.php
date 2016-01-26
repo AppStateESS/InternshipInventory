@@ -31,13 +31,13 @@ class NormalCoursesRest {
         if ($subjectId == '')
 		{
 			header('HTTP/1.1 500 Internal Server Error');
-			echo("Missing a subject id.");
+			echo("it is missing a subject id.");
             exit;
 		}
 		if ($cnum == '')
 		{
 			header('HTTP/1.1 500 Internal Server Error');
-			echo("Missing a course number.");
+			echo("it is missing a course number.");
             exit;
 		}	
 		
@@ -53,7 +53,7 @@ class NormalCoursesRest {
 		if (sizeof($result) > 0)
 		{
 			header('HTTP/1.1 500 Internal Server Error');
-			echo("Multiple courses with the same course number.");
+			echo("it already exists.");
             exit;
 		}
 
@@ -62,8 +62,7 @@ class NormalCoursesRest {
 	
 		$sth = $pdo->prepare($sql);
 		
-		$sth->execute(array('subject_id'=>$subjectId, 'cnum'=>$cnum));
-		
+		$sth->execute(array('subject_id'=>$subjectId, 'cnum'=>$cnum));		
 	}
 	public function delete()
 	{
