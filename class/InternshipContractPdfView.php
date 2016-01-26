@@ -73,8 +73,13 @@ class InternshipContractPdfView {
         $this->pdf->setXY(138, 40);
         $this->pdf->MultiCell(31, 3, $subject->getName());
 
-        $this->pdf->setXY(140, 52);
+        /* Course title */
+        $this->pdf->setXY(138, 43);
         $this->pdf->cell(73, 6, $this->internship->getCourseTitle());
+
+        /* Term */
+        $this->pdf->setXY(138, 48);
+        $this->pdf->cell(73, 6, Term::rawToRead($this->internship->getTerm()));
 
         /* Location */
         if($this->internship->isDomestic()){
