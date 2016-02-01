@@ -46,7 +46,7 @@ class Agency implements DbStorable {
 
     public static function getTableName()
     {
-        return 'intern_host';
+        return 'intern_agency';
     }
 
     /**
