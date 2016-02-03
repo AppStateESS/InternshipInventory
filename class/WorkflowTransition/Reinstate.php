@@ -10,7 +10,7 @@ class Reinstate extends WorkflowTransition {
     const actionName  = 'Reinstate';
 
     public function getAllowedPermissionList(){
-        return array('dept_approve', 'sig_auth_approve');
+        return array('dept_approve', 'sig_auth_approve', 'dean_approve');
     }
 }
 
