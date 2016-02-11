@@ -34,7 +34,6 @@ class Term extends Model
         $db->addOrder('term desc');
         $terms = $db->getObjects('Intern\Term');
         $readables = array();
-        $readables[-1] = 'All';
 
         foreach($terms as $t){
             // Ex. array(20111 => "Spring 2011");

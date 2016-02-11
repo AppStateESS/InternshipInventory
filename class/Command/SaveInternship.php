@@ -159,6 +159,10 @@ class SaveInternship {
         $i->stipend = isset($_REQUEST['stipend']) && $i->paid;
         $i->pay_rate = $_REQUEST['pay_rate'];
 
+        if (\Current_User::isDeity()) {  
+            $i->term = $_REQUEST['term'];
+        }
+   
         // Internship experience type
         if(isset($_REQUEST['experience_type'])){
             $i->setExperienceType($_REQUEST['experience_type']);

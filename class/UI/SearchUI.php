@@ -38,7 +38,7 @@ class SearchUI implements UI
          * Course Info *
          ***************/
         $terms = Term::getTermsAssoc();
-        $form->addSelect('term_select', $terms);
+        $form->addSelect('term_select', array(-1 => 'All') + $terms);
         $form->setLabel('term_select', 'Term');
         $form->setClass('term_select', 'form-control');
 
