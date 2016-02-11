@@ -358,13 +358,18 @@ class EditInternshipFormView {
         /*************
          * Term Info *
          */
-        //$terms = Term::getFutureTermsAssoc();
-        //$terms[-1] = 'Select Term';
-        //$this->form->addSelect('term', $terms);
-        //$this->form->setLabel('term', 'Select Term');
-        //$this->form->addCssClass('term', 'form-control');
 
-        $this->tpl['TERM'] = Term::rawToRead($this->intern->term);
+        if (\Current_User::isDeity()) {  
+            $terms = Term::getTermsAssoc();
+            $this->form->addSelect('term', $terms);
+            $this->form->setMatch('term', $this->intern->term);
+            $this->form->addCssClass('term', 'form-control');  
+        }else{
+            $this->tpl['TERM'] = Term::rawToRead($this->intern->term);
+        }
+
+
+        
 
         $this->form->addText('start_date');
         $this->form->setLabel('start_date', 'Start Date');
