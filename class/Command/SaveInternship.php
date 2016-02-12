@@ -152,7 +152,7 @@ class SaveInternship {
         $i->department_id = $_REQUEST['department'];
         $i->start_date = !empty($_REQUEST['start_date']) ? strtotime($_REQUEST['start_date']) : 0;
         $i->end_date = !empty($_REQUEST['end_date']) ? strtotime($_REQUEST['end_date']) : 0;
-        $i->credits = $_REQUEST['credits'] != '' ? (int) $_REQUEST['credits'] : null;
+        $i->credits = isset($_POST['multipart']) && isset($_POST['secondary_part']) ? null : (int) $_REQUEST['credits'];
         $avg_hours_week = (int) $_REQUEST['avg_hours_week'];
         $i->avg_hours_week = $avg_hours_week ? $avg_hours_week : null;
         $i->paid = $_REQUEST['payment'] == 'paid';
@@ -181,9 +181,9 @@ class SaveInternship {
         }
 
         // Course info
-        $i->course_no = strip_tags($_POST['course_no']);
-        $i->course_sect = strip_tags($_POST['course_sect']);
-        $i->course_title = strip_tags($_POST['course_title']);
+        $i->course_no = !isset($_POST['course_no']) ? null : strip_tags($_POST['course_no']);
+        $i->course_sect = !isset($_POST['course_sect']) ? null : strip_tags($_POST['course_sect']);
+        $i->course_title = !isset($_POST['course_title']) ? null : strip_tags($_POST['course_title']);
 
         // Multipart course
         if(isset($_POST['multipart'])){
