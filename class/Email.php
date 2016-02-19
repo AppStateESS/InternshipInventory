@@ -585,6 +585,53 @@ class Email {
 
         email::sendTemplateMessage($to, $subject, 'email/RegistrationIssue.tpl', $tpl, $cc);
     }
+
+
+        /**
+     *  Sends the Background or Drug check notification email.
+     *
+     * @param Internship $i
+     * @param Agency $agency
+     * @param string $note
+     */
+    public static function sendCheckEmail(Internship $i, Agency $agency, $backgroundCheck, $drugCheck)
+    {
+        $tpl = array();
+        $background = '';
+        $drugTest = '';
+
+        $subjects = Subject::getSubjects();
+
+        $settings = InternSettings::getInstance();
+
+        $faculty = $i->getFaculty();
+
+        $tpl = array();
+        $tpl['NAME'] = $i->getFullName();
+        $tpl['BANNER'] = $i->banner;
+        $tpl['BIRTHDAY'] = $i->getBirthDateFormatted();
+        $tpl['EMAIL'] = $i->getEmailAddress() . $settings->getEmailDomain();
+        $tpl['AGENCY'] = $agency->getName();
+
+        if ($backgroundCheck)
+            $background = 'Background';
+        
+        if ($drugCheck)
+            $drugTest = 'Drug';
+
+        if ($backgroundCheck && $drugCheck)
+        {
+            $subject = 'Internship Background/Drug Check Needed ' . $i->getFullName();
+            $tpl['CHECK'] = $background . '/' . $drugTest;
+        }else{
+            $subject = 'Internship ' . $background . $drugTest . ' Check Needed ' . $i->getFullName();
+            $tpl['CHECK'] = $background . $drugTest;
+        }
+
+        $to = $settings->getCheckEmail();
+
+        email::sendTemplateMessage($to, $subject, 'email/BackgroundDrugCheck.tpl', $tpl);
+    }
 }
 
 ?>

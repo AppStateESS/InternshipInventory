@@ -94,6 +94,7 @@ class Internship {
     public $stipend;
     public $pay_rate;
 
+
     // Course Info
     public $multi_part;
     public $secondary_part;
@@ -109,6 +110,10 @@ class Internship {
 
     // Type
     public $experience_type;
+
+    // Checks
+    public $background_check;
+    public $drug_check;
 
     /**
      * Constructs a new Internship object.
@@ -191,6 +196,9 @@ class Internship {
         $this->student_city = $student->getCity();
         $this->student_state = $student->getState();
         $this->student_zip = $student->getZip();
+
+        $this->background_check = $student->getBackgroundCheck();
+        $this->drug_check = $student->getDrugCheck();
     }
 
     /**
@@ -987,6 +995,22 @@ class Internship {
 
     public function setExperienceType($type){
         $this->experience_type = $type;
+    }
+
+    public function getBackgroundCheck(){
+        return $this->background_check;
+    }
+
+    public function setBackgroundCheck($check){
+        $this->background_check = $check;
+    }
+
+    public function getDrugCheck(){
+        return $this->drug_check;
+    }
+
+    public function setDrugCheck($check){
+        $this->drug_check = $check;
     }
 
     /**

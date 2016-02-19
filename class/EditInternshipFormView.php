@@ -146,6 +146,29 @@ class EditInternshipFormView {
         $this->form->setLabel('student_zip','Zip Code');
         $this->form->addCssClass('student_zip', 'form-control');
 
+        if($this->intern->getBackgroundCheck() == 0){
+            $this->tpl['BACK_ACTIVE'] = '';
+            $this->tpl['BACK_NOT_ACTIVE'] = 'active';
+            $this->tpl['BACK_CHECKED'] = '';
+            $this->tpl['BACK_NOT_CHECKED'] = 'checked';
+        }else{
+            $this->tpl['BACK_ACTIVE'] = 'active';
+            $this->tpl['BACK_NOT_ACTIVE'] = '';
+            $this->tpl['BACK_CHECKED'] = 'checked';
+            $this->tpl['BACK_NOT_CHECKED'] = '';
+        }
+
+        if($this->intern->getDrugCheck() == 0){
+            $this->tpl['DRUG_ACTIVE'] = '';
+            $this->tpl['DRUG_NOT_ACTIVE'] = 'active';
+            $this->tpl['DRUG_CHECKED'] = '';
+            $this->tpl['DRUG_NOT_CHECKED'] = 'checked';
+        }else{
+            $this->tpl['DRUG_ACTIVE'] = 'active';
+            $this->tpl['DRUG_NOT_ACTIVE'] = '';
+            $this->tpl['DRUG_CHECKED'] = 'checked';
+            $this->tpl['DRUG_NOT_CHECKED'] = '';
+        }
 
         /************************
          * Department Drop Down *

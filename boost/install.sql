@@ -303,6 +303,8 @@ CREATE TABLE intern_internship (
        multi_part SMALLINT NOT NULL,
        secondary_part SMALLINT NOT NULL,
        experience_type varchar NOT NULL,
+       background_check SMALLINT DEFAULT 0;
+       drug_check SMALLINT DEFAULT 0;
        PRIMARY KEY(id)
 );
 

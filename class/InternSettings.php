@@ -164,6 +164,24 @@ class InternSettings {
 
         return $result;
     }
+
+    /**
+     * Returns the friendly name of this system, used for the
+     * "from" name in email notifications.
+     *
+     * @throws InvalidArgumentException
+     * @return string
+     */
+    public function getCheckEmail()
+    {
+        $result = \PHPWS_Settings::get('intern', 'checkEmail');
+
+        if (!isset($result) || is_null($result)) {
+            throw new \InvalidArgumentException('Missing configuration for background/drug check address.');
+        }
+
+        return $result;
+    }
 }
 
 ?>

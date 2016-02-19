@@ -135,6 +135,42 @@
           <div id="credit-hours" class="col-lg-6"><p class="form-control-static">{ENROLLED_CREDIT_HORUS}</p></div>
         </div>
 
+        <div class="col-lg-8 col-lg-offset-3">
+          <p>
+            <span class="help-block">Does the student need a background check?</span>
+          </p>
+        </div> 
+        <div class="form-group">
+          <div class="col-lg-8 col-lg-offset-3">
+            <div class="btn-group" data-toggle="buttons" role="group" aria-label="background selector">
+              <label class="btn btn-default {BACK_ACTIVE}">
+                <input type="radio" name="background_code" autocomplete="off" value="1" {BACK_CHECKED}> Yes
+              </label>
+              <label class="btn btn-default {BACK_NOT_ACTIVE}">
+                <input type="radio" name="background_code" autocomplete="off" value="0" {BACK_NOT_CHECKED}> No
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-8 col-lg-offset-3">
+          <p>
+            <span class="help-block">Does the student need a drug check?</span>
+          </p>
+        </div>
+        <div class="form-group">
+          <div class="col-lg-8 col-lg-offset-3">
+            <div class="btn-group" data-toggle="buttons" role="group" aria-label="drug selector">
+              <label class="btn btn-default {DRUG_ACTIVE}">
+                <input type="radio" name="drug_code" autocomplete="off" value="1" {DRUG_CHECKED}> Yes
+              </label>
+              <label class="btn btn-default {DRUG_NOT_ACTIVE}">
+                <input type="radio" name="drug_code" autocomplete="off" value="0" {DRUG_NOT_CHECKED}> No
+              </label>
+            </div>
+          </div>
+        </div>
+
       </fieldset>
 
       <!-- Emergency Contact Info -->
