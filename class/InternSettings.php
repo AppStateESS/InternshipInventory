@@ -166,8 +166,7 @@ class InternSettings {
     }
 
     /**
-     * Returns the friendly name of this system, used for the
-     * "from" name in email notifications.
+     * Returns the name background/drug check user email.
      *
      * @throws InvalidArgumentException
      * @return string
