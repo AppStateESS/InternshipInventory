@@ -586,14 +586,13 @@ class Email {
         email::sendTemplateMessage($to, $subject, 'email/RegistrationIssue.tpl', $tpl, $cc);
     }
 
-        /**
-     *  Sends the 'Registration Issue' notification email.
+    /**
+     *  Sends the OIED certification email to the given faclty member
      *
      * @param Internship $i
      * @param Agency $agency
-     * @param string $note
      */
-    public static function sendSignatureAuthority(Internship $i, Agency $agency)
+    public static function sendOIEDCertifiedNotice(Internship $i, Agency $agency)
     {
         $tpl = array();
 
@@ -605,16 +604,17 @@ class Email {
 
         $tpl = array();
         $tpl['NAME'] = $i->getFullName();
-        $tpl['BANNER'] = $i->banner;
-        $tpl['TERM'] = Term::rawToRead($i->term, false);
+        $tpl['BANNER'] = $i->getBannerId();
+        $tpl['TERM'] = Term::rawToRead($i->getTerm(), false);
         $tpl['FACULTY'] = $faculty->getFullName();
+        $tpl['AGENCY'] = $agency->getName();
 
 
         $to = $faculty->getUsername() . $settings->getEmailDomain();
 
         $subject = 'OIED Certified Internship';
 
-        email::sendTemplateMessage($to, $subject, 'email/SignatureAuth.tpl', $tpl);
+        email::sendTemplateMessage($to, $subject, 'email/OiedCertifiedNotice.tpl', $tpl);
     }
 }
 
