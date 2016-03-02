@@ -74,8 +74,9 @@ class InternshipView {
 
     private function showWarnings()
     {
+
         // Show warning if no documents uploaded but workflow state suggests there should be documents
-        if(($this->wfState instanceof WorkflowState\SigAuthReadyState || $this->wfState instanceof WorkflowState\SigAuthApprovedState || $this->wfState instanceof WorkflowState\DeanApprovedState || $this->wfState instanceof WorkflowState\RegisteredState) && ($this->docs < 1))
+        if(($this->wfState instanceof WorkflowState\SigAuthReadyState || $this->wfState instanceof WorkflowState\SigAuthApprovedState || $this->wfState instanceof WorkflowState\DeanApprovedState || $this->wfState instanceof WorkflowState\RegisteredState) && (sizeof($this->docs) < 1) && (!$this->intern->isSecondaryPart()))
         {
             \NQ::simple('intern', UI\NotifyUI::WARNING, "No documents have been uploaded yet. Usually a copy of the signed contract document should be uploaded.");
         }
