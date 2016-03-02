@@ -398,7 +398,7 @@ var HostAgency = React.createClass({
             <div className="row">
                 <div className="col-sm-12 col-md-4 col-md-push-3">
                     <div className={fgClasses} id="agency">
-                        <label htmlFor="agency2" className="control-label">Host Agency</label>
+                        <label htmlFor="agency2" className="control-label">Internship Host</label>
                         <input type="text" id="agency2" name="agency" className="form-control" placeholder="Acme, Inc." />
                     </div>
                 </div>

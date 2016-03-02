@@ -505,7 +505,7 @@ var HostAgency = React.createClass({
                     React.createElement(
                         'label',
                         { htmlFor: 'agency2', className: 'control-label' },
-                        'Host Agency'
+                        'Internship Host'
                     ),
                     React.createElement('input', { type: 'text', id: 'agency2', name: 'agency', className: 'form-control', placeholder: 'Acme, Inc.' })
                 )

@@ -56,25 +56,25 @@ class Agency implements DbStorable {
     {
         $csv = array();
 
-        $csv['Agency Name']              = $this->name;
-        $csv['Agency Address']           = $this->address;
-        $csv['Agency City']              = $this->city;
-        $csv['Agency State']             = $this->state == null ? '' : $this->state;
-        $csv['Agency Zip Code']          = $this->zip == null ? '' : $this->zip;
-        $csv['Agency Phone']             = $this->phone;
-        $csv['Agency Country']           = $this->country;
+        $csv['Host Name']              = $this->name;
+        $csv['Host Address']           = $this->address;
+        $csv['Host City']              = $this->city;
+        $csv['Host State']             = $this->state == null ? '' : $this->state;
+        $csv['Host Zip Code']          = $this->zip == null ? '' : $this->zip;
+        $csv['Host Phone']             = $this->phone;
+        $csv['Host Country']           = $this->country;
 
-        $csv['Agency Super. First Name'] = $this->supervisor_first_name;
-        $csv['Agency Super. Last Name']  = $this->supervisor_last_name;
-        $csv['Agency Super. Title']      = $this->supervisor_title;
-        $csv['Agency Super. Phone']      = $this->supervisor_phone;
-        $csv['Agency Super. Email']      = $this->supervisor_email;
-        $csv['Agency Super. Fax']        = $this->supervisor_fax;
-        $csv['Agency Super. Address']    = $this->supervisor_address;
-        $csv['Agency Super. City']       = $this->supervisor_city;
-        $csv['Agency Super. State']      = $this->supervisor_state == null ? '' : $this->supervisor_state;
-        $csv['Agency Super. Zip Code']   = $this->supervisor_zip == null ? '' : $this->supervisor_zip;
-        $csv['Agency Super. Country']    = $this->supervisor_country;
+        $csv['Host Super. First Name'] = $this->supervisor_first_name;
+        $csv['Host Super. Last Name']  = $this->supervisor_last_name;
+        $csv['Host Super. Title']      = $this->supervisor_title;
+        $csv['Host Super. Phone']      = $this->supervisor_phone;
+        $csv['Host Super. Email']      = $this->supervisor_email;
+        $csv['Host Super. Fax']        = $this->supervisor_fax;
+        $csv['Host Super. Address']    = $this->supervisor_address;
+        $csv['Host Super. City']       = $this->supervisor_city;
+        $csv['Host Super. State']      = $this->supervisor_state == null ? '' : $this->supervisor_state;
+        $csv['Host Super. Zip Code']   = $this->supervisor_zip == null ? '' : $this->supervisor_zip;
+        $csv['Host Super. Country']    = $this->supervisor_country;
 
         return $csv;
     }

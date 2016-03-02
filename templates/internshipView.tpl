@@ -410,10 +410,10 @@
 
       <!-- Agency info -->
       <fieldset>
-        <legend>Agency Details</legend>
+        <legend>Host Details</legend>
 
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{STUDENT_GPA_ID}">Agency Name</label>
+          <label class="col-lg-3 control-label" for="{STUDENT_GPA_ID}">Host Name</label>
           <div class="col-lg-6"><p class="form-control-static">{AGENCY_NAME}</p></div>
         </div>
 
