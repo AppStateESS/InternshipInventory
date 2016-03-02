@@ -375,6 +375,8 @@ class SaveInternship {
             $currState = WorkflowStateFactory::getState($i->getStateName());
             $ch = new ChangeHistory($i, \Current_User::getUserObj(), time(), $currState, $currState, 'Certified by OIED');
             $ch->save();
+            if ($i->getFaculty() != null)
+                \Intern\Email::sendSignatureAuthority($i, $agency);
         }
 
         \PHPWS_DB::commit();

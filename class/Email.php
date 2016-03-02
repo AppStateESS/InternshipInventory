@@ -585,6 +585,37 @@ class Email {
 
         email::sendTemplateMessage($to, $subject, 'email/RegistrationIssue.tpl', $tpl, $cc);
     }
+
+        /**
+     *  Sends the 'Registration Issue' notification email.
+     *
+     * @param Internship $i
+     * @param Agency $agency
+     * @param string $note
+     */
+    public static function sendSignatureAuthority(Internship $i, Agency $agency)
+    {
+        $tpl = array();
+
+        $subjects = Subject::getSubjects();
+
+        $settings = InternSettings::getInstance();
+
+        $faculty = $i->getFaculty();
+
+        $tpl = array();
+        $tpl['NAME'] = $i->getFullName();
+        $tpl['BANNER'] = $i->banner;
+        $tpl['TERM'] = Term::rawToRead($i->term, false);
+        $tpl['FACULTY'] = $faculty->getFullName();
+
+
+        $to = $faculty->getUsername() . $settings->getEmailDomain();
+
+        $subject = 'OIED Certified Internship';
+
+        email::sendTemplateMessage($to, $subject, 'email/SignatureAuth.tpl', $tpl);
+    }
 }
 
 ?>
