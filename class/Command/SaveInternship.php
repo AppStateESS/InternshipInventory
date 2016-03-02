@@ -167,10 +167,10 @@ class SaveInternship {
         $i->stipend = isset($_REQUEST['stipend']) && $i->paid;
         $i->pay_rate = $_REQUEST['pay_rate'];
 
-        if (\Current_User::isDeity()) {  
+        if (\Current_User::isDeity()) {
             $i->term = $_REQUEST['term'];
         }
-   
+
         // Internship experience type
         if(isset($_REQUEST['experience_type'])){
             $i->setExperienceType($_REQUEST['experience_type']);
@@ -375,8 +375,11 @@ class SaveInternship {
             $currState = WorkflowStateFactory::getState($i->getStateName());
             $ch = new ChangeHistory($i, \Current_User::getUserObj(), time(), $currState, $currState, 'Certified by OIED');
             $ch->save();
-            if ($i->getFaculty() != null)
-                \Intern\Email::sendSignatureAuthority($i, $agency);
+
+            // Notify the faculty member that OIED has certified the internship
+            if ($i->getFaculty() != null) {
+                \Intern\Email::sendOIEDCertifiedNotice($i, $agency);
+            }
         }
 
         \PHPWS_DB::commit();
