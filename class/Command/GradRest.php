@@ -1,5 +1,7 @@
 <?php
 
+namespace Intern\Command;
+
 class GradRest {
 
 	public function execute()
@@ -40,7 +42,7 @@ class GradRest {
 				VALUES (nextval('intern_major_seq'), :grad, :hidden)";
 
 		$sth = $pdo->prepare($sql);
-		
+
 		$sth->execute(array('grad'=>$grad, 'hidden'=>0));
 
 	}
@@ -54,26 +56,26 @@ class GradRest {
 			//hidden value
 			$hVal = $_REQUEST['val'];
 			$id = $_REQUEST['id'];
-		
+
 			$sql = "UPDATE intern_grad_prog
 					SET hidden=:val
 					WHERE id=:id";
-		
+
 			$sth = $pdo->prepare($sql);
-			
+
 			$sth->execute(array('val'=>$hVal, 'id'=>$id));
 		}
 		else if(isset($_REQUEST['name']))
 		{
 			$mname = $_REQUEST['name'];
 			$id = $_REQUEST['id'];
-		
+
 			$sql = "UPDATE intern_grad_prog
 					SET name=:mname
 					WHERE id=:id";
-		
+
 			$sth = $pdo->prepare($sql);
-			
+
 			$sth->execute(array('mname'=>$mname, 'id'=>$id));
 		}
 	}
@@ -83,16 +85,15 @@ class GradRest {
 		$db = \Database::newDB();
 		$pdo = $db->getPDO();
 
-		$sql = "SELECT id, name, hidden 
+		$sql = "SELECT id, name, hidden
 				FROM intern_grad_prog
 				ORDER BY name ASC";
-		
+
 		$sth = $pdo->prepare($sql);
-		
+
 		$sth->execute();
 		$result = $sth->fetchAll(PDO::FETCH_ASSOC);
 
 		return $result;
 	}
 }
-?>
