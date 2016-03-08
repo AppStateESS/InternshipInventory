@@ -2,8 +2,6 @@
 
 namespace Intern\UI;
 
-use Intern\Department;
-
 /**
  * View class for the add/edit faculty menu.
  *
@@ -12,38 +10,12 @@ use Intern\Department;
  */
 class FacultyUI implements UI
 {
-
-	/**
-	 * Constructor
-	 */
-	public function __construct()
-	{
-
-	}
-
-	/**
-	 * (non-PHPdoc)
-	 * @see UI::display()
-	 */
 	public function display()
 	{
-		// Get the list of departments the current user has access to
-		$departments = Department::getDepartmentsAssocForUsername(\Current_User::getUsername());
-
-        $renderedDepts = '';
-        foreach($departments as $key => $val) {
-            $renderedDepts .= \PHPWS_Template::process(
-                array('ID'=>$key, 'DEPT'=>$val),
-                'intern',
-                'facultySelectOption.tpl');
-        }
-
 		$tpl = array();
-        $tpl['FACULTY_EDIT'] =
-            javascriptMod('intern', 'facultyEdit', array('DEPTS'=>$renderedDepts));
+		javascript('jquery_ui');
+        javascriptMod('intern', 'facultyEdit');
 
-		return \PHPWS_Template::process($tpl, 'intern', 'editFaculty.tpl');
+		return PHPWS_Template::process($tpl, 'intern', 'editFaculty.tpl');
 	}
 }
-
-?>

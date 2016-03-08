@@ -11,6 +11,10 @@ class FacultyDeptRest {
     public function execute()
     {
         switch($_SERVER['REQUEST_METHOD']) {
+            case 'GET':
+                $data = $this->get();
+                echo (json_encode($data));
+                exit;
             case 'POST':
                 $this->post();
                 exit;
@@ -23,29 +27,40 @@ class FacultyDeptRest {
         }
     }
 
+    private function get()
+    {
+        PHPWS_Core::initModClass('intern', 'Department.php');
+        $departments = Department::getDepartmentsAssocForUsername(Current_User::getUsername());
+
+        $props = array();
+
+       foreach ($departments as $id => $val) {
+            $props[]=array('id'=>$id, 'name'=>$val);
+       }
+
+        return $props;
+    }
+
     private function post()
     {
-        $postArray = json_decode(file_get_contents('php://input'), true);
+        $facultyId       = $_REQUEST['faculty_id'];
+        $departmentId    = $_REQUEST['department_id'];
 
-        $facultyId       = $postArray['faculty_id'];
-        $departmentId    = $postArray['department_id'];
-
-        $sql = "INSERT INTO intern_faculty_department VALUES ('$facultyId', '$departmentId')";
-
-        $result = \PHPWS_DB::query($sql);
-
-        if(\PHPWS_Error::logIfError($result)){
+        if ($facultyId == '')
+        {
             header('HTTP/1.1 500 Internal Server Error');
+            echo("Missing a faculty ID.");
             exit;
         }
 
-        $obj = new \stdClass();
-        $obj->faculty_id       = $facultyId;
-        $obj->department_id    = $departmentId;
+        $db = \Database::newDB();
+        $pdo = $db->getPDO();
 
-        echo json_encode($obj);
+        $sql = "INSERT INTO intern_faculty_department VALUES (:facultyId, :departmentId)";
 
-        exit;
+        $sth = $pdo->prepare($sql);
+
+        $sth->execute(array('facultyId'=>$facultyId, 'departmentId'=>$departmentId));
     }
 
     private function delete()
@@ -56,16 +71,16 @@ class FacultyDeptRest {
         $facultyId       = $_REQUEST['faculty_id'];
         $departmentId    = $_REQUEST['department_id'];
 
-        $sql = "DELETE FROM intern_faculty_department WHERE faculty_id = $facultyId AND department_id = $departmentId";
+        $db = \Database::newDB();
+        $pdo = $db->getPDO();
 
-        $result = \PHPWS_DB::query($sql);
+        $sql = "DELETE FROM intern_faculty_department WHERE faculty_id = :facultyId AND department_id = :departmentId";
 
-        if(\PHPWS_Error::logIfError($result)){
-            header('HTTP/1.1 500 Internal Server Error');
-            exit;
-        }
 
-        header('HTTP/1.1 204 No Content');
+        $sth = $pdo->prepare($sql);
+
+        $sth->execute(array('facultyId'=>$facultyId, 'departmentId'=>$departmentId));
+
         exit;
     }
 }

@@ -2,8 +2,6 @@
 
 namespace Intern\UI;
 
-use Intern\Major;
-
 class MajorUI implements UI
 {
     public function display()
@@ -15,34 +13,12 @@ class MajorUI implements UI
             return false;
         }
 
-        $tpl['PAGER'] = MajorUI::doPager();
+        $tpl = array();
+        javascript('jquery');
 
-        javascript('/jquery/');
-        javascriptMod('intern', 'editMajor', array('EDIT_ACTION' => Major::getEditAction()));
+        javascriptMod('intern', 'manager');
+        javascriptMod('intern', 'editMajor');
 
-        /* Form for adding new major */
-        $form = new \PHPWS_Form('add_major');
-        $form->addText('name');
-        $form->setLabel('name', 'Major Title');
-        $form->addSubmit('submit','Add Major');
-        $form->setAction('index.php?module=intern&action=edit_major');
-        $form->addHidden('add',TRUE);
-
-        $form->mergeTemplate($tpl);
-        return \PHPWS_Template::process($form->getTemplate(), 'intern', 'edit_major.tpl');
-    }
-
-    public static function doPager()
-    {
-        $pager = new \DBPager('intern_major', '\Intern\Major');
-        $pager->db->addOrder('name asc');
-        $pager->setModule('intern');
-        $pager->setTemplate('major_pager.tpl');
-        $pager->setEmptyMessage('No Majors Found.');
-        $pager->addRowTags('getRowTags');
-
-        return $pager->get();
+        return \PHPWS_Template::process($tpl, 'intern', 'edit_major.tpl');
     }
 }
-
-?>
