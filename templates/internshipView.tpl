@@ -139,12 +139,14 @@
 
       <!-- Emergency Contact Info -->
       <fieldset>
-        <legend>Emergency Contacts</legend>
-        <div class="row">
-          <!-- React Emergency Contact -->
-          <div id="content"></div>
+          <legend>Emergency Contacts</legend>
+          <div class="row">
+              <!-- React Emergency Contact -->
+              <div class="col-md-12">
+                  <div id="emergency-contact-list"></div>
+              </div>
 
-        </div>
+          </div>
       </fieldset>
 
       <fieldset>

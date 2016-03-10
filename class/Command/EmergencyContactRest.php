@@ -17,8 +17,7 @@ class EmergencyContactRest {
                 $this->delete();
                 exit;
             case 'GET':
-            	$data = $this->get();
-				echo (json_encode($data));
+            	$this->get();
 				exit;
 			case 'POST':
 				$this->post();
@@ -29,8 +28,27 @@ class EmergencyContactRest {
         }
 	}
 
+    public function get()
+	{
+        // Check permissions
+        if(!\Current_User::isLogged()){
+            header('HTTP/1.1 403 Forbidden');
+            exit;
+        }
+
+		$internshipId = $_REQUEST['internshipId'];
+
+        echo json_encode($this->getAllContacts($internshipId));
+        exit;
+	}
+
 	public function post()
 	{
+        // Check permissions
+        if(!\Current_User::isLogged()){
+            header('HTTP/1.1 403 Forbidden');
+            exit;
+        }
 
          // Get data from request
         $internshipId = $_REQUEST['internshipId'];
@@ -60,12 +78,7 @@ class EmergencyContactRest {
             throw new InvalidArgumentException('Missing contact email.');
         }
 
-        PHPWS_Core::initModClass('intern', 'EmergencyContact.php');
-        PHPWS_Core::initModClass('intern', 'InternshipFactory.php');
-        PHPWS_Core::initModClass('intern', 'DatabaseStorage.php');
-
-        if ($_REQUEST['contactId'] != -1)
-        {
+        if ($_REQUEST['contactId'] != -1) {
             $contactId = $_REQUEST['contactId'];
 
             $contact = EmergencyContactFactory::getContactById($contactId);
@@ -76,9 +89,7 @@ class EmergencyContactRest {
             $contact->setEmail($email);
 
             DatabaseStorage::save($contact);
-        }
-        else
-        {
+        } else {
             // Get an Internship object based on the ID
             $internship = InternshipFactory::getInternshipById($internshipId);
 
@@ -88,46 +99,48 @@ class EmergencyContactRest {
             // Save the emergency contact object
             DatabaseStorage::save($contact);
 
-            echo json_encode($contact);
+            //echo json_encode($contact);
 
-            // Exit, since this is called by JSON
-            exit;
         }
 
+        echo json_encode($this->getAllContacts($internshipId));
+        exit;
 	}
 
 	public function delete()
 	{
 		// Check permissions
-        //TODO
+        if(!\Current_User::isLogged()){
+            header('HTTP/1.1 403 Forbidden');
+            exit;
+        }
 
         // Get the contactId parameter
         if(!isset($_REQUEST['contactId'])){
             throw new InvalidArgumentException('Missing contact id.');
         }
 
-        $contactId = $_REQUEST['contactId'];
+        if(!isset($_REQUEST['internshipId'])){
+            throw new InvalidArgumentException('Missing internship id.');
+        }
 
-        PHPWS_Core::initModClass('intern', 'EmergencyContactFactory.php');
+        $contactId = $_REQUEST['contactId'];
+        $internshipId = $_REQUEST['internshipId'];
+
         $contact = EmergencyContactFactory::getContactById($contactId);
 
         EmergencyContactFactory::delete($contact);
 
-        // Called from AJAX, so just exit with no output
-        exit();
+        echo json_encode($this->getAllContacts($internshipId));
+        exit;
 	}
 
-	public function get()
-	{
-		$internshipId = $_REQUEST['internshipid'];
-		// Get an Internship object based on the ID
-		PHPWS_Core::initModClass('intern', 'EmergencyContact.php');
-        PHPWS_Core::initModClass('intern', 'InternshipFactory.php');
-
+    private function getAllContacts($internshipId)
+    {
         // Get an Internship object based on the ID
         $internship = InternshipFactory::getInternshipById($internshipId);
         $contacts = EmergencyContactFactory::getContactsForInternship($internship);
 
         return $contacts;
-	}
+    }
 }

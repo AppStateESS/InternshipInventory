@@ -181,33 +181,27 @@ class InternshipInventory {
                 $ctrl->execute();
                 break;
             case 'adminRest':
-                PHPWS_Core::initModClass('intern', 'command/AdminRest.php');
-                $ctrl = new AdminRest();
+                $ctrl = new Command\AdminRest();
                 $ctrl->execute();
                 break;
             case 'majorRest':
-                PHPWS_Core::initModClass('intern', 'command/MajorRest.php');
-                $ctrl = new MajorRest();
+                $ctrl = new Command\MajorRest();
                 $ctrl->execute();
                 break;
             case 'gradRest':
-                PHPWS_Core::initModClass('intern', 'command/GradRest.php');
-                $ctrl = new GradRest();
+                $ctrl = new Command\GradRest();
                 $ctrl->execute();
                 break;
             case 'deptRest':
-                PHPWS_Core::initModClass('intern', 'command/DeptRest.php');
-                $ctrl = new DeptRest();
+                $ctrl = new Command\DeptRest();
                 $ctrl->execute();
                 break;
             case 'stateRest':
-                PHPWS_Core::initModClass('intern', 'command/StateRest.php');
-                $ctrl = new StateRest();
+                $ctrl = new Command\StateRest();
                 $ctrl->execute();
                 break;
             case 'emergencyContactRest':
-                PHPWS_Core::initModClass('intern', 'command/EmergencyContactRest.php');
-                $ctrl = new EmergencyContactRest();
+                $ctrl = new Command\EmergencyContactRest();
                 $ctrl->execute();
                 break;
             default:

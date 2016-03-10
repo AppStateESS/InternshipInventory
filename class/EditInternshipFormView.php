@@ -359,17 +359,17 @@ class EditInternshipFormView {
          * Term Info *
          */
 
-        if (\Current_User::isDeity()) {  
+        if (\Current_User::isDeity()) {
             $terms = Term::getTermsAssoc();
             $this->form->addSelect('term', $terms);
             $this->form->setMatch('term', $this->intern->term);
-            $this->form->addCssClass('term', 'form-control');  
+            $this->form->addCssClass('term', 'form-control');
         }else{
             $this->tpl['TERM'] = Term::rawToRead($this->intern->term);
         }
 
 
-        
+
 
         $this->form->addText('start_date');
         $this->form->setLabel('start_date', 'Start Date');
@@ -477,10 +477,10 @@ class EditInternshipFormView {
          * *
          * Emergency Contacts
          */
-        //javascript('jquery');
-        $contacts = EmergencyContactFactory::getContactsForInternship($this->intern);
-        $emgContactJson = json_encode($contacts);
-        \Layout::add(javascriptMod('intern', 'emergencyContact', array('existing_contacts_json' => $emgContactJson)));
+        javascript('jquery');
+        //$contacts = EmergencyContactFactory::getContactsForInternship($this->intern);
+        //$emgContactJson = json_encode($contacts);
+        \Layout::add(javascriptMod('intern', 'emergencyContact', array('INTERN_ID' => $this->intern->getId())));
     }
 
     private function plugStudent()
