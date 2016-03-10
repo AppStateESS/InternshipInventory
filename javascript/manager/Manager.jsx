@@ -223,7 +223,7 @@ var AddData = React.createClass({
 	},
 	render: function() {
 		return (
-			<div className="col-md-4 col-md-offset-1">
+			<div className="col-md-5 col-md-offset-1">
 				<br /><br /><br />
 				<div className="panel panel-default">
 					<div className="panel-body">
