@@ -139,16 +139,14 @@
 
       <!-- Emergency Contact Info -->
       <fieldset>
-        <legend>Emergency Contacts</legend>
-        <div class="row">
-          <div class="col-lg-9">
-            <ul id="emergency-contact-list" class="list-group">
-            </ul>
-            <div id="emergency-spinner" style="margin-top: 15px;"></div>
-          </div>
-          <div class="col-lg-3">{ADD_EMERGENCY_CONTACT}</div>
+          <legend>Emergency Contacts</legend>
+          <div class="row">
+              <!-- React Emergency Contact -->
+              <div class="col-md-12">
+                  <div id="emergency-contact-list"></div>
+              </div>
 
-        </div>
+          </div>
       </fieldset>
 
       <fieldset>

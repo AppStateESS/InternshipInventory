@@ -46,7 +46,7 @@ class Admin extends Model
             $dept = $dept->id;
         }
 
-        $db = self::getDb();
+        $db = new PHPWS_DB('intern_admin');
         $db->addWhere('username', $username);
         $db->addWhere('department_id', $dept);
         $db->addColumn('id', $count=true);
@@ -64,17 +64,6 @@ class Admin extends Model
      */
     public function rowTags()
     {
-        //$d = new Department($this->department_id);
-
-        /*
-        $link = PHPWS_Text::secureLink('Delete', 'intern', array('action' => 'edit_admins',
-                                                                 'del' => true,
-                                                                 'username' => $this->username,
-                                                                 'department_id' => $this->department_id));
-        */
-
-        //test($this,1);
-
         return array('USERNAME' => $this->username,
                      'DEPARTMENT' => $this->department_name,
                      'DELETE' => '');
@@ -157,10 +146,6 @@ class Admin extends Model
             $pager->setOrder('department_name');
         }
 
-        /***** Row Background Color Toggles ******/
-        $pager->addToggle('tablerow-bg-color1');
-        $pager->addToggle('tablerow-bg-color2');
-
         // Search
         $pager->setSearch('username');
 
@@ -176,5 +161,3 @@ class Admin extends Model
         return $db->select('col');
     }
 }
-
-?>

@@ -1,31 +1,31 @@
 <?php
+
 namespace Intern\Command;
 
-class getDepartments {
+class GetDepartments
+{
 
-    public function execute()
-    {
-        // Get list of departments for the current user
-        // If user is a Deity, then get all departments
-        if (\Current_User::isDeity()) {
-            $departments = \Intern\Department::getDepartmentsAssoc();
-        } else {
-            $departments = \Intern\Department::getDepartmentsAssocForUsername(\Current_User::getUsername());
-        }
+	public function getData()
+	{
+		$data = $this->getDeptData();
+		echo (json_encode($data));
+		exit;
+	}
 
-        $departments = array('-1' => 'Select a Department') + $departments;
+	public function getDeptData()
+	{
+		$db = \Database::newDB();
+		$pdo = $db->getPDO();
 
-        /*
-         * NB: Javascript objects are unordered. When the JSON data is
-         * decoded, numeric keys may be re-arraged. Making the keys into strings
-         * (by pre-pending an underscore) will prevent the re-ordering.
-         */
-        $newDepts = array();
-        foreach($departments as $key=>$value){
-            $newDepts['_' . $key] = $value;
-        }
+		$sql = "SELECT name, id
+				FROM intern_department
+				ORDER BY name ASC";
 
-        echo json_encode($newDepts);
-        exit;
-    }
+		$sth = $pdo->prepare($sql);
+
+		$sth->execute();
+		$result = $sth->fetchAll(\PDO::FETCH_ASSOC);
+		return $result;
+	}
+
 }
