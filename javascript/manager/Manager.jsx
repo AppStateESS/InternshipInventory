@@ -15,13 +15,13 @@ var Manager = React.createClass({
 			url: 'index.php?module=intern&action='+this.props.ajaxURL,
 			type: 'GET',
 			dataType: 'json',
-			success: function(data) {					
+			success: function(data) {
 				this.setState({mainData: data});
 			}.bind(this),
 			error: function(xhr, status, err) {
 				alert("test failed")
 				console.error(this.props.url, status, err.toString());
-			}.bind(this)				
+			}.bind(this)
 		});
 	},
 	onHidden: function(val, id){
@@ -38,13 +38,13 @@ var Manager = React.createClass({
 		$.ajax({
 			url: 'index.php?module=intern&action='+this.props.ajaxURL+'&val='+val+'&id='+id,
 			type: 'PUT',
-			success: function() {						
+			success: function() {
 				this.getData();
 			}.bind(this),
 			error: function(xhr, status, err) {
 				alert("test failed")
 				console.error(this.props.url, status, err.toString());
-			}.bind(this)				
+			}.bind(this)
 		});
 	},
 	onSave: function(orgName, newName, id){
@@ -52,29 +52,29 @@ var Manager = React.createClass({
 		$.ajax({
 			url: 'index.php?module=intern&action='+this.props.ajaxURL+'&name='+newName+'&id='+id,
 			type: 'PUT',
-			success: function(data) {	
+			success: function(data) {
 				// Determines if the values have changed and if so, continues
 				// with the changes.
 				if (orgName != newName)
-				{	
+				{
 					$("#success").show();
 					var added = 'Updated '+orgName+ " to " +newName+'.';
 					this.setState({success: added});
-				}				
+				}
 				this.getData();
 			}.bind(this),
 			error: function(xhr, status, err) {
 				alert("test failed")
 				console.error(this.props.url, status, err.toString());
-			}.bind(this)				
+			}.bind(this)
 		});
 	},
 	onCreate: function(name) {
 		// Creates a new value
 		$.ajax({
 			url: 'index.php?module=intern&action='+this.props.ajaxURL+'&create='+name,
-			type: 'POST',		
-			success: function(data) {	
+			type: 'POST',
+			success: function(data) {
 				// Shows a success message for the new value being added.
 				$("#success").show();
 				var added = 'Added '+name+'.';
@@ -85,7 +85,7 @@ var Manager = React.createClass({
 				var errorMessage = http.responseText;
 				this.setState({errorWarning: errorMessage});
 				$("#warningError").show();
-			}.bind(this)	
+			}.bind(this)
 		});
 	},
 	render: function() {
@@ -95,17 +95,17 @@ var Manager = React.createClass({
 			var panelTitle = this.props.panelTitle;
 			var onHidden = this.onHidden;
 			var onSave = this.onSave;
-			var Data = this.state.mainData.map(function (data) {		    
+			var Data = this.state.mainData.map(function (data) {
 			return (
 				<DisplayData key = {data.id}
 						   id = {data.id}
 						   name = {data.name}
-						   hidden = {data.hidden} 
+						   hidden = {data.hidden}
 						   onHidden = {onHidden}
 						   onSave = {onSave} />
 				);
-			});	
-		}	
+			});
+		}
 		else
 		{
 			var Data = "";
@@ -137,12 +137,12 @@ var Manager = React.createClass({
 								<tbody>
 									{Data}
 								</tbody>
-							</table>												
-					</div>	
+							</table>
+					</div>
 					<AddData onCreate={this.onCreate}
 							   buttonTitle={this.props.buttonTitle}
-						       panelTitle={this.props.panelTitle}  />						
-					
+						       panelTitle={this.props.panelTitle}  />
+
 				</div>
 			</div>
 		);
@@ -160,7 +160,7 @@ var DisplayData = React.createClass({
 		this.setState({editMode: true});
 
 	},
-	handleHide: function() {		
+	handleHide: function() {
 		this.props.onHidden(this.props.hidden, this.props.id);
 	},
 	handleSave: function() {
@@ -176,59 +176,54 @@ var DisplayData = React.createClass({
 
 		this.props.onSave(originalName, newName, this.props.id);
 	},
-	render: function() {  
+	render: function() {
 		// Determines which element to show on the page (hide/show and Save/Edit)
-		if (this.props.hidden == 0)
-		{
+		if (this.props.hidden == 0) {
 			var name = this.props.name;
-			var hButton = <button className="btn btn-default btn-xs" type="submit" onClick={this.handleHide}> Hide </button> 
-		}
-		else
-		{
+			var hButton = <button className="btn btn-default btn-xs" type="submit" onClick={this.handleHide}> Hide </button>
+		} else {
 			var name = <span className="text-muted"><em> {this.props.name} </em></span>;
-			var hButton = <button className="btn btn-default btn-xs" type="submit" onClick={this.handleHide}> Show </button> 
+			var hButton = <button className="btn btn-default btn-xs" type="submit" onClick={this.handleHide}> Show </button>
 		}
 
-		if (this.state.editMode)
-		{
+		if (this.state.editMode) {
 			var eName = 'Save';
 			var text = <div id={this.props.id} >
-		  				<input type="text" className="form-control" placeholder={this.props.name} ref="savedData" />
-						</div> 
+		  				<input type="text" className="form-control" defaultValue={this.props.name} ref="savedData" />
+						</div>
 
-			var eButton = <button className="btn btn-default btn-xs" type="submit" onClick={this.handleSave}> Save </button> 		
-		}
-		else
-		{
+			var eButton = <button className="btn btn-default btn-xs" type="submit" onClick={this.handleSave}> Save </button>
+		} else {
 			var eName = 'Edit';
 			var text = name;
-			
-			var eButton = <button className="btn btn-default btn-xs" type="submit" onClick={this.handleEdit}> Edit </button> 
+
+			var eButton = <button className="btn btn-default btn-xs" type="submit" onClick={this.handleEdit}> Edit </button>
 		}
-		return (	
+
+		return (
 			<tr>
 				<td>
-					
+
 					{text}
 
 				</td>
 				<td> {eButton} </td>
 				<td> {hButton} </td>
-			</tr>	
-			
+			</tr>
+
 		);
-	
+
 	}
-});		
+});
 
 var AddData = React.createClass({
 	handleClick: function() {
 		var textName = React.findDOMNode(this.refs.addData).value.trim();
 		this.props.onCreate(textName);
 	},
-	render: function() {  
-		return (	
-			<div className="col-md-5 col-md-offset-1">
+	render: function() {
+		return (
+			<div className="col-md-4 col-md-offset-1">
 				<br /><br /><br />
 				<div className="panel panel-default">
 					<div className="panel-body">
@@ -237,22 +232,23 @@ var AddData = React.createClass({
 								<label>{this.props.panelTitle}</label>
 							</div>
 						</div>
-						<br />
 						<div className="row">
-							<div className="col-md-6">
+							<div className="col-md-8">
+                                <div className="form-group">
+								    <input type="text" className="form-control" ref="addData" />
+                                </div>
+							</div>
 
-								<input type="text" className="form-control" ref="addData" />
+							<div className="col-md-4">
+                                <div className="form-group">
+								    <button className="btn btn-default btn-md" onClick={this.handleClick}>{this.props.buttonTitle}</button>
+                                </div>
 							</div>
-							
-							<div className="col-md-1 col-md-offset-.5">
-								<input className="btn btn-default btn-md" value={this.props.buttonTitle} onClick={this.handleClick} />
-							</div>
-						</div>	
+						</div>
 					</div>
 				</div>
-			</div>	
+			</div>
 		);
-	
-	}
-});	
 
+	}
+});
