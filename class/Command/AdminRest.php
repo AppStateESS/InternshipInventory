@@ -61,7 +61,7 @@ class AdminRest {
 
 		$sth->execute(array('user'=>$user, 'dept'=>$dept));
 
-		$result = $sth->fetchAll(PDO::FETCH_ASSOC);
+		$result = $sth->fetchAll(\PDO::FETCH_ASSOC);
 
 		if (sizeof($result) > 0)
 		{
@@ -80,7 +80,7 @@ class AdminRest {
 
 		$sth->execute(array('user'=>$user));
 
-		$result = $sth->fetchAll(PDO::FETCH_ASSOC);
+		$result = $sth->fetchAll(\PDO::FETCH_ASSOC);
 		if (sizeof($result) == 0)
 		{
 
@@ -131,7 +131,7 @@ class AdminRest {
 		$sth = $pdo->prepare($sql);
 
 		$sth->execute();
-		$result = $sth->fetchAll(PDO::FETCH_ASSOC);
+		$result = $sth->fetchAll(\PDO::FETCH_ASSOC);
 
 		return $result;
 	}

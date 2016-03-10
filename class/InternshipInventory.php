@@ -109,8 +109,7 @@ class InternshipInventory {
                 $this->content = $view->display();
                 break;
             case 'get_dept':
-                PHPWS_Core::initModClass('intern','command/GetDepartments.php');
-                $deptData = new GetDepartments();
+                $deptData = new \Intern\Command\GetDepartments();
                 $deptData->getData();
                 break;
             case 'pdf':
