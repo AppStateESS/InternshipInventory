@@ -75,6 +75,10 @@ class InternshipInventory {
                 $view = new UI\MajorUI();
                 $this->content = $view->display();
                 break;
+            case 'showEditGradProgs':
+                $view = new UI\GradProgramUI();
+                $this->content = $view->display();
+                break;
 
                 /**
                  * Matt additions!

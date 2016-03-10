@@ -16,11 +16,11 @@ class GradProgramUI implements UI
         }
 
         $tpl = array();
-        javascript('/jquery/');
-        javascriptMod('intern', 'manager');
-        javascriptMod('intern', 'editGrad');
+        \javascript('/jquery/');
+        \javascriptMod('intern', 'manager');
+        \javascriptMod('intern', 'editGrad');
 
-        return PHPWS_Template::process($tpl, 'intern', 'edit_grad.tpl');
+        return \PHPWS_Template::process($tpl, 'intern', 'edit_grad.tpl');
     }
 
 }
