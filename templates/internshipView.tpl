@@ -21,8 +21,15 @@
     <div class="col-lg-1 col-lg-offset-8">
       <button type="submit" class="btn btn-primary" id="{SUBMIT_ID}">{SUBMIT_VALUE}</button>
     </div>
+
+    <div class="col-lg-1">
+      <!-- BEGIN delete_btn -->
+      <a href="{DELETE_URL}" class="btn btn-danger-hover" onclick="return confirm('Are you sure you want to delete this internship?');">Delete</a>
+      <!-- END delete_btn -->
+    </div>
+
     <div class="col-lg-1 col-lg-offset-1">
-      <button type="button" id="contract-button" class="btn btn-default generateContract"><i class="fa fa-file"></i> Generate Contract</button>
+      <button type="button" id="contract-button" class="btn btn-default pull-right generateContract"><i class="fa fa-file"></i> Generate Contract</button>
     </div>
   </div>
 
