@@ -561,9 +561,8 @@
       <div class="form-group">
         <button type="submit" class="btn btn-primary pull-right" id="{SUBMIT_ID}">{SUBMIT_VALUE}</button>
       </div>
-    </div>
-    <!-- End of right column -->
-  </div>
+    </div> <!-- End of right column -->
+  </div> <!-- End of main row -->
 
   <div class="row">
     <div class="col-lg-6">
@@ -582,9 +581,9 @@
     </div>
   </div>
 
-  {END_FORM} {EMERGENCY_CONTACT_DIALOG}
+{END_FORM}
 
-  <div id="internship-type-help">
+<div id="internship-type-help">
     <h2>Internship Type Definitions</h2>
     <h3>Student Teaching</h3>
     <p>A course requiring students to instruct or teach at an entity external to the institution, generally as part of the culminating curriculum of a teacher education or certificate program.</p>
@@ -597,4 +596,14 @@
 
     <h3>Internship</h3>
     <p>A course requiring students to participate in a partnership, professional employment, work experience or cooperative education with any entity external to the institution, generally under the supervision of an employee of the external entity.</p>
-  </div>
+</div>
+
+<script type = "text/javascript">
+    var internshipId = {INTERN_ID};
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react-with-addons.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react-dom.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap/0.28.3/react-bootstrap.js"></script>
+
+<script type="text/javascript" src="{source_http}mod/intern/javascript/emergencyContact/dist/emergencyContact.min.041d386d.js"></script>

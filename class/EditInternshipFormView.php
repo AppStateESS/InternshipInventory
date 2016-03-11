@@ -54,7 +54,6 @@ class EditInternshipFormView {
         $this->plugInternship();
 
         $this->setupDocumentList();
-        $this->setupEmergencyContact();
         $this->setupChangeHistory();
     }
 
@@ -478,9 +477,7 @@ class EditInternshipFormView {
          * Emergency Contacts
          */
         javascript('jquery');
-        //$contacts = EmergencyContactFactory::getContactsForInternship($this->intern);
-        //$emgContactJson = json_encode($contacts);
-        \Layout::add(javascriptMod('intern', 'emergencyContact', array('INTERN_ID' => $this->intern->getId())));
+        $this->tpl['INTERN_ID'] = $this->intern->getId();
     }
 
     private function plugStudent()
@@ -691,14 +688,6 @@ class EditInternshipFormView {
         // Document upload button
         $folder = new InternFolder(InternDocument::getFolderId());
         $this->tpl['UPLOAD_DOC'] = $folder->documentUpload($this->intern->id);
-    }
-
-    private function setupEmergencyContact()
-    {
-        $emgContactDialog = new EmergencyContactFormView($this->intern);
-
-        $this->tpl['ADD_EMERGENCY_CONTACT'] = '<button type="button" class="btn btn-default btn-sm" id="add-ec-button"><i class="fa fa-plus"></i> Add Contact</button>';
-        $this->tpl['EMERGENCY_CONTACT_DIALOG'] = $emgContactDialog->getHtml();
     }
 
     private function setupChangeHistory()
