@@ -73,5 +73,5 @@ module.exports = function(grunt) {
 
     grunt.config.set('currMod', grunt.option('module'));
 
-    grunt.registerTask("default", ['clean', 'babel', 'uglify', 'hash']);
+    grunt.registerTask("default", ['clean:one', 'babel', 'uglify', 'hash']);
 }
