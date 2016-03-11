@@ -8,7 +8,7 @@ namespace Intern\Command;
  * Controller class for creating an new internship.
  *
  * @author Eric Cambel
- * @package hms
+ * @package intern
  */
 class DeleteInternship {
 
@@ -38,23 +38,23 @@ class DeleteInternship {
             $query = 'DELETE FROM intern_document WHERE internship_id = :id';
             $sth = $pdo->prepare($query);
             $sth->execute($internId);
-            
-            // Delete all emergency contacts relating to the internship 
+
+            // Delete all emergency contacts relating to the internship
             $query = 'DELETE FROM intern_emergency_contact WHERE internship_id = :id';
             $sth = $pdo->prepare($query);
             $sth->execute($internId);
-    
-            // Delete all history relating to the internship 
+
+            // Delete all history relating to the internship
             $query = 'DELETE FROM intern_change_history WHERE internship_id = :id';
             $sth = $pdo->prepare($query);
-            $sth->execute($internId);         
+            $sth->execute($internId);
 
 
             // Delete the internship
             $query = 'DELETE FROM intern_internship WHERE id = :id';
             $sth = $pdo->prepare($query);
             $sth->execute($internId);
-    
+
             $pdo->commit();
 
             // Show a success notice and redirect to the search page.
@@ -72,7 +72,5 @@ class DeleteInternship {
 
             return \PHPWS_Core::reroute('index.php?module=intern&action=ShowInternship&internship_id=' . $id);
         }
-
-        
     }
 }
