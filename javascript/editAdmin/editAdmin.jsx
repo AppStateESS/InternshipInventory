@@ -33,7 +33,7 @@ var SearchAdmin = React.createClass({
 	},
 	getDept: function(){
 		$.ajax({
-			url: 'index.php?module=intern&action=get_dept',
+			url: 'index.php?module=intern&action=deptRest',
 			action: 'GET',
 			dataType: 'json',
 			success: function(data) {
