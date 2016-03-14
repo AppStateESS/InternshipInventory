@@ -116,10 +116,6 @@ class InternshipInventory {
                 $view = new UI\AdminUI();
                 $this->content = $view->display();
                 break;
-            case 'get_dept':
-                $deptData = new \Intern\Command\GetDepartments();
-                $deptData->getData();
-                break;
             case 'pdf':
                 $i = InternshipFactory::getInternshipById($_REQUEST['internship_id']);
                 $emgContacts = EmergencyContactFactory::getContactsForInternship($i);
