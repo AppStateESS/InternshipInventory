@@ -31,6 +31,7 @@ class InternshipView {
 
     public function display()
     {
+        /*
         $tpl = array();
 
         // Setup the form
@@ -38,39 +39,46 @@ class InternshipView {
 
         // Get the Form object
         $form = $internshipForm->getForm();
+        */
 
         /*
          * If 'missing' is set then we have been redirected
          * back to the form because the user didn't type in something and
          * somehow got past the javascript.
          */
+/*
         if (isset($_REQUEST['missing'])) {
             $missing = explode(' ', $_REQUEST['missing']);
-
+*/
             /*
              * Set classes on field we are missing.
             */
+/*
             foreach ($missing as $m) {
             	//$form->addCssClass($m, 'has-error');
             	$form->addExtraTag($m, 'data-has-error="true"');
             }
-
+*/
 
             /* Plug old values back into form fields. */
-            $form->plugIn($_GET);
+  //          $form->plugIn($_GET);
 
             /* Re-add hidden fields with object ID's */
-            $form->addHidden('id', $this->intern->id);
-        }
+    //        $form->addHidden('id', $this->intern->id);
+      //  }
 
-        $form->mergeTemplate($tpl);
+        //$form->mergeTemplate($tpl);
 
-        $this->showWarnings();
-        $this->showStudentWarnings();
+        //$this->showWarnings();
+        //$this->showStudentWarnings();
+
 
         javascript('jquery');
 
-        return \PHPWS_Template::process($form->getTemplate(), 'intern', 'internshipView.tpl');
+        $content = array();
+        //javascriptMod('intern', 'editInternshipView');
+        return \PHPWS_Template::process($content, 'intern', 'editInternshipView.tpl');
+
     }
 
     private function showWarnings()
