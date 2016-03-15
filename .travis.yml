@@ -8,5 +8,6 @@ php:
 
 script:
     - ".travis-build/phplint ."
+    - phpunit
 
 notifications:
