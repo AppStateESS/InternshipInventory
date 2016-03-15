@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
-<phpunit>
+<phpunit colors="true" verbose="true" bootstrap="test/bootstrap.php">
     <testsuites>
-        <testsuite name="intern-test">
-            <directory>tests</directory>
+        <testsuite name="Internship Inventory Test Suite">
+            <directory>test</directory>
         </testsuite>
     </testsuites>
 </phpunit>
