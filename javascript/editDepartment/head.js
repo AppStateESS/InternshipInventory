@@ -1,3 +1,2 @@
 
-<script type ="text/jsx" src = "mod/intern/javascript/editDepartment/deptEditor.jsx"></script>
-
+<script type ="text/jsx" src = "{source_http}mod/intern/javascript/editDepartment/deptEditor.jsx"></script>
