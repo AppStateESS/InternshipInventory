@@ -38,6 +38,7 @@ class ResultsUI implements UI {
         $courseSubject = null;
         $courseNum = null;
         $courseSect = null;
+        $oied = null;
 
 
         /**
@@ -74,9 +75,11 @@ class ResultsUI implements UI {
             $courseNum = $_REQUEST['course_no'];
         if (isset($_REQUEST['course_sect']))
             $courseSect = $_REQUEST['course_sect'];
+        if (isset($_REQUEST['oied']))
+            $oied = $_REQUEST['oied'];
 
             /* Get Pager */
-        $pager = self::getPager($name, $dept, $term, $ugradMajor, $gradProg, $level, $type, $campus, $loc, $state, $country, $workflowState, $courseSubject, $courseNum, $courseSect);
+        $pager = self::getPager($name, $dept, $term, $ugradMajor, $gradProg, $level, $type, $campus, $loc, $state, $country, $workflowState, $courseSubject, $courseNum, $courseSect, $oied);
 
         $pagerContent = $pager->get();
 
@@ -102,7 +105,7 @@ class ResultsUI implements UI {
      * Get the DBPager object.
      * Search strings can be passed in too.
      */
-    private static function getPager($name = null, $deptId = null, $term = null, $ugradMajor = null, $gradProg = null, $level = null, $type = null, $campus = null, $loc = null, $state = null, $country = null, $workflowState = null, $courseSubject = null, $courseNum = null, $courseSect = null)
+    private static function getPager($name = null, $deptId = null, $term = null, $ugradMajor = null, $gradProg = null, $level = null, $type = null, $campus = null, $loc = null, $state = null, $country = null, $workflowState = null, $courseSubject = null, $courseNum = null, $courseSect = null, $oied = null)
     {
         $pager = new SubselectPager('intern_internship', '\Intern\InternshipRestored');
 
@@ -271,6 +274,11 @@ class ResultsUI implements UI {
                 $path = explode('\\', $s);
                 $pager->db->addWhere('state', $path[2], '=', 'OR', 'workflow_group');
             }
+        }
+
+        // OIED Certification
+        if (isset($oied) && $oied != '-1') {
+            $pager->db->addWhere('oied_certified', $oied, '=');
         }
 
         //var_dump($pager);exit;

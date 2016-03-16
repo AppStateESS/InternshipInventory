@@ -135,6 +135,12 @@ class SearchUI implements UI
         $form->addCheckAssoc('workflow_state', $workflowStates);
 
 
+        /************************
+         * Certification Status *
+         ************************/
+        // Handeled directly in the html template
+
+
         $form->addSubmit('submit', 'Search');
 
         // Javascript...
