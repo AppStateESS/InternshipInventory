@@ -16,6 +16,6 @@ class FacultyUI implements UI
 		javascript('jquery_ui');
         javascriptMod('intern', 'facultyEdit');
 
-		return PHPWS_Template::process($tpl, 'intern', 'editFaculty.tpl');
+		return \PHPWS_Template::process($tpl, 'intern', 'editFaculty.tpl');
 	}
 }

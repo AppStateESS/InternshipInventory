@@ -1,6 +1,8 @@
 <?php
 namespace Intern\Command;
 
+use \Intern\Department;
+
 /**
  * REST-ful controller for creating/editing faculty to department associations.
  * @author jbooker
@@ -29,8 +31,7 @@ class FacultyDeptRest {
 
     private function get()
     {
-        PHPWS_Core::initModClass('intern', 'Department.php');
-        $departments = Department::getDepartmentsAssocForUsername(Current_User::getUsername());
+        $departments = Department::getDepartmentsAssocForUsername(\Current_User::getUsername());
 
         $props = array();
 
