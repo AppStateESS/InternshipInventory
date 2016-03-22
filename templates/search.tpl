@@ -148,16 +148,12 @@
             </div>
           </div>
         </div>
-      </fieldset>
 
-
-      <fieldset>
-        <legend>OIED Certifcation</legend>
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="oied">Certifications</label>
+          <label class="col-lg-4 control-label" for="oied">OIED Certification</label>
           <div class="col-lg-8">
               <div class="btn-group" data-toggle="buttons">
-                <label class="btn btn-default active">Any Certification
+                <label class="btn btn-default active">Any
                   <input type="radio" name="oied" value="-1" checked>
                 </label>
                 <label class="btn btn-default">Non-Certified
