@@ -208,7 +208,7 @@ var ModalForm = React.createClass({
 				    this.addFacultyToDept(data);
                 }
 
-				this.props.hide();
+				this.clearStateAndHide();
 			}.bind(this),
 			error: function(xhr, status, err) {
 				alert("Sorry, looks like something went wrong. We couldn't save your changes.");
