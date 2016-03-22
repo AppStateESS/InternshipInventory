@@ -205,7 +205,7 @@ var EmergencyContactList = React.createClass({
             }.bind(this));
 
         }else{
-            var eData = <p className="text-muted"><i className="fa fa-spinner fa-2x fa-spin"></i> Loading Emergency Contacts...</p>;
+            var eData = <p className="text-muted"><i className="fa fa-spinner fa-2x fa-spin"></i> Loading Emergency Contacts...</p>; 
         }
 
         return (

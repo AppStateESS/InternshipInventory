@@ -817,7 +817,7 @@ class Internship {
     public function getWorkflowState()
     {
         $stateName = $this->getStateName();
-
+        
         if(is_null($stateName)){
             return null;
         }

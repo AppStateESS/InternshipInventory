@@ -72,7 +72,6 @@ class InternshipView {
         //$this->showWarnings();
         //$this->showStudentWarnings();
 
-
         javascript('jquery');
 
         $content = array();
