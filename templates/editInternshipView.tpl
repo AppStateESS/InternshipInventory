@@ -1,8 +1,10 @@
-
-
 <div id="editInternshipInterface"></div>
 
+<script type = "text/javascript">
+var internshipId = {INTERN_ID};
+</script>
 
+<script type="text/javascript" src="{source_http}mod/intern/node_modules/classnames/index.js"></script>
 <script src="https://fb.me/react-with-addons-0.13.3.js"></script>
 
 <!-- <script type="text/javascript" src="{source_http}mod/intern/node_modules/react/dist/react-with-addons.js"></script>

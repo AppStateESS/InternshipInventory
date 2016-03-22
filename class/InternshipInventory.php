@@ -207,6 +207,10 @@ class InternshipInventory {
                 $ctrl = new Command\EmergencyContactRest();
                 $ctrl->execute();
                 break;
+            case 'editInternshipRest':
+                $ctrl = new Command\EditInternshipRest();
+                $ctrl->execute();
+                break;
             default:
                 $menu = new UI\InternMenu();
                 $this->content = $menu->display();

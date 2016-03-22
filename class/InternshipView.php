@@ -74,9 +74,13 @@ class InternshipView {
         //$this->showStudentWarnings();
 
         //return \PHPWS_Template::process($form->getTemplate(), 'intern', 'internshipView.tpl');
-        $content = array();
+        $tpl = array();
         //javascriptMod('intern', 'editInternshipView');
-        return \PHPWS_Template::process($content, 'intern', 'editInternshipView.tpl');
+
+        javascript('jquery');
+        $tpl['INTERN_ID'] = $this->intern->getId();
+
+        return \PHPWS_Template::process($tpl, 'intern', 'editInternshipView.tpl');
     }
 
     private function showWarnings()
