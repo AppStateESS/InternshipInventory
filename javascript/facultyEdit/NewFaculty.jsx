@@ -24,7 +24,7 @@ var BannerSearch = React.createClass({
             <div>
                 <div className="form-group">
                     <label htmlFor="bannerId-search">Faculty Member's Banner ID</label>
-                    <input type="text" className="form-control" ref="bannerId" placeholder="Banner ID" onKeyPress={this.onKeyPress} />
+                    <input type="text" id="bannerId-search" className="form-control" ref="bannerId" placeholder="Banner ID" onKeyPress={this.onKeyPress} />
                 </div>
                 <div className="form-group pull-right">
                     <ReactBootstrap.Button onClick={this.handleSearch}>Search</ReactBootstrap.Button>
@@ -105,7 +105,7 @@ var FacultyForm = React.createClass({
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="faculty-edit-vity">City</label>
+                        <label htmlFor="faculty-edit-city">City</label>
                         <input type="text" className="form-control" id="faculty-edit-city" ref="facultyEditCity" defaultValue={this.props.facultyData.city} />
                     </div>
 
@@ -128,7 +128,7 @@ var FacultyForm = React.createClass({
 
 // Modal Pop-up for adding/editing faculty members
 // !This uses ReactBoostrap!
-var ModalForm = React.createClass({
+var FacultyModal = React.createClass({
 	getInitialState: function() {
 		return {
 			facultyData: null,
@@ -179,7 +179,7 @@ var ModalForm = React.createClass({
 		$.ajax({
 			url: 'index.php?module=intern&action=facultyDeptRest&faculty_id='+idNum+'&department_id='+departNum,
 			type: 'POST',
-			success: function() {
+			success: function() {http://localhost/intern/phpwebsite/index.php?module=intern&action=edit_faculty
 				this.props.getDeptFaculty(departNum);
 			}.bind(this),
 			error: function(xhr, status, err) {
@@ -208,7 +208,13 @@ var ModalForm = React.createClass({
 				    this.addFacultyToDept(data);
                 }
 
-				this.clearStateAndHide();
+
+                if(this.props.edit){
+                    this.props.hide();
+                } else {
+                    this.clearStateAndHide();
+                }
+
 			}.bind(this),
 			error: function(xhr, status, err) {
 				alert("Sorry, looks like something went wrong. We couldn't save your changes.");
@@ -225,12 +231,14 @@ var ModalForm = React.createClass({
 
         if(this.props.edit){
             var title = 'Edit Faculty Details';
+            var onHideMethod = this.props.hide;
         } else {
             var title = 'Add a Facutly Member';
+            var onHideMethod = this.clearStateAndHide;
         }
 
         return (
-          <ReactBootstrap.Modal show={this.props.show} onHide={this.clearStateAndHide} animation={true} backdrop='static'>
+          <ReactBootstrap.Modal show={this.props.show} onHide={onHideMethod} animation={true} backdrop='static'>
             <ReactBootstrap.Modal.Header closeButton>
                 <ReactBootstrap.Modal.Title>{title}</ReactBootstrap.Modal.Title>
             </ReactBootstrap.Modal.Header>
@@ -273,7 +281,7 @@ var FacultyTableRow = React.createClass({
 				<td><a onClick={this.handleEdit}><i className="fa fa-pencil-square-o" /></a></td>
 				<td><a onClick={this.handleRemove}><i className="fa fa-trash-o" /></a></td>
                 <td>
-                    <ModalForm  show={this.state.showModalForm}
+                    <FacultyModal  show={this.state.showModalForm}
                                 hide={this.hideModal}
                                 edit={true}
                                 deptNum={this.props.deptNum}
@@ -501,7 +509,7 @@ var EditFaculty = React.createClass({
 
 				</div>
 
-                <ModalForm show={this.state.showPopup} hide={this.hideModal} deptNum={this.state.deptNum} getDeptFaculty={this.getDeptFaculty} />
+                <FacultyModal show={this.state.showPopup} hide={this.hideModal} deptNum={this.state.deptNum} getDeptFaculty={this.getDeptFaculty} />
 			</div>
 		);
 	}
