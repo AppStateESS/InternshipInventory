@@ -57,8 +57,20 @@ class FacultyDeptRest {
         $db = \Database::newDB();
         $pdo = $db->getPDO();
 
-        $sql = "INSERT INTO intern_faculty_department VALUES (:facultyId, :departmentId)";
+        // Check to see if this faculty member exists in this department already
+        $sql = "SELECT * FROM intern_faculty_department WHERE faculty_id = :facultyId AND department_id = :departmentId";
+        $statement = $pdo->prepare($sql);
+        $statement->execute(array('facultyId'=>$facultyId, 'departmentId'=>$departmentId));
 
+        $result = $statement->fetch();
+
+        // If there's any results, then the faculty member is already in this department and we can just quit here
+        if(sizeof($result) > 0){
+            return;
+        }
+
+        // Add the faculty member to the department
+        $sql = "INSERT INTO intern_faculty_department VALUES (:facultyId, :departmentId)";
         $sth = $pdo->prepare($sql);
 
         $sth->execute(array('facultyId'=>$facultyId, 'departmentId'=>$departmentId));

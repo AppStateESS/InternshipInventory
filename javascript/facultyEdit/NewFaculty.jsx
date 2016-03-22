@@ -10,7 +10,7 @@ var BannerSearch = React.createClass({
         if(bannerId.length == 9) {
             this.props.handleSearch(bannerId);
         }else{
-            // TODO: show an error alert (banner ID must be nine digits)
+            // TODO: show an error alert for invalid format (banner ID must be nine digits)
         }
     },
     onKeyPress: function(event){
@@ -40,6 +40,8 @@ var BannerSearch = React.createClass({
  * Form for editing faculty details
  */
 var FacultyForm = React.createClass({
+    // Event handler for Save button. Captures the data and passes
+    // it as an object to the parent's handleSave() method.
     handleSave: function() {
         this.props.handleSave({id: this.refs.facultyEditId.value,
                             username: this.refs.facultyEditUsername.value,
@@ -55,7 +57,6 @@ var FacultyForm = React.createClass({
                         });
     },
     render: function(){
-        console.log()
         return (
             <div className="row">
 				<div className="col-md-offset-1 col-md-10">
@@ -136,21 +137,19 @@ var ModalForm = React.createClass({
 		};
 	},
 	componentWillMount: function() {
-
-		//Used for editing a user (see edit handler).
-		//Disables/enables modal form and then grabs and displays the data.
+		// Used for editing a user (see edit handler).
+		// Disables/enables modal form and then grabs and displays the data.
 		if (this.props.edit == true)
 		{
 			this.setState({showModalForm: true, showModalSearch: false})
-			this.getData(this.props.id);
+			this.getFacultyDetails(this.props.id);
 		}
 	},
     clearStateAndHide: function() {
-        console.log('Clearing the modal state.');
         this.setState(this.getInitialState());
         this.props.hide();
     },
-	getData: function(idNum){
+	getFacultyDetails: function(idNum){
 		// Grabs the facuitly data from restFacultyById and sets the
 		// data to the state as well as setting the modal form to true and false.
 		$.ajax({
@@ -161,16 +160,22 @@ var ModalForm = React.createClass({
 				this.setState({facultyData: data, showModalSearch: false, showModalForm: true});
 			}.bind(this),
 			error: function(xhr, status, err) {
-				alert("Failed to grab faculty data.")
+                if(xhr.status == 404){
+                    // Handle the case where we couldn't find anyone with that banner ID
+                    alert("We couldn't find anyone with that Banner ID.");
+                    return;
+                }
+				alert("Sorry, we couldn't load the details for that faculty member.");
 				console.error(this.props.url, status, err.toString());
 			}.bind(this)
 		});
 	},
 	addFacultyToDept: function(facultyData) {
+        // Connects the faculty member and the department together.
+
 		var idNum = facultyData.id;
 		var departNum = this.props.deptNum;
 
-		// Connects the faculty member and the department together.
 		$.ajax({
 			url: 'index.php?module=intern&action=facultyDeptRest&faculty_id='+idNum+'&department_id='+departNum,
 			type: 'POST',
@@ -184,7 +189,7 @@ var ModalForm = React.createClass({
 		});
 	},
 	handleSearch: function(bannerId) {
-		this.getData(bannerId);
+		this.getFacultyDetails(bannerId);
 	},
 	handleSave: function(facultyData) {
 		// Saves the faculty data.
@@ -366,7 +371,7 @@ var EditFaculty = React.createClass({
 		this.getData();
 	},
 	getData: function(){
-		// Gets the dropdown data from the database.
+		// Gets the list of departments which the current user has access to
 		$.ajax({
 			url: 'index.php?module=intern&action=facultyDeptRest',
 			type: 'GET',
