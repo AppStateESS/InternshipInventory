@@ -226,9 +226,3 @@ var EmergencyContactList = React.createClass({
         );
     }
 });
-
-
-ReactDOM.render(
-    <EmergencyContactList />,
-    document.getElementById('emergency-contact-list')
-);
