@@ -77,6 +77,7 @@ var EditInternshipInterface = React.createClass({
 
                                     <div className="col-lg-6">
                                       <InternStatus />
+                                      <FacultyInfo />
                                     </div>
                                   </div>
                               
@@ -311,6 +312,73 @@ var InternStatus = React.createClass({
             </fieldset>
         );
     }
+});
+
+var FacultyInfo = React.createClass({
+    render: function() {
+        return (
+            <fieldset>
+              <legend>Faculty Advisor</legend>
+              <div id="faculty_selector">
+                <div className="form-group required">
+                  <label className="col-lg-3 control-label" for="{DEPARTMENT_ID}">DEPARTMENT_LABEL_TEXT</label>
+                  <div className="col-lg-8"></div>
+                </div>
+                <div className="form-group">
+                  <label className="col-lg-3 control-label" for="{FACULTY_ID}">FACULTY_LABEL_TEXT</label>
+                  <div className="col-lg-8"></div>
+                </div>
+              </div>
+              <div id="faculty_details">
+
+                <div className="row">
+                  <div id="faculty_change" className="col-lg-2">
+                    <button type="button" id="faculty-change" className="btn btn-default btn-xs">
+                      <i className="fa fa-chevron-left"></i> change
+                    </button>
+                  </div>
+                  <div id="faculty_name" className="col-lg-10 lead"></div>
+                </div>
+
+                <div className="row">
+                  <div className="col-lg-5 col-lg-offset-2">
+
+                    <div className="row">
+                      <div className="col-lg-12">
+                        <p>
+                          <abbr title="Email address"><i className="fa fa-envelope"></i></abbr> &nbsp;<span id="faculty_email"></span>
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="row">
+                      <div className="col-lg-12">
+                        <p>
+                          <abbr title="Phone"><i className="fa fa-phone"></i></abbr> &nbsp;<span id="faculty_phone"></span>
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="row">
+                      <div className="col-lg-12">
+                        <p>
+                          <abbr title="Fax"><i className="fa fa-print"></i></abbr> &nbsp;<span id="faculty_fax"></span>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="col-lg-5">
+                    <abbr title="Address"><i className="fa fa-map-marker"></i></abbr> &nbsp;
+                    <address id="faculty_address"></address>
+                  </div>
+                </div>
+
+              </div>
+            </fieldset>
+        );
+    }
+
 });
 
 ReactDOM.render(
