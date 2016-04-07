@@ -35,12 +35,11 @@ var StateDropDown = React.createClass({
                         React.createElement(
                             'select',
                             { id: 'state', name: 'state', className: 'form-control' },
-                            Object.keys(states).map(function (key) {
-                                return React.createElement(
-                                    'option',
-                                    { key: key, value: key },
-                                    states[key]
-                                );
+                            this.props.states.map(function (data) {
+                                return React.createElement(StateList, { key: data.abbr, ref: 'state',
+                                    sAbbr: data.abbr,
+                                    stateName: data.full_name,
+                                    active: data.active });
                             })
                         )
                     )
@@ -76,6 +75,28 @@ var StateDropDown = React.createClass({
         }
 
         return output;
+    }
+});
+
+var StateList = React.createClass({
+    displayName: 'StateList',
+
+    // Disables/Enables the state in the dropdown
+    render: function render() {
+        if (this.props.active == 1) {
+            var optionSelect = React.createElement(
+                'option',
+                { value: this.props.sAbbr },
+                this.props.stateName
+            );
+        } else {
+            var optionSelect = React.createElement(
+                'option',
+                { value: this.props.sAbbr, disabled: true },
+                this.props.stateName
+            );
+        }
+        return optionSelect;
     }
 });
 //# sourceMappingURL=StateDropDown.js.map

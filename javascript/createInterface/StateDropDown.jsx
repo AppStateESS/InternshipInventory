@@ -20,9 +20,14 @@ var StateDropDown = React.createClass({
                         <div className={fgClasses} id="state">
                             <label htmlFor="state" className="control-label">State</label>
                             <select id="state" name="state" className="form-control">
-                                {Object.keys(states).map(function(key) {
-                                    return <option key={key} value={key}>{states[key]}</option>;
-                                })}
+                                {this.props.states.map(function (data) {          
+                                    return (
+                                            <StateList key={data.abbr} ref="state"
+                                                       sAbbr={data.abbr}
+                                                       stateName={data.full_name}
+                                                       active={data.active} />
+                                        );
+                                    })}
                             </select>
                         </div>
                     </div>
@@ -47,4 +52,19 @@ var StateDropDown = React.createClass({
 
         return output;
     }
+});
+
+
+var StateList = React.createClass({
+    // Disables/Enables the state in the dropdown
+  render: function() {  
+    if (this.props.active == 1){
+        var optionSelect = <option value={this.props.sAbbr}>{this.props.stateName}</option>
+    } else {
+        var optionSelect = <option value={this.props.sAbbr} disabled>{this.props.stateName}</option>
+    }
+    return (   
+        optionSelect
+    );
+  }
 });
