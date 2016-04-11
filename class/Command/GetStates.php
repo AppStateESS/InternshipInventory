@@ -3,11 +3,11 @@ namespace Intern\Command;
 
 use \Intern\State as State;
 
-class getAvailableStates {
+class getStates {
 
     public function execute()
     {
-        $states = State::getAllowedStates();
+        $states = State::getStates();
 
         // If NC is in the array of states, move it to the top
         if(array_key_exists('NC', $states)) {
@@ -21,7 +21,11 @@ class getAvailableStates {
             $states = array('NC' => $nc) + $states;
         }
 
-        $states = array('-1'=>'Select a State') + $states;
+        $obj = new \stdClass();
+        $obj->full_name = 'Select a State';
+        $obj->active = 1;
+
+        $states = array('-1'=>$obj) + $states;
 
         echo json_encode($states);
         exit;

@@ -167,8 +167,8 @@ class InternshipInventory {
                 $ctrl = new Command\GetSearchSuggestions();
                 $ctrl->execute();
                 break;
-            case 'GetAvailableStates':
-                $ctrl = new Command\GetAvailableStates();
+            case 'GetStates':
+                $ctrl = new Command\GetStates();
                 $ctrl->execute();
                 break;
             case 'GetAvailableCountries':

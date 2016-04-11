@@ -9,7 +9,7 @@ namespace Intern;
 class State {
 
     public $abbr;
-    public $fullname;
+    public $full_name;
     public $active;
 
     public function __construct($abbr)
@@ -47,6 +47,35 @@ class State {
         }
 
         return $states;
+    }
+
+    public static function getStates()
+    {
+        $db = \Database::newDB();
+        $pdo = $db->getPDO();
+
+        $sql = "SELECT *
+                FROM intern_state 
+                ORDER BY full_name ASC";
+
+        $sth = $pdo->prepare($sql);
+
+        $sth->execute();
+        $result = $sth->fetchAll(\PDO::FETCH_CLASS, 'Intern\StateRestored');
+
+        if (empty($result)) {
+            \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, 'The list of allowed US states for internship locations has not been configured. Please use the administrative options to <a href="index.php?module=intern&action=edit_states">add allowed states.</a>');
+            \NQ::close();
+            PHPWS_Core::goBack();
+        }
+
+        $resultState = array();
+        foreach($result as $state)
+        {
+            $resultState[$state->abbr] = $state;
+        }
+
+        return $resultState;
     }
 
     /* http://www.bytemycode.com/snippets/snippet/454/ */

@@ -19,4 +19,4 @@
 <script type="text/jsx" src="{source_http}mod/intern/javascript/createInterface/InternationalDropDown.jsx"></script>
 <script type="text/jsx" src="{source_http}mod/intern/javascript/createInterface/create.jsx"></script> -->
 
-<script type="text/javascript" src="{source_http}mod/intern/javascript/createInterface/dist/createInterface.min.787e734e.js"></script>
+<script type="text/javascript" src="{source_http}mod/intern/javascript/createInterface/dist/createInterface.min.3a090b72.js"></script>

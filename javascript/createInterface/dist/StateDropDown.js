@@ -35,11 +35,20 @@ var StateDropDown = React.createClass({
                         React.createElement(
                             'select',
                             { id: 'state', name: 'state', className: 'form-control' },
-                            this.props.states.map(function (data) {
-                                return React.createElement(StateList, { key: data.abbr, ref: 'state',
-                                    sAbbr: data.abbr,
-                                    stateName: data.full_name,
-                                    active: data.active });
+                            Object.keys(states).map(function (key) {
+                                if (states[key].active == 1) {
+                                    return React.createElement(
+                                        'option',
+                                        { key: key, value: key },
+                                        states[key].full_name
+                                    );
+                                } else {
+                                    return React.createElement(
+                                        'option',
+                                        { key: key, value: key, disabled: true },
+                                        states[key].full_name
+                                    );
+                                }
                             })
                         )
                     )
@@ -47,56 +56,7 @@ var StateDropDown = React.createClass({
             );
         }
 
-        if (this.props.formStyle === 'horizontal') {
-            var output = React.createElement(
-                'div',
-                { 'class': 'form-group' },
-                React.createElement(
-                    'label',
-                    { htmlFor: 'state', className: 'col-lg-3 control-label' },
-                    'State'
-                ),
-                React.createElement(
-                    'div',
-                    { className: 'col-lg-8' },
-                    React.createElement(
-                        'select',
-                        { id: 'state', name: 'state', className: 'form-control' },
-                        Object.keys(states).map(function (key) {
-                            return React.createElement(
-                                'option',
-                                { key: key, value: key },
-                                states[key]
-                            );
-                        })
-                    )
-                )
-            );
-        }
-
         return output;
-    }
-});
-
-var StateList = React.createClass({
-    displayName: 'StateList',
-
-    // Disables/Enables the state in the dropdown
-    render: function render() {
-        if (this.props.active == 1) {
-            var optionSelect = React.createElement(
-                'option',
-                { value: this.props.sAbbr },
-                this.props.stateName
-            );
-        } else {
-            var optionSelect = React.createElement(
-                'option',
-                { value: this.props.sAbbr, disabled: true },
-                this.props.stateName
-            );
-        }
-        return optionSelect;
     }
 });
 //# sourceMappingURL=StateDropDown.js.map

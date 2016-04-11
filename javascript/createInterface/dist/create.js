@@ -318,7 +318,7 @@ var LocationBlock = React.createClass({
     componentDidMount: function componentDidMount() {
         // Fetch list of states
         $.ajax({
-            url: 'index.php?module=intern&action=stateRest',
+            url: 'index.php?module=intern&action=GetStates',
             type: 'GET',
             dataType: 'json',
             success: (function (data) {
