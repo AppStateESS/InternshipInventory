@@ -254,9 +254,10 @@ var LocationBlock = React.createClass({
             });
     },
     componentDidMount: function() {
-        // Fetch list of available states
+        // Fetch list of states
         $.ajax({
-            url: 'index.php?module=intern&action=GetAvailableStates',
+            url: 'index.php?module=intern&action=GetStates',
+            type: 'GET',
             dataType: 'json',
             success: function(data) {
                 this.setState({availableStates: data});

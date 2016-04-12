@@ -19,9 +19,14 @@ var StateDropDown = React.createClass({
                     <div className="col-sm-12 col-md-4 col-md-push-3">
                         <div className={fgClasses} id="state">
                             <label htmlFor="state" className="control-label">State</label>
-                            <select id="state" name="state" className="form-control">
+                            <select id="state" name="state" className="form-control">   
                                 {Object.keys(states).map(function(key) {
-                                    return <option key={key} value={key}>{states[key]}</option>;
+                                    if(states[key].active == 1){
+                                        return <option key={key} value={key}>{states[key].full_name}</option>;
+                                    } else {
+                                        return <option key={key} value={key} disabled>{states[key].full_name}</option>;
+                                    }
+                                    
                                 })}
                             </select>
                         </div>
@@ -30,21 +35,7 @@ var StateDropDown = React.createClass({
             );
         }
 
-        if(this.props.formStyle === 'horizontal'){
-            var output = (
-                <div class="form-group">
-                    <label htmlFor="state" className="col-lg-3 control-label">State</label>
-                    <div className="col-lg-8">
-                        <select id="state" name="state" className="form-control">
-                            {Object.keys(states).map(function(key) {
-                                return <option key={key} value={key}>{states[key]}</option>;
-                            })}
-                        </select>
-                    </div>
-                </div>
-            );
-        }
-
         return output;
     }
 });
+

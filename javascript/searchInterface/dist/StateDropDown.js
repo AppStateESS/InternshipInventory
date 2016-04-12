@@ -17,6 +17,7 @@ var StateDropDown = React.createClass({
 
         var states = this.props.states;
 
+<<<<<<< HEAD
         if (this.props.formStyle === undefined || this.props.formStyle === 'vertical') {
             var output = React.createElement(
                 'div',
@@ -52,6 +53,12 @@ var StateDropDown = React.createClass({
             var output = React.createElement(
                 'div',
                 { 'class': 'form-group' },
+=======
+        if (this.props.formStyle === 'horizontal') {
+            var output = React.createElement(
+                'div',
+                { className: 'form-group' },
+>>>>>>> f0fddb38c33b14c0a576037e714f7c0533bc8447
                 React.createElement(
                     'label',
                     { htmlFor: 'state', className: 'col-lg-3 control-label' },
@@ -67,7 +74,11 @@ var StateDropDown = React.createClass({
                             return React.createElement(
                                 'option',
                                 { key: key, value: key },
+<<<<<<< HEAD
                                 states[key]
+=======
+                                states[key].full_name
+>>>>>>> f0fddb38c33b14c0a576037e714f7c0533bc8447
                             );
                         })
                     )

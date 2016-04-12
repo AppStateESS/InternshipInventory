@@ -36,40 +36,21 @@ var StateDropDown = React.createClass({
                             'select',
                             { id: 'state', name: 'state', className: 'form-control' },
                             Object.keys(states).map(function (key) {
-                                return React.createElement(
-                                    'option',
-                                    { key: key, value: key },
-                                    states[key]
-                                );
+                                if (states[key].active == 1) {
+                                    return React.createElement(
+                                        'option',
+                                        { key: key, value: key },
+                                        states[key].full_name
+                                    );
+                                } else {
+                                    return React.createElement(
+                                        'option',
+                                        { key: key, value: key, disabled: true },
+                                        states[key].full_name
+                                    );
+                                }
                             })
                         )
-                    )
-                )
-            );
-        }
-
-        if (this.props.formStyle === 'horizontal') {
-            var output = React.createElement(
-                'div',
-                { 'class': 'form-group' },
-                React.createElement(
-                    'label',
-                    { htmlFor: 'state', className: 'col-lg-3 control-label' },
-                    'State'
-                ),
-                React.createElement(
-                    'div',
-                    { className: 'col-lg-8' },
-                    React.createElement(
-                        'select',
-                        { id: 'state', name: 'state', className: 'form-control' },
-                        Object.keys(states).map(function (key) {
-                            return React.createElement(
-                                'option',
-                                { key: key, value: key },
-                                states[key]
-                            );
-                        })
                     )
                 )
             );
