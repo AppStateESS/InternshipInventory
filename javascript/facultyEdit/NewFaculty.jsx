@@ -11,6 +11,7 @@ var BannerSearch = React.createClass({
             this.props.handleSearch(bannerId);
         }else{
             // TODO: show an error alert for invalid format (banner ID must be nine digits)
+            this.props.showNotification("Invalid banner ID format: ID must be nine digits");
         }
     },
     onKeyPress: function(event){
@@ -43,8 +44,8 @@ var FacultyForm = React.createClass({
     // Event handler for Save button. Captures the data and passes
     // it as an object to the parent's handleSave() method.
     handleSave: function() {
-        this.props.handleSave({id: this.refs.facultyEditId.value,
-                            username: this.refs.facultyEditUsername.value,
+        this.props.handleSave({id: this.props.facultyData.id,
+                            username: this.props.facultyData.username,
                             first_name: this.refs.facultyEditFirstName.value,
                             last_name: this.refs.facultyEditLastName.value,
                             phone: this.refs.facultyEditPhone.value,
@@ -60,16 +61,21 @@ var FacultyForm = React.createClass({
         return (
             <div className="row">
 				<div className="col-md-offset-1 col-md-10">
-                    <div className="form-group">
-                        <label htmlFor="faculty-edit-id">Banner ID</label>
-			            <input type="text" className="form-control" id="faculty-edit-id" ref="facultyEditId" defaultValue={this.props.facultyData.id} />
-                    </div>
 
-
-                    <div className="form-group">
-                        <label htmlFor="faculty-edit-username">Username</label>
-			            <input type="text" className="form-control"  id="faculty-edit-username" ref="facultyEditUsername" defaultValue={this.props.facultyData.username} />
-                    </div>
+					<div className="row">
+			    		<div className="col-md-6">
+			    			<div className="form-group">
+		                        <label htmlFor="faculty-edit-id">Banner ID:&nbsp;</label>
+		                        <span className="banner-id">{this.props.facultyData.id}</span>
+		                    </div>
+			    		</div>
+						<div className="col-md-6">
+							<div className="form-group">
+		                        <label className="control-label" htmlFor="faculty-edit-username">Username:&nbsp;</label>
+					            <span className="username">{this.props.facultyData.username}</span>
+		                    </div>
+			    		</div>
+				    </div>
 
 			    	<div className="row">
 			    		<div className="col-md-6">
@@ -131,7 +137,8 @@ var FacultyForm = React.createClass({
 var FacultyModal = React.createClass({
 	getInitialState: function() {
 		return {
-			facultyData: null,
+			errorWarning: '',
+			showModalNotification: false,
 			showModalForm: false,
 			showModalSearch: true,
 		};
@@ -142,34 +149,13 @@ var FacultyModal = React.createClass({
 		if (this.props.edit == true)
 		{
 			this.setState({showModalForm: true, showModalSearch: false})
-			this.getFacultyDetails(this.props.id);
+			this.props.getFacultyDetail(this.props.id);
 		}
 	},
     clearStateAndHide: function() {
         this.setState(this.getInitialState());
         this.props.hide();
     },
-	getFacultyDetails: function(idNum){
-		// Grabs the facuitly data from restFacultyById and sets the
-		// data to the state as well as setting the modal form to true and false.
-		$.ajax({
-			url: 'index.php?module=intern&action=restFacultyById&id=' + idNum,
-			type: 'GET',
-			dataType: 'json',
-			success: function(data) {
-				this.setState({facultyData: data, showModalSearch: false, showModalForm: true});
-			}.bind(this),
-			error: function(xhr, status, err) {
-                if(xhr.status == 404){
-                    // Handle the case where we couldn't find anyone with that banner ID
-                    alert("We couldn't find anyone with that Banner ID.");
-                    return;
-                }
-				alert("Sorry, we couldn't load the details for that faculty member.");
-				console.error(this.props.url, status, err.toString());
-			}.bind(this)
-		});
-	},
 	addFacultyToDept: function(facultyData) {
         // Connects the faculty member and the department together.
 
@@ -179,7 +165,7 @@ var FacultyModal = React.createClass({
 		$.ajax({
 			url: 'index.php?module=intern&action=facultyDeptRest&faculty_id='+idNum+'&department_id='+departNum,
 			type: 'POST',
-			success: function() {http://localhost/intern/phpwebsite/index.php?module=intern&action=edit_faculty
+			success: function() {
 				this.props.getDeptFaculty(departNum);
 			}.bind(this),
 			error: function(xhr, status, err) {
@@ -189,7 +175,8 @@ var FacultyModal = React.createClass({
 		});
 	},
 	handleSearch: function(bannerId) {
-		this.getFacultyDetails(bannerId);
+		this.setState({errorWarning:''});
+		this.props.getFacultyDetails(bannerId);
 	},
 	handleSave: function(facultyData) {
 		// Saves the faculty data.
@@ -208,8 +195,10 @@ var FacultyModal = React.createClass({
 				    this.addFacultyToDept(data);
                 }
 
-
                 if(this.props.edit){
+ 					var departNum = this.props.deptNum;
+					this.props.getDeptFaculty(departNum);
+              
                     this.props.hide();
                 } else {
                     this.clearStateAndHide();
@@ -222,12 +211,18 @@ var FacultyModal = React.createClass({
 			}.bind(this)
 		});
 	},
+	showNotification: function(msg){
+		this.setState({errorWarning:msg});
+	},
     render: function() {
+    	// Warning notification for invalid Banner size or Banner ID
+    	var notification = <div className="alert alert-warning" role="alert">{this.state.errorWarning != '' ? this.state.errorWarning: this.props.errorWarning}</div>
+
         // Search bar for inputting the Banner ID
-	    var searchBanner = <BannerSearch handleSearch={this.handleSearch}/>;
+	    var searchBanner = <BannerSearch handleSearch={this.handleSearch} showNotification={this.showNotification}/>;
 
         // Modal Form used to show and update the data. This could look better...
-        var modalForm = <FacultyForm facultyData={this.state.facultyData} handleSave={this.handleSave}/>
+        var modalForm = <FacultyForm facultyData={this.props.facultyData} handleSave={this.handleSave}/>
 
         if(this.props.edit){
             var title = 'Edit Faculty Details';
@@ -245,8 +240,9 @@ var FacultyModal = React.createClass({
 
 
             <ReactBootstrap.Modal.Body>
-            	{this.state.showModalSearch ? searchBanner: null}
-    			{this.state.showModalForm ? modalForm: null}
+            	{this.state.errorWarning != '' || this.props.errorWarning != '' ? notification: null}
+            	{this.props.showModalSearch ? searchBanner: null}
+    			{this.props.showModalForm ? modalForm: null}
             </ReactBootstrap.Modal.Body>
 
 
@@ -259,18 +255,43 @@ var FacultyModal = React.createClass({
 });
 
 
+
 var FacultyTableRow = React.createClass({
     getInitialState: function() {
-        return {showModalForm: false};
+        return {showModal: false,
+        		userData: 	   null,
+        		showModalSearch: false,
+        		showModalForm: true,
+        		errorWarning: ''};
     },
+    getFacultyDetails: function(idNum){
+		// Grabs the facuitly data from restFacultyById and sets the
+		// data to the state as well as setting the modal form to true and false.
+		$.ajax({
+			url: 'index.php?module=intern&action=restFacultyById&id=' + idNum,
+			type: 'GET',
+			dataType: 'json',
+			success: function(data) {
+				this.setState({userData: data});
+	
+			}.bind(this),
+			error: function(xhr, status, err) {
+				console.error(this.props.url, status, err.toString());
+			}.bind(this)
+		});
+	},
 	handleRemove: function() {
 		this.props.onFacultyRemove(this.props.id);
 	},
 	handleEdit: function() {
-		this.setState({showModalForm: true});
+		if (this.state.userData == null)
+		{
+			this.getFacultyDetails(this.props.id);
+		}
+		this.setState({showModal: true});
 	},
     hideModal: function() {
-        this.setState({showModalForm: false});
+        this.setState({showModal: false});
     },
 	render: function() {
 		// Creates each row for the name, banner ID, a button with a trigger for modal to edit, and a delete button.
@@ -281,11 +302,17 @@ var FacultyTableRow = React.createClass({
 				<td><a onClick={this.handleEdit}><i className="fa fa-pencil-square-o" /></a></td>
 				<td><a onClick={this.handleRemove}><i className="fa fa-trash-o" /></a></td>
                 <td>
-                    <FacultyModal  show={this.state.showModalForm}
+                    <FacultyModal  show={this.state.showModal}
                                 hide={this.hideModal}
                                 edit={true}
                                 deptNum={this.props.deptNum}
-        				        id={this.props.id} />
+        				        id={this.props.id}
+        				        facultyData={this.state.userData}
+        				        showModalSearch={this.state.showModalSearch}
+        						showModalForm={this.state.showModalForm}
+        						getFacultyDetail={this.getFacultyDetails}
+        						errorWarning={this.state.errorWarning} 
+        						getDeptFaculty = {this.props.getDeptFaculty} />
                 </td>
 			</tr>
 		);
@@ -364,6 +391,7 @@ var EditFaculty = React.createClass({
 	getInitialState: function() {
 		return {
 			dropData: null,
+			deptData: null,
 			facultyData: null,
 			showTable: false,
 			showModalForm: false,
@@ -401,7 +429,7 @@ var EditFaculty = React.createClass({
 			type: 'GET',
 			dataType: 'json',
 			success: function(data) {
-				this.setState({facultyData: data, deptNum: department_id});
+				this.setState({deptData: data, deptNum: department_id});
 			}.bind(this),
 			error: function(xhr, status, err) {
 				alert("Failed to grab data.")
@@ -426,6 +454,30 @@ var EditFaculty = React.createClass({
 		});
 
 	},
+	getFacultyDetails: function(idNum){
+		// Grabs the facuitly data from restFacultyById and sets the
+		// data to the state as well as setting the modal form to true and false.
+		$.ajax({
+			url: 'index.php?module=intern&action=restFacultyById&id=' + idNum,
+			type: 'GET',
+			dataType: 'json',
+			success: function(data) {
+				var warning = '';
+				this.setState({facultyData: data, showModalSearch: false, showModalForm: true, errorWarning:warning});
+			}.bind(this),
+			error: function(xhr, status, err) {
+                if(xhr.status == 404){
+                    // Handle the case where we couldn't find anyone with that banner ID
+                    var warning = "We couldn't find anyone with that Banner ID.";
+                    this.setState({errorWarning:warning})
+                    return;
+                }
+				var warning = "Sorry, we couldn't load the details for that faculty member.";
+				this.setState({errorWarning:warning})
+				console.error(this.props.url, status, err.toString());
+			}.bind(this)
+		});
+	},
 	handleDrop: function(e) {
 		// Event handler for the dropdown box, shows the table if the department is not 'select a department'
 		if (e.target.value == -1)
@@ -441,7 +493,7 @@ var EditFaculty = React.createClass({
 
 	},
     showModal: function(){
-        this.setState({showPopup: true});
+        this.setState({showPopup: true, showModalSearch: true, showModalForm: false});
     },
     hideModal: function() {
         this.setState({showPopup: false});
@@ -460,11 +512,11 @@ var EditFaculty = React.createClass({
 			var dData = "";
 		}
 
-		if (this.state.facultyData != null) {
+		if (this.state.deptData != null) {
 
 			var facultyTable =
 					<FacultyTable
-						tableData={this.state.facultyData}
+						tableData={this.state.deptData}
 						onFacultyRemove={this.onFacultyRemove}
 						getDeptFaculty={this.getDeptFaculty}
 						deptNum={this.state.deptNum} />
@@ -509,7 +561,9 @@ var EditFaculty = React.createClass({
 
 				</div>
 
-                <FacultyModal show={this.state.showPopup} hide={this.hideModal} deptNum={this.state.deptNum} getDeptFaculty={this.getDeptFaculty} />
+                <FacultyModal show={this.state.showPopup} hide={this.hideModal} deptNum={this.state.deptNum} getDeptFaculty={this.getDeptFaculty} 
+                			   showModalSearch={this.state.showModalSearch} showModalForm={this.state.showModalForm} facultyData={this.state.facultyData} 
+                			   getFacultyDetails={this.getFacultyDetails} errorWarning={this.state.errorWarning}/>
 			</div>
 		);
 	}

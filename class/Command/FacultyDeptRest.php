@@ -62,7 +62,7 @@ class FacultyDeptRest {
         $statement = $pdo->prepare($sql);
         $statement->execute(array('facultyId'=>$facultyId, 'departmentId'=>$departmentId));
 
-        $result = $statement->fetch();
+        $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
 
         // If there's any results, then the faculty member is already in this department and we can just quit here
         if(sizeof($result) > 0){
