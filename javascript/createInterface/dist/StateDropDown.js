@@ -45,7 +45,7 @@ var StateDropDown = React.createClass({
                                 } else {
                                     return React.createElement(
                                         'option',
-                                        { key: key, value: key, disabled: true },
+                                        { key: key, value: key, disabled: true, style: { textDecoration: "line-through", color: "#FFF", backgroundColor: "#777" } },
                                         states[key].full_name
                                     );
                                 }
