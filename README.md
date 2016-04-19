@@ -8,7 +8,7 @@ Internship Inventory
 Internship Inventory is a sleek, intunitive, and powerful web-application for tracking and approving student internships, created and maintained by the core team of [Electronic Student Services](http://ess.appstate.edu) at [Appalachian State University](http://www.appstate.edu).
 
 ## Installation
-Instruction for [how to install Internship Inventory](https://github.com/AppStateESS/InternshipInventory/wiki/Installation) can be found in the Wiki.
+Instructions on [how to install Internship Inventory](https://github.com/AppStateESS/InternshipInventory/wiki/Installation) can be found in the Wiki.
 
 ## Documentation
 The project's [documentation is maintained in the wiki](https://github.com/AppStateESS/InternshipInventory/wiki). It's a bit sparse so far, but we're working on that.
