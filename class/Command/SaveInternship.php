@@ -79,7 +79,7 @@ class SaveInternship {
                 foreach ($_POST as $key => $val) {
                     $url .= "&$key=$val";
                 }
-                \NQ::simple('intern', Intern\NotifyUI::WARNING, 'The internship start date must be before the end date.');
+                \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, 'The internship start date must be before the end date.');
                 \NQ::close();
                 return \PHPWS_Core::reroute($url);
             }
