@@ -331,14 +331,14 @@ class EditInternshipFormView {
 
         // State or Country & Province
         if ($this->intern->isDomestic()) {
-            $states = State::getAllowedStates();
+            $states = State::getStates();
 
             $locationState = $this->intern->getLocationState();
             if($locationState === null) {
                 throw new \InvalidArgumentException('Domestic internship with null value for state.');
             }
 
-            $this->tpl['LOC_STATE'] = $states[$locationState];
+            $this->tpl['LOC_STATE'] = $states[$locationState]->full_name;
 
             $this->form->setLabel('loc_zip', 'Zip');
         } else {
