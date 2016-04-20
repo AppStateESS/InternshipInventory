@@ -78,7 +78,7 @@ $notifications = $nv->display();
 \Layout::addStyle('intern', 'tango-icons.css');
 \Layout::add($content);
 
-function formatException(Exception $e)
+function formatException(\Exception $e)
 {
     ob_start();
     echo "Ohes Noes!  Intern Inventory threw an exception that was not caught!\n\n";
