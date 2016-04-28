@@ -16,6 +16,7 @@ var Manager = React.createClass({
 			type: 'GET',
 			dataType: 'json',
 			success: function(data) {
+				console.log(data);
 				this.setState({mainData: data});
 			}.bind(this),
 			error: function(xhr, status, err) {
@@ -48,9 +49,11 @@ var Manager = React.createClass({
 		});
 	},
 	onSave: function(orgName, newName, id){
+		var cleanName = encodeURIComponent(newName)
+
 		// Saves the value into the database
 		$.ajax({
-			url: 'index.php?module=intern&action='+this.props.ajaxURL+'&name='+newName+'&id='+id,
+			url: 'index.php?module=intern&action='+this.props.ajaxURL+'&name='+cleanName+'&id='+id,
 			type: 'PUT',
 			success: function(data) {
 				// Determines if the values have changed and if so, continues
