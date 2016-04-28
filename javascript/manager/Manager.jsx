@@ -16,7 +16,6 @@ var Manager = React.createClass({
 			type: 'GET',
 			dataType: 'json',
 			success: function(data) {
-				console.log(data);
 				this.setState({mainData: data});
 			}.bind(this),
 			error: function(xhr, status, err) {
