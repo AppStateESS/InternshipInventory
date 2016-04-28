@@ -1,6 +1,5 @@
 {
     "require": {
-        "symfony/yaml": "^2.6",
         "setasign/fpdi-fpdf": "^1.6"
     },
     "require-dev": {
