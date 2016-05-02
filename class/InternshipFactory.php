@@ -34,6 +34,29 @@ class InternshipFactory {
 
         return $stmt->fetch();
     }
-}
 
-?>
+    /**
+     * Retrieves Unregistered Internship objects by attempting to load the internship from the database with the given id.
+     *
+     * @param int $id
+     * @returns Internship
+     * @throws InvalidArgumentException
+     * @throws Exception
+     * @throws InternshipNotFoundException
+     */
+    public static function getUnregisteredInternshipsByTerm($term)
+    {
+        $db = Database::newDB();
+        $pdo = $db->getPDO();
+
+        $stmt = $pdo->prepare("SELECT *
+                               FROM intern_internship
+                               WHERE state != :state
+                                     AND term = :term");
+        $stmt->execute(array('state' => 'RegisteredState',
+                             'term'  => $term));
+        $stmt->setFetchMode(\PDO::FETCH_CLASS, 'Intern\InternshipRestored');
+
+        return $stmt->fetchAll();
+    }
+}

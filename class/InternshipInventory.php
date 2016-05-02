@@ -207,6 +207,10 @@ class InternshipInventory {
                 $ctrl = new Command\EmergencyContactRest();
                 $ctrl->execute();
                 break;
+            case 'ReminderEmails':
+                $ctrl = new Command\ReminderEmails();
+                $ctrl->execute();
+                break;
             default:
                 $menu = new UI\InternMenu();
                 $this->content = $menu->display();
