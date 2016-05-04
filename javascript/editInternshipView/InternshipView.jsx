@@ -3,12 +3,15 @@ var EditInternshipInterface = React.createClass({
     getInitialState: function() {
         return {
             internData: null,
+            departmentData: null,
+            facultyData: null,
             stateData: null
         };
     },
     componentWillMount: function(){
         this.getInternData();
         this.getStates();
+        this.getDepartmentData();
     },
     getInternData: function(){
         // Grabs the internship data
@@ -37,6 +40,43 @@ var EditInternshipInterface = React.createClass({
             }.bind(this),
             error: function(xhr, status, err) {
                 alert("Failed to load state data.")
+                console.error(this.props.url, status, err.toString());
+            }.bind(this)
+        });
+    },
+    //getFacultyListForDept&department
+    getFacultyData: function(deptNum){
+        // Grabs the State data
+        $.ajax({
+            url: 'index.php?module=intern&action=getFacultyListForDept&department='+deptNum,
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                if(data != '')
+                {
+                  data.unshift({first_name: "None", last_name: "", id: "-1"});
+                  this.setState({facultyData: data});
+                } else {
+                  this.setState({facultyData: null});
+                }
+            }.bind(this),
+            error: function(xhr, status, err) {
+                alert("Failed to load faculty data.")
+                console.error(this.props.url, status, err.toString());
+            }.bind(this)
+        });
+    },
+    getDepartmentData: function(){
+        // Grabs the State data
+        $.ajax({
+            url: 'index.php?module=intern&action=facultyDeptRest',
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                this.setState({departmentData: data});
+            }.bind(this),
+            error: function(xhr, status, err) {
+                alert("Failed to load department data.")
                 console.error(this.props.url, status, err.toString());
             }.bind(this)
         });
@@ -77,7 +117,11 @@ var EditInternshipInterface = React.createClass({
 
                                     <div className="col-lg-6">
                                       <InternStatus />
-                                      <FacultyInfo />
+                                      <FacultyInterface facultyData    = {this.state.facultyData} 
+                                                        departmentData = {this.state.departmentData}
+                                                        deptNumber     = {this.state.internData.intern.department_id}
+                                                        getFacultyData = {this.getFacultyData}
+                                                        facultyID      = {this.state.internData.intern.faculty_id} />
                                     </div>
                                   </div>
                               
@@ -291,7 +335,7 @@ var InternStatus = React.createClass({
               </p>
               <div className="panel panel-default">
                 <div className="panel-heading">
-                  <h4 className="panel-title">Next status</h4>
+                  <h4 className="panel-title">Next Status</h4>
                 </div>
                 <div className="panel-body">
 
@@ -305,7 +349,7 @@ var InternStatus = React.createClass({
               <div className="form-group">
                 <div className="col-lg-10">
                   <div className="checkbox">
-                    <label>OIED STUFF</label>
+                    <label>Certified by Office of International Education and Development</label>
                   </div>
                 </div>
               </div>
@@ -314,30 +358,185 @@ var InternStatus = React.createClass({
     }
 });
 
-var FacultyInfo = React.createClass({
+var FacultyInterface = React.createClass({
+    getInitialState: function(){
+        return {showDetails: false, facultyID: null};
+    },
+  //Query for list of departments for first drop down
+  //Query based on chosen department for second drop down
+  //Use second dropdown information for details page.
+    componentWillMount: function() {
+        this.getFacultyData();
+    },
+    getFacultyData: function() {
+        if (this.props.deptNumber !== '')
+        {
+          this.setState({facultyID: null, showDetails: true}, this.props.getFacultyData(this.props.deptNumber));
+        } else {
+          this.setState({facultyID: null, showDetails: false});
+        }
+    },
+    setFacultyID: function(num) {
+        this.setState({facultyID: num, showDetails: true});
+    },
+    hideDetailInfo: function() {
+        this.setState({facultyID: null,showDetails: false});
+    },
     render: function() {
+
+        if (this.props.departmentData == null){
+            return (<div />)
+        }
+        var facultyDetail = null;
+        var facultyData = this.props.facultyData;
+        var facultyID   = (this.state.facultyID != null) ? this.state.facultyID :this.props.facultyID;
+        var dept        = this.props.departmentData;
+        var deptNum     = this.props.deptNumber;
+
+        //FIX DEPT NAME
+        // WORK HERE TUESDAY - GETTING CHANGE BUTTON WORKING
+        if(facultyData != null){
+            facultyDetail = facultyData.map(function (faculty) {
+                if(facultyID == faculty.id)
+                  return (<FacultyDetail key={faculty.id} 
+                                         username   = {faculty.username} 
+                                         phone      = {faculty.phone} 
+                                         fax        = {faculty.fax} 
+                                         address1   = {faculty.street_address1}
+                                         address2   = {faculty.street_address2}
+                                         city       = {faculty.city}
+                                         state      = {faculty.state}
+                                         zip        = {faculty.zip} 
+                                         fname      = {faculty.first_name}
+                                         lname      = {faculty.last_name}
+                                         deptname   = {dept[deptNum].name}
+                                         hideDetailInfo = {this.hideDetailInfo} />);
+            }.bind(this));
+        }     //this.props.facultyID == null
         return (
             <fieldset>
               <legend>Faculty Advisor</legend>
-              <div id="faculty_selector">
-                <div className="form-group required">
-                  <label className="col-lg-3 control-label" for="{DEPARTMENT_ID}">DEPARTMENT_LABEL_TEXT</label>
-                  <div className="col-lg-8"></div>
-                </div>
-                <div className="form-group">
-                  <label className="col-lg-3 control-label" for="{FACULTY_ID}">FACULTY_LABEL_TEXT</label>
-                  <div className="col-lg-8"></div>
+              {(this.state.showDetails) ? facultyDetail 
+                                        : <FacultyDropDown facultyData    = {facultyData} 
+                                                           departmentData = {this.props.departmentData}
+                                                           getFacultyData = {this.props.getFacultyData}
+                                                           deptNumber     = {this.props.deptNumber}
+                                                           setFacultyID   = {this.setFacultyID} />}
+            </fieldset>
+        );
+    }
+
+});
+
+var FacultyDropDown = React.createClass({
+    handleDeptDrop: function(e) {
+        var deptNum = e.target.value;
+
+        this.props.getFacultyData(deptNum);
+    },
+    handleFaculty: function(e) {
+        var faculty = e.target.value;
+        this.props.setFacultyID(faculty);
+
+    },
+    render: function() {
+        var departments = this.props.departmentData;
+        var facultyData = this.props.facultyData;
+        var deptNumber  = this.props.deptNumber;
+
+        if (this.props.facultyData == null){
+            var ddFaculty =   <select className='form-control' disabled>
+                                <option>No Advisors Available</option>
+                              </select>
+        } else {
+            var ddFaculty =   <select className='form-control' onChange={this.handleFaculty}>
+                                {Object.keys(facultyData).map(function(key) {
+                                    return <option key={key} value={facultyData[key].id}>{facultyData[key].first_name+" "+facultyData[key].last_name}</option>;
+                                })}
+                              </select>
+        }
+        return(
+            <div id="faculty_selector">
+              <div className="form-group required">
+                <label className="col-lg-3 control-label" for="{DEPARTMENT_ID}">Department</label>
+                <div className="col-lg-8">
+                  <select className="form-control" defaultValue={deptNumber} onChange={this.handleDeptDrop}> 
+                    {Object.keys(departments).map(function(key) {                 
+                          return <option key={departments[key].id} value={departments[key].id}>{departments[key].name}</option>;
+                    })}
+                  </select>
                 </div>
               </div>
-              <div id="faculty_details">
+              <div className="form-group">
+                <label className="col-lg-3 control-label" for="{FACULTY_ID}">Faculty Advisor / Instructor of Record</label>
+                <div className="col-lg-8">
+                    {ddFaculty}
+                </div>
+              </div>
+            </div>
+        );
+    }
+});
+
+var FacultyDetail = React.createClass({
+    handleClick: function() {
+        this.props.hideDetailInfo();
+    },
+    render: function() {
+        var name = this.props.fname + " " + this.props.lname + " - " + this.props.dept;
+
+
+        // Format Faculty Email
+        var emailInfo = "mailto:" + this.props.username + "@appstate.edu";
+        var email = <a href={emailInfo}> {this.props.username + "@appstate.edu"} </a>
+        
+        // Format Faculty Phone
+        var phone = '';
+        if(this.props.phone !== ''){
+            var phoneInfo = "tel:+1" + this.props.phone;
+            phone = <a href={phoneInfo}> {this.props.phone} </a>;
+        } else {
+            phone = <small className="text-muted">Has not been set</small>;
+        }
+
+        // Format Faculty Fax
+        var fax = '';
+        if(this.props.fax !== ''){
+            var faxInfo = "fax:+1" + this.props.fax;
+            fax = <a href={faxInfo}> {this.props.fax} </a>;
+        } else {
+            fax = <small className="text-muted">Has not been set</small>;
+        }
+
+        // Format Faculty Address
+        var address = '';
+        if(this.props.address1 !== '' && this.props.address1 !== null){
+            address += this.props.address1;
+
+            if (this.props.address2 !== '') {
+                address += "<br />" + this.props.address2;
+            }
+        } else {
+            address = <small className="text-muted">Address has not been set</small>;
+        }
+        if(this.props.city !== '' && this.props.city !== null && this.props.state !== '' && this.props.state !== null){
+            address += "<br />" + this.props.city + ", " + this.props.state;
+        }
+        if(this.props.zip !== '' && this.props.zip !== null) {
+            address += " " + this.props.zip;
+        }
+
+
+        return (
+            <div id="faculty_details">
 
                 <div className="row">
                   <div id="faculty_change" className="col-lg-2">
-                    <button type="button" id="faculty-change" className="btn btn-default btn-xs">
+                    <button type="button" id="faculty-change" className="btn btn-default btn-xs" onClick={this.handleClick}>
                       <i className="fa fa-chevron-left"></i> change
                     </button>
                   </div>
-                  <div id="faculty_name" className="col-lg-10 lead"></div>
+                  <div id="faculty_name" className="col-lg-10 lead">{name}</div>
                 </div>
 
                 <div className="row">
@@ -346,7 +545,8 @@ var FacultyInfo = React.createClass({
                     <div className="row">
                       <div className="col-lg-12">
                         <p>
-                          <abbr title="Email address"><i className="fa fa-envelope"></i></abbr> &nbsp;<span id="faculty_email"></span>
+                          <abbr title="Email address"><i className="fa fa-envelope"></i></abbr> &nbsp;
+                          <span id="faculty_email"></span>{email}
                         </p>
                       </div>
                     </div>
@@ -354,7 +554,8 @@ var FacultyInfo = React.createClass({
                     <div className="row">
                       <div className="col-lg-12">
                         <p>
-                          <abbr title="Phone"><i className="fa fa-phone"></i></abbr> &nbsp;<span id="faculty_phone"></span>
+                          <abbr title="Phone"><i className="fa fa-phone"></i></abbr> &nbsp;
+                          <span id="faculty_phone"></span>{phone}
                         </p>
                       </div>
                     </div>
@@ -362,7 +563,8 @@ var FacultyInfo = React.createClass({
                     <div className="row">
                       <div className="col-lg-12">
                         <p>
-                          <abbr title="Fax"><i className="fa fa-print"></i></abbr> &nbsp;<span id="faculty_fax"></span>
+                          <abbr title="Fax"><i className="fa fa-print"></i></abbr> &nbsp;
+                          <span id="faculty_fax"></span>{fax}
                         </p>
                       </div>
                     </div>
@@ -370,15 +572,12 @@ var FacultyInfo = React.createClass({
 
                   <div className="col-lg-5">
                     <abbr title="Address"><i className="fa fa-map-marker"></i></abbr> &nbsp;
-                    <address id="faculty_address"></address>
+                    <address id="faculty_address">{address}</address>
                   </div>
                 </div>
-
               </div>
-            </fieldset>
         );
     }
-
 });
 
 ReactDOM.render(
