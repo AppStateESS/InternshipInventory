@@ -116,7 +116,9 @@ var EditInternshipInterface = React.createClass({
                                     </div>
 
                                     <div className="col-lg-6">
-                                      <InternStatus />
+                                      <InternStatus workflow = {this.state.internData.wfState}
+                                                    intern = {this.state.internData.intern} />
+
                                       <FacultyInterface facultyData    = {this.state.facultyData} 
                                                         departmentData = {this.state.departmentData}
                                                         deptNumber     = {this.state.internData.intern.department_id}
@@ -327,11 +329,19 @@ var EmgContactList = React.createClass({
 
 var InternStatus = React.createClass({
     render: function() {
+        var status = this.props.workflow.status;
+        var workflowAction = this.props.workflow.workflowAction;
+        var allow = this.props.workflow.allow;
+
+// **************
+// NOT DONE!!!  *
+// **************
+
         return (   
             <fieldset>
               <legend>Status</legend>
               <p>
-                Current Status: <strong>WORKFLOW_STATE</strong>
+                Current Status: <strong>{status}</strong>
               </p>
               <div className="panel panel-default">
                 <div className="panel-heading">
@@ -339,17 +349,22 @@ var InternStatus = React.createClass({
                 </div>
                 <div className="panel-body">
 
-                 
-                  <div className="radio">
-                    <label>WORKFLOW_ACTION WORKFLOW_ACTION_LABEL</label>
-                  </div>
-                  
+                    {Object.keys(workflowAction).map(function(key) {
+                        return( 
+                            <div className="radio">
+                                <label><input type="radio" name="workflowOption" value={key}/>{workflowAction[key]}</label>
+                            </div>)
+                    })}
+                    
                 </div>
               </div>
               <div className="form-group">
                 <div className="col-lg-10">
                   <div className="checkbox">
-                    <label>Certified by Office of International Education and Development</label>
+                    { allow ? <label><input type="checkbox" value="" />Certified by Office of International Education and Development</label>
+                            : <label><input type="checkbox" value="" disabled />Certified by Office of International Education and Development</label>
+                    }
+
                   </div>
                 </div>
               </div>
