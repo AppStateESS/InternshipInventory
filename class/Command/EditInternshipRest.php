@@ -67,8 +67,27 @@ class EditInternshipRest {
         // Format intern data
         $intern = $this->formatIntern($intern);
 
+        $state = $intern->getWorkflowState();
         // Load the WorkflowState
-        $wfState = $intern->getWorkflowState();
+        $transitions = $state->getTransitions($intern);
+
+        $workflow = array('status'=>$state->getFriendlyName());
+
+        // Generate the array of radio buttons to add (one for each possible transition)
+        $radioButtons = array();
+
+        foreach($transitions as $t){
+            $radioButtons[$t->getName()] = $t->getActionName();
+        }
+
+        $workflow['workflowAction'] = $radioButtons;
+        $workflow['allow'] = true;
+
+        if(!\Current_User::allow('intern', 'oied_certify') || $intern->isDomestic()){
+            $workflow['allow'] = false;
+        }
+
+        $wfState = $workflow;
 
         // Load the agency
         $agency = AgencyFactory::getAgencyById($intern->getAgencyId());
