@@ -6,6 +6,7 @@ use \Intern\InternshipFactory;
 use \Intern\AgencyFactory;
 use \Intern\InternshipView;
 use \Intern\StudentProviderFactory;
+use \Intern\Internship;
 
 class EditInternshipRest {
 
@@ -101,7 +102,9 @@ class EditInternshipRest {
             $docs = array(); // if no docs, setup an empty array
         }
 
-        $content = array("intern" => $intern, "student" => $studentData, "wfState" => $wfState, "agency" => $agency, "docs" => $docs);
+        $expType = Internship::getTypesAssoc();
+
+        $content = array("intern" => $intern, "student" => $studentData, "wfState" => $wfState, "agency" => $agency, "docs" => $docs, "experience_type" => $expType);
         return $content;
 	}
 

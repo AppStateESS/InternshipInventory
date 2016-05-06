@@ -124,6 +124,10 @@ var EditInternshipInterface = React.createClass({
                                                         deptNumber     = {this.state.internData.intern.department_id}
                                                         getFacultyData = {this.getFacultyData}
                                                         facultyID      = {this.state.internData.intern.faculty_id} />
+
+                                      <CourseAndTerm />
+
+                                      <TypeInterface experience_type = {this.state.internData.experience_type}/>
                                     </div>
                                   </div>
                               
@@ -274,15 +278,11 @@ var StudentInformation = React.createClass({
 
 var StateDropDown = React.createClass({
     render: function() {
-        var optionSelect = <div />
         if (this.props.active == 1 && this.props.stuState == this.props.sAbbr){
-          optionSelect = <option value={this.props.sAbbr} defaultValue>{this.props.stateName}</option>
-        }else if(this.props.active == 1){
-          optionSelect = <option value={this.props.sAbbr}>{this.props.stateName}</option>
+          return <option value={this.props.sAbbr} defaultValue>{this.props.stateName}</option>
+        }else {
+          return <option value={this.props.sAbbr}>{this.props.stateName}</option>
         }
-        return (   
-          optionSelect
-        );
     }
 });
 
@@ -350,10 +350,15 @@ var InternStatus = React.createClass({
                 <div className="panel-body">
 
                     {Object.keys(workflowAction).map(function(key) {
-                        return( 
-                            <div className="radio">
-                                <label><input type="radio" name="workflowOption" value={key}/>{workflowAction[key]}</label>
-                            </div>)
+                        if(key === "Intern\\WorkflowTransition\\LeaveTransition"){            
+                          return(<div className="radio" key={key}>
+                                    <label><input type="radio" name="workflowOption" value={key} defaultChecked/>{workflowAction[key]}</label>
+                                 </div>)
+                        } else {
+                          return(<div className="radio" key={key}>
+                                    <label><input type="radio" name="workflowOption" value={key}/>{workflowAction[key]}</label>
+                                 </div>)
+                        }
                     })}
                     
                 </div>
@@ -594,6 +599,96 @@ var FacultyDetail = React.createClass({
         );
     }
 });
+
+var CourseAndTerm = React.createClass({
+    render: function() {
+        return(
+          <div>
+          <fieldset>
+              <legend>Term & Course Information</legend>
+
+              <div className="form-group">
+                <label className="col-lg-3 control-label" htmlFor="campus">Term</label>
+                <div id="campus" className="col-lg-6"><p className="form-control-static">TERM</p></div>
+              </div>
+
+
+              <div className="form-group">
+                <label className="col-lg-3 control-label" htmlFor="{START_DATE_ID}">Term Start Date</label>
+                <div className="col-lg-6"><input type="text" className="form-control" defaultValue="START_DATE" /></div>
+              </div>
+
+              <div className="form-group">
+                <label className="col-lg-3 control-label" htmlFor="{END_DATE_ID}">Term End Date</label>
+                <div className="col-lg-6"><input type="text" className="form-control" defaultValue="END_DATE" /></div>
+              </div>
+
+              <div className="form-group">
+                <label className="col-lg-3 control-label" for="{COURSE_SUBJ_ID}">Course Subject</label>
+                <div className="col-lg-6">COURSE_SUBJ</div>
+              </div>
+
+              <div className="form-group">
+                <label className="col-lg-3 control-label" for="{COURSE_NO_ID}">Course Number</label>
+                <div className="col-lg-6"><input type="text" className="form-control" defaultValue="COURSE_NO" /></div>
+              </div>
+
+              <div className="form-group">
+                <label className="col-lg-3 control-label" for="{COURSE_SECT_ID}">Section</label>
+                <div className="col-lg-6"><input type="text" className="form-control" defaultValue="COURSE_SECT" /></div>
+              </div>
+
+              <div className="form-group">
+                <label className="col-lg-3 control-label" for="{CREDITS_ID}">Credit Hours</label>
+                <div className="col-lg-6"><input type="text" className="form-control" defaultValue="CREDITS" />
+                   <span className="help-block"><small className="text-muted">Decimal values will be rounded.</small></span>
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label className="col-lg-3 control-label" for="{CREDITS_ID}">Title</label>
+                <div className="col-lg-6"><input type="text" className="form-control" defaultValue="COURSE_TITLE" />
+                   <span className="help-block"><small className="text-muted">(Limit 28 characters; Banner)</small></span>
+                </div>
+              </div>
+              </fieldset>
+          </div>
+        );
+    }
+});
+
+
+var TypeInterface = React.createClass({
+    render: function() {
+        var expType = this.props.experience_type;
+        return(
+          <div>
+            <fieldset>
+              <legend>Type</legend>
+              <div className="form-group">
+                <div className="col-lg-5 col-lg-offset-3">
+                  {Object.keys(expType).map(function(key) {
+                        if(key === "internship"){            
+                          return(<div className="radio" key={key}>
+                                    <label><input type="radio" name="workflowOption" value={key} defaultChecked/>{expType[key]}</label>
+                                 </div>)
+                        } else {
+                          return(<div className="radio" key={key}>
+                                    <label><input type="radio" name="workflowOption" value={key}/>{expType[key]}</label>
+                                 </div>)
+                        }
+                    })}
+                </div>
+                <div className="col-lg-4">
+                  <a id="internship-type-help-button" className="pull-right"><i className="fa fa-question-circle"></i> Type Definitions</a>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+        );
+    }
+});
+
 
 ReactDOM.render(
     <EditInternshipInterface />, 
