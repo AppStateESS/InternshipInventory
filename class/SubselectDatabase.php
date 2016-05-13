@@ -7,6 +7,9 @@ use \PHPWS_DB;
 use \PHPWS_DB_Where;
 
 PHPWS_Core::initCoreClass('PHPWS_DB.php');
+//PHPWS_Core::initCoreClass('DB/PHPWS_DB_Where.php');
+//require_once PHPWS_SOURCE_DIR . 'src/phpws/src/DB/PHPWS_DB_Where.php';
+require_once PHPWS_SOURCE_DIR . 'core/class/DB/PHPWS_DB_Where.php';
 
 /**
  * A database class tailored for doing sub-selects

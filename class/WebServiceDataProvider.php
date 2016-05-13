@@ -5,14 +5,14 @@ namespace Intern;
 use \SoapFault;
 
 /**
- * BannerStudentProvider
+ * WebServiceDataProvider
  *
  * Returns a Student object with data pulled from a web service connected to Banner.
  *
  * @author Jeremy Booker
  * @package Intern
  */
-class BannerStudentProvider extends StudentProvider {
+class WebServiceDataProvider extends ExternalDataProvider {
 
     protected $currentUserName;
 
@@ -139,6 +139,54 @@ class BannerStudentProvider extends StudentProvider {
         }
     }
 
+    public function getFacultyMember($facultyId)
+    {
+        if($facultyId === null || $facultyId == ''){
+            throw new \InvalidArgumentException('Missing student ID.');
+        }
+
+        $params = array('BannerID' => $facultyId,
+                        'UserName' => $this->currentUserName);
+
+        try {
+            $response = $this->client->getInternInfo($params);
+        } catch (SoapFault $e){
+            throw $e;
+        }
+
+        // Check for an empty response
+        if(isset($response->GetInternInfoResult->DirectoryInfo)) {
+            $response = $response->GetInternInfoResult->DirectoryInfo;
+        } else {
+            throw new \Intern\Exception\StudentNotFoundException("Could not locate student: $studentId");
+        }
+
+        // Check for an InvalidUsername error (i.e. the user doesn't have banner permissions)
+        if($response->error_num == 1002 && $response->error_desc == 'InvalidUserName'){
+            throw new \Intern\Exception\BannerPermissionException("No banner permissions for {$this->currentUserName}");
+        }
+
+        // Check for a web service system error
+        if($response->error_num == 1 && $response->error_desc == 'SYSTEM'){
+            throw new \Intern\Exception\WebServiceException("Web service system error while looking up {$studentId}");
+        }
+
+        if($response->error_num == 1101 && $response->error_desc == 'LookupBannerID'){
+            throw new \Intern\Exception\StudentNotFoundException("Invalid banner id: {$studentId}");
+        }
+
+        if($response->error_num == 1001 && $response->error_desc == 'InvalidBannerID'){
+            throw new \Intern\Exception\StudentNotFoundException("Invalid banner id: {$studentId}");
+
+        }
+
+        if(is_array($response)){
+            $response = $response[0];
+        }
+
+        return $response;
+    }
+
     /**
      * Takes a reference to a Student object and a SOAP response,
      * Plugs the SOAP values into Student object.
@@ -185,7 +233,7 @@ class BannerStudentProvider extends StudentProvider {
          *****************/
 
         // Campus
-        if($data->campus == BannerStudentProvider::MAIN_CAMPUS) {
+        if($data->campus == WebServiceDataProvider::MAIN_CAMPUS) {
             // If campus is 'Main Campus', then we know it's a main campus student
             $student->setCampus(Student::MAIN_CAMPUS);
         } else if ($data->campus != '') {

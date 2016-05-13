@@ -8,7 +8,7 @@ namespace Intern;
  * @author Jeremy Booker
  * @package Intern
  */
-class TestStudentProvider extends BannerStudentProvider {
+class TestWebServiceDataProvider extends WebServiceDataProvider {
 
     public function __construct($currentUserName) {
         $this->currentUserName = $currentUserName;
@@ -23,6 +23,13 @@ class TestStudentProvider extends BannerStudentProvider {
     public function getCreditHours($studentId, $term)
     {
         return 16;
+    }
+
+    public function getFacultyMember($facultyId)
+    {
+        $response = $this->getFakeResponse();
+
+        return $response->GetInternInfoResult->DirectoryInfo;
     }
 
     private function getFakeResponse()
@@ -61,9 +68,9 @@ class TestStudentProvider extends BannerStudentProvider {
         $obj->zip   = '28602';
 
         // Academic Info
-        //$obj->level     = BannerStudentProvider::UNDERGRAD;   // 'U' or 'G'
-        $obj->level     = BannerStudentProvider::GRADUATE2;
-        $obj->campus    = BannerStudentProvider::MAIN_CAMPUS; // TODO verify values in SOAP
+        //$obj->level     = WebServiceDataProvider::UNDERGRAD;   // 'U' or 'G'
+        $obj->level     = WebServiceDataProvider::GRADUATE2;
+        $obj->campus    = WebServiceDataProvider::MAIN_CAMPUS; // TODO verify values in SOAP
         //$obj->gpa       = '3.8129032260';
         $obj->gpa       = '1.8129032260';
 
