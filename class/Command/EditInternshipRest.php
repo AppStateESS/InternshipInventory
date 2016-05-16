@@ -7,6 +7,7 @@ use \Intern\AgencyFactory;
 use \Intern\InternshipView;
 use \Intern\StudentProviderFactory;
 use \Intern\Internship;
+use \Intern\Subject;
 
 class EditInternshipRest {
 
@@ -103,8 +104,9 @@ class EditInternshipRest {
         }
 
         $expType = Internship::getTypesAssoc();
+        $subjects = array("-1" => "Select subject...") + Subject::getSubjects();
 
-        $content = array("intern" => $intern, "student" => $studentData, "wfState" => $wfState, "agency" => $agency, "docs" => $docs, "experience_type" => $expType);
+        $content = array("intern" => $intern, "student" => $studentData, "wfState" => $wfState, "agency" => $agency, "docs" => $docs, "experience_type" => $expType, "subjects" => $subjects);
         return $content;
 	}
 
