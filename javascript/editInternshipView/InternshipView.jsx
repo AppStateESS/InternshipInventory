@@ -20,7 +20,7 @@ var EditInternshipInterface = React.createClass({
             type: 'GET',
             dataType: 'json',
             success: function(data) {
-              console.log(data);
+                console.log(data);
                 this.setState({internData: data});
             }.bind(this),
             error: function(xhr, status, err) {
@@ -83,64 +83,108 @@ var EditInternshipInterface = React.createClass({
     },
     render: function() {
         if(this.state.internData != null){
-            var interface = <div>
-                              <h1>
-                                  <i className="fa fa-edit"></i> Edit Internship
-                              </h1>
-
-                              <form className="form-horizontal">
-
-                                <div className="form-group">
-                                  <div className="col-lg-1 col-lg-offset-8">
-                                    <button type="submit" className="btn btn-primary" id="{SUBMIT_ID}">Save</button>
-                                  </div>
-
-                                  <div className="col-lg-1">
-                                    <a href="{DELETE_URL}" className="btn btn-danger-hover" onclick="return confirm('Are you sure you want to delete this internship?');">Delete</a>                             
-                                  </div>
-
-                                  <div className="col-lg-1 col-lg-offset-1">
-                                    <button type="button" id="contract-button" className="btn btn-default pull-right generateContract"><i className="fa fa-file"></i> Generate Contract</button>
-                                  </div>
-                                </div>
-
-                               
-                                  <div className="row">
-                                    <div className="col-lg-6">
-
-                                      <StudentInformation intern = {this.state.internData.intern}
-                                                  student = {this.state.internData.student}
-                                                  states = {this.state.stateData} />
-                                      <EmgContactList />
-
-                                    </div>
-
-                                    <div className="col-lg-6">
-                                      <InternStatus workflow = {this.state.internData.wfState}
-                                                    intern = {this.state.internData.intern} />
-
-                                      <FacultyInterface facultyData    = {this.state.facultyData} 
-                                                        departmentData = {this.state.departmentData}
-                                                        deptNumber     = {this.state.internData.intern.department_id}
-                                                        getFacultyData = {this.getFacultyData}
-                                                        facultyID      = {this.state.internData.intern.faculty_id} />
-
-                                      <CourseAndTerm />
-
-                                      <TypeInterface experience_type = {this.state.internData.experience_type}/>
-                                    </div>
-                                  </div>
-                              
-                              </form>
-                            </div>
+            return <MainInterface internData      = {this.state.internData} 
+                                  facultyData     = {this.state.facultyData}
+                                  departmentData  = {this.state.departmentData}
+                                  stateData       = {this.state.stateData}
+                                  getFacultyData  = {this.getFacultyData} />
         }else{
-            var interface = <p className="text-muted" style={{position:"absolute", top:"50%", left:"50%"}}>
-                                <i className="fa fa-spinner fa-2x fa-spin"></i> Loading Internship...
-                            </p>;
+            return( <p className="text-muted" style={{position:"absolute", top:"50%", left:"50%"}}>
+                        <i className="fa fa-spinner fa-2x fa-spin"></i> Loading Internship...
+                    </p>
+            );
         }
-        return (
+    }
+});
+
+var MainInterface = React.createClass({
+    render: function() {
+        var internData     = this.props.internData;
+        var stateData      = this.props.stateData;
+        var facultyData    = this.props.facultyData;
+        var departmentData = this.props.departmentData;
+
+        return(
             <div>
-              {interface} 
+              <h1>
+                  <i className="fa fa-edit"></i> Edit Internship
+              </h1>
+
+              <form className="form-horizontal">
+
+                <div className="form-group">
+                  <div className="col-lg-1 col-lg-offset-8">
+                    <button type="submit" className="btn btn-primary" id="{SUBMIT_ID}">Save</button>
+                  </div>
+
+                  <div className="col-lg-1">
+                    <a href="{DELETE_URL}" className="btn btn-danger-hover" onclick="return confirm('Are you sure you want to delete this internship?');">Delete</a>                             
+                  </div>
+
+                  <div className="col-lg-1 col-lg-offset-1">
+                    <button type="button" id="contract-button" className="btn btn-default pull-right generateContract"><i className="fa fa-file"></i> Generate Contract</button>
+                  </div>
+                </div>
+
+               
+                  <div className="row">
+                    <div className="col-lg-6">
+                      <StudentInformation intern = {internData.intern}
+                                  student = {internData.student}
+                                  states = {stateData} />
+                      <EmgContactList />
+                    </div>
+
+                    <div className="col-lg-6">
+                      <InternStatus workflow = {internData.wfState}
+                                    intern = {internData.intern} />
+
+                      <FacultyInterface facultyData    = {facultyData} 
+                                        departmentData = {departmentData}
+                                        deptNumber     = {internData.intern.department_id}
+                                        getFacultyData = {this.props.getFacultyData}
+                                        facultyID      = {internData.intern.faculty_id} />
+
+                      <CourseAndTerm intern = {internData.intern}
+                                     subjects = {internData.subjects} />
+
+                      <TypeInterface experience_type = {internData.experience_type}/>
+                    </div>
+                  </div>
+              
+                  <div className="row">
+                    <div className="col-lg-12">
+                      <div className="form-group">
+                        <div className="col-lg-1 col-lg-offset-9">
+                          <button className="btn btn-success" id="{SUBMIT_ID}">Add Host</button>
+                        </div>
+                        <div className="col-lg-1 pull-right">
+                          <button type="submit" className="btn btn-primary" id="{SUBMIT_ID}">Save</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-lg-12">
+                      <HostInterface hostData = {internData.agency}
+                                     intern   = {internData.intern}
+                                     states   = {stateData} />
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-lg-6">
+                      <NoteBox />
+                    </div>
+
+                    <div className="col-lg-6">
+                       <Contracts title="Extra Documents"/>
+                    </div>
+                  </div>
+
+                  <ChangeLog />
+              </form>
             </div>
         );
     }
@@ -279,7 +323,7 @@ var StudentInformation = React.createClass({
 var StateDropDown = React.createClass({
     render: function() {
         if (this.props.active == 1 && this.props.stuState == this.props.sAbbr){
-          return <option value={this.props.sAbbr} defaultValue>{this.props.stateName}</option>
+          return <option value={this.props.sAbbr} selected>{this.props.stateName}</option>
         }else {
           return <option value={this.props.sAbbr}>{this.props.stateName}</option>
         }
@@ -331,7 +375,7 @@ var InternStatus = React.createClass({
     render: function() {
         var status = this.props.workflow.status;
         var workflowAction = this.props.workflow.workflowAction;
-        var allow = this.props.workflow.allow;
+        var oiedAllow = this.props.workflow.allow;
 
 // **************
 // NOT DONE!!!  *
@@ -350,7 +394,7 @@ var InternStatus = React.createClass({
                 <div className="panel-body">
 
                     {Object.keys(workflowAction).map(function(key) {
-                        if(key === "Intern\\WorkflowTransition\\LeaveTransition"){            
+                        if(key == "Intern\\WorkflowTransition\\LeaveTransition"){     
                           return(<div className="radio" key={key}>
                                     <label><input type="radio" name="workflowOption" value={key} defaultChecked/>{workflowAction[key]}</label>
                                  </div>)
@@ -366,8 +410,8 @@ var InternStatus = React.createClass({
               <div className="form-group">
                 <div className="col-lg-10">
                   <div className="checkbox">
-                    { allow ? <label><input type="checkbox" value="" />Certified by Office of International Education and Development</label>
-                            : <label><input type="checkbox" value="" disabled />Certified by Office of International Education and Development</label>
+                    { oiedAllow ? <label><input type="checkbox" value="" />Certified by Office of International Education and Development</label>
+                                : <label><input type="checkbox" value="" disabled />Certified by Office of International Education and Development</label>
                     }
 
                   </div>
@@ -602,6 +646,8 @@ var FacultyDetail = React.createClass({
 
 var CourseAndTerm = React.createClass({
     render: function() {
+        var intern = this.props.intern;
+        var subjects = this.props.subjects;
         return(
           <div>
           <fieldset>
@@ -609,7 +655,7 @@ var CourseAndTerm = React.createClass({
 
               <div className="form-group">
                 <label className="col-lg-3 control-label" htmlFor="campus">Term</label>
-                <div id="campus" className="col-lg-6"><p className="form-control-static">TERM</p></div>
+                <div id="campus" className="col-lg-6"><p className="form-control-static">{intern.term}</p></div>
               </div>
 
 
@@ -624,30 +670,42 @@ var CourseAndTerm = React.createClass({
               </div>
 
               <div className="form-group">
-                <label className="col-lg-3 control-label" for="{COURSE_SUBJ_ID}">Course Subject</label>
-                <div className="col-lg-6">COURSE_SUBJ</div>
+                <label className="col-lg-3 control-label" htmlFor="{STUDENT_STATE_ID}">Course Subject</label>
+                <div className="col-lg-6">
+                  <select className="form-control" onChange={this.handleDrop}>
+                  {Object.keys(subjects).map(function (key) {
+                      if ((intern.course_subj === key) || (intern.course_subj === null && key == -1)){
+                        return <option key={key} value={key} selected>{subjects[key]}</option>
+                      }else {
+                        return <option key={key} value={key}>{subjects[key]}</option>
+                      }
+                    }.bind(this))
+                  }
+                  </select>
+                </div>
               </div>
+
 
               <div className="form-group">
                 <label className="col-lg-3 control-label" for="{COURSE_NO_ID}">Course Number</label>
-                <div className="col-lg-6"><input type="text" className="form-control" defaultValue="COURSE_NO" /></div>
+                <div className="col-lg-6"><input type="text" className="form-control" defaultValue={intern.course_no} /></div>
               </div>
 
               <div className="form-group">
                 <label className="col-lg-3 control-label" for="{COURSE_SECT_ID}">Section</label>
-                <div className="col-lg-6"><input type="text" className="form-control" defaultValue="COURSE_SECT" /></div>
+                <div className="col-lg-6"><input type="text" className="form-control" defaultValue={intern.course_sect} /></div>
               </div>
 
               <div className="form-group">
                 <label className="col-lg-3 control-label" for="{CREDITS_ID}">Credit Hours</label>
-                <div className="col-lg-6"><input type="text" className="form-control" defaultValue="CREDITS" />
+                <div className="col-lg-6"><input type="text" className="form-control" defaultValue={intern.credits} />
                    <span className="help-block"><small className="text-muted">Decimal values will be rounded.</small></span>
                 </div>
               </div>
 
               <div className="form-group">
                 <label className="col-lg-3 control-label" for="{CREDITS_ID}">Title</label>
-                <div className="col-lg-6"><input type="text" className="form-control" defaultValue="COURSE_TITLE" />
+                <div className="col-lg-6"><input type="text" className="form-control" defaultValue={intern.course_title} />
                    <span className="help-block"><small className="text-muted">(Limit 28 characters; Banner)</small></span>
                 </div>
               </div>
@@ -670,11 +728,11 @@ var TypeInterface = React.createClass({
                   {Object.keys(expType).map(function(key) {
                         if(key === "internship"){            
                           return(<div className="radio" key={key}>
-                                    <label><input type="radio" name="workflowOption" value={key} defaultChecked/>{expType[key]}</label>
+                                    <label><input type="radio" name="typeOption" value={key} defaultChecked/>{expType[key]}</label>
                                  </div>)
                         } else {
                           return(<div className="radio" key={key}>
-                                    <label><input type="radio" name="workflowOption" value={key}/>{expType[key]}</label>
+                                    <label><input type="radio" name="typeOption" value={key}/>{expType[key]}</label>
                                  </div>)
                         }
                     })}
@@ -689,6 +747,319 @@ var TypeInterface = React.createClass({
     }
 });
 
+
+var NoteBox = React.createClass({
+    render: function() {
+        return(
+          <div>
+          <div className="form-group">
+            <label for="{NOTES_ID}">Add a note</label> NOTES
+          </div>
+          <div className="form-group">
+            <button type="submit" className="btn btn-primary pull-right" id="{SUBMIT_ID}">SUBMIT_VALUE</button>
+          </div>
+          </div>
+        );
+    }
+});
+
+var ChangeLog = React.createClass({
+    render: function() {
+        return(
+          <div className="row">
+            <div className="col-lg-8">
+              <div className="form-group">CHANGE_LOG</div>
+            </div>
+          </div>
+        );
+    }
+});
+
+
+
+
+
+
+
+
+// <--------------------------------------------Host Information Section---------------------------------------------->
+
+var HostInterface = React.createClass({
+    render: function() {
+        var hostData = this.props.hostData;
+        var intern = this.props.intern;
+        return(
+          <div className="panel panel-default">
+            <div className="panel-heading">
+              <h3 className="panel-title">Host Information: {hostData.name}</h3>
+            </div>
+            <div className="panel-body">
+                <div className="row">
+                  <div className="col-lg-6">
+                    <Location intern = {intern}/>
+                    <Compensation hostData = {hostData}
+                                  intern   = {intern} />
+                    <Contracts title = "Contracts"/>
+                  </div>
+                  <div className="col-lg-6">
+                    <HostDetails hostData = {hostData}
+                                 states   = {this.props.states} />
+                    <SupervisorInfo hostData = {hostData} />
+                  </div>
+                </div>
+            </div>
+          </div>
+        );
+    }
+});
+
+var Location = React.createClass({
+    render: function() {
+        var intern = this.props.intern;
+        return(
+          <div>
+            <fieldset>
+                <legend>Location</legend>
+
+                <div className="form-group">
+                  <label className="col-lg-3 control-label" htmlFor="campus">Location</label>
+                  <div id="campus" className="col-lg-6"><p className="form-control-static">{intern.international}</p></div>
+                </div>
+
+                <div className="checkbox">
+                  <label><input type="checkbox" value="" />Host's information is same as Internship's</label>
+                </div>
+
+                <div className="form-group">
+                  <label className="col-lg-3 control-label" for="{COURSE_SECT_ID}">Address</label>
+                  <div className="col-lg-6"><input type="text" className="form-control" defaultValue={intern.loc_address} /></div>
+                </div>
+
+                <div className="form-group">
+                  <label className="col-lg-3 control-label" for="{COURSE_SECT_ID}">City</label>
+                  <div className="col-lg-6"><input type="text" className="form-control" defaultValue={intern.loc_city} /></div>
+                </div>
+
+                <div className="form-group">
+                  <label className="col-lg-3 control-label" htmlFor="campus">State</label>
+                  <div id="campus" className="col-lg-6"><p className="form-control-static">STATE</p></div>
+                </div>
+
+                <div className="form-group">
+                  <label className="col-lg-3 control-label" for="{COURSE_SECT_ID}">Zip</label>
+                  <div className="col-lg-6"><input type="text" className="form-control" defaultValue={intern.loc_zip} /></div>
+                </div>
+
+                <div className="form-group">
+                  <label className="col-lg-3 control-label" for="{COURSE_SECT_ID}">Location Start Date on Site</label>
+                  <div className="col-lg-6"><input type="text" className="form-control" defaultValue="LOC_START_DATE" /></div>
+                </div>
+
+                <div className="form-group">
+                  <label className="col-lg-3 control-label" for="{COURSE_SECT_ID}">Location End Date on Site</label>
+                  <div className="col-lg-6"><input type="text" className="form-control" defaultValue="LOC_END_DATE" /></div>
+                </div>
+            </fieldset>
+          </div>
+        );
+    }
+});
+
+
+
+var Compensation = React.createClass({
+    render: function() {
+        var hostData = this.props.hostData;
+        var intern = this.props.intern;
+        var allow = intern.stipend;
+        var rButtons;
+
+        if(intern.paid == 0){ 
+          rButtons = <div className="radio">
+                     <label className="radio-inline"><input type="radio" name="compOption" value="unpaid" defaultChecked/>Unpaid</label>
+                     <label className="radio-inline"><input type="radio" name="compOption" value="paid" />Paid</label>
+                     </div>
+        } else {
+          rButtons = <div className="radio">
+                     <label className="radio-inline"><input type="radio" name="compOption" value="unpaid" />Unpaid</label>
+                     <label className="radio-inline"><input type="radio" name="compOption" value="paid" defaultChecked />Paid</label>
+                     </div>
+        }
+
+        return(
+          <div>
+            <fieldset>
+                <legend>Compensation</legend>
+                <div className="form-group">
+                  <div className="col-lg-6 col-lg-offset-3">
+
+                    {rButtons}
+
+                    <div className="checkbox">
+                      { allow ? <label><input type="checkbox" value="" />Stipend</label>
+                              : <label><input type="checkbox" value="" disabled />Stipend</label>
+                      }
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="form-group">
+                  <label className="col-lg-3 control-label" for="{COURSE_SECT_ID}">Pay rate</label>
+                  <div className="col-lg-3"><input type="text" className="form-control" defaultValue={intern.pay_rate} /></div>
+                </div>
+
+                <div className="form-group">
+                  <label className="col-lg-3 control-label" for="{COURSE_SECT_ID}">Average Hours per Week</label>
+                  <div className="col-lg-3"><input type="text" className="form-control" defaultValue={intern.avg_hours_week} /></div>
+                </div>
+
+            </fieldset>
+          </div>
+        );
+    }
+});
+
+var Contracts = React.createClass({
+    render: function() {
+        return(
+          <div>
+            <fieldset>
+                <legend>{this.props.title}</legend>
+                <div className="row">
+                  <div className="col-lg-9">
+                    <ul className="list-group">
+                      <li className="list-group-item"><i className="fa fa-file"></i> DOWNLOAD &nbsp;DELETE</li>
+                    </ul>
+                  </div>
+                  <div className="col-lg-2">UPLOAD_DOC</div>
+                </div>
+            </fieldset>
+          </div>
+        );
+    }
+});
+
+var HostDetails = React.createClass({
+    render: function() {
+        var hostData = this.props.hostData;
+        var stateData = '';
+
+        if(this.props.states != null){
+            stateData = this.props.states.map(function (state) {
+                  return (
+                          <StateDropDown  key={state.abbr}
+                                          sAbbr={state.abbr}
+                                          stateName={state.full_name}
+                                          active={hostData.state} />
+                      );
+              }.bind(this));
+        }
+        return(
+          <div>
+            <fieldset>
+                <legend>Host Details</legend>
+                <div className="form-group">
+                  <label className="col-lg-3 control-label" htmlFor="{STUDENT_ADDRESS_ID}">Host Name</label>
+                  <div className="col-lg-6"><input type="text" className="form-control" defaultValue={hostData.name} /></div>
+                </div>
+
+                <div className="form-group">
+                  <label className="col-lg-3 control-label" htmlFor="{STUDENT_ADDRESS_ID}">Phone</label>
+                  <div className="col-lg-6"><input type="text" className="form-control" defaultValue={hostData.phone} /></div>
+                </div>
+
+                <div className="form-group">
+                  <label className="col-lg-3 control-label" htmlFor="{STUDENT_ADDRESS_ID}">Address</label>
+                  <div className="col-lg-6"><input type="text" className="form-control" defaultValue={hostData.address} /></div>
+                </div>
+
+                <div className="form-group">
+                  <label className="col-lg-3 control-label" htmlFor="{STUDENT_CITY_ID}">City</label>
+                  <div className="col-lg-6"><input type="text" className="form-control" defaultValue={hostData.city} /></div>
+                </div>
+
+                <div className="form-group">
+                  <label className="col-lg-3 control-label" htmlFor="{STUDENT_STATE_ID}">State</label>
+                  <div className="col-lg-6">
+                    <select className="form-control" onChange={this.handleDrop}>{stateData}</select></div>
+                </div>
+
+                <div className="form-group">
+                  <label className="col-lg-3 control-label" htmlFor="{STUDENT_ZIP_ID}">Zip Code</label>
+                  <div className="col-lg-6"><input type="text" className="form-control" defaultValue={hostData.zip} /></div>
+                </div>
+            </fieldset>
+          </div>
+        );
+    }
+});
+
+var SupervisorInfo = React.createClass({
+    render: function() {
+        var hostData = this.props.hostData;
+        return(
+          <div>
+            <fieldset>
+                <legend>Supervisor Information</legend>
+                <div className="form-group">
+                  <label className="col-lg-3 control-label" htmlFor="{STUDENT_MIDDLE_NAME_ID}">First Name</label>
+                  <div className="col-lg-6"><input type="text" className="form-control" defaultValue={hostData.supervisor_first_name} /></div>
+                </div>
+
+                <div className="form-group">
+                  <label className="col-lg-3 control-label" htmlFor="{STUDENT_MIDDLE_NAME_ID}">Last Name</label>
+                  <div className="col-lg-6"><input type="text" className="form-control" defaultValue={hostData.supervisor_last_name} /></div>
+                </div>
+
+                <div className="form-group">
+                  <label className="col-lg-3 control-label" htmlFor="{STUDENT_MIDDLE_NAME_ID}">Title</label>
+                  <div className="col-lg-6"><input type="text" className="form-control" defaultValue={hostData.supervisor_title} /></div>
+                </div>
+
+                <div className="form-group">
+                  <label className="col-lg-3 control-label" htmlFor="{STUDENT_MIDDLE_NAME_ID}">Email</label>
+                  <div className="col-lg-6"><input type="text" className="form-control" defaultValue={hostData.supervisor_email} /></div>
+                </div>
+
+                <div className="form-group">
+                  <label className="col-lg-3 control-label" htmlFor="{STUDENT_MIDDLE_NAME_ID}">Fax</label>
+                  <div className="col-lg-6"><input type="text" className="form-control" defaultValue={hostData.supervisor_fax} /></div>
+                </div>
+
+                <div className="checkbox">
+                  <label><input type="checkbox" value="" />Supervisor's information is same as Host's</label>
+                </div>
+
+                <div className="form-group">
+                  <label className="col-lg-3 control-label" htmlFor="{STUDENT_ADDRESS_ID}">Phone</label>
+                  <div className="col-lg-6"><input type="text" className="form-control" defaultValue={hostData.supervisor_phone} /></div>
+                </div>
+
+                <div className="form-group">
+                  <label className="col-lg-3 control-label" htmlFor="{STUDENT_ADDRESS_ID}">Address</label>
+                  <div className="col-lg-6"><input type="text" className="form-control" defaultValue={hostData.supervisor_address} /></div>
+                </div>
+
+                <div className="form-group">
+                  <label className="col-lg-3 control-label" htmlFor="{STUDENT_CITY_ID}">City</label>
+                  <div className="col-lg-6"><input type="text" className="form-control" defaultValue={hostData.supervisor_city} /></div>
+                </div>
+
+                <div className="form-group">
+                  <label className="col-lg-3 control-label" htmlFor="{STUDENT_STATE_ID}">State</label>
+                  <div className="col-lg-6">
+                    <select className="form-control" onChange={this.handleDrop}></select></div>
+                </div>
+
+                <div className="form-group">
+                  <label className="col-lg-3 control-label" htmlFor="{STUDENT_ZIP_ID}">Zip Code</label>
+                  <div className="col-lg-6"><input type="text" className="form-control" defaultValue={hostData.supervisor_zip} /></div>
+                </div>
+            </fieldset>
+          </div>
+        );
+    }
+});
 
 ReactDOM.render(
     <EditInternshipInterface />, 
