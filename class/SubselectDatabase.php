@@ -930,6 +930,24 @@ class SubselectDatabase extends PHPWS_DB{
         }
     }
 
+    /**
+     * Allows you to add an order or an array of orders to
+     * a db query
+     *
+     * sending random or rand with or without the () will query random
+     * element
+     */
+    public function addOrderRaw($order)
+    {
+        if (is_array($order)) {
+            foreach ($order as $value) {
+                $this->addOrder($value);
+            }
+        } else {
+            $this->order = $this->order . $order;
+        }
+    }
+
     public function getOrder($dbReady = false)
     {
         if (empty($this->order)) {
