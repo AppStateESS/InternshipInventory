@@ -92,9 +92,9 @@ var LocationDropdown = React.createClass({
         var used = this.props.used;
         var selectOptions = this.props.data.map(function(node){
             if(used.indexOf(node.full_name) > 0){
-                return <option value={node.abbr} disabled>{node.full_name}</option>
+                return <option key={node.abbr} value={node.abbr} disabled>{node.full_name}</option>
             }
-            return (<option value={node.abbr}>{node.full_name}</option>);
+            return (<option key={node.abbr} value={node.abbr}>{node.full_name}</option>);
         });
         return (
             <div className="LocationDropdown">
@@ -118,7 +118,7 @@ var LocationList = React.createClass({
         var removeClick = this.props.removeClick;
         var listNodes = this.props.data.map(function(panel){
             return (
-                <LocationPanel remove={removeClick} loc={panel}/>
+                <LocationPanel key={panel} remove={removeClick} loc={panel}/>
         );
     });
     return (

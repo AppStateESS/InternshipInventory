@@ -119,36 +119,19 @@ class InternshipInventory {
                 $ctrl->execute();
                 break;
             case 'upload_contract_form':
-                    $docManager = new AffiliationContractDocumentManager();
-                    echo $docManager->edit();
-                    exit();
-                    break;
-            case 'post_contract_upload':
-                    $docManager = new AffiliationContractDocumentManager();
-                    $docManager->postDocumentUpload();
-                    break;
-            case 'delete_document':
-                    AffiliationContractFactory::deleteByDocId($_REQUEST['doc_id']);
-                    NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, 'Document deleted.');
-                    NQ::close();
-                    PHPWS_Core::goBack();
-                    break;
-                if (!\Current_User::allow('intern', 'edit_state')) {
-                    disallow();
-                }
-                $state = new State($_GET['abbr']);
-                $state->setActive(true);
-                $state->save();
+                $docManager = new AffiliationContractDocumentManager();
+                echo $docManager->edit();
                 exit();
                 break;
-            case 'remove_state':
-                if (!\Current_User::allow('intern', 'edit_state')) {
-                    disallow();
-                }
-                $state = new State($_GET['abbr']);
-                $state->setActive(false);
-                $state->save();
-                exit();
+            case 'post_contract_upload':
+                $docManager = new AffiliationContractDocumentManager();
+                $docManager->postDocumentUpload();
+                break;
+            case 'delete_document':
+                AffiliationContractFactory::deleteByDocId($_REQUEST['doc_id']);
+                NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, 'Document deleted.');
+                NQ::close();
+                PHPWS_Core::goBack();
                 break;
             case 'edit_states':
                 if (!\Current_User::allow('intern', 'edit_state')) {

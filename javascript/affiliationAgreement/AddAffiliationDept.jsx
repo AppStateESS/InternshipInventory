@@ -95,9 +95,9 @@ var DepartmentDropdown = React.createClass({
         }
         var selectOptions = options.map(function(node){
             if(used.indexOf(node.name) > 0){
-                return <option value={node.id} disabled>{node.name}</option>
+                return <option key={node.id} value={node.id} disabled>{node.name}</option>
             }
-            return (<option value={node.id}>{node.name}</option>);
+            return (<option key={node.id} value={node.id}>{node.name}</option>);
         });
         return (
             <div>
@@ -123,7 +123,7 @@ var DepartmentList = React.createClass({
         var removeMethod = this.removeClick;
         var listNodes = this.props.data.map(function(panel){
             return (
-                <DepartmentPanel onRemoveClick={removeMethod} dept={panel}/>
+                <DepartmentPanel key={panel} onRemoveClick={removeMethod} dept={panel}/>
             );
         });
         return (
