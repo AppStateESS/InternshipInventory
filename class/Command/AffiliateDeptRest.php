@@ -35,23 +35,14 @@ class AffiliateDeptRest {
 
         $db = PdoFactory::getPdoInstance();
 
-        $query = "SELECT department_id FROM intern_agreement_department
-        WHERE agreement_id = :aaId";
+        $query = "SELECT intern_department.id, intern_department.name FROM intern_agreement_department JOIN intern_department ON intern_agreement_department.department_id = intern_department.id
+        WHERE agreement_id = :id and hidden = 0;";
 
-        $params= array('aaId' => $affiliationId);
-
+        $params= array('id' => $affiliationId);
         $stmt = $db->prepare($query);
         $stmt->execute($params);
 
-        $results = $stmt->fetchAll();
-
-        $deptNames = array();
-        foreach ($results as $id) {
-            $dept = DepartmentFactory::getDepartmentById($id['department_id']);
-            array_push($deptNames, $dept->getName());
-        }
-
-        return $deptNames;
+        return $stmt->fetchAll(\PDO::FETCH_CLASS, '\Intern\DepartmentDB');
     }
 
     public function post()
