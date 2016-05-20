@@ -4,15 +4,15 @@ namespace Intern;
 class AffiliationAgreementFactory {
 
     /**
-    * Generates an AffiliationAgreement object by attempting to load the
-    * AffiliationAgreement from the database with the given id.
-    *
-    * @param int $id
-    * @returns AffiliationAgreement
-    * @throws InvalidArgumentException
-    * @throws Exception
-    * @throws InternshipNotFoundException
-    */
+     * Generates an AffiliationAgreement object by attempting to load the
+     * AffiliationAgreement from the database with the given id.
+     *
+     * @param int $id
+     * @return AffiliationAgreement
+     * @throws InvalidArgumentException
+     * @throws Exception
+     * @throws InternshipNotFoundException
+     */
     public static function getAffiliationById($id)
     {
         if(is_null($id) || !isset($id)){
@@ -23,7 +23,6 @@ class AffiliationAgreementFactory {
             throw new \InvalidArgumentException('AffiliationAgreement ID must be greater than zero.');
         }
 
-        \PHPWS_Core::initModClass('intern', 'AffiliationAgreement.php');
         $db = new \PHPWS_DB('intern_affiliation_agreement');
         $db->addWhere('id', $id);
 
@@ -60,8 +59,7 @@ class AffiliationAgreementFactory {
      */
     public static function save(AffiliationAgreement $agreement)
     {
-        if(!isset($agreement) || is_null($agreement))
-        {
+        if(!isset($agreement) || is_null($agreement)){
             throw new \InvalidArgumentException('Missing agreement object');
         }
 
@@ -69,37 +67,37 @@ class AffiliationAgreementFactory {
 
         $id = $agreement->getId();
 
-        if(!is_null($id)) {
-            $values = array('saveId' => $id,
-                        'saveName' => $agreement->getName(),
-                        'saveBeginDate' => $agreement->getBeginDate(),
-                        'saveEndDate' => $agreement->getEndDate(),
-                        'saveAutoRenew' => (int)$agreement->getAutoRenew(),
-                        'saveNotes' => $agreement->getNotes(),
-                        'saveTerminated' => $agreement->getTerminated());
-
-            $query = "UPDATE intern_affiliation_agreement
-                        SET name = :saveName, begin_date = :saveBeginDate,
-                        end_date = :saveEndDate, auto_renew = :saveAutoRenew,
-                        notes = :saveNotes, terminated = :saveTerminated
-                        WHERE id = :saveId";
-
-        } else {
+        if(is_null($id)) {
             $values = array(
                         'saveName' => $agreement->getName(),
                         'saveBeginDate' => $agreement->getBeginDate(),
                         'saveEndDate' => $agreement->getEndDate(),
                         'saveAutoRenew' => (int)$agreement->getAutoRenew());
 
-                $query = "INSERT INTO intern_affiliation_agreement
-                        (id, name, begin_date, end_date, auto_renew)
-                        VALUES (nextval('intern_affiliation_agreement_seq'),
-                        :saveName, :saveBeginDate, :saveEndDate, :saveAutoRenew)";
+            $query = "INSERT INTO intern_affiliation_agreement
+                    (id, name, begin_date, end_date, auto_renew)
+                    VALUES (nextval('intern_affiliation_agreement_seq'),
+                    :saveName, :saveBeginDate, :saveEndDate, :saveAutoRenew)";
+
+        } else {
+            $values = array('id' => $id,
+                        'name' => $agreement->getName(),
+                        'beginDate' => $agreement->getBeginDate(),
+                        'endDate' => $agreement->getEndDate(),
+                        'autoRenew' => (int)$agreement->getAutoRenew(),
+                        'notes' => $agreement->getNotes(),
+                        'terminated' => $agreement->getTerminated());
+
+            $query = "UPDATE intern_affiliation_agreement
+                        SET name = :name, begin_date = :beginDate,
+                        end_date = :endDate, auto_renew = :autoRenew,
+                        notes = :notes, terminated = :terminated
+                        WHERE id = :id";
         }
+
         $stmt = $db->prepare($query);
 
         $stmt->execute($values);
-
     }
 
 }

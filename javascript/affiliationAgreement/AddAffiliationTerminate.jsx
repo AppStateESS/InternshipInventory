@@ -1,18 +1,18 @@
 
 var TerminateBox = React.createClass({
     getInitialState: function() {
-        return {terminate: 0};
+        return {agreement: null};
     },
     componentWillMount: function(){
         this.getData();
     },
     getData: function(){
         $.ajax({
-            url: 'index.php?module=intern&action=AffiliateRest&affiliation_agreement_id='+aaId,
+            url: 'index.php?module=intern&action=AffiliateRest&affiliation_agreement_id='+this.props.affiliationId,
             type: 'GET',
             dataType: 'json',
             success: function(data) {
-                this.setState({terminate: data});
+                this.setState({agreement: data});
             }.bind(this),
             error: function(xhr, status, err) {
                 console.error(this.props.url, status, err.toString());
@@ -21,24 +21,28 @@ var TerminateBox = React.createClass({
     },
     clicked: function(){
         $.ajax({
-            url:'index.php?module=intern&action=AffiliateRest&affiliation_agreement_id='+aaId,
+            url:'index.php?module=intern&action=AffiliateRest&affiliation_agreement_id='+this.props.affiliationId,
             type: 'POST',
             success:function(){
                 this.getData();
             }.bind(this),
             error: function(xhr, status, err) {
-                alert("Failed to Set Termination value")
                 console.error(this.props.url, status, err.toString());
             }.bind(this)
         });
     },
     render: function() {
+
+        if(this.state.agreement == null){
+            return (<div></div>);
+        }
+
         return(
             <div>
-            <TerminateButton clicked={this.clicked} data={this.state.terminate} />
-        </div>
-    );
-}
+                <TerminateButton clicked={this.clicked} terminated={this.state.agreement.terminated} />
+            </div>
+        );
+    }
 });
 
 
@@ -47,7 +51,7 @@ var TerminateButton = React.createClass({
         this.props.clicked();
     },
     render:function() {
-        if(this.props.data == 0){
+        if(this.props.terminated == 0){
             var btnClass = "btn btn-danger pull-right";
             var btnText = "Terminate ";
             var btnAwesome = "fa fa-times";
@@ -67,6 +71,6 @@ var TerminateButton = React.createClass({
     }
 });
 
-React.render(<TerminateBox/>,
+React.render(<TerminateBox affiliationId={aaId}/>,
     document.getElementById('terminate')
 );

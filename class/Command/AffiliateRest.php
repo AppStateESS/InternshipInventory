@@ -28,7 +28,10 @@ class AffiliateRest {
 
         $agreement = AffiliationAgreementFactory::getAffiliationById($affiliationId);
 
-        return $agreement->getTerminated();
+        $agreement->states = array();
+        $agreement->depratments = array();
+
+        return $agreement;
     }
 
 	public function post()
