@@ -36,7 +36,8 @@ class AffiliateDeptRest {
         $db = PdoFactory::getPdoInstance();
 
         $query = "SELECT intern_department.id, intern_department.name FROM intern_agreement_department JOIN intern_department ON intern_agreement_department.department_id = intern_department.id
-        WHERE agreement_id = :id and hidden = 0;";
+        WHERE agreement_id = :id and hidden = 0
+        ORDER BY intern_department.name ASC";
 
         $params= array('id' => $affiliationId);
         $stmt = $db->prepare($query);
@@ -74,11 +75,11 @@ class AffiliateDeptRest {
 
     public function delete()
     {
-        $deptName = $_REQUEST['department'];
+        $deptId = $_REQUEST['department'];
         $affiliationId = $_REQUEST['affiliation_agreement_id'];
 
         // Sanity checking
-        if (is_null($deptName) || !isset($deptName)) {
+        if (is_null($deptId) || !isset($deptId)) {
             throw new \InvalidArgumentException('Missing Department Name.');
         }
 
@@ -87,18 +88,6 @@ class AffiliateDeptRest {
         }
 
         $db = PdoFactory::getPdoInstance();
-
-        $query = "SELECT id FROM intern_department
-        WHERE name = :deptName";
-
-        $params = array('deptName' => $deptName);
-
-        $stmt = $db->prepare($query);
-        $stmt->execute($params);
-
-        $results = $stmt->fetch();
-
-        $deptId = $results['id'];
 
         $query = "DELETE FROM intern_agreement_department
         WHERE agreement_id = :agreementId AND department_id = :deptId";

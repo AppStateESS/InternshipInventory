@@ -3,7 +3,7 @@
 
 var DepartmentBox = React.createClass({
     getInitialState: function() {
-        return {depts: [], usedDepts: []};
+        return {depts: null, usedDepts: null};
     },
     addDept: function(nameToAdd) {
         this.postData(nameToAdd);
@@ -31,7 +31,7 @@ var DepartmentBox = React.createClass({
         });
         // Fetch the list of departments for this internship
         $.ajax({
-            url: 'index.php?module=intern&action=AffiliateDeptRest&affiliation_agreement_id='+aaId,
+            url: 'index.php?module=intern&action=AffiliateDeptRest&affiliation_agreement_id='+this.props.affiliationId,
             type: 'GET',
             dataType: 'json',
             success: function(data) {
@@ -45,7 +45,7 @@ var DepartmentBox = React.createClass({
     },
     postData: function(department) {
         $.ajax({
-            url: 'index.php?module=intern&action=AffiliateDeptRest&department='+department+'&affiliation_agreement_id='+aaId,
+            url: 'index.php?module=intern&action=AffiliateDeptRest&department='+department+'&affiliation_agreement_id='+this.props.affiliationId,
             type: 'POST',
             success: function(data){
                 this.getData();
@@ -58,7 +58,7 @@ var DepartmentBox = React.createClass({
     },
     deleteData: function(department) {
         $.ajax({
-            url: 'index.php?module=intern&action=AffiliateDeptRest&department='+department+'&affiliation_agreement_id='+aaId,
+            url: 'index.php?module=intern&action=AffiliateDeptRest&department='+department.id+'&affiliation_agreement_id='+this.props.affiliationId,
             type: 'DELETE',
             success: function(data) {
                 this.getData();
@@ -70,10 +70,15 @@ var DepartmentBox = React.createClass({
         });
     },
     render: function() {
+
+        if(this.state.depts == null || this.state.usedDepts == null){
+            return (<div></div>);
+        }
+
         return (
             <div className="form-group">
                 <DepartmentDropdown onAdd={this.addDept} departments={this.state.depts} usedDepartments={this.state.usedDepts}/>
-                <DepartmentList removeClick={this.removeClick} data={this.state.usedDepts}/>
+                <DepartmentList removeClick={this.removeClick} departments={this.state.usedDepts}/>
             </div>
         );
     }
@@ -88,7 +93,7 @@ var DepartmentDropdown = React.createClass({
         var options = this.props.departments;
         options.unshift({id:0, name: "Select a Department"});
 
-        var selectOptions = this.props.departments.map(function(department){
+        var selectOptions = options.map(function(department){
 
             // Check if this department is in the set of used departments
             usedIndex = this.props.usedDepartments.findIndex(function(element, index, arr){
@@ -129,11 +134,11 @@ var DepartmentList = React.createClass({
         this.props.removeClick(deptToRemove);
     },
     render: function() {
-        var listNodes = this.props.data.map(function(department){
+        var listNodes = this.props.departments.map(function(department){
             return (
-                <DepartmentPanel key={department.id} onRemoveClick={this.removeClick} dept={department}/>
+                <DepartmentItem key={department.id} onRemoveClick={this.removeClick} dept={department}/>
             );
-        });
+        }.bind(this));
 
         return (
             <ul className="list-group">
@@ -143,7 +148,7 @@ var DepartmentList = React.createClass({
     }
 });
 
-var DepartmentPanel = React.createClass({
+var DepartmentItem = React.createClass({
     remove: function() {
         this.props.onRemoveClick(this.props.dept);
     },
@@ -159,6 +164,6 @@ var DepartmentPanel = React.createClass({
 
 
 React.render(
-    <DepartmentBox/>,
+    <DepartmentBox affiliationId={aaId}/>,
     document.getElementById('departments')
 );

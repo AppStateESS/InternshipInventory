@@ -1,82 +1,85 @@
-// Adds the components involved in the adding of different Locations
-// to the Add Affiliation form.
-
+// Components for adding states (locations) to an Affiliation Agreement
+// on the Edit Affiliation interface.
 
 var LocationBox = React.createClass({
     getInitialState: function() {
-        return {locs: [], usedlocs: []};
+        return {locs: null, usedLocs: null};
     },
-    addloc: function(nameToAdd)
-    {
+    addloc: function(nameToAdd) {
         this.postData(nameToAdd);
     },
-    removeLoc: function(loc)
-    {
+    removeLoc: function(loc) {
         this.deleteData(loc);
     },
-    componentWillMount: function(){
+    componentWillMount: function() {
+        // Get data on inital load
         this.getData();
     },
-    getData: function(){
+    getData: function() {
+        // Get the full list of all states
         $.ajax({
             url: 'index.php?module=intern&action=stateRest',
             type: 'GET',
             dataType: 'json',
             success: function(data) {
-                // Adds Select a State to the data array.
-                data.unshift({full_name: "Select a State", abbr: "AA"});
                 this.setState({locs: data});
             }.bind(this),
             error: function(xhr, status, err) {
-                alert("test failed")
-                console.error(this.props.url, status, err.toString());
+                alert("There was an error loading location data for this agreement.");
+                console.error(status, err.toString());
             }.bind(this)
         });
+
+        // Get the list of states already added (used) on this agreement
         $.ajax({
-            url: 'index.php?module=intern&action=AffiliateStateRest&affiliation_agreement_id='+aaId,
+            url: 'index.php?module=intern&action=AffiliateStateRest&affiliation_agreement_id='+this.props.affiliationId,
             type: 'GET',
             dataType: 'json',
             success: function(data) {
-                this.setState({usedlocs: data});
+                this.setState({usedLocs: data});
             }.bind(this),
             error: function(xhr, status, err) {
-                alert("test failed")
-                console.err(this.props.url, status, err.toString());
+                alert("There was an error loading location data for this agreement.")
+                console.error(status, err.toString());
             }.bind(this)
         });
     },
     postData: function(state){
         $.ajax({
-            url: 'index.php?module=intern&action=AffiliateStateRest&affiliation_agreement_id='+aaId+'&state='+state,
+            url: 'index.php?module=intern&action=AffiliateStateRest&affiliation_agreement_id='+this.props.affiliationId+'&state='+state,
             type: 'POST',
             success: function() {
                 this.getData();
             }.bind(this),
             error: function(xhr, status, err) {
                 alert("Failed to add to the database. " + err.toString())
-                console.error(this.props.url, status, err.toString());
+                console.error(status, err.toString());
             }.bind(this)
         });
     },
     deleteData: function(state){
         $.ajax({
-            url: 'index.php?module=intern&action=AffiliateStateRest&affiliation_agreement_id='+aaId+'&state='+state,
+            url: 'index.php?module=intern&action=AffiliateStateRest&affiliation_agreement_id='+this.props.affiliationId+'&state='+state.abbr,
             type: 'DELETE',
             success: function() {
                 this.getData();
             }.bind(this),
             error: function(xhr, status, err) {
-                alert("Failed to remove from the database." + err.toString())
-                console.error(this.props.url, status, err.toString());
+                alert("There was an error while trying to remove that location.");
+                console.error(status, err.toString());
             }.bind(this)
         });
     },
     render: function() {
+        // If we don't have location data yet, don't even bother rendering
+        if(this.state.locs == null || this.state.usedLocs == null){
+            return (<div></div>);
+        }
+
         return (
             <div className ="LocationBox">
-                <LocationDropdown onAdd={this.addloc} data={this.state.locs} used={this.state.usedlocs}/>
-                <p></p>
-                <LocationList removeClick={this.removeLoc} data={this.state.usedlocs}/>
+                <LocationDropdown onAdd={this.addloc} locations={this.state.locs} usedLocations={this.state.usedLocs}/>
+                <LocationList removeClick={this.removeLoc} locations={this.state.usedLocs}/>
             </div>
         );
     }
@@ -88,14 +91,30 @@ var LocationDropdown = React.createClass({
         this.props.onAdd(locToAdd);
     },
     render: function() {
-        var options = this.props.data;
-        var used = this.props.used;
-        var selectOptions = this.props.data.map(function(node){
-            if(used.indexOf(node.full_name) > 0){
-                return <option key={node.abbr} value={node.abbr} disabled>{node.full_name}</option>
+        var options = this.props.locations;
+        // Adds Select a State to the data array.
+        options.unshift({full_name: "Select a State", abbr: "-1"});
+
+        var selectOptions = options.map(function(location){
+
+            // Check if this location is in the set of used locations
+            usedIndex = this.props.usedLocations.findIndex(function(element, index, arr){
+                if(location.abbr == element.abbr){
+                    return true;
+                } else {
+                    return false;
+                }
+            }.bind(this));
+
+            // If the location has been used (findIndex returns non-negative), then disable the location in the dropdown list
+            if(usedIndex > -1){
+                return <option key={location.abbr} value={location.abbr} disabled>{location.full_name}</option>
             }
-            return (<option key={node.abbr} value={node.abbr}>{node.full_name}</option>);
-        });
+
+            // Otherwise, return an enabled option
+            return (<option key={location.abbr} value={location.abbr}>{location.full_name}</option>);
+        }.bind(this));
+
         return (
             <div className="LocationDropdown">
                 <div className="form-group">
@@ -111,43 +130,37 @@ var LocationDropdown = React.createClass({
     }
 });
 
-
-
 var LocationList = React.createClass({
     render: function() {
-        var removeClick = this.props.removeClick;
-        var listNodes = this.props.data.map(function(panel){
+        var listNodes = this.props.locations.map(function(location){
             return (
-                <LocationPanel key={panel} remove={removeClick} loc={panel}/>
+                <LocationItem key={location.abbr} remove={this.props.removeClick} location={location}/>
+            );
+        }.bind(this));
+
+        return (
+            <ul className="list-group">
+                {listNodes}
+            </ul>
         );
-    });
-    return (
-        <ul className="list-group">
-        {listNodes}
-        </ul>
-    );
-}
+    }
 });
 
-var LocationPanel = React.createClass({
+var LocationItem = React.createClass({
     remove: function() {
-        this.props.remove(this.props.loc)
+        this.props.remove(this.props.location)
     },
     render: function() {
         return (
             <li className="list-group-item">
-            {this.props.loc}
-            <button onClick={this.remove} className="close">
-            &times;
-            </button>
+                {this.props.location.full_name}
+                <button onClick={this.remove} className="close">&times;</button>
             </li>
         );
     }
 });
 
 
-
-React.render(
-    <LocationBox/>,
-document.getElementById('locations')
+React.render(<LocationBox affiliationId={aaId}/>,
+    document.getElementById('locations')
 );

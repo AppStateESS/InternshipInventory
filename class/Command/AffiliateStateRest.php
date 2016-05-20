@@ -36,25 +36,16 @@ class AffiliateStateRest {
 
 		$db = PdoFactory::getPdoInstance();
 
-		$query = "SELECT location FROM intern_agreement_location
-							WHERE agreement_id = :aaId";
+		$query = "SELECT intern_state.* FROM intern_state JOIN intern_agreement_location ON intern_state.abbr = intern_agreement_location.location
+                    WHERE intern_agreement_location.agreement_id = :agreementId
+                    ORDER BY intern_state.full_name ASC";
 
-		$params= array('aaId' => $affiliationId);
+		$params= array('agreementId' => $affiliationId);
 
 		$stmt = $db->prepare($query);
 		$stmt->execute($params);
 
-		$results = $stmt->fetchAll();
-
-		$stateNames = array();
-        $allStates = State::$UNITED_STATES;
-
-		foreach ($results as $id) {
-            $name = $allStates[$id['location']];
-			array_push($stateNames, $name);
-        }
-
-		return $stateNames;
+		return $stmt->fetchAll(\PDO::FETCH_CLASS, '\Intern\StateRestored');
 	}
 
 
@@ -89,11 +80,11 @@ class AffiliateStateRest {
 
   public function delete()
 	{
-		$stateName = $_REQUEST['state'];
+		$stateAbbr = $_REQUEST['state'];
 		$affiliationId = $_REQUEST['affiliation_agreement_id'];
 
 		// Sanity checking
-		if (is_null($stateName) || !isset($stateName)){
+		if (is_null($stateAbbr) || !isset($stateAbbr)){
 			throw new \InvalidArgumentException('Missing Department Name.');
 		}
 
@@ -103,22 +94,10 @@ class AffiliateStateRest {
 
 		$db = PdoFactory::getPdoInstance();
 
-		$query = "SELECT abbr FROM intern_state
-							WHERE full_name = :stateName";
-
-		$params = array('stateName' => $stateName);
-
-		$stmt = $db->prepare($query);
-		$stmt->execute($params);
-
-		$results = $stmt->fetch();
-
-		$stateId = $results['abbr'];
-
 		$query = "DELETE FROM intern_agreement_location
-							WHERE agreement_id = :agreementId AND location = :stateId";
+							WHERE agreement_id = :agreementId AND location = :stateAbbr";
 
-		$values = array('agreementId' => $affiliationId, 'stateId' => $stateId);
+		$values = array('agreementId' => $affiliationId, 'stateAbbr' => $stateAbbr);
 
 		$stmt = $db->prepare($query);
 		$stmt->execute($values);
