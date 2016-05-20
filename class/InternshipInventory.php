@@ -84,26 +84,54 @@ class InternshipInventory {
                 $this->content = $view->display();
                 break;
 
-                /**
-                 * Matt additions!
-                 */
-            case 'add_state':
-                if (!\Current_User::allow('intern', 'edit_state')) {
-                    disallow();
-                }
-                $state = new State($_GET['abbr']);
-                $state->setActive(true);
-                $state->save();
+            case 'showAffiliateAgreement':
+                $view = new UI\AffiliateAgreementUI();
+                $this->content = $view->display();
+                break;
+
+            case 'addAgreementView':
+                $view = new UI\AddAgreementUI();
+                $this->content = $view->display();
+                break;
+
+            case 'addAffiliate':
+                $ctrl = new Command\SaveAffiliate();
+                $ctrl->execute();
+                break;
+            case 'showAffiliateEditView':
+                $view = new UI\EditAgreementUI();
+                $this->content = $view->display();
+                break;
+            case 'saveAffiliate':
+                $ctrl = new Command\SaveAffiliate();
+                $ctrl->execute();
+                break;
+            case 'AffiliateRest':
+                $ctrl = new Command\AffiliateRest();
+                $ctrl->execute();
+                break;
+            case 'AffiliateDeptRest':
+                $ctrl = new Command\AffiliateDeptRest();
+                $ctrl->execute();
+                break;
+            case 'AffiliateStateRest':
+                $ctrl = new Command\AffiliateStateRest();
+                $ctrl->execute();
+                break;
+            case 'upload_contract_form':
+                $docManager = new AffiliationContractDocumentManager();
+                echo $docManager->edit();
                 exit();
                 break;
-            case 'remove_state':
-                if (!\Current_User::allow('intern', 'edit_state')) {
-                    disallow();
-                }
-                $state = new State($_GET['abbr']);
-                $state->setActive(false);
-                $state->save();
-                exit();
+            case 'post_contract_upload':
+                $docManager = new AffiliationContractDocumentManager();
+                $docManager->postDocumentUpload();
+                break;
+            case 'delete_document':
+                AffiliationContractFactory::deleteByDocId($_REQUEST['doc_id']);
+                NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, 'Document deleted.');
+                NQ::close();
+                PHPWS_Core::goBack();
                 break;
             case 'edit_states':
                 if (!\Current_User::allow('intern', 'edit_state')) {
@@ -207,6 +235,7 @@ class InternshipInventory {
                 $ctrl = new Command\EmergencyContactRest();
                 $ctrl->execute();
                 break;
+
             default:
                 $menu = new UI\InternMenu();
                 $this->content = $menu->display();

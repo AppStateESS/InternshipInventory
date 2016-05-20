@@ -41,6 +41,9 @@
           <!-- BEGIN states -->
           <li>{EDIT_STATES_LINK}</li>
           <!-- END states -->
+          <!-- BEGIN affiliation_agreement -->
+          <li>{AFFIL_AGREE_LINK}</li>
+          <!-- END affiliation_agreement -->
           <!-- BEGIN ctrl_panel -->
           <li>{CONTROL_PANEL}</li>
           <!-- END ctrl_panel -->
@@ -53,7 +56,7 @@
       <li>
         <a href="{LOGOUT_URI}"><i class="fa fa-sign-out"></i> Sign out</a>
       </li>
-      
+
     </ul>
 
   </div><!-- /.navbar-collapse -->

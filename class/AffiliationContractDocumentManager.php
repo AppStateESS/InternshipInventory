@@ -1,20 +1,18 @@
 <?php
-
 namespace Intern;
 
+\PHPWS_Core::initModClass('filecabinet', 'Document_Manager.php');
+
 /**
- * DocumentManager
+ * Document_Manager
  *
  * A subclass is needed because we need to do a little
  * extra work when a file is submitted. Also, the ID
- * of the new file is necessary to insert a new line in intern_document.
+ * of the new file is necessary to insert a new line in intern_agreement_documents.
  *
- * @author Robert Bost <bostrt at tux dot appstate dot edu>
- * @author Jeremy Booker <jbooker at tux dot appstate dot edu>
+ * @author Chris Detsch
  */
-\PHPWS_Core::initModClass('filecabinet', 'Document_Manager.php');
-
-class DocumentManager extends \FC_Document_Manager {
+class AffiliationContractDocumentManager extends \FC_Document_Manager {
 
     /**
      * @Override FC_Document_Manager::edit()
@@ -32,13 +30,14 @@ class DocumentManager extends \FC_Document_Manager {
         }
 
         // If the folder ID is zero then it was not found
-        // when InternFolder::documentUpload() was called.
+        // when Intern_Folder::documentUpload() was called.
         // Create one and load it.
         if ($this->folder->id == 0) {
+
             \PHPWS_Core::requireInc('filecabinet', 'defines.php');
-            $folder = new InternFolder();
+            $folder = new AffiliateFolder();
             $folder->module_created = 'intern';
-            $folder->title = 'intern documents';
+            $folder->title = 'contract documents';
             $folder->public_folder = FALSE;
             $folder->ftype = DOCUMENT_FOLDER;
             $folder->loadDirectory();
@@ -50,8 +49,8 @@ class DocumentManager extends \FC_Document_Manager {
 
         $form = new \PHPWS_FORM;
         $form->addHidden('module', 'intern');
-        $form->addHidden('internship', $_REQUEST['internship']);
-        $form->addHidden('action', 'post_document_upload');
+        $form->addHidden('affiliate', $_REQUEST['affiliate']);
+        $form->addHidden('action', 'post_contract_upload');
         $form->addHidden('ms', $this->max_size);
         $form->addHidden('folder_id', $this->folder->id);
 
@@ -72,16 +71,16 @@ class DocumentManager extends \FC_Document_Manager {
             $form->addSubmit('submit', dgettext('filecabinet', 'Update'));
         } else {
             $form->addTplTag('FORM_TITLE', dgettext('filecabinet', 'Upload new file'));
-            $form->addSubmit('upload', dgettext('filecabinet', 'Upload'));
+            $form->addSubmit('submit', dgettext('filecabinet', 'Upload'));
         }
 
         $form->addButton('cancel', dgettext('filecabinet', 'Cancel'));
         $form->setExtra('cancel', 'onclick="window.close()"');
 
-        $form->setExtra('upload', 'onclick="this.style.display=\'none\'"');
+        $form->setExtra('submit', 'onclick="this.style.display=\'none\'"');
 
-        if ($this->document->id && Current_User::allow('filecabinet', 'edit_folders', $this->folder->id, 'folder', true)) {
-            Cabinet::moveToForm($form, $this->folder);
+        if ($this->document->id && \Current_User::allow('filecabinet', 'edit_folders', $this->folder->id, 'folder', true)) {
+            \Cabinet::moveToForm($form, $this->folder);
         }
 
         $template = $form->getTemplate();
@@ -107,14 +106,13 @@ class DocumentManager extends \FC_Document_Manager {
             $template['ERROR'] = $this->document->printErrors();
         }
         return \PHPWS_Template::process($template, 'filecabinet', 'Forms/document_edit.tpl');
-//        Layout::add(PHPWS_Template::process($template, 'filecabinet', 'document_edit.tpl'));
     }
 
     /**
      * @Override FC_Document_Manager::postDocumentUpload().
      *
      * This is a copy and past of the overriden function except
-     * that we now create a new InternDocument object
+     * that we now create a new Intern_Document object
      * and save it to databse.
      */
     public function postDocumentUpload()
@@ -122,7 +120,7 @@ class DocumentManager extends \FC_Document_Manager {
         // importPost in File_Common
         $result = $this->document->importPost('file_name');
 
-        if (\PHPWS_Error::isError($result) || !$result) {
+        if (\PEAR::isError($result) || !$result) {
             \PHPWS_Error::log($result);
             $vars['timeout'] = '3';
             $vars['refresh'] = 0;
@@ -131,6 +129,7 @@ class DocumentManager extends \FC_Document_Manager {
         } elseif ($result) {
             $result = $this->document->save();
 
+
             if (\PHPWS_Error::logIfError($result)) {
                 $content = dgettext('filecabinet', '<p>Could not upload file to folder. Please check your directory permissions.</p>');
                 $content .= sprintf('<a href="#" onclick="window.close(); return false">%s</a>', dgettext('filecabinet', 'Close this window'));
@@ -138,18 +137,18 @@ class DocumentManager extends \FC_Document_Manager {
                 exit();
             }
 
+            \PHPWS_Core::initModClass('filecabinet', 'File_Assoc.php');
+            //According to the superclass this no longer does anything and causes an error
+            // FC_File_Assoc::updateTag(FC_DOCUMENT, $this->document->id, $this->document->getTag());
+
             $this->document->moveToFolder();
 
-            // If the document's id is set in the request
-            // then we are updating a file. Not need to insert
-            // it into database.
-            if (!isset($_REQUEST['document_id'])) {
-                // Save InternDocument in database.
-                $doc = new InternDocument();
-                $doc->internship_id = $_REQUEST['internship'];
-                $doc->document_fc_id = $this->document->id;
-                $result = $doc->save();
-            }
+                // Save Intern_Document in database.
+                $doc = new AffiliationContract();
+                $doc->agreement_id = $_REQUEST['affiliate'];
+                $doc->document_id = $this->document->id;
+                AffiliationContractFactory::save($doc);
+
 
             // Choose the proper notification text...
             if (isset($_REQUEST['document_id']) &&
@@ -157,7 +156,7 @@ class DocumentManager extends \FC_Document_Manager {
                 \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, "File saved.");
             } else if ($result) {
                 \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, "File added.");
-            } else if (\PHPWS_Error::logIfError($result)) {
+            } else if (PHPWS_Error::logIfError($result)) {
                 \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, $result->toString());
             }
             \NQ::close();
