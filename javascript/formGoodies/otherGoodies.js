@@ -260,6 +260,8 @@ function initFacultySelector()
     $("#internship_faculty").bind('change', function(){
         if($("#internship_faculty").val() !== "-1") {
             selectFaculty($("#internship_faculty").val());
+        } else {
+            $("#internship_faculty_id").val('');
         }
     });
 
