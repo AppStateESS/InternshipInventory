@@ -3,7 +3,7 @@
 namespace Intern;
 
 /**
- * StudentDataProviderFactory
+ * ExternalDataProviderFactory
  *
  * @author Jeremy Booker
  * @package Intern

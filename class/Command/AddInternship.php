@@ -5,7 +5,7 @@ namespace Intern\Command;
 use Intern\Internship;
 use Intern\DepartmentFactory;
 use Intern\Agency;
-use Intern\StudentProviderFactory;
+use Intern\ExternalDataProviderFactory;
 use Intern\WorkflowStateFactory;
 use Intern\ChangeHistory;
 use Intern\Department;
@@ -52,7 +52,7 @@ class AddInternship {
         $term = $_POST['term'];
 
         // Create the student object
-        $student = StudentProviderFactory::getProvider()->getStudent($studentId, $term);
+        $student = ExternalDataProviderFactory::getProvider()->getStudent($studentId, $term);
 
         // Get the department ojbect
         $departmentId = preg_replace("/^_/", '', $_POST['department']); // Remove leading underscore in department id
