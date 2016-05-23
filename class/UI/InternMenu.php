@@ -40,4 +40,3 @@ class InternMenu implements UI {
         return \PHPWS_Template::process($tags, 'intern', 'menu.tpl');
     }
 }
-?>

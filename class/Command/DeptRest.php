@@ -97,4 +97,3 @@ class DeptRest {
 		return $result;
 	}
 }
-?>

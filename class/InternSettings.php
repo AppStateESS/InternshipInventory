@@ -165,5 +165,3 @@ class InternSettings {
         return $result;
     }
 }
-
-?>

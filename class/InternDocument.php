@@ -114,4 +114,3 @@ class InternDocument extends Model
         return $db->select('one');
     }
 }
-?>

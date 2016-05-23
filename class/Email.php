@@ -617,5 +617,3 @@ class Email {
         email::sendTemplateMessage($to, $subject, 'email/OiedCertifiedNotice.tpl', $tpl);
     }
 }
-
-?>

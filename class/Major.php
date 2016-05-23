@@ -91,6 +91,7 @@ class Major extends Editable
 
         $db->setIndexBy('id');
 
+        $majors = array();
         $majors[-1] = 'Select Undergraduate Major or Certificate Program';
         $majors += $db->select('col');
 
@@ -130,5 +131,3 @@ class Major extends Editable
         \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, "<i>$name</i> added as undergraduate major.");
     }
 }
-
-?>

@@ -10,10 +10,8 @@ class UndoDepartmentApprove extends WorkflowTransition {
     const actionName  = 'Send back to advisor';
 
     const sortIndex = 6;
-    
+
     public function getAllowedPermissionList(){
         return array('dept_approve','sig_auth_approve');
     }
 }
-
-?>

@@ -93,4 +93,3 @@ class EmergencyContactFactory {
         return true;
     }
 }
-?>

@@ -136,4 +136,3 @@ class AdminRest {
 		return $result;
 	}
 }
-?>

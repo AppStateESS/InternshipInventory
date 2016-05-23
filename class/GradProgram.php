@@ -83,6 +83,7 @@ class GradProgram extends Editable
         }
 
         $db->setIndexBy('id');
+        $progs = array();
         $progs[-1] = 'Select Graduate Major or Certificate Program';
         $progs += $db->select('col');
         return $progs;

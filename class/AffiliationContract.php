@@ -83,11 +83,4 @@ class AffiliationContract
         return $db->select('one');
     }
 
-    public function rowTags()
-    {
-          $tpl             = array();
-          $tpl['NAME']     = $this->getName();
-          $tpl['EXPIRES']   = $this->getEndDate();
-          return $tpl;
-    }
 }

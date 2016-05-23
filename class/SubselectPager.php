@@ -756,6 +756,7 @@ class SubselectPager extends \DBPager {
         if ($current_page != 1) {
             if ($total_pages > 500 && $current_page > 50) {
                 $values['pg'] = $current_page - 50;
+                $pageList = array();
                 $pageList[] = \PHPWS_Text::moduleLink('&lt;&lt;&lt;', $module, $values, null, _('Back 50 pages'));
             }
 
@@ -880,7 +881,6 @@ class SubselectPager extends \DBPager {
         //test($sort_columns);
 
         foreach ($sort_columns as $varname) {
-            $vars = array();
             $values = $this->getLinkValues();
 
             if (isset($this->sort_headers[$varname])) {
@@ -967,6 +967,7 @@ class SubselectPager extends \DBPager {
             $this->limit = DBPAGER_DEFAULT_LIMIT;
         }
 
+        $values = array();
         $values['pg'] = $this->current_page;
         $values['limit'] = $this->limit;
 
@@ -1070,6 +1071,7 @@ class SubselectPager extends \DBPager {
             $values['#'] = $anchor;
         }
 
+        $links = array();
         foreach ($this->limitList as $limit) {
             if ($limit == $this->limit) {
                 $links[] = $limit;
@@ -1353,5 +1355,3 @@ class SubselectPager extends \DBPager {
     }
 
 }
-
-?>

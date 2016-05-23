@@ -33,5 +33,3 @@ class GradSchoolApprove extends WorkflowTransition {
         }
     }
 }
-
-?>

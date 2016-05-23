@@ -9,4 +9,3 @@ interface UI
 {
     public function display();
 }
-?>

@@ -15,5 +15,3 @@ if (PHPWS_Core::atHome() && Current_User::isLogged()) {
     header("Location: $path");
     exit();
 }
-
-?>

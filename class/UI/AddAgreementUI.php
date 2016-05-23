@@ -34,6 +34,8 @@ class AddAgreementUI implements UI
 
         $tpl = array();
 
+        $tpl = array();
+
         /*
          * If 'missing' is set then we have been redirected
          * back to the form because the user didn't type in something and

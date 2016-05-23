@@ -32,11 +32,12 @@ class UndergradRegistration extends WorkflowTransition {
             }else{
                 return false;
             }
-        }else{
+        }
+        else
+        {
             return parent::allowed($i);
         }
 
-        return false;
     }
 
     public function doNotification(Internship $i, $note = null)

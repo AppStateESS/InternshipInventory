@@ -18,5 +18,3 @@ class ChangeHistoryFactory {
         return $results;
     }
 }
-
-?>
