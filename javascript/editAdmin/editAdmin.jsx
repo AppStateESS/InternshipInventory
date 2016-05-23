@@ -1,3 +1,4 @@
+var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
 var SearchAdmin = React.createClass({
 	getInitialState: function() {
@@ -5,7 +6,7 @@ var SearchAdmin = React.createClass({
 			mainData: null,
 			displayData: null,
 			deptData: null,
-			errorWarning: '',
+			errorWarning: null,
 			searchPhrase: '',
 			dropData: "",
 			textData: ""
@@ -64,35 +65,55 @@ var SearchAdmin = React.createClass({
 	},
 	onAdminCreate: function(username, department)
 	{
-		var isMult = false;
 		var displayName = '';
-		for (var j = 0, k = this.state.displayData.length; j < k; j++)
+		var displayData = this.state.displayData;
+		var dept = this.state.deptData;
+
+		// Catch whether the created admin is missing a department
+		if(department == '' || department == -1){
+			var errorMessage = "Please choose a department.";
+			this.setState({errorWarning: errorMessage});
+			return;
+		}
+
+		// Catch whether the created admin is missing a username
+		if(username == ''){
+			var errorMessage = "Please enter a valid username.";
+			this.setState({errorWarning: errorMessage});
+			return;
+		}
+
+		// Finds the index of the array if the department number matches
+		// the id of the object.
+		var deptIndex = dept.findIndex(function(element, index, arr){
+            if(department == element.id){
+                return true;
+            } else {
+                return false;
+            }
+        }.bind(this));
+
+
+		for (var j = 0, k = displayData.length; j < k; j++)
 		{
-			if (this.state.displayData[j].username == username)
+			if (displayData[j].username == username)
 			{
-				displayName = this.state.displayData[j].display_name;
-				if (this.state.displayData[j].name == department)
+				displayName = displayData[j].display_name;
+				if (displayData[j].name == dept[deptIndex].name)
 				{
-					isMult = true;
+					var errorMessage = "Multiple usernames in the same department.";
+					this.setState({errorWarning: errorMessage});
+					return;
 				}
 			}
 		}
 
-		var deptName = this.state.deptData[department].name;
+		var deptName = dept[deptIndex].name;
 
-		if (username != '')
-		{
-			if (displayName != '')
-			{
-				if (department != '')
-				{
-					if (!isMult)
-					{
-						this.state.displayData.unshift({username: username, id: -1, name: deptName, display_name: displayName});
-					}
-				}
-			}
+		if (displayName != ''){
+			displayData.unshift({username: username, id: -1, name: deptName, display_name: displayName});
 		}
+
 
 		// Updating the new state for optimization (snappy response on the client)
 		var newVal = this.state.displayData;
@@ -103,11 +124,11 @@ var SearchAdmin = React.createClass({
 			type: 'POST',
 			success: function(data) {
 				this.getData();
+				this.setState({errorWarning: null});
 			}.bind(this),
 			error: function(http) {
 				var errorMessage = http.responseText;
 				this.setState({errorWarning: errorMessage});
-				$("#warningError").show();
 			}.bind(this)
 		});
 	},
@@ -182,13 +203,20 @@ var SearchAdmin = React.createClass({
 		{
 			var dData = "";
 		}
+
+		var errors;
+        if(this.state.errorWarning == null){
+            errors = '';
+        } else {
+            errors = <ErrorMessagesBlock key="errorSet" errors = {this.state.errorWarning} />
+        }
+
 		return (
 			<div className="search">
 
-				<div id="warningError" className="alert alert-warning alert-dismissible" role="alert" hidden>
-					<button type="button"  className="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<strong>Warning!</strong> {this.state.errorWarning}
-				</div>
+				<ReactCSSTransitionGroup transitionName="example" transitionEnterTimeout={500} transitionLeaveTimeout={500}>
+                    {errors}
+                </ReactCSSTransitionGroup>
 
 				<div className="row">
 					<div className="col-md-5">
@@ -270,6 +298,27 @@ var DepartmentList = React.createClass({
      	<option value={this.props.id}>{this.props.name}</option>
     )
   }
+});
+
+var ErrorMessagesBlock = React.createClass({
+    render: function() {
+        if(this.props.errors === null){
+            return '';
+        }
+
+        var errors = this.props.errors;
+
+        return (
+            <div className="row">
+                <div className="col-sm-12 col-md-6 col-md-push-3">
+                    <div className="alert alert-warning" role="alert">
+                        <p><i className="fa fa-exclamation-circle fa-2x"></i> Warning: {errors}</p>
+                            
+                    </div>
+                </div>
+            </div>
+        );
+    }
 });
 
 React.render(
