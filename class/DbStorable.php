@@ -8,5 +8,3 @@ interface DbStorable {
     public function extractVars();
     public function setId($id);
 }
-
-?>

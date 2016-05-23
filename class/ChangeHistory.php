@@ -97,5 +97,3 @@ class ChangeHistory extends Model{
         return $this->note;
     }
 }
-
-?>

@@ -46,5 +46,3 @@ class ChangeHistoryView {
         return \PHPWS_Template::process($tpl, 'intern', 'changeHistory.tpl');
     }
 }
-
-?>

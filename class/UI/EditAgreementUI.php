@@ -50,6 +50,8 @@ class EditAgreementUI implements UI
           $form->setMatch('auto_renew', 'yes');
         }
 
+        $tpl = array();
+
         /*
          * If 'missing' is set then we have been redirected
          * back to the form because the user didn't type in something

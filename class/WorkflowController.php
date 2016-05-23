@@ -64,5 +64,3 @@ class WorkflowController {
         $this->t->doNotification($this->internship, $note);
     }
 }
-
-?>

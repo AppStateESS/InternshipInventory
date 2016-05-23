@@ -140,6 +140,7 @@ class Department extends Editable
 
         $db->setIndexBy('id');
 
+        $depts = array();
         $depts[-1] = 'Select Department';
         $depts += $db->select('col');
 

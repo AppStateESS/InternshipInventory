@@ -23,6 +23,10 @@ class TerminateAffiliate {
 
         $affiliate_agreement = AffiliationAgreementFactory::getAffiliationById($aaId);
 
+        if (is_null($affiliate_agreement) || !isset($affiliate_agreement)) {
+    			throw new Exception('Missing Affiliation ID.');
+    		}
+
         $affiliate_agreement->setTerminated(true);
 
         try {

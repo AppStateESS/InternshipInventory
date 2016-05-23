@@ -20,6 +20,7 @@ class InternFolder extends \Folder
      */
     public function documentUpload($internshipId)
     {
+        $link_var = array();
         $link_var['folder_id'] = $this->id;
         $link_var['action'] = 'upload_document_form';
         $link_var['internship'] = $internshipId;
@@ -27,6 +28,8 @@ class InternFolder extends \Folder
         $link = new PHPWS_Link(null, 'intern', $link_var, true);
         $link->convertAmp(false);
         $link->setSalted();
+        
+        $vars = array();
         $vars['address'] = $link->getAddress();
 
         $label = dgettext('filecabinet', 'Add document');

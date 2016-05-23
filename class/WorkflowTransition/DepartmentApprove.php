@@ -13,5 +13,3 @@ class DepartmentApprove extends WorkflowTransition {
         return array('dept_approve','sig_auth_approve');
     }
 }
-
-?>

@@ -266,6 +266,7 @@ class SubselectDatabase extends PHPWS_DB{
                     $value2 = $table2 . '.' . $join_on_2[$key];
                 }
 
+                $retVal = array();
                 $retVal[] = sprintf('%s = %s', $value1, $value2);
             }
             return implode(' AND ', $retVal);
@@ -280,6 +281,7 @@ class SubselectDatabase extends PHPWS_DB{
             return null;
         }
 
+        $join_info = array();
         $join_info['tables'] = array();
         foreach ($this->_join_tables as $join_array) {
             $dup = md5(serialize($join_array));
@@ -478,6 +480,8 @@ class SubselectDatabase extends PHPWS_DB{
                     }
                 } else {
                     $newVal = $GLOBALS['PHPWS_DB']['connection']->escape($newVal);
+
+                    $new_value_list = array();
                     $new_value_list[] = $newVal;
                 }
             }
@@ -635,6 +639,7 @@ class SubselectDatabase extends PHPWS_DB{
                     $startSub = true;
                 }
 
+                $where_list = array();
                 $where_list[$group_name]['group_sql'] = $subsql;
 
                 if (isset($groups['conj']) && $conj = $groups['conj']) {
@@ -647,7 +652,7 @@ class SubselectDatabase extends PHPWS_DB{
                     $where_list[$search_key]['group_in'][$group_name] = &$where_list[$group_name];
                 }
             }
-            $start_main = false;
+
             if (!empty($where_list)) {
                 $sql[] = $this->_buildGroup($where_list, $ignore_list, true);
             }
@@ -759,6 +764,7 @@ class SubselectDatabase extends PHPWS_DB{
             $this->addGroupBy($table . '.' . $column);
         }
 
+        $col = array();
         $col['table'] = $table;
         $col['name'] = $column;
         $col['max_min'] = $max_min;
@@ -796,6 +802,7 @@ class SubselectDatabase extends PHPWS_DB{
 
     public function getAllColumns()
     {
+        $columns = array();
         $columns[] = $this->getColumn(true);
         return $columns;
     }
@@ -956,6 +963,7 @@ class SubselectDatabase extends PHPWS_DB{
 
         if ($dbReady) {
             foreach ($this->order as $aOrder) {
+                $order_list = array();
                 if (is_array($aOrder)) {
                     $order_list[] = $this->checkTableAs($aOrder['table']) . '.' . $aOrder['column'];
                 } else {
@@ -1140,7 +1148,9 @@ class SubselectDatabase extends PHPWS_DB{
         }
 
         foreach ($values as $index => $entry) {
+            $columns = array();
             $columns[] = $index;
+            $set = array();
             $set[] = PHPWS_DB::dbReady($entry);
         }
 
@@ -1174,6 +1184,7 @@ class SubselectDatabase extends PHPWS_DB{
             return PHPWS_Error::get(PHPWS_DB_NO_VALUES, 'core', 'PHPWS_DB::update');
         }
 
+        $columns = array();
         foreach ($values as $index => $data) {
             $columns[] = $index . ' = ' . PHPWS_DB::dbReady($data);
         }
@@ -2706,4 +2717,3 @@ class SubselectDatabase extends PHPWS_DB{
         }
     }
 }
-?>

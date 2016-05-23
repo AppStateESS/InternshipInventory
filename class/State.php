@@ -55,7 +55,7 @@ class State {
         $pdo = $db->getPDO();
 
         $sql = "SELECT *
-                FROM intern_state 
+                FROM intern_state
                 ORDER BY full_name ASC";
 
         $sth = $pdo->prepare($sql);
@@ -133,5 +133,3 @@ class State {
             'WY' => "Wyoming");
 
 }
-
-?>

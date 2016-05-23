@@ -35,5 +35,3 @@ class InternshipFactory {
         return $stmt->fetch();
     }
 }
-
-?>

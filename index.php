@@ -120,4 +120,3 @@ function emailError($message)
     $tags = array('MESSAGE' => $message);
     Email::sendTemplateMessage($to, 'Uncaught Exception', 'email/UncaughtException.tpl', $tags);
 }
-?>

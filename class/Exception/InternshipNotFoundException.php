@@ -19,5 +19,3 @@ class InternshipNotFoundException extends \Exception
     }
 
 }
-
-?>

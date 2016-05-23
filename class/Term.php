@@ -221,5 +221,3 @@ class Term extends Model
         return substr($term, 4, 1);
     }
 }
-
-?>

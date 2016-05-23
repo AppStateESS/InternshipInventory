@@ -57,5 +57,3 @@ abstract class WorkflowState {
         return $class::sortIndex;
     }
 }
-
-?>

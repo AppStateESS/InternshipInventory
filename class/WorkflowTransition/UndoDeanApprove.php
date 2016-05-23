@@ -10,10 +10,8 @@ class UndoDeanApprove extends WorkflowTransition {
     const actionName  = 'Return for Dean Approval';
 
     const sortIndex = 6;
-    
+
     public function getAllowedPermissionList(){
         return array('dean_approve','register');
     }
 }
-
-?>

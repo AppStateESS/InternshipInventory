@@ -21,7 +21,7 @@ abstract class Editable extends Model
      * Ex. Major implements Editable and it's
      *     getEditAction method returns 'edit_major'.
      */
-    static function getEditAction()
+    public static function getEditAction()
     {
         throw new \Exception('Not yet implemented.');
     }
@@ -29,7 +29,7 @@ abstract class Editable extends Model
     /**
      * Get the name of the permission needed to edit the item.
      */
-    static function getEditPermission()
+    public static function getEditPermission()
     {
         throw new \Exception('Not yet implemented.');
     }
@@ -38,7 +38,7 @@ abstract class Editable extends Model
     /**
      * Get the name of the permission needed to delete the item.
      */
-    static function getDeletePermission()
+    public static function getDeletePermission()
     {
         throw new \Exception('Not yet implemented.');
     }
@@ -194,5 +194,3 @@ abstract class Editable extends Model
         return $tags;
     }
 }
-
-?>

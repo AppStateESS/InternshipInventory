@@ -51,6 +51,7 @@ class Subject extends Model {
         $stmt->execute($params);
         $results = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
+        $subjects = array();
         foreach($results as $row){
             $subjects[$row['id']] = $row['abbreviation'] . ' - ' . $row['description'];
         }
@@ -58,5 +59,3 @@ class Subject extends Model {
         return $subjects;
     }
 }
-
-?>

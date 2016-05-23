@@ -305,5 +305,3 @@ class Agency implements DbStorable {
         return $this->address_same_flag;
     }
 }
-
-?>

@@ -30,5 +30,3 @@ class DeanApprove extends WorkflowTransition {
         }
     }
 }
-
-?>
