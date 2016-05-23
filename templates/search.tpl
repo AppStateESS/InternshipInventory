@@ -1,6 +1,6 @@
 <h2><i class="fa fa-search"></i> Search Inventory</h2>
 
-<form class="form-horizontal {FORM_CLASS}" id="{FORM_ID}" action="{FORM_ACTION}" autocomplete="{FORM_AUTOCOMPLETE}" method="{FORM_METHOD}"{FORM_ENCODE}>
+<form class="form-horizontal {FORM_CLASS}" id="{FORM_ID}" action="{FORM_ACTION}" autocomplete="{FORM_AUTOCOMPLETE}" method="{FORM_METHOD}" {FORM_ENCODE}>
   {HIDDEN_FIELDS}
 
   <div class="row">
@@ -51,8 +51,13 @@
         </fieldset>
 
       <div class="form-group">
-        <label class="col-lg-3 control-label" for="{TERM_SELECT_ID}">{DEPT_LABEL_TEXT}</label>
-        <div class="col-lg-8">{DEPT}</div>
+        <label class="col-lg-3 control-label" for="{DEPARTMENT_ID}">{DEPARTMENT_LABEL_TEXT}</label>
+        <div class="col-lg-8">{DEPARTMENT}</div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-lg-3 control-label" for="{FACULTY_ID}">{FACULTY_LABEL_TEXT}</label>
+        <div class="col-lg-8">{FACULTY}</div>
       </div>
 
       <!-- Level & Major Fieldset -->

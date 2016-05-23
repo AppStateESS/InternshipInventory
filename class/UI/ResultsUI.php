@@ -39,14 +39,15 @@ class ResultsUI implements UI {
         $courseNum = null;
         $courseSect = null;
         $oied = null;
+        $faculty = null;
 
 
         /**
          * Check if any search fields are set.
          * This is a pretty nasty block of code...
          */
-        if (isset($_REQUEST['dept']))
-            $dept = $_REQUEST['dept'];
+        if (isset($_REQUEST['department']))
+            $dept = $_REQUEST['department'];
         if (isset($_REQUEST['term_select']))
             $term = $_REQUEST['term_select'];
         if (isset($_REQUEST['name']))
@@ -77,9 +78,11 @@ class ResultsUI implements UI {
             $courseSect = $_REQUEST['course_sect'];
         if (isset($_REQUEST['oied']))
             $oied = $_REQUEST['oied'];
+        if (isset($_REQUEST['faculty_id']))
+            $faculty = $_REQUEST['faculty_id'];
 
             /* Get Pager */
-        $pager = self::getPager($name, $dept, $term, $ugradMajor, $gradProg, $level, $type, $campus, $loc, $state, $country, $workflowState, $courseSubject, $courseNum, $courseSect, $oied);
+        $pager = self::getPager($name, $dept, $term, $ugradMajor, $gradProg, $level, $type, $campus, $loc, $state, $country, $workflowState, $courseSubject, $courseNum, $courseSect, $oied, $faculty);
 
         $pagerContent = $pager->get();
 
@@ -105,7 +108,7 @@ class ResultsUI implements UI {
      * Get the DBPager object.
      * Search strings can be passed in too.
      */
-    private static function getPager($name = null, $deptId = null, $term = null, $ugradMajor = null, $gradProg = null, $level = null, $type = null, $campus = null, $loc = null, $state = null, $country = null, $workflowState = null, $courseSubject = null, $courseNum = null, $courseSect = null, $oied = null)
+    private static function getPager($name = null, $deptId = null, $term = null, $ugradMajor = null, $gradProg = null, $level = null, $type = null, $campus = null, $loc = null, $state = null, $country = null, $workflowState = null, $courseSubject = null, $courseNum = null, $courseSect = null, $oied = null, $faculty = null)
     {
         $pager = new SubselectPager('intern_internship', '\Intern\InternshipRestored');
 
@@ -280,6 +283,12 @@ class ResultsUI implements UI {
         if (isset($oied) && $oied != '-1') {
             $pager->db->addWhere('oied_certified', $oied, '=');
         }
+
+        if (!empty($faculty)){
+            $pager->addWhere('faculty_id', $faculty);
+        }
+
+        //$pager->db->setTable(array('fuzzy'));
 
         //var_dump($pager);exit;
         //$pager->db->setTestMode();

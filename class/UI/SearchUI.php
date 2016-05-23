@@ -23,8 +23,14 @@ class SearchUI implements UI
 {
     public function display()
     {
+
+        \javascript('jquery');
+        \javascript('jquery_ui');
+        //\javascriptMod('intern', 'spinner');
+        \javascriptMod('intern', 'formGoodies');
+
         // Set up search fields
-        $form = new \PHPWS_Form();
+        $form = new \PHPWS_Form('internship');
         $form->setMethod('get');
         $form->addHidden('module', 'intern');
         $form->addHidden('action', 'results');
@@ -59,9 +65,9 @@ class SearchUI implements UI
         $form->setMaxSize('course_sect', 4);
         $form->setClass('course_sect', 'form-control');
 
-        /****************
-         * Faculty Info *
-         ****************/
+        /*******************
+         * Department Info *
+         *******************/
 
         // Deity can search for any department. Other users are restricted.
         if(\Current_User::isDeity()){
@@ -72,23 +78,34 @@ class SearchUI implements UI
 
         $depts = array('-1' => 'Select Department') + $depts;
 
-        $form->addSelect('dept', $depts);
-        $form->setLabel('dept', 'Department');
+        $form->addSelect('department', $depts);
+        $form->setLabel('department', 'Department');
         //$form->setClass('', 'form-control');
-        $form->setClass('dept', 'form-control');
+        $form->setClass('department', 'form-control');
 
         // If the user only has one department, select it for them
         // sizeof($depts) == 2 because of the 'Select Deparmtnet' option
         if(sizeof($depts) == 2){
             $keys = array_keys($depts);
-            $form->setMatch('dept', $keys[1]);
+            $form->setMatch('department', $keys[1]);
         }
 
+        /***************************
+         * Faculty Member Dropdown
+         *
+         * The options for this drop down are provided through AJAX on page-load and
+         * when the user changes the department dropdown above.
+         */
+        $form->addSelect('faculty', array(-1=>'Select Faculty Advisor'));
+        $form->setExtra('faculty', 'disabled');
+        $form->setLabel('faculty', 'Faculty Advisor / Instructor of Record');
+        $form->addCssClass('faculty', 'form-control');
+
+        // Hidden field for selected faculty member
+        $form->addHidden('faculty_id');
 
         // Student level radio button
-        javascript('jquery');
         javascriptMod('intern', 'majorSelector', array('form_id'=>$form->id));
-
 
         // Student Major dummy box (gets replaced by dropdowns below using JS when student_level is selected)
         $levels = array('-1' => 'Choose student level first');
@@ -111,7 +128,6 @@ class SearchUI implements UI
         $form->setMatch('graduate_major', '-1');
         $form->setClass('graduate_major', 'form-control');
 
-
         /*******************
          * Internship Type *
          *******************/
@@ -124,7 +140,7 @@ class SearchUI implements UI
 
         // International vs Domestic - Handeled directly in the html template
 
-        // State search
+        // State & Country search handeled in-browser
 
 
         /*******************
@@ -134,12 +150,14 @@ class SearchUI implements UI
         unset($workflowStates['Intern\WorkflowState\CreationState']); // Remove this state, since it's not valid (internal only state for initial creation)
         $form->addCheckAssoc('workflow_state', $workflowStates);
 
+        // Internship types.
+        $types = Internship::getTypesAssoc();
+        $form->addRadioAssoc('type', $types);
 
         /************************
          * Certification Status *
          ************************/
         // Handeled directly in the html template
-
 
         $form->addSubmit('submit', 'Search');
 
