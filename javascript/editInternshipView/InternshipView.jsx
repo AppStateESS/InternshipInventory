@@ -13,6 +13,12 @@ var EditInternshipInterface = React.createClass({
         this.getStates();
         this.getDepartmentData();
     },
+    saveInternship: function(e){
+        e.preventDefault();
+        var form = e.target;
+
+        this.refs.mainInterface.buildInternshipData(form);
+    },
     getInternData: function(){
         // Grabs the internship data
         $.ajax({
@@ -87,7 +93,9 @@ var EditInternshipInterface = React.createClass({
                                   facultyData     = {this.state.facultyData}
                                   departmentData  = {this.state.departmentData}
                                   stateData       = {this.state.stateData}
-                                  getFacultyData  = {this.getFacultyData} />
+                                  getFacultyData  = {this.getFacultyData} 
+                                  saveInternship  = {this.saveInternship}
+                                  ref             = "mainInterface"/>
         }else{
             return( <p className="text-muted" style={{position:"absolute", top:"50%", left:"50%"}}>
                         <i className="fa fa-spinner fa-2x fa-spin"></i> Loading Internship...
@@ -98,6 +106,24 @@ var EditInternshipInterface = React.createClass({
 });
 
 var MainInterface = React.createClass({
+    buildInternshipData: function(form) {
+        var student = this.refs.student.grabStudentData();
+        var status  = this.refs.status.grabStatusData(form);
+        var faculty = this.refs.faculty.grabFacultyData();
+        var term    = this.refs.term.grabCourseAndTerm();
+        var type    = this.refs.type.grabTypeData(form);
+
+
+        var internship = {student:  student,
+                          status:   status,
+                          faculty:  faculty,
+                          term:     term,
+                          type:     type};
+
+                          console.log(internship);
+        //Host Information
+        //var status  = this.refs.student.grabStudentData();
+    },
     render: function() {
         var internData     = this.props.internData;
         var stateData      = this.props.stateData;
@@ -110,11 +136,11 @@ var MainInterface = React.createClass({
                   <i className="fa fa-edit"></i> Edit Internship
               </h1>
 
-              <form className="form-horizontal">
+              <form className="form-horizontal" onSubmit={this.props.saveInternship}>
 
                 <div className="form-group">
                   <div className="col-lg-1 col-lg-offset-8">
-                    <button type="submit" className="btn btn-primary" id="{SUBMIT_ID}">Save</button>
+                    <button type="submit" className="btn btn-primary" id="{SUBMIT_ID}" >Save</button>
                   </div>
 
                   <div className="col-lg-1">
@@ -129,26 +155,31 @@ var MainInterface = React.createClass({
                
                   <div className="row">
                     <div className="col-lg-6">
-                      <StudentInformation intern = {internData.intern}
-                                  student = {internData.student}
-                                  states = {stateData} />
+                      <StudentInformation intern  = {internData.intern}
+                                          student = {internData.student}
+                                          states  = {stateData}
+                                          ref     = "student" />
                       <EmgContactList />
                     </div>
 
                     <div className="col-lg-6">
-                      <InternStatus workflow = {internData.wfState}
-                                    intern = {internData.intern} />
+                      <InternStatus workflow  = {internData.wfState}
+                                    intern    = {internData.intern}
+                                    ref       = "status" />
 
                       <FacultyInterface facultyData    = {facultyData} 
                                         departmentData = {departmentData}
                                         deptNumber     = {internData.intern.department_id}
                                         getFacultyData = {this.props.getFacultyData}
-                                        facultyID      = {internData.intern.faculty_id} />
+                                        facultyID      = {internData.intern.faculty_id}
+                                        ref            = "faculty" />
 
-                      <CourseAndTerm intern = {internData.intern}
-                                     subjects = {internData.subjects} />
+                      <CourseAndTerm intern   = {internData.intern}
+                                     subjects = {internData.subjects}
+                                     ref      = "term" />
 
-                      <TypeInterface experience_type = {internData.experience_type}/>
+                      <TypeInterface experience_type = {internData.experience_type}
+                                     ref             = "type"/>
                     </div>
                   </div>
               
@@ -191,6 +222,20 @@ var MainInterface = React.createClass({
 });
 
 var StudentInformation = React.createClass({
+    grabStudentData: function() {
+
+        var student = { fname:    this.refs.fname.value, 
+                        lname:    this.refs.lname.value,
+                        mname:    this.refs.mname.value,
+                        email:    this.refs.email.value,
+                        address:  this.refs.address.value,
+                        city:     this.refs.city.value,
+                        state:    this.refs.state.value,
+                        zip:      this.refs.zip.value,
+                        phone:    this.refs.phone.value,}
+
+        return student;
+    },
     render: function() {
         var intern = this.props.intern;
         var student = this.props.student;
@@ -218,24 +263,24 @@ var StudentInformation = React.createClass({
 
                 <div className="form-group required">
                   <label className="col-lg-3 control-label" htmlFor="{STUDENT_MIDDLE_NAME_ID}">First Name</label>
-                  <div className="col-lg-6"><input type="text" className="form-control" defaultValue={intern.first_name} /></div>
+                  <div className="col-lg-6"><input type="text" className="form-control" ref="fname" defaultValue={intern.first_name} /></div>
                 </div>
 
               <div className="form-group">
                 <label className="col-lg-3 control-label" htmlFor="{STUDENT_MIDDLE_NAME_ID}">Middle Name/Initial</label>
-                <div className="col-lg-6"><input type="text" className="form-control" defaultValue={intern.middle_name} /></div>
+                <div className="col-lg-6"><input type="text" className="form-control" ref="mname" defaultValue={intern.middle_name} /></div>
               </div>
 
               <div className="form-group required">
                 <label className="col-lg-3 control-label" htmlFor="{STUDENT_LAST_NAME_ID}">Last Name</label>
-                <div className="col-lg-6"><input type="text" className="form-control" defaultValue={intern.last_name} /></div>
+                <div className="col-lg-6"><input type="text" className="form-control" ref="lname" defaultValue={intern.last_name} /></div>
               </div>
 
               <div className="form-group required">
                 <label className="col-lg-3 control-label" htmlFor="{STUDENT_EMAIL_ID}">ASU Email</label>
                 <div className="col-lg-6">
                   <div className="input-group">
-                    <input type="text" className="form-control" defaultValue={intern.email} /><span className="input-group-addon">@appstate.edu</span>
+                    <input type="text" className="form-control" ref="email" defaultValue={intern.email} /><span className="input-group-addon">@appstate.edu</span>
                   </div>
                 </div>
               </div>
@@ -247,28 +292,28 @@ var StudentInformation = React.createClass({
 
               <div className="form-group">
                 <label className="col-lg-3 control-label" htmlFor="{STUDENT_ADDRESS_ID}">Address</label>
-                <div className="col-lg-6"><input type="text" className="form-control" defaultValue={intern.student_address} /></div>
+                <div className="col-lg-6"><input type="text" className="form-control" ref="address" defaultValue={intern.student_address} /></div>
               </div>
 
               <div className="form-group">
                 <label className="col-lg-3 control-label" htmlFor="{STUDENT_CITY_ID}">City</label>
-                <div className="col-lg-6"><input type="text" className="form-control" defaultValue={intern.student_city} /></div>
+                <div className="col-lg-6"><input type="text" className="form-control" ref="city" defaultValue={intern.student_city} /></div>
               </div>
 
               <div className="form-group">
                 <label className="col-lg-3 control-label" htmlFor="{STUDENT_STATE_ID}">State</label>
                 <div className="col-lg-6">
-                  <select className="form-control" onChange={this.handleDrop}>{stateData}</select></div>
+                  <select className="form-control" ref="state">{stateData}</select></div>
               </div>
 
               <div className="form-group">
                 <label className="col-lg-3 control-label" htmlFor="{STUDENT_ZIP_ID}">Zip Code</label>
-                <div className="col-lg-6"><input type="text" className="form-control" defaultValue={intern.student_zip} /></div>
+                <div className="col-lg-6"><input type="text" className="form-control" ref="zip" defaultValue={intern.student_zip} /></div>
               </div>
 
               <div className="form-group">
                 <label className="col-lg-3 control-label" htmlFor="{STUDENT_PHONE_ID}">Phone</label>
-                <div className="col-lg-6"><input type="text" className="form-control" defaultValue={intern.phone} /></div>
+                <div className="col-lg-6"><input type="text" className="form-control" ref="phone" defaultValue={intern.phone} /></div>
               </div>
 
               <div className="form-group">
@@ -372,14 +417,20 @@ var EmgContactList = React.createClass({
 });
 
 var InternStatus = React.createClass({
+    grabStatusData: function(form) {
+        var status = { status:  form.elements.workflowOption.value, 
+                        oied:    form.elements.oiedCert.checked}
+
+        return status;
+    },
     render: function() {
         var status = this.props.workflow.status;
         var workflowAction = this.props.workflow.workflowAction;
         var oiedAllow = this.props.workflow.allow;
 
-// **************
-// NOT DONE!!!  *
-// **************
+/****************
+   NOT DONE!!!  *
+ ****************/
 
         return (   
             <fieldset>
@@ -400,7 +451,7 @@ var InternStatus = React.createClass({
                                  </div>)
                         } else {
                           return(<div className="radio" key={key}>
-                                    <label><input type="radio" name="workflowOption" value={key}/>{workflowAction[key]}</label>
+                                    <label><input type="radio" name="workflowOption" value={key} />{workflowAction[key]}</label>
                                  </div>)
                         }
                     })}
@@ -410,8 +461,8 @@ var InternStatus = React.createClass({
               <div className="form-group">
                 <div className="col-lg-10">
                   <div className="checkbox">
-                    { oiedAllow ? <label><input type="checkbox" value="" />Certified by Office of International Education and Development</label>
-                                : <label><input type="checkbox" value="" disabled />Certified by Office of International Education and Development</label>
+                    { oiedAllow ? <label><input type="checkbox" name="oiedCert" />Certified by Office of International Education and Development</label>
+                                : <label><input type="checkbox" disabled />Certified by Office of International Education and Development</label>
                     }
 
                   </div>
@@ -435,7 +486,7 @@ var FacultyInterface = React.createClass({
     getFacultyData: function() {
         if (this.props.deptNumber !== '')
         {
-          this.setState({facultyID: null, showDetails: true}, this.props.getFacultyData(this.props.deptNumber));
+          this.setState({facultyID: this.props.facultyID, showDetails: true}, this.props.getFacultyData(this.props.deptNumber));
         } else {
           this.setState({facultyID: null, showDetails: false});
         }
@@ -445,6 +496,10 @@ var FacultyInterface = React.createClass({
     },
     hideDetailInfo: function() {
         this.setState({facultyID: null,showDetails: false});
+    },
+    grabFacultyData: function() {
+        var faculty = {faculty_id: this.state.facultyID};
+        return faculty;
     },
     render: function() {
 
@@ -458,7 +513,6 @@ var FacultyInterface = React.createClass({
         var deptNum     = this.props.deptNumber;
 
         //FIX DEPT NAME
-        // WORK HERE TUESDAY - GETTING CHANGE BUTTON WORKING
         if(facultyData != null){
             facultyDetail = facultyData.map(function (faculty) {
                 if(facultyID == faculty.id)
@@ -645,6 +699,16 @@ var FacultyDetail = React.createClass({
 });
 
 var CourseAndTerm = React.createClass({
+    grabCourseAndTerm: function(form) {
+        var courseTerm = {termStart:    this.refs.startDate.value,
+                          termEnd:      this.refs.endDate.value,
+                          courseSubj:   this.refs.courseSubj.value,
+                          courseNum:    this.refs.courseNum.value,
+                          section:      this.refs.courseSect.value,
+                          creditHours:  this.refs.courseCH.value,
+                          title:        this.refs.courseTitle.value};
+        return courseTerm;
+    },
     render: function() {
         var intern = this.props.intern;
         var subjects = this.props.subjects;
@@ -661,23 +725,23 @@ var CourseAndTerm = React.createClass({
 
               <div className="form-group">
                 <label className="col-lg-3 control-label" htmlFor="{START_DATE_ID}">Term Start Date</label>
-                <div className="col-lg-6"><input type="text" className="form-control" defaultValue="START_DATE" /></div>
+                <div className="col-lg-6"><input type="text" className="form-control" ref="startDate" defaultValue="START_DATE" /></div>
               </div>
 
               <div className="form-group">
                 <label className="col-lg-3 control-label" htmlFor="{END_DATE_ID}">Term End Date</label>
-                <div className="col-lg-6"><input type="text" className="form-control" defaultValue="END_DATE" /></div>
+                <div className="col-lg-6"><input type="text" className="form-control" ref="endDate" defaultValue="END_DATE" /></div>
               </div>
 
               <div className="form-group">
                 <label className="col-lg-3 control-label" htmlFor="{STUDENT_STATE_ID}">Course Subject</label>
                 <div className="col-lg-6">
-                  <select className="form-control" onChange={this.handleDrop}>
+                  <select className="form-control" ref="courseSubj">
                   {Object.keys(subjects).map(function (key) {
                       if ((intern.course_subj === key) || (intern.course_subj === null && key == -1)){
                         return <option key={key} value={key} selected>{subjects[key]}</option>
                       }else {
-                        return <option key={key} value={key}>{subjects[key]}</option>
+                        return <option key={key} value={key} >{subjects[key]}</option>
                       }
                     }.bind(this))
                   }
@@ -688,24 +752,24 @@ var CourseAndTerm = React.createClass({
 
               <div className="form-group">
                 <label className="col-lg-3 control-label" for="{COURSE_NO_ID}">Course Number</label>
-                <div className="col-lg-6"><input type="text" className="form-control" defaultValue={intern.course_no} /></div>
+                <div className="col-lg-6"><input type="text" className="form-control" ref="courseNum" defaultValue={intern.course_no} /></div>
               </div>
 
               <div className="form-group">
                 <label className="col-lg-3 control-label" for="{COURSE_SECT_ID}">Section</label>
-                <div className="col-lg-6"><input type="text" className="form-control" defaultValue={intern.course_sect} /></div>
+                <div className="col-lg-6"><input type="text" className="form-control" ref="courseSect" defaultValue={intern.course_sect} /></div>
               </div>
 
               <div className="form-group">
                 <label className="col-lg-3 control-label" for="{CREDITS_ID}">Credit Hours</label>
-                <div className="col-lg-6"><input type="text" className="form-control" defaultValue={intern.credits} />
+                <div className="col-lg-6"><input type="text" className="form-control" ref="courseCH" defaultValue={intern.credits} />
                    <span className="help-block"><small className="text-muted">Decimal values will be rounded.</small></span>
                 </div>
               </div>
 
               <div className="form-group">
                 <label className="col-lg-3 control-label" for="{CREDITS_ID}">Title</label>
-                <div className="col-lg-6"><input type="text" className="form-control" defaultValue={intern.course_title} />
+                <div className="col-lg-6"><input type="text" className="form-control" ref="courseTitle" defaultValue={intern.course_title} />
                    <span className="help-block"><small className="text-muted">(Limit 28 characters; Banner)</small></span>
                 </div>
               </div>
@@ -717,6 +781,11 @@ var CourseAndTerm = React.createClass({
 
 
 var TypeInterface = React.createClass({
+    grabTypeData: function(form) {
+        var type = { type:  form.elements.typeOption.value}
+
+        return type;
+    },
     render: function() {
         var expType = this.props.experience_type;
         return(
@@ -749,6 +818,9 @@ var TypeInterface = React.createClass({
 
 
 var NoteBox = React.createClass({
+    grabNoteData: function() {
+
+    },
     render: function() {
         return(
           <div>
@@ -785,6 +857,9 @@ var ChangeLog = React.createClass({
 // <--------------------------------------------Host Information Section---------------------------------------------->
 
 var HostInterface = React.createClass({
+    buildHostData: function() {
+
+    },
     render: function() {
         var hostData = this.props.hostData;
         var intern = this.props.intern;
@@ -814,6 +889,9 @@ var HostInterface = React.createClass({
 });
 
 var Location = React.createClass({
+    grabLocationData: function() {
+
+    },
     render: function() {
         var intern = this.props.intern;
         return(
@@ -868,6 +946,9 @@ var Location = React.createClass({
 
 
 var Compensation = React.createClass({
+    grabCompensationData: function() {
+
+    },
     render: function() {
         var hostData = this.props.hostData;
         var intern = this.props.intern;
@@ -920,6 +1001,9 @@ var Compensation = React.createClass({
 });
 
 var Contracts = React.createClass({
+    grabContractData: function() {
+
+    },
     render: function() {
         return(
           <div>
@@ -940,6 +1024,9 @@ var Contracts = React.createClass({
 });
 
 var HostDetails = React.createClass({
+    grabHostData: function() {
+
+    },
     render: function() {
         var hostData = this.props.hostData;
         var stateData = '';
@@ -995,6 +1082,9 @@ var HostDetails = React.createClass({
 });
 
 var SupervisorInfo = React.createClass({
+    grabSupervisorData: function() {
+
+    },
     render: function() {
         var hostData = this.props.hostData;
         return(
