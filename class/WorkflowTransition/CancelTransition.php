@@ -3,6 +3,7 @@
 namespace Intern\WorkflowTransition;
 use Intern\WorkflowTransition;
 use Intern\Internship;
+use Intern\Email;
 
 class CancelTransition extends WorkflowTransition {
     //const sourceState = '*';
@@ -17,5 +18,14 @@ class CancelTransition extends WorkflowTransition {
 
     public function getSourceState(){
         return array('NewState', 'SigAuthReadyState', 'SigAuthApprovedState', 'DeanApprovedState', 'GradSchoolApprovedState', 'RegistrationIssueState');
+    }
+
+    public function doNotification(Internship $i, $note = null)
+    {
+        if($i->isInternational()){
+            $agency = $i->getAgency();
+
+            Email::sendOIEDCancellationEmail($i, $agency);
+        }
     }
 }
