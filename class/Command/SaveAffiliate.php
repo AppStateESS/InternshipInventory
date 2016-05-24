@@ -28,7 +28,7 @@ class SaveAffiliate {
         $missing = self::checkRequest();
         if (!is_null($missing) && !empty($missing)) {
             // checkRequest returned some missing fields.
-            $url = 'index.php?module=intern&action=add_agreement_view';
+            $url = 'index.php?module=intern&action=addAgreementView';
             $url .= '&missing=' . implode('+', $missing);
             // Restore the values in the fields the user already entered
             foreach ($_POST as $key => $val) {
@@ -47,7 +47,7 @@ class SaveAffiliate {
             $end   = strtotime($_REQUEST['end_date']);
 
             if ($start > $end) {
-                $url = 'index.php?module=intern&action=add_agreement_view&missing=begin_date+end_date';
+                $url = 'index.php?module=intern&action=addAgreementView&missing=begin_date+end_date';
                 // Restore the values in the fields the user already entered
                 unset($_POST['begin_date']);
                 unset($_POST['end_date']);
