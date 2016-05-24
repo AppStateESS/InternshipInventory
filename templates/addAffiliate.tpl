@@ -17,7 +17,7 @@
 <div class="row">
     <div class="col-md-5">
         <div class="form-group {name_ERROR}">
-            <label for="NAME_LABEL_ID}" class="control-label">
+            <label for="{NAME_ID}" class="control-label">
                 {NAME_LABEL_TEXT}
             </label>
             {NAME}
