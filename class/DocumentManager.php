@@ -126,7 +126,6 @@ class DocumentManager extends \FC_Document_Manager {
             \PHPWS_Error::log($result);
             $vars['timeout'] = '3';
             $vars['refresh'] = 0;
-            javascript('close_refresh', $vars);
             return dgettext('filecabinet', 'An error occurred when trying to save your document.');
         } elseif ($result) {
             $result = $this->document->save();
