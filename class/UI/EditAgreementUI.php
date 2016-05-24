@@ -72,8 +72,7 @@ class EditAgreementUI implements UI
         if (!is_null($docs)) {
             //$docs = array_reverse($docs);
             foreach ($docs as $doc) {
-                $tpl['docs'][] = array('DOWNLOAD' => $doc->getDownloadLink('blah'),
-                        'DELETE' => $doc->getDeleteLink());
+                $tpl['docs'][] = array('DOWNLOAD' => $doc->getDownloadLink('blah'), 'DELETE' => $doc->getDeleteLink());
             }
         }
 

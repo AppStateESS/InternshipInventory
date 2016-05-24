@@ -37,7 +37,7 @@ class AffiliationContractDocumentManager extends \FC_Document_Manager {
             \PHPWS_Core::requireInc('filecabinet', 'defines.php');
             $folder = new AffiliateFolder();
             $folder->module_created = 'intern';
-            $folder->title = 'contract documents';
+            $folder->title = 'affiliation agreements';
             $folder->public_folder = FALSE;
             $folder->ftype = DOCUMENT_FOLDER;
             $folder->loadDirectory();
@@ -50,7 +50,7 @@ class AffiliationContractDocumentManager extends \FC_Document_Manager {
         $form = new \PHPWS_FORM;
         $form->addHidden('module', 'intern');
         $form->addHidden('affiliate', $_REQUEST['affiliate']);
-        $form->addHidden('action', 'post_contract_upload');
+        $form->addHidden('action', 'postAffiliationUpload');
         $form->addHidden('ms', $this->max_size);
         $form->addHidden('folder_id', $this->folder->id);
 
@@ -68,20 +68,23 @@ class AffiliationContractDocumentManager extends \FC_Document_Manager {
         if ($this->document->id) {
             $form->addTplTag('FORM_TITLE', dgettext('filecabinet', 'Update file'));
             $form->addHidden('document_id', $this->document->id);
-            $form->addSubmit('submit', dgettext('filecabinet', 'Update'));
+            $form->addSubmit('upload', dgettext('filecabinet', 'Update'));
         } else {
             $form->addTplTag('FORM_TITLE', dgettext('filecabinet', 'Upload new file'));
-            $form->addSubmit('submit', dgettext('filecabinet', 'Upload'));
+            $form->addSubmit('upload', dgettext('filecabinet', 'Upload'));
         }
 
         $form->addButton('cancel', dgettext('filecabinet', 'Cancel'));
         $form->setExtra('cancel', 'onclick="window.close()"');
 
-        $form->setExtra('submit', 'onclick="this.style.display=\'none\'"');
+        $form->setExtra('upload', 'onclick="this.style.display=\'none\'"');
 
         if ($this->document->id && \Current_User::allow('filecabinet', 'edit_folders', $this->folder->id, 'folder', true)) {
             \Cabinet::moveToForm($form, $this->folder);
         }
+
+        $form->setMethod('post');
+        $form->setAction('');
 
         $template = $form->getTemplate();
 
@@ -117,56 +120,55 @@ class AffiliationContractDocumentManager extends \FC_Document_Manager {
      */
     public function postDocumentUpload()
     {
+        var_dump('got into postDocumentUpload');
+
         // importPost in File_Common
         $result = $this->document->importPost('file_name');
 
         if (\PEAR::isError($result) || !$result) {
             \PHPWS_Error::log($result);
+            $vars = array();
             $vars['timeout'] = '3';
             $vars['refresh'] = 0;
-            javascript('close_refresh', $vars);
+            var_dump($result);exit;
             return dgettext('filecabinet', 'An error occurred when trying to save your document.');
-        } elseif ($result) {
-            $result = $this->document->save();
+        }
+
+        $result = $this->document->save();
 
 
-            if (\PHPWS_Error::logIfError($result)) {
-                $content = dgettext('filecabinet', '<p>Could not upload file to folder. Please check your directory permissions.</p>');
-                $content .= sprintf('<a href="#" onclick="window.close(); return false">%s</a>', dgettext('filecabinet', 'Close this window'));
-                Layout::nakedDisplay($content);
-                exit();
-            }
+        if (\PHPWS_Error::logIfError($result)) {
+            $content = dgettext('filecabinet', '<p>Could not upload file to folder. Please check your directory permissions.</p>');
+            $content .= sprintf('<a href="#" onclick="window.close(); return false">%s</a>', dgettext('filecabinet', 'Close this window'));
+            Layout::nakedDisplay($content);
+            exit();
+        }
 
-            \PHPWS_Core::initModClass('filecabinet', 'File_Assoc.php');
-            //According to the superclass this no longer does anything and causes an error
-            // FC_File_Assoc::updateTag(FC_DOCUMENT, $this->document->id, $this->document->getTag());
+        \PHPWS_Core::initModClass('filecabinet', 'File_Assoc.php');
 
-            $this->document->moveToFolder();
+        $this->document->moveToFolder();
 
-                // Save Intern_Document in database.
-                $doc = new AffiliationContract();
-                $doc->agreement_id = $_REQUEST['affiliate'];
-                $doc->document_id = $this->document->id;
-                AffiliationContractFactory::save($doc);
+            // Save Intern_Document in database.
+            $doc = new AffiliationContract();
+            $doc->agreement_id = $_REQUEST['affiliate'];
+            $doc->document_id = $this->document->id;
+            AffiliationContractFactory::save($doc);
 
 
-            // Choose the proper notification text...
-            if (isset($_REQUEST['document_id']) &&
-                    $_REQUEST['document_id'] && $result) {
-                \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, "File saved.");
-            } else if ($result) {
-                \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, "File added.");
-            } else if (PHPWS_Error::logIfError($result)) {
-                \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, $result->toString());
-            }
-            \NQ::close();
-            if (!isset($_POST['im'])) {
-                javascript('close_refresh');
-            } else {
-                javascript('/filecabinet/refresh_manager', array('document_id' => $this->document->id));
-            }
+        // Choose the proper notification text...
+        if (isset($_REQUEST['document_id']) &&
+                $_REQUEST['document_id'] && $result) {
+            \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, "File saved.");
+        } else if ($result) {
+            \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, "File added.");
+        } else if (PHPWS_Error::logIfError($result)) {
+            \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, $result->toString());
+        }
+        \NQ::close();
+        if (!isset($_POST['im'])) {
+            javascript('close_refresh');
         } else {
-            return $this->edit();
+            javascript('/filecabinet/refresh_manager', array('document_id' => $this->document->id));
         }
     }
 

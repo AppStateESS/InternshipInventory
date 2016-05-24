@@ -33,8 +33,6 @@ class InternshipInventory {
             $req = $_REQUEST['action'];
         }
 
-
-
         // Show requested page.
         switch ($req) {
             case 'example_form':
@@ -118,12 +116,12 @@ class InternshipInventory {
                 $ctrl = new Command\AffiliateStateRest();
                 $ctrl->execute();
                 break;
-            case 'upload_contract_form':
+            case 'uploadAffiliationAgreemenet':
                 $docManager = new AffiliationContractDocumentManager();
                 echo $docManager->edit();
                 exit();
                 break;
-            case 'post_contract_upload':
+            case 'postAffiliationUpload':
                 $docManager = new AffiliationContractDocumentManager();
                 $docManager->postDocumentUpload();
                 break;

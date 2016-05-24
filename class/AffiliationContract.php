@@ -64,7 +64,7 @@ class AffiliationContract
         $vars = array();
         $vars['doc_id'] = $this->document_id;
         $vars['action'] = 'delete_document';
-        $link = new PHPWS_Link(null, 'intern', $vars);
+        $link = new \PHPWS_Link(null, 'intern', $vars);
 
         $jsVars = array();
         $jsVars['QUESTION'] = 'Are you sure you want to delete this document?';

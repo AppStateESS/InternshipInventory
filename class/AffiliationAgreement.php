@@ -118,7 +118,7 @@ class AffiliationAgreement
     {
         $db = new \PHPWS_DB('intern_agreement_documents');
         $db->addWhere('agreement_id', $this->id);
-        return $db->getObjects('AffiliationContract');
+        return $db->getObjects('\Intern\AffiliationContract');
     }
 
     public function getRowTags()
