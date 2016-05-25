@@ -129,29 +129,6 @@ class Admin extends Model
         \NQ::simple('intern', NotifyUI::SUCCESS, "<i>$username</i> no longer view internships for <i>$d->name</i>.");
     }
 
-    public static function getAdminPager()
-    {
-        $pager = new \DBPager('intern_admin', '\Intern\Admin');
-
-        $pager->setModule('intern');
-        $pager->setTemplate('admin_pager.tpl');
-        $pager->setEmptyMessage('No admins found.');
-        $pager->addRowTags('rowTags');
-
-        $pager->joinResult('department_id', 'intern_department', 'id', 'name', 'department_name');
-        //$pager->db->setTestMode();
-
-        // Set a default order
-        if(!isset($_REQUEST['orderby'])){
-            $pager->setOrder('department_name');
-        }
-
-        // Search
-        $pager->setSearch('username');
-
-        return $pager->get();
-    }
-
     public static function searchUsers($string)
     {
         $db = new \PHPWS_DB('users');

@@ -103,31 +103,6 @@ form .required label:after {
     color: #888888;
 }
 
-.expanded {
-    position:relative;
-    left:25px;
-}
-
-.expanded td {
-    padding-left:5px;
-    padding-right:5px;
-}
-
-#department-pager {
-    margin-right: auto;
-    margin-left: auto;
-}
-
-#major-pager {
-    margin-right: auto;
-    margin-left: auto;
-}
-
-#admin-pager {
-    margin-right: auto;
-    margin-left: auto;
-}
-
 /******************************************
  * Styles for the add/edit internshp form *
  *****************************************/
@@ -149,7 +124,7 @@ form .required label:after {
 
 /****** Search Results Styles **************/
 tr.result-row td {
-  padding: 0px;
+  padding: 0;
   white-space: nowrap;
 }
 
@@ -161,15 +136,6 @@ tr.result-row td a {
 	color:#000;
 	text-decoration:none;
 }
-
-#name-term-dept-search {
-    border: 1px solid #C0C0C0;
-    border-left: 10px solid #C0C0C0;
-    margin-left: -8px;
-    margin-bottom: 10px;
-    padding-left: 5px;
-}
-
 
 .ui-autocomplete {
     width: 100px;
