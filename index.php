@@ -75,7 +75,6 @@ $notifications = $nv->display();
 
 // Add content to Layout
 \Layout::addStyle('intern', 'style.css');
-\Layout::addStyle('intern', 'tango-icons.css');
 \Layout::add($content);
 
 function formatException(\Exception $e)
