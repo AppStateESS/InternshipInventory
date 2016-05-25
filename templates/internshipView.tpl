@@ -573,7 +573,7 @@
 
   <div class="row">
     <div class="col-lg-6">
-      <div class="form-group">
+      <div class="form-group print-hide">
         <label for="{NOTES_ID}">Add a note</label> {NOTES}
       </div>
       <div class="form-group">
