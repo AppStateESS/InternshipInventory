@@ -293,6 +293,36 @@ class SaveInternship {
             $i->oied_certified = 0;
         }
 
+        /************
+         * Background and Drug checks
+        */
+        // Check if this has changed from no to yes for sending email
+        if($i->background_check == 0 && $_REQUEST['background_code'] == '1'){
+            // note the change for later
+            $backgroundCheck = true;
+        }else{
+            $backgroundCheck = false;
+        }
+
+        if($_REQUEST['background_code'] == '1'){
+            $i->background_check = 1;
+        }else if($_REQUEST['background_code'] == '0'){
+            $i->background_check = 0;
+        }
+
+        if($i->drug_check == 0 && $_REQUEST['drug_code'] == '1'){
+            // note the change for later
+            $drugCheck = true;
+        }else{
+            $drugCheck = false;
+        }
+
+        if($_REQUEST['drug_code'] == '1'){
+            $i->drug_check = 1;
+        }else if($_REQUEST['drug_code'] == '0'){
+            $i->drug_check = 0;
+        }
+
         // If we don't have a state and this is a new internship,
         // the set an initial state
         if($i->id == 0 && is_null($i->state)){
@@ -380,6 +410,11 @@ class SaveInternship {
             if ($i->getFaculty() != null) {
                 \Intern\Email::sendOIEDCertifiedNotice($i, $agency);
             }
+        }
+
+        // If the background check or drug check status changed to true (computed earlier), then send a notification
+        if($backgroundCheck || $drugCheck) {
+            \Intern\Email::sendBackgroundCheckEmail($i, $agency, $backgroundCheck, $drugCheck);
         }
 
         \PHPWS_DB::commit();

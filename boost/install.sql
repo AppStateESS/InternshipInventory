@@ -590,6 +590,8 @@ CREATE TABLE intern_internship (
        multi_part SMALLINT,
        secondary_part SMALLINT,
        experience_type varchar default 'internship',
+       background_check SMALLINT DEFAULT 0;
+       drug_check SMALLINT DEFAULT 0;
        PRIMARY KEY(id)
 );
 
