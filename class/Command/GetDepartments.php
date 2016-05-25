@@ -8,9 +8,9 @@ class getDepartments {
         // Get list of departments for the current user
         // If user is a Deity, then get all departments
         if (\Current_User::isDeity()) {
-            $departments = \Intern\Department::getDepartmentsAssoc();
+            $departments = \Intern\DepartmentFactory::getDepartmentsAssoc();
         } else {
-            $departments = \Intern\Department::getDepartmentsAssocForUsername(\Current_User::getUsername());
+            $departments = \Intern\DepartmentFactory::getDepartmentsAssocForUsername(\Current_User::getUsername());
         }
 
         $departments = array('-1' => 'Select a Department') + $departments;

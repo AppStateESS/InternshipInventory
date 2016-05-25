@@ -5,6 +5,7 @@ namespace Intern;
 
 use Intern\EmergencyContactFormView;
 use Intern\ChangeHistoryView;
+use Intern\DepartmentFactory;
 
 /**
  * View class for showing the big internship form for
@@ -179,15 +180,15 @@ class EditInternshipFormView {
          */
         if (\Current_User::isDeity()) {
             if (!is_null($this->intern)){
-                $depts = Department::getDepartmentsAssoc($this->intern->department_id);
+                $depts = DepartmentFactory::getDepartmentsAssoc($this->intern->department_id);
             } else {
-                $depts = Department::getDepartmentsAssoc();
+                $depts = DepartmentFactory::getDepartmentsAssoc();
             }
         }else {
             if (!is_null($this->intern)){
-                $depts = Department::getDepartmentsAssocForUsername(\Current_User::getUsername(), $this->intern->department_id);
+                $depts = DepartmentFactory::getDepartmentsAssocForUsername(\Current_User::getUsername(), $this->intern->department_id);
             }else{
-                $depts = Department::getDepartmentsAssocForUsername(\Current_User::getUsername());
+                $depts = DepartmentFactory::getDepartmentsAssocForUsername(\Current_User::getUsername());
             }
         }
         $this->form->addSelect('department', $depts);

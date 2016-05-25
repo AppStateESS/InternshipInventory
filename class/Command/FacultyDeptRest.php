@@ -1,7 +1,7 @@
 <?php
 namespace Intern\Command;
 
-use \Intern\Department;
+use \Intern\DepartmentFactory;
 
 /**
  * REST-ful controller for creating/editing faculty to department associations.
@@ -31,7 +31,7 @@ class FacultyDeptRest {
 
     private function get()
     {
-        $departments = Department::getDepartmentsAssocForUsername(\Current_User::getUsername());
+        $departments = DepartmentFactory::getDepartmentsAssocForUsername(\Current_User::getUsername());
 
         $props = array();
 

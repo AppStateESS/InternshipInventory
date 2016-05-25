@@ -4,7 +4,7 @@ namespace Intern\UI;
 
 use Intern\Internship;
 use Intern\Term;
-use Intern\Department;
+use Intern\DepartmentFactory;
 use Intern\Major;
 use Intern\GradProgram;
 use Intern\Subject;
@@ -71,9 +71,9 @@ class SearchUI implements UI
 
         // Deity can search for any department. Other users are restricted.
         if(\Current_User::isDeity()){
-            $depts = Department::getDepartmentsAssoc();
+            $depts = DepartmentFactory::getDepartmentsAssoc();
         }else{
-            $depts = Department::getDepartmentsAssocForUsername(\Current_User::getUsername());
+            $depts = DepartmentFactory::getDepartmentsAssocForUsername(\Current_User::getUsername());
         }
 
         $depts = array('-1' => 'Select Department') + $depts;
