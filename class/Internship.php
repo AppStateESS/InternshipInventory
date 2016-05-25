@@ -336,19 +336,19 @@ class Internship {
         // Merge data from other objects.
         $csv = array_merge($csv, $a->getCSV());
 
-		if(count($c) > 0)
-		{
+		if(count($c) > 0) {
 			$csv['Document Uploaded']  = 'Yes';
-		}
-		else
-		{
+		} else {
 			$csv['Document Uploaded']  = 'No';
 		}
 
         if ($f instanceof Faculty) {
             $csv = array_merge($csv, $f->getCSV());
         } else {
-            $csv = array_merge($csv, Faculty::getEmptyCsvRow());
+            $csv['Faculty Super. First Name'] = '';
+            $csv['Faculty Super. Last Name']  = '';
+            $csv['Faculty Super. Phone']      = '';
+            $csv['Faculty Super. Email']      = '';
         }
 
         $csv = array_merge($csv, $d->getCSV());

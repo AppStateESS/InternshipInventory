@@ -11,7 +11,7 @@ namespace Intern;
  * @package Hms
 */
 
-class Faculty implements DbStorable {
+class Faculty extends Model implements DbStorable {
 
     private $id;
     private $username;
@@ -54,19 +54,19 @@ class Faculty implements DbStorable {
         $vars = array();
         $vars['id']                 = $this->getId();
         $vars['username']           = $this->getUsername();
-         
+
         $vars['first_name']         = $this->getFirstName();
         $vars['last_name']          = $this->getLastName();
-         
+
         $vars['phone']              = $this->getPhone();
         $vars['fax']                = $this->getFax();
-         
+
         $vars['street_address1']    = $this->getStreetAddress1();
         $vars['street_address2']    = $this->getStreetAddress2();
         $vars['city']               = $this->getCity();
         $vars['state']              = $this->getState();
         $vars['zip']                = $this->getZip();
-         
+
         return $vars;
     }
 
@@ -306,22 +306,5 @@ class Faculty implements DbStorable {
     public function setZip($zip)
     {
         $this->zip = $zip;
-    }
-    
-    /**
-     * Returns an empty row for CSV reproting. Used as a placeholder when no faculty member is selected.
-     * 
-     * @return Array <string, string>
-     */
-    public static function getEmptyCsvRow()
-    {
-        $csv = array();
-        
-        $csv['Faculty Super. First Name'] = '';
-        $csv['Faculty Super. Last Name']  = '';
-        $csv['Faculty Super. Phone']      = '';
-        $csv['Faculty Super. Email']      = '';
-        
-        return $csv;        
     }
 }

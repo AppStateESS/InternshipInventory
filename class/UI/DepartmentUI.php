@@ -8,7 +8,7 @@ class DepartmentUI implements UI
     public function display()
     {
         /* Permission check */
-        if(!\Current_User::allow('intern', Department::getEditPermission())){
+        if(!\Current_User::allow('intern', 'edit_dept')){
             \NQ::simple('intern', NotifyUI::ERROR, "You do not have permission to edit departments.");
             return ;
         }

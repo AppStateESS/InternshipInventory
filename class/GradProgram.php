@@ -10,10 +10,11 @@ namespace Intern;
    *
    * @author Robert Bost <bostrt at tux dot appstate dot edu>
    */
-class GradProgram extends Editable
+class GradProgram extends Model
 {
     public $name;
     public $hidden;
+
     /**
      * @Override Model::getDb
      */
@@ -22,6 +23,7 @@ class GradProgram extends Editable
         $db = new \PHPWS_DB('intern_grad_prog');
         return $db;
     }
+
     /**
      * @Override Model::getCSV
      */
@@ -29,37 +31,12 @@ class GradProgram extends Editable
     {
         return array('Graduate Program' => $this->name);
     }
-    /**
-     * Get an empty CSV to fill in fields.
-     */
-    public static function getEmptyCSV(){
-        return array('Graduate Program' => '');
-    }
-    /**
-     * @Override Editable::getEditAction
-     */
-    public static function getEditAction()
-    {
-        return 'edit_grad';
-    }
-    /**
-     * @Override Editable::getEditPermission
-     */
-    public static function getEditPermission()
-    {
-        return 'edit_grad_prog';
-    }
-    /**
-     * @Override Editable::getDeletePermission
-     */
-    public static function getDeletePermission()
-    {
-        return 'delete_grad_prog';
-    }
+
     public function getName()
     {
         return $this->name;
     }
+
     public function isHidden()
     {
         return $this->hidden == 1;
@@ -87,35 +64,5 @@ class GradProgram extends Editable
         $progs[-1] = 'Select Graduate Major or Certificate Program';
         $progs += $db->select('col');
         return $progs;
-    }
-
-    /**
-     * Add a program to DB if it does not already exist.
-     */
-    public static function add($name)
-    {
-        $name = trim($name);
-        if($name == ''){
-            \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, 'No name given for new graduate program. No graduate program added.');
-            return;
-        }
-        /* Search DB for program with matching name. */
-        $db = self::getDb();
-        $db->addWhere('name', $name);
-        if($db->select('count') > 0){
-            \NQ::simple('intern', \Intern\NotifyUI::WARNING, "The graduate program <i>$name</i> already exists.");
-            return;
-        }
-        /* Program does not exist...keep going */
-        $prog = new GradProgram();
-        $prog->name = $name;
-        try{
-            $prog->save();
-        }catch(Exception $e){
-            \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "Error adding graduate program <i>$name</i>.<br/>".$e->getMessage());
-            return;
-        }
-        /* Program was successfully added. */
-        \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, "<i>$name</i> added as graduate program.");
     }
 }
