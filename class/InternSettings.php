@@ -164,4 +164,21 @@ class InternSettings {
 
         return $result;
     }
+
+    /**
+     * Returns the name background/drug check user email.
+     *
+     * @throws InvalidArgumentException
+     * @return string
+     */
+    public function getBackgroundCheckEmail()
+    {
+        $result = \PHPWS_Settings::get('intern', 'backgroundCheckEmail');
+
+        if (!isset($result) || is_null($result)) {
+            throw new \InvalidArgumentException('Missing configuration for background/drug check address.');
+        }
+
+        return $result;
+    }
 }
