@@ -196,9 +196,6 @@ class Internship {
         $this->student_city = $student->getCity();
         $this->student_state = $student->getState();
         $this->student_zip = $student->getZip();
-
-        $this->background_check = $student->getBackgroundCheck();
-        $this->drug_check = $student->getDrugCheck();
     }
 
     /**
