@@ -61,6 +61,10 @@ class InternshipInventory {
                 $ctrl = new Command\DeleteInternship();
                 $ctrl->execute();
                 break;
+            case 'copyInternshipToNextTerm':
+                $ctrl = new Command\CopyInternshipToNextTerm();
+                $ctrl->execute();
+                break;
             case 'search':
                 $view = new UI\SearchUI();
                 $this->content = $view->display();

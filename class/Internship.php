@@ -86,8 +86,8 @@ class Internship {
 
     // Term Info
     public $term;
-    public $start_date = 0;
-    public $end_date = 0;
+    public $start_date;
+    public $end_date;
     public $credits;
     public $avg_hours_week;
     public $paid;
@@ -517,6 +517,10 @@ class Internship {
         }
     }
 
+    public function setStartDate($startDate) {
+        $this->start_date = $startDate;
+    }
+
     public function getEndDate($formatted=false)
     {
         if (!$this->end_date) {
@@ -527,6 +531,10 @@ class Internship {
         } else {
             return $this->end_date;
         }
+    }
+
+    public function setEndDate($endDate) {
+        $this->end_date = $endDate;
     }
 
     /**
@@ -697,6 +705,10 @@ class Internship {
      */
     public function getId(){
         return $this->id;
+    }
+
+    public function setId($id){
+      $this->id = $id;
     }
 
     /**
@@ -940,6 +952,10 @@ class Internship {
      */
     public function getTerm(){
         return $this->term;
+    }
+
+    public function setTerm($term){
+        $this->term = $term;
     }
 
     public function getCourseNumber(){

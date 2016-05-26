@@ -11,14 +11,14 @@
 </script>
 
 <h1>
-  <i class="fa fa-edit"></i> {TITLE}
+  <i class="fa fa-edit"></i> Edit Internship
 </h1>
 
 <form class="form-horizontal {FORM_CLASS}" id="{FORM_ID}" action="{FORM_ACTION}" autocomplete="{FORM_AUTOCOMPLETE}" method="{FORM_METHOD}"{FORM_ENCODE}>
   {HIDDEN_FIELDS}
 
   <div class="form-group">
-    <div class="col-lg-1 col-lg-offset-8">
+    <div class="col-lg-1 col-lg-offset-6">
       <button type="submit" class="btn btn-primary" id="{SUBMIT_ID}">{SUBMIT_VALUE}</button>
     </div>
 
@@ -26,6 +26,19 @@
       <!-- BEGIN delete_btn -->
       <a href="{DELETE_URL}" class="btn btn-danger-hover" onclick="return confirm('Are you sure you want to delete this internship?');">Delete</a>
       <!-- END delete_btn -->
+    </div>
+
+    <div class="col-lg-2">
+        <!-- BEGIN copy_to_next_term -->
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-copy"></i> Continue Internship <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="index.php?module=intern&action=copyInternshipToNextTerm&internship_id={INTERN_ID}"><i class="fa fa-fast-forward"></i> Continue in {NEXT_TERM}</a></li>
+            </ul>
+        </div>
+        <!-- END copy_to_next_term -->
     </div>
 
     <div class="col-lg-1 col-lg-offset-1">

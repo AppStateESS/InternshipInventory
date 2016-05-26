@@ -13,7 +13,7 @@ namespace Intern;
 
 class Faculty extends Model implements DbStorable {
 
-    private $id;
+    public $id;
     private $username;
 
     private $firstName;

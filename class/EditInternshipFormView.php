@@ -45,6 +45,10 @@ class EditInternshipFormView {
         $this->department = $this->intern->getDepartment();
         $this->docs = $docs;
 
+        $this->tpl = array();
+
+        $this->tpl['INTERN_ID'] = $this->intern->getId();
+
         $this->form = new \PHPWS_Form('internship');
         $this->formVals = array();
 
@@ -86,6 +90,13 @@ class EditInternshipFormView {
         if (\Current_User::isDeity()) {
             $this->tpl['DELETE_URL'] = 'index.php?module=intern&action=DeleteInternship&internship_id=' . $this->intern->getId();
         }
+
+        // Determine if we can copy to the next term (i.e. the next term exists)
+        $nextTerm = Term::getNextTerm($this->intern->getTerm());
+        if(Term::termExists($nextTerm)){
+            $this->tpl['NEXT_TERM'] = Term::rawToRead($nextTerm);
+        }
+
 
         /*********************
          * Workflow / Status *
@@ -505,8 +516,7 @@ class EditInternshipFormView {
          * *
          * Emergency Contacts
          */
-        javascript('jquery');
-        $this->tpl['INTERN_ID'] = $this->intern->getId();
+        // Display of emergency contacts just requires the 'INTERN_ID' template variable be included. This is located in the constructor.
     }
 
     private function plugStudent()
