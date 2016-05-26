@@ -537,8 +537,8 @@ CREATE TABLE intern_internship (
        faculty_id integer REFERENCES intern_faculty(id),
        department_id INT NOT NULL,
 
-       start_date INT NOT NULL default 0,
-       end_date INT NOT NULL default 0,
+       start_date INT default 0,
+       end_date INT default 0,
 
        internship SMALLINT NOT NULL,
        student_teaching SMALLINT NOT NULL,
