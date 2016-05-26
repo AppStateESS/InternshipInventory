@@ -220,4 +220,33 @@ class Term extends Model
     {
         return substr($term, 4, 1);
     }
+
+    public static function getNextTerm($term)
+    {
+        // Grab the year
+        $year = substr($term, 0, 4);
+
+        // Grab the term
+        $sem = substr($term, 4, 1);
+
+        if($sem == self::FALL) {
+            return ($year + 1) . "1";
+        } else {
+            return "$year" . ($sem + 1);
+        }
+    }
+
+    /**
+     * Determine if a term exists in the database.
+     * Useful for deciding if a future term is "ready" yet
+     *
+     * @param $targetTerm Term to decide if exists or not
+     * @return bool True if the given term eixsts in the database, false otherwise
+     */
+    public static function termExists($targetTerm)
+    {
+        $terms = self::getTermsAssoc();
+
+        return in_array($targetTerm, array_keys($terms));
+    }
 }

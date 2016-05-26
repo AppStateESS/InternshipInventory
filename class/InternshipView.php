@@ -32,7 +32,6 @@ class InternshipView {
     public function display()
     {
         $tpl = array();
-        $tpl['TITLE'] = 'Edit Internship';
 
         // Setup the form
         $internshipForm = new EditInternshipFormView($this->intern, $this->student, $this->agency, $this->docs);
@@ -68,6 +67,8 @@ class InternshipView {
 
         $this->showWarnings();
         $this->showStudentWarnings();
+
+        javascript('jquery');
 
         return \PHPWS_Template::process($form->getTemplate(), 'intern', 'internshipView.tpl');
     }
