@@ -146,6 +146,17 @@ class SaveInternship {
             throw $e;
         }
 
+        // Check that the form token matched before we save anything
+        if($i->form_token == $_REQUEST['form_token']) {
+            // Generate a new form token
+            $i->form_token = uniqid();
+        } else {
+            // Form token doesn't match, so show a nice error message
+            \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, 'Some else has modified this internship while you were working. In order to not overwrite their changes, your changes were not saved.');
+            \NQ::close();
+            return \PHPWS_Core::reroute('index.php?module=intern&action=ShowInternship&internship_id=' . $i->id);
+        }
+
         // Load the student object
         try {
             $student = ExternalDataProviderFactory::getProvider()->getStudent($i->getBannerId(), $i->getTerm());

@@ -17,11 +17,7 @@ var LocationSelector = React.createClass({
     componentDidMount: function componentDidMount() {
         // Fetch list of available states
         $.ajax({
-<<<<<<< HEAD
-            url: 'index.php?module=intern&action=GetAvailableStates',
-=======
             url: 'index.php?module=intern&action=GetStates',
->>>>>>> f0fddb38c33b14c0a576037e714f7c0533bc8447
             dataType: 'json',
             success: (function (data) {
                 this.setState({ availableStates: data });

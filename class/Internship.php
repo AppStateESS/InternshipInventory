@@ -114,6 +114,9 @@ class Internship {
     // Checks
     public $background_check;
     public $drug_check;
+    
+    // Form token
+    public $form_token;
 
     /**
      * Constructs a new Internship object.
@@ -152,6 +155,9 @@ class Internship {
 
         // Set initial OIED certification
         $this->setOiedCertified(false);
+
+        // Set Form Token
+        $this->form_token = uniqid();
     }
 
     /**
@@ -1032,6 +1038,11 @@ class Internship {
     public function setLocationState($state)
     {
         $this->loc_state = $state;
+    }
+
+    public function getFormToken()
+    {
+        return $this->form_token;
     }
 
     /***********************
