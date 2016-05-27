@@ -14,5 +14,3 @@ class InternshipRestored extends Internship {
     // Override constructor with empty parameter list
     public function __construct(){}
 }
-
-?>

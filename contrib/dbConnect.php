@@ -30,4 +30,3 @@ function connectToDB()
 
     return $db;
 }
-?>

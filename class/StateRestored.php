@@ -14,5 +14,3 @@ class StateRestored extends State {
     // Override constructor with empty parameter list
     public function __construct(){}
 }
-
-?>

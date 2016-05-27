@@ -52,4 +52,3 @@ class NotifyUI implements UI
         }
     }
 }
-?>

@@ -26,4 +26,3 @@ class AddInternshipView implements \View {
         return 'text/html';
     }
 }
-?>

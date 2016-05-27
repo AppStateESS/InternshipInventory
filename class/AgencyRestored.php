@@ -14,5 +14,3 @@ class AgencyRestored extends Agency {
     // Override constructor with empty parameter list
     public function __construct(){}
 }
-
-?>

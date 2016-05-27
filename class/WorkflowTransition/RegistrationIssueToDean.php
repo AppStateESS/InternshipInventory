@@ -30,5 +30,3 @@ class RegistrationIssueToDean extends WorkflowTransition {
         return false;
     }
 }
-
-?>

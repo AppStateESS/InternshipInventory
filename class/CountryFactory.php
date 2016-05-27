@@ -26,5 +26,3 @@ class CountryFactory {
         return $countries;
     }
 }
-
-?>

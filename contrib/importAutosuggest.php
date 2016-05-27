@@ -65,5 +65,3 @@ while(($line = fgetcsv($inputFile, 0, '|')) !== FALSE) {
 
 pg_close($db);
 fclose($inputFile);
-
-?>

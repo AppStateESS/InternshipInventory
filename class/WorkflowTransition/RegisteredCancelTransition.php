@@ -40,5 +40,3 @@ class RegisteredCancelTransition extends WorkflowTransition {
         Email::sendInternshipCancelNotice($i);
     }
 }
-
-?>

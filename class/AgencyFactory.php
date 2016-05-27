@@ -24,5 +24,3 @@ class AgencyFactory {
         return $stmt->fetch();
     }
 }
-
-?>

@@ -40,4 +40,3 @@ function check_args($argc, $argv, &$args, &$switches)
         next($args_keys);
     }
 }
-?>
