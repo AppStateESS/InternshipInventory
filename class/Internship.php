@@ -42,6 +42,7 @@ class Internship {
 
     // Metaphones for fuzzy search
     public $first_name_meta;
+    public $middle_name_meta;
     public $last_name_meta;
 
     // Academic info
