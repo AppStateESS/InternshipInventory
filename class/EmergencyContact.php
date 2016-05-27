@@ -21,7 +21,7 @@ class EmergencyContact implements DbStorable {
 
     /**
      * Constructor.
-     * @param Internship $internship
+     * @param Internship $i
      * @param String $name
      * @param String $relation
      * @param String $phone
