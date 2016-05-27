@@ -89,7 +89,7 @@ class Email {
 
         if(isset($message->blind_copy)){
             foreach($message->blind_copy as $recipient){
-                fprintf($fd, "Bcc: %s\n", $bcc);
+                fprintf($fd, "Bcc: %s\n", $recipient);
             }
         }
 
