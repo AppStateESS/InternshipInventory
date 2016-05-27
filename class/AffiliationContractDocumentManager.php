@@ -120,7 +120,6 @@ class AffiliationContractDocumentManager extends \FC_Document_Manager {
      */
     public function postDocumentUpload()
     {
-        var_dump('got into postDocumentUpload');
 
         // importPost in File_Common
         $result = $this->document->importPost('file_name');
@@ -130,7 +129,6 @@ class AffiliationContractDocumentManager extends \FC_Document_Manager {
             $vars = array();
             $vars['timeout'] = '3';
             $vars['refresh'] = 0;
-            var_dump($result);exit;
             return dgettext('filecabinet', 'An error occurred when trying to save your document.');
         }
 
