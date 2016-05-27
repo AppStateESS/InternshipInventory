@@ -591,7 +591,6 @@ class Email {
      *
      * @param Internship $i
      * @param Agency $agency
-     * @param string $note
      */
     public static function sendBackgroundCheckEmail(Internship $i, Agency $agency, $backgroundCheck, $drugCheck)
     {
@@ -599,11 +598,7 @@ class Email {
         $background = '';
         $drugTest = '';
 
-        $subjects = Subject::getSubjects();
-
         $settings = InternSettings::getInstance();
-
-        $faculty = $i->getFaculty();
 
         $tpl = array();
         $tpl['NAME'] = $i->getFullName();
@@ -642,8 +637,6 @@ class Email {
     {
         $tpl = array();
 
-        $subjects = Subject::getSubjects();
-
         $settings = InternSettings::getInstance();
 
         $tpl = array();
@@ -671,8 +664,6 @@ class Email {
     public static function sendOIEDReinstateEmail(Internship $i, Agency $agency)
     {
         $tpl = array();
-
-        $subjects = Subject::getSubjects();
 
         $settings = InternSettings::getInstance();
 
