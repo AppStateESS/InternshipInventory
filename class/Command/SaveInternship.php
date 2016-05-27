@@ -21,6 +21,19 @@ class SaveInternship {
 
     }
 
+    private function rerouteWithError($url, $errorMessage)
+    {
+        // Restore the values in the fields the user already entered
+        foreach ($_POST as $key => $val) {
+            $url .= "&$key=$val";
+        }
+
+        \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, $errorMessage);
+        \NQ::close();
+
+        return \PHPWS_Core::reroute($url);
+    }
+
     public function execute()
     {
         /**************
@@ -33,37 +46,20 @@ class SaveInternship {
             // checkRequest returned some missing fields.
             $url = 'index.php?module=intern&action=ShowInternship';
             $url .= '&missing=' . implode('+', $missing);
-            // Restore the values in the fields the user already entered
-            foreach ($_POST as $key => $val) {
-                $url .= "&$key=$val";
-            }
-            \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, 'Please fill in the highlighted fields.');
-            \NQ::close();
-            return \PHPWS_Core::reroute($url);
+
+            $this->rerouteWithError($url, 'Please fill in the highlighted fields.');
         }
 
         // Sanity check student email
         if(isset($_REQUEST['student_email']) && preg_match("/@/", $_REQUEST['student_email'])){
             $url = 'index.php?module=intern&action=ShowInternship&missing=student_email';
-            // Restore the values in the fields the user already entered
-            foreach ($_POST as $key => $val) {
-                $url .= "&$key=$val";
-            }
-            \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "The student's email address is invalid. No changes were saved. Enter only the username portion of the student's email address. The '@appstate.edu' portion is not necessary.");
-            \NQ::close();
-            return \PHPWS_Core::reroute($url);
+            $this->rerouteWithError($url, "The student's email address is invalid. No changes were saved. Enter only the username portion of the student's email address. The '@appstate.edu' portion is not necessary.");
         }
 
 		// Sanity check student zip
 		if(isset($_REQUEST['student_zip']) && $_REQUEST['student_zip'] != "" && !preg_match('/^[\d]{5}$|^[\d]{5}-[\d]{4}$/', $_REQUEST['student_zip'])) {
 			$url = 'index.php?module=intern&action=ShowInternship&missing=student_zip';
-			// Restore the values in the fields the user already entered
-			foreach ($_POST as $key => $val){
-				$url .= "&$key=$val";
-			}
-			\NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "The student's zip code is invalid. No changes were saved. The zip code should be 5 digits (no letters, spaces, or punctuation), OR use the extended nine digit form (e.g. 28608-1234).");
-			\NQ::close();
-			return \PHPWS_Core::reroute($url);
+			$this->rerouteWithError($url, "The student's zip code is invalid. No changes were saved. The zip code should be 5 digits (no letters, spaces, or punctuation), OR use the extended nine digit form (e.g. 28608-1234).");
 		}
 
         // Course start date must be before end date
@@ -76,61 +72,32 @@ class SaveInternship {
                 // Restore the values in the fields the user already entered
                 unset($_POST['start_date']);
                 unset($_POST['end_date']);
-                foreach ($_POST as $key => $val) {
-                    $url .= "&$key=$val";
-                }
-                \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, 'The internship start date must be before the end date.');
-                \NQ::close();
-                return \PHPWS_Core::reroute($url);
+                $this->rerouteWithError($url, 'The internship start date must be before the end date.');
             }
         }
 
 		// Sanity check internship location zip
 		if((isset($_REQUEST['loc_zip']) && $_REQUEST['loc_zip'] != "") && !is_numeric($_REQUEST['loc_zip'])) {
 			$url = 'index.php?module=intern&action=ShowInternship&missing=loc_zip';
-			// Restore the values in the fields the user already entered
-			foreach ($_POST as $key => $val){
-				$url .= "&$key=$val";
-			}
-			\NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "The internship location's zip code is invalid. No changes were saved. Zip codes should be 5 digits only (no letters, spaces, or punctuation).");
-			\NQ::close();
-			return \PHPWS_Core::reroute($url);
+			$this->rerouteWithError($url, "The internship location's zip code is invalid. No changes were saved. Zip codes should be 5 digits only (no letters, spaces, or punctuation).");
 		}
 
 		// Sanity check agency zip
 		if((isset($_REQUEST['agency_zip']) && $_REQUEST['agency_zip'] != "") && !is_numeric($_REQUEST['agency_zip'])) {
 			$url = 'index.php?module=intern&action=ShowInternship&missing=agency_zip';
-			// Restore the values in the fields the user already entered
-			foreach ($_POST as $key => $val){
-				$url .= "&$key=$val";
-			}
-			\NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "The agency's zip code is invalid. No changes were saved. Zip codes should be 5 digits only (no letters, spaces, or punctuation).");
-			\NQ::close();
-			return \PHPWS_Core::reroute($url);
+			$this->rerouteWithError($url, "The agency's zip code is invalid. No changes were saved. Zip codes should be 5 digits only (no letters, spaces, or punctuation).");
 		}
 
 		// Sanity check supervisor's zip
 		if((isset($_REQUEST['agency_sup_zip']) && $_REQUEST['agency_sup_zip'] != "") && !is_numeric($_REQUEST['agency_sup_zip'])) {
 			$url = 'index.php?module=intern&action=ShowInternship&missing=agency_sup_zip';
-			// Restore the values in the fields the user already entered
-			foreach ($_POST as $key => $val){
-				$url .= "&$key=$val";
-			}
-			\NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "The agency supervisor's zip code is invalid. No changes were saved. Zip codes should be 5 digits only (no letters, spaces, or punctuation).");
-			\NQ::close();
-			return \PHPWS_Core::reroute($url);
+			$this->rerouteWithError($url, "The agency supervisor's zip code is invalid. No changes were saved. Zip codes should be 5 digits only (no letters, spaces, or punctuation).");
 		}
 
 		// Sanity check course number
 		if((isset($_REQUEST['course_no']) && $_REQUEST['course_no'] != '') && (strlen($_REQUEST['course_no']) > 20 || !is_numeric($_REQUEST['course_no']))) {
 			$url = 'index.php?module=intern&action=ShowInternship&missing=course_no';
-			// Restore the values in the fields the user already entered
-			foreach ($_POST as $key => $val){
-				$url .= "&$key=$val";
-			}
-			\NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "The course number provided is invalid. No changes were saved. Course numbers should be less than 20 digits (no letters, spaces, or punctuation).");
-			\NQ::close();
-			return \PHPWS_Core::reroute($url);
+			$this->rerouteWithError($url, "The course number provided is invalid. No changes were saved. Course numbers should be less than 20 digits (no letters, spaces, or punctuation).");
 		}
 
         \PHPWS_DB::begin();
@@ -152,9 +119,7 @@ class SaveInternship {
             $i->form_token = uniqid();
         } else {
             // Form token doesn't match, so show a nice error message
-            \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, 'Some else has modified this internship while you were working. In order to not overwrite their changes, your changes were not saved.');
-            \NQ::close();
-            return \PHPWS_Core::reroute('index.php?module=intern&action=ShowInternship&internship_id=' . $i->id);
+            $this->rerouteWithError('index.php?module=intern&action=ShowInternship', 'Some else has modified this internship while you were working. In order to not overwrite their changes, your changes were not saved.');
         }
 
         // Load the student object
@@ -163,7 +128,7 @@ class SaveInternship {
         } catch (StudentNotFoundException $e){
             $student = null;
 
-            \NQ::simple('intern', \Intern\UI\NotifyUI::WARNING, "We couldn't find a matching student in Banner. Your changes were saved, but this student probably needs to contact the Registrar's Office to re-enroll.");
+            $this->rerouteWithError('index.php?module=intern&action=ShowInternship', "We couldn't find a matching student in Banner. Your changes were saved, but this student probably needs to contact the Registrar's Office to re-enroll.");
 			\NQ::close();
         }
 
@@ -465,9 +430,7 @@ class SaveInternship {
         }
 
         /* Required select boxes should not equal -1 */
-
-        if (!isset($_REQUEST['department']) ||
-                $_REQUEST['department'] == -1) {
+        if (!isset($_REQUEST['department']) || $_REQUEST['department'] == -1) {
             $vals[] = 'department';
         }
 
