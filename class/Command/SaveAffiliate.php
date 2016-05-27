@@ -86,9 +86,9 @@ class SaveAffiliate {
 
         try {
             AffiliationAgreementFactory::save($affiliate_agreement);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // Rollback and re-throw the exception so that admins gets an email
-            PHPWS_DB::rollback();
+            \PHPWS_DB::rollback();
             throw $e;
         }
 
