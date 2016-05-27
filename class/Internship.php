@@ -114,7 +114,7 @@ class Internship {
     // Checks
     public $background_check;
     public $drug_check;
-    
+
     // Form token
     public $form_token;
 
@@ -875,7 +875,7 @@ class Internship {
     /**
      * Calculates and sets the metaphone value for this student's middle name.
      *
-     * @param string $firstName
+     * @param string $middleName
      */
     public function setMiddleNameMetaphone($middleName){
         $this->middle_name_meta = metaphone($middleName);
