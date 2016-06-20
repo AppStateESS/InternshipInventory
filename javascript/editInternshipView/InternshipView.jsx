@@ -5,7 +5,8 @@ var EditInternshipInterface = React.createClass({
             internData: null,
             departmentData: null,
             facultyData: null,
-            stateData: null
+            stateData: null,
+            submitted: false
         };
     },
     componentWillMount: function(){
@@ -16,8 +17,22 @@ var EditInternshipInterface = React.createClass({
     saveInternship: function(e){
         e.preventDefault();
         var form = e.target;
+        var thisComponent = this;
 
-        this.refs.mainInterface.buildInternshipData(form);
+        this.setState({submitted: true}, function(){
+            // After disabling submit buttons, use callback to validate the data
+            if(!false){
+                // If the data doesn't validate, wait a second before re-enabling the submit button
+                // This makes sure the user sees the "Creating..." spinner, instead of it re-rendering
+                // so fast that they don't think it did anything
+                setTimeout(function(){
+                    thisComponent.setState({submitted: false});
+                    thisComponent.refs.mainInterface.buildInternshipData(form);
+                }, 1000);
+
+                return;
+            }
+        });
     },
     getInternData: function(){
         // Grabs the internship data
@@ -93,6 +108,7 @@ var EditInternshipInterface = React.createClass({
                                   facultyData     = {this.state.facultyData}
                                   departmentData  = {this.state.departmentData}
                                   stateData       = {this.state.stateData}
+                                  submitted       = {this.state.submitted}
                                   getFacultyData  = {this.getFacultyData} 
                                   saveInternship  = {this.saveInternship}
                                   ref             = "mainInterface"/>
@@ -112,7 +128,9 @@ var MainInterface = React.createClass({
         var faculty = this.refs.faculty.grabFacultyData();
         var term    = this.refs.term.grabCourseAndTerm();
         var type    = this.refs.type.grabTypeData(form);
+        var host    = this.refs.host.buildHostData(form);
 
+        console.log(host);
 
         var internship = {student:  student,
                           status:   status,
@@ -140,7 +158,7 @@ var MainInterface = React.createClass({
 
                 <div className="form-group">
                   <div className="col-lg-1 col-lg-offset-8">
-                    <button type="submit" className="btn btn-primary" id="{SUBMIT_ID}" >Save</button>
+                    <SaveInternshipButton submitted={this.props.submitted}/>
                   </div>
 
                   <div className="col-lg-1">
@@ -190,7 +208,7 @@ var MainInterface = React.createClass({
                           <button className="btn btn-success" id="{SUBMIT_ID}">Add Host</button>
                         </div>
                         <div className="col-lg-1 pull-right">
-                          <button type="submit" className="btn btn-primary" id="{SUBMIT_ID}">Save</button>
+                          <SaveInternshipButton submitted={this.props.submitted}/>
                         </div>
                       </div>
                     </div>
@@ -198,9 +216,16 @@ var MainInterface = React.createClass({
 
                   <div className="row">
                     <div className="col-lg-12">
-                      <HostInterface hostData = {internData.agency}
-                                     intern   = {internData.intern}
-                                     states   = {stateData} />
+                      {internData.agency.map(function (agency) {
+                        return (
+                                <HostInterface key      = {agency.id}
+                                               hostData = {agency}
+                                               intern   = {internData.intern}
+                                               states   = {stateData}
+                                               ref      = "host" />
+                            );
+                      })}
+                      
                     </div>
                   </div>
 
@@ -217,6 +242,20 @@ var MainInterface = React.createClass({
                   <ChangeLog />
               </form>
             </div>
+        );
+    }
+});
+
+var SaveInternshipButton = React.createClass({
+    render: function() {
+        var button = null;
+        if(this.props.submitted) {
+            button = <button type="submit" className="btn btn-primary" id="save-btn" disabled><i className="fa fa-spinner fa-spin"></i> Saving...</button>;
+        } else {
+            button = <button type="submit" className="btn btn-primary" id="save-btn" >Save</button>;
+        }
+        return (
+            button
         );
     }
 });
@@ -484,7 +523,7 @@ var FacultyInterface = React.createClass({
         this.getFacultyData();
     },
     getFacultyData: function() {
-        if (this.props.deptNumber !== '')
+        if (this.props.deptNumber !== '' && this.props.facultyID != null)
         {
           this.setState({facultyID: this.props.facultyID, showDetails: true}, this.props.getFacultyData(this.props.deptNumber));
         } else {
@@ -504,6 +543,7 @@ var FacultyInterface = React.createClass({
     render: function() {
 
         if (this.props.departmentData == null){
+
             return (<div />)
         }
         var facultyDetail = null;
@@ -514,6 +554,7 @@ var FacultyInterface = React.createClass({
 
         //FIX DEPT NAME
         if(facultyData != null){
+          //console.log("Made it")
             facultyDetail = facultyData.map(function (faculty) {
                 if(facultyID == faculty.id)
                   return (<FacultyDetail key={faculty.id} 
@@ -547,6 +588,9 @@ var FacultyInterface = React.createClass({
 });
 
 var FacultyDropDown = React.createClass({
+    componentWillMount: function() {
+        this.props.getFacultyData(this.props.deptNumber);
+    },
     handleDeptDrop: function(e) {
         var deptNum = e.target.value;
 
@@ -857,8 +901,20 @@ var ChangeLog = React.createClass({
 // <--------------------------------------------Host Information Section---------------------------------------------->
 
 var HostInterface = React.createClass({
-    buildHostData: function() {
+    buildHostData: function(form) {
+        var location     = this.refs.location.grabLocationData();
+        var compensation = this.refs.compensation.grabCompensationData(form);
+        var contract     = this.refs.contract.grabContractData();
+        var hostDetails  = this.refs.hDetails.grabHostData();
+        var superDetails = this.refs.sDetails.grabSupervisorData();
 
+        var hostData = {location:     location,
+                          compensation: compensation,
+                          contract:     contract,
+                          hostDetails:  hostDetails,
+                          superDetails: superDetails};
+
+        return hostData;
     },
     render: function() {
         var hostData = this.props.hostData;
@@ -871,15 +927,18 @@ var HostInterface = React.createClass({
             <div className="panel-body">
                 <div className="row">
                   <div className="col-lg-6">
-                    <Location intern = {intern}/>
+                    <Location hostData = {hostData} domestic = {intern.domestic} ref = "location"/>
                     <Compensation hostData = {hostData}
-                                  intern   = {intern} />
-                    <Contracts title = "Contracts"/>
+                                  intern   = {intern}
+                                  ref      = "compensation" />
+                    <Contracts title = "Contracts" ref = "contract"/>
                   </div>
                   <div className="col-lg-6">
                     <HostDetails hostData = {hostData}
-                                 states   = {this.props.states} />
-                    <SupervisorInfo hostData = {hostData} />
+                                 states   = {this.props.states}
+                                 domestic = {intern.domestic} 
+                                 ref      = "hDetails" />
+                    <SupervisorInfo hostData = {hostData} domestic = {intern.domestic} ref = "sDetails"/>
                   </div>
                 </div>
             </div>
@@ -890,10 +949,27 @@ var HostInterface = React.createClass({
 
 var Location = React.createClass({
     grabLocationData: function() {
+        var locationData = {
+            loc_address:  this.refs.locAddress.value,
+            loc_city:     this.refs.locCity.value,
+            loc_zip:      this.refs.locZip.value,
+            loc_start:    this.refs.locStart.value,
+            loc_end:      this.refs.locEnd.value
+        };
 
+        return locationData;
     },
     render: function() {
-        var intern = this.props.intern;
+        var hostData = this.props.hostData;
+        var domestic = this.props.domestic;
+
+        if(domestic){
+            var locState = "State";
+            var zip      = "Zip";
+        } else {
+            var locState = "Country";
+            var zip      = "Postal Code";
+        }
         return(
           <div>
             <fieldset>
@@ -901,41 +977,48 @@ var Location = React.createClass({
 
                 <div className="form-group">
                   <label className="col-lg-3 control-label" htmlFor="campus">Location</label>
-                  <div id="campus" className="col-lg-6"><p className="form-control-static">{intern.international}</p></div>
+                  <div id="campus" className="col-lg-6"><p className="form-control-static">{hostData.international}</p></div>
                 </div>
 
                 <div className="checkbox">
-                  <label><input type="checkbox" value="" />Host's information is same as Internship's</label>
+                  <label><input type="checkbox" value="" />Location's information is same as Internship's</label>
                 </div>
 
                 <div className="form-group">
                   <label className="col-lg-3 control-label" for="{COURSE_SECT_ID}">Address</label>
-                  <div className="col-lg-6"><input type="text" className="form-control" defaultValue={intern.loc_address} /></div>
+                  <div className="col-lg-6"><input type="text" className="form-control" ref="locAddress" defaultValue={hostData.loc_address} /></div>
                 </div>
 
                 <div className="form-group">
                   <label className="col-lg-3 control-label" for="{COURSE_SECT_ID}">City</label>
-                  <div className="col-lg-6"><input type="text" className="form-control" defaultValue={intern.loc_city} /></div>
+                  <div className="col-lg-6"><input type="text" className="form-control" ref="locCity" defaultValue={hostData.loc_city} /></div>
                 </div>
 
                 <div className="form-group">
-                  <label className="col-lg-3 control-label" htmlFor="campus">State</label>
-                  <div id="campus" className="col-lg-6"><p className="form-control-static">STATE</p></div>
+                  <label className="col-lg-3 control-label" htmlFor="campus">{locState}</label>
+                  <div id="campus" className="col-lg-6"><p className="form-control-static">{hostData.loc_state}</p></div>
                 </div>
 
+                {!domestic ? <div className="form-group">
+                              <label className="col-lg-3 control-label" htmlFor="campus">Province/Territory</label>
+                              <div id="campus" className="col-lg-6"><p className="form-control-static">{hostData.loc_province}</p></div>
+                            </div>
+                          : null}
+
+
                 <div className="form-group">
-                  <label className="col-lg-3 control-label" for="{COURSE_SECT_ID}">Zip</label>
-                  <div className="col-lg-6"><input type="text" className="form-control" defaultValue={intern.loc_zip} /></div>
+                  <label className="col-lg-3 control-label" for="{COURSE_SECT_ID}">{zip}</label>
+                  <div className="col-lg-6"><input type="text" className="form-control" ref="locZip" defaultValue={hostData.loc_zip} /></div>
                 </div>
 
                 <div className="form-group">
                   <label className="col-lg-3 control-label" for="{COURSE_SECT_ID}">Location Start Date on Site</label>
-                  <div className="col-lg-6"><input type="text" className="form-control" defaultValue="LOC_START_DATE" /></div>
+                  <div className="col-lg-6"><input type="text" className="form-control" ref="locStart" defaultValue={hostData.loc_start} /></div>
                 </div>
 
                 <div className="form-group">
                   <label className="col-lg-3 control-label" for="{COURSE_SECT_ID}">Location End Date on Site</label>
-                  <div className="col-lg-6"><input type="text" className="form-control" defaultValue="LOC_END_DATE" /></div>
+                  <div className="col-lg-6"><input type="text" className="form-control" ref="locEnd" defaultValue={hostData.loc_end} /></div>
                 </div>
             </fieldset>
           </div>
@@ -946,27 +1029,53 @@ var Location = React.createClass({
 
 
 var Compensation = React.createClass({
-    grabCompensationData: function() {
+    getInitialState: function() {
+        return {
+            paid: false,
+            stipend: false
+        };
+    },
+    componentWillMount: function() {
+        var intern = this.props.intern;
+        if(intern.paid == true){
+            this.setState({paid: true});
+        }
 
+        if(intern.stipend == true){
+            this.setState({stipend: true});
+        }
+    },
+    grabCompensationData: function(form) {
+        var sOption = "r" + this.props.hostData.id;
+        console.log(form.elements.r23)
+        var compensationData = {
+            paid:           form.elements.sOption.checked,
+            //stipend:        form.elements.sOption.checked,
+            pay_rate:       this.refs.payRate.value,
+            avg_hours_week: this.refs.hoursPerWeek.value
+        };
+
+        return compensationData;
     },
     render: function() {
         var hostData = this.props.hostData;
         var intern = this.props.intern;
         var allow = intern.stipend;
         var rButtons;
-
-        if(intern.paid == 0){ 
+var rName = "r" + hostData.id;
+        if(this.state.paid == false){ 
           rButtons = <div className="radio">
-                     <label className="radio-inline"><input type="radio" name="compOption" value="unpaid" defaultChecked/>Unpaid</label>
-                     <label className="radio-inline"><input type="radio" name="compOption" value="paid" />Paid</label>
+                     <label className="radio-inline"><input type="radio" name={rName} defaultChecked />Unpaid</label>
+                     <label className="radio-inline"><input type="radio" name={rName} />Paid</label>
                      </div>
         } else {
           rButtons = <div className="radio">
-                     <label className="radio-inline"><input type="radio" name="compOption" value="unpaid" />Unpaid</label>
-                     <label className="radio-inline"><input type="radio" name="compOption" value="paid" defaultChecked />Paid</label>
+                     <label className="radio-inline"><input type="radio" name={rName} />Unpaid</label>
+                     <label className="radio-inline"><input type="radio" name={rName} defaultChecked />Paid</label>
                      </div>
         }
-
+        var stipendBox = "stipendOption";
+        //console.log(stipendBox);
         return(
           <div>
             <fieldset>
@@ -977,8 +1086,8 @@ var Compensation = React.createClass({
                     {rButtons}
 
                     <div className="checkbox">
-                      { allow ? <label><input type="checkbox" value="" />Stipend</label>
-                              : <label><input type="checkbox" value="" disabled />Stipend</label>
+                      { this.state.stipend ? <label><input type="checkbox"  checked/>Stipend</label>
+                                           : <label><input type="checkbox" />Stipend</label>
                       }
                     </div>
                   </div>
@@ -986,12 +1095,12 @@ var Compensation = React.createClass({
                 
                 <div className="form-group">
                   <label className="col-lg-3 control-label" for="{COURSE_SECT_ID}">Pay rate</label>
-                  <div className="col-lg-3"><input type="text" className="form-control" defaultValue={intern.pay_rate} /></div>
+                  <div className="col-lg-3"><input type="text" className="form-control" ref="payRate" defaultValue={intern.pay_rate} /></div>
                 </div>
 
                 <div className="form-group">
                   <label className="col-lg-3 control-label" for="{COURSE_SECT_ID}">Average Hours per Week</label>
-                  <div className="col-lg-3"><input type="text" className="form-control" defaultValue={intern.avg_hours_week} /></div>
+                  <div className="col-lg-3"><input type="text" className="form-control" ref="hoursPerWeek" defaultValue={intern.avg_hours_week} /></div>
                 </div>
 
             </fieldset>

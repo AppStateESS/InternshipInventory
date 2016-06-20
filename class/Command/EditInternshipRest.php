@@ -4,6 +4,7 @@ namespace Intern\Command;
 
 use \Intern\InternshipFactory;
 use \Intern\AgencyFactory;
+use \Intern\InternshipAgencyFactory;
 use \Intern\InternshipView;
 use \Intern\StudentProviderFactory;
 use \Intern\Internship;
@@ -91,8 +92,15 @@ class EditInternshipRest {
 
         $wfState = $workflow;
 
-        // Load the agency
-        $agency = AgencyFactory::getAgencyById($intern->getAgencyId());
+        $agencies = InternshipAgencyFactory::getHostInfoById($intern->getId());
+        
+        // foreach($agencies as $a){
+        //     // Load the agency
+        //     var_dump(AgencyFactory::getAgencyById($a['agency_id']));
+        //     //$agencies[] += AgencyFactory::getAgencyById($a['agency_id']);
+        // }
+        // //var_dump($agencies);
+        // exit;
 
         // Grab Student Data
         $studentData = $this->getStudentData($student, $intern);
@@ -106,7 +114,7 @@ class EditInternshipRest {
         $expType = Internship::getTypesAssoc();
         $subjects = array("-1" => "Select subject...") + Subject::getSubjects();
 
-        $content = array("intern" => $intern, "student" => $studentData, "wfState" => $wfState, "agency" => $agency, "docs" => $docs, "experience_type" => $expType, "subjects" => $subjects);
+        $content = array("intern" => $intern, "student" => $studentData, "wfState" => $wfState, "agency" => $agencies, "docs" => $docs, "experience_type" => $expType, "subjects" => $subjects);
         return $content;
 	}
 
