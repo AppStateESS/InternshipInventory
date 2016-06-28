@@ -131,6 +131,7 @@ class EditInternshipRest {
 
         $intern->campus = $intern->getCampusFormatted();
         $intern->level = $intern->getLevelFormatted();
+        $intern->level = $intern->getLevelFormatted();
 
 		return $intern;
 	}
