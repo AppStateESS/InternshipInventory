@@ -107,9 +107,11 @@ class EditInternshipRest {
 
         // Load the documents
         $docs = $intern->getDocuments();
-        if($docs === null) {
-            $docs = array(); // if no docs, setup an empty array
-        }
+        // if($docs === null) {
+        //     $docs = array(); // if no docs, setup an empty array
+        // } else {
+        $docs = $this->setupDocumentList($docs, $intern->getId());
+        //}
 
         $expType = Internship::getTypesAssoc();
         $subjects = array("-1" => "Select subject...") + Subject::getSubjects();
@@ -186,5 +188,30 @@ class EditInternshipRest {
         }
         return $data;
 	}
+
+    private function setupDocumentList($docs, $id)
+    {
+        $data = array();
+
+        // Document list
+        if (!is_null($docs)) {
+            foreach ($docs as $doc) {
+                $data['docs'][] = array('DOWNLOAD' => $doc->getDownloadLink('blah'),
+                                             'DELETE' => $doc->getDeleteLink());
+            }
+        }
+
+        // Document upload button
+        $folder = new \Intern\InternFolder(\Intern\InternDocument::getFolderId());
+        $data['UPLOAD_DOC'] = $folder->documentUpload($id);
+
+        return $data;
+    }
+
+    private function setupChangeHistory()
+    {
+        $historyView = new ChangeHistoryView($this->intern);
+        $this->tpl['CHANGE_LOG'] = $historyView->show();
+    }
 }
 

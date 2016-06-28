@@ -1,3 +1,5 @@
+// !! internshipId is hardcoded as a global variable !!
+
 
 var EditInternshipInterface = React.createClass({
     getInitialState: function() {
@@ -147,7 +149,7 @@ var MainInterface = React.createClass({
         var stateData      = this.props.stateData;
         var facultyData    = this.props.facultyData;
         var departmentData = this.props.departmentData;
-
+        var deleteURL      = "index.php?module=intern&action=DeleteInternship&internship_id=" + internshipId;
         return(
             <div>
               <h1>
@@ -162,7 +164,7 @@ var MainInterface = React.createClass({
                   </div>
 
                   <div className="col-lg-1">
-                    <a href="{DELETE_URL}" className="btn btn-danger-hover" onclick="return confirm('Are you sure you want to delete this internship?');">Delete</a>                             
+                    <a href="" className="btn btn-danger-hover" onclick="return confirm('Are you sure you want to delete this internship?');">Delete</a>                             
                   </div>
 
                   <div className="col-lg-1 col-lg-offset-1">
@@ -1046,36 +1048,40 @@ var Compensation = React.createClass({
         }
     },
     grabCompensationData: function(form) {
-        var sOption = "r" + this.props.hostData.id;
-        console.log(form.elements.r23)
+
         var compensationData = {
-            paid:           form.elements.sOption.checked,
-            //stipend:        form.elements.sOption.checked,
+            paid:           this.state.paid,
+            stipend:        this.state.stipend,
             pay_rate:       this.refs.payRate.value,
             avg_hours_week: this.refs.hoursPerWeek.value
         };
 
         return compensationData;
     },
+    changePaid: function(e) {
+        this.setState({paid: e.currentTarget.value});
+    },
+    changeStipend: function(e) {
+        this.setState({stipend: e.currentTarget.checked});
+    },
     render: function() {
         var hostData = this.props.hostData;
         var intern = this.props.intern;
         var allow = intern.stipend;
         var rButtons;
-var rName = "r" + hostData.id;
+        var rName = this.props.hostData.id;
         if(this.state.paid == false){ 
           rButtons = <div className="radio">
-                     <label className="radio-inline"><input type="radio" name={rName} defaultChecked />Unpaid</label>
-                     <label className="radio-inline"><input type="radio" name={rName} />Paid</label>
+                     <label className="radio-inline"><input type="radio" name={rName} value="false" onChange={this.changePaid} defaultChecked />Unpaid</label>
+                     <label className="radio-inline"><input type="radio" name={rName} value="true" onChange={this.changePaid}/>Paid</label>
                      </div>
         } else {
           rButtons = <div className="radio">
-                     <label className="radio-inline"><input type="radio" name={rName} />Unpaid</label>
-                     <label className="radio-inline"><input type="radio" name={rName} defaultChecked />Paid</label>
+                     <label className="radio-inline"><input type="radio" name={rName} value="false" onChange={this.changePaid} />Unpaid</label>
+                     <label className="radio-inline"><input type="radio" name={rName} value="true" onChange={this.changePaid} defaultChecked />Paid</label>
                      </div>
         }
-        var stipendBox = "stipendOption";
-        //console.log(stipendBox);
+
         return(
           <div>
             <fieldset>
@@ -1086,8 +1092,8 @@ var rName = "r" + hostData.id;
                     {rButtons}
 
                     <div className="checkbox">
-                      { this.state.stipend ? <label><input type="checkbox"  checked/>Stipend</label>
-                                           : <label><input type="checkbox" />Stipend</label>
+                      { this.state.stipend ? <label><input type="checkbox" onChange={this.changeStipend} checked/>Stipend</label>
+                                           : <label><input type="checkbox" onChange={this.changeStipend} />Stipend</label>
                       }
                     </div>
                   </div>
