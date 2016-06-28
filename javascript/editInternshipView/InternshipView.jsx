@@ -394,12 +394,20 @@ var StudentInformation = React.createClass({
 
               <div className="form-group">
                 <label className="col-lg-3 control-label" htmlFor="gradDate">Graduation Date</label>
-                <div id="gradDate" className="col-lg-6"><p className="form-control-static">{student.grad_date}</p></div>
+                <div id="gradDate" className="col-lg-6"><p className="form-control-static">
+                {student.grad_date == null ? <span class="text-muted"><em>Not Available</em></span>
+                                           : student.grad_date
+                }
+                </p></div>
               </div>
 
               <div className="form-group">
                 <label className="col-lg-3 control-label" htmlFor="credit-hours">Credit Hours</label>
-                <div id="credit-hours" className="col-lg-6"><p className="form-control-static">{student.enrolled_credit_hours}</p></div>
+                <div id="credit-hours" className="col-lg-6"><p className="form-control-static">
+                {student.enrolled_credit_hours == null ? <span class="text-muted"><em>Not Available</em></span>
+                                           : student.enrolled_credit_hours
+                }
+                </p></div>
               </div>
             </fieldset>
         );
