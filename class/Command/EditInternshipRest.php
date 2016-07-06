@@ -113,10 +113,12 @@ class EditInternshipRest {
         $docs = $this->setupDocumentList($docs, $intern->getId());
         //}
 
+        $notes = $this->setupChangeHistory($intern);
+        
         $expType = Internship::getTypesAssoc();
         $subjects = array("-1" => "Select subject...") + Subject::getSubjects();
 
-        $content = array("intern" => $intern, "student" => $studentData, "wfState" => $wfState, "agency" => $agencies, "docs" => $docs, "experience_type" => $expType, "subjects" => $subjects);
+        $content = array("intern" => $intern, "student" => $studentData, "wfState" => $wfState, "agency" => $agencies, "docs" => $docs, "notes" => $notes, "experience_type" => $expType, "subjects" => $subjects);
         return $content;
 	}
 
@@ -209,10 +211,10 @@ class EditInternshipRest {
         return $data;
     }
 
-    private function setupChangeHistory()
+    private function setupChangeHistory($intern)
     {
-        $historyView = new ChangeHistoryView($this->intern);
-        $this->tpl['CHANGE_LOG'] = $historyView->show();
+        $historyView = new \Intern\ChangeHistoryView($intern);
+        return $historyView->show();
     }
 }
 

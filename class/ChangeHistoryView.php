@@ -15,35 +15,40 @@ class ChangeHistoryView {
     {
         $tpl = array();
 
-        $tpl['CHANGELOG_REPEAT'] = array();
-
         $changes = ChangeHistoryFactory::getChangesForInternship($this->internship);
 
         if(is_null($changes)){
             return "";
         }
 
+        // Needed for key value in react -> ChangeFields class
+        // untill something better can be thought of.
+        $id = 0;
+
         foreach($changes as $change){
             $changeFields = array();
+            $changeFields['id'] = $id++;
 
-            $changeFields['RELATIVE_DATE'] = $change->getRelativeDate();
-            $changeFields['EXACT_DATE'] = $change->getFormattedDate();
-            $changeFields['USERNAME'] = $change->getUsername();
+            $changeFields['relative_date'] = $change->getRelativeDate();
+            $changeFields['exact_date'] = $change->getFormattedDate();
+            $changeFields['username'] = $change->getUsername();
 
             if($change->getFromStateFriendlyname() != $change->getToStateFriendlyName()){
-                $changeFields['FROM_STATE'] = $change->getFromStateFriendlyName();
-                $changeFields['TO_STATE'] = $change->getToStateFriendlyName();
+                $changeFields['from_state'] = $change->getFromStateFriendlyName();
+                $changeFields['to_state'] = $change->getToStateFriendlyName();
             }
 
             $note = $change->getNote();
             if(!is_null($note)){
-                $changeFields['NOTE'] = $note;
+                $changeFields['note'] = $note;
+            } else {
+                $changeFields['note'] = '';
             }
 
-            $tpl['changelog_repeat'][] = $changeFields;
+            $tpl[] = $changeFields;
         }
 
-        return \PHPWS_Template::process($tpl, 'intern', 'changeHistory.tpl');
+        return $tpl;
     }
 }
 
