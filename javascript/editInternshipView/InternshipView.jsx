@@ -241,7 +241,7 @@ var MainInterface = React.createClass({
                     </div>
                   </div>
 
-                  <ChangeLog />
+                  <ChangeLog noteData = {internData.notes}/>
               </form>
             </div>
         );
@@ -395,7 +395,7 @@ var StudentInformation = React.createClass({
               <div className="form-group">
                 <label className="col-lg-3 control-label" htmlFor="gradDate">Graduation Date</label>
                 <div id="gradDate" className="col-lg-6"><p className="form-control-static">
-                {student.grad_date == null ? <span class="text-muted"><em>Not Available</em></span>
+                {student.grad_date == null ? <span className="text-muted"><em>Not Available</em></span>
                                            : student.grad_date
                 }
                 </p></div>
@@ -404,7 +404,7 @@ var StudentInformation = React.createClass({
               <div className="form-group">
                 <label className="col-lg-3 control-label" htmlFor="credit-hours">Credit Hours</label>
                 <div id="credit-hours" className="col-lg-6"><p className="form-control-static">
-                {student.enrolled_credit_hours == null ? <span class="text-muted"><em>Not Available</em></span>
+                {student.enrolled_credit_hours == null ? <span className="text-muted"><em>Not Available</em></span>
                                            : student.enrolled_credit_hours
                 }
                 </p></div>
@@ -561,7 +561,7 @@ var FacultyInterface = React.createClass({
         var facultyID   = (this.state.facultyID != null) ? this.state.facultyID :this.props.facultyID;
         var dept        = this.props.departmentData;
         var deptNum     = this.props.deptNumber;
-
+console.log(deptNum);
         //FIX DEPT NAME
         if(facultyData != null){
           //console.log("Made it")
@@ -655,7 +655,7 @@ var FacultyDetail = React.createClass({
         this.props.hideDetailInfo();
     },
     render: function() {
-        var name = this.props.fname + " " + this.props.lname + " - " + this.props.dept;
+        var name = this.props.fname + " " + this.props.lname + " - " + this.props.deptname;
 
 
         // Format Faculty Email
@@ -779,12 +779,12 @@ var CourseAndTerm = React.createClass({
 
               <div className="form-group">
                 <label className="col-lg-3 control-label" htmlFor="{START_DATE_ID}">Term Start Date</label>
-                <div className="col-lg-6"><input type="text" className="form-control" ref="startDate" defaultValue="START_DATE" /></div>
+                <div className="col-lg-6"><input type="text" className="form-control" ref="startDate" defaultValue={intern.start_date} /></div>
               </div>
 
               <div className="form-group">
                 <label className="col-lg-3 control-label" htmlFor="{END_DATE_ID}">Term End Date</label>
-                <div className="col-lg-6"><input type="text" className="form-control" ref="endDate" defaultValue="END_DATE" /></div>
+                <div className="col-lg-6"><input type="text" className="form-control" ref="endDate" defaultValue={intern.end_date} /></div>
               </div>
 
               <div className="form-group">
@@ -877,14 +877,28 @@ var NoteBox = React.createClass({
     },
     render: function() {
         return(
+
           <div>
-          <div className="form-group">
-            <label for="{NOTES_ID}">Add a note</label> NOTES
+            <div className="form-group">
+              <div className="col-lg-10">
+                <label>Add a note</label> 
+              </div>
+            </div>
+
+            <div className="form-group">
+              <div className="col-lg-10">
+              <textarea className="form-control" style={{resize:"vertical"}} rows="3"></textarea>
+              </div>
+            </div>
+
+            <div className="form-group">
+              <div className="col-lg-10">
+              <button type="submit" className="btn btn-primary pull-right" id="{SUBMIT_ID}">SUBMIT_VALUE</button>
+              </div>
+            </div>
+      
           </div>
-          <div className="form-group">
-            <button type="submit" className="btn btn-primary pull-right" id="{SUBMIT_ID}">SUBMIT_VALUE</button>
-          </div>
-          </div>
+
         );
     }
 });
@@ -894,14 +908,44 @@ var ChangeLog = React.createClass({
         return(
           <div className="row">
             <div className="col-lg-8">
-              <div className="form-group">CHANGE_LOG</div>
+              <h3>Change History</h3>
+                {this.props.noteData.map(function (notes) {
+                  return (
+                          <ChangeFields key         ={notes.id}
+                                        exactDate   ={notes.exact_date}
+                                        fromState   ={notes.from_state}
+                                        toState     ={notes.to_state}
+                                        username    ={notes.username}
+                                        relativeData={notes.relative_date}
+                                        note        ={notes.note} />
+                      );
+                }.bind(this))}
             </div>
           </div>
         );
     }
 });
 
-
+var ChangeFields = React.createClass({
+    render: function() {
+        return(
+            <div id="changelog">
+              <div className="change">
+                <h3 className="change">
+                  <span className="exact-date">{this.props.exactDate}</span>Changed {this.props.relativeData} ago by {this.props.username}
+                </h3>
+                {this.props.fromState != undefined ?
+                <ul>
+                  <li>Status changed from <strong>{this.props.fromState}</strong> to <strong>{this.props.toState}</strong>
+                  </li>
+                </ul>
+                : null}
+                <div className="comment">{this.props.note}</div>
+              </div>             
+            </div>
+        );
+    }
+});
 
 
 
