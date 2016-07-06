@@ -6,7 +6,7 @@ use \Intern\InternshipFactory;
 use \Intern\AgencyFactory;
 use \Intern\InternshipAgencyFactory;
 use \Intern\InternshipView;
-use \Intern\StudentProviderFactory;
+use \Intern\StudentFactory;
 use \Intern\Internship;
 use \Intern\Subject;
 
@@ -60,7 +60,8 @@ class EditInternshipRest {
 
         // Load a fresh copy of the student data from the web service
         try {
-            $student = StudentProviderFactory::getProvider()->getStudent($intern->getBannerId(), $intern->getTerm());
+            $student = StudentFactory::getStudent($intern->getBannerId(), $intern->getTerm());
+            
         } catch(\Intern\Exception\StudentNotFoundException $e) {
             $studentId = $intern->getBannerId();
             $student = null;

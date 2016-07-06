@@ -33,7 +33,8 @@ class Department extends Model
 
     public function getId(){
         return $this->id;
-
+    }
+    
     /**
      * @Override Editable::getEditAction
      */
