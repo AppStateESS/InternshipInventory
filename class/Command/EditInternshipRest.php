@@ -60,8 +60,10 @@ class EditInternshipRest {
 
         // Load a fresh copy of the student data from the web service
         try {
+
             $student = StudentFactory::getStudent($intern->getBannerId(), $intern->getTerm());
             
+
         } catch(\Intern\Exception\StudentNotFoundException $e) {
             $studentId = $intern->getBannerId();
             $student = null;

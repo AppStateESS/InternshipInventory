@@ -39,8 +39,8 @@ class ShowInternship {
         javascript('jquery');
         $tpl['INTERN_ID'] = $_REQUEST['internship_id'];
 
-
         return \PHPWS_Template::process($tpl, 'intern', 'editInternshipView.tpl');
+
 
 /*
         
