@@ -113,7 +113,7 @@ class EditInternshipRest {
         // if($docs === null) {
         //     $docs = array(); // if no docs, setup an empty array
         // } else {
-        $docs = $this->setupDocumentList($docs, $intern->getId());
+        $doc = $this->setupDocumentList($docs, $intern->getId());
         //}
 
         $notes = $this->setupChangeHistory($intern);
@@ -121,7 +121,7 @@ class EditInternshipRest {
         $expType = Internship::getTypesAssoc();
         $subjects = array("-1" => "Select subject...") + Subject::getSubjects();
 
-        $content = array("intern" => $intern, "student" => $studentData, "wfState" => $wfState, "agency" => $agencies, "docs" => $docs, "notes" => $notes, "experience_type" => $expType, "subjects" => $subjects);
+        $content = array("intern" => $intern, "student" => $studentData, "wfState" => $wfState, "agency" => $agencies, "docs" => $doc, "notes" => $notes, "experience_type" => $expType, "subjects" => $subjects);
         return $content;
 	}
 
@@ -209,7 +209,7 @@ class EditInternshipRest {
 
         // Document upload button
         $folder = new \Intern\InternFolder(\Intern\InternDocument::getFolderId());
-        $data['UPLOAD_DOC'] = $folder->documentUpload($id);
+        $data = $folder->documentUpload($id);
 
         return $data;
     }

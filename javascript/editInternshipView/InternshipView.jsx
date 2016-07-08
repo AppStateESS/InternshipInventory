@@ -223,6 +223,7 @@ var MainInterface = React.createClass({
                                 <HostInterface key      = {agency.id}
                                                hostData = {agency}
                                                intern   = {internData.intern}
+                                               docs     = {internData.docs}
                                                states   = {stateData}
                                                ref      = "host" />
                             );
@@ -835,6 +836,15 @@ var CourseAndTerm = React.createClass({
 
 
 var TypeInterface = React.createClass({
+    getInitialState: function() {
+        return {showModal: false};
+    },
+    closeModal: function() {
+        this.setState({ showModal: false });
+    },
+    openModal: function() {
+        this.setState({ showModal: true });
+    },
     grabTypeData: function(form) {
         var type = { type:  form.elements.typeOption.value}
 
@@ -861,7 +871,8 @@ var TypeInterface = React.createClass({
                     })}
                 </div>
                 <div className="col-lg-4">
-                  <a id="internship-type-help-button" className="pull-right"><i className="fa fa-question-circle"></i> Type Definitions</a>
+                  <a id="internship-type-help-button" className="pull-right" onClick={this.openModal}><i className="fa fa-question-circle"></i> Type Definitions</a>
+                  <TypeModalForm show={this.state.showModal} hide={this.closeModal} />
                 </div>
               </div>
             </fieldset>
@@ -870,6 +881,39 @@ var TypeInterface = React.createClass({
     }
 });
 
+var TypeModalForm = React.createClass({
+    render: function() {
+        return (
+            <ReactBootstrap.Modal show={this.props.show} onHide={this.props.hide} backdrop='static'>
+                <ReactBootstrap.Modal.Header closeButton>
+                  <ReactBootstrap.Modal.Title><h2>Internship Type Definitions</h2></ReactBootstrap.Modal.Title>
+                </ReactBootstrap.Modal.Header>
+                <ReactBootstrap.Modal.Body>
+                    <form className="form-horizontal">
+                        <div className="form-group">
+                            <div className="col-lg-12">
+                            <h3>Student Teaching</h3>
+                            <p>A course requiring students to instruct or teach at an entity external to the institution, generally as part of the culminating curriculum of a teacher education or certificate program.</p>
+
+                            <h3>Practicum</h3>
+                            <p>A course requiring students to participate in an approved project or proposal that practically applies previously studied theory of the field or discipline under the supervision of an expert or qualified representative of the field or discipline.</p>
+
+                            <h3>Clinical</h3>
+                            <p>A course requiring medical- or healthcare-focused experiential work where students test, observe, experiment, or practice a field or discipline in a hands-on or simulated environment.</p>
+
+                            <h3>Internship</h3>
+                            <p>A course requiring students to participate in a partnership, professional employment, work experience or cooperative education with any entity external to the institution, generally under the supervision of an employee of the external entity.</p>
+                          </div>
+                        </div>
+                    </form>
+                </ReactBootstrap.Modal.Body>
+                <ReactBootstrap.Modal.Footer>
+                    <ReactBootstrap.Button onClick={this.props.hide}>Close</ReactBootstrap.Button>
+                </ReactBootstrap.Modal.Footer>
+            </ReactBootstrap.Modal>
+        );
+    }
+});
 
 var NoteBox = React.createClass({
     grabNoteData: function() {
@@ -893,7 +937,7 @@ var NoteBox = React.createClass({
 
             <div className="form-group">
               <div className="col-lg-10">
-              <button type="submit" className="btn btn-primary pull-right" id="{SUBMIT_ID}">SUBMIT_VALUE</button>
+              <button type="submit" className="btn btn-primary pull-right" id="{SUBMIT_ID}">Save</button>
               </div>
             </div>
       
@@ -973,6 +1017,7 @@ var HostInterface = React.createClass({
     render: function() {
         var hostData = this.props.hostData;
         var intern = this.props.intern;
+        var docs = this.props.docs;
         return(
           <div className="panel panel-default">
             <div className="panel-heading">
@@ -985,7 +1030,7 @@ var HostInterface = React.createClass({
                     <Compensation hostData = {hostData}
                                   intern   = {intern}
                                   ref      = "compensation" />
-                    <Contracts title = "Contracts" ref = "contract"/>
+                    <Contracts title = "Contracts" docs = {docs} ref = "contract"/>
                   </div>
                   <div className="col-lg-6">
                     <HostDetails hostData = {hostData}
@@ -1172,17 +1217,25 @@ var Contracts = React.createClass({
 
     },
     render: function() {
+      change = undefined;
         return(
           <div>
             <fieldset>
                 <legend>{this.props.title}</legend>
                 <div className="row">
                   <div className="col-lg-9">
+                  {change != undefined ?
                     <ul className="list-group">
                       <li className="list-group-item"><i className="fa fa-file"></i> DOWNLOAD &nbsp;DELETE</li>
                     </ul>
+                    : null
+                  }
                   </div>
-                  <div className="col-lg-2">UPLOAD_DOC</div>
+                  <div className="col-lg-2">
+                    <button type="button" className="btn btn-default btn-sm" ><i className="fa fa-upload"></i> label</button>
+                  </div>
+
+                  
                 </div>
             </fieldset>
           </div>
