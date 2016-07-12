@@ -76,12 +76,15 @@ class SaveInternship {
             }
         }
 
-		// Sanity check internship location zip
+		// Sanity check internship location zip, allows a-z A-Z if international
 		if((isset($_REQUEST['loc_zip']) && $_REQUEST['loc_zip'] != "") && !is_numeric($_REQUEST['loc_zip'])) {
-      $url = 'index.php?module=intern&action=ShowInternship&missing=loc_zip';
-			$this->rerouteWithError($url, "The internship location's zip code is invalid. No changes were saved. Zip codes should be 5 digits only (no letters, spaces, or punctuation).");
-		}
+      if(!($_REQUEST['location'] == 'international' && preg_match('/^[\w]{5}$|^[\w]{5}-[\w]{4}$/',$_REQUEST['loc_zip']))){
+        $url = 'index.php?module=intern&action=ShowInternship&missing=loc_zip';
+			  $this->rerouteWithError($url, "The internship location's zip code is invalid. No changes were saved. Zip codes should be 5 digits only (no letters, spaces, or punctuation).");
+		  }
+    }
 
+    // Sanity check internship acency zip, allows a-z A-Z if international.
 		if((isset($_REQUEST['agency_zip']) && $_REQUEST['agency_zip'] != "") && !is_numeric($_REQUEST['agency_zip'])) {
       if(!($_REQUEST['location'] == 'international' && preg_match('/^[\w]{5}$|^[\w]{5}-[\w]{4}$/',$_REQUEST['agency_zip']))) {
         $url = 'index.php?module=intern&action=ShowInternship&missing=agency_zip';
@@ -89,16 +92,7 @@ class SaveInternship {
       }
     }
 
-    // var_dump($_REQUEST['agency_sup_zip']);
-    // var_dump(isset($_REQUEST['agency_sup_zip']));
-    // var_dump($_REQUEST['agency_sup_zip'] != "");
-    // var_dump($_REQUEST['location'] == 'international');
-    // //var_dump(is_numeric($_REQUEST['agency_zip']));
-    // var_dump(preg_match('/^[\w]{5}$|^[\w]{5}-[\w]{4}$/',$_REQUEST['agency_sup_zip']));
-    // //exit;
-    // // Sanity check agency zip
-    // //(T&T)&(T&T)
-		// // Sanity check supervisor's zip
+    // Sanity check internship agency supervisor zip, allows a-z A-Z if international.
 		if((isset($_REQUEST['agency_sup_zip']) && $_REQUEST['agency_sup_zip'] != "") && !is_numeric($_REQUEST['agency_sup_zip'])) {
       if(!($_REQUEST['location'] == 'international' && preg_match('/^[\w]{5}$|^[\w]{5}-[\w]{4}$/',$_REQUEST['agency_sup_zip']))) {
         $url = 'index.php?module=intern&action=ShowInternship&missing=agency_sup_zip';
