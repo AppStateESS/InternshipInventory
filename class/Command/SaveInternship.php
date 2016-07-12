@@ -59,7 +59,7 @@ class SaveInternship {
 		// Sanity check student zip
 		if(isset($_REQUEST['student_zip']) && $_REQUEST['student_zip'] != "" && !preg_match('/^[\d]{5}$|^[\d]{5}-[\d]{4}$/', $_REQUEST['student_zip'])) {
       $url = 'index.php?module=intern&action=ShowInternship&missing=student_zip';
-			$this->rerouteWithError($url, "The student's zip code is invalid. No changes were saved. The zip code should be 5 digits (no letters, spaces, or punctuation), OR use the extended nine digit form (e.g. 28608-1234).");
+      $this->rerouteWithError($url, "The student's zip code is invalid. No changes were saved. The zip code should be 5 digits (no letters, spaces, or punctuation), OR use the extended nine digit form (e.g. 28608-1234).");
 		}
 
         // Course start date must be before end date
@@ -76,25 +76,25 @@ class SaveInternship {
             }
         }
 
-		// Sanity check internship location zip, allows a-z A-Z if international
+		// Sanity check internship location zip, allows a-z or A-Z if international
 		if((isset($_REQUEST['loc_zip']) && $_REQUEST['loc_zip'] != "") && !is_numeric($_REQUEST['loc_zip'])) {
-      if(!($_REQUEST['location'] == 'international' && preg_match('/^[\w]{5}$|^[\w]{5}-[\w]{4}$/',$_REQUEST['loc_zip']))){
+      if(!($_REQUEST['location'] == 'international' && preg_match('/[\w]/',$_REQUEST['loc_zip']))){
         $url = 'index.php?module=intern&action=ShowInternship&missing=loc_zip';
 			  $this->rerouteWithError($url, "The internship location's zip code is invalid. No changes were saved. Zip codes should be 5 digits only (no letters, spaces, or punctuation).");
 		  }
     }
 
-    // Sanity check internship acency zip, allows a-z A-Z if international.
+    // Sanity check internship acency zip, allows a-z or A-Z if international
 		if((isset($_REQUEST['agency_zip']) && $_REQUEST['agency_zip'] != "") && !is_numeric($_REQUEST['agency_zip'])) {
-      if(!($_REQUEST['location'] == 'international' && preg_match('/^[\w]{5}$|^[\w]{5}-[\w]{4}$/',$_REQUEST['agency_zip']))) {
+      if(!($_REQUEST['location'] == 'international' && preg_match('/[\w]/',$_REQUEST['agency_zip']))) {
         $url = 'index.php?module=intern&action=ShowInternship&missing=agency_zip';
 			  $this->rerouteWithError($url, "The agency's zip code is invalid. No changes were saved. Zip codes should be 5 digits only (no letters, spaces, or punctuation).");
       }
     }
 
-    // Sanity check internship agency supervisor zip, allows a-z A-Z if international.
+    // Sanity check internship agency supervisor zip, allows a-z or A-Z if international
 		if((isset($_REQUEST['agency_sup_zip']) && $_REQUEST['agency_sup_zip'] != "") && !is_numeric($_REQUEST['agency_sup_zip'])) {
-      if(!($_REQUEST['location'] == 'international' && preg_match('/^[\w]{5}$|^[\w]{5}-[\w]{4}$/',$_REQUEST['agency_sup_zip']))) {
+      if(!($_REQUEST['location'] == 'international' && preg_match('/[\w]/',$_REQUEST['agency_sup_zip']))) {
         $url = 'index.php?module=intern&action=ShowInternship&missing=agency_sup_zip';
 			  $this->rerouteWithError($url, "The agency supervisor's zip code is invalid. No changes were saved. Zip codes should be 5 digits only (no letters, spaces, or punctuation).");
 		  }
