@@ -91,7 +91,7 @@ class SaveInternship {
 			  $this->rerouteWithError($url, "The agency's zip code is invalid. No changes were saved. Zip codes should be 5 digits only (no letters, spaces, or punctuation).");
       }
     }
-
+    
     // Sanity check internship agency supervisor zip, allows a-z or A-Z if international.
 		if((isset($_REQUEST['agency_sup_zip']) && $_REQUEST['agency_sup_zip'] != "") && !is_numeric($_REQUEST['agency_sup_zip'])) {
       if(!($_REQUEST['location'] == 'international' && preg_match('/[\w]/',$_REQUEST['agency_sup_zip']))) {
