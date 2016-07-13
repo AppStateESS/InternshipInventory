@@ -12,7 +12,7 @@ class CountryFactory {
         $db = Database::newDB();
         $pdo = $db->getPDO();
 
-        $stmt = $pdo->prepare("SELECT * FROM intern_country");
+        $stmt = $pdo->prepare("SELECT * FROM intern_country ORDER BY name");
         $stmt->execute();
         $stmt->setFetchMode(\PDO::FETCH_ASSOC);
 
