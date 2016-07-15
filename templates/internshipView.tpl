@@ -343,44 +343,43 @@
             <label class="radio"> {EXPERIENCE_TYPE} {EXPERIENCE_TYPE_LABEL} </label>
             <!-- END experience_type_repeat -->
           </div>
+
+          <!-- Link to Informational Modal -->
           <div class="col-lg-4">
             <a href="#typeModal" id="internship-type-help-button" class="pull-right"  data-toggle="modal"><i class="fa fa-question-circle"></i> Type Definitions</a>
           </div>
-          <!-- Trigger the modal with a button -->
-<!-- <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#typeModal">Open Modal</button> -->
-          <!-- Modal -->
+
+          <!-- Informational Modal -->
           <div id ="typeModal" class="modal fade" role="dialog">
             <div class="modal-dialog">
-              <!-- Modal content -->
               <div class = "modal-content">
                 <div class = "modal-header">
                   <button type="button" class="close" data-dismiss="modal">&times;</button>
                   <h2>Internship Type Definitions</h2>
-                  <!-- <h4 class="modal-title">Modal Header</h4> -->
                 </div>
                 <div class="modal-body">
                   <div id="internship-type-help">
-                      <h3>Student Teaching</h3>
-                      <p>A course requiring students to instruct or teach at an entity external to the institution, generally as part of the culminating curriculum of a teacher education or certificate program.</p>
+                    <h3>Student Teaching</h3>
+                    <p>A course requiring students to instruct or teach at an entity external to the institution, generally as part of the culminating curriculum of a teacher education or certificate program.</p>
 
-                      <h3>Practicum</h3>
-                      <p>A course requiring students to participate in an approved project or proposal that practically applies previously studied theory of the field or discipline under the supervision of an expert or qualified representative of the field or discipline.</p>
+                    <h3>Practicum</h3>
+                    <p>A course requiring students to participate in an approved project or proposal that practically applies previously studied theory of the field or discipline under the supervision of an expert or qualified representative of the field or discipline.</p>
 
-                      <h3>Clinical</h3>
-                      <p>A course requiring medical- or healthcare-focused experiential work where students test, observe, experiment, or practice a field or discipline in a hands-on or simulated environment.</p>
+                    <h3>Clinical</h3>
+                    <p>A course requiring medical- or healthcare-focused experiential work where students test, observe, experiment, or practice a field or discipline in a hands-on or simulated environment.</p>
 
-                      <h3>Internship</h3>
-                      <p>A course requiring students to participate in a partnership, professional employment, work experience or cooperative education with any entity external to the institution, generally under the supervision of an employee of the external entity.</p>
+                    <h3>Internship</h3>
+                    <p>A course requiring students to participate in a partnership, professional employment, work experience or cooperative education with any entity external to the institution, generally under the supervision of an employee of the external entity.</p>
                   </div>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-primary pull-right" data-dismiss="modal">Close</button>
                 </div>
               </div>
-
             </div>
           </div>
         </div>
+
       </fieldset>
     </div>
     <!-- End of left column -->
