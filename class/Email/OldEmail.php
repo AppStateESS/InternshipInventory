@@ -4,6 +4,7 @@ namespace Intern;
 
 class Email {
 
+    //copied
     public static function sendTemplateMessage($to, $subject, $tpl, $tags, $cc = null)
     {
         $settings = InternSettings::getInstance();
@@ -13,6 +14,7 @@ class Email {
         self::sendEmail($to, $settings->getEmailFromAddress(), $subject, $content, $cc);
     }
 
+    //copied
     public static function sendEmail($to, $from, $subject, $content, $cc = NULL, $bcc = NULL)
     {
         $settings = InternSettings::getInstance();
@@ -67,6 +69,7 @@ class Email {
         return true;
     }
 
+    //copied
     /**
      * Logs a PHPWS_Mail object to a text file
      */
@@ -101,6 +104,7 @@ class Email {
         fclose($fd);
     }
 
+    //copied
     /**
      * Sends an email to the registrar notifying them to register
      * the student for the appropriate internship course.
@@ -237,6 +241,7 @@ class Email {
         Email::sendTemplateMessage($to, $subject, 'email/RegistrarEmail.tpl', $tpl, $cc);
     }
 
+    //copied
     /**
      * Sends an email to the grad school office, letting them know there's someone to notify
      *
