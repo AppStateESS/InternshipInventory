@@ -32,6 +32,7 @@ class RegistrationConfirm extends Email{
 
       $subject = 'OIED Certified Internship';
 
-      email::sendTemplateMessage($to, $subject, 'email/OiedCertifiedNotice.tpl', $tpl);
+      email::sendTemplateMessage($to, $subject,
+        'email/OiedCertifiedNotice.tpl', $tpl);
   }
 }

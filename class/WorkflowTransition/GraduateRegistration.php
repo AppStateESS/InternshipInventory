@@ -42,7 +42,7 @@ class GraduateRegistration extends WorkflowTransition {
     {
         $agency = $i->getAgency();
 
-        Email::sendRegistrationConfirmationEmail($i, $agency);
+        RegistrationConfirm::sendEmail($i, $agency);
     }
 
     public function checkRequiredFields(Internship $i)

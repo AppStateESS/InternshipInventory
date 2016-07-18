@@ -29,7 +29,7 @@ class GradSchoolApprove extends WorkflowTransition {
         if($i->isGraduate()){
             $agency = $i->getAgency();
 
-            Email::sendRegistrarEmail($i, $agency);
+            Registrar::sendEmail($i, $agency);
         }
     }
 }

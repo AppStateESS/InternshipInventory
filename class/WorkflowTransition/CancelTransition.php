@@ -25,7 +25,7 @@ class CancelTransition extends WorkflowTransition {
         if($i->isInternational()){
             $agency = $i->getAgency();
 
-            Email::sendOIEDCancellationEmail($i, $agency);
+            OIEDCancellation::sendEmail($i, $agency);
         }
     }
 }
