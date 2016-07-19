@@ -37,6 +37,6 @@ class RegisteredCancelTransition extends WorkflowTransition {
 
     public function doNotification(Internship $i, $note = null)
     {
-        InternshipCancelNotice::sendEmail($i);
+        Email::sendInternshipCancelNotice($i);
     }
 }

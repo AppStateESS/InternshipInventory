@@ -19,7 +19,7 @@ class Reinstate extends WorkflowTransition {
         if($i->isInternational()){
             $agency = $i->getAgency();
 
-            OIEDReinstate::sendEmail($i, $agency);
+            Email::sendOIEDReinstateEmail($i, $agency);
         }
     }
 }

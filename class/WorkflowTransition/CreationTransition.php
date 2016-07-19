@@ -17,8 +17,8 @@ class CreationTransition extends WorkflowTransition {
     public function doNotification(Internship $i, $note = null)
     {
         if(!$i->isDomestic()){
-            IntlInternshipNotice::sendEmail($i);
-            IntlInternshipNoticeStudent::sendEmail($i);
+            Email::sendIntlInternshipCreateNotice($i);
+            Email::sendIntlInternshipCreateNoticeStudent($i);
         }
     }
 }

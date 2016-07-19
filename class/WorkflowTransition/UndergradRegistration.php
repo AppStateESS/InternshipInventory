@@ -44,7 +44,7 @@ class UndergradRegistration extends WorkflowTransition {
     {
         $agency = $i->getAgency();
 
-        RegistrationConfirm::sendEmail($i, $agency);
+        Email::sendRegistrationConfirmationEmail($i, $agency);
     }
 
     public function checkRequiredFields(Internship $i)
