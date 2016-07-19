@@ -2,7 +2,29 @@
 
 namespace Intern\Email;
 
-class Email {
+abstract class Email {
+
+  //Lowest common denominator setup for all special emails
+  protected function sendSpecialMessage(Internship $i,
+    Agency $agency = null, $note = null) {
+
+    $settings = InternSettings::getInstance();
+
+    $tpl = array();
+    $tpl['NAME'] = $i->getFullName();
+    $tpl['BANNER'] = $i->getBannerId();
+    $tpl['USER'] = $i->getEmailAddress();
+    $tpl['PHONE'] = $i->getPhoneNumber();
+    $tpl['TERM'] = Term::rawToRead($i->getTerm(), false);
+
+    $outputs = self::setUpSpecial();
+
+    self::sendTemplateMessage($outputs['to'], $outputs['subject'], $outputs['doc'], $tpl);
+  }
+
+  //Hook method for specialized email setup
+  protected absract function setUpSpecial();
+
   public static function sendTemplateMessage($to,
   $subject, $tpl, $tags, $cc = null){
     $settings = InternSettings::getInstance();
