@@ -12,9 +12,12 @@ class GradSchoolNotice extends Email {
    */
   public static function sendGradSchoolNotification(Internship $i, Agency $a)
   {
-      Email::sendSpecialMessage($i, $a);
+      sendSpecialMessage($i, $a);
   }
 
+  /**
+   * Adds information to email unique to grad school.
+   */
   protected function setUpSpecial()
   {
     $subjects = Subject::getSubjects();

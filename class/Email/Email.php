@@ -2,10 +2,26 @@
 
 namespace Intern\Email;
 
+/**
+ * Allows for the simple sending of email messages. Follows the general flow:
+ *
+ * sendSpecialMessage() -> sendTemplateMessage() -> sendEmail() -> logEmail()
+ *
+ * A message can be processed at any point in this flow, depending on the
+ * desired function of the email.
+ */
 abstract class Email {
 
-  //Lowest common denominator setup for all special emails
-  protected function sendSpecialMessage(Internship $i,
+  /**
+   * Template method for specialized email messages. Subclasses will
+   * call this method and implement their own setUpSpecial() hook to meet
+   * their specialized needs.
+   *
+   * @param  $i
+   * @param  $agency
+   * @param  $note     Necessary for class RegistrationIssue.
+   */
+  protected final function sendSpecialMessage(Internship $i,
     Agency $agency = null, $note = null) {
 
     $settings = InternSettings::getInstance();
@@ -22,7 +38,11 @@ abstract class Email {
     self::sendTemplateMessage($outputs['to'], $outputs['subject'], $outputs['doc'], $tpl);
   }
 
-  //Hook method for specialized email setup
+  /**
+   * Hook for the template method sendSpecialMessage(). Allows Email subclasses
+   * to provide additional information to sendTemplateMessage() for their
+   * specialized purpose.
+   */
   protected absract function setUpSpecial();
 
   public static function sendTemplateMessage($to,
@@ -34,6 +54,17 @@ abstract class Email {
     self::sendEmail($to, $settings->getEmailFromAddress(), $subject, $content, $cc);
   }
 
+  /**
+   * Performs the email delivery process.
+   *
+   * @param  $to
+   * @param  $from
+   * @param  $subject
+   * @param  $content
+   * @param  $cc
+   * @param  $bcc
+   * @return True if successful.
+   */
   public static function sendEmail($to, $from,
   $subject, $content, $cc = NULL, $bcc = NULL){
     $settings = InternSettings::getInstance();
@@ -88,6 +119,11 @@ abstract class Email {
     return true;
   }
 
+  /**
+   * Stores the email in file email.log
+   *
+   * @param  $message
+   */
   public static function logEmail($message){
     // Log the message to a text file
     $fd = fopen(PHPWS_SOURCE_DIR . 'logs/email.log',"a");
