@@ -21,12 +21,12 @@ class DeanApprove extends WorkflowTransition {
         // If this is an undergrad internship, then send the Registrar an email
         // Graduate level internships have another workflow state to go through before we alert the Registrar
         if($i->isUndergraduate()){
-            Email::sendRegistrarEmail($i, $agency);
+            Registrar::sendEmail($i, $agency);
         }
 
         // If this is a graduate email, send the notification email to the grad school office
         if($i->isGraduate()){
-            Email::sendGradSchoolNotification($i, $agency);
+            GradSchoolNotice::sendEmail($i, $agency);
         }
     }
 }

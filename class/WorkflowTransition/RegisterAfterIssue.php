@@ -33,6 +33,6 @@ class RegisterAfterIssue extends WorkflowTransition {
     {
         $agency = $i->getAgency();
 
-        Email::sendRegistrationConfirmationEmail($i, $agency);
+        RegistrationConfirm::sendEmail($i, $agency);
     }
 }

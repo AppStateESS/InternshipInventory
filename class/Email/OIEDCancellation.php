@@ -29,6 +29,7 @@ class OIEDCancellation extends Email {
         $to = $settings->getInternationalOfficeEmail();
         $subject = 'International Internship Cancellation';
 
-        email::sendTemplateMessage($to, $subject, 'email/OIEDCancellation.tpl', $tpl);
+        email::sendTemplateMessage($to, $subject,
+          'email/OIEDCancellation.tpl', $tpl);
     }
 }

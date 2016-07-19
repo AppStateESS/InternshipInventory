@@ -44,6 +44,6 @@ class RegistrationIssueUgrad extends WorkflowTransition {
     {
         $agency = $i->getAgency();
 
-        Email::sendRegistrationIssueEmail($i, $agency, $note);
+        RegistrationIssue::sendEmail($i, $agency, $note);
     }
 }

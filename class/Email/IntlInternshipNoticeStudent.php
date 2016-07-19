@@ -11,7 +11,6 @@ class IntlInternshipNoticeStudent extends Email{
    */
   public static function sendEmail(Internship $i)
   {
-
       $settings = InternSettings::getInstance();
 
       $tpl = array();
