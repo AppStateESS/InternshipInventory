@@ -6,6 +6,7 @@ namespace Intern\Email;
  * Allows for the simple sending of email messages. Follows the general flow:
  *
  * sendSpecialMessage() -> sendTemplateMessage() -> sendEmail() -> logEmail()
+ * 	dynamic w/ hook							static							  static        static
  *
  * A message can be processed at any point in this flow, depending on the
  * desired function of the email.
@@ -22,7 +23,7 @@ abstract class Email {
    * @param  $note     Necessary for class RegistrationIssue.
    */
   protected final function sendSpecialMessage(Internship $i,
-    Agency $agency = null, $note = null) {
+    Agency $agency = null, $note = null, $drugCheck = false) {
 
     $settings = InternSettings::getInstance();
 
@@ -35,7 +36,7 @@ abstract class Email {
 
     $outputs = self::setUpSpecial();
 
-    self::sendTemplateMessage($outputs['to'], $outputs['subject'], $outputs['doc'], $tpl);
+    self::sendTemplateMessage($outputs['to'], $outputs['subject'], $outputs['doc'], $tpl, $outputs['cc']);
   }
 
   /**

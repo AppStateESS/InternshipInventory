@@ -11,91 +11,94 @@ class SendRegistrationIssueEmail extends Email {
    * @param Agency $agency
    * @param string $note
    */
-  public static function __construct(Internship $i, Agency $agency, $note)
-  {
-      $tpl = array();
+  public static function __construct(Internship $i, Agency $agency, $note) {
+      sendSpecialMessage($i, $agency, $note);
+  }
 
-      $subjects = Subject::getSubjects();
+  public function setUpSpecial() {
+    $tpl = array();
 
-      $settings = InternSettings::getInstance();
+    $subjects = Subject::getSubjects();
 
-      $faculty = $i->getFaculty();
+    $settings = InternSettings::getInstance();
 
-      $tpl = array();
-      $tpl['NAME'] = $i->getFullName();
-      $tpl['BANNER'] = $i->banner;
-      $tpl['USER'] = $i->email;
-      $tpl['PHONE'] = $i->phone;
+    $faculty = $i->getFaculty();
 
-      $tpl['TERM'] = Term::rawToRead($i->term, false);
-      if(isset($i->course_subj)){
-          $tpl['SUBJECT'] = $subjects[$i->course_subj];
-      }else{
-          $tpl['SUBJECT'] = '(No course subject provided)';
-      }
-      $tpl['COURSE_NUM'] = $i->course_no;
+    $tpl = array();
+    $tpl['NAME'] = $i->getFullName();
+    $tpl['BANNER'] = $i->banner;
+    $tpl['USER'] = $i->email;
+    $tpl['PHONE'] = $i->phone;
 
-      if(isset($i->course_sect)){
-          $tpl['SECTION'] = $i->course_sect;
-      }else{
-          $tpl['SECTION'] = '(not provided)';
-      }
+    $tpl['TERM'] = Term::rawToRead($i->term, false);
+    if(isset($i->course_subj)){
+        $tpl['SUBJECT'] = $subjects[$i->course_subj];
+    }else{
+        $tpl['SUBJECT'] = '(No course subject provided)';
+    }
+    $tpl['COURSE_NUM'] = $i->course_no;
 
-      if(isset($i->course_title)){
-          $tpl['COURSE_TITLE'] = $i->course_title;
-      }
+    if(isset($i->course_sect)){
+        $tpl['SECTION'] = $i->course_sect;
+    }else{
+        $tpl['SECTION'] = '(not provided)';
+    }
 
-      if(isset($i->credits)){
-          $tpl['CREDITS'] = $i->credits;
-      }else{
-          $tpl['CREDITS'] = '(not provided)';
-      }
+    if(isset($i->course_title)){
+        $tpl['COURSE_TITLE'] = $i->course_title;
+    }
 
-      $startDate = $i->getStartDate(true);
-      if(isset($startDate)){
-          $tpl['START_DATE'] = $startDate;
-      }else{
-          $tpl['START_DATE'] = '(not provided)';
-      }
+    if(isset($i->credits)){
+        $tpl['CREDITS'] = $i->credits;
+    }else{
+        $tpl['CREDITS'] = '(not provided)';
+    }
 
-      $endDate = $i->getEndDate(true);
-      if(isset($endDate)){
-          $tpl['END_DATE'] = $endDate;
-      }else{
-          $tpl['END_DATE'] = '(not provided)';
-      }
+    $startDate = $i->getStartDate(true);
+    if(isset($startDate)){
+        $tpl['START_DATE'] = $startDate;
+    }else{
+        $tpl['START_DATE'] = '(not provided)';
+    }
 
-      if($faculty instanceof Faculty){
-          $tpl['FACULTY'] = $faculty->getFullName();
-      }else{
-          $tpl['FACULTY'] = '(not provided)';
-      }
+    $endDate = $i->getEndDate(true);
+    if(isset($endDate)){
+        $tpl['END_DATE'] = $endDate;
+    }else{
+        $tpl['END_DATE'] = '(not provided)';
+    }
 
-      $department = $i->getDepartment();
-      $tpl['DEPT'] = $department->getName();
+    if($faculty instanceof Faculty){
+        $tpl['FACULTY'] = $faculty->getFullName();
+    }else{
+        $tpl['FACULTY'] = '(not provided)';
+    }
 
-      if($i->international){
-          $tpl['COUNTRY'] = $i->loc_country;
-          $tpl['INTERNATIONAL'] = 'Yes';
-          $intlSubject = '[int\'l] ';
-      }else{
-          $tpl['STATE'] = $i->loc_state;
-          $tpl['INTERNATIONAL'] = 'No';
-          $intlSubject = '';
-      }
+    $department = $i->getDepartment();
+    $tpl['DEPT'] = $department->getName();
 
-      $tpl['NOTE'] = $note;
+    if($i->international){
+        $tpl['COUNTRY'] = $i->loc_country;
+        $tpl['INTERNATIONAL'] = 'Yes';
+        $intlSubject = '[int\'l] ';
+    }else{
+        $tpl['STATE'] = $i->loc_state;
+        $tpl['INTERNATIONAL'] = 'No';
+        $intlSubject = '';
+    }
 
-      $to = $i->email . $settings->getEmailDomain();
-      if ($faculty instanceof Faculty) {
-          $cc = array($faculty->getUsername() . $settings->getEmailDomain());
-      } else {
-          $cc = array();
-      }
+    $tpl['NOTE'] = $note;
 
-      $subject = 'Internship Enrollment Issue';
+    $to = $i->email . $settings->getEmailDomain();
+    if ($faculty instanceof Faculty) {
+        $cc = array($faculty->getUsername() . $settings->getEmailDomain());
+    } else {
+        $cc = array();
+    }
 
-      email::sendTemplateMessage($to, $subject,
-        'email/RegistrationIssue.tpl', $tpl, $cc);
+    $subject = 'Internship Enrollment Issue';
+
+    email::sendTemplateMessage($to, $subject,
+      'email/RegistrationIssue.tpl', $tpl, $cc);
   }
 }

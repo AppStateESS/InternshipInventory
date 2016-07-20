@@ -10,38 +10,42 @@ class BackgroundCheck extends Email{
    * @param Internship $i
    * @param Agency $agency
    */
-  public static function __construct(Internship $i, Agency $agency, $backgroundCheck, $drugCheck)
+  public function __construct(Internship $i, Agency $agency, $backgroundCheck, $drugCheck)
   {
-      $tpl = array();
-      $background = '';
-      $drugTest = '';
+    sendSpecialMessage($i, $agency, $backgroundCheck, $drugCheck);
+  }
 
-      $settings = InternSettings::getInstance();
+  public function setUpSpecial() {
+    $tpl = array();
+    $background = '';
+    $drugTest = '';
 
-      $tpl = array();
-      $tpl['NAME'] = $i->getFullName();
-      $tpl['BANNER'] = $i->banner;
-      $tpl['BIRTHDAY'] = $i->getBirthDateFormatted();
-      $tpl['EMAIL'] = $i->getEmailAddress() . $settings->getEmailDomain();
-      $tpl['AGENCY'] = $agency->getName();
+    $settings = InternSettings::getInstance();
 
-      if ($backgroundCheck)
-          $background = 'Background';
+    $tpl = array();
+    $tpl['NAME'] = $i->getFullName();
+    $tpl['BANNER'] = $i->banner;
+    $tpl['BIRTHDAY'] = $i->getBirthDateFormatted();
+    $tpl['EMAIL'] = $i->getEmailAddress() . $settings->getEmailDomain();
+    $tpl['AGENCY'] = $agency->getName();
 
-      if ($drugCheck)
-          $drugTest = 'Drug';
+    if ($backgroundCheck)
+        $background = 'Background';
 
-      if ($backgroundCheck && $drugCheck)
-      {
-          $subject = 'Internship Background/Drug Check Needed ' . $i->getFullName();
-          $tpl['CHECK'] = $background . '/' . $drugTest;
-      }else{
-          $subject = 'Internship ' . $background . $drugTest . ' Check Needed ' . $i->getFullName();
-          $tpl['CHECK'] = $background . $drugTest;
-      }
+    if ($drugCheck)
+        $drugTest = 'Drug';
 
-      $to = $settings->getBackgroundCheckEmail();
+    if ($backgroundCheck && $drugCheck)
+    {
+        $subject = 'Internship Background/Drug Check Needed ' . $i->getFullName();
+        $tpl['CHECK'] = $background . '/' . $drugTest;
+    }else{
+        $subject = 'Internship ' . $background . $drugTest . ' Check Needed ' . $i->getFullName();
+        $tpl['CHECK'] = $background . $drugTest;
+    }
 
-      email::sendTemplateMessage($to, $subject, 'email/BackgroundDrugCheck.tpl', $tpl);
+    $to = $settings->getBackgroundCheckEmail();
+
+    email::sendTemplateMessage($to, $subject, 'email/BackgroundDrugCheck.tpl', $tpl);
   }
 }

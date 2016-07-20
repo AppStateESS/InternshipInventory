@@ -11,24 +11,28 @@ class OIEDCancellation extends Email {
    * @param Internship $i
    * @param Agency $a
    */
-  public static function __construct(Internship $i, Agency $a) {
-        $tpl = array();
+  public function __construct(Internship $i, Agency $a) {
+    sendSpecialMessage($i, $a);
+  }
 
-        $settings = InternSettings::getInstance();
+  public function setUpSpecial() {
+    $tpl = array();
 
-        $tpl = array();
-        $tpl['NAME'] = $i->getFullName();
-        $tpl['BANNER'] = $i->banner;
+    $settings = InternSettings::getInstance();
 
-        $tpl['TERM'] = Term::rawToRead($i->term, false);
+    $tpl = array();
+    $tpl['NAME'] = $i->getFullName();
+    $tpl['BANNER'] = $i->banner;
 
-        $countries = \Intern\CountryFactory::getCountries();
+    $tpl['TERM'] = Term::rawToRead($i->term, false);
 
-        $tpl['COUNTRY'] = $countries[$i->loc_country];
+    $countries = \Intern\CountryFactory::getCountries();
 
-        $to = $settings->getInternationalOfficeEmail();
-        $subject = 'International Internship Cancellation';
+    $tpl['COUNTRY'] = $countries[$i->loc_country];
 
-        email::sendTemplateMessage($to, $subject, 'email/OIEDCancellation.tpl', $tpl);
-    }
+    $to = $settings->getInternationalOfficeEmail();
+    $subject = 'International Internship Cancellation';
+
+    email::sendTemplateMessage($to, $subject, 'email/OIEDCancellation.tpl', $tpl);
+  }
 }

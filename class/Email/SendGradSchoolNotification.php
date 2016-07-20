@@ -10,16 +10,14 @@ class SendGradSchoolNotification extends Email {
    * @param Internship $i
    * @param Agency $a
    */
-  public static function __construct(Internship $i, Agency $a)
-  {
+  public function __construct(Internship $i, Agency $a) {
       sendSpecialMessage($i, $a);
   }
 
   /**
    * Adds information to email unique to grad school.
    */
-  protected function setUpSpecial()
-  {
+  protected function setUpSpecial() {
     $subjects = Subject::getSubjects();
 
     $faculty = $i->getFaculty();

@@ -10,28 +10,31 @@ class RegistrationConfirm extends Email{
    * @param Internship $i
    * @param Agency $agency
    */
-  public static function __construct(Internship $i, Agency $agency)
-  {
-      $tpl = array();
+  public function __construct(Internship $i, Agency $a) {
+      sendSpecialMessage($i, $a);
+  }
 
-      $subjects = Subject::getSubjects();
+  public function setUpSpecial() {
+    $tpl = array();
 
-      $settings = InternSettings::getInstance();
+    $subjects = Subject::getSubjects();
 
-      $faculty = $i->getFaculty();
+    $settings = InternSettings::getInstance();
 
-      $tpl = array();
-      $tpl['NAME'] = $i->getFullName();
-      $tpl['BANNER'] = $i->getBannerId();
-      $tpl['TERM'] = Term::rawToRead($i->getTerm(), false);
-      $tpl['FACULTY'] = $faculty->getFullName();
-      $tpl['AGENCY'] = $agency->getName();
+    $faculty = $i->getFaculty();
+
+    $tpl = array();
+    $tpl['NAME'] = $i->getFullName();
+    $tpl['BANNER'] = $i->getBannerId();
+    $tpl['TERM'] = Term::rawToRead($i->getTerm(), false);
+    $tpl['FACULTY'] = $faculty->getFullName();
+    $tpl['AGENCY'] = $agency->getName();
 
 
-      $to = $faculty->getUsername() . $settings->getEmailDomain();
+    $to = $faculty->getUsername() . $settings->getEmailDomain();
 
-      $subject = 'OIED Certified Internship';
+    $subject = 'OIED Certified Internship';
 
-      email::sendTemplateMessage($to, $subject, 'email/OiedCertifiedNotice.tpl', $tpl);
+    email::sendTemplateMessage($to, $subject, 'email/OiedCertifiedNotice.tpl', $tpl);
   }
 }

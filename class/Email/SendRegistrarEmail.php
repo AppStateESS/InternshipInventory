@@ -11,12 +11,11 @@ class SendRegistrarEmail extends Email {
   * @param Internship $i
   * @param Agency $a
   */
-  public function __construct(Internship $i, Agency $a){
+  public function __construct(Internship $i, Agency $a) {
     sendSpecialMessage($i, $a);
   }
 
-  public function setUpSpecial()
-  {
+  public function setUpSpecial() {
     $subjects = Subject::getSubjects();
 
     $faculty = $i->getFaculty();
@@ -130,8 +129,6 @@ class SendRegistrarEmail extends Email {
     } else {
       $cc = array();
     }
-
-
 
     $ouputs = array();
     $outputs['to'] = $to;
