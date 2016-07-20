@@ -1,6 +1,10 @@
 <?php
 
 namespace Intern\Email;
+use Intern\Internship;
+use Intern\Agency;
+use Intern\InternSettings;
+use Intern\Term;
 
 /**
  * Allows for the simple sending of email messages. Follows the general flow:
@@ -13,18 +17,18 @@ namespace Intern\Email;
  */
 abstract class Email {
 
-  private $internship;
-  private $agency;
-  private $settings;
-  private $faculty;
-  private $note;
-  private $backgroundCheck;
-  private $drugCheck;
-  private $to;
-  private $subject;
-  private $doc;
-  private $tpl;
-  private $cc;
+  protected $internship;
+  protected $agency;
+  protected $settings;
+  protected $faculty;
+  protected $note;
+  protected $backgroundCheck;
+  protected $drugCheck;
+  protected $to;
+  protected $subject;
+  protected $doc;
+  protected $tpl;
+  protected $cc;
 
   /**
    * Template method for specialized email messages. Subclasses will
@@ -56,8 +60,8 @@ abstract class Email {
     $this->tpl['BIRTHDAY'] = $this->internship->getBirthDateFormatted();
     $this->tpl['TERM'] = Term::rawToRead($this->internship->getTerm(), false);
 
-    self::setUpSpecial();
-    self::sendTemplateMessage($this->to, $this->subject, $this->doc,
+    $this->setUpSpecial();
+    $this->sendTemplateMessage($this->to, $this->subject, $this->doc,
       $this->tpl, $this->cc);
   }
 
