@@ -13,18 +13,18 @@ namespace Intern\Email;
  */
 abstract class Email {
 
-  Internship $internship;
-  Agency $agency;
-  $settings;
-  $faculty;
-  $note;
-  $backgroundCheck;
-  $drugCheck;
-  $to;
-  $subject;
-  $doc;
-  $tpl;
-  $cc;
+  private $internship;
+  private $agency;
+  private $settings;
+  private $faculty;
+  private $note;
+  private $backgroundCheck;
+  private $drugCheck;
+  private $to;
+  private $subject;
+  private $doc;
+  private $tpl;
+  private $cc;
 
   /**
    * Template method for specialized email messages. Subclasses will
