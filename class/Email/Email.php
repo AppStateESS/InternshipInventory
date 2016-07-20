@@ -13,6 +13,17 @@ namespace Intern\Email;
  */
 abstract class Email {
 
+  Internship $internship;
+  Agency $agency;
+  $note;
+  $backgroundCheck;
+  $drugCheck;
+  $to;
+  $subject;
+  $doc;
+  $tpl;
+  $cc;
+
   /**
    * Template method for specialized email messages. Subclasses will
    * call this method and implement their own setUpSpecial() hook to meet
@@ -23,20 +34,27 @@ abstract class Email {
    * @param  $note     Necessary for class RegistrationIssue.
    */
   protected final function sendSpecialMessage(Internship $i,
-    Agency $agency = null, $note = null, $drugCheck = false) {
+    Agency $agency = null, $note = null, $backgroundCheck = false,
+    $drugCheck = false) {
+
+    $this->internship = $i;
+    $this->agency = $agency;
+    $this->note = $note;
+    $this->backgroundCheck = $backgroundCheck;
+    $this->drugCheck = $drugCheck;
 
     $settings = InternSettings::getInstance();
 
-    $tpl = array();
-    $tpl['NAME'] = $i->getFullName();
-    $tpl['BANNER'] = $i->getBannerId();
-    $tpl['USER'] = $i->getEmailAddress();
-    $tpl['PHONE'] = $i->getPhoneNumber();
-    $tpl['TERM'] = Term::rawToRead($i->getTerm(), false);
+    $this->tpl = array();
+    $this->tpl['NAME'] = $internship->getFullName();
+    $this->tpl['BANNER'] = $internship->getBannerId();
+    $this->tpl['USER'] = $internship->getEmailAddress();
+    $this->tpl['PHONE'] = $internship->getPhoneNumber();
+    $this->tpl['TERM'] = Term::rawToRead($internship->getTerm(), false);
 
-    $outputs = self::setUpSpecial();
-
-    self::sendTemplateMessage($outputs['to'], $outputs['subject'], $outputs['doc'], $tpl, $outputs['cc']);
+    self::setUpSpecial();
+    self::sendTemplateMessage($this->to, $this->subject, $this->doc,
+      $this->tpl, $this->cc);
   }
 
   /**
