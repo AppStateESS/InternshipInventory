@@ -12,7 +12,7 @@ class BackgroundCheck extends Email{
    */
   public function __construct(Internship $i, Agency $a, $backgroundCheck, $drugCheck)
   {
-    sendSpecialMessage($i, $a, null, $backgroundCheck, $drugCheck);
+    self::sendSpecialMessage($i, $a, null, $backgroundCheck, $drugCheck);
   }
 
   public function setUpSpecial() {
