@@ -2,14 +2,14 @@
 
 namespace Intern\Email;
 
-class InternshipCancelNotice extends Email{
+class SendInternshipCancelNotice extends Email {
 
   /**
    * Notifies of internship cancelation.
    *
    * @param Internship $i
    */
-  public static function sendEmail(Internship $i)
+  public static function __construct(Internship $i)
   {
       $settings = InternSettings::getInstance();
 

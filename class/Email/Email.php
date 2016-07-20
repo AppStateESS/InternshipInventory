@@ -43,7 +43,7 @@ abstract class Email {
    * to provide additional information to sendTemplateMessage() for their
    * specialized purpose.
    */
-  protected absract function setUpSpecial();
+  abstract protected function setUpSpecial();
 
   public static function sendTemplateMessage($to,
   $subject, $tpl, $tags, $cc = null){

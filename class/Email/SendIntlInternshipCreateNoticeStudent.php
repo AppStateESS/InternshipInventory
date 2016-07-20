@@ -2,14 +2,14 @@
 
 namespace Intern\Email;
 
-class IntlInternshipNoticeStudent extends Email{
+class SendIntlInternshipCreateNoticeStudent extends Email{
 
   /**
    * Notifies the student of an international internship.
    *
    * @param Internship $i
    */
-  public static function sendEmail(Internship $i)
+  public static function __construct(Internship $i)
   {
 
       $settings = InternSettings::getInstance();

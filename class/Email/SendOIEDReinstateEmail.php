@@ -9,7 +9,7 @@ class OIEDReinstate extends Email {
    * @param Internship $i
    * @param Agency $agency
    */
-  public static function sendEmail(Internship $i, Agency $agency)
+  public static function __construct(Internship $i, Agency $agency)
   {
       $tpl = array();
 

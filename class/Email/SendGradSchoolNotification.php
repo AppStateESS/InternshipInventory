@@ -2,7 +2,7 @@
 
 namespace Intern\Email;
 
-class GradSchoolNotice extends Email {
+class SendGradSchoolNotification extends Email {
 
   /**
    * Sends an email to the grad school office, letting them know there's someone to notify
@@ -10,7 +10,7 @@ class GradSchoolNotice extends Email {
    * @param Internship $i
    * @param Agency $a
    */
-  public static function sendGradSchoolNotification(Internship $i, Agency $a)
+  public static function __construct(Internship $i, Agency $a)
   {
       sendSpecialMessage($i, $a);
   }

@@ -2,22 +2,21 @@
 
 namespace Intern\Email;
 
-class RegistrationIssue extends Email {
+class RegistrationConfirm extends Email{
 
   /**
-   *  Sends the 'Registration Issue' notification email.
+   * Sends the 'Registration Confirmation' email.
    *
    * @param Internship $i
    * @param Agency $agency
-   * @param string $note
    */
-  public static function sendEmail(Internship $i, Agency $agency, $note)
+  public static function __construct(Internship $i, Agency $a)
   {
+      $settings = InternSettings::getInstance();
+
       $tpl = array();
 
       $subjects = Subject::getSubjects();
-
-      $settings = InternSettings::getInstance();
 
       $faculty = $i->getFaculty();
 
@@ -84,18 +83,15 @@ class RegistrationIssue extends Email {
           $intlSubject = '';
       }
 
-      $tpl['NOTE'] = $note;
-
       $to = $i->email . $settings->getEmailDomain();
       if ($faculty instanceof Faculty) {
           $cc = array($faculty->getUsername() . $settings->getEmailDomain());
       } else {
           $cc = array();
       }
-
-      $subject = 'Internship Enrollment Issue';
+      $subject = 'Internship Approved';
 
       email::sendTemplateMessage($to, $subject,
-        'email/RegistrationIssue.tpl', $tpl, $cc);
+        'email/RegistrationConfirmation.tpl', $tpl, $cc);
   }
 }

@@ -11,7 +11,7 @@ class OIEDCancellation extends Email {
    * @param Internship $i
    * @param Agency $a
    */
-  public static function sendEmail(Internship $i, Agency $a) {
+  public static function __construct(Internship $i, Agency $a) {
         $tpl = array();
 
         $settings = InternSettings::getInstance();

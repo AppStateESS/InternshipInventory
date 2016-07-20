@@ -10,7 +10,7 @@ class BackgroundCheck extends Email{
    * @param Internship $i
    * @param Agency $agency
    */
-  public static function sendEmail(Internship $i, Agency $agency, $backgroundCheck, $drugCheck)
+  public static function __construct(Internship $i, Agency $agency, $backgroundCheck, $drugCheck)
   {
       $tpl = array();
       $background = '';
