@@ -15,6 +15,7 @@ abstract class Email {
 
   Internship $internship;
   Agency $agency;
+  $settings;
   $note;
   $backgroundCheck;
   $drugCheck;
@@ -43,13 +44,14 @@ abstract class Email {
     $this->backgroundCheck = $backgroundCheck;
     $this->drugCheck = $drugCheck;
 
-    $settings = InternSettings::getInstance();
+    $this->settings = InternSettings::getInstance();
 
     $this->tpl = array();
     $this->tpl['NAME'] = $internship->getFullName();
     $this->tpl['BANNER'] = $internship->getBannerId();
     $this->tpl['USER'] = $internship->getEmailAddress();
     $this->tpl['PHONE'] = $internship->getPhoneNumber();
+    $this->tpl['BIRTHDAY'] = $internship->getBirthDateFormatted();
     $this->tpl['TERM'] = Term::rawToRead($internship->getTerm(), false);
 
     self::setUpSpecial();
