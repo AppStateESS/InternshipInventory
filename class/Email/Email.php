@@ -32,6 +32,7 @@ abstract class Email {
   protected $doc;
   protected $tpl;
   protected $cc;
+  protected $intlSubject;
 
   /**
    * Template method for specialized email messages. Subclasses will
@@ -91,6 +92,77 @@ abstract class Email {
    * specialized purpose.
    */
   abstract protected function setUpSpecial();
+
+  /**
+   * Performs common sanity check for classes that require this.
+   */
+  protected final function sanityCheck() {
+    /**** Subject Checking ***/
+    $subject = $this->internship->getSubject();
+    if(isset($subject)){
+        $this->tpl['SUBJECT'] = $this->subjects[$subject];
+    }else{
+        $this->tpl['SUBJECT'] = '(No course subject provided)';
+    }
+
+    /**** Course Section Checking ***/
+    $section = $this->internship->getCourseSection();
+    if(isset($section)){
+        $this->tpl['SECTION'] = $section;
+    }else{
+        $this->tpl['SECTION'] = '(Section not provided)';
+    }
+
+    /**** Course Title Checking ***/
+    $courseTitle = $this->internship->getCourseTitle();
+    if(isset($courseTitle)){
+        $this->tpl['COURSE_TITLE'] = $courseTitle;
+    }
+
+    /**** Credit Hour Checking ***/
+    $creditHours = $this->internship->getCreditHours();
+    if(isset($creditHours)){
+        $this->tpl['CREDITS'] = $creditHours;
+    }else{
+        $this->tpl['CREDITS'] = '(not provided)';
+    }
+
+    /**** Start Date Checking ***/
+    $startDate = $this->internship->getStartDate(true);
+    if(isset($startDate)){
+        $this->tpl['START_DATE'] = $startDate;
+    }else{
+        $this->tpl['START_DATE'] = '(not provided)';
+    }
+
+    /**** End Date Checking ***/
+    $endDate = $this->internship->getEndDate(true);
+    if(isset($endDate)){
+        $this->tpl['END_DATE'] = $endDate;
+    }else{
+        $this->tpl['END_DATE'] = '(not provided)';
+    }
+
+    /**** Faculty Checking ***/
+    //Id for all: Grad, RegE, RegC, RegI? Ask Jeremy. Originally just RegE
+    if($faculty instanceof Faculty){
+        $tpl['FACULTY'] = $faculty->getFullName() . ' ('
+          . $this->facutly->getId() . ')';
+    }else{
+        $tpl['FACULTY'] = '(not provided)';
+    }
+
+    /**** International Checking ***/
+    if($this->internship->isInternational()){
+        $this->tpl['COUNTRY'] = $this->internship->getLocCountry();
+        $this->tpl['INTERNATIONAL'] = 'Yes';
+        $this->intlSubject = '[int\'l] ';
+    }else{
+        $this->tpl['STATE'] = $this->internship->getLocationState();
+        $this->tpl['INTERNATIONAL'] = 'No';
+        $this->intlSubject = '';
+    }
+  }
 
   public static function sendTemplateMessage($to,
   $subject, $tpl, $tags, $cc = null){
