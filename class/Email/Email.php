@@ -63,6 +63,7 @@ abstract class Email {
     $this->tpl['BIRTHDAY'] = $this->internship->getBirthDateFormatted();
     $this->tpl['TERM'] = Term::rawToRead($this->internship->getTerm(), false);
 
+    //Call to hook
     $this->setUpSpecial();
 
     //special email debug
@@ -116,7 +117,7 @@ abstract class Email {
 
     // Sanity checking
     if(!isset($to) || is_null($to)){
-        return false;
+        throw new ErrorException('\"To\" not set.');
     }
 
     if(!isset($from) || is_null($from)){
@@ -124,11 +125,11 @@ abstract class Email {
     }
 
     if(!isset($subject) || is_null($subject)){
-        return false;
+        throw new ErrorException('\"Subject\" not set.');
     }
 
     if(!isset($content) || is_nulL($content)){
-        return false;
+        throw new ErrorException('\"Content\" not set.');
     }
 
     // Create a Mail object and set it up
@@ -156,7 +157,7 @@ abstract class Email {
     }
 
     if(\PHPWS_Error::logIfError($result)){
-        return false;
+      throw new ErrorException('PHPWS_Error.');
     }
 
     self::logEmail($message);
