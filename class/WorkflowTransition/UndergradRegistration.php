@@ -3,7 +3,7 @@
 namespace Intern\WorkflowTransition;
 use Intern\WorkflowTransition;
 use Intern\Internship;
-use Intern\Email;
+use Intern\Email\SendRegistrationConfirmationEmail;
 use Intern\Exception\MissingDataException;
 
 class UndergradRegistration extends WorkflowTransition {
@@ -44,7 +44,7 @@ class UndergradRegistration extends WorkflowTransition {
     {
         $agency = $i->getAgency();
 
-        Email::sendRegistrationConfirmationEmail($i, $agency);
+        new SendRegistrationConfirmationEmail($i, $agency);
     }
 
     public function checkRequiredFields(Internship $i)

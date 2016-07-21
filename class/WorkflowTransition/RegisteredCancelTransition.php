@@ -3,7 +3,7 @@
 namespace Intern\WorkflowTransition;
 use Intern\WorkflowTransition;
 use Intern\Internship;
-use Intern\Email;
+use Intern\Email\SendInternshipCancelNotice;
 
 class RegisteredCancelTransition extends WorkflowTransition {
     const sourceState = 'RegisteredState';
@@ -37,6 +37,6 @@ class RegisteredCancelTransition extends WorkflowTransition {
 
     public function doNotification(Internship $i, $note = null)
     {
-        Email::sendInternshipCancelNotice($i);
+        new SendInternshipCancelNotice($i);
     }
 }

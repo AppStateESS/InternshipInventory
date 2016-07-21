@@ -3,7 +3,7 @@
 namespace Intern\WorkflowTransition;
 use Intern\WorkflowTransition;
 use Intern\Internship;
-use Intern\Email;
+use Intern\Email\SendRegistrationIssueEmail;
 
 class RegistrationIssueUgrad extends WorkflowTransition {
     const sourceState = 'DeanApprovedState';
@@ -44,6 +44,6 @@ class RegistrationIssueUgrad extends WorkflowTransition {
     {
         $agency = $i->getAgency();
 
-        Email::sendRegistrationIssueEmail($i, $agency, $note);
+        new SendRegistrationIssueEmail($i, $agency, $note);
     }
 }
