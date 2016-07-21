@@ -25,7 +25,9 @@ class SendIntlInternshipCreateNotice extends Email {
     $this->tpl['DEPARTMENT'] = $dept->getName();
 
     $this->to = $this->settings->getInternationalOfficeEmail();
-    $this->subject = "International Internship Created - {$this->internship->getFirstName()} {$this->internship->getLastName()}";
+    $fname = $this->internship->getFirstName();
+    $lname = $this->internship->getLastName();
+    $this->subject = "International Internship Created - {$fname} {$lname}";
     $this->doc = 'email/IntlInternshipCreateNotice.tpl';
   }
 }
