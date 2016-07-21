@@ -1,8 +1,10 @@
 <?php
 
 namespace Intern\Email;
+use Intern\Internship;
+use Intern\Agency;
 
-class RegistrationConfirm extends Email{
+class SendOIEDCertifiedNoticeEmail extends Email{
 
   /**
    *  Sends the OIED certification email to the given faclty member
@@ -15,27 +17,15 @@ class RegistrationConfirm extends Email{
       sendSpecialMessage($i, $a);
   }
 
+  /*
+   * Sets up OIED notice email.
+   */
   public function setUpSpecial() {
-    $tpl = array();
+    $this->tpl['FACULTY'] = $this->faculty->getFullName();
+    $this->tpl['AGENCY'] = $this->agency->getName();
 
-    $subjects = Subject::getSubjects();
-
-    $settings = InternSettings::getInstance();
-
-    $faculty = $i->getFaculty();
-
-    $tpl = array();
-    $tpl['NAME'] = $i->getFullName();
-    $tpl['BANNER'] = $i->getBannerId();
-    $tpl['TERM'] = Term::rawToRead($i->getTerm(), false);
-    $tpl['FACULTY'] = $faculty->getFullName();
-    $tpl['AGENCY'] = $agency->getName();
-
-
-    $to = $faculty->getUsername() . $settings->getEmailDomain();
-
-    $subject = 'OIED Certified Internship';
-
-    email::sendTemplateMessage($to, $subject, 'email/OiedCertifiedNotice.tpl', $tpl);
+    $this->to = $this->faculty->getUsername() . $this->settings->getEmailDomain();
+    $this->subject = 'OIED Certified Internship';
+    $this->doc = 'email/OiedCertifiedNotice.tpl';
   }
 }

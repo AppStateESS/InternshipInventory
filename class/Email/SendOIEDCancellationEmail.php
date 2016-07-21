@@ -1,12 +1,14 @@
 <?php
 
 namespace Intern\Email;
+use Intern\Internship;
+use Intern\Agency;
+use Intern\CountryFactory;
 
-class OIEDCancellation extends Email {
+class OIEDCancellationEmail extends Email {
 
   /**
-   * Sends an email to the registrar notifying them to register
-   * the student for the appropriate internship course.
+   * Cancelation email for OIED.
    *
    * @param Internship $i
    * @param Agency $a
@@ -16,24 +18,15 @@ class OIEDCancellation extends Email {
     sendSpecialMessage($i, $a);
   }
 
+  /*
+   * Sets up OIED cancelation email.
+   */
   public function setUpSpecial() {
-    $tpl = array();
+    $countries = CountryFactory::getCountries();
+    $this->tpl['COUNTRY'] = $countries[$internship->getLocCountry()];
 
-    $settings = InternSettings::getInstance();
-
-    $tpl = array();
-    $tpl['NAME'] = $i->getFullName();
-    $tpl['BANNER'] = $i->banner;
-
-    $tpl['TERM'] = Term::rawToRead($i->term, false);
-
-    $countries = \Intern\CountryFactory::getCountries();
-
-    $tpl['COUNTRY'] = $countries[$i->loc_country];
-
-    $to = $settings->getInternationalOfficeEmail();
-    $subject = 'International Internship Cancellation';
-
-    email::sendTemplateMessage($to, $subject, 'email/OIEDCancellation.tpl', $tpl);
+    $this->to = $this->settings->getInternationalOfficeEmail();
+    $this->subject = 'International Internship Cancellation';
+    $this->doc = 'email/OIEDCancellation.tpl';
   }
 }

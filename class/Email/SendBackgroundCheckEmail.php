@@ -1,11 +1,13 @@
 <?php
 
 namespace Intern\Email;
-//DONE
+use Intern\Internship;
+use Intern\Agency;
+
 class BackgroundCheck extends Email{
 
   /**
-   *  Sends the Background or Drug check notification email.
+   * Sends the Background or Drug check notification email.
    *
    * @param Internship $i
    * @param Agency $agency
@@ -15,11 +17,14 @@ class BackgroundCheck extends Email{
     self::sendSpecialMessage($i, $a, null, $backgroundCheck, $drugCheck);
   }
 
+  /**
+   * Adds information to email regarding background and/or drug checking.
+   */
   public function setUpSpecial() {
     $background = '';
     $drugTest = '';
 
-    $tpl['AGENCY'] = $agency->getName();
+    $this->tpl['AGENCY'] = $this->agency->getName();
 
     if ($this->backgroundCheck)
         $background = 'Background';

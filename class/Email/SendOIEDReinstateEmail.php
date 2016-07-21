@@ -1,8 +1,11 @@
 <?php
 
 namespace Intern\Email;
+use Intern\Internship;
+use Intern\Agency;
+use Intern\CountryFactory;
 
-class OIEDReinstate extends Email {
+class SendOIEDReinstateEmail extends Email {
   /**
    *  Sends the  reinstate notification email to OIED.
    *
@@ -16,24 +19,11 @@ class OIEDReinstate extends Email {
 
   public function setUpSpecial()
   {
-    $tpl = array();
+    $countries = CountryFactory::getCountries();
+    $this->tpl['COUNTRY'] = $countries[$this->internship->getLocCountry()];
 
-    $settings = InternSettings::getInstance();
-
-    $tpl = array();
-    $tpl['NAME'] = $i->getFullName();
-    $tpl['BANNER'] = $i->banner;
-
-    $tpl['TERM'] = Term::rawToRead($i->term, false);
-
-    $countries = \Intern\CountryFactory::getCountries();
-
-    $tpl['COUNTRY'] = $countries[$i->loc_country];
-
-    $to = $settings->getInternationalOfficeEmail();
-    $subject = 'International Internship Reinstated';
-
-    email::sendTemplateMessage($to, $subject,
-      'email/OIEDReinstate.tpl', $tpl);
+    $this->to = $this->settings->getInternationalOfficeEmail();
+    $this->subject = 'International Internship Reinstated';
+    $this->doc = 'email/OIEDReinstate.tpl';
   }
 }

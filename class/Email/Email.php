@@ -6,6 +6,7 @@ use Intern\Agency;
 use Intern\InternSettings;
 use Intern\Term;
 use Intern\Subject;
+use ErrorException;
 
 /**
  * Allows for the simple sending of email messages. Follows the general flow:

@@ -1,7 +1,10 @@
 <?php
 
 namespace Intern\Email;
-//DONE
+use Intern\Internship;
+use Intern\Agency;
+use Intern\Faculty;
+
 class SendGradSchoolNotification extends Email {
 
   /**
@@ -20,25 +23,25 @@ class SendGradSchoolNotification extends Email {
    */
   protected function setUpSpecial() {
 
-    if(isset($this->internship->course_subj)){
-        $this->tpl['SUBJECT'] = $this->subjects[$this->internship->course_subj];
+    if(isset($this->internship->getSubject())){
+        $this->tpl['SUBJECT'] = $this->subjects[$this->internship->getSubject()];
     }else{
         $this->tpl['SUBJECT'] = '(No course subject provided)';
     }
-    $this->tpl['COURSE_NUM'] = $this->internship->course_no;
+    $this->tpl['COURSE_NUM'] = $this->internship->getCourseNumber();
 
-    if(isset($this->internship->course_sect)){
-        $this->tpl['SECTION'] = $this->internship->course_sect;
+    if(isset($this->internship->getCourseSection())){
+        $this->tpl['SECTION'] = $this->internship->getCourseSection();
     }else{
         $this->tpl['SECTION'] = '(not provided)';
     }
 
-    if(isset($this->internship->course_title)){
-        $this->tpl['COURSE_TITLE'] = $this->internship->course_title;
+    if(isset($this->internship->getCourseTitle())){
+        $this->tpl['COURSE_TITLE'] = $this->internship->getCourseTitle();
     }
 
-    if(isset($this->internship->credits)){
-        $this->tpl['CREDITS'] = $this->internship->credits;
+    if(isset($this->internship->getCreditHours())){
+        $this->tpl['CREDITS'] = $this->internship->getCreditHours();
     }else{
         $this->tpl['CREDITS'] = '(not provided)';
     }
@@ -76,12 +79,12 @@ class SendGradSchoolNotification extends Email {
         $this->tpl['CAMPUS'] = $campus;
     }
 
-    if($this->internship->international){
-        $this->tpl['COUNTRY'] = $this->internship->loc_country;
+    if($this->internship->isInternational()){
+        $this->tpl['COUNTRY'] = $this->internship->getLocCountry();
         $this->tpl['INTERNATIONAL'] = 'Yes';
         $intlSubject = '[int\'l] ';
     }else{
-        $this->tpl['STATE'] = $this->internship->loc_state;
+        $this->tpl['STATE'] = $this->internship->getLocationState();
         $this->tpl['INTERNATIONAL'] = 'No';
         $intlSubject = '';
     }
@@ -89,7 +92,8 @@ class SendGradSchoolNotification extends Email {
     $emails = $this->settings->getGradSchoolEmail(); // To Holly Hirst, for now
 
     $this->to = explode(',', $emails);
-    $this->subject = 'Internship Approval Needed: ' . $intlSubject . '[' . $this->internship->getBannerId() . '] ' . $this->internship->getFullName();
+    $this->subject = 'Internship Approval Needed: ' . $intlSubject
+      . '[' . $this->internship->getBannerId() . '] ' . $this->internship->getFullName();
     $this->doc = 'email/GradSchoolNotification.tpl';
   }
 }

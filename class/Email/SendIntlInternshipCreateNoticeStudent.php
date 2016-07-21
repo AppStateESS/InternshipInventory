@@ -13,18 +13,20 @@ class SendIntlInternshipCreateNoticeStudent extends Email{
    */
   public function __construct(Internship $i) {
     echo("CLASS: SendIntlInternshipCreateNoticeStudent");
-    sendSpecialMessage($i);
+    $this->sendSpecialMessage($i);
   }
 
+  /**
+   * Sets up email as international internship creation notice for student.
+   */
   public function setUpSpecial() {
-    $this->tpl['COUNTRY'] = $this->internship->loc_country;
-
-    $dept = new Department($this->internship->department_id);
+    $this->tpl['COUNTRY'] = $this->internship->getLocCountry();
+    $dept = new Department($this->internship->getDepartmentId());
     $this->tpl['DEPARTMENT'] = $dept->getName();
-    $this->to = $this->internship->email . '@appstate.edu';
 
-    $subject = "International Internship Created -
-      {$this->internship->first_name} {$this->internship->last_name}";
+    $this->to = $this->internship->getEmailAddress() . '@appstate.edu';
+    $this->subject = "International Internship Created -
+      {$this->internship->getFirstName()} {$this->internship->getLastName()}";
     $this->doc = 'email/IntStudentInternshipOIEDNotice.tpl';
   }
 }

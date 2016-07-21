@@ -1,6 +1,7 @@
 <?php
 
 namespace Intern\Email;
+use Intern\Internship;
 use Intern\Department;
 use Intern\Faculty;
 use Intern\Term;
@@ -17,22 +18,22 @@ class SendInternshipCancelNotice extends Email {
     $this->sendSpecialMessage($i);
   }
 
-  public function setUpSpecial() {
-    $dept = new Department($this->internship->department_id);
+  /**
+   * Sets up email as a cancelation notice.
+   */
+  public function setupSpecial() {
+    $dept = new Department($this->internship->getDepartmentId());
     $this->tpl['DEPARTMENT'] = $dept->getName();
-
-    $this->to = $this->internship->email . '@appstate.edu';
-
     $faculty = $internship->getFaculty();
+
+    $this->to = $this->internship->getEmailAddress() . '@appstate.edu';
     if ($faculty instanceof Faculty) {
       $this->cc = array($faculty->getUsername() . '@' . $this->settings->getEmailDomain(), $this->settings->getRegistrarEmail());
     } else {
       $this->cc = array();
     }
-
     $this->subject = 'Internship Cancelled ' . $this->term .
       '[' . $this->internship->getBannerId() . '] ' . $this->internship->getFullName();
-
     $this->doc = 'email/StudentCancellationNotice.tpl';
   }
 }

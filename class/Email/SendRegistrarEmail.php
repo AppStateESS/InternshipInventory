@@ -3,9 +3,9 @@
 namespace Intern\Email;
 use Intern\Internship;
 use Intern\Agency;
+use Intern\Faculty;
 
 class SendRegistrarEmail extends Email {
-
 
   /**
   * Sends an email to the registrar notifying them to register
@@ -19,9 +19,10 @@ class SendRegistrarEmail extends Email {
     self::sendSpecialMessage($i, $a);
   }
 
+  /*
+   * Sets up special components of registrar email.
+   */
   public function setUpSpecial() {
-    $faculty = $this->internship->getFaculty();
-
     if(isset($this->internship->course_subj)){
       $this->tpl['SUBJECT'] = $this->subjects[$this->internship->course_subj];
     }else{
@@ -59,10 +60,10 @@ class SendRegistrarEmail extends Email {
       $this->tpl['END_DATE'] = '(not provided)';
     }
 
-    if($faculty instanceof Faculty){
-      $faculty = $this->internship->getFaculty();
-      $this->tpl['FACULTY'] = $faculty->getFullName() . ' ('
-      . $faculty->getId() . ')';
+    if($this->faculty instanceof Faculty){
+      $this->faculty = $this->internship->getFaculty();
+      $this->tpl['FACULTY'] = $this->faculty->getFullName() . ' ('
+      . $this->faculty->getId() . ')';
     }else{
       $this->tpl['FACULTY'] = '(not provided)';
     }
@@ -126,13 +127,13 @@ class SendRegistrarEmail extends Email {
     }
 
     // CC the faculty members
-    if ($faculty instanceof Faculty) {
-      $cc = array($faculty->getUsername() . $this->settings->getEmailDomain());
+    if ($this->faculty instanceof Faculty) {
+      $cc = array($this->faculty->getUsername() . $this->settings->getEmailDomain());
     } else {
       $cc = array();
     }
 
-    $this->subjects = $this->tpl['TERM'] . ' ' . $intlSubject . '[' . $this->internship->getBannerId()
+    $this->subject = $this->tpl['TERM'] . ' ' . $intlSubject . '[' . $this->internship->getBannerId()
     . '] ' . $this->internship->getFullName();
     $this->doc = 'email/RegistrarEmail.tpl';
     $this->cc = $cc;

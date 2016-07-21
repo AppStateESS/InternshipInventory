@@ -16,6 +16,9 @@ class SendRegistrationIssueEmail extends Email {
       sendSpecialMessage($i, $agency, $note);
   }
 
+  /*
+   * Sets up special components of registration issue email.
+   */
   public function setUpSpecial() {
     $tpl = array();
 

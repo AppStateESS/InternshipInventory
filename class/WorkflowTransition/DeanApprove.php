@@ -3,7 +3,7 @@
 namespace Intern\WorkflowTransition;
 use Intern\WorkflowTransition;
 use Intern\Internship;
-use Intern\Email;
+use Intern\Email\SendGradSchoolNotification;
 
 class DeanApprove extends WorkflowTransition {
     const sourceState = 'SigAuthApprovedState';
@@ -26,7 +26,7 @@ class DeanApprove extends WorkflowTransition {
 
         // If this is a graduate email, send the notification email to the grad school office
         if($i->isGraduate()){
-            Email::sendGradSchoolNotification($i, $agency);
+            new SendGradSchoolNotification($i, $agency);
         }
     }
 }
