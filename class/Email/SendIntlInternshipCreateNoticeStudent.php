@@ -1,6 +1,8 @@
 <?php
 
 namespace Intern\Email;
+use Intern\Internship;
+use Intern\Department;
 
 class SendIntlInternshipCreateNoticeStudent extends Email{
 
@@ -10,30 +12,19 @@ class SendIntlInternshipCreateNoticeStudent extends Email{
    * @param Internship $i
    */
   public function __construct(Internship $i) {
+    echo("CLASS: SendIntlInternshipCreateNoticeStudent");
     sendSpecialMessage($i);
   }
 
   public function setUpSpecial() {
-    $settings = InternSettings::getInstance();
+    $this->tpl['COUNTRY'] = $this->internship->loc_country;
 
-    $tpl = array();
-
-    $tpl['NAME'] = $i->getFullName();
-    $tpl['BANNER'] = $i->banner;
-    $tpl['USER'] = $i->email;
-    $tpl['PHONE'] = $i->phone;
-
-    $tpl['TERM'] = Term::rawToRead($i->term);
-    $tpl['COUNTRY'] = $i->loc_country;
-
-    $dept = new Department($i->department_id);
-    $tpl['DEPARTMENT'] = $dept->getName();
-    $to = $i->email . '@appstate.edu';
+    $dept = new Department($this->internship->department_id);
+    $this->tpl['DEPARTMENT'] = $dept->getName();
+    $this->to = $this->internship->email . '@appstate.edu';
 
     $subject = "International Internship Created -
-      {$i->first_name} {$i->last_name}";
-
-    Email::sendTemplateMessage($to, $subject,
-      'email/IntStudentInternshipOIEDNotice.tpl', $tpl);
+      {$this->internship->first_name} {$this->internship->last_name}";
+    $this->doc = 'email/IntStudentInternshipOIEDNotice.tpl';
   }
 }

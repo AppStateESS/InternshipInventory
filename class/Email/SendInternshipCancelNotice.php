@@ -1,43 +1,38 @@
 <?php
 
 namespace Intern\Email;
+use Intern\Department;
+use Intern\Faculty;
+use Intern\Term;
 
 class SendInternshipCancelNotice extends Email {
 
   /**
-   * Notifies of internship cancelation.
-   *
-   * @param Internship $i
-   */
+  * Notifies of internship cancelation.
+  *
+  * @param Internship $i
+  */
   public function __construct(Internship $i) {
-    sendSpecialMessage($i);
+    echo("CLASS: SendInternshipCancelNotice");
+    $this->sendSpecialMessage($i);
   }
-  
+
   public function setUpSpecial() {
-    $settings = InternSettings::getInstance();
+    $dept = new Department($this->internship->department_id);
+    $this->tpl['DEPARTMENT'] = $dept->getName();
 
-    $tpl = array();
+    $this->to = $this->internship->email . '@appstate.edu';
 
-
-    $tpl['NAME'] = $i->getFullName();
-    $tpl['BANNER'] = $i->banner;
-
-    $tpl['TERM'] = Term::rawToRead($i->term);
-
-    $dept = new Department($i->department_id);
-    $tpl['DEPARTMENT'] = $dept->getName();
-
-    $to = $i->email . '@appstate.edu';
-
-    $faculty = $i->getFaculty();
+    $faculty = $internship->getFaculty();
     if ($faculty instanceof Faculty) {
-        $cc = array($faculty->getUsername() . '@' . $settings->getEmailDomain(), $settings->getRegistrarEmail());
+      $this->cc = array($faculty->getUsername() . '@' . $this->settings->getEmailDomain(), $this->settings->getRegistrarEmail());
     } else {
-        $cc = array();
+      $this->cc = array();
     }
 
-    $subject = 'Internship Cancelled ' . Term::rawToRead($i->getTerm()) . '[' . $i->getBannerId() . '] ' . $i->getFullName();
+    $this->subject = 'Internship Cancelled ' . $this->term .
+      '[' . $this->internship->getBannerId() . '] ' . $this->internship->getFullName();
 
-    Email::sendTemplateMessage($to, $subject, 'email/StudentCancellationNotice.tpl', $tpl, $cc);
+    $this->doc = 'email/StudentCancellationNotice.tpl';
   }
 }

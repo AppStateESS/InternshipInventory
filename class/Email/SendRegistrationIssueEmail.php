@@ -12,6 +12,7 @@ class SendRegistrationIssueEmail extends Email {
    * @param string $note
    */
   public static function __construct(Internship $i, Agency $agency, $note) {
+      echo("CLASS: RegistrationConfirm");
       sendSpecialMessage($i, $agency, $note);
   }
 

@@ -12,6 +12,7 @@ class OIEDCancellation extends Email {
    * @param Agency $a
    */
   public function __construct(Internship $i, Agency $a) {
+    echo("CLASS: OIEDCancellation");
     sendSpecialMessage($i, $a);
   }
 

@@ -1,7 +1,7 @@
 <?php
 
 namespace Intern\Email;
-
+//DONE
 class SendGradSchoolNotification extends Email {
 
   /**
@@ -11,7 +11,8 @@ class SendGradSchoolNotification extends Email {
    * @param Agency $a
    */
   public function __construct(Internship $i, Agency $a) {
-      self::sendSpecialMessage($i, $a);
+    echo("CLASS: SendGradSchoolNotification");
+    $this->sendSpecialMessage($i, $a);
   }
 
   /**

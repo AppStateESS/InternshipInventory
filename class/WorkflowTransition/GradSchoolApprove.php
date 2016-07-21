@@ -3,7 +3,7 @@
 namespace Intern\WorkflowTransition;
 use Intern\WorkflowTransition;
 use Intern\Internship;
-use Intern\Email\Registrar;
+use Intern\Email\SendRegistrarEmail;
 
 class GradSchoolApprove extends WorkflowTransition {
 
@@ -29,7 +29,7 @@ class GradSchoolApprove extends WorkflowTransition {
         if($i->isGraduate()){
             $agency = $i->getAgency();
 
-            Registrar::sendRegistrarEmail($i, $agency);
+            new SendRegistrarEmail($i, $agency);
         }
     }
 }

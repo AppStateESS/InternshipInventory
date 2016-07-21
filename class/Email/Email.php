@@ -5,6 +5,7 @@ use Intern\Internship;
 use Intern\Agency;
 use Intern\InternSettings;
 use Intern\Term;
+use Intern\Subject;
 
 /**
  * Allows for the simple sending of email messages. Follows the general flow:
@@ -24,6 +25,7 @@ abstract class Email {
   protected $note;
   protected $backgroundCheck;
   protected $drugCheck;
+  protected $subjects;
   protected $to;
   protected $subject;
   protected $doc;
@@ -50,6 +52,7 @@ abstract class Email {
     $this->drugCheck = $drugCheck;
 
     $this->settings = InternSettings::getInstance();
+    $this->subjects = Subject::getSubjects();
     $this->faculty = $this->internship->getFaculty();
 
     $this->tpl = array();
@@ -61,6 +64,21 @@ abstract class Email {
     $this->tpl['TERM'] = Term::rawToRead($this->internship->getTerm(), false);
 
     $this->setUpSpecial();
+
+    //special email debug
+    var_dump($this->internship);
+    var_dump($this->agency);
+    var_dump($this->settings);
+    var_dump($this->faculty);
+    var_dump($this->note);
+    var_dump($this->backgroundCheck);
+    var_dump($this->drugCheck);
+    var_dump($this->to);
+    var_dump($this->subject);
+    var_dump($this->doc);
+    var_dump($this->tpl);
+    var_dump($this->cc);
+
     $this->sendTemplateMessage($this->to, $this->subject, $this->doc,
       $this->tpl, $this->cc);
   }

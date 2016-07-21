@@ -1,8 +1,11 @@
 <?php
 
 namespace Intern\Email;
+use Intern\Internship;
+use Intern\Agency;
 
 class SendRegistrarEmail extends Email {
+
 
   /**
   * Sends an email to the registrar notifying them to register
@@ -12,6 +15,7 @@ class SendRegistrarEmail extends Email {
   * @param Agency $a
   */
   public function __construct(Internship $i, Agency $a) {
+    echo("CLASS: SendRegistrarEmail");
     self::sendSpecialMessage($i, $a);
   }
 
@@ -104,16 +108,16 @@ class SendRegistrarEmail extends Email {
     */
     // Send distance ed internship to speedse, per trac #110
     if ($this->internship->isDistanceEd()) {
-      $this->to = $settings->getDistanceEdEmail();
+      $this->to = $this->settings->getDistanceEdEmail();
 
       // Send all international or graduate internships to
       //  'hicksmp', per trac #102
     } else if ($this->internship->isInternational() || $this->internship->isGraduate()) {
-      $this->to = $settings->getGraduateRegEmail();
+      $this->to = $this->settings->getGraduateRegEmail();
 
       // Otherwise, send it to the general Registrar address
     } else {
-      $this->to = $settings->getRegistrarEmail();
+      $this->to = $this->settings->getRegistrarEmail();
     }
 
     if(!isset($this->to) || $this->to == null) {
@@ -123,7 +127,7 @@ class SendRegistrarEmail extends Email {
 
     // CC the faculty members
     if ($faculty instanceof Faculty) {
-      $cc = array($faculty->getUsername() . $settings->getEmailDomain());
+      $cc = array($faculty->getUsername() . $this->settings->getEmailDomain());
     } else {
       $cc = array();
     }
