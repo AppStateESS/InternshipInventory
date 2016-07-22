@@ -19,7 +19,7 @@ class SendIntlInternshipCreateNotice extends Email {
   /**
    * Sets up email as international internship creation notice.
    */
-  public function setUpSpecial() {
+  protected function setUpSpecial() {
     $this->tpl['COUNTRY'] = $this->internship->getLocCountry();
     $dept = new Department($this->internship->getDepartmentId());
     $this->tpl['DEPARTMENT'] = $dept->getName();

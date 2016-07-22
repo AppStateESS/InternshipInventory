@@ -22,7 +22,7 @@ class SendRegistrationIssueEmail extends Email {
   /*
    * Sets up special components of registration issue email.
    */
-  public function setUpSpecial() {
+  protected function setUpSpecial() {
     $this->sanityCheck();
 
     $this->tpl['DEPT'] = $this->internship->getDepartment()->getName();

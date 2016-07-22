@@ -23,7 +23,7 @@ class SendRegistrarEmail extends Email {
   /*
    * Sets up special components of registrar email.
    */
-  public function setUpSpecial() {
+  protected function setUpSpecial() {
     $this->sanityCheck();
 
     $this->tpl['DEPT'] = $this->internship->getDepartment()->getName();

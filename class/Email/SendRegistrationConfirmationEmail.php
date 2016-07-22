@@ -13,7 +13,7 @@ class SendRegistrationConfirmationEmail extends Email{
    * @param Internship $i
    * @param Agency $agency
    */
-  public static function __construct(Internship $i, Agency $a) {
+  public function __construct(Internship $i, Agency $a) {
       echo("CLASS: RegistrationConfirm");
       $this->sendSpecialMessage($i, $a);
   }
@@ -21,7 +21,7 @@ class SendRegistrationConfirmationEmail extends Email{
   /*
    * Sets up special components of registration confirmation email.
    */
-  public function setUpSpecial() {
+  protected function setUpSpecial() {
     $this->sanityCheck();
 
     $this->tpl['DEPT'] = $this->internship->getDepartment()->getName();

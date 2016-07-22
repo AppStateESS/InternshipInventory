@@ -21,7 +21,7 @@ class OIEDCancellationEmail extends Email {
   /*
    * Sets up OIED cancelation email.
    */
-  public function setUpSpecial() {
+  protected function setUpSpecial() {
     $countries = CountryFactory::getCountries();
     $this->tpl['COUNTRY'] = $countries[$internship->getLocCountry()];
 

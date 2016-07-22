@@ -21,7 +21,7 @@ class SendInternshipCancelNotice extends Email {
   /**
    * Sets up email as a cancelation notice.
    */
-  public function setupSpecial() {
+  protected function setupSpecial() {
     $dept = new Department($this->internship->getDepartmentId());
     $this->tpl['DEPARTMENT'] = $dept->getName();
 

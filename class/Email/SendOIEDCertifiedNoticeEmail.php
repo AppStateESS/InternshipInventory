@@ -20,7 +20,7 @@ class SendOIEDCertifiedNoticeEmail extends Email{
   /*
    * Sets up OIED notice email.
    */
-  public function setUpSpecial() {
+  protected function setUpSpecial() {
     $this->tpl['FACULTY'] = $this->faculty->getFullName();
     $this->tpl['AGENCY'] = $this->agency->getName();
 

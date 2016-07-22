@@ -20,7 +20,7 @@ class BackgroundCheck extends Email{
   /**
    * Adds information to email regarding background and/or drug checking.
    */
-  public function setUpSpecial() {
+  protected function setUpSpecial() {
     $background = '';
     $drugTest = '';
 

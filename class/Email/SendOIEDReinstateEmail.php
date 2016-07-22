@@ -17,7 +17,7 @@ class SendOIEDReinstateEmail extends Email {
       sendSpecialMessage($i, $a);
   }
 
-  public function setUpSpecial()
+  protected function setUpSpecial()
   {
     $countries = CountryFactory::getCountries();
     $this->tpl['COUNTRY'] = $countries[$this->internship->getLocCountry()];
