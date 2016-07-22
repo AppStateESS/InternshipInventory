@@ -39,24 +39,29 @@ abstract class Email {
    * call this method and implement their own setUpSpecial() hook to meet
    * their specialized needs.
    *
-   * @param  $i
-   * @param  $agency
-   * @param  $note     Necessary for class RegistrationIssue.
+   * @param  $i                 Internship obj provides email data for all classes
+   * @param  $agency            Agency objected needed for most subclasses
+   * @param  $note              Necessary for class RegistrationIssue
+   * @param  $backgroundCheck   Necessary for class SendBackgroundCheckEmail
+   * @param  $drugCheck         Necessary for class SendBackgroundCheckEmail
    */
   protected final function sendSpecialMessage(Internship $i,
     Agency $agency = null, $note = null, $backgroundCheck = false,
     $drugCheck = false) {
 
+    //Set parameters
     $this->internship = $i;
     $this->agency = $agency;
     $this->note = $note;
     $this->backgroundCheck = $backgroundCheck;
     $this->drugCheck = $drugCheck;
 
-    $this->settings = InternSettings::getInstance();
+    //Necessary global variables
     $this->subjects = Subject::getSubjects();
+    $this->settings = InternSettings::getInstance();
     $this->faculty = $this->internship->getFaculty();
 
+    //Basic tpl entries. Specific tpl entries set in hook
     $this->tpl = array();
     $this->tpl['NAME'] = $this->internship->getFullName();
     $this->tpl['BANNER'] = $this->internship->getBannerId();
@@ -65,7 +70,8 @@ abstract class Email {
     $this->tpl['BIRTHDAY'] = $this->internship->getBirthDateFormatted();
     $this->tpl['TERM'] = Term::rawToRead($this->internship->getTerm(), false);
 
-    //Call to hook
+    //Call to hook. Sets $to, $subject, $doc, $cc, and additional $tpl based
+    //on the specific type of email calling sendSpecialMessage()
     $this->setUpSpecial();
 
     //special email debug
@@ -81,7 +87,8 @@ abstract class Email {
     var_dump($this->doc);
     var_dump($this->tpl);
     var_dump($this->cc);
-
+    exit();
+    //Special setup passed on to static procedures to continue email processing
     $this->sendTemplateMessage($this->to, $this->subject, $this->doc,
       $this->tpl, $this->cc);
   }
@@ -94,12 +101,13 @@ abstract class Email {
   abstract protected function setUpSpecial();
 
   /**
-   * Performs common sanity check for classes that require this.
+   * Performs common sanity check for classes that require this. Should only
+   * be called from child class setUpSpecial() hook to avoid null references.
    */
   protected final function sanityCheck() {
     /**** Subject Checking ***/
-    $subject = $this->internship->getSubject();
-    if(isset($subject)){
+    $subject = $this->internship->getSubject()->getId();
+    if($subject != 0){
         $this->tpl['SUBJECT'] = $this->subjects[$subject];
     }else{
         $this->tpl['SUBJECT'] = '(No course subject provided)';
@@ -107,7 +115,7 @@ abstract class Email {
 
     /**** Course Section Checking ***/
     $section = $this->internship->getCourseSection();
-    if(isset($section)){
+    if(!empty($section)){
         $this->tpl['SECTION'] = $section;
     }else{
         $this->tpl['SECTION'] = '(Section not provided)';
@@ -115,8 +123,10 @@ abstract class Email {
 
     /**** Course Title Checking ***/
     $courseTitle = $this->internship->getCourseTitle();
-    if(isset($courseTitle)){
+    if(!empty($courseTitle)){
         $this->tpl['COURSE_TITLE'] = $courseTitle;
+    }else{
+        $this->tpl['COURSE_TITLE'] = '(Course title not provided)';
     }
 
     /**** Credit Hour Checking ***/
@@ -124,7 +134,7 @@ abstract class Email {
     if(isset($creditHours)){
         $this->tpl['CREDITS'] = $creditHours;
     }else{
-        $this->tpl['CREDITS'] = '(not provided)';
+        $this->tpl['CREDITS'] = '(Credit hours not provided)';
     }
 
     /**** Start Date Checking ***/
@@ -132,7 +142,7 @@ abstract class Email {
     if(isset($startDate)){
         $this->tpl['START_DATE'] = $startDate;
     }else{
-        $this->tpl['START_DATE'] = '(not provided)';
+        $this->tpl['START_DATE'] = '(Start date not provided)';
     }
 
     /**** End Date Checking ***/
@@ -140,16 +150,16 @@ abstract class Email {
     if(isset($endDate)){
         $this->tpl['END_DATE'] = $endDate;
     }else{
-        $this->tpl['END_DATE'] = '(not provided)';
+        $this->tpl['END_DATE'] = '(End date not provided)';
     }
 
     /**** Faculty Checking ***/
     //Id for all: Grad, RegE, RegC, RegI? Ask Jeremy. Originally just RegE
-    if($faculty instanceof Faculty){
-        $tpl['FACULTY'] = $faculty->getFullName() . ' ('
+    if($this->faculty instanceof Faculty){
+        $this->tpl['FACULTY'] = $this->faculty->getFullName() . ' ('
           . $this->facutly->getId() . ')';
     }else{
-        $tpl['FACULTY'] = '(not provided)';
+        $this->tpl['FACULTY'] = '(Faculty not provided)';
     }
 
     /**** International Checking ***/
@@ -164,6 +174,16 @@ abstract class Email {
     }
   }
 
+  /**
+   * Uses PHPWS_Template to construct a template email, which is
+   * then passed on the sendEmail()
+   *
+   * @param $to
+   * @param $subject
+   * @param $tpl
+   * @param $tags
+   * @param $cc
+   */
   public static function sendTemplateMessage($to,
   $subject, $tpl, $tags, $cc = null){
     $settings = InternSettings::getInstance();
