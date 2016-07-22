@@ -24,11 +24,10 @@ class SendInternshipCancelNotice extends Email {
   public function setupSpecial() {
     $dept = new Department($this->internship->getDepartmentId());
     $this->tpl['DEPARTMENT'] = $dept->getName();
-    $faculty = $internship->getFaculty();
 
     $this->to = $this->internship->getEmailAddress() . '@appstate.edu';
-    if ($faculty instanceof Faculty) {
-      $this->cc = array($faculty->getUsername() . '@' . $this->settings->getEmailDomain(), $this->settings->getRegistrarEmail());
+    if ($this->faculty instanceof Faculty) {
+      $this->cc = array($this->faculty->getUsername() . '@' . $this->settings->getEmailDomain(), $this->settings->getRegistrarEmail());
     } else {
       $this->cc = array();
     }

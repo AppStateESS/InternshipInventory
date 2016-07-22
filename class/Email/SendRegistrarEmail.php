@@ -15,16 +15,18 @@ class SendRegistrarEmail extends Email {
   * @param Agency $a
   */
   public function __construct(Internship $i, Agency $a) {
+    //Triggered by grad school approval request
     echo("CLASS: SendRegistrarEmail");
-    self::sendSpecialMessage($i, $a);
+    $this->sendSpecialMessage($i, $a);
   }
 
   /*
    * Sets up special components of registrar email.
    */
   public function setUpSpecial() {
-    $this->tpl['DEPT'] = $this->internship->getDepartment()->getName();
+    $this->sanityCheck();
 
+    $this->tpl['DEPT'] = $this->internship->getDepartment()->getName();
     $campus = $this->internship->getCampus();
     if ($campus == 'distance_ed') {
       $this->tpl['CAMPUS'] = 'Distance Ed';
@@ -33,7 +35,6 @@ class SendRegistrarEmail extends Email {
     } else {
       $this->tpl['CAMPUS'] = $campus;
     }
-
     /**** Corequisite Checking ****/
     $coreq = $this->internship->getCorequisiteNum();
     if (!is_null($coreq) && $coreq != '') {
@@ -41,7 +42,6 @@ class SendRegistrarEmail extends Email {
       $this->tpl['COREQ_COURSE_NUM'] = $coreq;
       $this->tpl['COREQ_COURSE_SECT'] = $this->internship->getCorequisiteSection();
     }
-
     /**** Multi-part checking ***/
     if ($this->internship->isMultipart() && $this->internship->isSecondaryPart()) {
       $this->tpl['SECONDARY_PART'] = '';

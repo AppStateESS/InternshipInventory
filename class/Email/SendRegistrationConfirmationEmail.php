@@ -15,7 +15,6 @@ class SendRegistrationConfirmationEmail extends Email{
    */
   public static function __construct(Internship $i, Agency $a) {
       echo("CLASS: RegistrationConfirm");
-      $this->sanityCheck();
       $this->sendSpecialMessage($i, $a);
   }
 
@@ -23,14 +22,15 @@ class SendRegistrationConfirmationEmail extends Email{
    * Sets up special components of registration confirmation email.
    */
   public function setUpSpecial() {
-    $department = $this->internship->getDepartment();
-    $this->tpl['DEPT'] = $department->getName();
+    $this->sanityCheck();
 
-    $to = $this->internship->email . $settings->getEmailDomain();
-    if ($faculty instanceof Faculty) {
-        $cc = array($faculty->getUsername() . $settings->getEmailDomain());
+    $this->tpl['DEPT'] = $this->internship->getDepartment()->getName();
+
+    $this->to = $this->internship->email . $this->settings->getEmailDomain();
+    if ($this->faculty instanceof Faculty) {
+        $this->cc = array($this->faculty->getUsername() . $this->settings->getEmailDomain());
     } else {
-        $cc = array();
+        $this->cc = array();
     }
     $this->subject = 'Internship Approved';
     $this->doc = 'email/RegistrationConfirmation.tpl';

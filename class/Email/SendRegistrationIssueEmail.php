@@ -16,7 +16,6 @@ class SendRegistrationIssueEmail extends Email {
    */
   public static function __construct(Internship $i, Agency $agency, $note) {
       echo("CLASS: RegistrationConfirm");
-      $this->sanityCheck();
       $this->sendSpecialMessage($i, $agency, $note);
   }
 
@@ -24,8 +23,9 @@ class SendRegistrationIssueEmail extends Email {
    * Sets up special components of registration issue email.
    */
   public function setUpSpecial() {
-    $department = $this->internship->getDepartment();
-    $this->tpl['DEPT'] = $department->getName();
+    $this->sanityCheck();
+
+    $this->tpl['DEPT'] = $this->internship->getDepartment()->getName();
     $this->tpl['NOTE'] = $this->note;
 
     if ($faculty instanceof Faculty) {
