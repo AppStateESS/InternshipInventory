@@ -3,7 +3,7 @@
 namespace Intern\WorkflowTransition;
 use Intern\WorkflowTransition;
 use Intern\Internship;
-use Intern\Email\SendRegistrationIssueEmail;
+use Intern\Email\SpecialEmailFactory;
 
 class RegistrationIssueUgrad extends WorkflowTransition {
     const sourceState = 'DeanApprovedState';

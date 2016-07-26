@@ -10,7 +10,8 @@ use DomainException;
  * a single factory class. Simplifies the creation of specialized emails for
  * use in other classes.
  */
-class EmailFactory {
+class SpecialEmailFactory {
+
   /**
    * Takes a specialized email type and its necessary parameters. Starts the
    * process of sending a specialized email; a call to this constructor
@@ -24,7 +25,7 @@ class EmailFactory {
    * @param boolean     $backgroundCheck
    * @param boolean     $drugCheck
    */
-  public function __construct($emailType, Internship $i,
+  public function sendEmail($emailType, Internship $i,
   Agency $a = null, $note = null, $backgroundCheck = false,
   $drugCheck = false)
   {

@@ -9,7 +9,8 @@ class SendRegistrarEmail extends Email {
 
   /**
   * Sends an email to the registrar notifying them to register
-  * the student for the appropriate internship course.
+  * the student for the appropriate internship course. Should call from
+  * EmailFactory.
   *
   * @param Internship $i
   * @param Agency $a

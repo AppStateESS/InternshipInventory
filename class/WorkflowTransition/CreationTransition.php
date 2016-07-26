@@ -3,8 +3,7 @@
 namespace Intern\WorkflowTransition;
 use Intern\WorkflowTransition;
 use Intern\Internship;
-use Intern\Email\SendIntlInternshipCreateNotice;
-use Intern\Email\SendIntlInternshipCreateNoticeStudent;
+use Intern\Email\SpecialEmailFactory;
 
 class CreationTransition extends WorkflowTransition {
     const sourceState = 'CreationState';
@@ -18,8 +17,9 @@ class CreationTransition extends WorkflowTransition {
     public function doNotification(Internship $i, $note = null)
     {
         if(!$i->isDomestic()){
-            new SendIntlInternshipCreateNotice($i);
-            new SendIntlInternshipCreateNoticeStudent($i);
+            $emailF = new SpecialEmailFactory();
+            $emailF->sendEmail("SendIntlInternshipCreateNotice",$i);
+            $emailF->sendEmail("SendIntlInternshipCreateNoticeStudent",$i);
         }
     }
 }
