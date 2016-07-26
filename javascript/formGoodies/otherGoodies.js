@@ -324,7 +324,6 @@ function otherStuff()
     addFormErrors();
     initPayment();
     initOIED();
-    //initTypeHelp();
     initMultiPart();
     initSecondaryPart();
     initFacultySelector();
