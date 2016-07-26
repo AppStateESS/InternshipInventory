@@ -174,7 +174,7 @@
         </div>
 
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{BACKGROUND_CHECK_ID}">Drust Test Needed?</label>
+          <label class="col-lg-3 control-label" for="{BACKGROUND_CHECK_ID}">Drug Test Needed?</label>
           <div class="col-lg-6">
               <div class="btn-group" data-toggle="buttons" role="group" aria-label="drug selector">
                 <label class="btn btn-default {DRUG_ACTIVE}">
