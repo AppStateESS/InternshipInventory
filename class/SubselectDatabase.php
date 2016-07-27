@@ -549,7 +549,7 @@ class SubselectDatabase extends PHPWS_DB{
         if (isset($group)) {
             $this->where[$group]['values'][] = $where;
         } else {
-            $this->where[0]['values'][] = $where;
+            $this->where['afancyspecialgroup']['values'][] = $where;
         }
     }
 
@@ -607,105 +607,107 @@ class SubselectDatabase extends PHPWS_DB{
         $this->qwhere['conj'] = $conj;
     }
 
-    /**
-     * Grabs the where variables from the object and creates a sql query
-     */
-    public function getWhere($dbReady = false)
-    {
-        $sql = array();
-        $ignore_list = $where = null;
+    // /**
+    //  * Grabs the where variables from the object and creates a sql query
+    //  */
+    // public function getWhere($dbReady = false)
+    // {
+    //     $sql = array();
+    //     $ignore_list = $where = null;
+    //
+    //     if (empty($this->where)) {
+    //         if (isset($this->qwhere)) {
+    //             return ' (' . $this->qwhere['where'] . ')';
+    //         }
+    //         return null;
+    //     }
+    //     $startMain = false;
+    //     if ($dbReady) {
+    //         foreach ($this->where as $group_name => $groups) {
+    //             $hold = null;
+    //             $subsql = array();
+    //             if (!isset($groups['values'])) {
+    //                 continue;
+    //             }
+    //
+    //             $startSub = false;
+    //             foreach ($groups['values'] as $whereVal) {
+    //                 if ($startSub == true) {
+    //                     $subsql[] = $whereVal->conj;
+    //                 }
+    //                 $subsql[] = $whereVal->get();
+    //                 $startSub = true;
+    //             }
+    //
+    //             $where_list = array();
+    //             $where_list[$group_name]['group_sql'] = $subsql;
+    //
+    //             if (isset($groups['conj']) && $conj = $groups['conj']) {
+    //                 $where_list[$group_name]['group_conj'] = $conj;
+    //             } else {
+    //                 $where_list[$group_name]['group_conj'] = 'AND';
+    //             }
+    //
+    //             if (@$search_key = array_search($group_name, $this->group_in, true)) {
+    //                 $where_list[$search_key]['group_in'][$group_name] = &$where_list[$group_name];
+    //             }
+    //         }
+    //
+    //         var_dump($where_list);
+    //
+    //         if (!empty($where_list)) {
+    //             $sql[] = $this->_buildGroup($where_list, $ignore_list, true);
+    //         }
+    //
+    //         if (isset($this->qwhere)) {
+    //             $sql[] = $this->qwhere['conj'] . ' (' . $this->qwhere['where'] . ')';
+    //         }
+    //
+    //         if (isset($sql)) {
+    //             $where = implode(' ', $sql);
+    //         }
+    //         return $where;
+    //     } else {
+    //         return $this->where;
+    //     }
+    // }
 
-        if (empty($this->where)) {
-            if (isset($this->qwhere)) {
-                return ' (' . $this->qwhere['where'] . ')';
-            }
-            return null;
-        }
-        $startMain = false;
-        if ($dbReady) {
-            foreach ($this->where as $group_name => $groups) {
-                $hold = null;
-                $subsql = array();
-                if (!isset($groups['values'])) {
-                    continue;
-                }
-
-                $startSub = false;
-                foreach ($groups['values'] as $whereVal) {
-                    if ($startSub == true) {
-                        $subsql[] = $whereVal->conj;
-                    }
-                    $subsql[] = $whereVal->get();
-                    $startSub = true;
-                }
-
-                $where_list = array();
-                $where_list[$group_name]['group_sql'] = $subsql;
-
-                if (isset($groups['conj']) && $conj = $groups['conj']) {
-                    $where_list[$group_name]['group_conj'] = $conj;
-                } else {
-                    $where_list[$group_name]['group_conj'] = 'AND';
-                }
-
-                if (@$search_key = array_search($group_name, $this->group_in, true)) {
-                    $where_list[$search_key]['group_in'][$group_name] = &$where_list[$group_name];
-                }
-            }
-
-            if (!empty($where_list)) {
-                $sql[] = $this->_buildGroup($where_list, $ignore_list, true);
-            }
-
-            if (isset($this->qwhere)) {
-                $sql[] = $this->qwhere['conj'] . ' (' . $this->qwhere['where'] . ')';
-            }
-
-            if (isset($sql)) {
-                $where = implode(' ', $sql);
-            }
-            return $where;
-        } else {
-            return $this->where;
-        }
-    }
-
-    /**
-     * Handles the imbedding of where groups
-     */
-    public function _buildGroup($where_list, &$ignore_list, $first = false)
-    {
-        if (!$ignore_list) {
-            $ignore_list = array();
-        }
-        foreach ($where_list as $group_name => $group_info) {
-            if (isset($ignore_list[$group_name])) {
-                continue;
-            }
-            $ignore_list[$group_name] = true;
-            extract($group_info);
-
-            if (!$first) {
-                $sql[] = $group_conj;
-            } else {
-                $first = false;
-            }
-
-            if (!empty($group_in)) {
-                $sql[] = '( ( ' . implode(' ', $group_sql) . ' )';
-                $result = $this->_buildGroup($group_in, $ignore_list);
-                if ($result) {
-                    $sql[] = $result;
-                }
-                $sql[] = ' )';
-            } else {
-                $sql[] = '( ' . implode(' ', $group_sql) . ' )';
-            }
-        }
-        if (!empty($sql)) {
-            return implode(' ', $sql);
-        }
-    }
+    // /**
+    //  * Handles the imbedding of where groups
+    //  */
+    // public function _buildGroup($where_list, &$ignore_list, $first = false)
+    // {
+    //     if (!$ignore_list) {
+    //         $ignore_list = array();
+    //     }
+    //     foreach ($where_list as $group_name => $group_info) {
+    //         if (isset($ignore_list[$group_name])) {
+    //             continue;
+    //         }
+    //         $ignore_list[$group_name] = true;
+    //         extract($group_info);
+    //
+    //         if (!$first) {
+    //             $sql[] = $group_conj;
+    //         } else {
+    //             $first = false;
+    //         }
+    //
+    //         if (!empty($group_in)) {
+    //             $sql[] = '( ( ' . implode(' ', $group_sql) . ' )';
+    //             $result = $this->_buildGroup($group_in, $ignore_list);
+    //             if ($result) {
+    //                 $sql[] = $result;
+    //             }
+    //             $sql[] = ' )';
+    //         } else {
+    //             $sql[] = '( ' . implode(' ', $group_sql) . ' )';
+    //         }
+    //     }
+    //     if (!empty($sql)) {
+    //         return implode(' ', $sql);
+    //     }
+    // }
 
     public function resetWhere()
     {
