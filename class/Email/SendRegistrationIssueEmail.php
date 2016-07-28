@@ -14,7 +14,7 @@ class SendRegistrationIssueEmail extends Email {
    * @param Agency $agency
    * @param string $note
    */
-  public static function __construct(Internship $i, Agency $agency, $note) {
+  public function __construct(Internship $i, Agency $agency, $note) {
       echo("CLASS: RegistrationConfirm");
       $this->sendSpecialMessage($i, $agency, $note);
   }
@@ -28,13 +28,13 @@ class SendRegistrationIssueEmail extends Email {
     $this->tpl['DEPT'] = $this->internship->getDepartment()->getName();
     $this->tpl['NOTE'] = $this->note;
 
-    if ($faculty instanceof Faculty) {
-        $cc = array($faculty->getUsername() . $settings->getEmailDomain());
+    if ($this->faculty instanceof Faculty) {
+        $this->cc = array($this->faculty->getUsername() . $this->settings->getEmailDomain());
     } else {
-        $cc = array();
+        $this->cc = array();
     }
-    $subject = 'Internship Enrollment Issue';
-    $to = $i->email . $settings->getEmailDomain();
-    $doc = 'email/RegistrationIssue.tpl';
+    $this->subject = 'Internship Enrollment Issue';
+    $this->to = $this->internship->email . $this->settings->getEmailDomain();
+    $this->doc = 'email/RegistrationIssue.tpl';
   }
 }

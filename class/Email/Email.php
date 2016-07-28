@@ -7,7 +7,7 @@ use Intern\InternSettings;
 use Intern\Term;
 use Intern\Subject;
 use ErrorException;
-
+require_once PHPWS_SOURCE_DIR . 'mod/intern/vendor/swiftmailer/swiftmailer/lib/swift_required.php';
 /**
  * Allows for the simple sending of email messages. Follows the general flow:
  *
@@ -74,21 +74,6 @@ abstract class Email {
     //on the specific type of email calling sendSpecialMessage()
     $this->setUpSpecial();
 
-    //special email debug
-    var_dump($this->internship);
-    var_dump($this->agency);
-    var_dump($this->settings);
-    var_dump($this->faculty);
-    var_dump($this->note);
-    var_dump($this->backgroundCheck);
-    var_dump($this->drugCheck);
-    var_dump($this->to);
-    var_dump($this->subject);
-    var_dump($this->doc);
-    var_dump($this->tpl);
-    var_dump($this->cc);
-    exit();
-    //Special setup passed on to static procedures to continue email processing
     $this->sendTemplateMessage($this->to, $this->subject, $this->doc,
       $this->tpl, $this->cc);
   }
@@ -214,7 +199,7 @@ abstract class Email {
     }
 
     if(!isset($from) || is_null($from)){
-        $from = $settings->getSystemName() . ' <' . $settings->getEmailFromAddress() .'>';
+        $from = $settings->getEmailFromAddress();
     }
 
     if(!isset($subject) || is_null($subject)){
@@ -225,32 +210,29 @@ abstract class Email {
         throw new ErrorException('\"Content\" not set.');
     }
 
-    // Create a Mail object and set it up
-    \PHPWS_Core::initCoreClass('Mail.php');
-    $message = new \PHPWS_Mail;
-
-    $message->addSendTo($to);
-    $message->setFrom($from);
-    $message->setSubject($subject);
-    $message->setMessageBody($content);
+    //Set up Swift Mailer message
+    $message = \Swift_Message::newInstance()
+      ->setSubject($subject)
+      ->setFrom($from,$settings->getSystemName())
+      ->setTo($to,$to)
+      ->setBody($content);
 
     if(isset($cc)){
-        $message->addCarbonCopy($cc);
+        $message->setCc($cc);
     }
-
     if(isset($bcc)){
-        $message->addBlindCopy($bcc);
+        $message->setBcc($bcc);
     }
 
-    // Send the message
+    //Set up Swift Mailer delivery
+    $transport = \Swift_SmtpTransport::newInstance('localhost');
+    $mailer = \Swift_Mailer::newInstance($transport);
+
+    //Send the message
     if(EMAIL_TEST_FLAG){
         $result = true;
     }else{
-        $result = $message->send();
-    }
-
-    if(\PHPWS_Error::logIfError($result)){
-      throw new ErrorException('PHPWS_Error.');
+        $result = $mailer->send($message);
     }
 
     self::logEmail($message);
@@ -263,32 +245,33 @@ abstract class Email {
    *
    * @param  $message
    */
-  public static function logEmail($message){
+  public static function logEmail(\Swift_Message $message){
     // Log the message to a text file
     $fd = fopen(PHPWS_SOURCE_DIR . 'logs/email.log',"a");
 
     fprintf($fd, "=======================\n");
 
-    foreach($message->send_to as $recipient){
-        fprintf($fd, "To: %s\n", $recipient);
-    }
+    // foreach($message->getSender() as $recipient){
+    //     fprintf($fd, "To: %s\n", $recipient);
+    // }
+    fprintf($fd, "To: %s\n", implode('', $message->getTo()));
 
-    if(isset($message->carbon_copy)){
-        foreach($message->carbon_copy as $recipient){
+    if($message->getCc() != null){
+        foreach($message->getCc() as $recipient){
             fprintf($fd, "Cc: %s\n", $recipient);
         }
     }
 
-    if(isset($message->blind_copy)){
-        foreach($message->blind_copy as $recipient){
+    if($message->getBcc() != null){
+        foreach($message->getBcc() as $recipient){
             fprintf($fd, "Bcc: %s\n", $recipient);
         }
     }
 
-    fprintf($fd, "From: %s\n", $message->from_address);
-    fprintf($fd, "Subject: %s\n", $message->subject_line);
+    fprintf($fd, "From: %s\n", implode('',$message->getFrom()));
+    fprintf($fd, "Subject: %s\n", $message->getSubject());
     fprintf($fd, "Content: \n");
-    fprintf($fd, "%s\n\n", $message->message_body);
+    fprintf($fd, "%s\n\n", $message->getBody());
 
     fclose($fd);
   }
