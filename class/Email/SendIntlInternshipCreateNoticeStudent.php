@@ -12,7 +12,6 @@ class SendIntlInternshipCreateNoticeStudent extends Email{
    * @param Internship $i
    */
   public function __construct(Internship $i) {
-    echo("CLASS: SendIntlInternshipCreateNoticeStudent");
     $this->sendSpecialMessage($i);
   }
 

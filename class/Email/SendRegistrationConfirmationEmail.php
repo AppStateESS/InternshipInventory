@@ -14,7 +14,6 @@ class SendRegistrationConfirmationEmail extends Email{
    * @param Agency $agency
    */
   public function __construct(Internship $i, Agency $a) {
-      echo("CLASS: RegistrationConfirm");
       $this->sendSpecialMessage($i, $a);
   }
 

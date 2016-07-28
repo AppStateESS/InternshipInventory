@@ -13,7 +13,6 @@ class BackgroundCheck extends Email{
    * @param Agency $agency
    */
   public function __construct(Internship $i, Agency $a, $backgroundCheck, $drugCheck) {
-    echo("CLASS: BackgroundCheck");
     self::sendSpecialMessage($i, $a, null, $backgroundCheck, $drugCheck);
   }
 

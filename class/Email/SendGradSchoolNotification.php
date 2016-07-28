@@ -14,8 +14,6 @@ class SendGradSchoolNotification extends Email {
   * @param Agency $a
   */
   public function __construct(Internship $i, Agency $a) {
-    //Triggered by dean approval request
-    echo("CLASS: SendGradSchoolNotification");
     $this->sendSpecialMessage($i, $a);
   }
 

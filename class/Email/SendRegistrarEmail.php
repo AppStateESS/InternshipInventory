@@ -16,8 +16,6 @@ class SendRegistrarEmail extends Email {
   * @param Agency $a
   */
   public function __construct(Internship $i, Agency $a) {
-    //Triggered by grad school approval request
-    echo("CLASS: SendRegistrarEmail");
     $this->sendSpecialMessage($i, $a);
   }
 

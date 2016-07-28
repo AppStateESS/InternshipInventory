@@ -139,7 +139,6 @@ abstract class Email {
     }
 
     /**** Faculty Checking ***/
-    //Id for all: Grad, RegE, RegC, RegI? Ask Jeremy. Originally just RegE
     if($this->faculty instanceof Faculty){
         $this->tpl['FACULTY'] = $this->faculty->getFullName() . ' ('
           . $this->facutly->getId() . ')';
@@ -251,9 +250,6 @@ abstract class Email {
 
     fprintf($fd, "=======================\n");
 
-    // foreach($message->getSender() as $recipient){
-    //     fprintf($fd, "To: %s\n", $recipient);
-    // }
     fprintf($fd, "To: %s\n", implode('', $message->getTo()));
 
     if($message->getCc() != null){

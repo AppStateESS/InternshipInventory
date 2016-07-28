@@ -13,7 +13,6 @@ class SendOIEDReinstateEmail extends Email {
    * @param Agency $agency
    */
   public function __construct(Internship $i, Agency $a) {
-      echo("CLASS: OIEDReinstate");
       sendSpecialMessage($i, $a);
   }
 
