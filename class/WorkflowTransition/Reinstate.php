@@ -3,7 +3,7 @@
 namespace Intern\WorkflowTransition;
 use Intern\WorkflowTransition;
 use Intern\Internship;
-use Intern\Email;
+use Intern\Email\SpecialEmailFactory;
 
 class Reinstate extends WorkflowTransition {
     const sourceState = 'CancelledState';
@@ -19,7 +19,8 @@ class Reinstate extends WorkflowTransition {
         if($i->isInternational()){
             $agency = $i->getAgency();
 
-            Email::sendOIEDReinstateEmail($i, $agency);
+            $emailF = new SpecialEmailFactory();
+            $emailF->sendEmail("SendOIEDReinstateEmail",$i, $agency);
         }
     }
 }

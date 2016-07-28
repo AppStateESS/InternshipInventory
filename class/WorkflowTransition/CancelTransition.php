@@ -3,7 +3,7 @@
 namespace Intern\WorkflowTransition;
 use Intern\WorkflowTransition;
 use Intern\Internship;
-use Intern\Email;
+use Intern\Email\SpecialEmailFactory;
 
 class CancelTransition extends WorkflowTransition {
     //const sourceState = '*';
@@ -25,7 +25,8 @@ class CancelTransition extends WorkflowTransition {
         if($i->isInternational()){
             $agency = $i->getAgency();
 
-            Email::sendOIEDCancellationEmail($i, $agency);
+            $emailF = new SpecialEmailFactory();
+            $emailF->sendEmail("SendOIEDCancellationEmail",$i, $agency);
         }
     }
 }
