@@ -63,7 +63,7 @@ class AffiliationContract
     {
         $vars = array();
         $vars['doc_id'] = $this->document_id;
-        $vars['action'] = 'delete_document';
+        $vars['action'] = 'delete_affiliation_contract';
         $link = new \PHPWS_Link(null, 'intern', $vars);
 
         $jsVars = array();

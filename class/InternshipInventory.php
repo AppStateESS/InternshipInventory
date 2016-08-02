@@ -129,11 +129,11 @@ class InternshipInventory {
                 $docManager = new AffiliationContractDocumentManager();
                 $docManager->postDocumentUpload();
                 break;
-            case 'delete_document':
+            case 'delete_affiliation_contract':
                 AffiliationContractFactory::deleteByDocId($_REQUEST['doc_id']);
-                NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, 'Document deleted.');
-                NQ::close();
-                PHPWS_Core::goBack();
+                \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, 'Document deleted.');
+                \NQ::close();
+                \PHPWS_Core::goBack();
                 break;
             case 'edit_states':
                 if (!\Current_User::allow('intern', 'edit_state')) {
