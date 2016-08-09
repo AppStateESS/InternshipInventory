@@ -713,4 +713,86 @@ class Email {
 
         email::sendTemplateMessage($to, $subject, 'email/OiedCertifiedNotice.tpl', $tpl);
     }
+
+    /**
+     *  Sends the reminder emails
+     *
+     * @param Internship $i
+     * @param Agency $agency
+     */
+    public static function sendReminderEmail(Internship $i, Agency $agency, $censusDate)
+    {
+        $tpl = array();
+
+        $settings = InternSettings::getInstance();
+
+        $faculty = $i->getFaculty();
+
+        if(is_null($i))
+        {
+            var_dump($i);
+        }
+
+        $tpl = array();
+        $tpl['NAME']            = $i->getFullName();
+        $tpl['BANNER']          = $i->getBannerId();
+        $tpl['TERM']            = Term::rawToRead($i->getTerm(), false);
+        if($i->getSubject()->getId() != 0)
+        {
+            $tpl['SUBJECT']     = $i->getSubject()->getName();
+        }
+        if(!is_null($i->getCourseNumber()))
+        {
+            $tpl['COURSE_NUM']      = $i->getCourseNumber();
+        }
+        if(!is_null($i->getCourseTitle()))
+        {
+            $tpl['COURSE_TITLE']    = $i->getCourseTitle();
+        }
+        if(!is_null($i->getCourseSection()))
+        {
+            $tpl['SECTION']         = $i->getCourseSection();
+        }
+        if(!is_null($i->getCreditHours()))
+        {
+            $tpl['CREDITS']         = $i->getCreditHours();
+        }
+        $tpl['DEPT']            = $i->getDepartment()->getName();
+        $tpl['INTERNATIONAL']   = $i->isInternational() ? 'Yes' : 'No';
+        if($i->isInternational)
+        {
+            $tpl['COUNTRY']     = $i->getLocCountry();
+        }
+        else
+        {
+            $tpl['STATE']       = $i->getLocationState();
+        }
+
+        if($i->getStartDate() != 0)
+        {
+            $tpl['START_DATE']  = $i->getStartDate();
+        }
+        if($i->getEndDate() != 0)
+        {
+            $tpl['END_DATE']    = $i->getEndDate();
+        }
+        if(!is_null($faculty))
+        {
+            $tpl['FACULTY']     = $faculty->getFullName();
+        }
+        $tpl['AGENCY']      = $agency->getName();
+        $tpl['CENSUS_DATE'] = $censusDate;
+
+        $to = $i->getEmailAddress() . $settings->getEmailDomain();
+        if(!is_null($faculty))
+        {
+            $cc = $faculty->getUsername() . $settings->getEmailDomain();
+        }
+
+        $subject = 'Registration needed before census date';
+
+        email::sendTemplateMessage($to, $subject, 'email/ReminderEmail.tpl', $tpl, $cc);
+    }
+
+
 }

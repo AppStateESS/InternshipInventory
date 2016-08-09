@@ -237,7 +237,10 @@ class InternshipInventory {
                 $ctrl = new Command\EmergencyContactRest();
                 $ctrl->execute();
                 break;
-
+            case 'SendPendingEnrollmentReminders':
+                $ctrl = new Command\SendPendingEnrollmentReminders();
+                $ctrl->execute();
+                break;
             default:
                 $menu = new UI\InternMenu();
                 $this->content = $menu->display();
