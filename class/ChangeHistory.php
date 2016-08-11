@@ -24,8 +24,13 @@ class ChangeHistory extends Model{
         if(!is_null($i)){
             $this->id = 0;
             $this->internship_id = $i->getId();
-            $this->username = $phpwsUser->getUsername();
             $this->timestamp = $timestamp;
+
+            if(is_null($phpwsUser)) {
+                $this->username = 'InternshipInventory';
+            } else {
+                $this->username = $phpwsUser->getUsername();
+            }
 
             // Strip namespace from start of from and to states, all four backspaces are required to escaping backslash
             $this->from_state   = preg_replace("/Intern\\\\WorkflowState\\\\/", '', $fromState->getName());
