@@ -10,7 +10,7 @@ class InternshipFactory {
      * Generates an Internship object by attempting to load the internship from the database with the given id.
      *
      * @param int $id
-     * @returns Internship
+     * @return Internship
      * @throws InvalidArgumentException
      * @throws Exception
      * @throws InternshipNotFoundException

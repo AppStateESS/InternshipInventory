@@ -32,17 +32,19 @@ class TestTermProvider extends BannerTermProvider {
         $obj->term_desc             = 'Summer 2016';
         $obj->term_start_date       = '6/1/2016';
         $obj->term_end_date         = '7/14/2016';
-        if($this->term == '201620')
-        {
-            $obj->census_date           = '5/25/2016';
-        }
-        else if($this->term == '201630')
-        {
-            $obj->census_date           = '7/4/2016';
-        }
-        else if($this->term == '201640')
-        {
-            $obj->census_date           = '7/29/2016';
+
+        if($this->term == '201620') {
+            $obj->census_date   = '5/25/2016';
+        } else if($this->term == '201630') {
+            $obj->census_date   = '7/4/2016';
+        } else if($this->term == '201640') {
+            $obj->census_date   = '8/29/2016';
+        } else if($this->term == '201710') {
+            $obj->census_date   = '1/15/2017';
+        } else if($this->term == '201720') {
+            $obj->census_date   = '5/15/2017';
+        } else {
+            throw new \Exception('Missing fake census date for ' . $this->term);
         }
 
         $partTerm = new \stdClass();
@@ -61,26 +63,6 @@ class TestTermProvider extends BannerTermProvider {
     {
         $obj = new \stdClass();
 
-        // $obj->banner_id = '900123456';
-        //
-        // // User does not have Banner permissions
-        // //$obj->error_num = 1002;
-        // //$obj->error_desc = 'InvalidUserName';
-        //
-        // // Web service had an unknown error
-        // //$obj->error_num = 1;
-        // //$obj->error_desc = 'SYSTEM';
-        //
-        // // Student was not found
-        // $obj->error_num = 1101;
-        // $obj->error_desc = 'LookupBannerID';
-
-        // No data?
-        //$obj = new \stdClass();
-
-        $parentObj = new \stdClass();
-        $parentObj->GetInternInfoResult = new \stdClass();
-        $parentObj->GetInternInfoResult->DirectoryInfo = $obj;
-        return $parentObj;
+        return $obj;
     }
 }
