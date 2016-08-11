@@ -713,4 +713,78 @@ class Email {
 
         email::sendTemplateMessage($to, $subject, 'email/OiedCertifiedNotice.tpl', $tpl);
     }
+
+    /**
+     *  Send the census date/enrollment reminder email to the specified group
+     *
+     * @param String $type Type of reminder to send. One of: 'faculty', 'student'
+     * @param Internship $i
+     * @param String $censusTimestamp Unix timestamp for census date
+     * @param String $toUser Username of the person to send the message to. Does not include the domain name.
+     * @param String $templateFile Filename of the template to use. Assumes the file is in './templates/email/...'
+     */
+    public static function sendEnrollmentReminderEmail(Internship $i, $censusTimestamp, $toUsername, $templateFile)
+    {
+        $tpl = array();
+
+        $settings = InternSettings::getInstance();
+
+        $faculty = $i->getFaculty();
+        $agency = $i->getAgency();
+
+        $tpl = array();
+        $tpl['NAME']    = $i->getFullName();
+        $tpl['BANNER']  = $i->getBannerId();
+        $tpl['EMAIL']   = $i->getEmailAddress() . $settings->getEmailDomain();
+        $tpl['TERM']    = Term::rawToRead($i->getTerm(), false);
+
+        if($i->getSubject()->getId() != 0) {
+            $tpl['SUBJECT']     = $i->getSubject()->getName();
+        }
+
+        if(!is_null($i->getCourseNumber())){
+            $tpl['COURSE_NUM']      = $i->getCourseNumber();
+        }
+
+        if(!is_null($i->getCourseSection())){
+            $tpl['SECTION']         = $i->getCourseSection();
+        }
+
+        if(!is_null($i->getCreditHours())){
+            $tpl['CREDITS']         = $i->getCreditHours();
+        }
+
+        if($i->isInternational()){
+            $tpl['COUNTRY']     = $i->getLocCountry();
+        }else{
+            $tpl['STATE']       = $i->getLocationState();
+        }
+
+        if($i->getStartDate() != 0){
+            $tpl['START_DATE']  = $i->getStartDate();
+        }
+
+        if($i->getEndDate() != 0){
+            $tpl['END_DATE']    = $i->getEndDate();
+        }
+
+        if(!is_null($faculty)){
+            $tpl['FACULTY']     = $faculty->getFullName();
+        }
+
+        $tpl['AGENCY']      = $agency->getName();
+        $tpl['CENSUS_DATE'] = date('l, F j, Y', $censusTimestamp);
+
+        $subject = 'Internship Registration Pending';
+
+        // Append domain name to username
+        $to = $toUsername . $settings->getEmailDomain();
+
+        // Prepend path to template file name
+        $templateFile = 'email/' . $templateFile;
+
+        email::sendTemplateMessage($to, $subject, $templateFile, $tpl);
+    }
+
+
 }
