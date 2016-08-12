@@ -26,4 +26,4 @@ Host: {AGENCY}
 <!-- BEGIN credit_hours -->Credits Hours: {CREDITS}<!-- END credit_hours -->
 <!-- BEGIN faculty -->Instructor: {FACULTY}<!-- END faculty -->
 
-- Internship Inventory (Student 1 Week)
+- Internship Inventory
