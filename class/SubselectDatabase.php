@@ -1377,7 +1377,7 @@ class SubselectDatabase extends PHPWS_DB{
                     if (PHPWS_Error::isError($result)) {
                         return $result;
                     }
-                    return $result[0];
+                    return $result['count'];
                 } else {
                     $result = $GLOBALS['PHPWS_DB']['connection']->queryCol($sql);
                     if (PHPWS_Error::isError($result)) {
