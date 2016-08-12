@@ -3,6 +3,10 @@ namespace Intern\Command;
 
 use Intern\WorkflowStateFactory;
 use Intern\ChangeHistory;
+use Intern\TermProviderFactory;
+use Intern\Term;
+use Intern\InternshipFactory;
+use Intern\Email;
 
 /**
  * @author Chris Detsch
@@ -18,12 +22,12 @@ class SendPendingEnrollmentReminders
     public function execute()
     {
         // Get the list of future terms
-        $provider = \intern\TermProviderFactory::getProvider();
-        $terms = array_keys(\intern\Term::getFutureTermsAssoc());
+        $provider = TermProviderFactory::getProvider();
+        $terms = array_keys(Term::getFutureTermsAssoc());
 
         foreach ($terms as $term) {
             // Get the pending internships for this term
-            $pendingInternships = \intern\InternshipFactory::getPendingInternshipsByTerm($term);
+            $pendingInternships = InternshipFactory::getPendingInternshipsByTerm($term);
 
             // Get the census date for this term
             $termInfo = $provider->getTerm($term);
@@ -53,10 +57,10 @@ class SendPendingEnrollmentReminders
                 $currState = WorkflowStateFactory::getState($i->getStateName());
                 if(!is_null($faculty)){
                     if($withinOneWeek){
-                        \intern\Email::sendEnrollmentReminderEmail($i, $censusTimestamp, $faculty->getUsername(), 'FacultyReminderEmail1Week.tpl');
+                        Email::sendEnrollmentReminderEmail($i, $censusTimestamp, $faculty->getUsername(), 'FacultyReminderEmail1Week.tpl');
                         $ch = new ChangeHistory($i, null, time(), $currState, $currState, 'Faculty 1-Week Census Date Reminder Sent');
                     }else{
-                        \intern\Email::sendEnrollmentReminderEmail($i, $censusTimestamp, $faculty->getUsername(), 'FacultyReminderEmail4Weeks.tpl');
+                        Email::sendEnrollmentReminderEmail($i, $censusTimestamp, $faculty->getUsername(), 'FacultyReminderEmail4Weeks.tpl');
                         $ch = new ChangeHistory($i, null, time(), $currState, $currState, 'Faculty Census Date Reminder Sent');
                     }
 
@@ -65,15 +69,30 @@ class SendPendingEnrollmentReminders
 
                 // Email the student
                 if($withinOneWeek){
-                    \intern\Email::sendEnrollmentReminderEmail($i, $censusTimestamp, $i->getEmailAddress(), 'StudentReminderEmail1Week.tpl');
+                    Email::sendEnrollmentReminderEmail($i, $censusTimestamp, $i->getEmailAddress(), 'StudentReminderEmail1Week.tpl');
                     $ch = new ChangeHistory($i, null, time(), $currState, $currState, 'Student 1-Week Census Date Reminder Sent');
                 }else{
-                    \intern\Email::sendEnrollmentReminderEmail($i, $censusTimestamp, $i->getEmailAddress(), 'StudentReminderEmail4Weeks.tpl');
+                    Email::sendEnrollmentReminderEmail($i, $censusTimestamp, $i->getEmailAddress(), 'StudentReminderEmail4Weeks.tpl');
                     $ch = new ChangeHistory($i, null, time(), $currState, $currState, 'Student Census Date Reminder Sent');
                 }
                 $ch->save();
             }
         }
+    }
+
+    public static function pulseIsStatic(){
+        require_once(PHPWS_SOURCE_DIR . 'inc/intern_defines.php');
+
+        \PHPWS_Core::initModClass('users', 'Users.php');
+        \PHPWS_Core::initModClass('users', 'Current_User.php');
+        $user = new \PHPWS_User(0, 'jb67803');
+        //$user->login();
+        \Current_User::init($user->id);
+
+
+
+        $obj = new SendPendingEnrollmentReminders();
+        $obj->execute();
     }
 
 }
