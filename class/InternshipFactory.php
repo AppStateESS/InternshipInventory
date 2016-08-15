@@ -53,6 +53,7 @@ class InternshipFactory {
                                FROM intern_internship
                                WHERE state != 'RegisteredState'
                                     AND state != 'CancelledState'
+                                    AND state != 'DeanApprovedState'
                                     AND term = :term");
         $stmt->execute(array('term'  => $term));
         $stmt->setFetchMode(\PDO::FETCH_CLASS, 'Intern\InternshipRestored');
