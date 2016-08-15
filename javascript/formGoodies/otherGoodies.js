@@ -269,7 +269,6 @@ function initFacultySelector()
 
         for(var i = 0; i < facultyData.length; i++){
             if(facultyData[i].id == bannerId){ // NB: Comparison must use double equals, not triple
-                console.log("Matched on i=" + i);
                 faculty = facultyData[i];
                 break;
             }
