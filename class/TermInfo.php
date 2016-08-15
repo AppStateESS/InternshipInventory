@@ -16,7 +16,7 @@ class TermInfo {
 
     public function __construct()
     {
-        $partTerm = array();
+        $this->partTerm = array();
     }
 
     /*****

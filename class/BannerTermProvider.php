@@ -58,6 +58,8 @@ class BannerTermProvider {
             $response = $response[0];
         }
 
+        $response = $response->GetTermInfoResult;
+
         // Log the request
         $this->logRequest('getTerm', 'success', $params);
 
