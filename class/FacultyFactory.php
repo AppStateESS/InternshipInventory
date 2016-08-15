@@ -66,9 +66,15 @@ class FacultyFactory {
      */
     public static function getFacultyByDepartmentAssoc(Department $department)
     {
-        $sql = "SELECT intern_faculty.* FROM intern_faculty JOIN intern_faculty_department ON intern_faculty.id = intern_faculty_department.faculty_id WHERE intern_faculty_department.department_id = {$department->getId()} ORDER BY last_name ASC";
+        $db = \Database::newDB();
+        $pdo = $db->getPDO();
 
-        $result = \PHPWS_DB::getAll($sql);
+        $sql = "SELECT intern_faculty.* FROM intern_faculty JOIN intern_faculty_department ON intern_faculty.id = intern_faculty_department.faculty_id WHERE intern_faculty_department.department_id = :departmentId ORDER BY last_name ASC";
+
+        $sth = $pdo->prepare($sql);
+        $sth->execute(array('departmentId' => $department->getId()));
+
+        $result = $sth->fetchAll(\PDO::FETCH_ASSOC);
 
         return $result;
     }

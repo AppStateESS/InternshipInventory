@@ -266,8 +266,10 @@ function initFacultySelector()
         // Search the list of faculty for a match to the JSON data fetched earlier
         //TODO What if there isn't a match? We still need to be able to find/show that faculty member.
         var faculty = null;
+
         for(var i = 0; i < facultyData.length; i++){
-            if(facultyData[i].id === bannerId){
+            if(facultyData[i].id == bannerId){ // NB: Comparison must use double equals, not triple
+                console.log("Matched on i=" + i);
                 faculty = facultyData[i];
                 break;
             }
