@@ -7,12 +7,12 @@ class AddAgreementUI implements UI
     {
 
         /* Check if user should have access to Affiliate Agreement page */
-        if(!\Current_User::allow('intern', 'affiliate_agreement')){
+        if(!\Current_User::allow('intern', 'affiliation_agreement')){
             \NQ::simple('intern', \Intern\UI\NotifyUI::WARNING, 'You do not have permission to add Affiliate Agreements.');
             return false;
         }
 
-        javascript('/jquery/');
+        javascript('jquery');
 
         /* Form for adding new grad program */
         $form = new \PHPWS_Form('add_prog');
