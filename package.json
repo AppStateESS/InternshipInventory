@@ -11,7 +11,8 @@
     "bower": "^1.4.2",
     "classnames": "~2.2.0",
     "react": "~0.14.0",
-    "react-dom": "~0.14.0"
+    "react-dom": "~0.14.0",
+    "react-dropzone": "~3.5.3"
   },
   "devDependencies": {
     "grunt": "~0.4.5",

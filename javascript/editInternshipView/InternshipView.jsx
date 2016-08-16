@@ -1,6 +1,5 @@
 // !! internshipId is hardcoded as a global variable !!
 
-
 var EditInternshipInterface = React.createClass({
     getInitialState: function() {
         return {
@@ -23,17 +22,37 @@ var EditInternshipInterface = React.createClass({
 
         this.setState({submitted: true}, function(){
             // After disabling submit buttons, use callback to validate the data
-            if(!false){
+            if(!true){
                 // If the data doesn't validate, wait a second before re-enabling the submit button
                 // This makes sure the user sees the "Creating..." spinner, instead of it re-rendering
                 // so fast that they don't think it did anything
                 setTimeout(function(){
                     thisComponent.setState({submitted: false});
-                    thisComponent.refs.mainInterface.buildInternshipData(form);
+                    // thisComponent.refs.mainInterface.buildInternshipData(form);
                 }, 1000);
 
                 return;
             }
+
+            setTimeout(function(){
+                thisComponent.setState({submitted: false});
+                var data = thisComponent.refs.mainInterface.buildInternshipData(form);
+                console.log(data);
+                $.ajax({
+                    url: 'index.php?module=intern&action=editInternshipRest&internshipId='+internshipId,
+                    type: 'POST',
+                    processData: false,
+                    dataType: 'json',
+                    data: JSON.stringify(data),
+                    success: function() {
+                        console.log("success!");
+                    }.bind(this),
+                    error: function(xhr, status, err) {
+                        alert("Failed to save intern data.")
+                        console.error(this.props.url, status, err.toString());
+                    }.bind(this)
+                });
+            }, 1000);
         });
     },
     getInternData: function(){
@@ -132,15 +151,16 @@ var MainInterface = React.createClass({
         var type    = this.refs.type.grabTypeData(form);
         var host    = this.refs.host.buildHostData(form);
 
-        console.log(host);
-
         var internship = {student:  student,
                           status:   status,
                           faculty:  faculty,
                           term:     term,
                           type:     type};
 
-                          console.log(internship);
+
+        var internData = {internship: internship,
+                          host:       host};
+        return internData;
         //Host Information
         //var status  = this.refs.student.grabStudentData();
     },
@@ -239,6 +259,7 @@ var MainInterface = React.createClass({
 
                     <div className="col-lg-6">
                        <Contracts title="Extra Documents"/>
+
                     </div>
                   </div>
 
@@ -991,7 +1012,21 @@ var ChangeFields = React.createClass({
     }
 });
 
+var DropzoneDemo = React.createClass({
+    onDrop: function (files) {
+      console.log('Received files: ', files);
+    },
 
+    render: function () {
+      return (
+          <div>
+            <Dropzone onDrop={this.onDrop}>
+              <div>Try dropping some files here, or click to select files to upload.</div>
+            </Dropzone>
+          </div>
+      );
+    }
+});
 
 
 
@@ -1037,7 +1072,10 @@ var HostInterface = React.createClass({
                                  states   = {this.props.states}
                                  domestic = {intern.domestic} 
                                  ref      = "hDetails" />
-                    <SupervisorInfo hostData = {hostData} domestic = {intern.domestic} ref = "sDetails"/>
+                    <SupervisorInfo hostData = {hostData} 
+                                    domestic = {intern.domestic} 
+                                    states   = {this.props.states}
+                                    ref = "sDetails"/>
                   </div>
                 </div>
             </div>
@@ -1245,7 +1283,16 @@ var Contracts = React.createClass({
 
 var HostDetails = React.createClass({
     grabHostData: function() {
+        var hostData = { 
+                name:    this.refs.name.value, 
+                phone:   this.refs.phone.value,
+                address: this.refs.address.value,
+                city:    this.refs.city.value,
+                state:   this.refs.state.value,
+                zip:     this.refs.zip.value
+                }
 
+        return hostData;
     },
     render: function() {
         var hostData = this.props.hostData;
@@ -1267,33 +1314,33 @@ var HostDetails = React.createClass({
                 <legend>Host Details</legend>
                 <div className="form-group">
                   <label className="col-lg-3 control-label" htmlFor="{STUDENT_ADDRESS_ID}">Host Name</label>
-                  <div className="col-lg-6"><input type="text" className="form-control" defaultValue={hostData.name} /></div>
+                  <div className="col-lg-6"><input type="text" className="form-control" ref="name" defaultValue={hostData.name} /></div>
                 </div>
 
                 <div className="form-group">
                   <label className="col-lg-3 control-label" htmlFor="{STUDENT_ADDRESS_ID}">Phone</label>
-                  <div className="col-lg-6"><input type="text" className="form-control" defaultValue={hostData.phone} /></div>
+                  <div className="col-lg-6"><input type="text" className="form-control" ref="phone" defaultValue={hostData.phone} /></div>
                 </div>
 
                 <div className="form-group">
                   <label className="col-lg-3 control-label" htmlFor="{STUDENT_ADDRESS_ID}">Address</label>
-                  <div className="col-lg-6"><input type="text" className="form-control" defaultValue={hostData.address} /></div>
+                  <div className="col-lg-6"><input type="text" className="form-control" ref="address" defaultValue={hostData.address} /></div>
                 </div>
 
                 <div className="form-group">
                   <label className="col-lg-3 control-label" htmlFor="{STUDENT_CITY_ID}">City</label>
-                  <div className="col-lg-6"><input type="text" className="form-control" defaultValue={hostData.city} /></div>
+                  <div className="col-lg-6"><input type="text" className="form-control" ref="city" defaultValue={hostData.city} /></div>
                 </div>
 
                 <div className="form-group">
                   <label className="col-lg-3 control-label" htmlFor="{STUDENT_STATE_ID}">State</label>
                   <div className="col-lg-6">
-                    <select className="form-control" onChange={this.handleDrop}>{stateData}</select></div>
+                    <select className="form-control" ref="state" onChange={this.handleDrop}>{stateData}</select></div>
                 </div>
 
                 <div className="form-group">
                   <label className="col-lg-3 control-label" htmlFor="{STUDENT_ZIP_ID}">Zip Code</label>
-                  <div className="col-lg-6"><input type="text" className="form-control" defaultValue={hostData.zip} /></div>
+                  <div className="col-lg-6"><input type="text" className="form-control" ref="zip" defaultValue={hostData.zip} /></div>
                 </div>
             </fieldset>
           </div>
@@ -1303,37 +1350,62 @@ var HostDetails = React.createClass({
 
 var SupervisorInfo = React.createClass({
     grabSupervisorData: function() {
+        var superData = { 
+                fname:   this.refs.fname.value, 
+                lname:   this.refs.lname.value,
+                title:   this.refs.title.value,
+                email:   this.refs.email.value,
+                fax:     this.refs.fax.value,
+                phone:   this.refs.phone.value,
+                address: this.refs.address.value, 
+                city:    this.refs.city.value,
+                state:   this.refs.state.value,
+                zip:     this.refs.zip.value
+                }
 
+        return superData;
     },
     render: function() {
         var hostData = this.props.hostData;
+        var stateData = '';
+
+        if(this.props.states != null){
+            stateData = this.props.states.map(function (state) {
+                  return (
+                          <StateDropDown  key={state.abbr}
+                                          sAbbr={state.abbr}
+                                          stateName={state.full_name}
+                                          active={hostData.state} />
+                      );
+              }.bind(this));
+        }
         return(
           <div>
             <fieldset>
                 <legend>Supervisor Information</legend>
                 <div className="form-group">
                   <label className="col-lg-3 control-label" htmlFor="{STUDENT_MIDDLE_NAME_ID}">First Name</label>
-                  <div className="col-lg-6"><input type="text" className="form-control" defaultValue={hostData.supervisor_first_name} /></div>
+                  <div className="col-lg-6"><input type="text" className="form-control" ref="fname" defaultValue={hostData.supervisor_first_name} /></div>
                 </div>
 
                 <div className="form-group">
                   <label className="col-lg-3 control-label" htmlFor="{STUDENT_MIDDLE_NAME_ID}">Last Name</label>
-                  <div className="col-lg-6"><input type="text" className="form-control" defaultValue={hostData.supervisor_last_name} /></div>
+                  <div className="col-lg-6"><input type="text" className="form-control" ref="lname" defaultValue={hostData.supervisor_last_name} /></div>
                 </div>
 
                 <div className="form-group">
                   <label className="col-lg-3 control-label" htmlFor="{STUDENT_MIDDLE_NAME_ID}">Title</label>
-                  <div className="col-lg-6"><input type="text" className="form-control" defaultValue={hostData.supervisor_title} /></div>
+                  <div className="col-lg-6"><input type="text" className="form-control" ref="title" defaultValue={hostData.supervisor_title} /></div>
                 </div>
 
                 <div className="form-group">
                   <label className="col-lg-3 control-label" htmlFor="{STUDENT_MIDDLE_NAME_ID}">Email</label>
-                  <div className="col-lg-6"><input type="text" className="form-control" defaultValue={hostData.supervisor_email} /></div>
+                  <div className="col-lg-6"><input type="text" className="form-control" ref="email" defaultValue={hostData.supervisor_email} /></div>
                 </div>
 
                 <div className="form-group">
                   <label className="col-lg-3 control-label" htmlFor="{STUDENT_MIDDLE_NAME_ID}">Fax</label>
-                  <div className="col-lg-6"><input type="text" className="form-control" defaultValue={hostData.supervisor_fax} /></div>
+                  <div className="col-lg-6"><input type="text" className="form-control" ref="fax" defaultValue={hostData.supervisor_fax} /></div>
                 </div>
 
                 <div className="checkbox">
@@ -1342,28 +1414,28 @@ var SupervisorInfo = React.createClass({
 
                 <div className="form-group">
                   <label className="col-lg-3 control-label" htmlFor="{STUDENT_ADDRESS_ID}">Phone</label>
-                  <div className="col-lg-6"><input type="text" className="form-control" defaultValue={hostData.supervisor_phone} /></div>
+                  <div className="col-lg-6"><input type="text" className="form-control" ref="phone" defaultValue={hostData.supervisor_phone} /></div>
                 </div>
 
                 <div className="form-group">
                   <label className="col-lg-3 control-label" htmlFor="{STUDENT_ADDRESS_ID}">Address</label>
-                  <div className="col-lg-6"><input type="text" className="form-control" defaultValue={hostData.supervisor_address} /></div>
+                  <div className="col-lg-6"><input type="text" className="form-control" ref="address" defaultValue={hostData.supervisor_address} /></div>
                 </div>
 
                 <div className="form-group">
                   <label className="col-lg-3 control-label" htmlFor="{STUDENT_CITY_ID}">City</label>
-                  <div className="col-lg-6"><input type="text" className="form-control" defaultValue={hostData.supervisor_city} /></div>
+                  <div className="col-lg-6"><input type="text" className="form-control" ref="city" defaultValue={hostData.supervisor_city} /></div>
                 </div>
 
                 <div className="form-group">
                   <label className="col-lg-3 control-label" htmlFor="{STUDENT_STATE_ID}">State</label>
                   <div className="col-lg-6">
-                    <select className="form-control" onChange={this.handleDrop}></select></div>
+                    <select className="form-control" ref="state" onChange={this.handleDrop}>{stateData}</select></div>
                 </div>
 
                 <div className="form-group">
                   <label className="col-lg-3 control-label" htmlFor="{STUDENT_ZIP_ID}">Zip Code</label>
-                  <div className="col-lg-6"><input type="text" className="form-control" defaultValue={hostData.supervisor_zip} /></div>
+                  <div className="col-lg-6"><input type="text" className="form-control" ref="zip" defaultValue={hostData.supervisor_zip} /></div>
                 </div>
             </fieldset>
           </div>

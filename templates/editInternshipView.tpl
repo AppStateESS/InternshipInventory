@@ -17,6 +17,8 @@ var internshipId = {INTERN_ID};
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap/0.28.3/react-bootstrap.js"></script>
 <script type="text/javascript" src="{source_http}mod/intern/node_modules/classnames/index.js"></script>
 
+<!--<script type="text/javascript" src="{source_http}mod/intern/node_modules/react-dropzone/dist/index.js"></script>-->
+
 <script type="text/jsx" src="{source_http}mod/intern/javascript/emergencyContact/EmgContactList.jsx"></script>
 
 <script type="text/jsx" src="{source_http}mod/intern/javascript/editInternshipView/InternshipView.jsx"></script>

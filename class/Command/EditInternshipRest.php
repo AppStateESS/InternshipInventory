@@ -34,7 +34,13 @@ class EditInternshipRest {
 
 	public function post()
 	{
+        $req = \Server::getCurrentRequest();
+        $postarray = json_decode($req->getRawData(), true);
 
+        echo("<pre>");
+        var_dump($postarray);
+        echo("</pre>");
+        exit;        
 	}
 
 	public function delete()
