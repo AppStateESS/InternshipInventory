@@ -79,7 +79,7 @@ class BannerTermProvider {
      * Takes a reference to a Student object and a SOAP response,
      * Plugs the SOAP values into Student object.
      *
-     * @param Student $student
+     * @param TermInfo $termInfo
      * @param stdClass $data
      */
     protected function plugValues(&$termInfo, \stdClass $data)
