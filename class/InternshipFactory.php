@@ -40,7 +40,7 @@ class InternshipFactory {
      * Returns internships which are not marked as Registered in the workflow
      * and are not cancelled (i.e. state is not 'RegisteredState' nor 'CancelledState'). These are pending
      *
-     * @param int $id
+     * @param int $term
      * @return Array<Internship> Array of all pending Internship objects in the given term
      * @throws InvalidArgumentException
      */
