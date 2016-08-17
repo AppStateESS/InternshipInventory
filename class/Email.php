@@ -717,16 +717,13 @@ class Email {
     /**
      *  Send the census date/enrollment reminder email to the specified group
      *
-     * @param String $type Type of reminder to send. One of: 'faculty', 'student'
      * @param Internship $i
      * @param String $censusTimestamp Unix timestamp for census date
-     * @param String $toUser Username of the person to send the message to. Does not include the domain name.
+     * @param String $toUsername Username of the person to send the message to. Does not include the domain name.
      * @param String $templateFile Filename of the template to use. Assumes the file is in './templates/email/...'
      */
     public static function sendEnrollmentReminderEmail(Internship $i, $censusTimestamp, $toUsername, $templateFile)
     {
-        $tpl = array();
-
         $settings = InternSettings::getInstance();
 
         $faculty = $i->getFaculty();
