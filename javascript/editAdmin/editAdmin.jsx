@@ -178,7 +178,6 @@ var SearchAdmin = React.createClass({
 
 		// Updating the new state for optimization (snappy response on the client)
 		var newVal = this.state.displayData;
-		console.log(newVal);
 		this.setState({displayData: newVal},this.searchList());
 
 		$.ajax({
