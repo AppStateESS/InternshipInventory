@@ -34,6 +34,7 @@ class AddInternship {
             \NQ::simple('intern', NotifyUI::ERROR, 'You do not have permission to create new internships.');
             \NQ::close();
             \PHPWS_Core::home();
+            return;
         }
 
         // Get a list of any missing input the user didn't fill in
@@ -41,7 +42,9 @@ class AddInternship {
 
         // If there are missing fields, redirect to the add internship interface
         if(!empty($missingFieldList)) {
+            \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "Please complete the highlighted fields.");
             $this->redirectToForm();
+            return;
         }
 
         // Check that the student Id looks valid
@@ -53,6 +56,13 @@ class AddInternship {
 
         // Create the student object
         $student = ExternalDataProviderFactory::getProvider()->getStudent($studentId, $term);
+
+        // Double check the student's level field
+        if($student->getLevel() == null){
+            \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "This student does not have a valid 'level' field in Banner. This usually means the student is not currently enrolled. We recommend contacting the Registrar's Office to check this student's enrollment status.");
+            $this->redirectToForm();
+            return;
+        }
 
         // Get the department ojbect
         $departmentId = preg_replace("/^_/", '', $_POST['department']); // Remove leading underscore in department id
@@ -147,7 +157,6 @@ class AddInternship {
      */
     private function redirectToForm()
     {
-        \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "Please complete the highlighted fields.");
         \NQ::close();
         return \PHPWS_Core::reroute('index.php?module=intern&action=ShowAddInternship');
     }

@@ -101,6 +101,11 @@ class InternshipView {
         if (!$this->intern->isDistanceEd() && ($this->intern->getCourseSection() > 300 && $this->intern->getCourseSection() < 400)) {
             \NQ::simple('intern', UI\NotifyUI::WARNING, "The course section number you entered looks like a distance ed course. Be sure to check the Distance Ed option, or double check the section number.");
         }
+
+        // Show a warning if the student's type is invalid in the student data (from Banner)
+        if($this->student->getLevel() == null){
+            \NQ::simple('intern', \Intern\UI\NotifyUI::WARNING, "This student's 'level' is not set in Banner. This could mean this student is not currently enrolled.");
+        }
     }
 
     private function showStudentWarnings()

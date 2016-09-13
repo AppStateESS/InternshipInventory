@@ -257,7 +257,7 @@ class WebServiceDataProvider extends ExternalDataProvider {
         } else if ($data->level == self::POSTDOC) {
             $student->setLevel(Student::POSTDOC);
         } else {
-            throw new \InvalidArgumentException("Unrecognized student level ({$data->level}) for {$data->banner_id}.");
+            $student->setLevel(null);
         }
 
         // Credit Hours
