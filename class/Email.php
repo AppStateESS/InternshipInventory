@@ -208,17 +208,25 @@ class Email {
         /***
          * Figure out who the notification email goes to
         */
-        // Send distance ed internship to speedse, per trac #110
         if ($i->isDistanceEd()) {
+            // Send distance ed internship to Distance Ed Office
             $to = $settings->getDistanceEdEmail();
+            $tpl['UNDERGRAD'] = ''; // Dummy template var to use undergrad text
 
-            // Send all international or graduate internships to 'hicksmp', per trac #102
-        } else if ($i->isInternational() || $i->isGraduate()) {
-            $to = $settings->getGraduateRegEmail();
+        } else if ($i->isGraduate()) {
+            // Send all graduate internships to the graduate school (whether international or not)
+            $to = explode(',', $settings->getGraduateRegEmail()); // NB: Setting is a comma separated array
+            $tpl['GRADUATE'] = ''; // Dummy template var to use grad school text
 
-            // Otherwise, send it to the general Registrar address
+        } else if ($i->isInternational()){
+            // Send international undergraduate internships to a special person
+            $to = $settings->getInternationalRegEmail();
+            $tpl['UNDERGRAD'] = ''; // Dummy template var to use undergrad text
+
         } else {
+            // Otherwise, send it to the general Registrar address
             $to = $settings->getRegistrarEmail();
+            $tpl['UNDERGRAD'] = ''; // Dummy template var to use undergrad text
         }
 
         if(!isset($to) || $to == null) {
@@ -324,7 +332,7 @@ class Email {
             $intlSubject = '';
         }
 
-        $emails = $settings->getGradSchoolEmail(); // To Holly Hirst, for now
+        $emails = $settings->getGradSchoolEmail();
 
         $to = explode(',', $emails);
 
@@ -385,7 +393,6 @@ class Email {
 
         $tpl = array();
 
-
         $tpl['NAME'] = $i->getFullName();
         $tpl['BANNER'] = $i->banner;
 
@@ -395,12 +402,18 @@ class Email {
         $tpl['DEPARTMENT'] = $dept->getName();
 
         $to = $i->email . '@appstate.edu';
+        $cc = array();
 
         $faculty = $i->getFaculty();
         if ($faculty instanceof Faculty) {
-            $cc = array($faculty->getUsername() . '@' . $settings->getEmailDomain(), $settings->getRegistrarEmail());
+            $cc[] = ($faculty->getUsername() . '@' . $settings->getEmailDomain());
+        }
+
+        // CC the graduate school (for grad level) or the registrar's office (for undergrad level)
+        if($i->isGraduate()){
+            $cc[] = array($settings->getGraduateRegEmail());
         } else {
-            $cc = array();
+            $cc[] = $settings->getRegistrarEmail();
         }
 
         $subject = 'Internship Cancelled ' . Term::rawToRead($i->getTerm()) . '[' . $i->getBannerId() . '] ' . $i->getFullName();
