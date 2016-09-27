@@ -1,4 +1,8 @@
-var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
+import React from 'react';
+import ReactDom from 'react-dom';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+
+//var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
 // Student Search Parent Component
 var StudentSearch = React.createClass({
