@@ -36,5 +36,4 @@ module.exports = {
         configFile: path.join(__dirname, '.eslintrc.js'),
         useEslintrc: false
     },
-    devtool: 'source-map'
 }

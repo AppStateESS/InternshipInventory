@@ -24,7 +24,7 @@ module.exports = {
             enforce: "pre",
             test: /\.(js|jsx)$/,
             loader: "eslint",
-            include: JS_DIR + "/*"
+            include: JS_DIR
         }, {
             test: /\.jsx?/,
             include: APP_DIR,
@@ -37,6 +37,10 @@ module.exports = {
             test: /\.css$/,
             loader: "style-loader!css-loader"
         }]
+    },
+    eslint: {
+        configFile: path.join(__dirname, '.eslintrc.js'),
+        useEslintrc: false
     },
     plugins: [
         new webpack.DefinePlugin({
