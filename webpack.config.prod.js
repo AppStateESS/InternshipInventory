@@ -6,6 +6,9 @@ var Promise = require('es6-promise').polyfill();
 var APP_DIR = path.resolve(__dirname, 'javascript');
 
 module.exports = {
+    // Don't attempt to continue if there are any errors
+    bail: true,
+    devtool: 'source-map',
     entry: {
         createInterface: APP_DIR + '/create.jsx',
         searchInterface: APP_DIR = '/serchInterface/search.jsx'
@@ -13,10 +16,16 @@ module.exports = {
     },
     output: {
         path: path.join(APP_DIR, "dist"),
-        filename: "[name].prod.js"
+        filename: "[name]-[hash].min.js",
+        chunkFilename: '[name].[chunkhash:8].chunk.js'
     },
     module: {
         loaders: [{
+            enforce: "pre",
+            test: /\.(js|jsx)$/,
+            loader: "eslint",
+            include: JS_DIR + "/*"
+        }, {
             test: /\.jsx?/,
             include: APP_DIR,
             loader: 'babel'
@@ -37,7 +46,15 @@ module.exports = {
         }),
         new webpack.optimize.UglifyJsPlugin({
             compress: {
+                screw_ie8: true, // React doesn't support IE8 anyway
                 warnings: true
+            },
+            mangle: {
+                screw_ie8: true
+            },
+            output: {
+                comments: false,
+                screw_ie8: true
             }
         })
     ]
