@@ -16,7 +16,7 @@ module.exports = {
         editAdmin: JS_DIR + '/editAdmin/editAdmin.jsx'
     },
     output: {
-        path: path.join(APP_DIR, "dist"),
+        path: path.join(JS_DIR, "dist"),
         filename: "[name]-[hash].min.js",
         chunkFilename: '[name].[chunkhash:8].chunk.js'
     },
