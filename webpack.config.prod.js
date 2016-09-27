@@ -3,16 +3,17 @@ var WebpackStripLoader = require('strip-loader');
 var path = require('path');
 var Promise = require('es6-promise').polyfill();
 
-var APP_DIR = path.resolve(__dirname, 'javascript');
+var APP_DIR = path.resolve(__dirname, '');
+var JS_DIR = path.resolve(__dirname, 'javascript');
 
 module.exports = {
     // Don't attempt to continue if there are any errors
     bail: true,
     devtool: 'source-map',
     entry: {
-        createInterface: APP_DIR + '/create.jsx',
-        searchInterface: APP_DIR = '/serchInterface/search.jsx'
-        editAdmin: APP_DIR + '/editAdmin/editAdmin.jsx'
+        createInterface: JS_DIR + '/createInterface/CreateInternshipInterface.jsx',
+        searchInterface: JS_DIR + '/searchInterface/search.jsx',
+        editAdmin: JS_DIR + '/editAdmin/editAdmin.jsx'
     },
     output: {
         path: path.join(APP_DIR, "dist"),
