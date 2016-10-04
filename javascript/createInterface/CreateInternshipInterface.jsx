@@ -1,73 +1,17 @@
 import React from 'react';
-import ReactDom from 'react-dom';
+import ReactDOM from 'react-dom';
+import $ from 'jquery';
+import classNames from 'classnames';
+//import typeahead from 'corejs-typeahead';
+import Bloodhound from 'corejs-typeahead';
+
+import InternationalDropDown from './InternationalDropDown.jsx';
+import StateDropDown from './StateDropDown.jsx';
+
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
 //var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
-// Student Search Parent Component
-var StudentSearch = React.createClass({
-    getInitialState: function() {
-        return {student: null, studentFound: false, hasError: false};
-    },
-    // Performs a search and handles the response
-    doSearch: function(searchString) {
-        $.ajax({
-            url: 'index.php?module=intern&action=GetSearchSuggestions',
-            dataType: 'json',
-            data: {searchString: searchString},
-            success: function(data) {
-                if(data.length == 1 && data[0].error === undefined) {
-                    this.setState({student:data[0], studentFound: true, hasError: false});
-                }
-            }.bind(this),
-            error: function(xhr, status, err) {
-                console.error(status, err.toString());
-            }.bind(this)
-        });
-    },
-    studentFound: function() {
-        return this.state.studentFound;
-    },
-    // Clears results from current state, resets for next search
-    resetPreview: function() {
-        this.setState({student: null, studentFound: false});
-    },
-    setError: function(status) {
-        this.setState({hasError: status});
-    },
-    render: function() {
-        var fgClasses = classNames({
-            'form-group': true,
-            'has-success': this.state.studentFound || this.state.hasError,
-            'has-feedback': this.state.studentFound,
-            'has-error': this.state.hasError
-        });
-        return (
-
-            <div className="row">
-                <div className="col-sm-12 col-md-6 col-md-push-3">
-                    <div className="panel panel-default">
-                        <div className="panel-body">
-                            <h3 style={{marginTop: "0"}}><i className="fa fa-user"></i> Student</h3>
-                            <div className="row">
-                                <div className="col-sm-12 col-md-10 col-md-push-1">
-                                    <div className={fgClasses} id="studentId">
-                                        <label htmlFor="studentId2" className="sr-only">Banner ID, User name, or Full Name</label>
-                                        <SearchBox onSelect={this.doSearch} onReset={this.resetPreview}/>
-                                        {this.state.studentFound ? <span className="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span> : null }
-                                        {this.state.studentFound ? <span id="inputSuccess2Status" className="sr-only">(success)</span> : null }
-                                    </div>
-
-                                    {this.state.studentFound ? <StudentPreview student={this.state.student}/> : null }
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );
-    }
-});
 
 var SearchBox = React.createClass({
     getInitialState: function() {
@@ -81,7 +25,7 @@ var SearchBox = React.createClass({
                 var studentIdTokens = Bloodhound.tokenizers.obj.whitespace('studentId');
                 var usernameTokens  = Bloodhound.tokenizers.obj.whitespace('email');
 
-                return nameTokens.concat(studentIdTokens).concat(usernameToekns);
+                return nameTokens.concat(studentIdTokens).concat(usernameTokens);
             },
     		queryTokenizer: Bloodhound.tokenizers.whitespace,
     		remote: {
@@ -128,14 +72,14 @@ var SearchBox = React.createClass({
         $(element).keydown(function(e){
 
             // Look for the enter key
-            if(e.keyCode == 13) {
+            if(e.keyCode === 13) {
                 // Prevent default to keep the form from being submitted on enter
                 e.preventDefault();
                 return;
             }
 
             // Ignore the tab key
-            if(e.keyCode == 9){
+            if(e.keyCode === 9){
                 return;
             }
 
@@ -185,6 +129,71 @@ var StudentPreview = React.createClass({
     }
 });
 
+// Student Search Parent Component
+var StudentSearch = React.createClass({
+    getInitialState: function() {
+        return {student: null, studentFound: false, hasError: false};
+    },
+    // Performs a search and handles the response
+    doSearch: function(searchString) {
+        $.ajax({
+            url: 'index.php?module=intern&action=GetSearchSuggestions',
+            dataType: 'json',
+            data: {searchString: searchString},
+            success: function(data) {
+                if(data.length === 1 && data[0].error === undefined) {
+                    this.setState({student:data[0], studentFound: true, hasError: false});
+                }
+            }.bind(this),
+            error: function(xhr, status, err) {
+                console.error(status, err.toString());
+            }
+        });
+    },
+    studentFound: function() {
+        return this.state.studentFound;
+    },
+    // Clears results from current state, resets for next search
+    resetPreview: function() {
+        this.setState({student: null, studentFound: false});
+    },
+    setError: function(status) {
+        this.setState({hasError: status});
+    },
+    render: function() {
+        var fgClasses = classNames({
+            'form-group': true,
+            'has-success': this.state.studentFound || this.state.hasError,
+            'has-feedback': this.state.studentFound,
+            'has-error': this.state.hasError
+        });
+        return (
+
+            <div className="row">
+                <div className="col-sm-12 col-md-6 col-md-push-3">
+                    <div className="panel panel-default">
+                        <div className="panel-body">
+                            <h3 style={{marginTop: "0"}}><i className="fa fa-user"></i> Student</h3>
+                            <div className="row">
+                                <div className="col-sm-12 col-md-10 col-md-push-1">
+                                    <div className={fgClasses} id="studentId">
+                                        <label htmlFor="studentId2" className="sr-only">Banner ID, User name, or Full Name</label>
+                                        <SearchBox onSelect={this.doSearch} onReset={this.resetPreview}/>
+                                        {this.state.studentFound ? <span className="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span> : null }
+                                        {this.state.studentFound ? <span id="inputSuccess2Status" className="sr-only">(success)</span> : null }
+                                    </div>
+
+                                    {this.state.studentFound ? <StudentPreview student={this.state.student}/> : null }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+});
+
 
 /*********
  * Terms *
@@ -202,7 +211,7 @@ var TermBlock = React.createClass({
             }.bind(this),
             error: function(xhr, status, err) {
                 console.error(status, err.toString());
-            }.bind(this)
+            }
         });
     },
     setError: function(status){
@@ -268,7 +277,7 @@ var LocationBlock = React.createClass({
             }.bind(this),
             error: function(xhr, status, err) {
                 console.error(status, err.toString());
-            }.bind(this)
+            }
         });
 
         // Fetch list of available countries
@@ -280,7 +289,7 @@ var LocationBlock = React.createClass({
             }.bind(this),
             error: function(xhr, status, err) {
                 console.error(status, err.toString());
-            }.bind(this)
+            }
         });
     },
     domestic: function() {
@@ -352,7 +361,7 @@ var Department = React.createClass({
             }.bind(this),
             error: function(xhr, status, err) {
                 console.error(status, err.toString());
-            }.bind(this)
+            }
         });
     },
     render: function() {
@@ -564,7 +573,7 @@ var CreateInternshipInterface = React.createClass({
             thisComponent.refs.hostAgency.setError(false);
         }
 
-        if(errors.length != 0){
+        if(errors.length !== 0){
             thisComponent.setErrorMessages(errors);
         }
 
@@ -578,7 +587,7 @@ var CreateInternshipInterface = React.createClass({
         if(this.state.errorMessages == null){
             errors = '';
         } else {
-            errors = <ErrorMessagesBlock key="errorSet" errors = {this.state.errorMessages} />
+            errors = <ErrorMessagesBlock key="errorSet" errors={this.state.errorMessages} />
         }
 
         return (

@@ -1,4 +1,56 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import $ from 'jquery';
+
 var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
+
+var ErrorMessagesBlock = React.createClass({
+    render: function() {
+        if(this.props.errors === null){
+            return '';
+        }
+
+        var errors = this.props.errors;
+
+        return (
+            <div className="row">
+                <div className="col-sm-12 col-md-6 col-md-push-3">
+                    <div className="alert alert-warning" role="alert">
+                        <p><i className="fa fa-exclamation-circle fa-2x"></i> Warning: {errors}</p>
+
+                    </div>
+                </div>
+            </div>
+        );
+    }
+});
+
+var DepartmentList = React.createClass({
+  render: function() {
+    return (
+     	<option value={this.props.id}>{this.props.name}</option>
+    )
+  }
+});
+
+var DeleteAdmin = React.createClass({
+	handleChange: function() {
+		this.props.onAdminDelete(this.props.id);
+	},
+	render: function() {
+		return (
+
+			<tr>
+				<td>{this.props.fullname}</td>
+				<td>{this.props.username}</td>
+				<td>{this.props.department}</td>
+				<td> <a onClick={this.handleChange}> <i className="fa fa-trash-o" /> </a> </td>
+			</tr>
+
+		);
+
+	}
+});
 
 var SearchAdmin = React.createClass({
 	getInitialState: function() {
@@ -69,16 +121,18 @@ var SearchAdmin = React.createClass({
 		var displayData = this.state.displayData;
 		var dept = this.state.deptData;
 
+        var errorMessage = null;
+
 		// Catch whether the created admin is missing a department
-		if(department == '' || department == -1){
-			var errorMessage = "Please choose a department.";
+		if(department === '' || department === -1){
+			errorMessage = "Please choose a department.";
 			this.setState({errorWarning: errorMessage});
 			return;
 		}
 
 		// Catch whether the created admin is missing a username
-		if(username == ''){
-			var errorMessage = "Please enter a valid username.";
+		if(username === ''){
+			errorMessage = "Please enter a valid username.";
 			this.setState({errorWarning: errorMessage});
 			return;
 		}
@@ -86,22 +140,22 @@ var SearchAdmin = React.createClass({
 		// Finds the index of the array if the department number matches
 		// the id of the object.
 		var deptIndex = dept.findIndex(function(element, index, arr){
-            if(department == element.id){
+            if(department === element.id){
                 return true;
             } else {
                 return false;
             }
-        }.bind(this));
+        });
 
 
 		for (var j = 0, k = displayData.length; j < k; j++)
 		{
-			if (displayData[j].username == username)
+			if (displayData[j].username === username)
 			{
 				displayName = displayData[j].display_name;
-				if (displayData[j].name == dept[deptIndex].name)
+				if (displayData[j].name === dept[deptIndex].name)
 				{
-					var errorMessage = "Multiple usernames in the same department.";
+					errorMessage = "Multiple usernames in the same department.";
 					this.setState({errorWarning: errorMessage});
 					return;
 				}
@@ -110,7 +164,7 @@ var SearchAdmin = React.createClass({
 
 		var deptName = dept[deptIndex].name;
 
-		if (displayName != ''){
+		if (displayName !== ''){
 			displayData.unshift({username: username, id: -1, name: deptName, display_name: displayName});
 		}
 
@@ -134,14 +188,15 @@ var SearchAdmin = React.createClass({
 	},
 	searchList: function(e)
 	{
+        var phrase = null;
 		try {
 			// Saves the phrase that the user is looking for.
-			var phrase = e.target.value.toLowerCase();
+			phrase = e.target.value.toLowerCase();
 			this.setState({searchPhrase: phrase});
 		}
 		catch (err)
 		{
-			var phrase = this.state.searchPhrase;
+			phrase = this.state.searchPhrase;
 		}
 
 		var filtered = [];
@@ -164,16 +219,16 @@ var SearchAdmin = React.createClass({
 		this.setState({dropData: e.target.value});
 	},
 	handleSubmit: function() {
-		var username = React.findDOMNode(this.refs.username).value.trim();
+		var username = ReactDOM.findDOMNode(this.refs.username).value.trim();
 		var deptNum = this.state.dropData;
 
 		this.onAdminCreate(username, deptNum);
 	},
 	render: function() {
-		if (this.state.mainData != null)
-		{
+        var AdminsData = null;
+		if (this.state.mainData != null) {
 			var onAdminDelete = this.onAdminDelete;
-			var AdminsData = this.state.displayData.map(function (admin) {
+			AdminsData = this.state.displayData.map(function (admin) {
 			return (
 				<DeleteAdmin key={admin.id}
 						fullname={admin.display_name}
@@ -183,32 +238,28 @@ var SearchAdmin = React.createClass({
 					  	onAdminDelete={onAdminDelete} />
 				);
 			});
-		}
-		else
-		{
-			var AdminsData = "";
+		} else {
+			AdminsData = "";
 		}
 
-		if (this.state.deptData != null)
-		{
-			var dData = this.state.deptData.map(function (dept) {
+        var dData = null;
+		if (this.state.deptData != null) {
+			dData = this.state.deptData.map(function (dept) {
 			return (
 					<DepartmentList key={dept.id}
 						name={dept.name}
 						id={dept.id} />
 				);
 			});
-		}
-		else
-		{
-			var dData = "";
+		} else {
+			dData = "";
 		}
 
 		var errors;
         if(this.state.errorWarning == null){
             errors = '';
         } else {
-            errors = <ErrorMessagesBlock key="errorSet" errors = {this.state.errorWarning} />
+            errors = <ErrorMessagesBlock key="errorSet" errors={this.state.errorWarning} />
         }
 
 		return (
@@ -272,56 +323,7 @@ var SearchAdmin = React.createClass({
 });
 
 
-var DeleteAdmin = React.createClass({
-	handleChange: function() {
-		this.props.onAdminDelete(this.props.id);
-	},
-	render: function() {
-		return (
-
-			<tr>
-				<td>{this.props.fullname}</td>
-				<td>{this.props.username}</td>
-				<td>{this.props.department}</td>
-				<td> <a onClick={this.handleChange}> <i className="fa fa-trash-o" /> </a> </td>
-			</tr>
-
-		);
-
-	}
-});
-
-
-var DepartmentList = React.createClass({
-  render: function() {
-    return (
-     	<option value={this.props.id}>{this.props.name}</option>
-    )
-  }
-});
-
-var ErrorMessagesBlock = React.createClass({
-    render: function() {
-        if(this.props.errors === null){
-            return '';
-        }
-
-        var errors = this.props.errors;
-
-        return (
-            <div className="row">
-                <div className="col-sm-12 col-md-6 col-md-push-3">
-                    <div className="alert alert-warning" role="alert">
-                        <p><i className="fa fa-exclamation-circle fa-2x"></i> Warning: {errors}</p>
-                            
-                    </div>
-                </div>
-            </div>
-        );
-    }
-});
-
-React.render(
+ReactDOM.render(
 	<SearchAdmin />,
 	document.getElementById('content')
 );
