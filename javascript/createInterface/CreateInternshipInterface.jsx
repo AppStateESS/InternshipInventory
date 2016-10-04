@@ -108,7 +108,7 @@ var SearchBox = React.createClass({
 
         return (
             <div>
-                <input type="search" name="studentId" id="studentSearch" className="form-control typeahead input-lg" placeholder="Banner ID, User name, or Full Name" ref="typeahead" autoComplete="off" autofocus/>
+                <input type="search" name="studentId" id="studentSearch" className="form-control typeahead input-lg" placeholder="Banner ID, User name, or Full Name" ref="typeahead" autoComplete="off" autoFocus={true}/>
                 {errorNotice}
             </div>
         );
