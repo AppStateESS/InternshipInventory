@@ -1,3 +1,6 @@
+import React from 'react';
+import classNames from 'classnames';
+
 var StateDropDown = React.createClass({
     getInitialState: function(){
         return ({hasError: false});
@@ -21,7 +24,7 @@ var StateDropDown = React.createClass({
                             <label htmlFor="state" className="control-label">State</label>
                             <select id="state" name="state" className="form-control">
                                 {Object.keys(states).map(function(key) {
-                                    if(states[key].active == 1){
+                                    if(states[key].active === 1){
                                         return <option key={key} value={key}>{states[key].full_name}</option>;
                                     } else {
                                         return <option key={key} value={key} disabled style={{textDecoration:"line-through", color: "#FFF", backgroundColor: "#777"}}>{states[key].full_name}</option>;
@@ -38,3 +41,5 @@ var StateDropDown = React.createClass({
         return output;
     }
 });
+
+export default StateDropDown;
