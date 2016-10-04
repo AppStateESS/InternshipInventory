@@ -29,7 +29,7 @@ module.exports = {
         }, {
             test: /\.(js|jsx)$/,
             include: JS_DIR,
-            loader: 'babel'
+            loader: 'babel-loader'
         }, {
             test: /\.css$/,
             loader: "style-loader!css-loader"
@@ -40,5 +40,9 @@ module.exports = {
         useEslintrc: false
     },
     plugins: [
+    ],
+    presets: [
+        require.resolve("babel-preset-es2015"),
+        require.resolve("babel-preset-react")
     ]
 }

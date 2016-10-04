@@ -65,5 +65,9 @@ module.exports = {
                 screw_ie8: true
             }
         })
+    ],
+    presets: [
+        require.resolve("babel-preset-es2015"),
+        require.resolve("babel-preset-react")
     ]
 }
