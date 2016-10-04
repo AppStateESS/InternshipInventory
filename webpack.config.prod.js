@@ -3,7 +3,7 @@ var WebpackStripLoader = require('strip-loader');
 var path = require('path');
 var Promise = require('es6-promise').polyfill();
 
-var APP_DIR = path.resolve(__dirname, '');
+//var APP_DIR = path.resolve(__dirname, '');
 var JS_DIR = path.resolve(__dirname, 'javascript');
 
 module.exports = {
@@ -12,13 +12,16 @@ module.exports = {
     devtool: 'source-map',
     entry: {
         createInterface: JS_DIR + '/createInterface/CreateInternshipInterface.jsx',
-        searchInterface: JS_DIR + '/searchInterface/search.jsx',
+        searchInterface: JS_DIR + '/searchInterface/SearchInterface.jsx',
         editAdmin: JS_DIR + '/editAdmin/editAdmin.jsx'
     },
     output: {
         path: path.join(JS_DIR, "dist"),
         filename: "[name]-[hash].min.js",
         chunkFilename: '[name].[chunkhash:8].chunk.js'
+    },
+    externals: {
+        "jquery": "$"
     },
     module: {
         loaders: [{
@@ -27,8 +30,8 @@ module.exports = {
             loader: "eslint",
             include: JS_DIR
         }, {
-            test: /\.jsx?/,
-            include: APP_DIR,
+            test: /\.(js|jsx)$/,
+            include: JS_DIR,
             loader: 'babel'
         }, {
             test: [/\.js$/, /\.es6$/, /\.jsx$/],

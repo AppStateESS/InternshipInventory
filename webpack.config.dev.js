@@ -2,19 +2,22 @@ var webpack = require('webpack');
 var path = require('path');
 var Promise = require('es6-promise').polyfill();
 
-var APP_DIR = path.resolve(__dirname, '');
+//var APP_DIR = path.resolve(__dirname, '');
 var JS_DIR = path.resolve(__dirname, 'javascript');
 
 module.exports = {
     devtool: 'eval',
     entry: {
         createInterface: JS_DIR + '/createInterface/CreateInternshipInterface.jsx',
-        searchInterface: JS_DIR + '/searchInterface/search.jsx',
+        searchInterface: JS_DIR + '/searchInterface/SearchInterface.jsx',
         editAdmin: JS_DIR + '/editAdmin/editAdmin.jsx'
     },
     output: {
         path: path.join(JS_DIR, "dist"),
         filename: "[name].dev.js"
+    },
+    externals: {
+        "jquery": "$"
     },
     module: {
         loaders: [
@@ -36,4 +39,6 @@ module.exports = {
         configFile: path.join(__dirname, '.eslintrc.js'),
         useEslintrc: false
     },
+    plugins: [
+    ]
 }
