@@ -8,35 +8,37 @@
     "test": "tests"
   },
   "dependencies": {
-      "react": "~15.3.0",
-      "react-dom": "~15.3.0",
-      "react-addons-css-transition-group": "~15.3.0",
-      "react-dropzone": "~3.5.3"
+    "classnames": "^2.2.5",
+    "corejs-typeahead": "^0.11.1",
+    "react": "~15.3.0",
+    "react-addons-css-transition-group": "~15.3.0",
+    "react-dom": "~15.3.0",
+    "react-dropzone": "~3.5.3"
   },
   "devDependencies": {
-      "babel-core": "~6.13.2",
-      "webpack": "~1.13.1",
-      "babel-eslint": "6.1.2",
-      "babel-loader": "~6.2.4",
-      "babel-preset-react": "~6.11.1",
-      "babel-preset-es2016": "~6.11.3",
-      "react-dev-utils": "^0.2.1",
-      "eslint": "3.5.0",
-      "eslint-config-react-app": "^0.2.1",
-      "eslint-loader": "1.5.0",
-      "eslint-plugin-flowtype": "2.18.1",
-      "eslint-plugin-import": "1.12.0",
-      "eslint-plugin-jsx-a11y": "2.2.2",
-      "eslint-plugin-react": "6.3.0",
-      "json-loader": "0.5.4",
-      "strip-loader": "~0.1.2",
-      "style-loader": "~0.13.1",
-      "css-loader": "~0.23.1",
-      "es6-promise": "~3.2.1"
+    "babel-core": "~6.13.2",
+    "webpack": "~1.13.1",
+    "babel-eslint": "6.1.2",
+    "babel-loader": "~6.2.4",
+    "babel-preset-react": "~6.11.1",
+    "babel-preset-es2016": "~6.11.3",
+    "react-dev-utils": "^0.2.1",
+    "eslint": "3.5.0",
+    "eslint-config-react-app": "^0.2.1",
+    "eslint-loader": "1.5.0",
+    "eslint-plugin-flowtype": "2.18.1",
+    "eslint-plugin-import": "1.12.0",
+    "eslint-plugin-jsx-a11y": "2.2.2",
+    "eslint-plugin-react": "6.3.0",
+    "json-loader": "0.5.4",
+    "strip-loader": "~0.1.2",
+    "style-loader": "~0.13.1",
+    "css-loader": "~0.23.1",
+    "es6-promise": "~3.2.1"
   },
   "scripts": {
-      "dev": "webpack --config webpack.config.dev.js -d --watch",
-      "build": "webpack --config webpack.config.prod.js -p"
+    "dev": "webpack --config webpack.config.dev.js -d --watch",
+    "build": "webpack --config webpack.config.prod.js -p"
   },
   "repository": {
     "type": "git",
