@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
-var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
+//var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
 var ErrorMessagesBlock = React.createClass({
     render: function() {
@@ -239,7 +240,7 @@ var SearchAdmin = React.createClass({
 				);
 			});
 		} else {
-			AdminsData = "";
+			AdminsData = <tr><td></td></tr>; // Use an empty row here to avoid React warnings about whitespace inside <tbody>
 		}
 
         var dData = null;
