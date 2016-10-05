@@ -10,7 +10,8 @@ module.exports = {
     entry: {
         createInterface: JS_DIR + '/createInterface/CreateInternshipInterface.jsx',
         searchInterface: JS_DIR + '/searchInterface/SearchInterface.jsx',
-        editAdmin: JS_DIR + '/editAdmin/editAdmin.jsx'
+        editAdmin: JS_DIR + '/editAdmin/editAdmin.jsx',
+        editDepartment: JS_DIR + '/editDepartment/deptEditor.jsx'
     },
     output: {
         path: path.join(JS_DIR, "dist"),
