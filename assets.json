@@ -10,5 +10,8 @@
   },
   "searchInterface": {
     "js": "javascript/dist/searchInterface.dev.js"
+  },
+  "stateList": {
+    "js": "javascript/dist/stateList.dev.js"
   }
 }
