@@ -287,7 +287,8 @@ var SaveInternshipButton = React.createClass({
 var StudentInformation = React.createClass({
     grabStudentData: function() {
 
-        var student = { fname:    this.refs.fname.value, 
+        var student = { id:       this.props.intern.banner,
+                        fname:    this.refs.fname.value, 
                         lname:    this.refs.lname.value,
                         mname:    this.refs.mname.value,
                         email:    this.refs.email.value,
@@ -295,7 +296,8 @@ var StudentInformation = React.createClass({
                         city:     this.refs.city.value,
                         state:    this.refs.state.value,
                         zip:      this.refs.zip.value,
-                        phone:    this.refs.phone.value,}
+                        phone:    this.refs.phone.value,
+                        department: this.props.intern.department_id}
 
         return student;
     },
