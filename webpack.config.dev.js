@@ -12,7 +12,8 @@ module.exports = {
         createInterface: JS_DIR + '/createInterface/CreateInternshipInterface.jsx',
         searchInterface: JS_DIR + '/searchInterface/SearchInterface.jsx',
         editAdmin: JS_DIR + '/editAdmin/editAdmin.jsx',
-        editDepartment: JS_DIR + '/editDepartment/deptEditor.jsx'
+        editDepartment: JS_DIR + '/editDepartment/deptEditor.jsx',
+        stateList: JS_DIR + '/stateList/StateList.jsx'
     },
     output: {
         path: path.join(JS_DIR, "dist"),

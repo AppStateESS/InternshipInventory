@@ -12,8 +12,6 @@ class StateUI implements UI {
     public function display()
     {
         $tpl = array();
-        javascript('/jquery/');
-        javascriptMod('intern', 'pick_state');
 
         return \PHPWS_Template::process($tpl, 'intern', 'state_list.tpl');
     }
