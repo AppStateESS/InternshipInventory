@@ -1,6 +1,7 @@
 var webpack = require('webpack');
 var path = require('path');
 var Promise = require('es6-promise').polyfill();
+var AssetsPlugin = require('assets-webpack-plugin');
 
 //var APP_DIR = path.resolve(__dirname, '');
 var JS_DIR = path.resolve(__dirname, 'javascript');
@@ -15,7 +16,8 @@ module.exports = {
     },
     output: {
         path: path.join(JS_DIR, "dist"),
-        filename: "[name].dev.js"
+        filename: "[name].dev.js",
+        publicPath: "javascript/dist/"
     },
     externals: {
         "jquery": "$"
@@ -41,6 +43,10 @@ module.exports = {
         useEslintrc: false
     },
     plugins: [
+        new AssetsPlugin({
+            filename: 'assets.json',
+            prettyPrint: true
+        })
     ],
     presets: [
         require.resolve("babel-preset-es2015"),

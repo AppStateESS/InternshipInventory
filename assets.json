@@ -1,0 +1,14 @@
+{
+  "createInterface": {
+    "js": "javascript/dist/createInterface.dev.js"
+  },
+  "editAdmin": {
+    "js": "javascript/dist/editAdmin.dev.js"
+  },
+  "editDepartment": {
+    "js": "javascript/dist/editDepartment.dev.js"
+  },
+  "searchInterface": {
+    "js": "javascript/dist/searchInterface.dev.js"
+  }
+}

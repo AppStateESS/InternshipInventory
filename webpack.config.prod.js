@@ -2,6 +2,7 @@ var webpack = require('webpack');
 var WebpackStripLoader = require('strip-loader');
 var path = require('path');
 var Promise = require('es6-promise').polyfill();
+var AssetsPlugin = require('assets-webpack-plugin');
 
 //var APP_DIR = path.resolve(__dirname, '');
 var JS_DIR = path.resolve(__dirname, 'javascript');
@@ -19,7 +20,8 @@ module.exports = {
     output: {
         path: path.join(JS_DIR, "dist"),
         filename: "[name]-[hash].min.js",
-        chunkFilename: '[name].[chunkhash:8].chunk.js'
+        chunkFilename: '[name].[chunkhash:8].chunk.js',
+        publicPath: "javascript/dist/"
     },
     externals: {
         "jquery": "$"
@@ -65,6 +67,10 @@ module.exports = {
                 comments: false,
                 screw_ie8: true
             }
+        }),
+        new AssetsPlugin({
+            filename: 'assets.json',
+            prettyPrint: true
         })
     ],
     presets: [
