@@ -8,6 +8,9 @@
   "editDepartment": {
     "js": "javascript/dist/editDepartment.dev.js"
   },
+  "emergencyContact": {
+    "js": "javascript/dist/emergencyContact.dev.js"
+  },
   "searchInterface": {
     "js": "javascript/dist/searchInterface.dev.js"
   },
