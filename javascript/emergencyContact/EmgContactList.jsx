@@ -1,9 +1,14 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import $ from 'jquery';
+import {Button, Modal} from 'react-bootstrap';
+
+
+
 // !!The internshipId variable is important!!
 
 // It's being used as a global variable from the head.js where this file is located
 // to determine which internship is loaded so it can grab the emergency contacts.
-
-"use strict";
 
 /****************************
  * Modal Form
@@ -14,7 +19,7 @@ var ModalForm = React.createClass({
         return {showError: false};
     },
     handleSave: function() {
-        if (this.refs.emg_name.value == '' || this.refs.emg_relation.value == '' ||  this.refs.emg_phone.value == '') {
+        if (this.refs.emg_name.value === '' || this.refs.emg_relation.value === '' ||  this.refs.emg_phone.value === '') {
             // If any field is left empty, it will display an error message in the modal form.
             this.setState({showError: true});
             return;
@@ -38,12 +43,12 @@ var ModalForm = React.createClass({
                       </div>
 
         return (
-            <ReactBootstrap.Modal show={this.props.show} onHide={this.props.hide} backdrop='static'>
-                <ReactBootstrap.Modal.Header closeButton>
-                  <ReactBootstrap.Modal.Title>Emergency Contact</ReactBootstrap.Modal.Title>
+            <Modal show={this.props.show} onHide={this.props.hide} backdrop='static'>
+                <Modal.Header closeButton>
+                  <Modal.Title>Emergency Contact</Modal.Title>
                   {this.state.showError ? warning : null}
-                </ReactBootstrap.Modal.Header>
-                <ReactBootstrap.Modal.Body>
+                </Modal.Header>
+                <Modal.Body>
                     <form className="form-horizontal">
                         <div className="form-group">
                             <label className="col-lg-3 control-label">Name</label>
@@ -62,12 +67,12 @@ var ModalForm = React.createClass({
                             <div className="col-lg-9"><input  type="text" className="form-control" id="emg-email" ref="emg_email" defaultValue={this.props.email} /></div>
                         </div>
                     </form>
-                </ReactBootstrap.Modal.Body>
-                <ReactBootstrap.Modal.Footer>
-                    <ReactBootstrap.Button onClick={this.handleSave}>Save</ReactBootstrap.Button>
-                    <ReactBootstrap.Button onClick={this.props.hide}>Close</ReactBootstrap.Button>
-                </ReactBootstrap.Modal.Footer>
-            </ReactBootstrap.Modal>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button onClick={this.handleSave}>Save</Button>
+                    <Button onClick={this.props.hide}>Close</Button>
+                </Modal.Footer>
+            </Modal>
         );
     }
 });
@@ -135,7 +140,7 @@ var EmergencyContactList = React.createClass({
     getData: function(){
         // Grabs the emergency contact data
         $.ajax({
-            url: 'index.php?module=intern&action=emergencyContactRest&internshipId='+internshipId,
+            url: 'index.php?module=intern&action=emergencyContactRest&internshipId='+this.props.internshipId,
             type: 'GET',
             dataType: 'json',
             success: function(data) {
@@ -155,7 +160,7 @@ var EmergencyContactList = React.createClass({
             url: 'index.php?module=intern&action=emergencyContactRest',
             type: 'POST',
             dataType: 'json',
-            data: {internshipId: internshipId,
+            data: {internshipId: this.props.internshipId,
                    contactId: contact.id,
                    emergency_contact_name: contact.name,
                    emergency_contact_relation: contact.relation,
@@ -175,7 +180,7 @@ var EmergencyContactList = React.createClass({
     onContactRemove: function(contactId){
         // Deletes the emergency contact.
         $.ajax({
-            url: 'index.php?module=intern&action=emergencyContactRest&contactId='+contactId+'&internshipId='+internshipId,
+            url: 'index.php?module=intern&action=emergencyContactRest&contactId='+contactId+'&internshipId='+this.props.internshipId,
             type: 'DELETE',
             dataType: 'json',
             success: function(data) {
@@ -188,8 +193,9 @@ var EmergencyContactList = React.createClass({
         });
     },
     render: function() {
+        var eData = null;
         if(this.state.emgConData != null){
-            var eData = this.state.emgConData.map(function (conData) {
+            eData = this.state.emgConData.map(function (conData) {
                 return (
 
                         <EmergencyContact key={conData.id}
@@ -205,7 +211,7 @@ var EmergencyContactList = React.createClass({
             }.bind(this));
 
         }else{
-            var eData = <p className="text-muted"><i className="fa fa-spinner fa-2x fa-spin"></i> Loading Emergency Contacts...</p>;
+            eData = <p className="text-muted"><i className="fa fa-spinner fa-2x fa-spin"></i> Loading Emergency Contacts...</p>;
         }
 
         return (
@@ -229,6 +235,6 @@ var EmergencyContactList = React.createClass({
 
 
 ReactDOM.render(
-    <EmergencyContactList />,
+    <EmergencyContactList internshipId={window.internshipId}/>,
     document.getElementById('emergency-contact-list')
 );

@@ -665,11 +665,7 @@
 {END_FORM}
 
 <script type = "text/javascript">
-    var internshipId = {INTERN_ID};
+    window.internshipId = {INTERN_ID};
 </script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react-with-addons.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react-dom.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap/0.28.3/react-bootstrap.js"></script>
-
-<script type="text/javascript" src="{source_http}mod/intern/javascript/emergencyContact/dist/emergencyContact.min.041d386d.js"></script>
+<script type="text/javascript" src="{source_http}mod/intern/javascript/dist/emergencyContact.dev.js"></script>
