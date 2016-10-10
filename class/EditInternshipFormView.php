@@ -2,8 +2,6 @@
 
 namespace Intern;
 
-
-use Intern\EmergencyContactFormView;
 use Intern\ChangeHistoryView;
 use Intern\DepartmentFactory;
 
