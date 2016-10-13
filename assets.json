@@ -11,6 +11,9 @@
   "emergencyContact": {
     "js": "javascript/dist/emergencyContact.dev.js"
   },
+  "facultyEdit": {
+    "js": "javascript/dist/facultyEdit.dev.js"
+  },
   "searchInterface": {
     "js": "javascript/dist/searchInterface.dev.js"
   },
