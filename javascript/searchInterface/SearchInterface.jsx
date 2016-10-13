@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import InternationalDropDown from '../createInterface/InternationalDropDown.jsx';
 import StateDropDown from '../createInterface/StateDropDown.jsx';
 
-var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 var LocationSelector = React.createClass({
     getInitialState: function() {

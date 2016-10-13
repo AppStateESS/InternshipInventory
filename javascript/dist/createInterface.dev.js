@@ -25370,7 +25370,7 @@
 	
 	        var output = null;
 	
-	        if (this.props.formStyle === undefined || this.props.formStyle === 'vertical') {
+	        if (this.props.formStyle === 'vertical' || this.props.formStyle === undefined) {
 	            output = _react2.default.createElement(
 	                'div',
 	                { className: 'row' },
@@ -25399,9 +25399,7 @@
 	                    )
 	                )
 	            );
-	        }
-	
-	        if (this.props.formStyle === 'horizontal') {
+	        } else if (this.props.formStyle === 'horizontal') {
 	            output = _react2.default.createElement(
 	                'div',
 	                { className: 'form-group' },
@@ -25474,8 +25472,10 @@
 	
 	        var states = this.props.states;
 	
+	        var output = null;
+	
 	        if (this.props.formStyle === undefined || this.props.formStyle === 'vertical') {
-	            var output = _react2.default.createElement(
+	            output = _react2.default.createElement(
 	                'div',
 	                { className: 'row' },
 	                _react2.default.createElement(
@@ -25508,6 +25508,31 @@
 	                                }
 	                            })
 	                        )
+	                    )
+	                )
+	            );
+	        } else if (this.props.formStyle === 'horizontal') {
+	            output = _react2.default.createElement(
+	                'div',
+	                { className: 'form-group' },
+	                _react2.default.createElement(
+	                    'label',
+	                    { htmlFor: 'state', className: 'col-lg-3 control-label' },
+	                    'State'
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'col-lg-8' },
+	                    _react2.default.createElement(
+	                        'select',
+	                        { id: 'state', name: 'state', className: 'form-control' },
+	                        Object.keys(states).map(function (key) {
+	                            return _react2.default.createElement(
+	                                'option',
+	                                { key: key, value: key },
+	                                states[key].full_name
+	                            );
+	                        })
 	                    )
 	                )
 	            );

@@ -18,7 +18,7 @@ var InternationalDropDown = React.createClass({
 
         var output = null;
 
-        if(this.props.formStyle === undefined || this.props.formStyle === 'vertical'){
+        if(this.props.formStyle === 'vertical' || this.props.formStyle === undefined){
             output = (
                 <div className="row">
                     <div className="col-sm-12 col-md-4 col-md-push-3">
@@ -33,9 +33,7 @@ var InternationalDropDown = React.createClass({
                     </div>
                 </div>
             );
-        }
-
-        if(this.props.formStyle === 'horizontal') {
+        } else if(this.props.formStyle === 'horizontal') {
             output = (
                 <div className="form-group">
                     <label htmlFor="country" className="col-lg-3 control-label">Country</label>

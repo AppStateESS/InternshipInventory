@@ -16,8 +16,10 @@ var StateDropDown = React.createClass({
 
         var states = this.props.states;
 
+        var output = null;
+
         if(this.props.formStyle === undefined || this.props.formStyle === 'vertical'){
-            var output = (
+            output = (
                 <div className="row">
                     <div className="col-sm-12 col-md-4 col-md-push-3">
                         <div className={fgClasses} id="state">
@@ -33,6 +35,19 @@ var StateDropDown = React.createClass({
                                 })}
                             </select>
                         </div>
+                    </div>
+                </div>
+            );
+        } else if (this.props.formStyle === 'horizontal'){
+            output = (
+                <div className="form-group">
+                    <label htmlFor="state" className="col-lg-3 control-label">State</label>
+                    <div className="col-lg-8">
+                        <select id="state" name="state" className="form-control">
+                            {Object.keys(states).map(function(key) {
+                                return <option key={key} value={key}>{states[key].full_name}</option>;
+                            })}
+                        </select>
                     </div>
                 </div>
             );
