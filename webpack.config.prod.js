@@ -20,11 +20,12 @@ module.exports = {
         emergencyContact: JS_DIR + '/emergencyContact/EmgContactList.jsx',
         facultyEdit: JS_DIR + '/facultyEdit/FacultyEdit.jsx',
         editMajor: JS_DIR + '/editMajor/editMajor.jsx',
-        editGrad: JS_DIR + '/editGrad/editGrad.jsx'
+        editGrad: JS_DIR + '/editGrad/editGrad.jsx',
+        vendor: ['jquery', 'react', 'react-dom', 'react-bootstrap']
     },
     output: {
         path: path.join(JS_DIR, "dist"),
-        filename: "[name]-[hash].min.js",
+        filename: "[name].[chunkhash:8].min.js",
         chunkFilename: '[name].[chunkhash:8].chunk.js',
         publicPath: "javascript/dist/"
     },
@@ -60,6 +61,7 @@ module.exports = {
                 'NODE_ENV': JSON.stringify('production')
             }
         }),
+        new webpack.optimize.CommonsChunkPlugin("vendor", "vendor.[chunkhash:8].bundle.js"),
         new webpack.optimize.UglifyJsPlugin({
             compress: {
                 screw_ie8: true, // React doesn't support IE8 anyway
@@ -76,8 +78,7 @@ module.exports = {
         new AssetsPlugin({
             filename: 'assets.json',
             prettyPrint: true
-        })
-    ],
+        })    ],
     presets: [
         require.resolve("babel-preset-es2015"),
         require.resolve("babel-preset-react")

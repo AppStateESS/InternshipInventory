@@ -668,4 +668,5 @@
     window.internshipId = {INTERN_ID};
 </script>
 
+<script type="text/javascript" src="{source_http}mod/intern/javascript/dist/vendor.bundle.js"></script>
 <script type="text/javascript" src="{source_http}mod/intern/javascript/dist/emergencyContact.dev.js"></script>

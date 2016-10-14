@@ -17,7 +17,8 @@ module.exports = {
         emergencyContact: JS_DIR + '/emergencyContact/EmgContactList.jsx',
         facultyEdit: JS_DIR + '/facultyEdit/FacultyEdit.jsx',
         editMajor: JS_DIR + '/editMajor/editMajor.jsx',
-        editGrad: JS_DIR + '/editGrad/editGrad.jsx'
+        editGrad: JS_DIR + '/editGrad/editGrad.jsx',
+        vendor: ['jquery', 'react', 'react-dom', 'react-bootstrap']
     },
     output: {
         path: path.join(JS_DIR, "dist"),
@@ -51,7 +52,8 @@ module.exports = {
         new AssetsPlugin({
             filename: 'assets.json',
             prettyPrint: true
-        })
+        }),
+        new webpack.optimize.CommonsChunkPlugin("vendor", "vendor.bundle.js")
     ],
     presets: [
         require.resolve("babel-preset-es2015"),

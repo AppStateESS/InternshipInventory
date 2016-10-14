@@ -19,4 +19,5 @@
 <script type="text/jsx" src="{source_http}mod/intern/javascript/createInterface/InternationalDropDown.jsx"></script>
 <script type="text/jsx" src="{source_http}mod/intern/javascript/createInterface/create.jsx"></script> -->
 
+<script type="text/javascript" src="{source_http}mod/intern/javascript/dist/vendor.bundle.js"></script>
 <script type="text/javascript" src="{source_http}mod/intern/javascript/dist/createInterface.dev.js"></script>
