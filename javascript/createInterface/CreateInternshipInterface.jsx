@@ -8,7 +8,7 @@ import Bloodhound from 'corejs-typeahead';
 import InternationalDropDown from './InternationalDropDown.jsx';
 import StateDropDown from './StateDropDown.jsx';
 
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 //var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
