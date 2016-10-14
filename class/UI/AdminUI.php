@@ -18,9 +18,6 @@ class AdminUI implements UI {
 
         $tpl = array();
 
-        //\javascript('jquery');
-        //\javascriptMod('intern', 'editAdmin');
-
         return \PHPWS_Template::process($tpl, 'intern','edit_admin.tpl');
     }
 }

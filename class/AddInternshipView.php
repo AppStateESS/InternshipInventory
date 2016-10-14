@@ -15,9 +15,6 @@ class AddInternshipView implements \View {
     {
         $tpl = array();
 
-        \javascript('jquery');
-        \javascriptMod('intern', 'missing');
-
         return \PHPWS_Template::process($tpl, 'intern', 'addInternship.tpl');
     }
 
