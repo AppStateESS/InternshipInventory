@@ -18,7 +18,8 @@ module.exports = {
         editDepartment: JS_DIR + '/editDepartment/deptEditor.jsx',
         stateList: JS_DIR + '/stateList/StateList.jsx',
         emergencyContact: JS_DIR + '/emergencyContact/EmgContactList.jsx',
-        facultyEdit: JS_DIR + '/facultyEdit/FacultyEdit.jsx'
+        facultyEdit: JS_DIR + '/facultyEdit/FacultyEdit.jsx',
+        editMajor: JS_DIR + '/editMajor/editMajor.jsx'
     },
     output: {
         path: path.join(JS_DIR, "dist"),

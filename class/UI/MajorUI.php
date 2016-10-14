@@ -14,10 +14,6 @@ class MajorUI implements UI
         }
 
         $tpl = array();
-        javascript('jquery');
-
-        javascriptMod('intern', 'manager');
-        javascriptMod('intern', 'editMajor');
 
         return \PHPWS_Template::process($tpl, 'intern', 'edit_major.tpl');
     }
