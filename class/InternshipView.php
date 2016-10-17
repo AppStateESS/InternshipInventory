@@ -63,12 +63,15 @@ class InternshipView {
             $form->addHidden('id', $this->intern->id);
         }
 
+        $tpl['vendor_bundle'] = AssetResolver::resolveJsPath('assets.json', 'vendor');
+        $tpl['entry_bundle'] = AssetResolver::resolveJsPath('assets.json', 'emergencyContact');
+
         $form->mergeTemplate($tpl);
 
         $this->showWarnings();
         $this->showStudentWarnings();
 
-        javascript('jquery');
+
 
         return \PHPWS_Template::process($form->getTemplate(), 'intern', 'internshipView.tpl');
     }

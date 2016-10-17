@@ -10,6 +10,7 @@ use Intern\GradProgram;
 use Intern\Subject;
 use Intern\WorkflowStateFactory;
 use Intern\MajorsProviderFactory;
+use Intern\AssetResolver;
 
   /**
    * SearchUI
@@ -163,6 +164,11 @@ class SearchUI implements UI
 
         // Javascript...
         javascriptMod('intern', 'resetSearch');
+        $tpl = array();
+        $tpl['vendor_bundle'] = AssetResolver::resolveJsPath('assets.json', 'vendor');
+        $tpl['entry_bundle'] = AssetResolver::resolveJsPath('assets.json', 'searchInterface');
+
+        $form->mergeTemplate($tpl);
 
         return \PHPWS_Template::process($form->getTemplate(), 'intern', 'search.tpl');
     }

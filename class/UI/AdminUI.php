@@ -1,6 +1,7 @@
 <?php
 
 namespace Intern\UI;
+use \Intern\AssetResolver;
 
 /**
  * Class for handling UI for Admin editing and creation
@@ -17,6 +18,9 @@ class AdminUI implements UI {
         }
 
         $tpl = array();
+
+        $tpl['vendor_bundle'] = AssetResolver::resolveJsPath('assets.json', 'vendor');
+        $tpl['entry_bundle'] = AssetResolver::resolveJsPath('assets.json', 'editAdmin');
 
         return \PHPWS_Template::process($tpl, 'intern','edit_admin.tpl');
     }

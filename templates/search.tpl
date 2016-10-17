@@ -184,5 +184,5 @@
   </div>
 </form>
 
-<script type="text/javascript" src="{source_http}mod/intern/javascript/dist/vendor.bundle.js"></script>
-<script type="text/javascript" src="{source_http}mod/intern/javascript/dist/searchInterface.dev.js"></script>
+<script type="text/javascript" src="{vendor_bundle}"></script>
+<script type="text/javascript" src="{entry_bundle}"></script>
