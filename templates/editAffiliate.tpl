@@ -105,3 +105,12 @@
         </div>
     </div>
 </div>
+
+<script type ="text/javascript">
+  window.aaId = {AGREEMENT_ID};
+</script>
+
+<script type="text/javascript" src="{vendor_bundle}"></script>
+<script type="text/javascript" src="{department_bundle}"></script>
+<script type="text/javascript" src="{location_bundle}"></script>
+<script type="text/javascript" src="{terminate_bundle}"></script>

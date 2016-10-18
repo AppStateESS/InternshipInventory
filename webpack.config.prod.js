@@ -21,6 +21,9 @@ module.exports = {
         facultyEdit: JS_DIR + '/facultyEdit/FacultyEdit.jsx',
         editMajor: JS_DIR + '/editMajor/editMajor.jsx',
         editGrad: JS_DIR + '/editGrad/editGrad.jsx',
+        affiliationDepartments: JS_DIR + '/affiliationAgreement/AffiliationDepartments.jsx',
+        affiliationLocation: JS_DIR + '/affiliationAgreement/AffiliationLocation.jsx',
+        affiliationTerminate: JS_DIR + '/affiliationAgreement/AffiliationTerminate.jsx',
         vendor: ['jquery', 'react', 'react-dom', 'react-bootstrap']
     },
     output: {
