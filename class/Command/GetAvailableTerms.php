@@ -16,14 +16,7 @@ class GetAvailableTerms {
         foreach($futureTerms as $term => $description){
             $termInfo = $termProvider->getTerm($term);
 
-            $semester = Term::getSemester($term);
-            if($semester == Term::SPRING || $semester == Term::FALL){
-                $part = $termInfo->getTermPartByCode('4');
-            } else if($semester == Term::SUMMER1){
-                $part = $termInfo->getTermPartByCode('SD');
-            } else if($semester == Term::SUMMER2){
-                $part = $termInfo->getTermPartByCode('SE');
-            }
+            $part = $termInfo->getLongestTermPart();
 
             if($part === null){
                 throw new \Exception('Couldn\'t find a part of term for ' . $term);
