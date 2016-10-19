@@ -93,10 +93,13 @@ class BannerTermProvider {
         $termInfo->setTermEndDate($data->term_end_date);
         $termInfo->setCensusDate($data->census_date);
 
-        $termInfo->setPartTermCode($data->part_term->part_term_code);
-        $termInfo->setPartTermDesc($data->part_term->part_term_desc);
-        $termInfo->setPartTermStartDate($data->part_term->part_start_date);
-        $termInfo->setPartTermEndDate($data->part_term->part_end_date);
+        if(is_array($data->part_term)){
+            foreach($data->part_term as $termPart){
+                $termInfo->addTermPart($termPart);
+            }
+        }else{
+            $termInfo->addTermPart($data->part_term);
+        }
     }
 
     /**

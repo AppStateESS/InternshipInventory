@@ -200,7 +200,7 @@ var StudentSearch = React.createClass({
  *********/
 var TermBlock = React.createClass({
     getInitialState: function() {
-        return ({terms: null, hasError: false});
+        return ({terms: null, hasError: false, selectedTerm: null});
     },
     componentWillMount: function() {
         $.ajax({
@@ -217,10 +217,11 @@ var TermBlock = React.createClass({
     setError: function(status){
         this.setState({hasError: status});
     },
+    handleChange: function(clickEvent){
+        this.setState({selectedTerm: clickEvent.target.childNodes[0].value});
+    },
     render: function() {
-        var terms = this.state.terms;
-
-        if(terms === null){
+        if(this.state.terms === null){
             return (<div></div>);
         }
 
@@ -229,23 +230,30 @@ var TermBlock = React.createClass({
                         'has-error': this.state.hasError
                     });
 
+        var termDates = null;
+        if(this.state.selectedTerm !== null){
+            termDates = this.state.terms[this.state.selectedTerm].startDate + " through " + this.state.terms[this.state.selectedTerm].endDate;
+        }else{
+            termDates = '';
+        }
+
         return (
             <div className="row">
                 <div className="col-sm-12 col-md-6 col-md-push-3">
                     <div className={fgClasses} id="term">
-                    <label htmlFor="term" className="control-label">Term</label><br />
+                        <label htmlFor="term" className="control-label">Term</label><br />
                         <div className="btn-group" data-toggle="buttons">
 
-                            {Object.keys(terms).map(function(key) {
+                            {Object.keys(this.state.terms).map(function(key) {
                                 return (
-                                    <label className="btn btn-default" key={key}>
-                                        <input type="radio" name="term" key={key} value={key} />{terms[key]}
+                                    <label className="btn btn-default" key={key} onClick={this.handleChange}>
+                                        <input type="radio" ref="term" name="term" key={key} value={key} />{this.state.terms[key].description}
                                     </label>
                                 );
-                            })}
-
+                            }.bind(this))}
                         </div>
                     </div>
+                    <span id="helpBlock" className="help-block">{termDates}</span>
                 </div>
             </div>
 
