@@ -30,6 +30,20 @@ class TermInfo {
         return null;
     }
 
+    public function getLongestTermPart()
+    {
+        $semester = Term::getSemester($this->termCode);
+        if($semester == Term::SPRING || $semester == Term::FALL){
+            $part = $this->getTermPartByCode('4');
+        } else if($semester == Term::SUMMER1){
+            $part = $this->getTermPartByCode('SD');
+        } else if($semester == Term::SUMMER2){
+            $part = $this->getTermPartByCode('SE');
+        }
+
+        return $part;
+    }
+
     /*****
      * Accessor / Mutator Methods *
      */
