@@ -8,8 +8,9 @@ php:
     - hhvm
 
 install:
-    - npm install -g yarn
-    - yarn
+    #- npm install -g yarn
+    #- yarn
+    - npm install
     - npm run build
 
 script:
