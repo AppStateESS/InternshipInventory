@@ -12,12 +12,11 @@ before_install:
     - nvm install 6
 
 install:
-    #- npm install -g yarn
-    #- yarn
-    - node -v
-    - "npm config set spin false"
-    - npm install -g bower
-    - npm install
+    - npm install -g yarn
+    - yarn global add bower
+    #- "npm config set spin false"
+    #- npm install -g bower
+    - yarn install
 
 script:
     - npm run build
