@@ -68,7 +68,7 @@ module.exports = {
         new webpack.optimize.UglifyJsPlugin({
             compress: {
                 screw_ie8: true, // React doesn't support IE8 anyway
-                warnings: true
+                warnings: false
             },
             mangle: {
                 screw_ie8: true
