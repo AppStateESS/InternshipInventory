@@ -14,11 +14,13 @@ before_install:
 install:
     #- npm install -g yarn
     #- yarn
+    - "npm config set spin false"
     - npm install -g bower
     - npm install
-    - npm run build
+    - node -v
 
 script:
+    - npm run build
     - ".travis-build/phplint ."
     - phpunit
 
