@@ -9,15 +9,15 @@ php:
     - hhvm
 
 before_install:
-    - nvm 4
+    - nvm install 6
 
 install:
     #- npm install -g yarn
     #- yarn
+    - node -v
     - "npm config set spin false"
     - npm install -g bower
     - npm install
-    - node -v
 
 script:
     - npm run build
