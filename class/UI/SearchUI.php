@@ -96,9 +96,9 @@ class SearchUI implements UI
          * The options for this drop down are provided through AJAX on page-load and
          * when the user changes the department dropdown above.
          */
-        $form->addSelect('faculty', array(-1=>'Select Faculty Advisor'));
+        $form->addSelect('faculty', array(-1=>'Select Faculty Supervisor'));
         $form->setExtra('faculty', 'disabled');
-        $form->setLabel('faculty', 'Faculty Advisor / Instructor of Record');
+        $form->setLabel('faculty', 'Faculty Supervisor / Instructor of Record');
         $form->addCssClass('faculty', 'form-control');
 
         // Hidden field for selected faculty member

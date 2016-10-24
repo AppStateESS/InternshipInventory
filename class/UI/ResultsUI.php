@@ -310,7 +310,7 @@ class ResultsUI implements UI {
         $pager->addSortHeader('intern_department.name', 'Department Name');
 
         //$pager->joinResult('faculty_id', 'intern_faculty', 'id', 'last_name', 'faculty_last_name');
-        $pager->addSortHeader('intern_faculty.last_name', 'Instructor');
+        $pager->addSortHeader('intern_faculty.last_name', 'Supervisor');
 
         $pager->addSortHeader('state', 'Status');
 
