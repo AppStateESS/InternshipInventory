@@ -203,7 +203,7 @@ function initFacultySelector()
 
         // Show a message if no faculty were returned for the selected department
         if(data.length === 0){
-            $("#internship_faculty").html("<option value='-1'>No Advisors Available</option>");
+            $("#internship_faculty").html("<option value='-1'>No Supervisors Available</option>");
             return;
         }
 

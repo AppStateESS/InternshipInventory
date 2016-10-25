@@ -220,9 +220,9 @@ class EditInternshipFormView {
          * The options for this drop down are provided through AJAX on page-load and
          * when the user changes the department dropdown above.
          */
-        $this->form->addSelect('faculty', array(-1=>'Select Faculty Advisor'));
+        $this->form->addSelect('faculty', array(-1=>'Select Faculty Supervisor'));
         $this->form->setExtra('faculty', 'disabled');
-        $this->form->setLabel('faculty', 'Faculty Advisor / Instructor of Record');
+        $this->form->setLabel('faculty', 'Faculty Supervisor / Instructor of Record');
         $this->form->addCssClass('faculty', 'form-control');
 
         // Hidden field for selected faculty member

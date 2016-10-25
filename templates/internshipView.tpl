@@ -413,7 +413,7 @@
 
       <!-- Faculty info -->
       <fieldset>
-        <legend>Faculty Advisor</legend>
+        <legend>Faculty Supervisor</legend>
         <div id="faculty_selector">
           <div class="form-group required">
             <label class="col-lg-3 control-label" for="{DEPARTMENT_ID}">{DEPARTMENT_LABEL_TEXT}</label>
