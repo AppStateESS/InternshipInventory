@@ -1,5 +1,7 @@
 var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
+// Main module that calls several component to build
+// the search admin screen.
 var SearchAdmin = React.createClass({
 	getInitialState: function() {
 		return {
@@ -14,10 +16,13 @@ var SearchAdmin = React.createClass({
 	},
 	componentWillMount: function(){
 		// Grabs the department data and admin data
+		// at the start of execution
 		this.getData();
 		this.getDept();
 	},
 	getData: function(){
+		// Sends an ajax request to adminRest to grab the
+		// display data.
 		$.ajax({
 			url: 'index.php?module=intern&action=adminRest',
 			type: 'GET',
@@ -33,6 +38,8 @@ var SearchAdmin = React.createClass({
 		});
 	},
 	getDept: function(){
+		// Sends an ajax request to deptRest to grab the
+		// department data.
 		$.ajax({
 			url: 'index.php?module=intern&action=deptRest',
 			action: 'GET',
@@ -93,7 +100,8 @@ var SearchAdmin = React.createClass({
             }
         }.bind(this));
 
-
+		// Determines if the username has multiple entries within
+		// the same department before creating the admin.
 		for (var j = 0, k = displayData.length; j < k; j++)
 		{
 			if (displayData[j].username == username)
@@ -109,7 +117,7 @@ var SearchAdmin = React.createClass({
 		}
 
 		var deptName = dept[deptIndex].name;
-
+		// Updating the displayData so that it can be used in the ajax request.
 		if (displayName != ''){
 			displayData.unshift({username: username, id: -1, name: deptName, display_name: displayName});
 		}
@@ -150,6 +158,7 @@ var SearchAdmin = React.createClass({
 		for (var i = 0; i < this.state.mainData.length; i++) {
 			var item = this.state.mainData[i];
 
+			// makes the item, username, displayName lowercase for easier searching
 			if (item.name.toLowerCase().includes(phrase)
 				|| item.username.toLowerCase().includes(phrase)
 				|| item.display_name.toLowerCase().includes(phrase))
@@ -164,6 +173,7 @@ var SearchAdmin = React.createClass({
 		this.setState({dropData: e.target.value});
 	},
 	handleSubmit: function() {
+		// React.findDOMNode is a little outdate - fix at a later time.
 		var username = React.findDOMNode(this.refs.username).value.trim();
 		var deptNum = this.state.dropData;
 
@@ -271,27 +281,25 @@ var SearchAdmin = React.createClass({
 	}
 });
 
-
+// Component that aids in deleting an admin
 var DeleteAdmin = React.createClass({
 	handleChange: function() {
 		this.props.onAdminDelete(this.props.id);
 	},
 	render: function() {
 		return (
-
 			<tr>
 				<td>{this.props.fullname}</td>
 				<td>{this.props.username}</td>
 				<td>{this.props.department}</td>
 				<td> <a onClick={this.handleChange}> <i className="fa fa-trash-o" /> </a> </td>
 			</tr>
-
 		);
 
 	}
 });
 
-
+// Component that helps build the department list
 var DepartmentList = React.createClass({
   render: function() {
     return (
@@ -300,6 +308,8 @@ var DepartmentList = React.createClass({
   }
 });
 
+// Component that builds the error message to display
+// those messages.
 var ErrorMessagesBlock = React.createClass({
     render: function() {
         if(this.props.errors === null){
@@ -313,7 +323,6 @@ var ErrorMessagesBlock = React.createClass({
                 <div className="col-sm-12 col-md-6 col-md-push-3">
                     <div className="alert alert-warning" role="alert">
                         <p><i className="fa fa-exclamation-circle fa-2x"></i> Warning: {errors}</p>
-                            
                     </div>
                 </div>
             </div>
