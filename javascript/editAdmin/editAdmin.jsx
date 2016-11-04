@@ -60,6 +60,7 @@ var SearchAdmin = React.createClass({
 			displayData: null,
 			deptData: null,
 			errorWarning: null,
+			messageType: null,
 			searchPhrase: '',
 			dropData: "",
 			textData: ""
@@ -78,6 +79,7 @@ var SearchAdmin = React.createClass({
 			success: function(data) {
 				this.setState({mainData: data,
 							   displayData: data});
+				this.searchList();
 			}.bind(this),
 			error: function(xhr, status, err) {
 				alert("Failed to grab displayed data.")
@@ -100,7 +102,7 @@ var SearchAdmin = React.createClass({
 			}.bind(this)
 		});
 	},
-	onAdminDelete: function(idNum){
+	onAdminDelete: function(idNum, username, department){
 		// Updating the new state for optimization (snappy response on the client)
 		// When a value is being deleted
 		var newVal = this.state.displayData.filter(function(el){
@@ -112,6 +114,8 @@ var SearchAdmin = React.createClass({
 			url: 'index.php?module=intern&action=adminRest&id='+idNum,
 			type: 'DELETE',
 			success: function() {
+				var message = "Deleted admin "+username+ " from department " + department +".";
+				this.setState({errorWarning: message, messageType: "success"});
 				this.getData();
 			}.bind(this)
 		});
@@ -135,6 +139,7 @@ var SearchAdmin = React.createClass({
 		if(username === ''){
 			errorMessage = "Please enter a valid username.";
 			this.setState({errorWarning: errorMessage});
+
 			return;
 		}
 
@@ -164,26 +169,29 @@ var SearchAdmin = React.createClass({
 		}
 
 		var deptName = dept[deptIndex].name;
+		displayData.unshift({username: username, id: -1, name: deptName, display_name: ""});
 
-		if (displayName !== ''){
+		/*if (displayName !== ''){
 			displayData.unshift({username: username, id: -1, name: deptName, display_name: displayName});
-		}
+		}*/
 
 
 		// Updating the new state for optimization (snappy response on the client)
 		var newVal = this.state.displayData;
-		this.setState({displayData: newVal});
+		console.log(newVal);
+		this.setState({displayData: newVal},this.searchList());
 
 		$.ajax({
 			url: 'index.php?module=intern&action=adminRest&user='+username+'&dept='+department,
 			type: 'POST',
 			success: function(data) {
 				this.getData();
-				this.setState({errorWarning: null});
+				var message = "Created admin "+username+" for department " + dept[deptIndex].name + ".";
+				this.setState({errorWarning: message, messageType: "success"});
 			}.bind(this),
 			error: function(http) {
 				var errorMessage = http.responseText;
-				this.setState({errorWarning: errorMessage});
+				this.setState({errorWarning: errorMessage, messageType: "error"});
 			}.bind(this)
 		});
 	},
@@ -260,7 +268,7 @@ var SearchAdmin = React.createClass({
         if(this.state.errorWarning == null){
             errors = '';
         } else {
-            errors = <ErrorMessagesBlock key="errorSet" errors={this.state.errorWarning} />
+            errors = <ErrorMessagesBlock key="errorSet" errors = {this.state.errorWarning} messageType = {this.state.messageType} />
         }
 
 		return (
@@ -323,6 +331,62 @@ var SearchAdmin = React.createClass({
 	}
 });
 
+
+var DeleteAdmin = React.createClass({
+	handleChange: function() {
+		this.props.onAdminDelete(this.props.id, this.props.username, this.props.department);
+	},
+	render: function() {
+		return (
+
+			<tr>
+				<td>{this.props.fullname}</td>
+				<td>{this.props.username}</td>
+				<td>{this.props.department}</td>
+				<td> <a onClick={this.handleChange}> <i className="fa fa-trash-o" /> </a> </td>
+			</tr>
+
+		);
+
+	}
+});
+
+
+var DepartmentList = React.createClass({
+  render: function() {
+    return (
+     	<option value={this.props.id}>{this.props.name}</option>
+    )
+  }
+});
+
+var ErrorMessagesBlock = React.createClass({
+    render: function() {
+        if(this.props.errors === null){
+            return '';
+        }
+
+        var errors = this.props.errors;
+        if (this.props.messageType == "success"){
+        	var alert = "alert alert-success";
+        	var msg = "Success:";
+        } else {
+        	var alert = "alert alert-warning";
+        	var msg = "Warning:"
+        }
+
+        return (
+            <div className="row">
+                <div className="col-sm-12 col-md-6 col-md-push-3">
+                    <div className={alert} role="alert">
+                        <p><i className="fa fa-exclamation-circle fa-2x"></i> {msg} {errors}</p>
+                            
+                    </div>
+                </div>
+            </div>
+        );
+    }
+});
 
 ReactDOM.render(
 	<SearchAdmin />,
