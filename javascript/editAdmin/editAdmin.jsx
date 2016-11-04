@@ -122,7 +122,7 @@ var SearchAdmin = React.createClass({
 	},
 	onAdminCreate: function(username, department)
 	{
-		var displayName = '';
+		//var displayName = '';
 		var displayData = this.state.displayData;
 		var dept = this.state.deptData;
 
@@ -158,7 +158,7 @@ var SearchAdmin = React.createClass({
 		{
 			if (displayData[j].username === username)
 			{
-				displayName = displayData[j].display_name;
+				//displayName = displayData[j].display_name;
 				if (displayData[j].name === dept[deptIndex].name)
 				{
 					errorMessage = "Multiple usernames in the same department.";
@@ -330,62 +330,6 @@ var SearchAdmin = React.createClass({
 	}
 });
 
-
-var DeleteAdmin = React.createClass({
-	handleChange: function() {
-		this.props.onAdminDelete(this.props.id, this.props.username, this.props.department);
-	},
-	render: function() {
-		return (
-
-			<tr>
-				<td>{this.props.fullname}</td>
-				<td>{this.props.username}</td>
-				<td>{this.props.department}</td>
-				<td> <a onClick={this.handleChange}> <i className="fa fa-trash-o" /> </a> </td>
-			</tr>
-
-		);
-
-	}
-});
-
-
-var DepartmentList = React.createClass({
-  render: function() {
-    return (
-     	<option value={this.props.id}>{this.props.name}</option>
-    )
-  }
-});
-
-var ErrorMessagesBlock = React.createClass({
-    render: function() {
-        if(this.props.errors === null){
-            return '';
-        }
-
-        var errors = this.props.errors;
-        if (this.props.messageType == "success"){
-        	var alert = "alert alert-success";
-        	var msg = "Success:";
-        } else {
-        	var alert = "alert alert-warning";
-        	var msg = "Warning:"
-        }
-
-        return (
-            <div className="row">
-                <div className="col-sm-12 col-md-6 col-md-push-3">
-                    <div className={alert} role="alert">
-                        <p><i className="fa fa-exclamation-circle fa-2x"></i> {msg} {errors}</p>
-                            
-                    </div>
-                </div>
-            </div>
-        );
-    }
-});
 
 ReactDOM.render(
 	<SearchAdmin />,
