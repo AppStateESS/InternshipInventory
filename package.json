@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "classnames": "^2.2.5",
-    "corejs-typeahead": "^0.11.1",
+    "corejs-typeahead": "^1.0.1",
     "react": "~15.3.0",
     "react-addons-css-transition-group": "~15.3.0",
     "react-dom": "~15.3.0",
