@@ -373,7 +373,14 @@ class EditInternshipFormView {
                 throw new \InvalidArgumentException('Domestic internship with null value for state.');
             }
 
-            $this->tpl['LOC_STATE'] = $states[$locationState]->full_name;
+            if (\Current_User::isDeity()) {
+                $states = State::getAllowedStates();
+                $this->form->addSelect('loc_state', $states);
+                $this->form->setMatch('loc_state', $this->intern->loc_state);
+                $this->form->addCssClass('loc_state', 'form-control');
+            }else{
+                $this->tpl['LOC_STATE'] = $states[$locationState]->full_name;
+            }
 
             $this->form->setLabel('loc_zip', 'Zip');
         } else {
@@ -384,7 +391,15 @@ class EditInternshipFormView {
                 throw new \InvalidArgumentException('International internship with null value for country.');
             }
 
-            $this->tpl['LOC_COUNTRY'] = $countries[$locationCountry];
+
+            if (\Current_User::isDeity()) {
+                $countries = CountryFactory::getCountries();
+                $this->form->addSelect('loc_country', $countries);
+                $this->form->setMatch('loc_country', $this->intern->loc_country);
+                $this->form->addCssClass('loc_country', 'form-control');
+            }else{
+                $this->tpl['LOC_COUNTRY'] = $countries[$locationCountry];
+            }
 
             // Itn'l location fields
             $this->form->addText('loc_province');
@@ -398,6 +413,7 @@ class EditInternshipFormView {
          * Term Info *
          */
 
+
         if (\Current_User::isDeity()) {
             $terms = Term::getTermsAssoc();
             $this->form->addSelect('term', $terms);
@@ -405,15 +421,6 @@ class EditInternshipFormView {
             $this->form->addCssClass('term', 'form-control');
         }else{
             $this->tpl['TERM'] = Term::rawToRead($this->intern->term);
-        }
-
-        if (\Current_User::isDeity()) {
-            $countries = CountryFactory::getCountries();
-            $this->form->addSelect('country', $countries);
-            $this->form->setMatch('country', $this->intern->loc_country);
-            $this->form->addCssClass('country', 'form-control');
-        }else{
-            $this->tpl['COUNTRY'] = $this->intern->loc_country;
         }
 
 
