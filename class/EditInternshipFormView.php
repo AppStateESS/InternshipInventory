@@ -407,6 +407,15 @@ class EditInternshipFormView {
             $this->tpl['TERM'] = Term::rawToRead($this->intern->term);
         }
 
+        if (\Current_User::isDeity()) {
+            $countries = CountryFactory::getCountries();
+            $this->form->addSelect('country', $countries);
+            $this->form->setMatch('country', $this->intern->loc_country);
+            $this->form->addCssClass('country', 'form-control');
+        }else{
+            $this->tpl['COUNTRY'] = $this->intern->loc_country;
+        }
+
 
 
 
