@@ -616,6 +616,7 @@ class Email {
         $tpl = array();
         $tpl['NAME'] = $i->getFullName();
         $tpl['BANNER'] = $i->banner;
+        $tpl['TERM'] = Term::rawToRead($i->getTerm());
         $tpl['BIRTHDAY'] = $i->getBirthDateFormatted();
         $tpl['EMAIL'] = $i->getEmailAddress() . $settings->getEmailDomain();
         $tpl['AGENCY'] = $agency->getName();
