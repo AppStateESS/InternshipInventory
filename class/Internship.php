@@ -826,6 +826,17 @@ class Internship {
     }
 
     /**
+    *Returns array of campus names
+    *
+    *@return Array campus names
+    */
+    public static function getCampusAssoc()
+    {
+        $campusNames = array('Main campus', 'Distance Ed');
+        return $campusNames;
+    }
+
+    /**
      * Returns the campus on which this internship is based
      *
      * Valid values are: 'main_campus', 'distance_ed'

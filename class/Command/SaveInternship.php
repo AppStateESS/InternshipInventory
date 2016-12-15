@@ -130,7 +130,7 @@ class SaveInternship {
 
         // Load the student object
         try {
-            $student = ExternalDataProviderFactory::getProvider()->getStudent($i->getBannerId(), $i->getTerm());
+            $student = ExternalDataProviderFactory::getProvider()->getStudent($i->getBannerId(), $i->getTerm(), $i->getLocationCountry());
         } catch (StudentNotFoundException $e){
             $student = null;
 
@@ -167,6 +167,9 @@ class SaveInternship {
         $i->loc_address = strip_tags($_POST['loc_address']);
         $i->loc_city = strip_tags($_POST['loc_city']);
         $i->loc_zip = strip_tags($_POST['loc_zip']);
+
+        //Country is set if international
+        $i->loc_country = $_REQUEST['loc_country'];
 
         if(isset($_POST['course_subj']) && $_POST['course_subj'] != '-1'){
             $i->course_subj = strip_tags($_POST['course_subj']);
@@ -221,6 +224,8 @@ class SaveInternship {
             $i->student_state = "";
         }
         $i->student_zip = $_REQUEST['student_zip'];
+
+        $i->campus = $_REQUEST['campus'];
 
         // Student major handling, if more than one major
         // Make sure we have a student object, since it could be null if the Banner lookup failed
@@ -306,7 +311,7 @@ class SaveInternship {
         }
 
         // If we don't have a state and this is a new internship,
-        // the set an initial state
+        // then set an initial state
         if($i->id == 0 && is_null($i->state)){
             $state = WorkflowStateFactory::getState('CreationState');
             $i->setState($state); // Set this initial value
