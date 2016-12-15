@@ -425,7 +425,6 @@ class EditInternshipFormView {
 
 
 
-
         $this->form->addText('start_date');
         $this->form->setLabel('start_date', 'Start Date');
         $this->form->addCssClass('start_date', 'form-control');
@@ -554,7 +553,16 @@ class EditInternshipFormView {
         }
 
         $this->tpl['STUDENT_GPA'] = $this->intern->getGpa();
-        $this->tpl['CAMPUS'] = $this->intern->getCampusFormatted();
+
+        // if (\Current_User::isDeity()) {
+        //     $terms = Term::getTermsAssoc();
+        //     $this->form->addSelect('term', $terms);
+        //     $this->form->setMatch('term', $this->intern->term);
+        //     $this->form->addCssClass('term', 'form-control');
+        // }else{
+            $this->tpl['CAMPUS'] = $this->intern->getCampusFormatted();
+        // }
+
         $this->tpl['LEVEL'] = $this->intern->getLevelFormatted();
 
         // Student object can be null, so be sure we actually have a student first
