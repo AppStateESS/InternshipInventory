@@ -554,14 +554,14 @@ class EditInternshipFormView {
 
         $this->tpl['STUDENT_GPA'] = $this->intern->getGpa();
 
-        // if (\Current_User::isDeity()) {
-        //     $terms = Term::getTermsAssoc();
-        //     $this->form->addSelect('term', $terms);
-        //     $this->form->setMatch('term', $this->intern->term);
-        //     $this->form->addCssClass('term', 'form-control');
-        // }else{
+        if (\Current_User::isDeity()) {
+            $campus = Internship::getCampusAssoc();
+            $this->form->addSelect('campus', $campus);
+            $this->form->setMatch('campus', $this->intern->campus);
+            $this->form->addCssClass('campus', 'form-control');
+        }else{
             $this->tpl['CAMPUS'] = $this->intern->getCampusFormatted();
-        // }
+        }
 
         $this->tpl['LEVEL'] = $this->intern->getLevelFormatted();
 
