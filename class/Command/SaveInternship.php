@@ -169,7 +169,10 @@ class SaveInternship {
         $i->loc_zip = strip_tags($_POST['loc_zip']);
 
         //Country is set if international
-        $i->loc_country = $_REQUEST['loc_country'];
+        if ($i->isInternational())
+        {
+            $i->loc_country = $_REQUEST['loc_country'];
+        }
 
         if(isset($_POST['course_subj']) && $_POST['course_subj'] != '-1'){
             $i->course_subj = strip_tags($_POST['course_subj']);
