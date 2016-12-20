@@ -832,7 +832,7 @@ class Internship {
     */
     public static function getCampusAssoc()
     {
-        $campusNames = array('Main campus', 'Distance Ed');
+        $campusNames = array("main_campus" => "Main campus", "distance_ed" => "Distance Ed");
         return $campusNames;
     }
 
