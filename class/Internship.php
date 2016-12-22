@@ -826,10 +826,10 @@ class Internship {
     }
 
     /**
-    *Returns array of campus names
-    *
-    *@return Array campus names
-    */
+     * Returns array of campus names
+     *
+     * @return Array campus names
+     */
     public static function getCampusAssoc()
     {
         $campusNames = array("main_campus" => "Main campus", "distance_ed" => "Distance Ed");
