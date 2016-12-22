@@ -169,7 +169,7 @@ class SaveInternship {
         $i->loc_zip = strip_tags($_POST['loc_zip']);
 
         //Country is set if international
-        if ($i->isInternational())
+        if ($i->isInternational() && \Current_User::isDeity())
         {
             $i->loc_country = $_REQUEST['loc_country'];
         }
@@ -228,7 +228,9 @@ class SaveInternship {
         }
         $i->student_zip = $_REQUEST['student_zip'];
 
-        $i->campus = $_REQUEST['campus'];
+        if(\Current_User::isDeity()){
+            $i->campus = $_REQUEST['campus'];
+        }
 
         // Student major handling, if more than one major
         // Make sure we have a student object, since it could be null if the Banner lookup failed
