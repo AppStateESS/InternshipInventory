@@ -232,9 +232,12 @@ var EmergencyContactList = React.createClass({
         );
     }
 });
+<<<<<<< HEAD
 
 
 ReactDOM.render(
     <EmergencyContactList internshipId={window.internshipId}/>,
     document.getElementById('emergency-contact-list')
 );
+=======
+>>>>>>> origin/reactEditInternship

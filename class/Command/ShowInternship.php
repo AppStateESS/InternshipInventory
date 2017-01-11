@@ -9,6 +9,20 @@ use \Intern\TermProviderFactory;
 
 class ShowInternship {
 
+    public function test()
+    {
+
+        switch($_SERVER['REQUEST_METHOD']) {
+            case 'GET':
+                $data = $this->get();
+                echo (json_encode($data));
+                exit;
+            default:
+                header('HTTP/1.1 405 Method Not Allowed');
+                exit;
+        }
+    }
+
     public function execute()
     {
         // Make sure an 'internship_id' key is set on the request
@@ -18,40 +32,19 @@ class ShowInternship {
             \PHPWS_Core::reroute('index.php');
         }
 
-        // Load the Internship
-        try{
-            $intern = InternshipFactory::getInternshipById($_REQUEST['internship_id']);
-        }catch(\Intern\Exception\InternshipNotFoundException $e){
-            \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, 'Could not locate an internship with the given ID.');
-            return;
-        }
+        
 
-        if($intern === false) {
-            \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, 'Could not locate an internship with the given ID.');
-            //TODO redirect to the search interface
-            return;
-        }
+        $tpl = array();
+        //javascriptMod('intern', 'editInternshipView');
 
-        // Load a fresh copy of the student data from the web service
-        try {
-            $student = ExternalDataProviderFactory::getProvider()->getStudent($intern->getBannerId(), $intern->getTerm());
-        } catch(\Intern\Exception\StudentNotFoundException $e) {
-            $studentId = $intern->getBannerId();
-            $student = null;
-            \NQ::simple('intern', \Intern\UI\NotifyUI::WARNING, "We couldn't find a student with an ID of {$studentId} in Banner. This probably means this person is not an active student.");
-        }
+        javascript('jquery');
+        $tpl['INTERN_ID'] = $_REQUEST['internship_id'];
 
-        // Load the WorkflowState
-        $wfState = $intern->getWorkflowState();
+        return \PHPWS_Template::process($tpl, 'intern', 'editInternshipView.tpl');
 
-        // Load the agency
-        $agency = AgencyFactory::getAgencyById($intern->getAgencyId());
 
-        // Load the documents
-        $docs = $intern->getDocuments();
-        if($docs === null) {
-            $docs = array(); // if no docs, setup an empty array
-        }
+/*
+        
 
         // Load the term info for this internship
         $termProvider = TermProviderFactory::getProvider();
@@ -60,5 +53,6 @@ class ShowInternship {
         $view = new InternshipView($intern, $student, $wfState, $agency, $docs, $termInfo);
 
         return $view->display();
+        */
     }
 }

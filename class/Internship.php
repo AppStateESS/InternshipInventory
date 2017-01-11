@@ -515,6 +515,8 @@ class Internship {
     public function getStartDate($formatted=false)
     {
         if (!$this->start_date) {
+            var_dump("made it");
+            exit;
             return null;
         }
         if ($formatted) {
@@ -817,7 +819,7 @@ class Internship {
     public function getWorkflowState()
     {
         $stateName = $this->getStateName();
-
+        
         if(is_null($stateName)){
             return null;
         }
