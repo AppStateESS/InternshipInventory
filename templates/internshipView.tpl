@@ -41,10 +41,15 @@
         <!-- END copy_to_next_term -->
     </div>
 
+<div>
     <div class="col-lg-1 col-lg-offset-1">
       <button type="button" id="contract-button" class="btn btn-default pull-right generateContract"><i class="fa fa-file"></i> Generate Contract</button>
     </div>
-  </div>
+
+  <div class="col-lg-1 col-lg-offset-1">
+    <button type="button" style="margin-top: 10px;" id="email-contract-button" class="btn btn-default pull-right emailContractToStudent"><i class="fa fa-file"></i> Email Contract to Student</button>
+</div>
+</div>
 
   <div class="row">
     <!-- Left column -->
