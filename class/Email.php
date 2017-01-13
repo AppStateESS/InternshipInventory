@@ -102,6 +102,38 @@ class Email {
     }
 
     /**
+     * Logs a Swift_Message object to a text file
+     */
+    public static function logSwiftmailMessageLong(\Swift_Message $message)
+    {
+       $fd = fopen(PHPWS_SOURCE_DIR . 'logs/email.log', 'a');
+       fprintf($fd, "=======================\n");
+       foreach($message->getFrom() as $address => $name) {
+           fprintf($fd, "From: %s <%s>\n", $name, $address);
+       }
+       foreach($message->getTo() as $address => $name) {
+           fprintf($fd, "To: %s <%s>\n", $name, $address);
+       }
+       $cc = $message->getCc();
+       if(!empty($cc)){
+           foreach($cc() as $address => $name) {
+               fprintf($fd, "Cc: %s <%s>\n", $name, $address);
+           }
+       }
+       $bcc = $message->getBcc();
+       if(!empty($bcc)){
+           foreach($bcc as $address => $name) {
+               fprintf($fd, "Bcc: %s <%s>\n", $name, $address);
+           }
+       }
+       fprintf($fd, "Sender: %s\n", $message->getSender());
+       fprintf($fd, "Subject: %s\n", $message->getSubject());
+       fprintf($fd, "Date: %s\n", date('Y-m-d H:i:s'));
+       fprintf($fd, "Content: \n");
+       fprintf($fd, "%s\n\n", $message->toString());
+    }
+
+    /**
      * Sends an email to the registrar notifying them to register
      * the student for the appropriate internship course.
      *
@@ -503,6 +535,35 @@ class Email {
         $subject = 'Internship Approved';
 
         email::sendTemplateMessage($to, $subject, 'email/RegistrationConfirmation.tpl', $tpl, $cc);
+    }
+
+    /**
+    *  Sends the internship contract to the student.
+    *
+    *@param Inernship $i
+    *@param InternshipContractPdfView $pdfView
+    */
+    public static function emailContractToStudent(Internship $i, InternshipContractPdfView $pdfView)
+    {
+        $settings = InternSettings::getInstance();
+
+        try{
+            $message = \Swift_Message::newInstance();
+            $message->setSubject('Internship Contract');
+            $message->setFrom(array(('no-reply' . $settings->getEmailDomain()) => $settings->getSystemName()));
+            $message->setTo(array(($i->email . $settings->getEmailDomain()) => $i->getFullName()));
+            $message->setBody('Attached is a copy of your internship contract. If you have any issues with your contract, please contact your faculty supervisor.');
+            $attachment = \Swift_Attachment::newInstance($pdfView->getPdf()->output('internship-contract.pdf', 'S'), $i->getFullName() . ' Internship Contract.pdf');
+            $message->attach($attachment);
+
+            // $transport = \Swift_SmtpTransport::newInstance('localhost', 80);
+            // $mailer = \Swift_Mailer::newInstance($transport);
+
+            self::logSwiftmailMessageLong($message);
+        }catch(\Swift_TransportException $e){
+            $transport->stop();
+        }
+
     }
 
     /**

@@ -153,6 +153,13 @@ class InternshipInventory {
                 $pdf = $pdfView->getPdf();
                 $pdf->output();
                 exit;
+            case 'emailPdf' :
+                $i = InternshipFactory::getInternshipById($_REQUEST['internship_id']);
+                $emgContacts = EmergencyContactFactory::getContactsForInternship($i);
+                $pdfView = new InternshipContractPdfView($i, $emgContacts);
+
+                Email::emailContractToStudent($i, $pdfView);
+                exit;
             case 'upload_document_form':
                 $docManager = new DocumentManager();
                 echo $docManager->edit();
