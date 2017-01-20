@@ -34,6 +34,11 @@ class SendPendingEnrollmentReminders
             $censusDate = $termInfo->getCensusDate();
             $censusTimestamp = strtotime($censusDate);
 
+            // Double check that we have a valid census timestamp. Try to avoid sending emails with the date set to December 31, 1969
+            if($censusTimestamp === 0 || $censusTimestamp === '' || $censusTimestamp === null || !isset($censusTimestamp) || empty($censusTimestamp)){
+                throw new \InvalidArgumentException("Census timestamp is 0, null, empty, or not set for $term.");
+            }
+
             // Calculate timestamps for 1 week and 4 weeks into the future
             $oneWeekOut = strtotime('+1 week');
             $fourWeeksOut = strtotime('+4 weeks');
