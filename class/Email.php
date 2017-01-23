@@ -412,7 +412,7 @@ class Email {
 
         $dept = new Department($i->department_id);
         $tpl['DEPARTMENT'] = $dept->getName();
-        $to = $i->email . '@appstate.edu';
+        $to = $i->email . $settings->getEmailDomain();
 
         $subject = "International Internship Created - {$i->first_name} {$i->last_name}";
 
@@ -550,7 +550,7 @@ class Email {
         try{
             $message = \Swift_Message::newInstance();
             $message->setSubject('Internship Contract');
-            $message->setFrom(array(('no-reply' . $settings->getEmailDomain()) => $settings->getSystemName()));
+            $message->setFrom(array(('noreply' . $settings->getEmailDomain()) => $settings->getSystemName()));
             $message->setTo(array(($i->email . $settings->getEmailDomain()) => $i->getFullName()));
             $message->setBody('Attached is a copy of your internship contract. If you have any issues with your contract, please contact your faculty supervisor.');
             $attachment = \Swift_Attachment::newInstance($pdfView->getPdf()->output('internship-contract.pdf', 'S'), $i->getFullName() . ' Internship Contract.pdf');
