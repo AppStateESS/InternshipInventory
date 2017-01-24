@@ -43,12 +43,12 @@ function setupEmailContractButton()
 function EmailContractHandler()
 {
     // Disable the button
-    $('.emailContract').prop('disabled', 'disabled');
+    $('#contract-button').prop('disabled', 'disabled');
 
     // Change the button text
-    $('.emailContract').html('<i class="fa fa-spinner fa-spin"></i> Sending...');
+    $('#contract-button').html('<i class="fa fa-spinner fa-spin"></i> Sending...');
 
-    $.post('index.php?module=intern&action=SaveInternship', $('#internship').serialize() + '&emailContract=true',
+    $.post('index.php?module=intern&action=SaveInternship', $('#internship').serialize() + '&generateContract=true',
             function(data){
                 window.location = 'index.php?module=intern&action=emailPdf&internship_id=' + data.id;
             },
@@ -352,4 +352,5 @@ function otherStuff()
 
     setupFormSubmit();
     setupContractButton();
+    setupEmailContractButton();
 }

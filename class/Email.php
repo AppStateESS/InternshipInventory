@@ -556,14 +556,13 @@ class Email {
             $attachment = \Swift_Attachment::newInstance($pdfView->getPdf()->output('internship-contract.pdf', 'S'), $i->getFullName() . ' Internship Contract.pdf');
             $message->attach($attachment);
 
-            // $transport = \Swift_SmtpTransport::newInstance('localhost', 80);
-            // $mailer = \Swift_Mailer::newInstance($transport);
+            $transport = \Swift_SmtpTransport::newInstance('localhost');
+            $mailer = \Swift_Mailer::newInstance($transport);
 
             self::logSwiftmailMessageLong($message);
         }catch(\Swift_TransportException $e){
             $transport->stop();
         }
-
     }
 
     /**
