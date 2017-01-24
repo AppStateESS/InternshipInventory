@@ -168,6 +168,16 @@ class SaveInternship {
         $i->loc_city = strip_tags($_POST['loc_city']);
         $i->loc_zip = strip_tags($_POST['loc_zip']);
 
+        // Save Country if international
+        if ($i->isInternational() && \Current_User::isDeity()) {
+            $i->loc_country = $_REQUEST['loc_country'];
+        }
+
+        // Save state if domestic
+        if ($i->isDomestic() && \Current_User::isDeity()) {
+            $i->loc_state = $_REQUEST['loc_state'];
+        }
+
         if(isset($_POST['course_subj']) && $_POST['course_subj'] != '-1'){
             $i->course_subj = strip_tags($_POST['course_subj']);
         }else{
@@ -221,6 +231,10 @@ class SaveInternship {
             $i->student_state = "";
         }
         $i->student_zip = $_REQUEST['student_zip'];
+
+        if(\Current_User::isDeity()){
+            $i->campus = $_REQUEST['campus'];
+        }
 
         // Student major handling, if more than one major
         // Make sure we have a student object, since it could be null if the Banner lookup failed
@@ -306,7 +320,7 @@ class SaveInternship {
         }
 
         // If we don't have a state and this is a new internship,
-        // the set an initial state
+        // then set an initial state
         if($i->id == 0 && is_null($i->state)){
             $state = WorkflowStateFactory::getState('CreationState');
             $i->setState($state); // Set this initial value
