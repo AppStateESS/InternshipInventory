@@ -130,7 +130,7 @@ class SaveInternship {
 
         // Load the student object
         try {
-            $student = ExternalDataProviderFactory::getProvider()->getStudent($i->getBannerId(), $i->getTerm(), $i->getLocationCountry());
+            $student = ExternalDataProviderFactory::getProvider()->getStudent($i->getBannerId(), $i->getTerm());
         } catch (StudentNotFoundException $e){
             $student = null;
 
@@ -168,10 +168,14 @@ class SaveInternship {
         $i->loc_city = strip_tags($_POST['loc_city']);
         $i->loc_zip = strip_tags($_POST['loc_zip']);
 
-        //Country is set if international
-        if ($i->isInternational() && \Current_User::isDeity())
-        {
+        // Save Country if international
+        if ($i->isInternational() && \Current_User::isDeity()) {
             $i->loc_country = $_REQUEST['loc_country'];
+        }
+
+        // Save state if domestic
+        if ($i->isDomestic() && \Current_User::isDeity()) {
+            $i->loc_state = $_REQUEST['loc_state'];
         }
 
         if(isset($_POST['course_subj']) && $_POST['course_subj'] != '-1'){

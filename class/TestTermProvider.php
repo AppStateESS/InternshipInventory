@@ -40,9 +40,11 @@ class TestTermProvider extends BannerTermProvider {
         } else if($this->term == '201640') {
             $obj->census_date   = '8/29/2016';
         } else if($this->term == '201710') {
-            $obj->census_date   = '1/15/2017';
+            $obj->census_date   = '01/30/2017';
         } else if($this->term == '201720') {
-            $obj->census_date   = '5/15/2017';
+            $obj->census_date   = '06/01/2017';
+        } else if($this->term == '201730') {
+            $obj->census_date   = '07/10/2017';
         } else {
             throw new \Exception('Missing fake census date for ' . $this->term);
         }
@@ -56,7 +58,10 @@ class TestTermProvider extends BannerTermProvider {
 
         $obj->part_term             = $partTerm;
 
-        return $obj;
+        $parentObj = new \stdClass();
+        $parentObj->GetTermInfoResult = $obj;
+
+        return $parentObj;
     }
 
     private function getFakeErrorResponse()
