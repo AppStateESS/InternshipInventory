@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import {Button, Modal} from 'react-bootstrap';
 
@@ -232,12 +231,5 @@ var EmergencyContactList = React.createClass({
         );
     }
 });
-<<<<<<< HEAD
 
-
-ReactDOM.render(
-    <EmergencyContactList internshipId={window.internshipId}/>,
-    document.getElementById('emergency-contact-list')
-);
-=======
->>>>>>> origin/reactEditInternship
+export default EmergencyContactList;

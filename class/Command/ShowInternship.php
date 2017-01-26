@@ -32,19 +32,38 @@ class ShowInternship {
             \PHPWS_Core::reroute('index.php');
         }
 
-        
+        // Load the Internship
+        try{
+            $intern = InternshipFactory::getInternshipById($_REQUEST['internship_id']);
+        }catch(\Intern\Exception\InternshipNotFoundException $e){
+            \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, 'Could not locate an internship with the given ID.');
+            return;
+        }
+        if($intern === false) {
+            \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, 'Could not locate an internship with the given ID.');
+            //TODO redirect to the search interface
+            return;
+        }
+        // Load a fresh copy of the student data from the web service
+        try {
+            $student = ExternalDataProviderFactory::getProvider()->getStudent($intern->getBannerId(), $intern->getTerm());
+        } catch(\Intern\Exception\StudentNotFoundException $e) {
+            $studentId = $intern->getBannerId();
+            $student = null;
+            \NQ::simple('intern', \Intern\UI\NotifyUI::WARNING, "We couldn't find a student with an ID of {$studentId} in Banner. This probably means this person is not an active student.");
+        }
 
         $tpl = array();
-        //javascriptMod('intern', 'editInternshipView');
-
-        javascript('jquery');
+  
+        $tpl['vendor_bundle'] = \Intern\AssetResolver::resolveJsPath('assets.json', 'vendor');
+        $tpl['entry_bundle'] = \Intern\AssetResolver::resolveJsPath('assets.json', 'internshipView');
         $tpl['INTERN_ID'] = $_REQUEST['internship_id'];
 
         return \PHPWS_Template::process($tpl, 'intern', 'editInternshipView.tpl');
 
 
 /*
-        
+
 
         // Load the term info for this internship
         $termProvider = TermProviderFactory::getProvider();

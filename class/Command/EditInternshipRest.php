@@ -39,10 +39,10 @@ class EditInternshipRest {
 
 
         // id, internId, agencyId, loc_start, loc_end, loc_address, loc_city, loc_zip, loc_province, loc_country
-echo("<pre>");
-var_dump($postarray);
-echo("</pre>");
-exit;
+// echo("<pre>");
+// var_dump($postarray);
+// echo("</pre>");
+// exit;
         $studentPost    = $postarray["internship"]["student"];
         $faculty        = $postarray['internship']['faculty'];
         $status         = $postarray['internship']['status'];
@@ -145,7 +145,7 @@ exit;
         *************************/
         $i->faculty_id = $faculty['faculty_id'] > 0 ? $faculty['faculty_id'] : null;
         $i->department_id = $studentPost['department'];
-        
+
         // Term & Course Information Field
         // TERM START AND END DATE
         $i->start_date = !empty($term['termStart']) ? strtotime($term['termStart']) : 0;
@@ -156,7 +156,7 @@ exit;
         $i->course_sect = !isset($_POST['course_sect']) ? null : strip_tags($_POST['course_sect']);
         $i->course_title = !isset($_POST['course_title']) ? null : strip_tags($_POST['course_title']);
 
-//Ensure this is the correct creditHours field..        
+//Ensure this is the correct creditHours field..
         $i->credits = (int) $term['creditHours'];
 
         // Compensation Field
@@ -373,7 +373,7 @@ exit;
         echo("<pre>");
         var_dump($postarray);
         echo("</pre>");
-        exit;       
+        exit;
 	}
 
 	public function delete()
@@ -401,14 +401,14 @@ exit;
         try {
 
             $student = StudentFactory::getStudent($intern->getBannerId(), $intern->getTerm());
-            
+
 
         } catch(\Intern\Exception\StudentNotFoundException $e) {
             $studentId = $intern->getBannerId();
             $student = null;
             \NQ::simple('intern', \Intern\UI\NotifyUI::WARNING, "We couldn't find a student with an ID of {$studentId} in Banner. This probably means this person is not an active student.");
         }
-        
+
         // Format intern data
         $intern = $this->formatIntern($intern);
 
@@ -435,7 +435,7 @@ exit;
         $wfState = $workflow;
 
         $agencies = InternshipAgencyFactory::getHostInfoById($intern->getId());
-        
+
         // foreach($agencies as $a){
         //     // Load the agency
         //     var_dump(AgencyFactory::getAgencyById($a['agency_id']));
@@ -456,7 +456,7 @@ exit;
         //}
 
         $notes = $this->setupChangeHistory($intern);
-        
+
         $expType = Internship::getTypesAssoc();
         $subjects = array("-1" => "Select subject...") + Subject::getSubjects();
 
@@ -559,4 +559,3 @@ exit;
         return $historyView->show();
     }
 }
-
