@@ -38,7 +38,7 @@ deploy:
     skip_cleanup: true
     api_key:
       secure: lPFLb25Gwb/X8aBiNQ4Mz2b5XBviLLg0Zp7Rgoj9Xc8ZwFlNw/JqnoLKnZFljXBW38yUt3fEyxUGFrImLDbwwzN6+1iOfjVrCrIYdJtKf1CoF9Mq1+bjUbz8wIXfvdIvuF+VxFWFcbFtUiTiVpeDkSBwWXLaazCZWQJZpWYZuQc=
-     file: Internshipinventory.tar.gz
+    file: Internshipinventory.tar.gz
     overwrite: true
     on:
       repo: AppStateESS/InternshipInventory
