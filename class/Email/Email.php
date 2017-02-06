@@ -1,274 +1,245 @@
 <?php
-
 namespace Intern\Email;
-use Intern\Internship;
-use Intern\Agency;
-use Intern\InternSettings;
-use Intern\Term;
-use Intern\Subject;
-use ErrorException;
-require_once PHPWS_SOURCE_DIR . 'mod/intern/vendor/swiftmailer/swiftmailer/lib/swift_required.php';
+
+use \Intern\InternSettings;
+
+// Setup autoloader for Composer to load SwiftMail via autoload
+require_once PHPWS_SOURCE_DIR . 'mod/intern/vendor/autoload.php';
+
 /**
- * Allows for the simple sending of email messages. Follows the general flow:
+ * Abstract class for representing an email to be sent. Provides a
+ * central implementaion of message sending/delivery via SwiftMail
+ * library. To use, implment a concrete child class, call the child
+ * class constructor, then call the send() method.
  *
- * sendSpecialMessage() -> sendTemplateMessage() -> sendEmail() -> logEmail()
- * 	dynamic w/ hook							static							  static        static
+ * This class could later be abstracted further to use alternate delivery
+ * providers (i.e. a transactional email API).
  *
- * A message can be processed at any point in this flow, depending on the
- * desired function of the email.
+ * @author jbooker
+ * @package Intern\Email
  */
 abstract class Email {
 
-  protected $internship;
-  protected $agency;
-  protected $settings;
-  protected $faculty;
-  protected $note;
-  protected $backgroundCheck;
-  protected $drugCheck;
-  protected $subjects;
-  protected $to;
-  protected $subject;
-  protected $doc;
-  protected $tpl;
-  protected $cc;
-  protected $intlSubject;
+    // Address info, initialized to empty arrays in constructor
+    protected $to;
+    protected $cc;
+    protected $bcc;
 
-  /**
-   * Template method for specialized email messages. Subclasses will
-   * call this method and implement their own setUpSpecial() hook to meet
-   * their specialized needs.
-   *
-   * @param  $i                 Internship obj provides email data for all classes
-   * @param  $agency            Agency objected needed for most subclasses
-   * @param  $note              Necessary for class RegistrationIssue
-   * @param  $backgroundCheck   Necessary for class SendBackgroundCheckEmail
-   * @param  $drugCheck         Necessary for class SendBackgroundCheckEmail
-   */
-  protected final function sendSpecialMessage(Internship $i,
+    // From name and address, defaulted to system name and address settings
+    protected $fromName;
+    protected $fromAddress;
+
+    protected $subject; // Must be set by concrete implementations in buildMessage()
+
+    protected $tpl; // Array of template tags, setup in buildMessage()
+
+
+    protected $emailSettings; // Instance of InternSettings class, holds system settings
+
+
+    /**
+     * Constructor
+     * Initializses to/cc/bbc arrays to empty. Sets 'from' information via InternSettings
+     *
+     * @param \Intern\InternSettings $settings Instance of an InternSettings class. Available via InternSettings::getInstance()
+     */
+    public function __construct(InternSettings $settings)
+    {
+        $this->tpl = array();
+        $this->to = array();
+        $this->cc = array();
+        $this->bcc = array();
+
+        $this->emailSettings = $settings;
+
+        // Set a default from address and name, based on system settings
+        // Child classes can overwrite these values
+        $this->fromName = $this->emailSettings->getSystemName();
+        $this->fromAddress = $this->emailSettings->getEmailFromAddress();
+    }
+
+    protected abstract function buildMessage();
+    protected abstract function getTemplateFileName();
+
+    public function send()
+    {
+        // Build the message template and to/cc/from fields
+        $this->buildMessage();
+
+        // Get the body of the message by processing the template tag array into a template file
+        $bodyContent = $this->buildMessageBody($this->getTemplateFileName());
+
+        // Build a SwiftMessage object from member variables, settings, and body content
+        $message = $this->buildSwiftMessage($settings, $this->to, $this->fromAddress, $this->fromName, $this->subject, $bodyContent, $this->cc, $this->bcc);
+
+        // Send the SwiftMail message
+        $this->sendSwiftMessage($message);
+    }
+
+
+    protected function buildMessageBody($templateFileName)
+    {
+        $bodyContent = \PHPWS_Template::process($this->tpl, 'intern', $templateFileName);
+
+        return $bodyContent;
+    }
+
+    /**
+     * Performs the email delivery process.
+     *
+     * @param  $to
+     * @param  $fromAddress
+     * @param  $fromName
+     * @param  $subject
+     * @param  $content
+     * @param  $cc
+     * @param  $bcc
+     * @return True if successful.
+     */
+    protected static function buildSwiftMessage(InternSettings $settings, $to, $fromAddress, $fromName, $subject, $content, $cc = NULL, $bcc = NULL){
+        $fromAddress = $settings->getEmailFromAddress();
+        $fromName = $settings->getSystemName();
+
+        // Sanity checking
+        if(!isset($to) || $to === null){
+            throw new \InvalidArgumentException('\"To\" not set.');
+        }
+
+        if(!isset($fromAddress) || $fromAddress === null){
+            throw new \InvalidArgumentException('\"From Address\" not set.');
+        }
+
+        if(!isset($fromName) || $fromName === null){
+            throw new \InvalidArgumentException('\"From Name\" not set.');
+        }
+
+        if(!isset($subject) || $subject === null){
+            throw new \InvalidArgumentException('\"Subject\" not set.');
+        }
+
+        if(!isset($content) || $content === null){
+            throw new \InvalidArgumentException('\"Content\" not set.');
+        }
+
+        // Set up Swift Mailer message
+        $message = \Swift_Message::newInstance()
+            ->setSubject($subject)
+            ->setFrom($fromAddress, $fromName)
+            ->setTo($to,$to)
+            ->setBody($content);
+
+        if(isset($cc)){
+            $message->setCc($cc);
+        }
+
+        if(isset($bcc)){
+            $message->setBcc($bcc);
+        }
+
+        return $message;
+    }
+
+    protected static function sendSwiftMessage(\Swift_Message $message)
+    {
+        //Set up Swift Mailer delivery
+        $transport = \Swift_SmtpTransport::newInstance('localhost');
+        $mailer = \Swift_Mailer::newInstance($transport);
+
+        // Send the message
+        if(EMAIL_TEST_FLAG){
+            $result = true;
+        }else{
+            $result = $mailer->send($message);
+        }
+
+        self::logEmail($message);
+
+        return true;
+    }
+
+    /**
+    * Stores the email in file email.log
+    *
+    * @param  $message
+    */
+    public static function logEmail(\Swift_Message $message){
+        // Log the message to a text file
+        $fd = fopen(PHPWS_SOURCE_DIR . 'logs/email.log',"a");
+
+        fprintf($fd, "=======================\n");
+
+        fprintf($fd, "To: %s\n", implode('', $message->getTo()));
+
+        if($message->getCc() != null){
+            foreach($message->getCc() as $recipient){
+                fprintf($fd, "Cc: %s\n", $recipient);
+            }
+        }
+
+        if($message->getBcc() != null){
+            foreach($message->getBcc() as $recipient){
+                fprintf($fd, "Bcc: %s\n", $recipient);
+            }
+        }
+
+        fprintf($fd, "From: %s\n", implode('',$message->getFrom()));
+        fprintf($fd, "Subject: %s\n", $message->getSubject());
+        fprintf($fd, "Content: \n");
+        fprintf($fd, "%s\n\n", $message->getBody());
+
+        fclose($fd);
+    }
+
+
+
+
+
+
+
+
+
+
+    /**
+    * Template method for specialized email messages. Subclasses will
+    * call this method and implement their own setUpSpecial() hook to meet
+    * their specialized needs.
+    *
+    * @param  $i                 Internship obj provides email data for all classes
+    * @param  $agency            Agency objected needed for most subclasses
+    * @param  $note              Necessary for class RegistrationIssue
+    * @param  $backgroundCheck   Necessary for class SendBackgroundCheckEmail
+    * @param  $drugCheck         Necessary for class SendBackgroundCheckEmail
+    */
+    protected final function sendSpecialMessage(Internship $i,
     Agency $agency = null, $note = null, $backgroundCheck = false,
     $drugCheck = false) {
 
-    //Set parameters
-    $this->internship = $i;
-    $this->agency = $agency;
-    $this->note = $note;
-    $this->backgroundCheck = $backgroundCheck;
-    $this->drugCheck = $drugCheck;
+        //Set parameters
+        $this->internship = $i;
+        $this->agency = $agency;
+        $this->note = $note;
+        $this->backgroundCheck = $backgroundCheck;
+        $this->drugCheck = $drugCheck;
 
-    //Necessary global variables
-    $this->subjects = Subject::getSubjects();
-    $this->settings = InternSettings::getInstance();
-    $this->faculty = $this->internship->getFaculty();
+        //Necessary global variables
+        $this->subjects = Subject::getSubjects();
+        $this->settings = InternSettings::getInstance();
+        $this->faculty = $this->internship->getFaculty();
 
-    //Basic tpl entries. Specific tpl entries set in hook
-    $this->tpl = array();
-    $this->tpl['NAME'] = $this->internship->getFullName();
-    $this->tpl['BANNER'] = $this->internship->getBannerId();
-    $this->tpl['USER'] = $this->internship->getEmailAddress();
-    $this->tpl['PHONE'] = $this->internship->getPhoneNumber();
-    $this->tpl['BIRTHDAY'] = $this->internship->getBirthDateFormatted();
-    $this->tpl['TERM'] = Term::rawToRead($this->internship->getTerm(), false);
+        //Basic tpl entries. Specific tpl entries set in hook
+        $this->tpl = array();
+        $this->tpl['NAME'] = $this->internship->getFullName();
+        $this->tpl['BANNER'] = $this->internship->getBannerId();
+        $this->tpl['USER'] = $this->internship->getEmailAddress();
+        $this->tpl['PHONE'] = $this->internship->getPhoneNumber();
+        $this->tpl['BIRTHDAY'] = $this->internship->getBirthDateFormatted();
+        $this->tpl['TERM'] = Term::rawToRead($this->internship->getTerm(), false);
 
-    //Call to hook. Sets $to, $subject, $doc, $cc, and additional $tpl based
-    //on the specific type of email calling sendSpecialMessage()
-    $this->setUpSpecial();
+        //Call to hook. Sets $to, $subject, $doc, $cc, and additional $tpl based
+        //on the specific type of email calling sendSpecialMessage()
+        $this->setUpSpecial();
 
-    $this->sendTemplateMessage($this->to, $this->subject, $this->doc,
-      $this->tpl, $this->cc);
-  }
-
-  /**
-   * Hook for the template method sendSpecialMessage(). Allows Email subclasses
-   * to provide additional information to sendTemplateMessage() for their
-   * specialized purpose.
-   */
-  abstract protected function setUpSpecial();
-
-  /**
-   * Performs common sanity check for classes that require this. Should only
-   * be called from child class setUpSpecial() hook to avoid null references.
-   */
-  protected final function sanityCheck() {
-    /**** Subject Checking ***/
-    $subject = $this->internship->getSubject()->getId();
-    if($subject != 0){
-        $this->tpl['SUBJECT'] = $this->subjects[$subject];
-    }else{
-        $this->tpl['SUBJECT'] = '(No course subject provided)';
+        $this->sendTemplateMessage($this->to, $this->subject, $this->doc,
+        $this->tpl, $this->cc);
     }
-
-    /**** Course Section Checking ***/
-    $section = $this->internship->getCourseSection();
-    if(!empty($section)){
-        $this->tpl['SECTION'] = $section;
-    }else{
-        $this->tpl['SECTION'] = '(Section not provided)';
-    }
-
-    /**** Course Title Checking ***/
-    $courseTitle = $this->internship->getCourseTitle();
-    if(!empty($courseTitle)){
-        $this->tpl['COURSE_TITLE'] = $courseTitle;
-    }else{
-        $this->tpl['COURSE_TITLE'] = '(Course title not provided)';
-    }
-
-    /**** Credit Hour Checking ***/
-    $creditHours = $this->internship->getCreditHours();
-    if(isset($creditHours)){
-        $this->tpl['CREDITS'] = $creditHours;
-    }else{
-        $this->tpl['CREDITS'] = '(Credit hours not provided)';
-    }
-
-    /**** Start Date Checking ***/
-    $startDate = $this->internship->getStartDate(true);
-    if(isset($startDate)){
-        $this->tpl['START_DATE'] = $startDate;
-    }else{
-        $this->tpl['START_DATE'] = '(Start date not provided)';
-    }
-
-    /**** End Date Checking ***/
-    $endDate = $this->internship->getEndDate(true);
-    if(isset($endDate)){
-        $this->tpl['END_DATE'] = $endDate;
-    }else{
-        $this->tpl['END_DATE'] = '(End date not provided)';
-    }
-
-    /**** Faculty Checking ***/
-    if($this->faculty instanceof Faculty){
-        $this->tpl['FACULTY'] = $this->faculty->getFullName() . ' ('
-          . $this->facutly->getId() . ')';
-    }else{
-        $this->tpl['FACULTY'] = '(Faculty not provided)';
-    }
-
-    /**** International Checking ***/
-    if($this->internship->isInternational()){
-        $this->tpl['COUNTRY'] = $this->internship->getLocCountry();
-        $this->tpl['INTERNATIONAL'] = 'Yes';
-        $this->intlSubject = '[int\'l] ';
-    }else{
-        $this->tpl['STATE'] = $this->internship->getLocationState();
-        $this->tpl['INTERNATIONAL'] = 'No';
-        $this->intlSubject = '';
-    }
-  }
-
-  /**
-   * Uses PHPWS_Template to construct a template email, which is
-   * then passed on the sendEmail()
-   *
-   * @param $to
-   * @param $subject
-   * @param $tpl
-   * @param $tags
-   * @param $cc
-   */
-  public static function sendTemplateMessage($to,
-  $subject, $tpl, $tags, $cc = null){
-    $settings = InternSettings::getInstance();
-
-    $content = \PHPWS_Template::process($tags, 'intern', $tpl);
-
-    self::sendEmail($to, $settings->getEmailFromAddress(), $subject, $content, $cc);
-  }
-
-  /**
-   * Performs the email delivery process.
-   *
-   * @param  $to
-   * @param  $from
-   * @param  $subject
-   * @param  $content
-   * @param  $cc
-   * @param  $bcc
-   * @return True if successful.
-   */
-  public static function sendEmail($to, $from,
-  $subject, $content, $cc = NULL, $bcc = NULL){
-    $settings = InternSettings::getInstance();
-
-    // Sanity checking
-    if(!isset($to) || is_null($to)){
-        throw new ErrorException('\"To\" not set.');
-    }
-
-    if(!isset($from) || is_null($from)){
-        $from = $settings->getEmailFromAddress();
-    }
-
-    if(!isset($subject) || is_null($subject)){
-        throw new ErrorException('\"Subject\" not set.');
-    }
-
-    if(!isset($content) || is_nulL($content)){
-        throw new ErrorException('\"Content\" not set.');
-    }
-
-    //Set up Swift Mailer message
-    $message = \Swift_Message::newInstance()
-      ->setSubject($subject)
-      ->setFrom($from,$settings->getSystemName())
-      ->setTo($to,$to)
-      ->setBody($content);
-
-    if(isset($cc)){
-        $message->setCc($cc);
-    }
-    if(isset($bcc)){
-        $message->setBcc($bcc);
-    }
-
-    //Set up Swift Mailer delivery
-    $transport = \Swift_SmtpTransport::newInstance('localhost');
-    $mailer = \Swift_Mailer::newInstance($transport);
-
-    //Send the message
-    if(EMAIL_TEST_FLAG){
-        $result = true;
-    }else{
-        $result = $mailer->send($message);
-    }
-
-    self::logEmail($message);
-
-    return true;
-  }
-
-  /**
-   * Stores the email in file email.log
-   *
-   * @param  $message
-   */
-  public static function logEmail(\Swift_Message $message){
-    // Log the message to a text file
-    $fd = fopen(PHPWS_SOURCE_DIR . 'logs/email.log',"a");
-
-    fprintf($fd, "=======================\n");
-
-    fprintf($fd, "To: %s\n", implode('', $message->getTo()));
-
-    if($message->getCc() != null){
-        foreach($message->getCc() as $recipient){
-            fprintf($fd, "Cc: %s\n", $recipient);
-        }
-    }
-
-    if($message->getBcc() != null){
-        foreach($message->getBcc() as $recipient){
-            fprintf($fd, "Bcc: %s\n", $recipient);
-        }
-    }
-
-    fprintf($fd, "From: %s\n", implode('',$message->getFrom()));
-    fprintf($fd, "Subject: %s\n", $message->getSubject());
-    fprintf($fd, "Content: \n");
-    fprintf($fd, "%s\n\n", $message->getBody());
-
-    fclose($fd);
-  }
 }
