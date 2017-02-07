@@ -25,6 +25,9 @@ class SendPendingEnrollmentReminders
         $provider = TermProviderFactory::getProvider();
         $terms = array_keys(Term::getFutureTermsAssoc());
 
+        // Get email settings
+        $emailSettings = \Intern\InternSettings::getInstance();
+
         foreach ($terms as $term) {
             // Get the pending internships for this term
             $pendingInternships = InternshipFactory::getPendingInternshipsByTerm($term);
@@ -62,10 +65,14 @@ class SendPendingEnrollmentReminders
                 $currState = WorkflowStateFactory::getState($i->getStateName());
                 if(!is_null($faculty)){
                     if($withinOneWeek){
-                        Email::sendEnrollmentReminderEmail($i, $censusTimestamp, $faculty->getUsername(), 'FacultyReminderEmail1Week.tpl');
+                        $email = new \Intern\Email\EnrollmentReminderEmail($emailSettings, $i, $censusTimestamp, $faculty->getUsername(), 'FacultyReminderEmail1Week.tpl');
+                        $email->send();
+
                         $ch = new ChangeHistory($i, null, time(), $currState, $currState, 'Faculty 1-Week Census Date Reminder Sent');
                     }else{
-                        Email::sendEnrollmentReminderEmail($i, $censusTimestamp, $faculty->getUsername(), 'FacultyReminderEmail4Weeks.tpl');
+                        $email = new \Intern\Email\EnrollmentReminderEmail($emailSettings, $i, $censusTimestamp, $faculty->getUsername(), 'FacultyReminderEmail4Weeks.tpl');
+                        $email->send();
+
                         $ch = new ChangeHistory($i, null, time(), $currState, $currState, 'Faculty Census Date Reminder Sent');
                     }
 
@@ -74,10 +81,14 @@ class SendPendingEnrollmentReminders
 
                 // Email the student
                 if($withinOneWeek){
-                    Email::sendEnrollmentReminderEmail($i, $censusTimestamp, $i->getEmailAddress(), 'StudentReminderEmail1Week.tpl');
+                    $email = new \Intern\Email\EnrollmentReminderEmail($emailSettings, $i, $censusTimestamp, $i->getUsername(), 'StudentReminderEmail1Week.tpl');
+                    $email->send();
+
                     $ch = new ChangeHistory($i, null, time(), $currState, $currState, 'Student 1-Week Census Date Reminder Sent');
                 }else{
-                    Email::sendEnrollmentReminderEmail($i, $censusTimestamp, $i->getEmailAddress(), 'StudentReminderEmail4Weeks.tpl');
+                    $email = new \Intern\Email\EnrollmentReminderEmail($emailSettings, $i, $censusTimestamp, $i->getUsername(), 'StudentReminderEmail4Weeks.tpl');
+                    $email->send();
+
                     $ch = new ChangeHistory($i, null, time(), $currState, $currState, 'Student Census Date Reminder Sent');
                 }
                 $ch->save();
