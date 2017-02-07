@@ -3,7 +3,6 @@
 namespace Intern\WorkflowTransition;
 use Intern\WorkflowTransition;
 use Intern\Internship;
-use Intern\Email\SpecialEmailFactory;
 
 class RegisterAfterIssue extends WorkflowTransition {
     const sourceState = 'RegistrationIssueState';
@@ -31,9 +30,7 @@ class RegisterAfterIssue extends WorkflowTransition {
 
     public function doNotification(Internship $i, $note = null)
     {
-        $agency = $i->getAgency();
-
-        $emailF = new SpecialEmailFactory();
-        $emailF->sendEmail("SendRegistrationConfirmationEmail",$i, $agency);
+        $email = new \Intern\Email\RegistrationConfirmationEmail(\Intern\InternSettings::getInstance(), $i);
+        $email->send();
     }
 }

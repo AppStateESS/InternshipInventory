@@ -1,17 +1,26 @@
 <?php
 
 namespace Intern\Email;
-use Intern\Internship;
-use Intern\CountryFactory;
-use Intern\Term;
+use \Intern\Internship;
+use \Intern\CountryFactory;
+use \Intern\Term;
+use \Intern\InternSettings;
 
-class OIEDCancellationEmail extends Email {
+/**
+ * Email to the International Ed Office to notify that an international internship
+ * has been cancelled.
+ *
+ * @author jbooker
+ * @package Intern
+ */
+class IntlInternshipCancelNotice extends Email {
 
     private $internship;
 
     /**
-    * Cancelation email for OIED.
+    * Constructor
     *
+    * @param InternSettings $emailSettings
     * @param Internship $internship
     */
     public function __construct(InternSettings $emailSettings, Internship $internship) {
@@ -26,12 +35,12 @@ class OIEDCancellationEmail extends Email {
 
     protected function buildMessage()
     {
-        $this->tpl['NAME'] = $i->getFullName();
-        $this->tpl['BANNER'] = $i->banner;
-        $this->tpl['TERM'] = Term::rawToRead($i->term, false);
+        $this->tpl['NAME'] = $this->internship->getFullName();
+        $this->tpl['BANNER'] = $this->internship->banner;
+        $this->tpl['TERM'] = Term::rawToRead($this->internship->term, false);
 
         $countries = CountryFactory::getCountries();
-        $this->tpl['COUNTRY'] = $countries[$i->loc_country];
+        $this->tpl['COUNTRY'] = $countries[$this->internship->loc_country];
 
         $this->to = $this->emailSettings->getInternationalOfficeEmail();
         $this->subject = 'International Internship Cancellation';

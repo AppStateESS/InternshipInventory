@@ -1,21 +1,28 @@
 <?php
 namespace Intern\Email;
 
-use Intern\Internship;
-use Intern\Agency;
-use Intern\Faculty;
+use \Intern\Internship;
+use \Intern\Faculty;
+use \Intern\Subject;
+use \Intern\Term;
+use \Intern\InternSettings;
 
-use Intern\Subject;
-use Intern\Term;
-
+/**
+ * Email to student and faculty instructor that the student has been enrolled
+ * for the internship course.
+ *
+ * @author jbooker
+ * @package Intern
+ */
 class RegistrationConfirmationEmail extends Email {
 
     private $internship;
 
     /**
-    * Sends the 'Registration Confirmation' email.
+    * Constructor
     *
-    * @param Internship $i
+    * @param InternSettings $emailSettings
+    * @param Internship $internship
     */
     public function __construct(InternSettings $emailSettings, Internship $internship) {
         parent::__construct($emailSettings);
@@ -32,74 +39,74 @@ class RegistrationConfirmationEmail extends Email {
         $subjects = Subject::getSubjects();
         $faculty = $this->internship->getFaculty();
 
-        $tpl['NAME'] = $this->internship->getFullName();
-        $tpl['BANNER'] = $this->internship->banner;
-        $tpl['USER'] = $this->internship->email;
-        $tpl['PHONE'] = $this->internship->phone;
-        $tpl['TERM'] = Term::rawToRead($this->internship->term, false);
+        $this->tpl['NAME'] = $this->internship->getFullName();
+        $this->tpl['BANNER'] = $this->internship->banner;
+        $this->tpl['USER'] = $this->internship->email;
+        $this->tpl['PHONE'] = $this->internship->phone;
+        $this->tpl['TERM'] = Term::rawToRead($this->internship->term, false);
 
         if(isset($this->internship->course_subj)){
-            $tpl['SUBJECT'] = $subjects[$this->internship->course_subj];
+            $this->tpl['SUBJECT'] = $subjects[$this->internship->course_subj];
         }else{
-            $tpl['SUBJECT'] = '(No course subject provided)';
+            $this->tpl['SUBJECT'] = '(No course subject provided)';
         }
 
-        $tpl['COURSE_NUM'] = $this->internship->course_no;
+        $this->tpl['COURSE_NUM'] = $this->internship->course_no;
 
         if(isset($this->internship->course_sect)){
-            $tpl['SECTION'] = $this->internship->course_sect;
+            $this->tpl['SECTION'] = $this->internship->course_sect;
         }else{
-            $tpl['SECTION'] = '(not provided)';
+            $this->tpl['SECTION'] = '(not provided)';
         }
 
         if(isset($this->internship->course_title)){
-            $tpl['COURSE_TITLE'] = $this->internship->course_title;
+            $this->tpl['COURSE_TITLE'] = $this->internship->course_title;
         }
 
         if(isset($this->internship->credits)){
-            $tpl['CREDITS'] = $this->internship->credits;
+            $this->tpl['CREDITS'] = $this->internship->credits;
         }else{
-            $tpl['CREDITS'] = '(not provided)';
+            $this->tpl['CREDITS'] = '(not provided)';
         }
 
         $startDate = $this->internship->getStartDate(true);
         if(isset($startDate)){
-            $tpl['START_DATE'] = $startDate;
+            $this->tpl['START_DATE'] = $startDate;
         }else{
-            $tpl['START_DATE'] = '(not provided)';
+            $this->tpl['START_DATE'] = '(not provided)';
         }
 
         $endDate = $this->internship->getEndDate(true);
         if(isset($endDate)){
-            $tpl['END_DATE'] = $endDate;
+            $this->tpl['END_DATE'] = $endDate;
         }else{
-            $tpl['END_DATE'] = '(not provided)';
+            $this->tpl['END_DATE'] = '(not provided)';
         }
 
         if($faculty instanceof Faculty){
-            $tpl['FACULTY'] = $faculty->getFullName();
+            $this->tpl['FACULTY'] = $faculty->getFullName();
         }else{
-            $tpl['FACULTY'] = '(not provided)';
+            $this->tpl['FACULTY'] = '(not provided)';
         }
 
         $department = $this->internship->getDepartment();
-        $tpl['DEPT'] = $department->getName();
+        $this->tpl['DEPT'] = $department->getName();
         if($this->internship->international){
-            $tpl['COUNTRY'] = $this->internship->loc_country;
-            $tpl['INTERNATIONAL'] = 'Yes';
+            $this->tpl['COUNTRY'] = $this->internship->loc_country;
+            $this->tpl['INTERNATIONAL'] = 'Yes';
             $intlSubject = '[int\'l] ';
         }else{
-            $tpl['STATE'] = $this->internship->loc_state;
-            $tpl['INTERNATIONAL'] = 'No';
+            $this->tpl['STATE'] = $this->internship->loc_state;
+            $this->tpl['INTERNATIONAL'] = 'No';
             $intlSubject = '';
         }
-        $to = $this->internship->email . $this->emailSettings->getEmailDomain();
+
+        $this->to[] = $this->internship->email . $this->emailSettings->getEmailDomain();
+
         if ($faculty instanceof Faculty) {
-            $cc = array($faculty->getUsername() . $this->emailSettings->getEmailDomain());
-        } else {
-            $cc = array();
+            $this->cc[] = $faculty->getUsername() . $this->emailSettings->getEmailDomain();
         }
 
-        $subject = 'Internship Registration Confirmation';
+        $this->subject = 'Internship Registration Confirmation';
     }
 }

@@ -4,7 +4,6 @@ namespace Intern\WorkflowTransition;
 use Intern\WorkflowTransition;
 use Intern\Internship;
 use Intern\Exception\MissingDataException;
-use Intern\Email\SpecialEmailFactory;
 
 class GraduateRegistration extends WorkflowTransition {
 
@@ -40,10 +39,8 @@ class GraduateRegistration extends WorkflowTransition {
 
     public function doNotification(Internship $i, $note = null)
     {
-        $agency = $i->getAgency();
-
-        $emailF = new SpecialEmailFactory();
-        $emailF->sendEmail("SendRegistrationConfirmationEmail",$i, $agency);
+        $email = new \Intern\Email\RegistrationConfirmationEmail(\Intern\InternSettings::getInstance(), $i);
+        $email->send();
     }
 
     public function checkRequiredFields(Internship $i)

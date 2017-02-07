@@ -3,7 +3,6 @@
 namespace Intern\WorkflowTransition;
 use Intern\WorkflowTransition;
 use Intern\Internship;
-use Intern\Email\SpecialEmailFactory;
 
 class DeanApprove extends WorkflowTransition {
     const sourceState = 'SigAuthApprovedState';
@@ -16,19 +15,19 @@ class DeanApprove extends WorkflowTransition {
 
     public function doNotification(Internship $i, $note = null)
     {
-        $agency = $i->getAgency();
-        $emailF = new SpecialEmailFactory();
-
+        $settings = \Intern\InternSettings::getInstance();
+        
         // If this is an undergrad internship, then send the Registrar an email
         // Graduate level internships have another workflow state to go through before we alert the Registrar
         if($i->isUndergraduate()){
-            $emailF->sendEmail("SendRegistrarEmail", $i, $agency);
+            $email = new \Intern\Email\ReadyToRegisterEmail($settings, $i);
+            $email->send();
         }
 
         // If this is a graduate email, send the notification email to the grad school office
         if($i->isGraduate()){
-
-            $emailF->sendEmail("SendGradSchoolNotification",$i, $agency);
+            $email = new \Intern\Email\GradSchoolNotificationEmail($settings, $i);
+            $email->send();
         }
     }
 }

@@ -1,18 +1,26 @@
 <?php
 namespace Intern\Email;
 
-use Intern\Internship;
-use Intern\Department;
-use Intern\Faculty;
-use Intern\Term;
+use \Intern\Internship;
+use \Intern\Department;
+use \Intern\Faculty;
+use \Intern\Term;
+use \Intern\InternSettings;
 
+/**
+ *  Email to notify a student that their internship has been cancelled.
+ *
+ * @author jbooker
+ * @package Intern
+ */
 class CancelInternshipNotice extends Email {
 
     private $internship;
 
     /**
-    * Notifies of internship cancelation.
+    * Constructor
     *
+    * @param InternSettings $emailSettings
     * @param Internship $i
     */
     public function __construct(InternSettings $emailSettings, Internship $internship) {
@@ -35,18 +43,18 @@ class CancelInternshipNotice extends Email {
         $dept = new Department($this->internship->department_id);
         $this->tpl['DEPARTMENT'] = $dept->getName();
 
-        $this->to = $this->internship->email . $this->settings->getEmailDomain();
+        $this->to = $this->internship->email . $this->emailSettings->getEmailDomain();
 
         $faculty = $this->internship->getFaculty();
         if ($faculty instanceof Faculty) {
-            $this->cc[] = ($faculty->getUsername() . $settings->getEmailDomain());
+            $this->cc[] = ($faculty->getUsername() . $this->emailSettings->getEmailDomain());
         }
 
         // CC the graduate school (for grad level) or the registrar's office (for undergrad level)
         if($this->internship->isGraduate()){
-            $cc[] = array($settings->getGraduateRegEmail());
+            $cc[] = array($this->emailSettings->getGraduateRegEmail());
         } else {
-            $cc[] = $settings->getRegistrarEmail();
+            $cc[] = $this->emailSettings->getRegistrarEmail();
         }
 
         $this->subject = 'Internship Cancelled ' . Term::rawToRead($this->internship->getTerm()) . '[' . $this->internship->getBannerId() . '] ' . $this->internship->getFullName();

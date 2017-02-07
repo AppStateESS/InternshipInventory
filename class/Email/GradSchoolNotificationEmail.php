@@ -1,18 +1,27 @@
 <?php
 
 namespace Intern\Email;
-use Intern\Internship;
-use Intern\Subject;
-use Intern\Term;
-use Intern\Faculty;
+use \Intern\Internship;
+use \Intern\Subject;
+use \Intern\Term;
+use \Intern\Faculty;
+use \Intern\InternSettings;
 
+/**
+ * An email to the graduate school contact, letting them know there's a graduate
+ * internship that needs approval.
+ *
+ * @author jbooker
+ * @package Intern
+ */
 class GradSchoolNotificationEmail extends Email {
 
     private $internship;
 
     /**
-    * Sends an email to the grad school office, letting them know there's someone to notify
+    * Constructor
     *
+    * @param InternSettings $emailSettings
     * @param Internship $internship
     */
     public function __construct(InternSettings $emailSettings, Internship $internship) {
@@ -44,15 +53,19 @@ class GradSchoolNotificationEmail extends Email {
             $this->tpl['SUBJECT'] = '(No course subject provided)';
         }
 
-        $this->tpl['COURSE_NUM'] = $this->internship->course_no;
+        if(isset($this->internship->course_no) && $this->internship->course_no !== ''){
+            $this->tpl['COURSE_NUM'] = $this->internship->course_no;
+        }else{
+            $this->tpl['COURSE_NUM'] = '(No course number provided)';
+        }
 
-        if(isset($this->internship->course_sect)){
+        if(isset($this->internship->course_sect) && $this->internship->course_sect !== ''){
             $this->tpl['SECTION'] = $this->internship->course_sect;
         }else{
             $this->tpl['SECTION'] = '(not provided)';
         }
 
-        if(isset($this->internship->course_title)){
+        if(isset($this->internship->course_title) && $this->internship->course_title !== ''){
             $this->tpl['COURSE_TITLE'] = $this->internship->course_title;
         }
 
@@ -106,6 +119,7 @@ class GradSchoolNotificationEmail extends Email {
 
         $emails = $this->emailSettings->getGradSchoolEmail();
         $this->to = explode(',', $emails);
+
         $this->subject = 'Internship Approval Needed: ' . $intlSubject . '[' . $this->internship->getBannerId() . '] ' . $this->internship->getFullName();
     }
 }

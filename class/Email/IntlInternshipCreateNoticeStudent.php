@@ -2,20 +2,29 @@
 
 namespace Intern\Email;
 
-use Intern\Internship;
-use Intern\Department;
-use Intern\Term;
+use \Intern\Internship;
+use \Intern\Department;
+use \Intern\Term;
+use \Intern\InternSettings;
 
-class IntlInternshipCreateNoticeStudent extends Email{
+/**
+ * Notifies the student that an International internship has been created for them,
+ * and that they'll need to contact the International Ed Office to complete extra requirements/paperwork.
+ *
+ * @author jbooker
+ * @package Intern
+ */
+class IntlInternshipCreateNoticeStudent extends Email {
 
     private $internship;
 
     /**
-    * Notifies the student of an international internship.
-    *
-    * @param Internship $internship
-    */
-    public function __construct(InternSettings $emailSettings, Internship $i) {
+     * Constructor
+     *
+     * @param InternSettings $emailSettings
+     * @param Internship $internship
+     */
+    public function __construct(InternSettings $emailSettings, Internship $internship) {
         parent::__construct($emailSettings);
 
         $this->internship = $internship;

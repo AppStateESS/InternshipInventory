@@ -70,7 +70,7 @@ abstract class Email {
         $bodyContent = $this->buildMessageBody($this->getTemplateFileName());
 
         // Build a SwiftMessage object from member variables, settings, and body content
-        $message = $this->buildSwiftMessage($settings, $this->to, $this->fromAddress, $this->fromName, $this->subject, $bodyContent, $this->cc, $this->bcc);
+        $message = $this->buildSwiftMessage($this->emailSettings, $this->to, $this->fromAddress, $this->fromName, $this->subject, $bodyContent, $this->cc, $this->bcc);
 
         // Send the SwiftMail message
         $this->sendSwiftMessage($message);
@@ -124,7 +124,7 @@ abstract class Email {
         // Set up Swift Mailer message
         $message = \Swift_Message::newInstance()
             ->setSubject($subject)
-            ->setFrom($fromAddress, $fromName)
+            ->setFrom(array($fromAddress => $fromName))
             ->setTo($to,$to)
             ->setBody($content);
 
@@ -168,16 +168,16 @@ abstract class Email {
 
         fprintf($fd, "=======================\n");
 
-        fprintf($fd, "To: %s\n", implode('', $message->getTo()));
+        fprintf($fd, "To: %s\n", implode('', array_keys($message->getTo())));
 
         if($message->getCc() != null){
-            foreach($message->getCc() as $recipient){
-                fprintf($fd, "Cc: %s\n", $recipient);
+            foreach($message->getCc() as $address => $name){
+                fprintf($fd, "Cc: %s\n", $address);
             }
         }
 
         if($message->getBcc() != null){
-            foreach($message->getBcc() as $recipient){
+            foreach($message->getBcc() as $address => $name){
                 fprintf($fd, "Bcc: %s\n", $recipient);
             }
         }

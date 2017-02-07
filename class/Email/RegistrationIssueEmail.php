@@ -1,13 +1,16 @@
 <?php
-
 namespace Intern\Email;
-use Intern\Internship;
-use Intern\Faculty;
-use Intern\Subject;
+
+use \Intern\Internship;
+use \Intern\Faculty;
+use \Intern\Subject;
+use \Intern\InternSettings;
+use \Intern\Term;
 
 class RegistrationIssueEmail extends Email {
 
     private $internship;
+    private $note;
 
     /**
     *  Sends the 'Registration Issue' notification email.
@@ -19,6 +22,7 @@ class RegistrationIssueEmail extends Email {
         parent::__construct($emailSettings);
 
         $this->internship = $internship;
+        $this->note = $note;
     }
 
     protected function getTemplateFileName(){
@@ -31,6 +35,7 @@ class RegistrationIssueEmail extends Email {
         $this->to = $this->internship->email . $this->emailSettings->getEmailDomain();
 
         $subjects = Subject::getSubjects();
+        $faculty = $this->internship->getFaculty();
 
         $this->tpl['NAME'] = $this->internship->getFullName();
         $this->tpl['BANNER'] = $this->internship->banner;
@@ -79,7 +84,7 @@ class RegistrationIssueEmail extends Email {
             $this->tpl['FACULTY'] = $faculty->getFullName();
 
             // CC the Faculty member
-            $this->cc = array($faculty->getUsername() . $this->emailSettings->getEmailDomain());
+            $this->cc[] = $faculty->getUsername() . $this->emailSettings->getEmailDomain();
         }else{
             $this->tpl['FACULTY'] = '(not provided)';
         }
@@ -97,6 +102,6 @@ class RegistrationIssueEmail extends Email {
             $intlSubject = '';
         }
 
-        $this->tpl['NOTE'] = $note;
+        $this->tpl['NOTE'] = $this->note;
     }
 }

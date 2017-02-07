@@ -1,8 +1,11 @@
 <?php
 namespace Intern\Email;
 
-use Intern\Internship;
-use Intern\Faculty;
+use \Intern\Internship;
+use \Intern\Faculty;
+use \Intern\InternSettings;
+use \Intern\Subject;
+use \Intern\Term;
 
 /**
  * Class to handle creating an email to the registrar notifying them to register
@@ -16,8 +19,9 @@ class ReadyToRegisterEmail extends Email {
 
     /**
      * Constructor
+     *
+     * @param InternSettings $emailSettings
      * @param Internship $i
-     * @param Agency $a
      */
     public function __construct(InternSettings $emailSettings, Internship $internship) {
         parent::__construct($emailSettings);
@@ -40,7 +44,7 @@ class ReadyToRegisterEmail extends Email {
         $this->tpl['USER'] = $this->internship->email;
         $this->tpl['PHONE'] = $this->internship->phone;
 
-        $this->term = Term::rawToRead($this->internship->term, false);
+        $term = Term::rawToRead($this->internship->getTerm(), false);
         $this->tpl['TERM'] = $term;
 
         if(isset($this->internship->course_subj)){
@@ -49,15 +53,22 @@ class ReadyToRegisterEmail extends Email {
             $this->tpl['SUBJECT'] = '(No course subject provided)';
         }
 
-        $this->tpl['COURSE_NUM'] = $this->internship->course_no;
-        if(isset($this->internship->course_sect)){
+        if(isset($this->internship->course_no) && $this->internship->course_no !== ''){
+            $this->tpl['COURSE_NUM'] = $this->internship->course_no;
+        } else {
+            $this->tpl['COURSE_NUM'] = '(not provided)';
+        }
+
+        if(isset($this->internship->course_sect) && $this->internship->course_sect !== ''){
             $this->tpl['SECTION'] = $this->internship->course_sect;
         }else{
             $this->tpl['SECTION'] = '(not provided)';
         }
 
-        if(isset($this->internship->course_title)){
+        if(isset($this->internship->course_title) && $this->internship->course_title !== ''){
             $this->tpl['COURSE_TITLE'] = $this->internship->course_title;
+        } else {
+            $this->tpl['COURSE_TITLE'] = 'not provided';
         }
 
         if(isset($this->internship->credits)){
@@ -128,19 +139,19 @@ class ReadyToRegisterEmail extends Email {
         */
         if ($this->internship->isDistanceEd()) {
             // Send distance ed internship to Distance Ed Office
-            $this->to = $this->settings->getDistanceEdEmail();
+            $this->to = $this->emailsSettings->getDistanceEdEmail();
             $this->tpl['UNDERGRAD'] = ''; // Dummy template var to use undergrad text
         } else if ($this->internship->isGraduate()) {
             // Send all graduate internships to the graduate school (whether international or not)
-            $this->to = explode(',', $this->settings->getGraduateRegEmail()); // NB: Setting is a comma separated array
+            $this->to = explode(',', $this->emailSettings->getGraduateRegEmail()); // NB: Setting is a comma separated array
             $this->tpl['GRADUATE'] = ''; // Dummy template var to use grad school text
         } else if ($this->internship->isInternational()){
             // Send international undergraduate internships to a special person
-            $this->to = $this->settings->getInternationalRegEmail();
+            $this->to = $this->emailSettings->getInternationalRegEmail();
             $this->tpl['UNDERGRAD'] = ''; // Dummy template var to use undergrad text
         } else {
             // Otherwise, send it to the general Registrar address
-            $this->to = $this->settings->getRegistrarEmail();
+            $this->to = $this->emailSettings->getRegistrarEmail();
             $this->tpl['UNDERGRAD'] = ''; // Dummy template var to use undergrad text
         }
 
@@ -151,7 +162,7 @@ class ReadyToRegisterEmail extends Email {
 
         // CC the faculty members
         if ($faculty instanceof Faculty) {
-            $this->cc = array($faculty->getUsername() . $this->settings->getEmailDomain());
+            $this->cc = array($faculty->getUsername() . $this->emailSettings->getEmailDomain());
         }
 
         // Subject line

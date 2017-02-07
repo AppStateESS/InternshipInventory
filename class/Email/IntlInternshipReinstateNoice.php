@@ -1,18 +1,27 @@
 <?php
 namespace Intern\Email;
 
-use Intern\Internship;
-use Intern\CountryFactory;
-use Intern\Term;
+use \Intern\Internship;
+use \Intern\CountryFactory;
+use \Intern\Term;
+use \Intern\InternSettings;
 
-class OIEDReinstateEmail extends Email {
+/**
+ * Email to the International Ed Office to notify that an international internship
+ * has been reinstated.
+ *
+ * @author jbooker
+ * @package Intern
+ */
+class IntlInternshipReinstateNoice extends Email {
 
     private $internship;
 
     /**
     *  Sends the  reinstate notification email to OIED.
     *
-    * @param Internship $i
+    * @param InternSettings $emailSettings
+    * @param Internship $internshp
     */
     public function __construct(InternSettings $emailSettings, Internship $internship) {
         parent::__construct($emailSettings);
