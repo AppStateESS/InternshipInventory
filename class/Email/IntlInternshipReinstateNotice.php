@@ -13,7 +13,7 @@ use \Intern\InternSettings;
  * @author jbooker
  * @package Intern
  */
-class IntlInternshipReinstateNoice extends Email {
+class IntlInternshipReinstateNotice extends Email {
 
     private $internship;
 

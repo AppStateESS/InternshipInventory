@@ -16,7 +16,7 @@ class Reinstate extends WorkflowTransition {
     public function doNotification(Internship $i, $note = null)
     {
         if($i->isInternational()){
-            $email = new \Intern\Email\IntlInternshipReinstateNoice(\Intern\InternSettings::getInstance(), $i);
+            $email = new \Intern\Email\IntlInternshipReinstateNotice(\Intern\InternSettings::getInstance(), $i);
             $email->send();
         }
     }
