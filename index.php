@@ -35,8 +35,8 @@ if(DEBUG){
         try{
             \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, 'The Intern Inventory has experienced an error. The software engineers have been notified about this problem. We apologize for the inconvenience.');
 
-            $message = formatException($e);
-            emailError($message);
+            $email = new \Intern\Email\ExceptionEmail(\Intern\InternSettings::getInstance(), $e);
+            $email->send();
 
             \NQ::close();
             \Intern\UI\NotifyUI::display();
@@ -76,46 +76,3 @@ $notifications = $nv->display();
 // Add content to Layout
 \Layout::addStyle('intern', 'style.css');
 \Layout::add($content);
-
-function formatException(\Exception $e)
-{
-    ob_start();
-    echo "Ohes Noes!  Intern Inventory threw an exception that was not caught!\n\n";
-    echo "Host: {$_SERVER['SERVER_NAME']}({$_SERVER['SERVER_ADDR']})\n";
-    echo 'Request time: ' . date("D M j G:i:s T Y", $_SERVER['REQUEST_TIME']) . "\n";
-    if(isset($_SERVER['HTTP_REFERER'])){
-        echo "Referrer: {$_SERVER['HTTP_REFERER']}\n";
-    }else{
-        echo "Referrer: (none)\n";
-    }
-    echo "Remote addr: {$_SERVER['REMOTE_ADDR']}\n\n";
-
-    $user = \Current_User::getUserObj();
-    if(isset($user) && !is_null($user)){
-        echo "User name: {$user->getUsername()}\n\n";
-    }else{
-        echo "User name: (none)\n\n";
-    }
-
-    echo "Here is the exception:\n\n";
-    print_r($e);
-
-    echo "\n\nHere is $_REQUEST:\n\n";
-    print_r($_REQUEST);
-
-    echo "\n\nHere is CurrentUser:\n\n";
-    print_r(\Current_User::getUserObj());
-
-    $message = ob_get_contents();
-    ob_end_clean();
-
-    return $message;
-}
-
-function emailError($message)
-{
-    $to = array('jb67803@appstate.edu');
-
-    $tags = array('MESSAGE' => $message);
-    Email::sendTemplateMessage($to, 'Uncaught Exception', 'email/UncaughtException.tpl', $tags);
-}
