@@ -143,11 +143,9 @@ abstract class Email {
         $transport = \Swift_SmtpTransport::newInstance('localhost');
         $mailer = \Swift_Mailer::newInstance($transport);
 
-        // Send the message
-        if(EMAIL_TEST_FLAG){
-            $result = true;
-        }else{
-            $result = $mailer->send($message);
+        // If we're not in test mode, actually send the message
+        if(!EMAIL_TEST_FLAG){
+            $mailer->send($message); // send() returns the number of successful recipients. Can be 0, which indicates failure
         }
 
         self::logEmail($message);
