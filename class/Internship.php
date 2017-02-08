@@ -509,6 +509,22 @@ class Internship {
         return $name;
     }
 
+    /*
+     * Get the student's first name.
+     */
+    public function getFirstName()
+    {
+      return $this->first_name;
+    }
+
+    /*
+     * Get the student's last name.
+     */
+    public function getLastName()
+    {
+      return $this->last_name;
+    }
+
     /**
      * Get formatted dates.
      */

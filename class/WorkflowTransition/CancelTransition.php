@@ -3,7 +3,6 @@
 namespace Intern\WorkflowTransition;
 use Intern\WorkflowTransition;
 use Intern\Internship;
-use Intern\Email;
 
 class CancelTransition extends WorkflowTransition {
     //const sourceState = '*';
@@ -22,10 +21,14 @@ class CancelTransition extends WorkflowTransition {
 
     public function doNotification(Internship $i, $note = null)
     {
-        if($i->isInternational()){
-            $agency = $i->getAgency();
+        $settings = \Intern\InternSettings::getInstance();
 
-            Email::sendOIEDCancellationEmail($i, $agency);
+        $email = new \Intern\Email\CancelInternshipNotice($settings, $i);
+        $email->send();
+
+        if($i->isInternational()){
+            $email = new \Intern\Email\IntlInternshipCancelNotice($settings, $i);
+            $email->send();
         }
     }
 }
