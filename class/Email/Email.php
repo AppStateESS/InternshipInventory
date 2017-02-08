@@ -97,8 +97,6 @@ abstract class Email {
      * @return True if successful.
      */
     protected static function buildSwiftMessage(InternSettings $settings, $to, $fromAddress, $fromName, $subject, $content, $cc = NULL, $bcc = NULL){
-        $fromAddress = $settings->getEmailFromAddress();
-        $fromName = $settings->getSystemName();
 
         // Sanity checking
         if(!isset($to) || $to === null){
