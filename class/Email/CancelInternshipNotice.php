@@ -21,7 +21,7 @@ class CancelInternshipNotice extends Email {
     * Constructor
     *
     * @param InternSettings $emailSettings
-    * @param Internship $i
+    * @param Internship $internship
     */
     public function __construct(InternSettings $emailSettings, Internship $internship) {
         parent::__construct($emailSettings);
@@ -47,14 +47,14 @@ class CancelInternshipNotice extends Email {
 
         $faculty = $this->internship->getFaculty();
         if ($faculty instanceof Faculty) {
-            $this->cc[] = ($faculty->getUsername() . $this->emailSettings->getEmailDomain());
+            $this->cc[] = $faculty->getUsername() . $this->emailSettings->getEmailDomain();
         }
 
         // CC the graduate school (for grad level) or the registrar's office (for undergrad level)
         if($this->internship->isGraduate()){
-            $cc[] = array($this->emailSettings->getGraduateRegEmail());
+            $this->cc[] = $this->emailSettings->getGraduateRegEmail();
         } else {
-            $cc[] = $this->emailSettings->getRegistrarEmail();
+            $this->cc[] = $this->emailSettings->getRegistrarEmail();
         }
 
         $this->subject = 'Internship Cancelled ' . Term::rawToRead($this->internship->getTerm()) . '[' . $this->internship->getBannerId() . '] ' . $this->internship->getFullName();
