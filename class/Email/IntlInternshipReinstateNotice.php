@@ -21,7 +21,7 @@ class IntlInternshipReinstateNotice extends Email {
     *  Sends the  reinstate notification email to OIED.
     *
     * @param InternSettings $emailSettings
-    * @param Internship $internshp
+    * @param Internship $internship
     */
     public function __construct(InternSettings $emailSettings, Internship $internship) {
         parent::__construct($emailSettings);
