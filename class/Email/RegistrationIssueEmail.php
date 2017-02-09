@@ -15,7 +15,8 @@ class RegistrationIssueEmail extends Email {
     /**
     *  Sends the 'Registration Issue' notification email.
     *
-    * @param Internship $i
+    * @param InternSettings $emailSettings
+    * @param Internship $internship
     * @param string $note
     */
     public function __construct(InternSettings $emailSettings, Internship $internship, $note) {
