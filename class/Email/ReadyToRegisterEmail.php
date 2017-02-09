@@ -139,7 +139,7 @@ class ReadyToRegisterEmail extends Email {
         */
         if ($this->internship->isDistanceEd()) {
             // Send distance ed internship to Distance Ed Office
-            $this->to = $this->emailsSettings->getDistanceEdEmail();
+            $this->to = $this->emailSettings->getDistanceEdEmail();
             $this->tpl['UNDERGRAD'] = ''; // Dummy template var to use undergrad text
         } else if ($this->internship->isGraduate()) {
             // Send all graduate internships to the graduate school (whether international or not)
