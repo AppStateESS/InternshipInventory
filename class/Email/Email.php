@@ -87,14 +87,14 @@ abstract class Email {
     /**
      * Performs the email delivery process.
      *
-     * @param  $to
-     * @param  $fromAddress
-     * @param  $fromName
-     * @param  $subject
-     * @param  $content
-     * @param  $cc
-     * @param  $bcc
-     * @return True if successful.
+     * @param  string $to
+     * @param  string $fromAddress
+     * @param  string $fromName
+     * @param  string $subject
+     * @param  string $content
+     * @param  Array $cc
+     * @param  Array $bcc
+     * @return \Swift_Message if successful.
      */
     protected static function buildSwiftMessage($to, $fromAddress, $fromName, $subject, $content, $cc = NULL, $bcc = NULL){
 
