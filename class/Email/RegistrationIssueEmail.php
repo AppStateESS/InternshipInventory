@@ -96,11 +96,9 @@ class RegistrationIssueEmail extends Email {
         if($this->internship->international){
             $this->tpl['COUNTRY'] = $this->internship->loc_country;
             $this->tpl['INTERNATIONAL'] = 'Yes';
-            $intlSubject = '[int\'l] ';
         }else{
             $this->tpl['STATE'] = $this->internship->loc_state;
             $this->tpl['INTERNATIONAL'] = 'No';
-            $intlSubject = '';
         }
 
         $this->tpl['NOTE'] = $this->note;
