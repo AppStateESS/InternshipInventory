@@ -81,12 +81,12 @@ class SendPendingEnrollmentReminders
 
                 // Email the student
                 if($withinOneWeek){
-                    $email = new \Intern\Email\EnrollmentReminderEmail($emailSettings, $i, $censusTimestamp, $i->getUsername(), 'StudentReminderEmail1Week.tpl');
+                    $email = new \Intern\Email\EnrollmentReminderEmail($emailSettings, $i, $censusTimestamp, $i->getEmailAddress(), 'StudentReminderEmail1Week.tpl');
                     $email->send();
 
                     $ch = new ChangeHistory($i, null, time(), $currState, $currState, 'Student 1-Week Census Date Reminder Sent');
                 }else{
-                    $email = new \Intern\Email\EnrollmentReminderEmail($emailSettings, $i, $censusTimestamp, $i->getUsername(), 'StudentReminderEmail4Weeks.tpl');
+                    $email = new \Intern\Email\EnrollmentReminderEmail($emailSettings, $i, $censusTimestamp, $i->getEmailAddress(), 'StudentReminderEmail4Weeks.tpl');
                     $email->send();
 
                     $ch = new ChangeHistory($i, null, time(), $currState, $currState, 'Student Census Date Reminder Sent');

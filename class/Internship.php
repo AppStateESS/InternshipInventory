@@ -65,7 +65,7 @@ class Internship {
 
     // Contact Info
     public $phone;
-    public $email;
+    public $email; // NB: Username, without a domain name
 
     // Student address
     public $student_address;
@@ -743,6 +743,9 @@ class Internship {
         return $this->banner;
     }
 
+    /**
+     * NB: Returns the username part of the email, without a domain name
+     */
     public function getEmailAddress(){
         return $this->email;
     }
