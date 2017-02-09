@@ -70,7 +70,7 @@ abstract class Email {
         $bodyContent = $this->buildMessageBody($this->getTemplateFileName());
 
         // Build a SwiftMessage object from member variables, settings, and body content
-        $message = $this->buildSwiftMessage($this->emailSettings, $this->to, $this->fromAddress, $this->fromName, $this->subject, $bodyContent, $this->cc, $this->bcc);
+        $message = $this->buildSwiftMessage($this->to, $this->fromAddress, $this->fromName, $this->subject, $bodyContent, $this->cc, $this->bcc);
 
         // Send the SwiftMail message
         $this->sendSwiftMessage($message);
@@ -96,7 +96,7 @@ abstract class Email {
      * @param  $bcc
      * @return True if successful.
      */
-    protected static function buildSwiftMessage(InternSettings $settings, $to, $fromAddress, $fromName, $subject, $content, $cc = NULL, $bcc = NULL){
+    protected static function buildSwiftMessage($to, $fromAddress, $fromName, $subject, $content, $cc = NULL, $bcc = NULL){
 
         // Sanity checking
         if(!isset($to) || $to === null){
