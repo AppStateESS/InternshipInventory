@@ -27,7 +27,7 @@ class BackgroundCheckEmail extends Email{
     * Sends the Background or Drug check notification email.
     *
     * @param InternSettings $emailSettings
-    * @param Internship $i
+    * @param Internship $internship
     * @param Agency $agency
     * @param bool $backgroundCheck
     * @param bool $drugCheck
