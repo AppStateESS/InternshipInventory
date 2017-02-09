@@ -21,7 +21,7 @@ class ReadyToRegisterEmail extends Email {
      * Constructor
      *
      * @param InternSettings $emailSettings
-     * @param Internship $i
+     * @param Internship $internship
      */
     public function __construct(InternSettings $emailSettings, Internship $internship) {
         parent::__construct($emailSettings);
