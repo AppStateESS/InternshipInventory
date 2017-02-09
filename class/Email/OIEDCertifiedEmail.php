@@ -3,7 +3,6 @@ namespace Intern\Email;
 
 use \Intern\Internship;
 use \Intern\Term;
-use \Intern\Subject;
 use \Intern\InternSettings;
 
 /**
@@ -35,8 +34,6 @@ class OIEDCertifiedEmail extends Email{
 
     protected function buildMessage()
     {
-        $subjects = Subject::getSubjects();
-
         $faculty = $this->internship->getFaculty();
 
         $this->tpl['NAME'] = $this->internship->getFullName();
