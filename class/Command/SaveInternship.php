@@ -404,13 +404,15 @@ class SaveInternship {
 
             // Notify the faculty member that OIED has certified the internship
             if ($i->getFaculty() != null) {
-                \Intern\Email::sendOIEDCertifiedNotice($i, $agency);
+                $email = new \Intern\Email\OIEDCertifiedEmail(\Intern\InternSettings::getInstance(), $i);
+                $email->send();
             }
         }
 
         // If the background check or drug check status changed to true (computed earlier), then send a notification
         if($backgroundCheck || $drugCheck) {
-            \Intern\Email::sendBackgroundCheckEmail($i, $agency, $backgroundCheck, $drugCheck);
+            $email = new \Intern\Email\BackgroundCheckEmail(\Intern\InternSettings::getInstance(), $i, $agency, $backgroundCheck, $drugCheck);
+            $email->send();
         }
 
         \PHPWS_DB::commit();

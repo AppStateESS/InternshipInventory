@@ -65,7 +65,7 @@ class Internship {
 
     // Contact Info
     public $phone;
-    public $email;
+    public $email; // NB: Username, without a domain name
 
     // Student address
     public $student_address;
@@ -509,6 +509,22 @@ class Internship {
         return $name;
     }
 
+    /*
+     * Get the student's first name.
+     */
+    public function getFirstName()
+    {
+      return $this->first_name;
+    }
+
+    /*
+     * Get the student's last name.
+     */
+    public function getLastName()
+    {
+      return $this->last_name;
+    }
+
     /**
      * Get formatted dates.
      */
@@ -727,6 +743,9 @@ class Internship {
         return $this->banner;
     }
 
+    /**
+     * NB: Returns the username part of the email, without a domain name
+     */
     public function getEmailAddress(){
         return $this->email;
     }
