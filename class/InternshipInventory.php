@@ -213,6 +213,14 @@ class InternshipInventory {
                 $ctrl = new Command\GetAvailableTerms();
                 $ctrl->execute();
                 break;
+            case 'GetUndergradMajors':
+                $ctrl = new Command\GetUndergradMajors();
+                $ctrl->execute();
+                break;
+            case 'GetGraduateMajors':
+                $ctrl = new Command\GetGraduateMajors();
+                $ctrl->execute();
+                break;
             case 'adminRest':
                 $ctrl = new Command\AdminRest();
                 $ctrl->execute();
