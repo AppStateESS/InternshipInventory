@@ -2,6 +2,15 @@
 
 namespace Intern;
 
+/**
+ * Class to contain and manage term information (e.g. class dates and census date)
+ * from Banner. This info is acquired through the web service interface by using the
+ * BannerTermProvider class.
+ *
+ * @see \Intern\BannerTermProvider
+ * @author jbooker
+ * @package Intern
+ */
 class TermInfo {
     // Defines for Internship Inventory Term Banner Data
 
