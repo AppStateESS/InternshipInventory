@@ -10,7 +10,8 @@ var MajorSelector = React.createClass({
         return ({
             undergrad: false,
             graduate: false,
-            availableMajors: false,
+            availableUndergradMajors: false,
+            availableGradMajors: false,
             hasError: false
         });
     },
@@ -20,7 +21,7 @@ var MajorSelector = React.createClass({
             url: 'index.php?module=intern&action=GetUndergradMajors',
             dataType: 'json',
             success: function(data) {
-                this.setState({availableMajors: data});
+                this.setState({availableUndergradMajors: data});
             }.bind(this),
             error: function(xhr, status, err) {
                 console.error(status, err.toString());
@@ -32,7 +33,7 @@ var MajorSelector = React.createClass({
             url: 'index.php?module=intern&action=GetGraduateMajors',
             dataType: 'json',
             success: function(data) {
-                this.setState({availableMajors: data});
+                this.setState({availableGradMajors: data});
             }.bind(this),
             error: function(xhr, status, err) {
                 console.error(status, err.toString());
@@ -53,9 +54,9 @@ var MajorSelector = React.createClass({
         if(!this.state.undergrad && !this.state.graduate) {
             majorsDropdown = <MajorsDropDown formStyle='horizontal'/>;
         } else if (this.state.undergrad) {
-            majorsDropdown = <MajorsDropDown key="undergradMajors" ref="undergrad" majors={this.state.availableMajors} level="undergrad" formStyle='horizontal'/>;
+            majorsDropdown = <MajorsDropDown key="undergradMajors" ref="undergrad" majors={this.state.availableUndergradMajors} level='undergrad' formStyle='horizontal'/>;
         } else {
-            majorsDropdown = <MajorsDropDown key="gradMajors" ref="graduate" majors={this.state.availableMajors} level="grad" formStyle='horizontal'/>;
+            majorsDropdown = <MajorsDropDown key="gradMajors" ref="graduate" majors={this.state.availableGradMajors} level='grad' formStyle='horizontal'/>;
         }
 
         var anyLevelClass = classNames({
