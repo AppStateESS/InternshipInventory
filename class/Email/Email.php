@@ -174,7 +174,7 @@ abstract class Email {
 
         if($message->getBcc() != null){
             foreach($message->getBcc() as $address => $name){
-                fprintf($fd, "Bcc: %s\n", $recipient);
+                fprintf($fd, "Bcc: %s\n", $address);
             }
         }
 
