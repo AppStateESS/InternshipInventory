@@ -38,7 +38,7 @@ class InternshipInventory {
         // Tell NewRelic about the controller we're going to run, so we get
         // better transaction names than just all 'index.php'
         if (extension_loaded('newrelic')) { // Ensure PHP agent is available
-	           newrelic_name_transaction($transactionName);
+            newrelic_name_transaction($transactionName);
         }
 
         // Show requested page.
