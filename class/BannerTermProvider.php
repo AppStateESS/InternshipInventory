@@ -8,7 +8,9 @@ use \SoapFault;
  * BannerTermProvider
  *
  * Returns a Term object with data pulled from a web service connected to Banner.
+ * Usually created through the TermProviderFactory.
  *
+ * @see \Intern\TermProviderFactory
  * @author Jeremy Booker
  * @package Intern
  */

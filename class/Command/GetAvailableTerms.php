@@ -4,6 +4,13 @@ namespace Intern\Command;
 use \Intern\Term as Term;
 use \Intern\TermProviderFactory;
 
+/**
+ * JSON endpoint for getting begin/end date and census date information for a term.
+ * Uses the TermProviderFactory to load TermInfo objects.
+ *
+ * @author jbooker
+ * @package Intern
+ */
 class GetAvailableTerms {
 
     public function execute()

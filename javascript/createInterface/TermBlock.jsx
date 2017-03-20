@@ -47,7 +47,7 @@ var TermBlock = React.createClass({
 
         return (
             <div className="row">
-                <div className="col-sm-12 col-md-6 col-md-push-3">
+                <div className="col-sm-12 col-md-5 col-md-push-3">
                     <div className={fgClasses} id="term">
                         <label htmlFor="term" className="control-label">Term</label><br />
                         <div className="btn-group" data-toggle="buttons">
@@ -61,6 +61,8 @@ var TermBlock = React.createClass({
                             }.bind(this))}
                         </div>
                     </div>
+                </div>
+                <div className="col-md-4 col-md-push-2">
                     <span id="helpBlock" className="help-block">{termDates}</span>
                 </div>
             </div>
