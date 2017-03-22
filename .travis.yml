@@ -6,20 +6,33 @@ php:
     - 5.5
     - 5.6
     - hhvm
+
 install:
-- npm install
+    - nvm install 6
+    - npm install -g yarn
+    - yarn global add bower
+    #- "npm config set spin false"
+    #- npm install -g bower
+    - yarn install
+
 script:
 - ".travis-build/phplint ."
 - phpunit
+
 after_script:
 - vendor/bin/test-reporter
+
 after_success:
-- npm run build
-- tar -cf Internshipinventory.tar.gz *
+    - npm run build
+    - rm -rf node_modules
+    - tar -czf Internshipinventory.tar.gz *
+
 addons:
   code_climate:
     repo_token: 3060bdda5db8f779d82ab527acadec5cd581bde782093136322604a4280162e7
-notifications: 
+
+notifications:
+
 deploy:
   provider: releases
   skip_cleanup: true
@@ -31,4 +44,3 @@ deploy:
     repo: AppStateESS/InternshipInventory
     branch: useWebpack
     tags: true
-

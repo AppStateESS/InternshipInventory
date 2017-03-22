@@ -60,6 +60,7 @@ var SearchAdmin = React.createClass({
 			displayData: null,
 			deptData: null,
 			errorWarning: null,
+			messageType: null,
 			searchPhrase: '',
 			dropData: "",
 			textData: ""
@@ -78,6 +79,7 @@ var SearchAdmin = React.createClass({
 			success: function(data) {
 				this.setState({mainData: data,
 							   displayData: data});
+				this.searchList();
 			}.bind(this),
 			error: function(xhr, status, err) {
 				alert("Failed to grab displayed data.")
@@ -100,7 +102,7 @@ var SearchAdmin = React.createClass({
 			}.bind(this)
 		});
 	},
-	onAdminDelete: function(idNum){
+	onAdminDelete: function(idNum, username, department){
 		// Updating the new state for optimization (snappy response on the client)
 		// When a value is being deleted
 		var newVal = this.state.displayData.filter(function(el){
@@ -112,13 +114,15 @@ var SearchAdmin = React.createClass({
 			url: 'index.php?module=intern&action=adminRest&id='+idNum,
 			type: 'DELETE',
 			success: function() {
+				var message = "Deleted admin "+username+ " from department " + department +".";
+				this.setState({errorWarning: message, messageType: "success"});
 				this.getData();
 			}.bind(this)
 		});
 	},
 	onAdminCreate: function(username, department)
 	{
-		var displayName = '';
+		//var displayName = '';
 		var displayData = this.state.displayData;
 		var dept = this.state.deptData;
 
@@ -135,6 +139,7 @@ var SearchAdmin = React.createClass({
 		if(username === ''){
 			errorMessage = "Please enter a valid username.";
 			this.setState({errorWarning: errorMessage});
+
 			return;
 		}
 
@@ -153,7 +158,7 @@ var SearchAdmin = React.createClass({
 		{
 			if (displayData[j].username === username)
 			{
-				displayName = displayData[j].display_name;
+				//displayName = displayData[j].display_name;
 				if (displayData[j].name === dept[deptIndex].name)
 				{
 					errorMessage = "Multiple usernames in the same department.";
@@ -164,26 +169,28 @@ var SearchAdmin = React.createClass({
 		}
 
 		var deptName = dept[deptIndex].name;
+		displayData.unshift({username: username, id: -1, name: deptName, display_name: ""});
 
-		if (displayName !== ''){
+		/*if (displayName !== ''){
 			displayData.unshift({username: username, id: -1, name: deptName, display_name: displayName});
-		}
+		}*/
 
 
 		// Updating the new state for optimization (snappy response on the client)
 		var newVal = this.state.displayData;
-		this.setState({displayData: newVal});
+		this.setState({displayData: newVal},this.searchList());
 
 		$.ajax({
 			url: 'index.php?module=intern&action=adminRest&user='+username+'&dept='+department,
 			type: 'POST',
 			success: function(data) {
 				this.getData();
-				this.setState({errorWarning: null});
+				var message = "Created admin "+username+" for department " + dept[deptIndex].name + ".";
+				this.setState({errorWarning: message, messageType: "success"});
 			}.bind(this),
 			error: function(http) {
 				var errorMessage = http.responseText;
-				this.setState({errorWarning: errorMessage});
+				this.setState({errorWarning: errorMessage, messageType: "error"});
 			}.bind(this)
 		});
 	},
@@ -260,7 +267,7 @@ var SearchAdmin = React.createClass({
         if(this.state.errorWarning == null){
             errors = '';
         } else {
-            errors = <ErrorMessagesBlock key="errorSet" errors={this.state.errorWarning} />
+            errors = <ErrorMessagesBlock key="errorSet" errors = {this.state.errorWarning} messageType = {this.state.messageType} />
         }
 
 		return (
