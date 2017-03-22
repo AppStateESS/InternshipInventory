@@ -63,7 +63,7 @@ var TermBlock = React.createClass({
                     </div>
                 </div>
                 <div className="col-md-4 col-md-push-2">
-                    <span id="helpBlock" className="help-block">{termDates}</span>
+                    <span id="helpBlock" className="help-block" style={{marginTop: '32px'}}>{termDates}</span>
                 </div>
             </div>
 

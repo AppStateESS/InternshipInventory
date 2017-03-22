@@ -57,7 +57,13 @@ class TestTermProvider extends BannerTermProvider {
                 $partTerm->part_end_date    = '5/11/2017';
                 $responseObj->part_term[] = $partTerm;
 
-                // TODO - Something here....
+                $partTerm = new \stdClass();
+                $partTerm->part_term_code   = '2';
+                $partTerm->part_term_desc   = 'First Half of Term';
+                $partTerm->part_start_date  = '3/7/2017';
+                $partTerm->part_end_date    = '3/6/2017';
+                $responseObj->part_term[] = $partTerm;
+
                 $partTerm = new \stdClass();
                 $partTerm->part_term_code   = '4';
                 $partTerm->part_term_desc   = 'Special Term';
@@ -94,6 +100,20 @@ class TestTermProvider extends BannerTermProvider {
                 $partTerm->part_term_desc   = 'Full Term';
                 $partTerm->part_start_date  = '8/22/2017';
                 $partTerm->part_end_date    = '12/14/2017';
+                $responseObj->part_term[] = $partTerm;
+
+                $partTerm = new \stdClass();
+                $partTerm->part_term_code   = '2';
+                $partTerm->part_term_desc   = 'First Half of Term';
+                $partTerm->part_start_date  = '10/11/2017';
+                $partTerm->part_end_date    = '10/10/2017';
+                $responseObj->part_term[] = $partTerm;
+
+                $partTerm = new \stdClass();
+                $partTerm->part_term_code   = 'EGF';
+                $partTerm->part_term_desc   = 'Distance Ed Graduate Flexible';
+                $partTerm->part_start_date  = '8/9/2017';
+                $partTerm->part_end_date    = '1/15/2018';
                 $responseObj->part_term[] = $partTerm;
 
                 $partTerm = new \stdClass();
