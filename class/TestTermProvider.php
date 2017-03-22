@@ -31,7 +31,6 @@ class TestTermProvider extends BannerTermProvider {
         $obj = new \stdClass();
         $responseObj = new \stdClass();
 
-        // ID & email
         $responseObj->term_code             = $this->term;
         $responseObj->term_desc             = Term::rawToRead($this->term);
 
@@ -151,7 +150,10 @@ class TestTermProvider extends BannerTermProvider {
 
         $obj->GetTermInfoResult = $responseObj;
 
-        return $obj;
+        $parentObj = new \stdClass();
+        $parentObj->GetTermInfoResult = $obj;
+
+        return $parentObj;
     }
 
     private function getFakeErrorResponse()

@@ -1,11 +1,11 @@
 <table id="affiliate-pager" class="table table-hover table-striped">
 <tr>
-    <th>Name</th>
-    <th>Expiration Date</th>
+    <th>Name {NAME_SORT}</th>
+    <th>Expiration Date {END_DATE_SORT}</th>
 </tr>
 <!-- BEGIN empty_table -->
 <tr>
-    <td colspan=3>{EMPTY_MESSAGE}</td>
+    <td colspan="3">{EMPTY_MESSAGE}</td>
 </tr>
 <!-- END empty_table -->
 

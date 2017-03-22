@@ -53,6 +53,8 @@ var DeleteAdmin = React.createClass({
 	}
 });
 
+// Main module that calls several component to build
+// the search admin screen.
 var SearchAdmin = React.createClass({
 	getInitialState: function() {
 		return {
@@ -68,10 +70,13 @@ var SearchAdmin = React.createClass({
 	},
 	componentWillMount: function(){
 		// Grabs the department data and admin data
+		// at the start of execution
 		this.getData();
 		this.getDept();
 	},
 	getData: function(){
+		// Sends an ajax request to adminRest to grab the
+		// display data.
 		$.ajax({
 			url: 'index.php?module=intern&action=adminRest',
 			type: 'GET',
@@ -88,6 +93,8 @@ var SearchAdmin = React.createClass({
 		});
 	},
 	getDept: function(){
+		// Sends an ajax request to deptRest to grab the
+		// department data.
 		$.ajax({
 			url: 'index.php?module=intern&action=deptRest',
 			action: 'GET',
@@ -153,7 +160,8 @@ var SearchAdmin = React.createClass({
             }
         });
 
-
+		// Determines if the username has multiple entries within
+		// the same department before creating the admin.
 		for (var j = 0, k = displayData.length; j < k; j++)
 		{
 			if (displayData[j].username === username)
@@ -168,12 +176,13 @@ var SearchAdmin = React.createClass({
 			}
 		}
 
-		var deptName = dept[deptIndex].name;
-		displayData.unshift({username: username, id: -1, name: deptName, display_name: ""});
-
-		/*if (displayName !== ''){
+		/*
+        var deptName = dept[deptIndex].name;
+		// Updating the displayData so that it can be used in the ajax request.
+		if (displayName != ''){
 			displayData.unshift({username: username, id: -1, name: deptName, display_name: displayName});
-		}*/
+		}
+        */
 
 
 		// Updating the new state for optimization (snappy response on the client)
@@ -213,6 +222,7 @@ var SearchAdmin = React.createClass({
 		for (var i = 0; i < this.state.mainData.length; i++) {
 			var item = this.state.mainData[i];
 
+			// makes the item, username, displayName lowercase for easier searching
 			if (item.name.toLowerCase().includes(phrase)
 				|| item.username.toLowerCase().includes(phrase)
 				|| item.display_name.toLowerCase().includes(phrase))
@@ -267,7 +277,7 @@ var SearchAdmin = React.createClass({
         if(this.state.errorWarning == null){
             errors = '';
         } else {
-            errors = <ErrorMessagesBlock key="errorSet" errors = {this.state.errorWarning} messageType = {this.state.messageType} />
+            errors = <ErrorMessagesBlock key="errorSet" errors={this.state.errorWarning} messageType={this.state.messageType} />
         }
 
 		return (
@@ -329,7 +339,6 @@ var SearchAdmin = React.createClass({
 		);
 	}
 });
-
 
 ReactDOM.render(
 	<SearchAdmin />,

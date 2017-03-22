@@ -6,6 +6,7 @@ Student
 --------
 Name: {NAME}
 Banner ID: {BANNER}
+Term: {TERM}
 Email: {EMAIL}
 Birthday: {BIRTHDAY}	
 

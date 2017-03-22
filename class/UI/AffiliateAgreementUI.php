@@ -11,6 +11,7 @@ class AffiliateAgreementUI implements UI
             return false;
         }
 
+        // TODO: Filtering by name should probably be done using DPager's built-in functionality
         if(isset($_POST['search'])){
             $name = $_POST['search'];
         } else {
@@ -22,8 +23,6 @@ class AffiliateAgreementUI implements UI
         if(isset($_POST['search'])){
           $tpl['CLEAR'] = 'index.php?module=intern&action=showAffiliateAgreement';
         }
-
-        javascript('/jquery/');
 
         /* Form for  */
         $form = new \PHPWS_Form('add_affil');
@@ -44,19 +43,11 @@ class AffiliateAgreementUI implements UI
     {
         \PHPWS_Core::initCoreClass('DBPager.php');
 
-        // TODO: This probably doesn't need a subselect pager
-        $pager = new \Intern\SubselectPager('intern_affiliation_agreement', '\Intern\AffiliationAgreement');
+        $pager = new \DBPager('intern_affiliation_agreement', '\Intern\AffiliationAgreement');
         $pager->db->addColumn("*");
 
-        $now = time();
-        $expired = "(case when (end_date - ".$now.") > 0 then 1 else 0 end) AS expired";
-        $pager->db->addColumnRaw($expired);
-
-        $orders = array('expired desc', 'end_date asc');
-        $pager->db->order = $orders;
-
         if($name !== null) {
-          $pager->db->addWhere("name", $name);
+          $pager->db->addWhere("name", '%' . $name . '%', 'ILIKE');
         }
 
         $pager->setModule('intern');

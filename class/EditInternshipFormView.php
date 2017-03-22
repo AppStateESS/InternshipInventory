@@ -221,9 +221,9 @@ class EditInternshipFormView {
          * The options for this drop down are provided through AJAX on page-load and
          * when the user changes the department dropdown above.
          */
-        $this->form->addSelect('faculty', array(-1=>'Select Faculty Advisor'));
+        $this->form->addSelect('faculty', array(-1=>'Select Faculty Supervisor'));
         $this->form->setExtra('faculty', 'disabled');
-        $this->form->setLabel('faculty', 'Faculty Advisor / Instructor of Record');
+        $this->form->setLabel('faculty', 'Faculty Supervisor / Instructor of Record');
         $this->form->addCssClass('faculty', 'form-control');
 
         // Hidden field for selected faculty member
@@ -374,7 +374,14 @@ class EditInternshipFormView {
                 throw new \InvalidArgumentException('Domestic internship with null value for state.');
             }
 
-            $this->tpl['LOC_STATE'] = $states[$locationState]->full_name;
+            if (\Current_User::isDeity()) {
+                $states = State::getAllowedStates();
+                $this->form->addSelect('loc_state', $states);
+                $this->form->setMatch('loc_state', $this->intern->loc_state);
+                $this->form->addCssClass('loc_state', 'form-control');
+            }else{
+                $this->tpl['LOC_STATE'] = $states[$locationState]->full_name;
+            }
 
             $this->form->setLabel('loc_zip', 'Zip');
         } else {
@@ -385,7 +392,15 @@ class EditInternshipFormView {
                 throw new \InvalidArgumentException('International internship with null value for country.');
             }
 
-            $this->tpl['LOC_COUNTRY'] = $countries[$locationCountry];
+
+            if (\Current_User::isDeity()) {
+                $countries = CountryFactory::getCountries();
+                $this->form->addSelect('loc_country', $countries);
+                $this->form->setMatch('loc_country', $this->intern->loc_country);
+                $this->form->addCssClass('loc_country', 'form-control');
+            }else{
+                $this->tpl['LOC_COUNTRY'] = $countries[$locationCountry];
+            }
 
             // Itn'l location fields
             $this->form->addText('loc_province');
@@ -399,6 +414,7 @@ class EditInternshipFormView {
          * Term Info *
          */
 
+
         if (\Current_User::isDeity()) {
             $terms = Term::getTermsAssoc();
             $this->form->addSelect('term', $terms);
@@ -407,7 +423,6 @@ class EditInternshipFormView {
         }else{
             $this->tpl['TERM'] = Term::rawToRead($this->intern->term);
         }
-
 
 
 
@@ -539,7 +554,16 @@ class EditInternshipFormView {
         }
 
         $this->tpl['STUDENT_GPA'] = $this->intern->getGpa();
-        $this->tpl['CAMPUS'] = $this->intern->getCampusFormatted();
+
+        if (\Current_User::isDeity()) {
+            $campus = Internship::getCampusAssoc();
+            $this->form->addSelect('campus', $campus);
+            $this->form->setMatch('campus', $this->intern->campus);
+            $this->form->addCssClass('campus', 'form-control');
+        }else{
+            $this->tpl['CAMPUS'] = $this->intern->getCampusFormatted();
+        }
+
         $this->tpl['LEVEL'] = $this->intern->getLevelFormatted();
 
         // Student object can be null, so be sure we actually have a student first
