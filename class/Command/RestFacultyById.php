@@ -58,7 +58,7 @@ class RestFacultyById {
     {
         //$postarray = json_decode(file_get_contents('php://input'), true);
 
-        $req = \Server::getCurrentRequest();
+        $req = \Canopy\Server::getCurrentRequest();
         $postarray = json_decode($req->getRawData(), true);
 
         $faculty = new FacultyDB();
