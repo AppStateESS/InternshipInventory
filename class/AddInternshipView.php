@@ -5,7 +5,7 @@ namespace Intern;
 /*
  * View for interface to Add an Internship
  */
-class AddInternshipView implements \View {
+class AddInternshipView {
 
     public function __construct()
     {

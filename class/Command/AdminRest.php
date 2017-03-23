@@ -1,6 +1,7 @@
 <?php
 
 namespace Intern\Command;
+use \phpws2\Database;
 
 class AdminRest {
 
@@ -50,7 +51,7 @@ class AdminRest {
             exit;
 		}
 
-		$db = \Database::newDB();
+		$db = Database::newDB();
 		$pdo = $db->getPDO();
 
 		$sql = "SELECT username, id
@@ -101,7 +102,7 @@ class AdminRest {
 	{
 		$id = $_REQUEST['id'];
 
-		$db = \Database::newDB();
+		$db = Database::newDB();
 		$pdo = $db->getPDO();
 
 
@@ -115,7 +116,7 @@ class AdminRest {
 
 	public function get()
 	{
-		$db = \Database::newDB();
+		$db = Database::newDB();
 		$pdo = $db->getPDO();
 
 		$sql = "SELECT intern_admin.username,

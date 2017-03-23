@@ -2,6 +2,7 @@
 namespace Intern\Command;
 
 use \Intern\DepartmentFactory;
+use \phpws2\Database;
 
 /**
  * REST-ful controller for creating/editing faculty to department associations.
@@ -54,7 +55,7 @@ class FacultyDeptRest {
             exit;
         }
 
-        $db = \Database::newDB();
+        $db = Database::newDB();
         $pdo = $db->getPDO();
 
         // Check to see if this faculty member exists in this department already
@@ -84,7 +85,7 @@ class FacultyDeptRest {
         $facultyId       = $_REQUEST['faculty_id'];
         $departmentId    = $_REQUEST['department_id'];
 
-        $db = \Database::newDB();
+        $db = Database::newDB();
         $pdo = $db->getPDO();
 
         $sql = "DELETE FROM intern_faculty_department WHERE faculty_id = :facultyId AND department_id = :departmentId";

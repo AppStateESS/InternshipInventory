@@ -87,7 +87,7 @@ class GetSearchSuggestions {
      */
     private function userNameSearch($string)
     {
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
         $pdo = $db->getPDO();
 
         $stmt = $pdo->prepare("SELECT * FROM intern_student_autocomplete WHERE username = :username");
