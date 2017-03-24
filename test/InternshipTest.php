@@ -7,7 +7,7 @@ use \Intern\Student;
 use \Intern\Agency;
 use \Intern\Department;
 
-class InternshipTest extends \PHPUnit_Framework_TestCase
+class InternshipTest extends \PHPUnit\Framework\TestCase
 {
     public function testSetStudentData()
     {
