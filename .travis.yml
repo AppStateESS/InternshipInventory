@@ -50,5 +50,5 @@ deploy:
   overwrite: true
   on:
     repo: AppStateESS/InternshipInventory
-    branch: useWebpack
+    branch: master
     tags: true
