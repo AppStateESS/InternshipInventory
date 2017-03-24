@@ -252,6 +252,7 @@ class EditInternshipFormView {
         $this->form->addCssClass('agency_zip', 'form-control');
 
         $countries = CountryFactory::getCountries();
+        asort($countries, SORT_STRING);
         $countries = array('-1' => 'Select Country') + $countries;
 
         if($this->intern->domestic) {
@@ -395,6 +396,8 @@ class EditInternshipFormView {
 
             if (\Current_User::isDeity()) {
                 $countries = CountryFactory::getCountries();
+                asort($countries, SORT_STRING);
+                unset($countries['US']);
                 $this->form->addSelect('loc_country', $countries);
                 $this->form->setMatch('loc_country', $this->intern->loc_country);
                 $this->form->addCssClass('loc_country', 'form-control');
