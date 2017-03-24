@@ -263,6 +263,10 @@
       </div>
 
       <div class="form-group">
+          <div class="col-lg-6 col-lg-push-3"><p class="form-control-static">{TERM_DATES}</p></div>
+      </div>
+
+      <div class="form-group">
         <label class="col-lg-3 control-label" for="{START_DATE_ID}">{START_DATE_LABEL_TEXT}</label>
         <div class="col-lg-6">{START_DATE}</div>
       </div>
@@ -665,11 +669,8 @@
 {END_FORM}
 
 <script type = "text/javascript">
-    var internshipId = {INTERN_ID};
+    window.internshipId = {INTERN_ID};
 </script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react-with-addons.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react-dom.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap/0.28.3/react-bootstrap.js"></script>
-
-<script type="text/javascript" src="{source_http}mod/intern/javascript/emergencyContact/dist/emergencyContact.min.041d386d.js"></script>
+<script type="text/javascript" src="{vendor_bundle}"></script>
+<script type="text/javascript" src="{entry_bundle}"></script>

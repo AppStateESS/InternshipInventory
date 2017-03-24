@@ -3,6 +3,7 @@
 namespace Intern\UI;
 
 use Intern\GradProgram;
+use Intern\AssetResolver;
 
 class GradProgramUI implements UI
 {
@@ -16,9 +17,9 @@ class GradProgramUI implements UI
         }
 
         $tpl = array();
-        \javascript('/jquery/');
-        \javascriptMod('intern', 'manager');
-        \javascriptMod('intern', 'editGrad');
+
+        $tpl['vendor_bundle'] = AssetResolver::resolveJsPath('assets.json', 'vendor');
+        $tpl['entry_bundle'] = AssetResolver::resolveJsPath('assets.json', 'editGrad');
 
         return \PHPWS_Template::process($tpl, 'intern', 'edit_grad.tpl');
     }

@@ -1,3 +1,37 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import $ from 'jquery';
+
+
+var TerminateButton = React.createClass({
+    clicked: function() {
+        this.props.clicked();
+    },
+    render:function() {
+        var btnClass;
+        var btnText;
+        var btnAwesome;
+
+        if(this.props.terminated === 0){
+            btnClass = "btn btn-danger pull-right";
+            btnText = "Terminate ";
+            btnAwesome = "fa fa-times";
+        }else{
+            btnClass = "btn btn-info pull-right";
+            btnText = "Reinstate ";
+            btnAwesome = "fa fa-recycle";
+        }
+
+        return(
+            <div className="terminateButton">
+                <a onClick={this.clicked} className={btnClass}>
+                    <i className={btnAwesome}></i> {btnText}
+                </a>
+            </div>
+        );
+    }
+});
+
 
 var TerminateBox = React.createClass({
     getInitialState: function() {
@@ -46,31 +80,6 @@ var TerminateBox = React.createClass({
 });
 
 
-var TerminateButton = React.createClass({
-    clicked: function() {
-        this.props.clicked();
-    },
-    render:function() {
-        if(this.props.terminated == 0){
-            var btnClass = "btn btn-danger pull-right";
-            var btnText = "Terminate ";
-            var btnAwesome = "fa fa-times";
-        }else{
-            var btnClass = "btn btn-info pull-right";
-            var btnText = "Reinstate ";
-            var btnAwesome = "fa fa-recycle";
-        }
-
-        return(
-            <div className="terminateButton">
-                <a onClick={this.clicked} className={btnClass}>
-                    <i className={btnAwesome}></i> {btnText}
-                </a>
-            </div>
-        );
-    }
-});
-
-React.render(<TerminateBox affiliationId={aaId}/>,
+ReactDOM.render(<TerminateBox affiliationId={window.aaId}/>,
     document.getElementById('terminate')
 );

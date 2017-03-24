@@ -1,3 +1,6 @@
+import React from 'react';
+import classNames from 'classnames';
+
 var InternationalDropDown = React.createClass({
     getInitialState: function(){
         return ({hasError: false});
@@ -13,8 +16,10 @@ var InternationalDropDown = React.createClass({
 
         var countries = this.props.countries;
 
-        if(this.props.formStyle === undefined || this.props.formStyle === 'vertical'){
-            var output = (
+        var output = null;
+
+        if(this.props.formStyle === 'vertical' || this.props.formStyle === undefined){
+            output = (
                 <div className="row">
                     <div className="col-sm-12 col-md-4 col-md-push-3">
                         <div className={fgClasses} id="country">
@@ -28,10 +33,8 @@ var InternationalDropDown = React.createClass({
                     </div>
                 </div>
             );
-        }
-
-        if(this.props.formStyle === 'horizontal') {
-            var output = (
+        } else if(this.props.formStyle === 'horizontal') {
+            output = (
                 <div className="form-group">
                     <label htmlFor="country" className="col-lg-3 control-label">Country</label>
                     <div className="col-lg-8">
@@ -48,3 +51,5 @@ var InternationalDropDown = React.createClass({
         return output;
     }
 });
+
+export default InternationalDropDown;

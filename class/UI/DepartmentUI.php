@@ -2,6 +2,7 @@
 
 namespace Intern\UI;
 use Intern\Department;
+use Intern\AssetResolver;
 
 class DepartmentUI implements UI
 {
@@ -14,9 +15,9 @@ class DepartmentUI implements UI
         }
 
         $tpl = array();
-        \javascript('/jquery/');
-        \javascriptMod('intern', 'manager');
-        \javascriptMod('intern', 'editDepartment');
+
+        $tpl['vendor_bundle'] = AssetResolver::resolveJsPath('assets.json', 'vendor');
+        $tpl['entry_bundle'] = AssetResolver::resolveJsPath('assets.json', 'editDepartment');
 
         return \PHPWS_Template::process($tpl, 'intern', 'edit_department.tpl');
     }

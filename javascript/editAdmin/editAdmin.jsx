@@ -1,4 +1,57 @@
-var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
+import React from 'react';
+import ReactDOM from 'react-dom';
+import $ from 'jquery';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+
+//var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
+
+var ErrorMessagesBlock = React.createClass({
+    render: function() {
+        if(this.props.errors === null){
+            return '';
+        }
+
+        var errors = this.props.errors;
+
+        return (
+            <div className="row">
+                <div className="col-sm-12 col-md-6 col-md-push-3">
+                    <div className="alert alert-warning" role="alert">
+                        <p><i className="fa fa-exclamation-circle fa-2x"></i> Warning: {errors}</p>
+
+                    </div>
+                </div>
+            </div>
+        );
+    }
+});
+
+var DepartmentList = React.createClass({
+  render: function() {
+    return (
+     	<option value={this.props.id}>{this.props.name}</option>
+    )
+  }
+});
+
+var DeleteAdmin = React.createClass({
+	handleChange: function() {
+		this.props.onAdminDelete(this.props.id);
+	},
+	render: function() {
+		return (
+
+			<tr>
+				<td>{this.props.fullname}</td>
+				<td>{this.props.username}</td>
+				<td>{this.props.department}</td>
+				<td> <a onClick={this.handleChange}> <i className="fa fa-trash-o" /> </a> </td>
+			</tr>
+
+		);
+
+	}
+});
 
 // Main module that calls several component to build
 // the search admin screen.
@@ -9,6 +62,7 @@ var SearchAdmin = React.createClass({
 			displayData: null,
 			deptData: null,
 			errorWarning: null,
+			messageType: null,
 			searchPhrase: '',
 			dropData: "",
 			textData: ""
@@ -30,6 +84,7 @@ var SearchAdmin = React.createClass({
 			success: function(data) {
 				this.setState({mainData: data,
 							   displayData: data});
+				this.searchList();
 			}.bind(this),
 			error: function(xhr, status, err) {
 				alert("Failed to grab displayed data.")
@@ -54,7 +109,7 @@ var SearchAdmin = React.createClass({
 			}.bind(this)
 		});
 	},
-	onAdminDelete: function(idNum){
+	onAdminDelete: function(idNum, username, department){
 		// Updating the new state for optimization (snappy response on the client)
 		// When a value is being deleted
 		var newVal = this.state.displayData.filter(function(el){
@@ -66,90 +121,99 @@ var SearchAdmin = React.createClass({
 			url: 'index.php?module=intern&action=adminRest&id='+idNum,
 			type: 'DELETE',
 			success: function() {
+				var message = "Deleted admin "+username+ " from department " + department +".";
+				this.setState({errorWarning: message, messageType: "success"});
 				this.getData();
 			}.bind(this)
 		});
 	},
 	onAdminCreate: function(username, department)
 	{
-		var displayName = '';
+		//var displayName = '';
 		var displayData = this.state.displayData;
 		var dept = this.state.deptData;
 
+        var errorMessage = null;
+
 		// Catch whether the created admin is missing a department
-		if(department == '' || department == -1){
-			var errorMessage = "Please choose a department.";
+		if(department === '' || department === -1){
+			errorMessage = "Please choose a department.";
 			this.setState({errorWarning: errorMessage});
 			return;
 		}
 
 		// Catch whether the created admin is missing a username
-		if(username == ''){
-			var errorMessage = "Please enter a valid username.";
+		if(username === ''){
+			errorMessage = "Please enter a valid username.";
 			this.setState({errorWarning: errorMessage});
+
 			return;
 		}
 
 		// Finds the index of the array if the department number matches
 		// the id of the object.
 		var deptIndex = dept.findIndex(function(element, index, arr){
-            if(department == element.id){
+            if(department === element.id){
                 return true;
             } else {
                 return false;
             }
-        }.bind(this));
+        });
 
 		// Determines if the username has multiple entries within
 		// the same department before creating the admin.
 		for (var j = 0, k = displayData.length; j < k; j++)
 		{
-			if (displayData[j].username == username)
+			if (displayData[j].username === username)
 			{
-				displayName = displayData[j].display_name;
-				if (displayData[j].name == dept[deptIndex].name)
+				//displayName = displayData[j].display_name;
+				if (displayData[j].name === dept[deptIndex].name)
 				{
-					var errorMessage = "Multiple usernames in the same department.";
+					errorMessage = "Multiple usernames in the same department.";
 					this.setState({errorWarning: errorMessage});
 					return;
 				}
 			}
 		}
 
-		var deptName = dept[deptIndex].name;
+		/*
+        var deptName = dept[deptIndex].name;
 		// Updating the displayData so that it can be used in the ajax request.
 		if (displayName != ''){
 			displayData.unshift({username: username, id: -1, name: deptName, display_name: displayName});
 		}
+        */
 
 
 		// Updating the new state for optimization (snappy response on the client)
 		var newVal = this.state.displayData;
-		this.setState({displayData: newVal});
+		this.setState({displayData: newVal},this.searchList());
 
 		$.ajax({
 			url: 'index.php?module=intern&action=adminRest&user='+username+'&dept='+department,
 			type: 'POST',
 			success: function(data) {
 				this.getData();
-				this.setState({errorWarning: null});
+				var message = "Created admin "+username+" for department " + dept[deptIndex].name + ".";
+				this.setState({errorWarning: message, messageType: "success"});
 			}.bind(this),
 			error: function(http) {
 				var errorMessage = http.responseText;
-				this.setState({errorWarning: errorMessage});
+				this.setState({errorWarning: errorMessage, messageType: "error"});
 			}.bind(this)
 		});
 	},
 	searchList: function(e)
 	{
+        var phrase = null;
 		try {
 			// Saves the phrase that the user is looking for.
-			var phrase = e.target.value.toLowerCase();
+			phrase = e.target.value.toLowerCase();
 			this.setState({searchPhrase: phrase});
 		}
 		catch (err)
 		{
-			var phrase = this.state.searchPhrase;
+			phrase = this.state.searchPhrase;
 		}
 
 		var filtered = [];
@@ -173,17 +237,16 @@ var SearchAdmin = React.createClass({
 		this.setState({dropData: e.target.value});
 	},
 	handleSubmit: function() {
-		// React.findDOMNode is a little outdate - fix at a later time.
-		var username = React.findDOMNode(this.refs.username).value.trim();
+		var username = ReactDOM.findDOMNode(this.refs.username).value.trim();
 		var deptNum = this.state.dropData;
 
 		this.onAdminCreate(username, deptNum);
 	},
 	render: function() {
-		if (this.state.mainData != null)
-		{
+        var AdminsData = null;
+		if (this.state.mainData != null) {
 			var onAdminDelete = this.onAdminDelete;
-			var AdminsData = this.state.displayData.map(function (admin) {
+			AdminsData = this.state.displayData.map(function (admin) {
 			return (
 				<DeleteAdmin key={admin.id}
 						fullname={admin.display_name}
@@ -193,32 +256,28 @@ var SearchAdmin = React.createClass({
 					  	onAdminDelete={onAdminDelete} />
 				);
 			});
-		}
-		else
-		{
-			var AdminsData = "";
+		} else {
+			AdminsData = <tr><td></td></tr>; // Use an empty row here to avoid React warnings about whitespace inside <tbody>
 		}
 
-		if (this.state.deptData != null)
-		{
-			var dData = this.state.deptData.map(function (dept) {
+        var dData = null;
+		if (this.state.deptData != null) {
+			dData = this.state.deptData.map(function (dept) {
 			return (
 					<DepartmentList key={dept.id}
 						name={dept.name}
 						id={dept.id} />
 				);
 			});
-		}
-		else
-		{
-			var dData = "";
+		} else {
+			dData = "";
 		}
 
 		var errors;
         if(this.state.errorWarning == null){
             errors = '';
         } else {
-            errors = <ErrorMessagesBlock key="errorSet" errors = {this.state.errorWarning} />
+            errors = <ErrorMessagesBlock key="errorSet" errors={this.state.errorWarning} messageType={this.state.messageType} />
         }
 
 		return (
@@ -281,56 +340,7 @@ var SearchAdmin = React.createClass({
 	}
 });
 
-// Component that aids in deleting an admin
-var DeleteAdmin = React.createClass({
-	handleChange: function() {
-		this.props.onAdminDelete(this.props.id);
-	},
-	render: function() {
-		return (
-			<tr>
-				<td>{this.props.fullname}</td>
-				<td>{this.props.username}</td>
-				<td>{this.props.department}</td>
-				<td> <a onClick={this.handleChange}> <i className="fa fa-trash-o" /> </a> </td>
-			</tr>
-		);
-
-	}
-});
-
-// Component that helps build the department list
-var DepartmentList = React.createClass({
-  render: function() {
-    return (
-     	<option value={this.props.id}>{this.props.name}</option>
-    )
-  }
-});
-
-// Component that builds the error message to display
-// those messages.
-var ErrorMessagesBlock = React.createClass({
-    render: function() {
-        if(this.props.errors === null){
-            return '';
-        }
-
-        var errors = this.props.errors;
-
-        return (
-            <div className="row">
-                <div className="col-sm-12 col-md-6 col-md-push-3">
-                    <div className="alert alert-warning" role="alert">
-                        <p><i className="fa fa-exclamation-circle fa-2x"></i> Warning: {errors}</p>
-                    </div>
-                </div>
-            </div>
-        );
-    }
-});
-
-React.render(
+ReactDOM.render(
 	<SearchAdmin />,
 	document.getElementById('content')
 );

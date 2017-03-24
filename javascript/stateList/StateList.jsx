@@ -1,3 +1,43 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import $ from 'jquery';
+
+
+var StateList = React.createClass({
+	// Disables/Enables the state in the dropdown
+    render: function() {
+        var optionSelect = null;
+  	    if (this.props.active === 1) {
+  	        optionSelect = <option value={this.props.sAbbr} disabled>{this.props.stateName}</option>
+  	    } else {
+            optionSelect = <option value={this.props.sAbbr}>{this.props.stateName}</option>
+  	    }
+
+        return (optionSelect);
+    }
+});
+
+
+var TableStates = React.createClass({
+	handleClick: function(){
+		this.props.onStateDelete(this.props.sAbbr);
+	},
+	// If the state is active rendering the html elements otherwise do nothing.
+	render: function() {
+		if (this.props.active === 1)
+		{
+			var row1 = <td>{this.props.stateName}</td>
+
+			var row2 =	<td><button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={this.handleClick}><span aria-hidden="true">&times;</span></button></td>
+		}
+		return(
+			<tr>
+				{row1}{row2}
+			</tr>
+		);
+	}
+});
+
 
 var States = React.createClass({
 	getInitialState: function() {
@@ -16,35 +56,37 @@ var States = React.createClass({
 			dataType: 'json',
 			success: function(data) {
 				// Adds Select a State to the data array.
-				data.unshift({full_name: "Select a State", abbr: "AA"});			
+				data.unshift({full_name: "Select a State", abbr: "AA"});
 				this.setState({mainData: data, dropData: data});
 			}.bind(this),
 			error: function(xhr, status, err) {
 				alert("test failed")
 				console.error(this.props.url, status, err.toString());
-			}.bind(this)				
+			}.bind(this)
 		});
 	},
 	handleDrop: function(e){
 		//Event handler for the dropdown box.
-		if (e.target.value != 'AA')
+		if (e.target.value !== 'AA')
 		{
 			// Determines the text value (not abbr) of the selected state.
-			var options = e.target.options;
-			var val = '';
-			for (var i = 0, l = options.length; i < l; i++)
-			{
-				if (options[i].selected){
-					val = options[i].text;
-				}
-			}
+			// var options = e.target.options;
+            // var val = null;
+			// for (var i = 0; i < options.length; i++)
+			// {
+			// 	if (options[i].selected){
+			// 		val = options[i].text;
+			// 	}
+			// }
 
 			// Activating the selected state
 			for (var j = 0, k = this.state.dropData.length; j < k; j++)
 			{
-				if (this.state.dropData[j].abbr == e.target.value)
+				if (this.state.dropData[j].abbr === e.target.value)
 				{
-					this.state.dropData[j].active = this.state.dropData[j].active + 1;
+                    var newDropData = this.state.dropData;
+					newDropData[j].active = this.state.dropData[j].active + 1;
+                    this.setState({dropData: newDropData});
 				}
 			}
 
@@ -62,7 +104,7 @@ var States = React.createClass({
 			error: function(xhr, status, err) {
 				alert("failed to PUT")
 				console.error(this.props.url, status, err.toString());
-			}.bind(this)				
+			}.bind(this)
 			});
 		}
 	},
@@ -70,9 +112,11 @@ var States = React.createClass({
 		// No longer makes the state active
 		for (var j = 0, k = this.state.dropData.length; j < k; j++)
 		{
-			if (this.state.dropData[j].abbr == abbr)
+			if (this.state.dropData[j].abbr === abbr)
 			{
-				this.state.dropData[j].active = this.state.dropData[j].active - 1;
+                var newDropData = this.state.dropData;
+                newDropData[j].active = this.state.dropData[j].active - 1;
+                this.setState({dropData: newDropData});
 			}
 		}
 
@@ -89,42 +133,39 @@ var States = React.createClass({
 			error: function(xhr, status, err) {
 				alert("failed to PUT")
 				console.error(this.props.url, status, err.toString());
-			}.bind(this)				
+			}.bind(this)
 		});
 	},
 	render: function() {
-		if (this.state.dropData != null)
-		{
-			var States = this.state.dropData.map(function (data) {		    
+        var states = null;
+
+		if (this.state.dropData != null) {
+			states = this.state.dropData.map(function (data) {
 			return (
 					<StateList key={data.abbr}
 							   sAbbr={data.abbr}
 							   stateName={data.full_name}
 							   active={data.active} />
 				);
-			});	
-		}	
-		else
-		{
-			var States = "";
+			});
+		} else {
+			states = '';
 		}
 
-		if (this.state.dropData != null)
-		{
+        var row = null;
+		if (this.state.dropData != null) {
 			var onStateDelete = this.onStateDelete;
-			var Row = this.state.dropData.map(function (data) {		    
+			row = this.state.dropData.map(function (data) {
 			return (
 					<TableStates key={data.abbr}
 							   sAbbr={data.abbr}
 							   stateName={data.full_name}
-							   active={data.active} 
+							   active={data.active}
 							   onStateDelete={onStateDelete} />
 				);
-			});	
-		}	
-		else
-		{
-			var Row = "";
+			});
+		} else {
+			row = <tr><td></td></tr>;
 		}
 		return (
 			<div className="State List">
@@ -133,7 +174,7 @@ var States = React.createClass({
 						<div className="col-md-6">
 							<label>States:</label>
 							<select className="form-control" onChange={this.handleDrop}>
-								{States}
+								{states}
 							</select>
 							<br />
 							<div className="panel panel-default">
@@ -146,59 +187,21 @@ var States = React.createClass({
 											</tr>
 										</thead>
 										<tbody>
-											{Row}
+											{row}
 										</tbody>
 									</table>
 								</div>
 							</div>
 						</div>
-					</div>			
+					</div>
 				</div>
 			</div>
 		);
 	}
 });
 
-var StateList = React.createClass({
-	// Disables/Enables the state in the dropdown
-  render: function() {  
-  	if (this.props.active == 1)
-  	{
-  		var optionSelect = <option value={this.props.sAbbr} disabled>{this.props.stateName}</option>
-  	}
-  	else
-  	{
-  		var optionSelect = <option value={this.props.sAbbr}>{this.props.stateName}</option>
-  	}
-    return (   
-    	optionSelect
-    );
-  }
-});
 
-
-var TableStates = React.createClass({
-	handleClick: function(){
-		this.props.onStateDelete(this.props.sAbbr);
-	},
-	// If the state is active rendering the html elements otherwise do nothing.
-	render: function() {
-		if (this.props.active == 1)
-		{
-			var row1 = <td>{this.props.stateName}</td>
-		    		  
-			var row2 =	<td><button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={this.handleClick}><span aria-hidden="true">&times;</span></button></td>	  
-		}	
-		return(
-			<tr>
-				{row1}{row2}
-			</tr>
-		);
-	}
-});
-
-
-React.render(
+ReactDOM.render(
 	<States />,
 	document.getElementById('content')
 );

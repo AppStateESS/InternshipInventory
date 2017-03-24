@@ -4,6 +4,7 @@ namespace Intern\UI;
 use \Intern\AffiliationAgreementFactory;
 use \Intern\AffiliateFolder;
 use \Intern\AffiliationContract;
+use \Intern\AssetResolver;
 
 class EditAgreementUI implements UI
 {
@@ -19,8 +20,16 @@ class EditAgreementUI implements UI
 
         $affiliate_agreement = AffiliationAgreementFactory::getAffiliationById($aaId);
 
-        javascript('jquery');
-        javascriptMod('intern', 'affiliationAgreement', array('ID'=>$affiliate_agreement->getId()));
+        $tpl = array();
+
+        //javascript('jquery');
+        //javascriptMod('intern', 'affiliationAgreement', array('ID'=>$affiliate_agreement->getId()));
+
+        $tpl['AGREEMENT_ID'] = $aaId;
+        $tpl['vendor_bundle'] = AssetResolver::resolveJsPath('assets.json', 'vendor');
+        $tpl['department_bundle'] = AssetResolver::resolveJsPath('assets.json', 'affiliationDepartments');
+        $tpl['location_bundle'] = AssetResolver::resolveJsPath('assets.json', 'affiliationLocation');
+        $tpl['terminate_bundle'] = AssetResolver::resolveJsPath('assets.json', 'affiliationTerminate');
 
         /* Form for adding new grad program */
         $form = new \PHPWS_Form('edit_affil');
@@ -49,8 +58,6 @@ class EditAgreementUI implements UI
         {
           $form->setMatch('auto_renew', 'yes');
         }
-
-        $tpl = array();
 
         /*
          * If 'missing' is set then we have been redirected

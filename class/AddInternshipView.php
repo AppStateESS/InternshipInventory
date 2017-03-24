@@ -15,8 +15,8 @@ class AddInternshipView implements \View {
     {
         $tpl = array();
 
-        \javascript('jquery');
-        \javascriptMod('intern', 'missing');
+        $tpl['vendor_bundle'] = AssetResolver::resolveJsPath('assets.json', 'vendor');
+        $tpl['entry_bundle'] = AssetResolver::resolveJsPath('assets.json', 'createInterface');
 
         return \PHPWS_Template::process($tpl, 'intern', 'addInternship.tpl');
     }

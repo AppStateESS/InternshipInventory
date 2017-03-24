@@ -2,6 +2,15 @@
 
 namespace Intern;
 
+/**
+ * Class to contain and manage term information (e.g. class dates and census date)
+ * from Banner. This info is acquired through the web service interface by using the
+ * BannerTermProvider class.
+ *
+ * @see \Intern\BannerTermProvider
+ * @author jbooker
+ * @package Intern
+ */
 class TermInfo {
     // Defines for Internship Inventory Term Banner Data
 
@@ -19,58 +28,43 @@ class TermInfo {
         $this->partTerm = array();
     }
 
+    public function getTermPartByCode($code)
+    {
+        foreach($this->partTerm as $part){
+            if($part->part_term_code == $code){
+                return $part;
+            }
+        }
+
+        return null;
+    }
+
+    public function getLongestTermPart()
+    {
+        $semester = Term::getSemester($this->termCode);
+        if($semester == Term::SPRING || $semester == Term::FALL){
+            $part = $this->getTermPartByCode('4');
+        } else if($semester == Term::SUMMER1){
+            $part = $this->getTermPartByCode('SD');
+        } else if($semester == Term::SUMMER2){
+            $part = $this->getTermPartByCode('SE');
+        }
+
+        return $part;
+    }
+
     /*****
      * Accessor / Mutator Methods *
      */
 
-    public function setTermCode($term_code)
-    {
-        $this->termCode = $term_code;
-    }
-
-    public function setTermDesc($term_desc)
-    {
-        $this->termDesc = $term_desc;
-    }
-
-    public function setTermStartDate($term_start_date)
-    {
-        $this->termStartDate = $term_start_date;
-    }
-
-    public function setTermEndDate($term_end_date)
-    {
-        $this->termEndDate = $term_end_date;
-    }
-
-    public function setCensusDate($census_date)
-    {
-        $this->censusDate = $census_date;
-    }
-
-    public function setPartTermCode($part_term_code)
-    {
-        $this->partTerm['code'] = $part_term_code;
-    }
-
-    public function setPartTermDesc($part_term_desc)
-    {
-        $this->partTerm['desc'] = $part_term_desc;
-    }
-
-    public function setPartTermStartDate($part_start_date)
-    {
-        $this->partTerm['startDate'] = $part_start_date;
-    }
-
-    public function setPartTermEndDate($part_end_date)
-    {
-        $this->partTerm['endDate'] = $part_end_date;
-    }
-
     public function getTermCode()
     {
         return $this->termCode;
+    }
+
+    public function setTermCode($term_code)
+    {
+        $this->termCode = $term_code;
     }
 
     public function getTermDesc()
@@ -78,9 +72,19 @@ class TermInfo {
         return $this->termDesc;
     }
 
+    public function setTermDesc($term_desc)
+    {
+        $this->termDesc = $term_desc;
+    }
+
     public function getTermStartDate()
     {
         return $this->termStartDate;
+    }
+
+    public function setTermStartDate($term_start_date)
+    {
+        $this->termStartDate = $term_start_date;
     }
 
     public function getTermEndDate()
@@ -88,30 +92,27 @@ class TermInfo {
         return $this->termEndDate;
     }
 
+    public function setTermEndDate($term_end_date)
+    {
+        $this->termEndDate = $term_end_date;
+    }
+
     public function getCensusDate()
     {
         return $this->censusDate;
     }
 
-    public function getPartTermCode()
+    public function setCensusDate($census_date)
     {
-        return $this->partTerm['code'];
+        $this->censusDate = $census_date;
     }
 
-    public function getPartTermDesc()
-    {
-        return $this->partTerm['desc'];
+    public function getTermParts(){
+        return $this->partTerm;
     }
 
-    public function getPartTermStartDate()
-    {
-        return $this->partTerm['startDate'];
+    public function addTermPart($part){
+        $this->partTerm[] = $part;
     }
-
-    public function getPartTermEndDate()
-    {
-        return $this->partTerm['endDate'];
-    }
-
 
 }

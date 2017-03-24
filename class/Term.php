@@ -2,9 +2,19 @@
 
 namespace Intern;
 
-  /**
-   * Term...
-   */
+/**
+ * Utility class for managing Term codes. Holds defines for each term
+ * (fall, spring, summer1, summer2), and has helper methods for find the
+ * previous/current/next terms. Terms are stored in the 'intern_term' table.
+ *
+ * NB: This class is distinct from the TermInfo class, which holds term start/end dates.
+ * This class is just for managing the term codes (e.g. 201740) that we already have in
+ * the local database.
+ *
+ * @see \Intern\TermInfo
+ * @author jbooker
+ * @package Intern
+ */
 class Term extends Model
 {
     const SPRING    = 1;

@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom';
 import Manager from '../manager/Manager.jsx';
 
 ReactDOM.render(
-	<Manager ajaxURL="deptRest"
-			 title="Departments"
-			 panelTitle="Add A Department "
-			 buttonTitle="Add Department"  />,
+	<Manager ajaxURL="majorRest"
+			 title="Undergraduate Majors"
+			 panelTitle="Add An Undergraduate Major:"
+			 buttonTitle="Add Major" />,
 	document.getElementById('content')
 );

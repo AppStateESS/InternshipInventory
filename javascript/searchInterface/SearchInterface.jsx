@@ -1,4 +1,12 @@
-var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
+import React from 'react';
+import ReactDOM from 'react-dom';
+import $ from 'jquery';
+import classNames from 'classnames';
+
+import InternationalDropDown from '../createInterface/InternationalDropDown.jsx';
+import StateDropDown from '../createInterface/StateDropDown.jsx';
+
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 var LocationSelector = React.createClass({
     getInitialState: function() {
@@ -20,7 +28,7 @@ var LocationSelector = React.createClass({
             }.bind(this),
             error: function(xhr, status, err) {
                 console.error(status, err.toString());
-            }.bind(this)
+            }
         });
 
         // Fetch list of available countries
@@ -32,7 +40,7 @@ var LocationSelector = React.createClass({
             }.bind(this),
             error: function(xhr, status, err) {
                 console.error(status, err.toString());
-            }.bind(this)
+            }
         });
     },
     domestic: function() {
@@ -45,10 +53,6 @@ var LocationSelector = React.createClass({
         this.setState({domestic: false, international: false});
     },
     render: function () {
-        var fgClasses = classNames({
-                        'form-group': true,
-                        'has-error': this.state.hasError
-                    });
 
         var dropdown;
         if(!this.state.domestic && !this.state.international) {

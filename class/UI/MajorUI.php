@@ -1,6 +1,7 @@
 <?php
 
 namespace Intern\UI;
+use \Intern\AssetResolver;
 
 class MajorUI implements UI
 {
@@ -14,10 +15,9 @@ class MajorUI implements UI
         }
 
         $tpl = array();
-        javascript('jquery');
 
-        javascriptMod('intern', 'manager');
-        javascriptMod('intern', 'editMajor');
+        $tpl['vendor_bundle'] = AssetResolver::resolveJsPath('assets.json', 'vendor');
+        $tpl['entry_bundle'] = AssetResolver::resolveJsPath('assets.json', 'editMajor');
 
         return \PHPWS_Template::process($tpl, 'intern', 'edit_major.tpl');
     }

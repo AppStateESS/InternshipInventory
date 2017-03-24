@@ -2,8 +2,6 @@
 
 namespace Intern;
 
-
-use Intern\EmergencyContactFormView;
 use Intern\ChangeHistoryView;
 use Intern\DepartmentFactory;
 
@@ -25,6 +23,8 @@ class EditInternshipFormView {
 
     private $agency;
     private $department;
+    private $docs;
+    private $termInfo;
 
     private $formVals;
 
@@ -34,7 +34,7 @@ class EditInternshipFormView {
      * @param string $pagetitle
      * @param Internship $i
      */
-    public function __construct(Internship $i, Student $student = null, Agency $agency, Array $docs)
+    public function __construct(Internship $i, Student $student = null, Agency $agency, Array $docs, TermInfo $termInfo)
     {
         \Layout::addPageTitle('Edit Internship');
 
@@ -44,6 +44,7 @@ class EditInternshipFormView {
         $this->agency = $agency;
         $this->department = $this->intern->getDepartment();
         $this->docs = $docs;
+        $this->termInfo = $termInfo;
 
         $this->tpl = array();
 
@@ -681,6 +682,10 @@ class EditInternshipFormView {
         $this->form->addHidden('internship_id', $this->intern->id);
         $this->formVals['start_date'] = $this->intern->start_date ? date('m/d/Y', $this->intern->start_date) : null;
         $this->formVals['end_date'] = $this->intern->end_date ? date('m/d/Y', $this->intern->end_date) : null;
+
+        $part = $this->termInfo->getLongestTermPart();
+        $this->tpl['TERM_DATES'] = $part->part_start_date . ' through ' . $part->part_end_date;
+
         $this->formVals['credits'] = $this->intern->credits;
         $this->formVals['avg_hours_week'] = $this->intern->avg_hours_week;
         $this->formVals['loc_address'] = $this->intern->loc_address;

@@ -1,6 +1,7 @@
 <?php
 
 namespace Intern\UI;
+use \Intern\AssetResolver;
 
 /**
  * View class for the add/edit faculty menu.
@@ -13,8 +14,9 @@ class FacultyUI implements UI
 	public function display()
 	{
 		$tpl = array();
-		javascript('jquery_ui');
-        javascriptMod('intern', 'facultyEdit');
+
+        $tpl['vendor_bundle'] = AssetResolver::resolveJsPath('assets.json', 'vendor');
+        $tpl['entry_bundle'] = AssetResolver::resolveJsPath('assets.json', 'facultyEdit');
 
 		return \PHPWS_Template::process($tpl, 'intern', 'editFaculty.tpl');
 	}
