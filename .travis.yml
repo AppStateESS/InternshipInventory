@@ -2,7 +2,6 @@ sudo: false
 language: php
 php:
     - 7
-    - hhvm
 
 install:
     - nvm install 6
