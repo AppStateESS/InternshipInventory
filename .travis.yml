@@ -27,9 +27,6 @@ addons:
   code_climate:
     repo_token: 3060bdda5db8f779d82ab527acadec5cd581bde782093136322604a4280162e7
 
-after_script:
-  - vendor/bin/test-reporter
-
 addons:
     code_climate:
         repo_token: 3060bdda5db8f779d82ab527acadec5cd581bde782093136322604a4280162e7
