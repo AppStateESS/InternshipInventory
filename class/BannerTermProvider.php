@@ -93,7 +93,11 @@ class BannerTermProvider {
         $termInfo->setTermDesc($data->term_desc);
         $termInfo->setTermStartDate($data->term_start_date);
         $termInfo->setTermEndDate($data->term_end_date);
-        $termInfo->setCensusDate($data->census_date);
+
+        // Census date may not always be set in our web service response
+        if(isset($data->census_date)){
+            $termInfo->setCensusDate($data->census_date);
+        }
 
         if(is_array($data->part_term)){
             foreach($data->part_term as $termPart){

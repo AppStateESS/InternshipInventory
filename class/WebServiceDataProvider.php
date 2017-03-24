@@ -70,6 +70,13 @@ class WebServiceDataProvider extends ExternalDataProvider {
             throw new \Intern\Exception\StudentNotFoundException("Could not locate student: $studentId");
         }
 
+        // Response may have multiple records (faculty/staff + student), so
+        // just take the first one
+        // TODO: Maybe be smarter about which result we use?
+        if(is_array($response)){
+            $response = $response[0];
+        }
+
         // Check for an InvalidUsername error (i.e. the user doesn't have banner permissions)
         if($response->error_num == 1002 && $response->error_desc == 'InvalidUserName'){
             throw new \Intern\Exception\BannerPermissionException("No banner permissions for {$this->currentUserName}");
@@ -87,10 +94,6 @@ class WebServiceDataProvider extends ExternalDataProvider {
         if($response->error_num == 1001 && $response->error_desc == 'InvalidBannerID'){
             throw new \Intern\Exception\StudentNotFoundException("Invalid banner id: {$studentId}");
 
-        }
-
-        if(is_array($response)){
-            $response = $response[0];
         }
 
         // Log the request
