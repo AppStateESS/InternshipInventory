@@ -77,7 +77,7 @@ class ChangeHistory extends Model{
     }
 
     public function getFormattedDate(){
-        return date("M j, Y h:i", $this->timestamp);
+        return date("M j, Y h:ia", $this->timestamp);
     }
 
     public function getFromStateFriendlyName()

@@ -5,7 +5,19 @@ Internship Inventory
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/AppStateESS/InternshipInventory/badges/quality-score.png?s=c90941c8179a4c726384b8b21bcd71536e7f1f36)](https://scrutinizer-ci.com/g/AppStateESS/InternshipInventory/)
 [![Code Climate](https://codeclimate.com/github/AppStateESS/InternshipInventory.png)](https://codeclimate.com/github/AppStateESS/InternshipInventory)
 
-Internship Inventory is a sleek, intunitive, and powerful web-application for tracking and approving student internships, created and maintained by the core team of [Electronic Student Services](http://ess.appstate.edu) at [Appalachian State University](http://www.appstate.edu).
+Internship Inventory is a sleek, intunitive, and powerful web-application for tracking and approving student internships in a higher-education setting. It is created and maintained by the core team of [Electronic Student Services](http://ess.appstate.edu) at [Appalachian State University](http://www.appstate.edu) and other contributers.
+
+## Purpose
+Internship Inventory helps a Univeristy track internships campus-wide. We specifically care about:
+* Where each student is located during their internship (because of [State Authorization](http://wcet.wiche.edu/focus-areas/policy-and-regulation/state-authorization) and in case of emergency)
+* Who we should contact in case of emergency
+* Generating and storing a valid contract for each internship, to protect all parties (Student, Hosts, and the University) in case of legal dispute.
+
+We've realized other benefits too:
+* We have great data for reporting and data mining!
+* Internships tend to get approved more quickly, or we have good notes on what happened otherwise.
+* Fewer students and faculty members skip steps in the approval process. We catch errors before they become problems.
+* Cut costs by streamlining the approval process (less man-hours) and saving paper.
 
 ## Installation
 Instructions on [how to install Internship Inventory](https://github.com/AppStateESS/InternshipInventory/wiki/Installation) can be found in the Wiki.

@@ -263,6 +263,10 @@
       </div>
 
       <div class="form-group">
+          <div class="col-lg-6 col-lg-push-3"><p class="form-control-static">{TERM_DATES}</p></div>
+      </div>
+
+      <div class="form-group">
         <label class="col-lg-3 control-label" for="{START_DATE_ID}">{START_DATE_LABEL_TEXT}</label>
         <div class="col-lg-6">{START_DATE}</div>
       </div>
@@ -413,7 +417,7 @@
 
       <!-- Faculty info -->
       <fieldset>
-        <legend>Faculty Advisor</legend>
+        <legend>Faculty Supervisor</legend>
         <div id="faculty_selector">
           <div class="form-group required">
             <label class="col-lg-3 control-label" for="{DEPARTMENT_ID}">{DEPARTMENT_LABEL_TEXT}</label>

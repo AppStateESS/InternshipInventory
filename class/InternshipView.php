@@ -19,14 +19,16 @@ class InternshipView {
     private $wfState;
     private $agency;
     private $docs;
+    private $termInfo;
 
-    public function __construct(Internship $internship, Student $student = null, WorkflowState $wfState, Agency $agency, Array $docs)
+    public function __construct(Internship $internship, Student $student = null, WorkflowState $wfState, Agency $agency, Array $docs, TermInfo $termInfo)
     {
         $this->intern = $internship;
         $this->student = $student;
         $this->wfState = $wfState;
         $this->agency = $agency;
         $this->docs = $docs;
+        $this->termInfo = $termInfo;
     }
 
     public function display()
@@ -34,7 +36,7 @@ class InternshipView {
         $tpl = array();
 
         // Setup the form
-        $internshipForm = new EditInternshipFormView($this->intern, $this->student, $this->agency, $this->docs);
+        $internshipForm = new EditInternshipFormView($this->intern, $this->student, $this->agency, $this->docs, $this->termInfo);
 
         // Get the Form object
         $form = $internshipForm->getForm();
@@ -70,8 +72,6 @@ class InternshipView {
 
         $this->showWarnings();
         $this->showStudentWarnings();
-
-
 
         return \PHPWS_Template::process($form->getTemplate(), 'intern', 'internshipView.tpl');
     }

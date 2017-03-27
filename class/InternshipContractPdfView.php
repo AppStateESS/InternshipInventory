@@ -55,7 +55,7 @@ class InternshipContractPdfView {
         $f = $this->internship->getFaculty();
         $m = $this->internship->getUgradMajor();
         $g = $this->internship->getGradProgram();
-        $subject = $this->internship->getSubject();
+        //$subject = $this->internship->getSubject();
 
         $pagecount = $this->pdf->setSourceFile(PHPWS_SOURCE_DIR . 'mod/intern/pdf/AppStateInternship_Contract_StartEndDates-flat.pdf');
         $tplidx = $this->pdf->importPage(1);
@@ -71,7 +71,7 @@ class InternshipContractPdfView {
 
         /* Department */
         $this->pdf->setXY(138, 40);
-        $this->pdf->MultiCell(31, 3, $subject->getName());
+        $this->pdf->multiCell(73, 3, $d->getName());
 
         /* Course title */
         $this->pdf->setXY(138, 43);

@@ -3,7 +3,6 @@
 namespace Intern\WorkflowTransition;
 use Intern\WorkflowTransition;
 use Intern\Internship;
-use Intern\Email;
 
 class GradSchoolApprove extends WorkflowTransition {
 
@@ -25,11 +24,7 @@ class GradSchoolApprove extends WorkflowTransition {
 
     public function doNotification(Internship $i, $note = null)
     {
-        // Should always be a grad-level internship if we've made it to this transition, but double check
-        if($i->isGraduate()){
-            $agency = $i->getAgency();
-
-            Email::sendRegistrarEmail($i, $agency);
-        }
+        $email = new \Intern\Email\ReadyToRegisterEmail(\Intern\InternSettings::getInstance(), $i);
+        $email->send();
     }
 }
