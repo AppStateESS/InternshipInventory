@@ -180,10 +180,16 @@ class GetSearchSuggestions {
     private function encodeStudents(Array $students) {
         $studentArray = array();
 
+        // If an empty array was given, just return an empty JSON array
+        if(sizeof($students) === 0){
+            return json_encode($studentArray);
+        }
+
         foreach($students as $student) {
 
             // Get the students list of majors
             $majors = $student->getMajors();
+            
             $majorNames = array();
             if(!empty($majors)) {
                 foreach($majors as $m) {
