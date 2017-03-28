@@ -39,7 +39,9 @@ if(DEBUG){
             $email->send();
 
             \NQ::close();
-            \Intern\UI\NotifyUI::display();
+
+            $notifyUI = new \Intern\UI\NotifyUI();
+            $notifyUI->display();
 
             \PHPWS_Core::goBack();
         }catch(Exception $e){

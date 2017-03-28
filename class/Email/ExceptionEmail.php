@@ -1,5 +1,5 @@
 <?php
-namespace \Intern\Email;
+namespace Intern\Email;
 
 use \Intern\InternSettings;
 
@@ -54,9 +54,9 @@ class ExceptionEmail extends Email {
         }
 
         echo "Here is the exception:\n\n";
-        print_r($this->e);
+        print_r($this->exception);
 
-        echo "\n\nHere is $_REQUEST:\n\n";
+        echo "\n\nHere is REQUEST:\n\n";
         print_r($_REQUEST);
 
         echo "\n\nHere is CurrentUser:\n\n";
