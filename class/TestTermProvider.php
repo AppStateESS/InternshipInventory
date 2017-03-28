@@ -148,10 +148,8 @@ class TestTermProvider extends BannerTermProvider {
 
         $responseObj->part_term[] = $partTerm;
 
-        $obj->GetTermInfoResult = $responseObj;
-
         $parentObj = new \stdClass();
-        $parentObj->GetTermInfoResult = $obj;
+        $parentObj->GetTermInfoResult = $responseObj;
 
         return $parentObj;
     }
