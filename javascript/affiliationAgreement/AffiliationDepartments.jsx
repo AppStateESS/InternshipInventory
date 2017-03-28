@@ -43,12 +43,11 @@ var DepartmentList = React.createClass({
 
 var DepartmentDropdown = React.createClass({
     add: function() {
-        var deptToAdd = this.refs.deptChoices.getDOMNode().value;
+        var deptToAdd = this.refs.deptChoices.value;
         this.props.onAdd(deptToAdd);
     },
     render: function() {
         var options = this.props.departments;
-        options.unshift({id:0, name: "Select a Department"});
 
         var selectOptions = options.map(function(department){
 
@@ -74,6 +73,7 @@ var DepartmentDropdown = React.createClass({
             <div>
                 <div className="form-group">
                     <select className="form-control" ref="deptChoices">
+                        <option value="-1">Select a Department"</option>
                         {selectOptions}
                     </select>
                 </div>

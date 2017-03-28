@@ -39,13 +39,11 @@ var LocationList = React.createClass({
 
 var LocationDropdown = React.createClass({
     add: function() {
-        var locToAdd = this.refs.locChoices.getDOMNode().value;
+        var locToAdd = this.refs.locChoices.value;
         this.props.onAdd(locToAdd);
     },
     render: function() {
         var options = this.props.locations;
-        // Adds Select a State to the data array.
-        options.unshift({full_name: "Select a State", abbr: "-1"});
 
         var selectOptions = options.map(function(location){
 
@@ -71,6 +69,7 @@ var LocationDropdown = React.createClass({
             <div className="LocationDropdown">
                 <div className="form-group">
                     <select className="form-control" ref="locChoices">
+                        <option value="-1">Select a State</option>
                         {selectOptions}
                     </select>
                 </div>
