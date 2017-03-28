@@ -12,13 +12,15 @@ use \Intern\InternSettings;
  */
 class ExceptionEmail extends Email {
 
+    private $exception;
+
     /**
      * Constructor
      *
      * @param InternSettings $emailSettings
      * @param Exception $e
      */
-    public function __construct(InternSettings $emailSettings, $e)
+    public function __construct(InternSettings $emailSettings, \Exception $e)
     {
         parent::__construct($emailSettings);
 
