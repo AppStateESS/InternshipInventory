@@ -7,7 +7,9 @@ Student
 Name: {NAME}
 Banner ID: {BANNER}
 Term: {TERM}
+Level: {LEVEL}
 Email: {EMAIL}
-Birthday: {BIRTHDAY}	
+Birthday: {BIRTHDAY}
+Faculty Supervisor: {FACULTY}
 
 - Internship Inventory
