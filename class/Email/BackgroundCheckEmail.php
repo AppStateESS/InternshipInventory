@@ -52,9 +52,16 @@ class BackgroundCheckEmail extends Email{
         $this->tpl['NAME'] = $this->internship->getFullName();
         $this->tpl['BANNER'] = $this->internship->banner;
         $this->tpl['TERM'] = Term::rawToRead($this->internship->getTerm());
+        $this->tpl['LEVEL'] = $this->internship->getLevel();
         $this->tpl['BIRTHDAY'] = $this->internship->getBirthDateFormatted();
         $this->tpl['EMAIL'] = $this->internship->getEmailAddress() . $this->emailSettings->getEmailDomain();
         $this->tpl['AGENCY'] = $this->agency->getName();
+
+        if ($this->internship->getFaculty() !== null) {
+            $this->tpl['FACULTY'] = $this->internship->getFaculty();
+        } else {
+            $this->tpl['FACULTY'] = 'Faculty supervisor not set.';
+        }
 
         if ($this->backgroundCheck === true && $this->drugCheck === true) {
             $this->subject = 'Internship Background & Drug Check Needed for ' . $this->internship->getFullName();
