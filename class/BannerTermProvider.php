@@ -56,11 +56,15 @@ class BannerTermProvider {
             throw $e;
         }
 
-        if(is_array($response)){
-            $response = $response[0];
-        }
-
         $response = $response->GetTermInfoResult;
+
+        if(isset($response->error_desc) && $response->error_desc !== '') {
+            if($response->error_desc === 'InvalidUserName') {
+                throw new \Intern\Exception\BannerPermissionException('While fetching term data, webservice returned permission error for: ' . $this->currentUserName);
+            }
+
+            throw new \Intern\Exception\WebServiceException('Web service returned an error while fetching term data.');
+        }
 
         // Log the request
         $this->logRequest('getTerm', 'success', $params);
