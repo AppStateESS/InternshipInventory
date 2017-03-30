@@ -21,7 +21,17 @@ class GetAvailableTerms {
 
         $terms = array();
         foreach($futureTerms as $term => $description){
-            $termInfo = $termProvider->getTerm($term);
+
+            try {
+                // Fetch info from web service for this particular term
+                $termInfo = $termProvider->getTerm($term);
+            } catch (\Intern\Exception\BannerPermissionException $e){
+                // Catch permission errors
+                $error = array('error'=>'You do not have Banner student data permissions. Please click the \'Get Help\' button in the top navigation bar to open a support request.');
+                echo json_encode($error);
+                exit;
+            }
+
 
             $part = $termInfo->getLongestTermPart();
 
