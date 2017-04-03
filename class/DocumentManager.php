@@ -81,7 +81,7 @@ class DocumentManager extends \FC_Document_Manager {
         $form->setExtra('upload', 'onclick="this.style.display=\'none\'"');
 
         if ($this->document->id && Current_User::allow('filecabinet', 'edit_folders', $this->folder->id, 'folder', true)) {
-            Cabinet::moveToForm($form, $this->folder);
+            \Cabinet::moveToForm($form, $this->folder);
         }
 
         $template = $form->getTemplate();
@@ -133,8 +133,7 @@ class DocumentManager extends \FC_Document_Manager {
             if (\PHPWS_Error::logIfError($result)) {
                 $content = dgettext('filecabinet', '<p>Could not upload file to folder. Please check your directory permissions.</p>');
                 $content .= sprintf('<a href="#" onclick="window.close(); return false">%s</a>', dgettext('filecabinet', 'Close this window'));
-                Layout::nakedDisplay($content);
-                exit();
+                \Layout::nakedDisplay($content);
             }
 
             $this->document->moveToFolder();
