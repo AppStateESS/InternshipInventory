@@ -52,7 +52,7 @@ class CancelInternshipNotice extends Email {
 
         // CC the graduate school (for grad level) or the registrar's office (for undergrad level)
         if($this->internship->isGraduate()){
-            $this->cc[] = $this->emailSettings->getGraduateRegEmail();
+            $this->cc[] = explode(',', $this->emailSettings->getGraduateRegEmail()); // NB: Setting is a comma separated array
         } else {
             $this->cc[] = $this->emailSettings->getRegistrarEmail();
         }
