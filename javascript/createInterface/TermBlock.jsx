@@ -8,7 +8,7 @@ import classNames from 'classnames';
  *********/
 var TermBlock = React.createClass({
     getInitialState: function() {
-        return ({terms: null, hasError: false, selectedTerm: null, dataError: null});
+        return ({terms: null, hasError: false, selectedTerm: null, dataError: null, dataLoading: true});
     },
     componentWillMount: function() {
         $.ajax({
@@ -17,14 +17,15 @@ var TermBlock = React.createClass({
             success: function(data) {
                 // If the 'error' property exists, then something went wrong on the server-side
                 if('error' in data){
-                    this.setState({dataError: data.error});
+                    console.log('Error key exists.');
+                    this.setState({dataLoading: false, dataError: data.error});
                 }else{
-                    this.setState({terms: data});
+                    this.setState({terms: data, dataLoading: false, dataError: false});
                 }
             }.bind(this),
             error: function(xhr, status, err) {
                 console.error(status, err.toString());
-                this.setState({dataError: 'There was an error loading the Term information. Please contact the site administrators.'});
+                this.setState({dataLoading: false, dataError: 'There was an error loading the Term information. Please contact the site administrators.'});
             }.bind(this)
         });
     },
@@ -35,12 +36,15 @@ var TermBlock = React.createClass({
         this.setState({selectedTerm: clickEvent.target.childNodes[0].value});
     },
     render: function() {
-        if(this.state.terms === null){
+
+        // If we have no data, and it's still loading, then return an empty div
+        if(this.state.terms === null && this.state.dataLoading === true){
             return (<div></div>);
         }
 
         var errorNotice = null;
-        if(this.state.dataError !== null){
+        if(this.state.dataError !== false){
+            console.log('Showing error notice!');
             errorNotice = <div style={{marginTop: "1em"}} className="alert alert-danger">
                                 <p>{this.state.dataError}</p>
                             </div>
@@ -58,21 +62,25 @@ var TermBlock = React.createClass({
             termDates = '';
         }
 
+        var termList = '';
+        if(this.state.dataError === false && this.state.tems !== null){
+            termList = Object.keys(this.state.terms).map(function(key) {
+                            return (
+                                <label className="btn btn-default" key={key} onClick={this.handleChange}>
+                                    <input type="radio" ref="term" name="term" key={key} value={key} />{this.state.terms[key].description}
+                                </label>
+                            );
+                        }.bind(this))
+        }
+
         return (
             <div className="row">
+                {errorNotice}
                 <div className="col-sm-12 col-md-5 col-md-push-3">
-                    {errorNotice}
                     <div className={fgClasses} id="term">
                         <label htmlFor="term" className="control-label">Term</label><br />
                         <div className="btn-group" data-toggle="buttons">
-
-                            {Object.keys(this.state.terms).map(function(key) {
-                                return (
-                                    <label className="btn btn-default" key={key} onClick={this.handleChange}>
-                                        <input type="radio" ref="term" name="term" key={key} value={key} />{this.state.terms[key].description}
-                                    </label>
-                                );
-                            }.bind(this))}
+                            {termList}
                         </div>
                     </div>
                 </div>
