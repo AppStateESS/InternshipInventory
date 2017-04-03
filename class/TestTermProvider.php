@@ -156,7 +156,11 @@ class TestTermProvider extends BannerTermProvider {
 
     private function getFakeErrorResponse()
     {
+        $resultObj = new \stdClass();
+        $resultObj->error_desc = 'InvalidUserName';
+
         $obj = new \stdClass();
+        $obj->GetTermInfoResult = $resultObj;
 
         return $obj;
     }
