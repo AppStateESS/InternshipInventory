@@ -41,7 +41,7 @@ class UndergradRegistration extends WorkflowTransition {
 
     public function doNotification(Internship $i, $note = null)
     {
-        $email = \Intern\Email\RegistrationConfirmationEmail(\Intern\InternSettings::getInstance(), $i);
+        $email = new \Intern\Email\RegistrationConfirmationEmail(\Intern\InternSettings::getInstance(), $i);
         $email->send();
     }
 
