@@ -2,7 +2,7 @@
 
 namespace Intern;
 
-use \Database;
+use \phpws2\Database;
 
 class InternshipFactory {
 

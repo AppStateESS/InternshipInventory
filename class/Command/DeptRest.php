@@ -1,6 +1,7 @@
 <?php
 
 namespace Intern\Command;
+use \phpws2\Database;
 
 class DeptRest {
 
@@ -35,7 +36,7 @@ class DeptRest {
             exit;
 		}
 
-		$db = \Database::newDB();
+		$db = Database::newDB();
 		$pdo = $db->getPDO();
 
 		$sql = "INSERT INTO intern_department (id, name, hidden, corequisite)
@@ -48,7 +49,7 @@ class DeptRest {
 	}
 	public function put()
 	{
-		$db = \Database::newDB();
+		$db = Database::newDB();
 		$pdo = $db->getPDO();
 
 		if(isset($_REQUEST['val']))
@@ -82,7 +83,7 @@ class DeptRest {
 
 	public function get()
 	{
-		$db = \Database::newDB();
+		$db = Database::newDB();
 		$pdo = $db->getPDO();
 
 		$sql = "SELECT id, name, hidden

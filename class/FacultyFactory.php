@@ -2,11 +2,13 @@
 
 namespace Intern;
 
+use \phpws2\Database;
+
 class FacultyFactory {
 
     public static function getFacultyById($id)
     {
-        $db = \Database::newDB();
+        $db = Database::newDB();
         $pdo = $db->getPDO();
 
         $sql = "SELECT intern_faculty.* FROM intern_faculty WHERE intern_faculty.id = :id";
@@ -66,7 +68,7 @@ class FacultyFactory {
      */
     public static function getFacultyByDepartmentAssoc(Department $department)
     {
-        $db = \Database::newDB();
+        $db = Database::newDB();
         $pdo = $db->getPDO();
 
         $sql = "SELECT intern_faculty.* FROM intern_faculty JOIN intern_faculty_department ON intern_faculty.id = intern_faculty_department.faculty_id WHERE intern_faculty_department.department_id = :departmentId ORDER BY last_name ASC";

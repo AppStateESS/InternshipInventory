@@ -31,6 +31,6 @@ class ShowAddInternship {
 
         $view = new \Intern\AddInternshipView();
 
-        return new \Response($view);
+        return $view->render();
     }
 }

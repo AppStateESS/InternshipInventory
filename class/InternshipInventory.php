@@ -55,7 +55,7 @@ class InternshipInventory {
                 break;
             case 'ShowAddInternship':
                 $ctrl = new Command\ShowAddInternship();
-                $this->content = $ctrl->execute()->getView()->render();
+                $this->content = $ctrl->execute();
                 break;
             case 'AddInternship':
                 $ctrl = new Command\AddInternship();

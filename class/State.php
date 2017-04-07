@@ -51,7 +51,7 @@ class State {
 
     public static function getStates()
     {
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
         $pdo = $db->getPDO();
 
         $sql = "SELECT *
