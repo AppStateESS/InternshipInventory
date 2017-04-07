@@ -1,6 +1,7 @@
 <?php
 
 namespace Intern\Command;
+use \phpws2\Database;
 
 /**
  * DeleteInternship Class
@@ -29,7 +30,7 @@ class DeleteInternship {
         $internId = array('id'=> $id);
 
         // Delete all documents relating to internship
-        $db = \Database::newDB();
+        $db = Database::newDB();
         $pdo = $db->getPDO();
         $pdo->beginTransaction();
 

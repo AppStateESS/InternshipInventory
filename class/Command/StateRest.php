@@ -1,6 +1,7 @@
 <?php
 
 namespace Intern\Command;
+use \phpws2\Database;
 
 class StateRest {
 
@@ -23,7 +24,7 @@ class StateRest {
 
 	public function get()
 	{
-		$db = \Database::newDB();
+		$db = Database::newDB();
 		$pdo = $db->getPDO();
 
 
@@ -39,7 +40,7 @@ class StateRest {
 
 	public function put()
 	{
-		$db = \Database::newDB();
+		$db = Database::newDB();
 		$pdo = $db->getPDO();
 
 		if (!isset($_REQUEST['remove']))

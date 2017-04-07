@@ -1,6 +1,7 @@
 <?php
 
 namespace Intern\Command;
+use \phpws2\Database;
 
 class MajorRest {
 
@@ -35,7 +36,7 @@ class MajorRest {
             exit;
 		}
 
-		$db = \Database::newDB();
+		$db = Database::newDB();
 		$pdo = $db->getPDO();
 
 		$sql = "INSERT INTO intern_major (id, name, hidden)
@@ -48,7 +49,7 @@ class MajorRest {
 	}
 	public function put()
 	{
-		$db = \Database::newDB();
+		$db = Database::newDB();
 		$pdo = $db->getPDO();
 
 		if(isset($_REQUEST['val']))
@@ -81,7 +82,7 @@ class MajorRest {
 
 	public function get()
 	{
-		$db = \Database::newDB();
+		$db = Database::newDB();
 		$pdo = $db->getPDO();
 
 		$sql = "SELECT id, name, hidden
