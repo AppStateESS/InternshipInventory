@@ -47,7 +47,7 @@ class BackgroundCheckEmail extends Email{
 
     protected function buildMessage()
     {
-        $this->to = $this->emailSettings->getBackgroundCheckEmail();
+        $this->to = explode(',', $this->emailSettings->getBackgroundCheckEmail());
 
         $this->tpl['NAME'] = $this->internship->getFullName();
         $this->tpl['BANNER'] = $this->internship->banner;
