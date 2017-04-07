@@ -67,6 +67,13 @@ class InternSettings {
         return $result;
     }
 
+    /**
+     * Returns list of email addresses to notify when a graduate internship is
+     * ready for registration. NB: Can be a comma separated list.
+     *
+     * @throws InvalidArgumentException
+     * @return string Comma separated list of email addresses
+     */
     public function getGraduateRegEmail()
     {
         $result = \PHPWS_Settings::get('intern', 'graduateRegEmail');
@@ -82,7 +89,7 @@ class InternSettings {
      * Returns the email address of the Gradudate School approver.
      *
      * @throws InvalidArgumentException
-     * @return string
+     * @return string Comma separated list of email addresses
      */
     public function getGradSchoolEmail()
     {
@@ -169,7 +176,7 @@ class InternSettings {
      * Returns the name background/drug check user email.
      *
      * @throws InvalidArgumentException
-     * @return string
+     * @return string - Comma separated list of email addresses
      */
     public function getBackgroundCheckEmail()
     {
