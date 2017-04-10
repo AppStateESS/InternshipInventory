@@ -32,7 +32,7 @@ class TestTermProvider extends BannerTermProvider {
         $responseObj = new \stdClass();
 
         $responseObj->term_code             = $this->term;
-        $responseObj->term_desc             = Term::rawToRead($this->term);
+        $responseObj->term_desc             = Term::rawToRead(substr($this->term, 0, 5));
 
         switch ($this->term){
             case '201620':
@@ -42,6 +42,8 @@ class TestTermProvider extends BannerTermProvider {
                 $responseObj->census_date   = '7/4/2016';
                 break;
             case '201640':
+                $responseObj->term_start_date   = '8/15/2016';
+                $responseObj->term_end_date     = '1/5/2017';
                 $responseObj->census_date   = '8/29/2016';
                 break;
             case '201710':
