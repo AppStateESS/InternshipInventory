@@ -47,7 +47,6 @@ class InternshipInventory {
                 header('Content-type: application/pdf');
                 readfile(\PHPWS_SOURCE_DIR . 'mod/intern/pdf/Internship_Example.pdf');
                 exit();
-                break;
 
             case 'ShowInternship':
                 $ctrl = new Command\ShowInternship();
@@ -132,7 +131,6 @@ class InternshipInventory {
                 $docManager = new AffiliationContractDocumentManager();
                 echo $docManager->edit();
                 exit();
-                break;
             case 'postAffiliationUpload':
                 $docManager = new AffiliationContractDocumentManager();
                 $docManager->postDocumentUpload();
@@ -165,7 +163,6 @@ class InternshipInventory {
                 $docManager = new DocumentManager();
                 echo $docManager->edit();
                 exit();
-                break;
             case 'post_document_upload':
                 $docManager = new DocumentManager();
                 $docManager->postDocumentUpload();
