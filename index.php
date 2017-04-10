@@ -32,6 +32,22 @@ if(DEBUG){
         $inventory->handleRequest();
         $content = $inventory->getContent();
     }catch(\Exception $e){
+
+        $user = \Current_User::getUserObj();
+        $e->username = $user->getUsername();
+
+        if(isset($_SERVER['HTTP_REFERER'])){
+            $e->referrer = $_SERVER['HTTP_REFERER'];
+        }else{
+            $e->referrer = 'None';
+        }
+
+        $e->remoteAddr = $_SERVER['REMOTE_ADDR'];
+
+        if (extension_loaded('newrelic')) { // Ensure PHP agent is available
+            newrelic_notice_error($e->getMessage(), $e);
+        }
+
         try{
             \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, 'The Intern Inventory has experienced an error. The software engineers have been notified about this problem. We apologize for the inconvenience.');
 
