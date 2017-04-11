@@ -60,7 +60,7 @@ var States = React.createClass({
 				this.setState({mainData: data, dropData: data});
 			}.bind(this),
 			error: function(xhr, status, err) {
-				alert("test failed")
+				alert("Sorry, there was a problem fetching data from the server.");
 				console.error(this.props.url, status, err.toString());
 			}.bind(this)
 		});
