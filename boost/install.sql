@@ -360,6 +360,7 @@ INSERT INTO "intern_country" ("id", "name") VALUES ('UA', 'Ukraine');
 INSERT INTO "intern_country" ("id", "name") VALUES ('SU', 'Union of Soviet Socialist Republics');
 INSERT INTO "intern_country" ("id", "name") VALUES ('AE', 'United Arab Emirates');
 INSERT INTO "intern_country" ("id", "name") VALUES ('GB', 'United Kingdom');
+INSERT INTO "intern_country" ("id", "name") VALUES ('US', 'United States of America');
 INSERT INTO "intern_country" ("id", "name") VALUES ('UY', 'Uruguay');
 INSERT INTO "intern_country" ("id", "name") VALUES ('UZ', 'Uzbekistan');
 INSERT INTO "intern_country" ("id", "name") VALUES ('VU', 'Vanuatu');
