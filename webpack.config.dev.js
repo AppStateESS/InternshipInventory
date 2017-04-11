@@ -21,7 +21,7 @@ module.exports = {
         affiliationDepartments: JS_DIR + '/affiliationAgreement/AffiliationDepartments.jsx',
         affiliationLocation: JS_DIR + '/affiliationAgreement/AffiliationLocation.jsx',
         affiliationTerminate: JS_DIR + '/affiliationAgreement/AffiliationTerminate.jsx',
-        majorSelector: JS_DIR + '/majorSelector/majorSelector.jsx',
+        majorSelector: JS_DIR + '/majorSelector/MajorSelector.jsx',
         vendor: ['jquery', 'react', 'react-dom', 'react-bootstrap']
     },
     output: {
