@@ -16,6 +16,9 @@ use Intern\DepartmentFactory;
  */
 class EditInternshipFormView {
 
+    //Special section number for summer international internships
+    const SUM_INTER_SEC = 145;
+
     private $form;
     private $intern;
     private $student;
@@ -729,8 +732,18 @@ class EditInternshipFormView {
         $this->form->addCssClass('course_subj', 'form-control');
         $this->form->setMatch('course_subj', $this->intern->course_subj);
         $this->formVals['course_no'] = $this->intern->course_no;
-        $this->formVals['course_sect'] = $this->intern->course_sect;
         $this->formVals['course_title'] = $this->intern->course_title;
+
+        //Gets the last digit of the term number, which is the semester number
+        $semesterNum = ((int) ($this->intern->getTerm() % 10));
+        //Sets section number to constant if internship is international and during the summer
+        if($this->intern->isInternational() && ($semesterNum == 2 || $semesterNum == 3)) {
+          $this->formVals['course_sect'] = EditInternshipFormView::SUM_INTER_SEC;
+          $this->form->setDisabled('course_sect',true);
+        } else {
+          $this->form->setDisabled('course_sect',false);
+          $this->formVals['course_sect'] = $this->intern->course_sect;
+        }
 
         if ($this->intern->isMultipart()) {
             $this->form->setMatch('multipart', '1');
