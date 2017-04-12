@@ -40,7 +40,8 @@ class ResultsUI implements UI {
         $courseSect = null;
         $oied = null;
         $faculty = null;
-
+        $startDate = null;
+        $endDate = null;
 
         /**
          * Check if any search fields are set.
@@ -80,11 +81,16 @@ class ResultsUI implements UI {
             $oied = $_REQUEST['oied'];
         if (isset($_REQUEST['faculty_id']))
             $faculty = $_REQUEST['faculty_id'];
+        if (isset($_REQUEST['start_date']))
+            $startDate = $_REQUEST['start_date'];
+        if (isset($_REQUEST['end_date']))
+            $endDate = $_REQUEST['end_date'];
 
             /* Get Pager */
-        $pager = self::getPager($name, $dept, $term, $ugradMajor, $gradProg, $level, $type, $campus, $loc, $state, $country, $workflowState, $courseSubject, $courseNum, $courseSect, $oied, $faculty);
+        $pager = self::getPager($name, $dept, $term, $ugradMajor, $gradProg, $level, $type, $campus, $loc, $state, $country, $workflowState, $courseSubject, $courseNum, $courseSect, $oied, $faculty, $startDate, $endDate);
 
         $pagerContent = $pager->get();
+
 
         // If there were no results, send the user back to the search interface
         if (sizeof($pager->display_rows) == 0) {
@@ -108,7 +114,7 @@ class ResultsUI implements UI {
      * Get the DBPager object.
      * Search strings can be passed in too.
      */
-    private static function getPager($name = null, $deptId = null, $term = null, $ugradMajor = null, $gradProg = null, $level = null, $type = null, $campus = null, $loc = null, $state = null, $country = null, $workflowState = null, $courseSubject = null, $courseNum = null, $courseSect = null, $oied = null, $faculty = null)
+    private static function getPager($name = null, $deptId = null, $term = null, $ugradMajor = null, $gradProg = null, $level = null, $type = null, $campus = null, $loc = null, $state = null, $country = null, $workflowState = null, $courseSubject = null, $courseNum = null, $courseSect = null, $oied = null, $faculty = null, $startDate = null, $endDate = null)
     {
         $pager = new SubselectPager('intern_internship', '\Intern\InternshipRestored');
 
@@ -284,8 +290,16 @@ class ResultsUI implements UI {
             $pager->db->addWhere('oied_certified', $oied, '=');
         }
 
-        if (!empty($faculty)){
+        if (!empty($faculty)) {
             $pager->addWhere('faculty_id', $faculty);
+        }
+
+        if(!empty($startDate)) {
+          $pager->addWhere('start_date', strtotime($startDate), '>=', 'OR', 'date_group');
+        }
+
+        if(!empty($endDate)) {
+          $pager->addWhere('end_date', strtotime($endDate), '<=', 'OR', 'date_group');
         }
 
         //$pager->db->setTable(array('fuzzy'));

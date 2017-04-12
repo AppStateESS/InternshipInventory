@@ -1,3 +1,11 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        // Setup date pickers
+        $("#internship_start_date").datepicker();
+        $("#internship_end_date").datepicker();
+    });
+</script>
+
 <h2><i class="fa fa-search"></i> Search Inventory</h2>
 
 <form class="form-horizontal {FORM_CLASS}" id="{FORM_ID}" action="{FORM_ACTION}" autocomplete="{FORM_AUTOCOMPLETE}" method="{FORM_METHOD}" {FORM_ENCODE}>
@@ -106,6 +114,19 @@
                 </label>
               </div>
           </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Date Range</legend>
+        <div class="form-group">
+          <label class="col-lg-3 control-label" for="{START_DATE_ID}">{START_DATE_LABEL_TEXT}</label>
+          <div class="col-lg-6">{START_DATE}</div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-lg-3 control-label" for="{END_DATE_ID}">{END_DATE_LABEL_TEXT}</label>
+          <div class="col-lg-6">{END_DATE}</div>
         </div>
       </fieldset>
 
