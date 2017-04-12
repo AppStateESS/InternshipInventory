@@ -105,15 +105,6 @@ class SearchUI implements UI
         // Hidden field for selected faculty member
         $form->addHidden('faculty_id');
 
-        // Student level radio button
-        javascriptMod('intern', 'majorSelector', array('form_id'=>$form->id));
-
-        // Student Major dummy box (gets replaced by dropdowns below using JS when student_level is selected)
-        $levels = array('-1' => 'Choose student level first');
-        $form->addDropBox('student_major', $levels);
-        $form->setLabel('student_major', 'Major / Program');
-        $form->addCssClass('student_major', 'form-control');
-
         // Get the majors list
         $majorsList = MajorsProviderFactory::getProvider()->getMajors(Term::timeToTerm(time()));
 
@@ -143,7 +134,6 @@ class SearchUI implements UI
 
         // State & Country search handeled in-browser
 
-
         /*******************
          * Workflow States *
          *******************/
@@ -159,6 +149,19 @@ class SearchUI implements UI
          * Certification Status *
          ************************/
         // Handeled directly in the html template
+
+
+        /**************
+         * Date Range *
+         **************/
+        $form->addText('start_date');
+        $form->setLabel('start_date', 'Starting After');
+        $form->addCssClass('start_date', 'form-control');
+
+        $form->addText('end_date');
+        $form->setLabel('end_date', 'Ending Before');
+        $form->addCssClass('end_date', 'form-control');
+
 
         $form->addSubmit('submit', 'Search');
 
