@@ -16,8 +16,8 @@ use Intern\DepartmentFactory;
  */
 class EditInternshipFormView {
 
-    //Special section number for summer international internships
-    const SUM_INTER_SEC = 145;
+    // Special section number for summer international internships
+    const SUMMER_INTL_SECTION = 145;
 
     private $form;
     private $intern;
@@ -734,15 +734,15 @@ class EditInternshipFormView {
         $this->formVals['course_no'] = $this->intern->course_no;
         $this->formVals['course_title'] = $this->intern->course_title;
 
-        //Gets the last digit of the term number, which is the semester number
-        $semesterNum = ((int) ($this->intern->getTerm() % 10));
+        $semester = Term::getSemester($this->intern->getTerm());
+
         //Sets section number to constant if internship is international and during the summer
-        if($this->intern->isInternational() && ($semesterNum == 2 || $semesterNum == 3)) {
-          $this->formVals['course_sect'] = EditInternshipFormView::SUM_INTER_SEC;
-          $this->form->setDisabled('course_sect',true);
+        if($this->intern->isInternational() && ($semester == Term::SUMMER1 || $semester == Term::SUMMER2)) {
+            $this->formVals['course_sect'] = self::SUMMER_INTL_SECTION;
+            $this->form->setDisabled('course_sect',true);
         } else {
-          $this->form->setDisabled('course_sect',false);
-          $this->formVals['course_sect'] = $this->intern->course_sect;
+            //$this->form->setDisabled('course_sect',false);
+            $this->formVals['course_sect'] = $this->intern->course_sect;
         }
 
         if ($this->intern->isMultipart()) {
