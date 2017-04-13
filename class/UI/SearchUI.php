@@ -105,6 +105,18 @@ class SearchUI implements UI
         // Hidden field for selected faculty member
         $form->addHidden('faculty_id');
 
+        /*************************
+         * Student Level & Major *
+         *************************/
+         // Student level radio button
+        javascriptMod('intern', 'majorSelector', array('form_id'=>$form->id));
+
+        // Student Major dummy box (gets replaced by dropdowns below using JS when student_level is selected)
+        $levels = array('-1' => 'Choose student level first');
+        $form->addDropBox('student_major', $levels);
+        $form->setLabel('student_major', 'Major / Program');
+        $form->addCssClass('student_major', 'form-control');
+
         // Get the majors list
         $majorsList = MajorsProviderFactory::getProvider()->getMajors(Term::timeToTerm(time()));
 
