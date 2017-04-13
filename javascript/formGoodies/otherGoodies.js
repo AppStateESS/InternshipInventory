@@ -22,7 +22,7 @@ function setupContractButton()
 
 function generateContractHandler()
 {
-    // Diable the button
+    // Disable the button
     $('.generateContract').prop('disabled', 'disabled');
 
     // Change the button text
@@ -33,6 +33,27 @@ function generateContractHandler()
                 window.location = 'index.php?module=intern&action=pdf&internship_id=' + data.id;
             },
         'json');
+}
+
+function setupEmailContractButton()
+{
+    $('.emailContract').click(EmailContractHandler);
+}
+
+function EmailContractHandler()
+{
+    // Disable the button
+    $('#contract-button').prop('disabled', 'disabled');
+
+    // Change the button text
+    $('#contract-button').html('<i class="fa fa-spinner fa-spin"></i> Sending...');
+
+    $.post('index.php?module=intern&action=SaveInternship', $('#internship').serialize() + '&generateContract=true',
+            function(data){
+                window.location = 'index.php?module=intern&action=emailPdf&internship_id=' + data.id;
+            },
+        'json');
+
 }
 
 function addFormErrors()
@@ -331,4 +352,5 @@ function otherStuff()
 
     setupFormSubmit();
     setupContractButton();
+    setupEmailContractButton();
 }

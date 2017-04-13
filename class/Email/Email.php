@@ -3,9 +3,6 @@ namespace Intern\Email;
 
 use \Intern\InternSettings;
 
-// Setup autoloader for Composer to load SwiftMail via autoload
-require_once PHPWS_SOURCE_DIR . 'mod/intern/vendor/autoload.php';
-
 /**
  * Abstract class for representing an email to be sent. Provides a
  * central implementaion of message sending/delivery via SwiftMail
@@ -96,7 +93,7 @@ abstract class Email {
      * @param  Array $bcc
      * @return \Swift_Message if successful.
      */
-    protected static function buildSwiftMessage($to, $fromAddress, $fromName, $subject, $content, $cc = NULL, $bcc = NULL){
+    protected function buildSwiftMessage($to, $fromAddress, $fromName, $subject, $content, $cc = NULL, $bcc = NULL){
 
         // Sanity checking
         if(!isset($to) || $to === null){

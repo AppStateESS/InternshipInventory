@@ -159,6 +159,19 @@ class InternshipInventory {
                 $pdf = $pdfView->getPdf();
                 $pdf->output();
                 exit;
+            case 'emailPdf' :
+                $i = InternshipFactory::getInternshipById($_REQUEST['internship_id']);
+                $emgContacts = EmergencyContactFactory::getContactsForInternship($i);
+                $pdfView = new InternshipContractPdfView($i, $emgContacts);
+
+                $meailSettings = $emailSettings = \Intern\InternSettings::getInstance();
+                $email = new email\StudentContractEmail($emailSettings, $i, $pdfView);
+                $email->send();
+
+                \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, 'Contract emailed to student.');
+                \NQ::close();
+                \PHPWS_Core::reroute("index.php?module=intern&action=ShowInternship&internship_id=" . $i->getId());
+                exit;
             case 'upload_document_form':
                 $docManager = new DocumentManager();
                 echo $docManager->edit();
