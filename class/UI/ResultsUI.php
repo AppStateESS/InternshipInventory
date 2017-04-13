@@ -295,11 +295,11 @@ class ResultsUI implements UI {
         }
 
         if(!empty($startDate)) {
-          $pager->addWhere('start_date', strtotime($startDate), '>=', 'OR', 'date_group');
+          $pager->addWhere('start_date', strtotime($startDate), '>=', 'AND', 'date_group');
         }
 
         if(!empty($endDate)) {
-          $pager->addWhere('end_date', strtotime($endDate), '<=', 'OR', 'date_group');
+          $pager->addWhere('end_date', strtotime($endDate), '<=', 'AND', 'date_group');
         }
 
         //$pager->db->setTable(array('fuzzy'));
