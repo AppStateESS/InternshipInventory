@@ -29,5 +29,20 @@ class DeanApprove extends WorkflowTransition {
             $email = new \Intern\Email\GradSchoolNotificationEmail($settings, $i);
             $email->send();
         }
+
+        // If the subject and course number are not registered with InternshipInventory,
+        // send an email to the appropriate receiver.
+        $db = \Database::newDB();
+        $pdo = $db->getPDO();
+        $sql = "SELECT id FROM intern_courses
+                WHERE subject_id=:subject_id and course_num=:cnum";
+        $sth = $pdo->prepare($sql);
+        
+        $sth->execute(array('subject_id'=>$i->getSubject()->getId(), 'cnum'=>$i->getCourseNumber()));
+        $result = $sth->fetchAll(\PDO::FETCH_ASSOC);
+        if (sizeof($result) == 0)
+        {
+            Email::sendUnusualCourseEmail($i, $agency);
+        }
     }
 }

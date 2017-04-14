@@ -634,6 +634,15 @@ CREATE TABLE intern_change_history (
 CREATE INDEX change_history_internshp_idx ON intern_change_history(internship_id);
 CREATE SEQUENCE intern_change_history_seq;
 
+CREATE TABLE intern_courses(
+      id INT NOT NULL,
+      subject_id integer REFERENCES intern_subject(id),
+      course_num INT NOT NULL,
+      primary key (id)
+);
+
+CREATE SEQUENCE intern_courses_seq;
+
 -- Add Departments
 INSERT INTO intern_department VALUES  (1, 'Accounting');
 INSERT INTO intern_department VALUES  (2, 'Anthropology');

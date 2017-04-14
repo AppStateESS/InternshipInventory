@@ -173,6 +173,24 @@ class InternSettings {
     }
 
     /**
+     * Returns the email address of whoever is in charge of
+     * unusual course number / insurance.
+     *
+     * @throws InvalidArgumentException
+     * @return string
+     */
+    public function getUnusualCourseEmail()
+    {
+        $result = \PHPWS_Settings::get('intern', 'unusualCourseEmail');
+
+        if (!isset($result) || is_null($result)) {
+            throw new \InvalidArgumentException('Missing configuration for email domain address.');
+        }
+
+        return $result;
+    }
+
+    /**
      * Returns the name background/drug check user email.
      *
      * @throws InvalidArgumentException
