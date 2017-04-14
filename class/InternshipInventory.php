@@ -152,6 +152,13 @@ class InternshipInventory {
                 $view = new UI\AdminUI();
                 $this->content = $view->display();
                 break;
+            case 'edit_courses':
+                if (!\Current_User::allow('intern', 'edit_courses')) {
+                    disallow();
+                }
+                $view = new UI\CoursesUI();
+                $this->content = $view->display();
+                break;
             case 'pdf':
                 $i = InternshipFactory::getInternshipById($_REQUEST['internship_id']);
                 $emgContacts = EmergencyContactFactory::getContactsForInternship($i);
@@ -244,6 +251,10 @@ class InternshipInventory {
                 break;
             case 'SendPendingEnrollmentReminders':
                 $ctrl = new Command\SendPendingEnrollmentReminders();
+                $ctrl->execute();
+                break;
+            case 'NormalCoursesRest':
+                $ctrl = new Command\NormalCoursesRest();
                 $ctrl->execute();
                 break;
             default:
