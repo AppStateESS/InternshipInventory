@@ -44,7 +44,7 @@ function intern_update(&$content, $currentVersion)
         case version_compare($currentVersion, '0.0.16', '<') :
             internRunDbMigration('update_0_0_16.sql');
         case version_compare($currentVersion, '0.0.17', '<') :
-            PHPWS_Core::initModClass('users', 'Permission.php');
+            \PHPWS_Core::initModClass('users', 'Permission.php');
             Users_Permission::registerPermissions('intern', $content);
         case version_compare($currentVersion, '0.0.18', '<') :
             internRunDbMigration('update_0_0_18.sql');
@@ -61,7 +61,7 @@ function intern_update(&$content, $currentVersion)
         case version_compare($currentVersion, '0.0.24', '<') :
             internRunDbMigration('update_0_0_24.sql');
         case version_compare($currentVersion, '0.0.25', '<') :
-            PHPWS_Core::initModClass('users', 'Permission.php');
+            \PHPWS_Core::initModClass('users', 'Permission.php');
             Users_Permission::registerPermissions('intern', $content);
         case version_compare($currentVersion, '0.0.26', '<') :
             internRunDbMigration('update_0_0_26.sql');
@@ -77,15 +77,15 @@ function intern_update(&$content, $currentVersion)
             internRunDbMigration('update_0_0_31.sql');
         case version_compare($currentVersion, '0.0.32', '<') :
             internRunDbMigration('update_0_0_32.sql');
-            PHPWS_Core::initModClass('users', 'Permission.php');
+            \PHPWS_Core::initModClass('users', 'Permission.php');
             Users_Permission::registerPermissions('intern', $content);
         case version_compare($currentVersion, '0.0.33', '<') :
-            PHPWS_Core::initModClass('users', 'Permission.php');
+            \PHPWS_Core::initModClass('users', 'Permission.php');
             Users_Permission::registerPermissions('intern', $content);
         case version_compare($currentVersion, '0.0.35', '<') :
             internRunDbMigration('update_0_0_35.sql');
         case version_compare($currentVersion, '0.0.36', '<') :
-            PHPWS_Core::initModClass('users', 'Permission.php');
+            \PHPWS_Core::initModClass('users', 'Permission.php');
             Users_Permission::registerPermissions('intern', $content);
         case version_compare($currentVersion, '0.0.37', '<') :
             internRunDbMigration('update_0_0_37.sql');
@@ -112,7 +112,7 @@ function intern_update(&$content, $currentVersion)
         case version_compare($currentVersion, '0.1.10', '<') :
             internRunDbMigration('update_00.01.10.sql');
         case version_compare($currentVersion, '0.1.15', '<') :
-            PHPWS_Core::initModClass('users', 'Permission.php');
+            \PHPWS_Core::initModClass('users', 'Permission.php');
             Users_Permission::registerPermissions('intern', $content);
     }
 

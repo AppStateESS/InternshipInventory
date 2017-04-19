@@ -3,7 +3,7 @@
 namespace Intern;
 
 use PHPWS_Link;
-use PHPWS_Core;
+use \PHPWS_Core;
 
   /**
    * Intern_Folder

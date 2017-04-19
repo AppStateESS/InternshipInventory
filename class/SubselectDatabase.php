@@ -2136,7 +2136,7 @@ class SubselectDatabase extends PHPWS_DB{
                 if (!is_array($files)) {
                     continue;
                 }
-                PHPWS_Core::initModClass($files[0], $files[1]);
+                \PHPWS_Core::initModClass($files[0], $files[1]);
             }
             $this->load_class = null;
         }
@@ -2173,7 +2173,7 @@ class SubselectDatabase extends PHPWS_DB{
             return false;
         }
 
-        return PHPWS_Core::plugObject($object, $variables);
+        return \PHPWS_Core::plugObject($object, $variables);
     }
 
 // END FUNC loadObject
@@ -2235,11 +2235,11 @@ class SubselectDatabase extends PHPWS_DB{
             if (isset($itemResult[0]) && is_array($itemResult[0])) {
                 foreach ($itemResult as $key => $sub) {
                     $genClass = new $class_name;
-                    PHPWS_Core::plugObject($genClass, $sub, $args);
+                    \PHPWS_Core::plugObject($genClass, $sub, $args);
                     $items[$indexby][] = $genClass;
                 }
             } else {
-                PHPWS_Core::plugObject($genClass, $itemResult, $args);
+                \PHPWS_Core::plugObject($genClass, $itemResult, $args);
                 $items[$indexby] = $genClass;
             }
         }
