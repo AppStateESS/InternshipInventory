@@ -3,7 +3,7 @@
 namespace Intern;
 
 use PHPWS_Link;
-use PHPWS_Core;
+use \PHPWS_Core;
 
   /**
    * Intern_Folder
@@ -34,7 +34,10 @@ class InternFolder extends \Folder
 
         $label = dgettext('filecabinet', 'Add document');
 
-        javascript('open_window');
-        return '<button type="button" class="btn btn-default btn-sm" onClick="javascript:open_window(\'' . $link->getAddress() . '\', 600, 600, \'default970975506\', 1); return false;"><i class="fa fa-upload"></i> ' . $label . '</button>';
+        
+        return array('label'=> $label, 'address'=> $link->getAddress());
+
+        // javascript('open_window');
+        // return '<button type="button" class="btn btn-default btn-sm" onClick="javascript:open_window(\'' . $link->getAddress() . '\', 600, 600, \'default970975506\', 1); return false;"><i class="fa fa-upload"></i> ' . $label . '</button>';
     }
 }

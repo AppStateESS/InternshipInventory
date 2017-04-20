@@ -65,7 +65,7 @@ class WorkflowTransitionFactory {
             // Look for directories that don't start with '.'
             if(!is_dir($dir . '/' . $f) && substr($f, 0, 1) != '.'){
                 // Include each one
-                PHPWS_Core::initModClass('intern', self::$dir . '/' . $f);
+                \PHPWS_Core::initModClass('intern', self::$dir . '/' . $f);
                 $className = preg_replace('/\.php/', '', $f);
 
                 $className = '\Intern\WorkflowTransition\\' . $className;
