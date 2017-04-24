@@ -3,6 +3,9 @@
 namespace Intern\Email;
 
 use \Intern\InternSettings;
+use \Intern\Internship;
+use \Intern\Subject;
+use \Intern\Term;
 
 /**
  * Responsible for the details of an email to an Internship administrator when
@@ -41,8 +44,9 @@ class UnusualCourseEmail extends Email {
 
         $this->tpl['TERM'] = $term;
 
-        $subj = $subjects[$this->internship->getCourseSubject()];
+        $subj = $subjects[$this->internship->getSubject()->getId()];
         $courseNum = $this->internship->getCourseNumber();
+        $bannerId = $this->internship->getBannerId();
 
         $this->tpl['SUBJECT'] = $subj;
         $this->tpl['COURSE_NUM'] = $courseNum;

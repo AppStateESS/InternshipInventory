@@ -184,7 +184,7 @@ class InternSettings {
         $result = \PHPWS_Settings::get('intern', 'unusualCourseEmail');
 
         if (!isset($result) || is_null($result)) {
-            throw new \InvalidArgumentException('Missing configuration for email domain address.');
+            throw new \InvalidArgumentException('Missing configuration for Unusual Course Notification address.');
         }
 
         return $result;
