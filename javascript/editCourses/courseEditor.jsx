@@ -202,13 +202,6 @@ var CourseSelector = React.createClass({
 
 				<div className="row">
 					<div className="col-lg-5">
-						<h1> Courses </h1>
-						<br />
-					</div>
-				</div>
-
-				<div className="row">
-					<div className="col-lg-5">
 						<CourseList	subjectData={this.state.subjectData} deleteCourse={this.deleteCourse} />
 					</div>
 
