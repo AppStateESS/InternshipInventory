@@ -1,6 +1,8 @@
 <?php
 namespace Intern\Command;
 
+use \phpws2\Database;
+
 class NormalCoursesRest {
 
 	public function execute()
@@ -39,15 +41,15 @@ class NormalCoursesRest {
 			header('HTTP/1.1 500 Internal Server Error');
 			echo("it is missing a course number.");
             exit;
-		}	
-		
-		$db = \Database::newDB();
+		}
+
+		$db = Database::newDB();
 		$pdo = $db->getPDO();
-		$sql = "SELECT subject_id, course_num 
+		$sql = "SELECT subject_id, course_num
 		FROM intern_courses
 		WHERE subject_id=:subject_id and course_num=:cnum";
 		$sth = $pdo->prepare($sql);
-		
+
 		$sth->execute(array('subject_id'=>$subjectId, 'cnum'=>$cnum));
 		$result = $sth->fetchAll(\PDO::FETCH_ASSOC);
 		if (sizeof($result) > 0)
@@ -59,25 +61,25 @@ class NormalCoursesRest {
 
 		$sql = "INSERT INTO intern_courses (id, subject_id, course_num)
 				VALUES (nextval('intern_courses_seq'), :subject_id, :cnum)";
-	
+
 		$sth = $pdo->prepare($sql);
-		
-		$sth->execute(array('subject_id'=>$subjectId, 'cnum'=>$cnum));		
+
+		$sth->execute(array('subject_id'=>$subjectId, 'cnum'=>$cnum));
 	}
 	public function delete()
 	{
 		$id = $_REQUEST['courseId'];
-		$db = \Database::newDB();
+		$db = Database::newDB();
 		$pdo = $db->getPDO();
 		$sql = "DELETE FROM intern_courses
 				WHERE id = :id";
-	
+
 		$sth = $pdo->prepare($sql);
 		$sth->execute(array('id'=>$id));
 	}
 	public function get()
 	{
-		$db = \Database::newDB();
+		$db = Database::newDB();
 		$pdo = $db->getPDO();
 		$sql = "SELECT intern_courses.course_num,
 					   intern_courses.subject_id,
@@ -92,7 +94,7 @@ class NormalCoursesRest {
 		$sth = $pdo->prepare($sql);
 		$sth->execute();
 		$result = $sth->fetchAll(\PDO::FETCH_ASSOC);
-		
+
 		return $result;
 	}
 }

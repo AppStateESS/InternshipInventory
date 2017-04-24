@@ -2,6 +2,7 @@
 
 namespace Intern\UI;
 
+use \Intern\AssetResolver;
 
 /**
  * Class for handling UI for Admin editing and creation
@@ -17,9 +18,6 @@ class CoursesUI implements UI {
             return false;
         }
 
-        // set up some stuff for the page template
-        $tpl                     = array();
-
         // Grab subjects to be loaded with the page
         $internSubjects =  array("-1" => "Select subject...") + \Intern\Subject::getSubjects();
 
@@ -32,9 +30,10 @@ class CoursesUI implements UI {
 
         $subjects = json_encode($internSubjects);
 
-        // TODO: Add Javascript autocomplete for usernames.
-        javascript('jquery');
-        javascriptMod('intern', 'editCourses', array('SUBJECTS'=>$subjects));
+        $tpl = array();
+        $tpl['SUBJECTS'] = $subjects;
+        $tpl['vendor_bundle'] = AssetResolver::resolveJsPath('assets.json', 'vendor');
+        $tpl['entry_bundle'] = AssetResolver::resolveJsPath('assets.json', 'editExpectedCourses');
 
         return \PHPWS_Template::process($tpl, 'intern','edit_courses.tpl');
 
