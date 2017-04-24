@@ -46,8 +46,8 @@ class NormalCoursesRest {
 		$db = Database::newDB();
 		$pdo = $db->getPDO();
 		$sql = "SELECT subject_id, course_num
-		FROM intern_courses
-		WHERE subject_id=:subject_id and course_num=:cnum";
+		          FROM intern_courses
+		          WHERE subject_id=:subject_id and course_num=:cnum";
 		$sth = $pdo->prepare($sql);
 
 		$sth->execute(array('subject_id'=>$subjectId, 'cnum'=>$cnum));
@@ -88,7 +88,8 @@ class NormalCoursesRest {
 					   intern_subject.description
 				FROM intern_courses
 				INNER JOIN intern_subject
-				ON 	 intern_courses.subject_id = intern_subject.id";
+				    ON intern_courses.subject_id = intern_subject.id
+                ORDER BY intern_subject.description ASC, intern_courses.course_num ASC";
 
 
 		$sth = $pdo->prepare($sql);
