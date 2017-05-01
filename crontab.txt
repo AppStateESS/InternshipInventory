@@ -1,0 +1,9 @@
+/***
+ * Example crontab entries for Internship Inventory
+ *
+ * NB: You'll need to change the path to the phpwebsite directory, and the path
+ * to phpwebsite's config.php.
+ */
+
+// Send enrollment reminder emails every Monday morning at 7am
+0 7 * * 1 phpwebsite/cli.php phpwebsite/config/core/config.php intern '\Intern\Command\SendPendingEnrollmentReminders' >/dev/null 2>&1
