@@ -96,7 +96,7 @@ class SendPendingEnrollmentReminders
         }
     }
 
-    public static function pulseIsStatic(){
+    public static function cliExec(){
         require_once(PHPWS_SOURCE_DIR . 'inc/intern_defines.php');
 
         \PHPWS_Core::initModClass('users', 'Users.php');
@@ -104,8 +104,6 @@ class SendPendingEnrollmentReminders
         $user = new \PHPWS_User(0, 'jb67803');
         //$user->login();
         \Current_User::init($user->id);
-
-
 
         $obj = new SendPendingEnrollmentReminders();
         $obj->execute();
