@@ -5,5 +5,5 @@
  * to phpwebsite's config.php.
  */
 
-// Send enrollment reminder emails every Monday morning at 7am
-0 7 * * 1 phpwebsite/cli.php phpwebsite/config/core/config.php intern '\Intern\Command\SendPendingEnrollmentReminders' >/dev/null 2>&1
+# Send enrollment reminder emails every Monday morning at 7am
+0 7 * * 1 SERVER_NAME="localhost.example" /var/www/phpwebsite/mod/intern/cli.php /var/www/branches/internshipinventory/config/core/config.php intern '\Intern\Command\SendPendingEnrollmentReminders' >> /var/www/phpwebsite/logs/cron.log 2>&1

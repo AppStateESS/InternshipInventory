@@ -18,6 +18,10 @@ class AffiliateRest {
                 $data = $this->get();
                 echo (json_encode($data));
                 exit;
+            case 'INCLUDE_ALL':
+                $data = $this->includeAll();
+                echo (json_encode($data));
+                exit;
             case 'POST':
                 $this->post();
                 exit;
@@ -35,9 +39,26 @@ class AffiliateRest {
         $agreement = AffiliationAgreementFactory::getAffiliationById($affiliationId);
 
         $agreement->states = array();
-        $agreement->depratments = array();
+        $agreement->departments = array();
 
         return $agreement;
+    }
+
+    public function includeAll()
+    {
+        $db = \Database::newDB();
+		$pdo = $db->getPDO();
+
+		$sql = "SELECT intern_affiliation_agreement.name,
+					   intern_affiliation_agreement.end_date,
+				FROM intern_affiliation_agreement";
+
+		$sth = $pdo->prepare($sql);
+
+		$sth->execute();
+		$result = $sth->fetchAll(\PDO::FETCH_ASSOC);
+
+		return $result;
     }
 
 	public function post()

@@ -16,6 +16,7 @@ class AffiliationAgreement
     public $auto_renew;
     public $notes;
     public $terminated;
+    public $status;
 
     /**
      * Getters
@@ -111,6 +112,11 @@ class AffiliationAgreement
       $this->terminated = $terminated;
     }
 
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    }
+
     /**
      * Get Document objects associated with this internship.
      */
@@ -130,15 +136,32 @@ class AffiliationAgreement
                               array('action' => 'showAffiliateEditView', 'affiliation_agreement_id' => $this->getId()));
           $expirationTime = ((int)$this->getEndDate() - time());
 
-          if($expirationTime < 0){
-            $tpl['STATUS'] = "danger";
-          } else if($expirationTime < 7884000) {
-            $tpl['STATUS'] = "warning";
-          } else {
-            $tpl['STATUS'] = "active";
-          }
+        //   if($this->getAutoRenew()){
+        //     $this->status = "green";
+        //   }else if($expirationTime < 0){
+        //     $this->status = "red";
+        //   } else if($expirationTime < 7884000) {
+        //     $this->status = "orange";
+        //   } else {
+        //     $this->status = "green";
+        //   }
 
           return $tpl;
+    }
+
+    public function expirationStatus()
+    {
+        // assign values for active, warning and danger
+        // json stuff to pass it to react thing
+        if($this->getAutoRenew()){
+          $this->status = "green";
+        }else if($expirationTime < 0){
+          $this->status = "red";
+        } else if($expirationTime < 7884000) {
+          $this->status = "orange";
+        } else {
+          $this->status = "green";
+        }
     }
 
 }
