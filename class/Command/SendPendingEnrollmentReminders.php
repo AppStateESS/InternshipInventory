@@ -49,11 +49,14 @@ class SendPendingEnrollmentReminders
             if($oneWeekOut > $censusTimestamp){
                 // We're within one week of census
                 $withinOneWeek = true;
+                echo "Within one week of $term\n\n";
             }else if ($fourWeeksOut > $censusTimestamp){
                 // We're more than one week, but less than 4 weeks from census
                 $withinOneWeek = false;
+                echo "Within four weeks of $term\n\n";
             }else{
                 // If we're not within four weeks, then we can skip this term completely
+                echo "Not within range of $term\n\n";
                 continue;
             }
 
