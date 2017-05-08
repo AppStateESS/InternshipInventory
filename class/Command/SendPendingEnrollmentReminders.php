@@ -101,12 +101,20 @@ class SendPendingEnrollmentReminders
 
         \PHPWS_Core::initModClass('users', 'Users.php');
         \PHPWS_Core::initModClass('users', 'Current_User.php');
-        $user = new \PHPWS_User(0, 'jb67803');
+
+        $userId = \PHPWS_DB::getOne("SELECT id FROM users WHERE username = 'jb67803'");
+
+        $user = new \PHPWS_User($userId);
+        $user->auth_script = 'shibbolethnocreate.php';
+        $user->auth_name = 'shibbolethnocreate';
         //$user->login();
-        \Current_User::init($user->id);
+        $user->setLogged(true);
+
+        \Current_User::loadAuthorization($user);
+        //\Current_User::init($user->id);
+        $_SESSION['User'] = $user;
 
         $obj = new SendPendingEnrollmentReminders();
         $obj->execute();
     }
-
 }
