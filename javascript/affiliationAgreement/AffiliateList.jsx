@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+import classNames from 'classnames';
 
 var ErrorMessagesBlock = React.createClass({
     render: function() {
@@ -40,28 +41,36 @@ var ShowAffiliate = React.createClass({
         window.location =  "index.php?module=intern&action=showAffiliateEditView&affiliation_agreement_id=" + this.props.id;
     },
     render: function(){
-        var color = null;
-
+        var b = new Date().getTime();
         var a = new Date(this.props.end_date * 1000);
-        var months = ['1','2','3','4','5','6','7','8','9','10','11','12'];
         var year = a.getFullYear();
-        var month = months[a.getMonth()];
+        var month = a.getMonth() + 1;
         var date = a.getDate();
         var dateForm = month + '/' + date + '/' + year;
-        var expiration = a - a.getTime();
+
+        var green = false, yellow = false, red = false;
+
+        var expiration = (a - b)/1000;
+        console.log(this.props.auto_renew);
 
         if(this.props.auto_renew){
-          color = "green";
+            green = true;
         }else if(expiration < 0){
-          color = "red";
+            red = true;
         } else if(expiration < 7884000) {
-          color = "orange";
+            yellow = true;
         } else {
-          color = "green";
+            green = true;
         }
 
+        var alertClass = classNames({
+            'alert-danger': red,
+            'alert-success': green,
+            'alert-warning': yellow
+        });
+
         return (
-            <tr id={this.props.id} style={{color: {color}}} onClick={this.onShowAffiliate} key={this.props.id}>
+            <tr role="button" id={this.props.id} className={alertClass} onClick={this.onShowAffiliate} key={this.props.id}>
 
                 <td>{this.props.name}</td>
                 <td>{dateForm}</td>
@@ -160,7 +169,10 @@ var AffiliateList = React.createClass({
         } catch (err) {
             dept = this.state.searchDept;
         }
-
+        if(dept === "-1"){
+            this.getData();
+            return;
+        }
 
         $.ajax({
             type: 'GET',
@@ -190,7 +202,8 @@ var AffiliateList = React.createClass({
                     <ShowAffiliate key={affil.id}
                         name={affil.name}
                         end_date={affil.end_date}
-                        id={affil.id} />
+                        id={affil.id}
+                        auto_renew={affil.auto_renew} />
                 );
             });
         } else {
@@ -250,7 +263,7 @@ var AffiliateList = React.createClass({
                 </div>
                 <div className="row">
                     <div className="col-md-12">
-                        <table className="table table-hover table-striped">
+                        <table className="table">
                             <thead>
                                 <tr>
                                     <th>Name</th>

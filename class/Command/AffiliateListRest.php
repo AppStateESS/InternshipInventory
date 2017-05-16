@@ -32,8 +32,10 @@ class AffiliateListRest {
 
 		$sql = "SELECT intern_affiliation_agreement.name,
 					   intern_affiliation_agreement.end_date,
-                       intern_affiliation_agreement.id
-				FROM intern_affiliation_agreement";
+                       intern_affiliation_agreement.id,
+                       intern_affiliation_agreement.auto_renew
+				FROM intern_affiliation_agreement
+                ORDER BY intern_affiliation_agreement.end_date ASC";
 
 		$sth = $pdo->prepare($sql);
 

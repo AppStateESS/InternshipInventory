@@ -99,7 +99,7 @@ class AffiliationAgreement
 
     public function setAutoRenew($autoRenew)
     {
-      $this->auto_renew = $autoRenew;
+      $this->auto_renew = (int)$autoRenew;
     }
 
     public function setNotes($notes)

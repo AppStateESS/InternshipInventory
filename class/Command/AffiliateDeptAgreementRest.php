@@ -36,11 +36,11 @@ class AffiliateDeptAgreementRest {
         $db = \Database::newDB();
         $pdo = $db->getPDO();
 
-		$sql = "SELECT intern_affiliation_agreement.name, intern_affiliation_agreement.end_date, intern_affiliation_agreement.id
+		$sql = "SELECT intern_affiliation_agreement.name, intern_affiliation_agreement.end_date, intern_affiliation_agreement.id, intern_affiliation_agreement.auto_renew
                 FROM intern_affiliation_agreement JOIN intern_agreement_department on intern_affiliation_agreement.id = intern_agreement_department.agreement_id
                 JOIN intern_department on intern_department.id = intern_agreement_department.department_id
                 WHERE intern_agreement_department.department_id = :dept
-                ORDER BY intern_affiliation_agreement.end_date DESC";
+                ORDER BY intern_affiliation_agreement.end_date ASC";
 
         $params = array('dept' => $dept);
         $sth = $pdo->prepare($sql);
