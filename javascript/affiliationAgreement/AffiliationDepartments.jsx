@@ -73,7 +73,7 @@ var DepartmentDropdown = React.createClass({
             <div>
                 <div className="form-group">
                     <select className="form-control" ref="deptChoices">
-                        <option value="-1">Select a Department"</option>
+                        <option value="-1">Select a Department</option>
                         {selectOptions}
                     </select>
                 </div>
