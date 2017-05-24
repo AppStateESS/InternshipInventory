@@ -16,7 +16,7 @@ class AffiliationAgreement
     public $auto_renew;
     public $notes;
     public $terminated;
-
+    
     /**
      * Getters
      */
@@ -98,7 +98,7 @@ class AffiliationAgreement
 
     public function setAutoRenew($autoRenew)
     {
-      $this->auto_renew = $autoRenew;
+      $this->auto_renew = (int)$autoRenew;
     }
 
     public function setNotes($notes)
@@ -130,7 +130,9 @@ class AffiliationAgreement
                               array('action' => 'showAffiliateEditView', 'affiliation_agreement_id' => $this->getId()));
           $expirationTime = ((int)$this->getEndDate() - time());
 
-          if($expirationTime < 0){
+          if($this->getAutoRenew()){
+            $tpl['STATUS'] = "active";
+          }else if($expirationTime < 0){
             $tpl['STATUS'] = "danger";
           } else if($expirationTime < 7884000) {
             $tpl['STATUS'] = "warning";
@@ -140,5 +142,4 @@ class AffiliationAgreement
 
           return $tpl;
     }
-
 }
