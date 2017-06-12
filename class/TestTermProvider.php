@@ -129,6 +129,20 @@ class TestTermProvider extends BannerTermProvider {
                 $responseObj->term_start_date   = '1/11/2018';
                 $responseObj->term_end_date     = '5/6/2018';
                 $responseObj->census_date       = '1/20/2018';
+
+                $partTerm = new \stdClass();
+                $partTerm->part_term_code   = '1';
+                $partTerm->part_term_desc   = 'Full Term';
+                $partTerm->part_start_date  = '12/22/2017';
+                $partTerm->part_end_date    = '5/14/2018';
+                $responseObj->part_term[] = $partTerm;
+
+                $partTerm = new \stdClass();
+                $partTerm->part_term_code   = '2';
+                $partTerm->part_term_desc   = 'First Half of Term';
+                $partTerm->part_start_date  = '1/11/2018';
+                $partTerm->part_end_date    = '3/15/2018';
+                $responseObj->part_term[] = $partTerm;
             default:
                 throw new \Exception('Missing fake census date for ' . $this->term);
         }
