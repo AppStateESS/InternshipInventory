@@ -143,6 +143,8 @@ class TestTermProvider extends BannerTermProvider {
                 $partTerm->part_start_date  = '1/11/2018';
                 $partTerm->part_end_date    = '3/15/2018';
                 $responseObj->part_term[] = $partTerm;
+
+                break;
             default:
                 throw new \Exception('Missing fake census date for ' . $this->term);
         }
