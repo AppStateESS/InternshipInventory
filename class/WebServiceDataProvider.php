@@ -124,7 +124,8 @@ class WebServiceDataProvider extends ExternalDataProvider {
         }
 
         $params = array('BannerID'  => $studentId,
-                        'Term'      => $term);
+                        'Term'      => $term,
+                        'UserName'  => $this->currentUserName);
 
         try {
             $response = $this->client->GetCreditHours($params);
