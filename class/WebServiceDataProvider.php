@@ -135,8 +135,8 @@ class WebServiceDataProvider extends ExternalDataProvider {
         // Log the request
         $this->logRequest('getCreditHours', 'success', $params);
 
-        if(isset($response->GetCreditHoursResponse)){
-            return $response->GetCreditHoursResponse;
+        if(isset($response->GetCreditHoursResult)){
+            return $response->GetCreditHoursResult;
         }else{
             return null;
         }
