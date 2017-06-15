@@ -17,13 +17,14 @@ module.exports = {
         editAdmin: JS_DIR + '/editAdmin/editAdmin.jsx',
         editDepartment: JS_DIR + '/editDepartment/deptEditor.jsx',
         stateList: JS_DIR + '/stateList/StateList.jsx',
-        emergencyContact: JS_DIR + '/emergencyContact/EmgContactList.jsx',
+        //emergencyContact: JS_DIR + '/emergencyContact/EmgContactList.jsx',
         facultyEdit: JS_DIR + '/facultyEdit/FacultyEdit.jsx',
         editMajor: JS_DIR + '/editMajor/editMajor.jsx',
         editGrad: JS_DIR + '/editGrad/editGrad.jsx',
         affiliationDepartments: JS_DIR + '/affiliationAgreement/AffiliationDepartments.jsx',
         affiliationLocation: JS_DIR + '/affiliationAgreement/AffiliationLocation.jsx',
         affiliationTerminate: JS_DIR + '/affiliationAgreement/AffiliationTerminate.jsx',
+        internshipView: JS_DIR + '/editInternshipView/InternshipView.jsx',
         vendor: ['jquery', 'react', 'react-dom', 'react-bootstrap']
     },
     output: {

@@ -1266,7 +1266,7 @@ class SubselectPager extends \DBPager {
                 $result = call_user_func($this->report_row, $foo);
             } else {
                 if (is_object($foo)) {
-                    $result = PHPWS_Core::stripObjValues($foo);
+                    $result = \PHPWS_Core::stripObjValues($foo);
                 } else {
                     $result = & $foo;
                 }
@@ -1309,7 +1309,7 @@ class SubselectPager extends \DBPager {
 
     public function saveLastView()
     {
-        $_SESSION['DBPager_Last_View'][$this->table] = PHPWS_Core::getCurrentUrl();
+        $_SESSION['DBPager_Last_View'][$this->table] = \PHPWS_Core::getCurrentUrl();
     }
 
     public static function getLastView($table)

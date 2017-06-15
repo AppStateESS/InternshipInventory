@@ -32,7 +32,9 @@ class FacultyDeptRest {
 
     private function get()
     {
-        $departments = DepartmentFactory::getDepartmentsAssocForUsername(\Current_User::getUsername());
+        \PHPWS_Core::initModClass('intern', 'Department.php');
+        $departments = \Intern\Department::getDepartmentsAssocForUsername(\Current_User::getUsername());
+
 
         $props = array();
 
