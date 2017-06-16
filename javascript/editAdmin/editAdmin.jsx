@@ -286,56 +286,57 @@ var SearchAdmin = React.createClass({
 				<ReactCSSTransitionGroup transitionName="example" transitionEnterTimeout={500} transitionLeaveTimeout={500}>
                     {errors}
                 </ReactCSSTransitionGroup>
+                <h1> Administrators </h1>
+                    <div className="row" style={{marginTop: '2em'}}>
+                        <div className="col-md-5 col-md-push-6">
+                            <div className="panel panel-default">
+                                <div className="panel-body">
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                            <label>Department:</label>
+                                            <select className="form-control" onChange={this.handleDrop}>
+                                                {dData}
+                                            </select>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <div className="form-group" style={{marginTop: '1em'}}>
+                                                <label>Username:</label>
+                                                <input type="text" className="form-control" placeholder="Username" ref="username" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="col-md-3 col-md-offset-6">
+                                            <div className="form-group">
+                                                <button className="btn btn-default" onClick={this.handleSubmit}>Create Admin</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-md-5 col-md-pull-5">
 
-				<div className="row">
-					<div className="col-md-5">
-						<h1> Administrators </h1>
-							<br />
-							<div className="input-group">
-      							<input type="text" className="form-control" placeholder="Search for..." onChange={this.searchList} />
-  							</div>
-  							<br />
-							<table className="table table-condensed table-striped">
-								<thead>
-									<tr>
-										<th>Fullname</th>
-										<th>Username</th>
-										<th>Department</th>
-										<th></th>
-									</tr>
-								</thead>
-								<tbody>
-									{AdminsData}
-								</tbody>
-							</table>
-					</div>
-					<br /> <br /> <br />
-					<div className="col-md-5 col-md-offset-1">
-						<div className="panel panel-default">
-							<div className="panel-body">
-								<div className="row">
-									<div className="col-md-6">
-										<label>Department:</label>
-										<select className="form-control" onChange={this.handleDrop}>
-											{dData}
-										</select>
-									</div>
-									<div className="col-md-6">
-										<label>Username:</label>
-										<input type="text" className="form-control" placeholder="Username" ref="username" />
-									</div>
-								</div>
-								<div className="row">
-									<br />
-									<div className="col-md-3 col-md-offset-6">
-										<button className="btn btn-default" onClick={this.handleSubmit}>Create Admin</button>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+                            <div className="form-group">
+                                <input type="text" className="form-control" placeholder="Search for..." onChange={this.searchList} />
+                            </div>
+
+                            <table className="table table-condensed table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Fullname</th>
+                                        <th>Username</th>
+                                        <th>Department</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {AdminsData}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
 		);
 	}
 });
