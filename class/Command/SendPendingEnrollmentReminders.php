@@ -49,11 +49,14 @@ class SendPendingEnrollmentReminders
             if($oneWeekOut > $censusTimestamp){
                 // We're within one week of census
                 $withinOneWeek = true;
+                echo "Within one week of $term\n\n";
             }else if ($fourWeeksOut > $censusTimestamp){
                 // We're more than one week, but less than 4 weeks from census
                 $withinOneWeek = false;
+                echo "Within four weeks of $term\n\n";
             }else{
                 // If we're not within four weeks, then we can skip this term completely
+                echo "Not within range of $term\n\n";
                 continue;
             }
 
@@ -96,19 +99,25 @@ class SendPendingEnrollmentReminders
         }
     }
 
-    public static function pulseIsStatic(){
+    public static function cliExec(){
         require_once(PHPWS_SOURCE_DIR . 'inc/intern_defines.php');
 
         \PHPWS_Core::initModClass('users', 'Users.php');
         \PHPWS_Core::initModClass('users', 'Current_User.php');
-        $user = new \PHPWS_User(0, 'jb67803');
+
+        $userId = \PHPWS_DB::getOne("SELECT id FROM users WHERE username = 'jb67803'");
+
+        $user = new \PHPWS_User($userId);
+        $user->auth_script = 'shibbolethnocreate.php';
+        $user->auth_name = 'shibbolethnocreate';
         //$user->login();
-        \Current_User::init($user->id);
+        $user->setLogged(true);
 
-
+        \Current_User::loadAuthorization($user);
+        //\Current_User::init($user->id);
+        $_SESSION['User'] = $user;
 
         $obj = new SendPendingEnrollmentReminders();
         $obj->execute();
     }
-
 }

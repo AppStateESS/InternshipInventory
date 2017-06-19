@@ -36,9 +36,10 @@ class InternshipFactory {
     }
 
     /**
-     * Returns an array of Internship objects which are still pending approval.
-     * Returns internships which are not marked as Registered in the workflow
-     * and are not cancelled (i.e. state is not 'RegisteredState' nor 'CancelledState'). These are pending
+     * Returns an array of Internship objects which are in the early stages of pending approval.
+     * Mainly used to send reminders to internships that aren't getting approved in a timely manner.
+     * As long as the Sig Auth person has approved it (i.e. it's pending Dean approval), then we don't
+     * need to send a reminder. This does include internships in the 'Registration Issue' status.
      *
      * @param int $term
      * @return Array<Internship> Array of all pending Internship objects in the given term
@@ -51,9 +52,7 @@ class InternshipFactory {
 
         $stmt = $pdo->prepare("SELECT *
                                FROM intern_internship
-                               WHERE state != 'RegisteredState'
-                                    AND state != 'CancelledState'
-                                    AND state != 'DeanApprovedState'
+                               WHERE state IN ('NewState', 'SigAuthReadyState', 'RegistrationIssueState')
                                     AND term = :term");
         $stmt->execute(array('term'  => $term));
         $stmt->setFetchMode(\PDO::FETCH_CLASS, 'Intern\InternshipRestored');
