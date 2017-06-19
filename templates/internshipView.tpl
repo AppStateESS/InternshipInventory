@@ -172,14 +172,7 @@
         <div class="form-group">
           <label class="col-lg-3 control-label" for="{BACKGROUND_CHECK_ID}">Drug Test Needed?</label>
           <div class="col-lg-6">
-              <div class="btn-group" data-toggle="buttons" role="group" aria-label="drug selector">
-                <label class="btn btn-default {DRUG_ACTIVE}">
-                  <input type="radio" name="drug_code" autocomplete="off" value="1" {DRUG_CHECKED}> Yes
-                </label>
-                <label class="btn btn-default {DRUG_NOT_ACTIVE}">
-                  <input type="radio" name="drug_code" autocomplete="off" value="0" {DRUG_NOT_CHECKED}> No
-                </label>
-              </div>
+              <button class="btn btn-default" type="button" name="drug_code" value="0" onClick="this.value='1';" {DRUG_CHECK_REQUESTED}>{DRUG_CHECK_REQUESTED_BTN}</button>
           </div>
       </div>
 

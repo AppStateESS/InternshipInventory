@@ -176,15 +176,21 @@ class EditInternshipFormView {
         }
 
         if($this->intern->getDrugCheck() == 0){
-            $this->tpl['DRUG_ACTIVE'] = '';
-            $this->tpl['DRUG_NOT_ACTIVE'] = 'active';
-            $this->tpl['DRUG_CHECKED'] = '';
-            $this->tpl['DRUG_NOT_CHECKED'] = 'checked';
+            //$this->tpl['DRUG_ACTIVE'] = '';
+            //$this->tpl['DRUG_NOT_ACTIVE'] = 'active';
+            //$this->tpl['DRUG_CHECKED'] = '';
+            //$this->tpl['DRUG_NOT_CHECKED'] = 'checked';
+            $this->tpl['DRUG_CHECK_REQUESTED'] = '';
+            $this->tpl['DRUG_CHECK_REQUESTED_BTN'] = 'Request Drug Screening';
+            //$this->tpl['DRUG_VALUE'] = 0;
         }else{
-            $this->tpl['DRUG_ACTIVE'] = 'active';
-            $this->tpl['DRUG_NOT_ACTIVE'] = '';
-            $this->tpl['DRUG_CHECKED'] = 'checked';
-            $this->tpl['DRUG_NOT_CHECKED'] = '';
+            //$this->tpl['DRUG_ACTIVE'] = 'active';
+            //$this->tpl['DRUG_NOT_ACTIVE'] = '';
+            $this->tpl['DRUG_CHECK_REQUESTED'] = 'disabled';
+            $this->tpl['DRUG_CHECK_REQUESTED_BTN'] = 'Drug Screening Requested';
+            //$this->tpl['DRUG_VALUE'] = 1;
+            //$this->tpl['DRUG_NOT_CHECKED'] = '';
+
         }
 
         /************************
