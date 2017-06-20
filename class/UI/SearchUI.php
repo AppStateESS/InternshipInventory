@@ -105,7 +105,8 @@ class SearchUI implements UI
         // Hidden field for selected faculty member
         $form->addHidden('faculty_id');
 
-        // Major and Program selector handled in React
+        // Student level radio button, Undergrad major drop down, Graduate major drop down
+        // Are all handled in JSX
 
         /*******************
          * Internship Type *

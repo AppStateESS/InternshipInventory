@@ -152,8 +152,9 @@ var SearchAdmin = React.createClass({
 
 		// Finds the index of the array if the department number matches
 		// the id of the object.
+        var departmentId = parseInt(department, 10);
 		var deptIndex = dept.findIndex(function(element, index, arr){
-            if(department === element.id){
+            if(departmentId === element.id){
                 return true;
             } else {
                 return false;
@@ -162,13 +163,10 @@ var SearchAdmin = React.createClass({
 
 		// Determines if the username has multiple entries within
 		// the same department before creating the admin.
-		for (var j = 0, k = displayData.length; j < k; j++)
-		{
-			if (displayData[j].username === username)
-			{
+		for (var j = 0; j < displayData.length; j++) {
+			if (displayData[j].username === username) {
 				//displayName = displayData[j].display_name;
-				if (displayData[j].name === dept[deptIndex].name)
-				{
+				if (displayData[j].name === dept[deptIndex].name) {
 					errorMessage = "Multiple usernames in the same department.";
 					this.setState({errorWarning: errorMessage});
 					return;
