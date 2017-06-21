@@ -172,7 +172,14 @@
         <div class="form-group">
           <label class="col-lg-3 control-label" for="{BACKGROUND_CHECK_ID}">Drug Test Needed?</label>
           <div class="col-lg-6">
-              <button class="btn btn-default" type="button" name="drug_code" value="0" onClick="this.value='1';" {DRUG_CHECK_REQUESTED}>{DRUG_CHECK_REQUESTED_BTN}</button>
+              <label class="btn btn-default" id="drug_button">
+                  <input type="button" name="drug_code" autocomplete ="off" value="0" onClick="document.getElementById('drug_button').value='1'">
+                  {DRUG_CHECK_REQUESTED_BTN}
+              </label>
+
+              <!--<button type="button" name="drug_code" id="drug_button" class="btn btn-default" value="0" onClick="document.getElementById('drug_button').value = '1'" disabled>
+                {DRUG_CHECK_REQUESTED_BTN}
+              </button> -->
           </div>
       </div>
 
