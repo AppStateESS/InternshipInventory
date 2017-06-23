@@ -254,6 +254,15 @@ class InternshipInventory {
                 $ctrl = new Command\SendPendingEnrollmentReminders();
                 $ctrl->execute();
                 break;
+                //two new case statements
+            case 'RequestBackgroundCheck':
+                $ctrl = new Command\RequestBackgroundCheck();
+                $ctrl->execute();
+                break;
+            case 'RequestDrugScreening':
+                $ctrl = new Command\RequestDrugScreening();
+                $ctrl->execute();
+                break;
             default:
                 $menu = new UI\InternMenu();
                 $this->content = $menu->display();

@@ -163,34 +163,16 @@ class EditInternshipFormView {
         $this->form->setLabel('student_zip','Zip Code');
         $this->form->addCssClass('student_zip', 'form-control');
 
-        if($this->intern->getBackgroundCheck() == 0){
-            $this->tpl['BACK_ACTIVE'] = '';
-            $this->tpl['BACK_NOT_ACTIVE'] = 'active';
-            $this->tpl['BACK_CHECKED'] = '';
-            $this->tpl['BACK_NOT_CHECKED'] = 'checked';
+        if($this->intern->getBackgroundCheck() == 1){
+            $this->tpl['BACK_CHECK_REQUESTED_BTN'] = 'Background Check Requested';
         }else{
-            $this->tpl['BACK_ACTIVE'] = 'active';
-            $this->tpl['BACK_NOT_ACTIVE'] = '';
-            $this->tpl['BACK_CHECKED'] = 'checked';
-            $this->tpl['BACK_NOT_CHECKED'] = '';
+            $this->tpl['BACK_CHECK_REQUEST_BTN'] = 'Request Background Check';
         }
 
-        if($this->intern->getDrugCheck() == 0){
-            //$this->tpl['DRUG_ACTIVE'] = '';
-            //$this->tpl['DRUG_NOT_ACTIVE'] = 'active';
-            //$this->tpl['DRUG_CHECKED'] = '';
-            //$this->tpl['DRUG_NOT_CHECKED'] = 'checked';
-            $this->tpl['DRUG_CHECK_REQUESTED'] = '';
-            $this->tpl['DRUG_CHECK_REQUESTED_BTN'] = 'Request Drug Screening';
-            //$this->tpl['DRUG_VALUE'] = 0;
-        }else{
-            //$this->tpl['DRUG_ACTIVE'] = 'active';
-            //$this->tpl['DRUG_NOT_ACTIVE'] = '';
-            $this->tpl['DRUG_CHECK_REQUESTED'] = 'disabled';
+        if($this->intern->getDrugCheck() == 1){
             $this->tpl['DRUG_CHECK_REQUESTED_BTN'] = 'Drug Screening Requested';
-            //$this->tpl['DRUG_VALUE'] = 1;
-            //$this->tpl['DRUG_NOT_CHECKED'] = '';
-
+        }else{
+            $this->tpl['DRUG_CHECK_REQUEST_BTN'] = 'Request Drug Screening';
         }
 
         /************************

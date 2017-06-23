@@ -22,7 +22,7 @@ function setupContractButton()
 
 function generateContractHandler()
 {
-    // Diable the button
+    // Disable the button
     $('.generateContract').prop('disabled', 'disabled');
 
     // Change the button text
