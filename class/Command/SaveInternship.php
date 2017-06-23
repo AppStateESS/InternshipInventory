@@ -385,6 +385,7 @@ class SaveInternship {
 
         //Commit to save changes in case of workflow error
         \PHPWS_DB::commit();
+        \PHPWS_DB::begin();
 
         /***************************
          * State/Workflow Handling *
