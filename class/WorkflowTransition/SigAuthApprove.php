@@ -3,13 +3,15 @@
 namespace Intern\WorkflowTransition;
 use Intern\WorkflowTransition;
 use Intern\Internship;
+use Intern\Exception\MissingDataException;
 
 class SigAuthApprove extends WorkflowTransition {
     const sourceState = 'SigAuthReadyState';
     const destState   = 'SigAuthApprovedState';
     const actionName  = 'Approved by Signature Authority';
 
-    public function getAllowedPermissionList(){
+    public function getAllowedPermissionList()
+    {
         return array('sig_auth_approve');
     }
 
@@ -27,5 +29,13 @@ class SigAuthApprove extends WorkflowTransition {
                 return true;
             }
         }
+    }
+
+    public function checkRequiredFields(Internship $i)
+    {
+      $emergName = $i->getEmergencyContactName();
+      if(!isset($emergName)){
+        throw new MissingDataException("Please add an emergency contact.");
+      }
     }
 }
