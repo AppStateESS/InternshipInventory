@@ -165,14 +165,18 @@ class EditInternshipFormView {
 
         if($this->intern->getBackgroundCheck() == 1){
             $this->tpl['BACK_CHECK_REQUESTED_BTN'] = 'Background Check Requested';
+            $this->background_code = 1;
         }else{
             $this->tpl['BACK_CHECK_REQUEST_BTN'] = 'Request Background Check';
+            $this->background_code = 0;
         }
 
         if($this->intern->getDrugCheck() == 1){
             $this->tpl['DRUG_CHECK_REQUESTED_BTN'] = 'Drug Screening Requested';
+            $this->drug_code = 1;
         }else{
             $this->tpl['DRUG_CHECK_REQUEST_BTN'] = 'Request Drug Screening';
+            $this->drug_code = 0;
         }
 
         /************************
