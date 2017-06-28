@@ -319,6 +319,13 @@ function initFacultySelector()
     }
 }
 
+//id of button. click function, ajax request, request background check url
+function initRequestBackCheck()
+{
+    
+}
+
+
 function otherStuff()
 {
 
