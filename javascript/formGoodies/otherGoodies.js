@@ -322,7 +322,35 @@ function initFacultySelector()
 //id of button. click function, ajax request, request background check url
 function initRequestBackCheck()
 {
-    
+    $("#back_check_id").click(function() {
+
+        $.ajax({
+
+            data:{
+                module: 'intern',
+                action: 'RequestBackgroundCheck'
+            },
+            url: 'RequestBackgroundCheck.php'
+            //url: ;
+
+        });
+    });
+}
+
+function initRequestDrugCheck()
+{
+    $("#drug_check_id").click(function() {
+
+        $.ajax({
+
+            data:{
+                module: 'intern',
+                action: 'RequestDrugScreening'
+            },
+            url: 'RequestDrugScreening.php'
+
+        });
+    });
 }
 
 

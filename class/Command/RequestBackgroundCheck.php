@@ -17,7 +17,7 @@ class RequestBackgroundCheck {
 
         $i = \Intern\InternshipFactory::getInternshipById($_REQUEST['internship_id']);
         $i->background_check = 1;
-        $i->agency
+        $i->agency = getAgency();
 
         $i->save();
 

@@ -159,12 +159,12 @@
           <label class="col-lg-3 control-label" for="{BACKGROUND_CHECK_ID}">Background Check Needed?</label>
           <div class="col-lg-6">
             <!-- BEGIN back_check -->
-              <button type="button" class="btn btn-default" name="background_code" id="back_check" value="0">
+              <button type="button" class="btn btn-default" name="background_code" id="back_check_id" value="0">
                 {BACK_CHECK_REQUEST_BTN}
               </button>
               <!-- END back_check -->
               <!-- BEGIN back_check_req -->
-              <button type="button" class="btn btn-default" name="background_code" id="back_check" value="1" disabled>
+              <button type="button" class="btn btn-default" name="background_code" id="back_check_id" value="1" disabled>
                 {BACK_CHECK_REQUESTED_BTN}
               </button>
               <!-- END back_check_req -->
@@ -175,12 +175,12 @@
           <label class="col-lg-3 control-label" for="{BACKGROUND_CHECK_ID}">Drug Test Needed?</label>
           <div class="col-lg-6">
               <!-- BEGIN drug_check -->
-              <button type="button" class="btn btn-default" name="drug_code" value="0">
+              <button type="button" class="btn btn-default" name="drug_code" id="drug_check_id" value="0">
                 {DRUG_CHECK_REQUEST_BTN}
               </button>
               <!-- END drug_check -->
               <!-- BEGIN drug_check_req -->
-              <button type="button" class="btn btn-default" name="drug_code" value="1" disabled>
+              <button type="button" class="btn btn-default" name="drug_code" id="drug_check_id" value="1" disabled>
                 {DRUG_CHECK_REQUESTED_BTN}
               </button>
               <!-- END drug_check_req -->
