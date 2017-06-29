@@ -43,18 +43,28 @@ class CancelInternshipNotice extends Email {
         $dept = new Department($this->internship->department_id);
         $this->tpl['DEPARTMENT'] = $dept->getName();
 
-        $this->to = $this->internship->email . $this->emailSettings->getEmailDomain();
+        // Email the distance ed, graduate school (for grad level), international, or the registrar's office (for undergrad level)
+        if($this->internship->isDistanceEd()){
+            $this->to[] = $this->emailSettings->getDistanceEdEmail();
+            $this->tpl['UNDERGRAD'] = ''; // Dummy template var to use undergrad text
+        } else if($this->internship->isGraduate()){
+            $this->to[] = explode(',', $this->emailSettings->getGraduateRegEmail()); // NB: Setting is a comma separated array
+            $this->tpl['GRADUATE'] = ''; // Dummy template var to use grad school text
+        } else if($this->internship->isInternational()){
+            $this->to[] = $this->emailSettings->getInternationalRegEmail();
+            $this->tpl['UNDERGRAD'] = ''; // Dummy template var to use undergrad text
+        } else {
+            $this->to[] = $this->emailSettings->getRegistrarEmail();
+            $this->tpl['UNDERGRAD'] = ''; // Dummy template var to use undergrad text
+        }
 
+        //CC student
+        $this->cc = $this->internship->email . $this->emailSettings->getEmailDomain();
+
+        //CC faculty members
         $faculty = $this->internship->getFaculty();
         if ($faculty instanceof Faculty) {
             $this->cc[] = $faculty->getUsername() . $this->emailSettings->getEmailDomain();
-        }
-
-        // CC the graduate school (for grad level) or the registrar's office (for undergrad level)
-        if($this->internship->isGraduate()){
-            $this->cc[] = explode(',', $this->emailSettings->getGraduateRegEmail()); // NB: Setting is a comma separated array
-        } else {
-            $this->cc[] = $this->emailSettings->getRegistrarEmail();
         }
 
         $this->subject = 'Internship Cancelled ' . Term::rawToRead($this->internship->getTerm()) . '[' . $this->internship->getBannerId() . '] ' . $this->internship->getFullName();
