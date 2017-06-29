@@ -97,6 +97,13 @@ class EditInternshipFormView {
         if(Term::termExists($nextTerm)){
             $this->tpl['NEXT_TERM'] = Term::rawToRead($nextTerm);
         }
+        $nextTwoTerm = Term::getNextTerm($nextTerm);
+        $nextThreeTerm = Term::getNextTerm($nextTwoTerm);
+        if(Term::termExists($nextThreeTerm) && $this->intern->getTerm()%10 == 1){
+          $this->tpl['NEXT_SEC_TERM'] = Term::rawToRead($nextThreeTerm);
+        } else if(Term::termExists($nextTwoTerm) && $this->intern->getTerm()%10 == 2){
+          $this->tpl['NEXT_SEC_TERM'] = Term::rawToRead($nextTwoTerm);
+        }
 
 
         /*********************
