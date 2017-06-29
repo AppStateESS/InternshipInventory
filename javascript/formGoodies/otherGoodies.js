@@ -183,8 +183,8 @@ function initFacultySelector()
             success: function(data){
               if (data.length === 0){
                 $.ajax({
-                    success: updateFaculty,
-                    error: handleGetFacultyError,
+                    success: handleGetFacultyResponse,
+                    error: handleGetFacultyResponseError,
                     data: {module: 'intern',
                         action: 'restFacultyById',
                         id: $("#internship_faculty_id").val()
@@ -235,11 +235,11 @@ function initFacultySelector()
       }
     }
 
-    // Handles an AJAX error when there are no listed faculty by that id in table
-    function handleGetFacultyError(data)
+    // Handle the AJAX response to get faculty member when no faculty in department
+    function handleGetFacultyResponse(data)
     {
-      $("#internship_faculty").html("<option value='-1'>No Supervisors Available</option>");
-      return;
+        $("#internship_faculty").html("<option value='-1'>No Supervisors Available</option>");
+        updateFaculty(data);
     }
 
     // Handle an AJAX error when getting faculty members for a department
@@ -247,6 +247,13 @@ function initFacultySelector()
     {
       console.log("Error loading facuty list. Please contact ESS.");
       console.log(textStatus);
+    }
+
+    // Handles an AJAX error when there are no listed faculty by that id in table
+    function handleGetFacultyResponseError(data)
+    {
+      $("#internship_faculty").html("<option value='-1'>No Supervisors Available</option>");
+      return;
     }
 
     // Trigger a change for the inital loading of faculty info
