@@ -1,4 +1,3 @@
-/*global $*/
 /***********************
  * Form Save Handler
  * Prevents duplicate form submission.
@@ -183,12 +182,11 @@ function initFacultySelector()
         $.ajax({
             success: function(data){
               if (data.length === 0){
-                console.log($("#internship_faculty_id").val());
                 $.ajax({
-                    success: handleGetFacultyResponce,
+                    success: updateFaculty,
                     error: handleGetFacultyError,
                     data: {module: 'intern',
-                        action: 'RestFacultyById',
+                        action: 'restFacultyById',
                         id: $("#internship_faculty_id").val()
                         },
                     dataType: 'json',
@@ -213,32 +211,98 @@ function initFacultySelector()
     // Handle the AJAX response containing the faculty members for a department
     function handleFacultyResponse(data)
     {
-        //console.log(data);
+      //console.log(data);
 
-        // Save the data outside this method for later
-        facultyData = data;
+      // Save the data outside this method for later
+      facultyData = data;
 
-        // Generate the dropdown list
-        var listItems = "<option value='-1'>None</option>";
-        for (var i = 0; i < data.length; i++){
-            // If the banner ID matches what's in the hidden field, set the selected option in the drop down
-            var selected = '';
-            if($("#internship_faculty_id").val() === data[i].id){
-                selected = 'selected="selected"';
-            }
-            listItems += "<option value='" + data[i].id + "' " + selected + ">" + data[i].first_name + " " + data[i].last_name + "</option>";
+      // Generate the dropdown list
+      var listItems = "<option value='-1'>None</option>";
+      for (var i = 0; i < data.length; i++){
+        // If the banner ID matches what's in the hidden field, set the selected option in the drop down
+        var selected = '';
+        if($("#internship_faculty_id").val() === data[i].id){
+          selected = 'selected="selected"';
         }
-        $("#internship_faculty").html(listItems);
-        $("#internship_faculty").prop('disabled', false);
+        listItems += "<option value='" + data[i].id + "' " + selected + ">" + data[i].first_name + " " + data[i].last_name + "</option>";
+      }
+      $("#internship_faculty").html(listItems);
+      $("#internship_faculty").prop('disabled', false);
 
-        // If a banner id is already set in the hidden field, select it
-        if ($("#internship_faculty_id").val() !== '') {
-            selectFaculty($("#internship_faculty_id").val());
-        }
+      // If a banner id is already set in the hidden field, select it
+      if ($("#internship_faculty_id").val() !== '') {
+        selectFaculty($("#internship_faculty_id").val());
+      }
     }
-    function handleGetFacultyResponce(faculty)
+
+    // Handles an AJAX error when there are no listed faculty by that id in table
+    function handleGetFacultyError(data)
     {
-      console.log(faculty);
+      $("#internship_faculty").html("<option value='-1'>No Supervisors Available</option>");
+      return;
+    }
+
+    // Handle an AJAX error when getting faculty members for a department
+    function handleFacultyReponseError(jqXHR, textStatus)
+    {
+      console.log("Error loading facuty list. Please contact ESS.");
+      console.log(textStatus);
+    }
+
+    // Trigger a change for the inital loading of faculty info
+    $("#internship_department").change(); // Trigger an initial update
+
+
+    // Handle changes to the faculty drop down
+    $("#internship_faculty").bind('change', function(){
+        if($("#internship_faculty").val() !== "-1") {
+            selectFaculty($("#internship_faculty").val());
+        } else {
+            $("#internship_faculty_id").val('');
+        }
+    });
+
+    // Change link click handler
+    $("#faculty-change").bind('click', function(){
+        // Reset the selected banner_id in the hidden field
+        $("#internship_faculty_id").val(null);
+
+        // Slide the faculty details panel out, and the faculty selector panel in
+        $("#faculty_details").hide('slide', {direction: 'right'}, "fast", function(){
+            $("#faculty_selector").show('slide', {direction: 'left'}, "fast");
+        });
+    });
+
+    // Select faculty from the dropdown list
+    function selectFaculty(bannerId)
+    {
+        // Store the selected faculty banner id in the hidden field
+        $("#internship_faculty_id").val(bannerId);
+
+        // Search the list of faculty for a match to the JSON data fetched earlier
+        //TODO What if there isn't a match? We still need to be able to find/show that faculty member.
+        var faculty = null;
+
+        for(var i = 0; i < facultyData.length; i++){
+            if(facultyData[i].id == bannerId){ // NB: Comparison must use double equals, not triple
+                faculty = facultyData[i];
+                updateFaculty(faculty);
+            }
+        }
+        $.ajax({
+            success: updateFaculty,
+            error: handleFacultyReponseError,
+            data: {module: 'intern',
+                action: 'restFacultyById',
+                id: $("#internship_faculty_id").val()
+                },
+            dataType: 'json',
+            url: 'index.php'
+        });
+    }
+
+    function updateFaculty(faculty)
+    {
       // Update the faculty details panel
       var departmentName = $("#internship_department :selected").text();
 
@@ -281,104 +345,6 @@ function initFacultySelector()
       $("#faculty_selector").hide('slide', {direction: 'left'}, "fast", function(){
         $("#faculty_details").show('slide', {direction: 'right'}, "fast");
       });
-    }
-
-    function handleGetFacultyError()
-    {
-      $("#internship_faculty").html("<option value='-1'>No Supervisors Available</option>");
-      return;
-    }
-
-    // Handle an AJAX error when getting faculty members for a department
-    function handleFacultyReponseError(jqXHR, textStatus)
-    {
-        console.log("Error loading facuty list. Please contact ESS.");
-        console.log(textStatus);
-    }
-
-    // Trigger a change for the inital loading of faculty info
-    $("#internship_department").change(); // Trigger an initial update
-
-
-    // Handle changes to the faculty drop down
-    $("#internship_faculty").bind('change', function(){
-        if($("#internship_faculty").val() !== "-1") {
-            selectFaculty($("#internship_faculty").val());
-        } else {
-            $("#internship_faculty_id").val('');
-        }
-    });
-
-    // Change link click handler
-    $("#faculty-change").bind('click', function(){
-        // Reset the selected banner_id in the hidden field
-        $("#internship_faculty_id").val(null);
-
-        // Slide the faculty details panel out, and the faculty selector panel in
-        $("#faculty_details").hide('slide', {direction: 'right'}, "fast", function(){
-            $("#faculty_selector").show('slide', {direction: 'left'}, "fast");
-        });
-    });
-
-
-    function selectFaculty(bannerId)
-    {
-        // Store the selected faculty banner id in the hidden field
-        $("#internship_faculty_id").val(bannerId);
-
-        // Search the list of faculty for a match to the JSON data fetched earlier
-        //TODO What if there isn't a match? We still need to be able to find/show that faculty member.
-        var faculty = null;
-
-        for(var i = 0; i < facultyData.length; i++){
-            if(facultyData[i].id == bannerId){ // NB: Comparison must use double equals, not triple
-                faculty = facultyData[i];
-                break;
-            }
-        }
-
-        // Update the faculty details panel
-        var departmentName = $("#internship_department :selected").text();
-
-        $("#faculty_details").removeClass('text disabled'); // Disable detail text
-        $("#faculty_name").html(faculty.first_name + " " + faculty.last_name + " - " + departmentName);
-        $("#faculty_email").html('<a href="mailto:' + faculty.username + '@appstate.edu">' + faculty.username + '@appstate.edu </a>');
-
-        if(faculty.phone !== ''){
-            $("#faculty_phone").html('<a href="tel:+1' + faculty.phone + '">' + faculty.phone + '</a>');
-        }else{
-            $("#faculty_phone").html('<small class="text-muted">Has not been set</small>');
-        }
-
-        if(faculty.fax !== '' && faculty.fax !== null){
-            $("#faculty_fax").html('<a href="fax:+1' + faculty.fax + '">' + faculty.fax + '</a>');
-        }else{
-            $("#faculty_fax").html('<small class="text-muted">Has not been set</small>');
-        }
-
-        // Format the address
-        var address = '';
-            if(faculty.street_address1 !== '' && faculty.street_address1 !== null){
-                address += faculty.street_address1;
-
-                if (faculty.street_address2 !== '') {
-                    address += ("<br />" + faculty.street_address2);
-                }
-            } else {
-                address += ('<small class="text-muted">Address has not been set</small>');
-            }
-        if(faculty.city !== '' && faculty.city !== null && faculty.state !== '' && faculty.state !== null){
-            address += ("<br />" + faculty.city + ", " + faculty.state);
-        }
-        if(faculty.zip !== '' && faculty.zip !== null) {
-            address += " " + faculty.zip;
-        }
-        $("#faculty_address").html(address);
-
-        // Slide the faculty selector div (drop downs) out, then slide the faculty details panel in
-        $("#faculty_selector").hide('slide', {direction: 'left'}, "fast", function(){
-                $("#faculty_details").show('slide', {direction: 'right'}, "fast");
-                });
     }
 }
 
