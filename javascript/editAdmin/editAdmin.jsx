@@ -36,7 +36,7 @@ var DepartmentList = React.createClass({
 
 var DeleteAdmin = React.createClass({
 	handleChange: function() {
-		this.props.onAdminDelete(this.props.id);
+		this.props.onAdminDelete(this.props.id, this.props.username, this.props.department);
 	},
 	render: function() {
 		return (
