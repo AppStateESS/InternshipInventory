@@ -166,6 +166,12 @@ class ReadyToRegisterEmail extends Email {
         }
 
         // Subject line
+        if(isset($this->internship->course_subj)){
+            $courseSubj = $subjects[$this->internship->course_subj];
+        } else {
+            $courseSubj = '';
+        }
+        
         $this->subject = $term . ' ' . $intlSubject . '[' . $this->internship->getBannerId() . '] ' . $this->internship->getFullName() . ' ' . $subjects[$this->internship->course_subj] . $this->internship->course_no;
     }
 }
