@@ -171,7 +171,7 @@ class ReadyToRegisterEmail extends Email {
         } else {
             $courseSubj = '';
         }
-        
-        $this->subject = $term . ' ' . $intlSubject . '[' . $this->internship->getBannerId() . '] ' . $this->internship->getFullName() . ' ' . $subjects[$this->internship->course_subj] . $this->internship->course_no;
+
+        $this->subject = $term . ' ' . $intlSubject . '[' . $this->internship->getBannerId() . '] ' . $this->internship->getFullName() . ' ' . $courseSubj . ' ' . $this->internship->course_no;
     }
 }
