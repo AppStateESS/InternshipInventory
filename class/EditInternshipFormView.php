@@ -92,17 +92,24 @@ class EditInternshipFormView {
             $this->tpl['DELETE_URL'] = 'index.php?module=intern&action=DeleteInternship&internship_id=' . $this->intern->getId();
         }
 
-        // Determine if we can copy to the next term (i.e. the next term exists)
+        // Get next three terms
         $nextTerm = Term::getNextTerm($this->intern->getTerm());
-        if(Term::termExists($nextTerm)){
-            $this->tpl['NEXT_TERM'] = Term::rawToRead($nextTerm);
-        }
         $nextTwoTerm = Term::getNextTerm($nextTerm);
         $nextThreeTerm = Term::getNextTerm($nextTwoTerm);
+        // Determine if we can copy to the next term (i.e. the next term exists)
+        if(Term::termExists($nextTerm)){
+          $this->tpl['NEXT_TERM'] = Term::rawToRead($nextTerm);
+        }
+        //Copy if it's Spring and exist, else if it's Summer 1 and exist. Hide the other term(s)
         if(Term::termExists($nextThreeTerm) && $this->intern->getTerm()%10 == 1){
           $this->tpl['NEXT_SEC_TERM'] = Term::rawToRead($nextThreeTerm);
+          $this->tpl['TWO_DIS'] = 'none';
         } else if(Term::termExists($nextTwoTerm) && $this->intern->getTerm()%10 == 2){
           $this->tpl['NEXT_SEC_TERM'] = Term::rawToRead($nextTwoTerm);
+          $this->tpl['THREE_DIS'] = 'none';
+        } else if(Term::termExists($nextTerm)){
+          $this->tpl['TWO_DIS'] = 'none';
+          $this->tpl['THREE_DIS'] = 'none';
         }
 
 

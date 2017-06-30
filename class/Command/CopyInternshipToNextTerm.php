@@ -33,7 +33,7 @@ class CopyInternshipToNextTerm {
       $internship->setState($state); // Set this initial value
 
 
-      // Calculate the new term and set it
+      // Calculate the new term(s) and set it
       $term = Term::getNextTerm($internship->getTerm());
       if($_REQUEST['next'] == 'two'){
         $newTerm = Term::getNextTerm($term);
