@@ -25,11 +25,13 @@ class InternshipContractPdfView {
      *
      * @param Internship $i
      * @param Array<EmergencyContact> $emergencyContacts
+     * @param BannerTermProvider $termProvider
      */
-    public function __construct(Internship $i, Array $emergencyContacts)
+    public function __construct(Internship $i, Array $emergencyContacts, BannerTermProvider $termProvider)
     {
         $this->internship = $i;
         $this->emergencyContacts = $emergencyContacts;
+        $this->termProvider = $termProvider;
 
         $this->generatePdf();
     }
@@ -134,11 +136,12 @@ class InternshipContractPdfView {
         $this->pdf->setXY(8, 106);
         $this->pdf->cell(27, 6, Term::rawToRead($this->internship->getTerm()), 0, 0, 'R');
 
-        /* TODO:Start/end dates for begining and end of term center aligned*/
+        /* Dates for begining and end of term center aligned*/
+        $termInfo = $this->termProvider->getTerm($this->internship->getTerm());
         $this->pdf->setXY(100, 106);
-        $this->pdf->cell(30, 5, $TermInfo->getTermStartDate(), 0, 0, 'C');
+        $this->pdf->cell(30, 5, $termInfo->getTermStartDate() , 0, 0, 'C');
         $this->pdf->setXY(173, 106);
-        $this->pdf->cell(30, 5, $TermInfo->getTermEndDate(), 0, 0, 'C');
+        $this->pdf->cell(30, 5, $termInfo->getTermEndDate(), 0, 0, 'C');
 
         /***
          * Faculty supervisor information.
@@ -216,7 +219,7 @@ class InternshipContractPdfView {
 
         $super_address = $a->getSuperAddress();
         //TODO: make this smarter so it adds the line break between words
-        if(strlen($agency_address) < 54){
+        if(strlen($super_address) < 54){
             // If it's short enough, just write it
             $this->pdf->setXY(113, 143);
             $this->pdf->cell(78, 5, $super_address);
