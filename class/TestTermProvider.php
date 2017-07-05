@@ -84,12 +84,26 @@ class TestTermProvider extends BannerTermProvider {
                 $partTerm->part_end_date    = '8/8/2017';
                 $responseObj->part_term[] = $partTerm;
 
+                $partTerm = new \stdClass();
+                $partTerm->part_term_code   = 'SD';
+                $partTerm->part_term_desc   = 'Summer Term Special';
+                $partTerm->part_start_date  = '5/4/2017';
+                $partTerm->part_end_date    = '8/14/2017';
+                $responseObj->part_term[] = $partTerm;
 
                 break;
             case '201730':
                 $responseObj->term_start_date   = '7/6/2017';
                 $responseObj->term_end_date     = '8/8/2017';
                 $responseObj->census_date       = '7/10/2017';
+
+                $partTerm = new \stdClass();
+                $partTerm->part_term_code   = 'SE';
+                $partTerm->part_term_desc   = 'Summer Term Special';
+                $partTerm->part_start_date  = '7/1/2017';
+                $partTerm->part_end_date    = '8/14/2017';
+                $responseObj->part_term[] = $partTerm;
+
                 break;
             case '201740':
                 $responseObj->term_start_date   = '8/22/2017';
@@ -144,27 +158,40 @@ class TestTermProvider extends BannerTermProvider {
                 $partTerm->part_end_date    = '3/15/2018';
                 $responseObj->part_term[] = $partTerm;
 
+                $partTerm = new \stdClass();
+                $partTerm->part_term_code   = '4';
+                $partTerm->part_term_desc   = 'Special Term';
+                $partTerm->part_start_date  = '12/18/2017';
+                $partTerm->part_end_date    = '5/28/2018';
+                $responseObj->part_term[] = $partTerm;
+
                 break;
             default:
                 throw new \Exception('Missing fake census date for ' . $this->term);
         }
 
-        $partTerm = new \stdClass();
 
-        $semester = Term::getSemester($this->term);
-        if($semester == Term::SPRING || $semester == Term::FALL){
-            $partTerm->part_term_code   = '4';
-        } else if($semester == Term::SUMMER1){
-            $partTerm->part_term_code   = 'SD';
-        } else if($semester == Term::SUMMER2){
-            $partTerm->part_term_code   = 'SE';
+        // This is a backup to make sure we have at least one part of term, if we haven't set one in the switch statement above
+        // The dates will always be in 2016, but at least we'll have a part of term object to use
+        if(sizeof($reponseObj->part_term) === 0){
+
+            $partTerm = new \stdClass();
+
+            $semester = Term::getSemester($this->term);
+            if($semester == Term::SPRING || $semester == Term::FALL){
+                $partTerm->part_term_code   = '4';
+            } else if($semester == Term::SUMMER1){
+                $partTerm->part_term_code   = 'SD';
+            } else if($semester == Term::SUMMER2){
+                $partTerm->part_term_code   = 'SE';
+            }
+
+            $partTerm->part_term_desc   = 'Special Term';
+            $partTerm->part_start_date  = '6/7/2016';
+            $partTerm->part_end_date    = '7/14/2016';
+
+            $responseObj->part_term[] = $partTerm;
         }
-
-        $partTerm->part_term_desc   = 'Special Term';
-        $partTerm->part_start_date  = '6/7/2016';
-        $partTerm->part_end_date    = '7/14/2016';
-
-        $responseObj->part_term[] = $partTerm;
 
         $parentObj = new \stdClass();
         $parentObj->GetTermInfoResult = $responseObj;
