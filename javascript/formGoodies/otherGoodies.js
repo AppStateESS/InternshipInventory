@@ -319,19 +319,25 @@ function initFacultySelector()
     }
 }
 
-//id of button. click function, ajax request, request background check url
 function initRequestBackCheck()
 {
     $("#back_check_id").click(function() {
 
+        $("#back_check_id").prop('disabled', true);
+
+        $("#back_check_id").html('Background Check Requested');
+
         $.ajax({
 
-            data:{
-                module: 'intern',
-                action: 'RequestBackgroundCheck'
+            url: 'index.php?module=intern&action=RequestBackgroundCheck&internship_id=' + $('#internship_internship_id').val(),
+
+            success: function() {
+                console.log('Background Request Sent');
             },
-            url: 'RequestBackgroundCheck.php'
-            //url: ;
+
+            error: function() {
+                alert('Request was not sent. Internal error.');
+            }
 
         });
     });
@@ -341,13 +347,21 @@ function initRequestDrugCheck()
 {
     $("#drug_check_id").click(function() {
 
+        $("#drug_check_id").prop('disabled', true);
+
+        $("#drug_check_id").html('Drug Screening Requested');
+
         $.ajax({
 
-            data:{
-                module: 'intern',
-                action: 'RequestDrugScreening'
+            url: 'index.php?module=intern&action=RequestDrugScreening&internship_id=' + $('#internship_internship_id').val(),
+
+            success: function() {
+                console.log('Drug Request Sent');
             },
-            url: 'RequestDrugScreening.php'
+
+            error: function() {
+                alert('Request was not sent. Internal error.');
+            }
 
         });
     });
@@ -363,6 +377,8 @@ function otherStuff()
     initMultiPart();
     initSecondaryPart();
     initFacultySelector();
+    initRequestBackCheck();
+    initRequestDrugCheck();
 
     setupFormSubmit();
     setupContractButton();
