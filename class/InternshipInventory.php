@@ -113,17 +113,14 @@ class InternshipInventory {
                 $view = new UI\GradProgramUI();
                 $this->content = $view->display();
                 break;
-
             case 'showAffiliateAgreement':
                 $view = new UI\AffiliateAgreementUI();
                 $this->content = $view->display();
                 break;
-
             case 'addAgreementView':
                 $view = new UI\AddAgreementUI();
                 $this->content = $view->display();
                 break;
-
             case 'addAffiliate':
                 $ctrl = new Command\SaveAffiliate();
                 $ctrl->execute();
@@ -183,6 +180,13 @@ class InternshipInventory {
                 break;
             case 'showAdminSettings':
                 $view = new UI\SettingsUI();
+                $this->content = $view->display();
+                break;
+            case 'edit_level':
+                if (!\Current_User::allow('intern', 'edit_level')) {
+                    disallow();
+                }
+                $view = new UI\StudentLevelUI();
                 $this->content = $view->display();
                 break;
             case 'showEditAdmins':
@@ -289,6 +293,10 @@ class InternshipInventory {
                 break;
             case 'stateRest':
                 $ctrl = new Command\StateRest();
+                $ctrl->execute();
+                break;
+            case 'levelRest':
+                $ctrl = new Command\LevelRest();
                 $ctrl->execute();
                 break;
             case 'emergencyContactRest':

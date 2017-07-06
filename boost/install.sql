@@ -662,6 +662,13 @@ CREATE TABLE intern_admin (
     PRIMARY KEY (id)
 );
 
+CREATE TABLE intern_student_level(
+  code varchar NOT NULL,
+  description varchar,
+  level varchar NOT NULL,
+  PRIMARY KEY(code)
+);
+
 CREATE TABLE intern_change_history (
     id INT NOT NULL,
     internship_id INT NOT NULL REFERENCES intern_internship(id),
@@ -903,6 +910,7 @@ CREATE SEQUENCE intern_term_seq;
 CREATE SEQUENCE intern_internship_seq;
 CREATE SEQUENCE intern_document_seq;
 CREATE SEQUENCE intern_admin_seq;
+CREATE SEQUENCE intern_student_level_seq;
 
 -- Local table for import and storage of student info
 CREATE TABLE intern_local_student_data (
