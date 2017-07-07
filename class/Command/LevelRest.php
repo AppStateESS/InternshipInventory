@@ -9,7 +9,10 @@ class LevelRest {
 	{
 
 		switch($_SERVER['REQUEST_METHOD']) {
-            case 'POST':
+						case 'PUT':
+								$this->put();
+								exit;
+						case 'POST':
                 $this->post();
                 exit;
             case 'GET':
@@ -22,20 +25,20 @@ class LevelRest {
         }
 	}
 
-	public function post()
+	public function put()
 	{
-		$code = $_REQUEST['code'];
-    $desc = $_REQUEST['desc'];
-		$level = $_REQUEST['level'];
+		$cod = $_REQUEST['code'];
+    $descri = $_REQUEST['descr'];
+		$lev = $_REQUEST['level'];
 
-    if ($code == '')
+    if ($cod == '')
 		{
 			header('HTTP/1.1 500 Internal Server Error');
 			echo("Missing a code.");
       exit;
 		}
 
-		if ($level == '')
+		if ($lev == '')
 		{
 			header('HTTP/1.1 500 Internal Server Error');
 			echo("Missing a level.");
@@ -45,30 +48,40 @@ class LevelRest {
 		$db = Database::newDB();
 		$pdo = $db->getPDO();
 
-		$sql = "SELECT code, description, level
-		FROM intern_student_level
-		WHERE code=:cod and description=:des and level=:lev";//TODO
+		$sql = "UPDATE intern_student_level
+				SET level=:lev and description=:descri
+				WHERE code=:cod";
 
 		$sth = $pdo->prepare($sql);
 
-		$sth->execute(array('cod'=>$code, 'des'=>$desc, 'lev'=>$level));
+		$sth->execute(array('cod'=>$cod, 'descri'=>$descri, 'lev'=>$lev));
+	}
 
-		$result = $sth->fetchAll(\PDO::FETCH_ASSOC);
+	public function post()
+	{
+		$cod = $_REQUEST['code'];
+    $descri = $_REQUEST['descr'];
+		$lev = $_REQUEST['level'];
 
-		if (sizeof($result) > 0)
+    if ($cod == '')
 		{
-
 			header('HTTP/1.1 500 Internal Server Error');
-			echo("Multiple codes in use.");
-            exit;
+			echo("Missing a code.");
+      exit;
 		}
 
+		if ($lev == '')
+		{
+			header('HTTP/1.1 500 Internal Server Error');
+			echo("Missing a level.");
+      exit;
+		}
+		$db = Database::newDB();
+		$pdo = $db->getPDO();
 		$sql = "INSERT INTO intern_student_level (code, description, level)
-				VALUES (nextval('intern_student_level_seq'), :cod, :des, :lev)";
-
+				VALUES (:cod, :descri, :lev)";
 		$sth = $pdo->prepare($sql);
-
-		$sth->execute(array('cod'=>$code, 'des'=>$desc, 'lev'=>$level));
+		$sth->execute(array('cod'=>$cod, 'descri'=>$descri, 'lev'=>$lev));
 	}
 
 	public function get()
@@ -76,10 +89,9 @@ class LevelRest {
 		$db = Database::newDB();
 		$pdo = $db->getPDO();
 
-		$sql = "SELECT intern_student_level.code,
-					   intern_student_level.description,
-					   intern_student_level.level
-				FROM intern_student_level";
+		$sql = "SELECT code, description, level
+				FROM intern_student_level
+				ORDER BY code ASC";
 
 		$sth = $pdo->prepare($sql);
 

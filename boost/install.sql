@@ -910,7 +910,6 @@ CREATE SEQUENCE intern_term_seq;
 CREATE SEQUENCE intern_internship_seq;
 CREATE SEQUENCE intern_document_seq;
 CREATE SEQUENCE intern_admin_seq;
-CREATE SEQUENCE intern_student_level_seq;
 
 -- Local table for import and storage of student info
 CREATE TABLE intern_local_student_data (

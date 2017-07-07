@@ -1,211 +1,263 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
-var ErrorMessagesBlock = React.createClass({
-    render: function() {
-        if(this.props.errors === null){
-            return '';
-        }
-
-        var errors = this.props.errors;
-
-        return (
-            <div className="row">
-                <div className="col-sm-12 col-md-6 col-md-push-3">
-                    <div className="alert alert-warning" role="alert">
-                        <p><i className="fa fa-exclamation-circle fa-2x"></i> Warning: {errors}</p>
-
-                    </div>
+var AddData = React.createClass({
+	handleClick: function() {
+		var textCode = ReactDOM.findDOMNode(this.refs.addNewCode).value.trim();
+		var textDes = ReactDOM.findDOMNode(this.refs.addNewDesc).value.trim();
+		var textLev = ReactDOM.findDOMNode(this.refs.addNewLevel).value.trim();
+		this.props.onCreate(textCode, textDes, textLev);
+	},
+	render: function() {
+		return (
+			<div className="col-md-5 col-md-offset-1">
+				<br /><br /><br />
+				<div className="panel panel-default">
+					<div className="panel-body">
+						<div className="row">
+							<div className="col-md-10">
+								<label>Code:</label>
+							</div>
+						</div>
+						<div className="row">
+							<div className="col-md-8">
+								<div className="form-group">
+								    <input type="text" className="form-control" ref="addNewCode" />
                 </div>
-            </div>
-        );
-    }
+							</div>
+						</div>
+						<div className="row">
+							<div className="col-md-10">
+								<label>Description:</label>
+							</div>
+						</div>
+						<div className="row">
+							<div className="col-md-8">
+								<div className="form-group">
+								    <input type="text" className="form-control" ref="addNewDesc" />
+                </div>
+							</div>
+						</div>
+						<div className="row">
+							<div className="col-md-10">
+								<label>Level:</label>
+							</div>
+						</div>
+						<div className="row">
+							<div className="col-md-8">
+								<div className="forCodem-group">
+								    <input type="text" className="form-control" ref="addNewLevel" />
+                </div>
+							</div>
+							<div className="col-md-4">
+								<div className="form-group">
+								    <button className="btn btn-default btn-md" onClick={this.handleClick}>Create Code</button>
+                </div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		);
+
+	}
 });
 
-var DisplayLevel = React.createClass({
-  render: function() {
-    return (
-     	<option value={this.props.id}>{this.props.name}</option>
-    )
-  }
+
+var DisplayData = React.createClass({
+	getInitialState: function() {
+		return {
+			editMode: false
+		};
+	},
+	handleEdit: function() {
+		this.setState({editMode: true});
+
+	},
+	handleSave: function() {
+		this.setState({editMode: false});
+
+		// Grabs the value in the textbox
+		var newCode = ReactDOM.findDOMNode(this.refs.savedCodeData).value.trim();
+		var newDes = ReactDOM.findDOMNode(this.refs.savedDesData).value.trim();
+		var newLeve = ReactDOM.findDOMNode(this.refs.savedLevelData).value.trim();
+
+		if (newCode === ''){
+			newCode = this.props.code;
+		}
+		if(newLeve === ''){
+			newLeve = this.props.level;
+		}
+
+		var originalName = this.props.code;
+		var originalLeve = this.props.level;
+
+		this.props.onSave(originalName, newCode, originalLeve, newLeve, newDes);
+	},
+	render: function() {
+    var textName = null;
+		var textDes = null;
+		var textLev = null;
+    var eButton = null;
+    var codeName = <span className="text-muted"> {this.props.code} </span>;
+		var desName = <span className="text-muted"> {this.props.description} </span>;;
+		var levelName = <span className="text-muted">{this.props.level} </span>;;
+		if (this.state.editMode) {
+			textName = <div id={this.props.code} >
+							     <input type="text" className="form-control" defaultValue={this.props.code} ref="savedCodeData" />
+						     </div>
+			textDes = <div id={this.props.description} >
+					 				 <input type="text" className="form-control" defaultValue={this.props.description} ref="savedDesData" />
+					 			 </div>
+			textLev = <div id={this.props.level} >
+									 <input type="text" className="form-control" defaultValue={this.props.level} ref="savedLevelData" />
+								 </div>
+			eButton = <button className="btn btn-default btn-xs" type="submit" onClick={this.handleSave}> Save </button>
+		} else {
+      textName = codeName;
+			textDes = desName;
+			textLev = levelName;
+			eButton = <button className="btn btn-default btn-xs" type="submit" onClick={this.handleEdit}> Edit </button>
+		}
+		return (
+			<tr>
+				<td>{textName}</td>
+				<td>{textDes}</td>
+				<td>{textLev}</td>
+				<td>{eButton}</td>
+			</tr>
+		);
+	}
 });
 
-// Main module that calls several component to build
-// the search admin screen.
-var SearchAdmin = React.createClass({
+
+var Manager = React.createClass({
 	getInitialState: function() {
 		return {
 			mainData: null,
-			displayData: null,
-			errorWarning: null,
-			messageType: null,
-			textData: ""
+			errorWarning: '',
+			success: ''
 		};
 	},
 	componentWillMount: function(){
-		// Grabs the level data at the start of execution
-		this.getLevelData();
+		this.getData();
 	},
-	getLevelData: function(){
-		// Sends an ajax request to levelRest to grab the display data.
+	getData: function(){
 		$.ajax({
 			url: 'index.php?module=intern&action=levelRest',
 			type: 'GET',
 			dataType: 'json',
 			success: function(data) {
-				this.setState({mainData: data,
-							   displayData: data});
+				this.setState({mainData: data});
 			}.bind(this),
 			error: function(xhr, status, err) {
-				alert("Failed to grab displayed data.")
+				alert("getData, there was a problem fetching data from the server.");
 				console.error(this.props.url, status, err.toString());
 			}.bind(this)
 		});
 	},
-	onAdminCreate: function(code, description, level)
-	{
-		var displayData = this.state.displayData;
-    var errorMessage = null;
+	onSave: function(orgCode, code, orgLeve, leve, newDes){
+		var cleanCode = encodeURIComponent(code)
+		var cleanLevel = encodeURIComponent(leve)
 
-		// Catch whether the user entered a level
-		if(level === ''){
-			errorMessage = "Please enter a level.";
-			this.setState({errorWarning: errorMessage});
-			return;
-		}
-
-		// Catch whether the user entered a code
-		if(code === ''){
-			errorMessage = "Please enter a code.";
-			this.setState({errorWarning: errorMessage});
-
-			return;
-		}
-
-		// Determines if the code has multiple entries within
-		// the table before creating the code.
-		for (var j = 0; j < displayData.length; j++) {
-			if (displayData[j].code === code) {
-				errorMessage = "Multiple codes used.";
-				this.setState({errorWarning: errorMessage});
-				return;
-			}
-		}
-
-		// Updating the new state for optimization (snappy response on the client)
-		var newVal = this.state.displayData;
-		this.setState({displayData: newVal});
-
+		// Saves the value into the database
 		$.ajax({
-			url: 'index.php?module=intern&action=levelRest&code='+code+'&desc='+description+'&level='+level,
-			type: 'POST',
+			url: 'index.php?module=intern&action=levelRest&code='+cleanCode+'&descr='+newDes+'&level='+cleanLevel,
+			type: 'PUT',
 			success: function(data) {
+				// Determines if the values have changed and if so, continues with the changes.
+				if (orgCode !== code && orgLeve !== leve)
+				{
+					$("#success").show();
+					var added = 'Updated '+orgCode+ " to " +code+'.';
+					this.setState({success: added});
+				}
 				this.getData();
-				var message = "Created code "+code+" with level "+level+".";
-				this.setState({errorWarning: message, messageType: "success"});
 			}.bind(this),
-			error: function(http) {
-				var errorMessage = http.responseText;
-				this.setState({errorWarning: errorMessage, messageType: "error"});
+			error: function(xhr, status, err) {
+				alert("onSave, there was a problem fetching data from the server.");
+				console.error(this.props.url, status, err.toString());
 			}.bind(this)
 		});
 	},
-	handleDrop: function(e) {
-		this.setState({dropData: e.target.value});
-	},
-	handleSubmit: function() {
-		var code = ReactDOM.findDOMNode(this.refs.cod).value.trim();
-		var level = ReactDOM.findDOMNode(this.refs.lev).value.trim();
-		var description = ReactDOM.findDOMNode(this.refs.desc).value.trim();;
-
-		this.onAdminCreate(code, description, level);
+	onCreate: function(code, descrip, level) {
+		// Creates a new value
+		$.ajax({
+			url: 'index.php?module=intern&action=levelRest&code='+code+'&descr='+descrip+'&level='+level,
+			type: 'POST',
+			success: function(data) {
+				// Shows a success message for the new value being added.
+				$("#success").show();
+				var added = 'Added '+code+'.';
+				this.setState({success: added});
+				this.getData();
+			}.bind(this),
+			error: function(http) {
+				var errorMessage = http.responseText;
+				this.setState({errorWarning: errorMessage});
+				$("#warningError").show();
+			}.bind(this)
+		});
 	},
 	render: function() {
-		var LevelData = null;
+    var data = null;
 		if (this.state.mainData != null) {
-			LevelData = this.state.displayData.map(function (levels) {
-				return (
-					<DisplayLevel key={levels.code}
-						description={levels.description}
-						level={levels.level} />
+			var onSave = this.onSave;
+			data = this.state.mainData.map(function (data) {
+			return (
+				<DisplayData key={data.code}
+						   code={data.code}
+						   onSave={onSave} />
 				);
 			});
+
 		} else {
-			LevelData = <tr><td></td></tr>; // Use an empty row here to avoid React warnings about whitespace inside <tbody>
+			data = <tr><td></td></tr>;
 		}
 
-		var errors;
-        if(this.state.errorWarning == null){
-            errors = '';
-        } else {
-            errors = <ErrorMessagesBlock key="errorSet" errors={this.state.errorWarning} messageType={this.state.messageType} />
-        }
-
 		return (
-			<div className="search">
+			<div className="data">
 
-				<ReactCSSTransitionGroup transitionName="example" transitionEnterTimeout={500} transitionLeaveTimeout={500}>
-                    {errors}
-                </ReactCSSTransitionGroup>
-                <h1> Student Levels </h1>
-                    <div className="row" style={{marginTop: '2em'}}>
-                        <div className="col-md-5 col-md-push-6">
-                            <div className="panel panel-default">
-                                <div className="panel-body">
-                                    <div className="row">
-                                        <div className="col-md-6">
-                                            <div className="form-group" style={{marginTop: '1em'}}>
-                                                <label>Code:</label>
-                                                <input type="text" className="form-control" placeholder="Code" ref="cod" />
-                                            </div>
-                                        </div>
-																				<div className="col-md-6">
-                                            <div className="form-group" style={{marginTop: '1em'}}>
-                                                <label>Description:</label>
-                                                <input type="text" className="form-control" placeholder="Description" ref="desc" />
-                                            </div>
-                                        </div>
-																				<div className="col-md-6">
-																					<div className="form-group" style={{marginTop: '1em'}}>
-																							<label>Level:</label>
-																							<input type="text" className="form-control" placeholder="Level" ref="lev" />
-																					</div>
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-md-3 col-md-offset-6">
-                                            <div className="form-group">
-                                                <button className="btn btn-default" onClick={this.handleSubmit}>Create Code</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-md-5 col-md-pull-5">
-                            <table className="table table-condensed table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Code</th>
-                                        <th>Description</th>
-                                        <th>Level</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {LevelData}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+			<div id="success" className="alert alert-success alert-dismissible" role="alert" hidden>
+				<button type="button"  className="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<strong>Success!</strong> {this.state.success}
+			</div>
+
+			<div id="warningError" className="alert alert-warning alert-dismissible" role="alert" hidden>
+				<button type="button"  className="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<strong>Warning!</strong> {this.state.errorWarning}
+			</div>
+
+				<div className="row">
+					<div className="col-md-5">
+						<h1> Student Levels</h1>
+							<table className="table table-condensed table-striped">
+								<thead>
+									<tr>
+										<th>Code</th>
+										<th>Description</th>
+										<th>Level</th>
+										<th>Options</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody>
+									{data}
+								</tbody>
+							</table>
+					</div>
+					<AddData onCreate={this.onCreate}
+							     buttonTitle={this.props.buttonTitle}
+						       panelTitle={this.props.panelTitle}  />
+
+				</div>
+			</div>
 		);
 	}
 });
 
 ReactDOM.render(
-	<SearchAdmin />,
+	<Manager />,
 	document.getElementById('content')
 );
