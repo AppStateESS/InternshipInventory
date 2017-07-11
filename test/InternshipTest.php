@@ -57,7 +57,7 @@ class InternshipTest extends \PHPUnit\Framework\TestCase
         $student->setLastName('Smith');
         $student->setBirthDateFromString('01/01/1986');
 
-        $student->setLevel(Student::UNDERGRAD);
+        $student->setLevel('U');
         $student->setCampus(Student::MAIN_CAMPUS);
         $student->setGpa(3.55);
         $student->addMajor(new \Intern\AcademicMajor('355*', 'Management', 'U'));

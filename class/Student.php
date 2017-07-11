@@ -22,11 +22,6 @@ namespace Intern;
 
 class Student {
     // Defines for Internship Inventory student Data
-    const UNDERGRAD = 'ugrad';
-    const GRADUATE  = 'grad';
-    const GRADUATE2 = 'grad2';
-    const DOCTORAL  = 'doctoral';
-    const POSTDOC   = 'postdoc';
 
     const MAIN_CAMPUS = 'main_campus';
     const DISTANCE_ED = 'distance_ed';
@@ -92,17 +87,18 @@ class Student {
     {
         $totalHours = $existingHours + $internHours;
 
-        $semester = $term->getSemesterType();
-        $level = $this->getLevel();
+        $semester = Term::getSemester($term);
+        $code = $this->getLevel();
         $limit = 0;
+        $level = LevelFactory::getLevelObjectById($code);
         if(($semester == Term::FALL || $semester == Term::SPRING)) {
-            if($level == self::UNDERGRAD){
+            if($level->getLevel() == 'Undergraduate'){
                 $limit = self::HOURS_LIMIT_UNDERGRAD_REG;
             } else {
                 $limit = self::HOURS_LIMIT_GRADUATE_REG;
             }
         } else if (($semester == Term::SUMMER1 || $semester == Term::SUMMER2)) {
-            if($level == self::UNDERGRAD){
+            if($level->getLevel() == 'Undergraduate'){
                 $limit = self::HOURS_LIMIT_UNDERGRAD_SUMMER;
             } else {
                 $limit = self::HOURS_LIMIT_GRADUATE_SUMMER;
@@ -232,7 +228,7 @@ class Student {
         $this->majors[] = $major;
     }
 
-    // TODO: test for valid values ('grad', 'ugrad')
+    // TODO: test for valid values ('Graduate' ...)
     public function setLevel($level) {
         $this->level = $level;
     }

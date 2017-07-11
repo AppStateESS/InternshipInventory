@@ -23,7 +23,7 @@ var AddData = React.createClass({
 						<div className="row">
 							<div className="col-md-8">
 								<div className="form-group">
-								    <input type="text" className="form-control" ref="addNewCode" />
+								    <input id="codeName" type="text" className="form-control" ref="addNewCode" />
                 </div>
 							</div>
 						</div>
@@ -35,7 +35,7 @@ var AddData = React.createClass({
 						<div className="row">
 							<div className="col-md-8">
 								<div className="form-group">
-								    <input type="text" className="form-control" ref="addNewDesc" />
+								    <input id="desName" type="text" className="form-control" ref="addNewDesc" />
                 </div>
 							</div>
 						</div>
@@ -47,7 +47,7 @@ var AddData = React.createClass({
 						<div className="row">
 							<div className="col-md-8">
 								<div className="forCodem-group">
-								    <input type="text" className="form-control" ref="addNewLevel" />
+								    <input id="levName" type="text" className="form-control" ref="addNewLevel" />
                 </div>
 							</div>
 							<div className="col-md-4">
@@ -79,34 +79,20 @@ var DisplayData = React.createClass({
 		this.setState({editMode: false});
 
 		// Grabs the value in the textbox
-		var newCode = ReactDOM.findDOMNode(this.refs.savedCodeData).value.trim();
+		var newCode = this.props.code;
 		var newDes = ReactDOM.findDOMNode(this.refs.savedDesData).value.trim();
 		var newLeve = ReactDOM.findDOMNode(this.refs.savedLevelData).value.trim();
 
-		if (newCode === ''){
-			newCode = this.props.code;
-		}
-		if(newLeve === ''){
-			newLeve = this.props.level;
-		}
-
-		var originalName = this.props.code;
-		var originalLeve = this.props.level;
-
-		this.props.onSave(originalName, newCode, originalLeve, newLeve, newDes);
+		this.props.onSave(newCode, newDes, newLeve);
 	},
 	render: function() {
-    var textName = null;
 		var textDes = null;
 		var textLev = null;
     var eButton = null;
-    var codeName = <span className="text-muted"> {this.props.code} </span>;
+    var textName = <span className="text-muted"> {this.props.code} </span>;
 		var desName = <span className="text-muted"> {this.props.description} </span>;;
 		var levelName = <span className="text-muted">{this.props.level} </span>;;
 		if (this.state.editMode) {
-			textName = <div id={this.props.code} >
-							     <input type="text" className="form-control" defaultValue={this.props.code} ref="savedCodeData" />
-						     </div>
 			textDes = <div id={this.props.description} >
 					 				 <input type="text" className="form-control" defaultValue={this.props.description} ref="savedDesData" />
 					 			 </div>
@@ -115,7 +101,6 @@ var DisplayData = React.createClass({
 								 </div>
 			eButton = <button className="btn btn-default btn-xs" type="submit" onClick={this.handleSave}> Save </button>
 		} else {
-      textName = codeName;
 			textDes = desName;
 			textLev = levelName;
 			eButton = <button className="btn btn-default btn-xs" type="submit" onClick={this.handleEdit}> Edit </button>
@@ -152,32 +137,28 @@ var Manager = React.createClass({
 				this.setState({mainData: data});
 			}.bind(this),
 			error: function(xhr, status, err) {
-				alert("getData, there was a problem fetching data from the server.");
+				alert("There was a problem fetching data from the server.");
 				console.error(this.props.url, status, err.toString());
 			}.bind(this)
 		});
 	},
-	onSave: function(orgCode, code, orgLeve, leve, newDes){
-		var cleanCode = encodeURIComponent(code)
-		var cleanLevel = encodeURIComponent(leve)
-
+	onSave: function(newCode, newDes, newLev){
 		// Saves the value into the database
 		$.ajax({
-			url: 'index.php?module=intern&action=levelRest&code='+cleanCode+'&descr='+newDes+'&level='+cleanLevel,
+			url: 'index.php?module=intern&action=levelRest&code='+newCode+'&descr='+newDes+'&level='+newLev,
 			type: 'PUT',
 			success: function(data) {
-				// Determines if the values have changed and if so, continues with the changes.
-				if (orgCode !== code && orgLeve !== leve)
-				{
-					$("#success").show();
-					var added = 'Updated '+orgCode+ " to " +code+'.';
-					this.setState({success: added});
-				}
+				$("#success").show();
+				var added = 'Updated '+newCode+'.';
+				this.setState({success: added});
 				this.getData();
+				$("#warningError").hide();
 			}.bind(this),
-			error: function(xhr, status, err) {
-				alert("onSave, there was a problem fetching data from the server.");
-				console.error(this.props.url, status, err.toString());
+			error: function(http) {
+				var errorMessage = http.responseText;
+				this.setState({errorWarning: errorMessage});
+				$("#warningError").show();
+				$("#success").hide();
 			}.bind(this)
 		});
 	},
@@ -192,11 +173,13 @@ var Manager = React.createClass({
 				var added = 'Added '+code+'.';
 				this.setState({success: added});
 				this.getData();
+				$("#warningError").hide();
 			}.bind(this),
 			error: function(http) {
 				var errorMessage = http.responseText;
 				this.setState({errorWarning: errorMessage});
 				$("#warningError").show();
+				$("#success").hide();
 			}.bind(this)
 		});
 	},
@@ -208,6 +191,8 @@ var Manager = React.createClass({
 			return (
 				<DisplayData key={data.code}
 						   code={data.code}
+							 description={data.description}
+							 level={data.level}
 						   onSave={onSave} />
 				);
 			});

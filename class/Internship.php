@@ -277,7 +277,7 @@ class Internship {
 
     /**
      * @Override Model::getCSV
-     * Get a CSV formatted for for this internship.
+     * Get a CSV formatted for this internship.
      */
     public function getCSV()
     {
@@ -296,11 +296,12 @@ class Internship {
         $csv['Last Name']   = $this->last_name;
 
         // Academic Info
-        $csv['Level']           = $this->getLevel();
-        if($this->getLevel() == 'ugrad'){
+        $csv['Level'] = $this->getLevel();
+        $level = LevelFactory::getLevelObjectById($this->getLevel());
+        if($level->getLevel() == 'Undergraduate'){
             //$csv['Undergrad Major'] = $this->getUgradMajor()->getName();
             $csv['Grduate Program'] = '';
-        }else if($this->getLevel() == 'grad'){
+        }else if($level->getLevel() == 'Graduate'){
             $csv['Undergrad Major'] = '';
             //$csv['Graduate Program'] = $this->getGradProgram()->getName();
         }else{
@@ -402,10 +403,10 @@ class Internship {
      */
     public function isUndergraduate()
     {
-        if($this->getLevel() == 'ugrad'){
-            return true;
+        $level = LevelFactory::getLevelObjectById($this->getLevel());
+        if($level->getLevel() == 'Undergraduate') {
+          return true;
         }
-
         return false;
     }
 
@@ -415,11 +416,10 @@ class Internship {
      */
     public function isGraduate()
     {
-        $level = $this->getLevel();
-        if($level == Student::GRADUATE || $level == Student::GRADUATE2 || $level == Student::DOCTORAL || $level == Student::POSTDOC) {
+        $level = LevelFactory::getLevelObjectById($this->getLevel());
+        if($level->getLevel() == "Graduate") {
             return true;
         }
-
         return false;
     }
 
@@ -803,9 +803,9 @@ class Internship {
         return $this->faculty_id;
     }
 
-	public function getStreetAddress(){
-		return $this->loc_address;
-	}
+	  public function getStreetAddress(){
+      return $this->loc_address;
+	  }
 
     /**
      * Get the domestic looking address of agency.
@@ -962,7 +962,7 @@ class Internship {
     }
 
     /**
-     * Returns this student's level ('grad', or 'undergrad')
+     * Returns this student's level code ('U' or 'G' ...)
      *
      * @return string
      */
@@ -972,19 +972,8 @@ class Internship {
 
     public function getLevelFormatted()
     {
-        if($this->getLevel() == Student::UNDERGRAD) {
-            return 'Undergraduate';
-        } else if ($this->getLevel() == Student::GRADUATE) {
-            return 'Graduate';
-        } else if ($this->getLevel() == Student::GRADUATE2) {
-            return 'Graduate 2';
-        }else if ($this->getLevel() == Student::DOCTORAL) {
-            return 'Doctoral';
-        } else if ($this->getLevel() == Student::POSTDOC) {
-            return 'Postdoctoral';
-        } else {
-            return 'Unknown level';
-        }
+      $level = LevelFactory::getLevelObjectById($this->level);
+      return $level->getDesc();
     }
 
     public function getMajorCode() {

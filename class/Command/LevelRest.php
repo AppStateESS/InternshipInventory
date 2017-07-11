@@ -25,23 +25,17 @@ class LevelRest {
         }
 	}
 
+  // Update code
 	public function put()
 	{
 		$cod = $_REQUEST['code'];
     $descri = $_REQUEST['descr'];
 		$lev = $_REQUEST['level'];
 
-    if ($cod == '')
-		{
-			header('HTTP/1.1 500 Internal Server Error');
-			echo("Missing a code.");
-      exit;
-		}
-
 		if ($lev == '')
 		{
 			header('HTTP/1.1 500 Internal Server Error');
-			echo("Missing a level.");
+			echo("Edit was missing a level. No changes saved.");
       exit;
 		}
 
@@ -49,14 +43,14 @@ class LevelRest {
 		$pdo = $db->getPDO();
 
 		$sql = "UPDATE intern_student_level
-				SET level=:lev and description=:descri
+				SET level=:lev, description=:descri
 				WHERE code=:cod";
 
 		$sth = $pdo->prepare($sql);
-
 		$sth->execute(array('cod'=>$cod, 'descri'=>$descri, 'lev'=>$lev));
 	}
 
+  // New code
 	public function post()
 	{
 		$cod = $_REQUEST['code'];
@@ -78,12 +72,29 @@ class LevelRest {
 		}
 		$db = Database::newDB();
 		$pdo = $db->getPDO();
+
+		$sql = "SELECT code
+		FROM intern_student_level
+		WHERE code=:cod";
+
+		$sth = $pdo->prepare($sql);
+		$sth->execute(array('cod'=>$cod));
+		$result = $sth->fetchAll(\PDO::FETCH_ASSOC);
+
+		if (sizeof($result) > 0)
+		{
+			header('HTTP/1.1 500 Internal Server Error');
+			echo("Code already exist.");
+            exit;
+		}
+
 		$sql = "INSERT INTO intern_student_level (code, description, level)
 				VALUES (:cod, :descri, :lev)";
 		$sth = $pdo->prepare($sql);
 		$sth->execute(array('cod'=>$cod, 'descri'=>$descri, 'lev'=>$lev));
 	}
 
+  // Get code information
 	public function get()
 	{
 		$db = Database::newDB();
@@ -94,7 +105,6 @@ class LevelRest {
 				ORDER BY code ASC";
 
 		$sth = $pdo->prepare($sql);
-
 		$sth->execute();
 		$result = $sth->fetchAll(\PDO::FETCH_ASSOC);
 

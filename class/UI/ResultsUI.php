@@ -227,20 +227,19 @@ class ResultsUI implements UI {
 
         // Student level
         if (isset($level)) {
-            if($level == Student::UNDERGRAD){
-                $pager->addWhere('level', Student::UNDERGRAD);
-            } else if ($level == Student::GRADUATE || $level == Student::DOCTORAL || $level == Student::POSTDOC) {
-                $pager->addWhere('level', Student::GRADUATE, null, 'OR', 'grad_level');
-                $pager->addWhere('level', Student::GRADUATE2, null, 'OR', 'grad_level');
-                $pager->addWhere('level', Student::DOCTORAL, null, 'OR', 'grad_level');
-                $pager->addWhere('level', Student::POSTDOC, null, 'OR', 'grad_level');
+          var_dump($level);
+            $sLevel = LevelFactory::getLevelObjectById($level);
+            if($sLevel->getLevel() == "Undergraduate"){
+                $pager->addWhere('level', "Undergraduate");
+            } else if ($sLevel->getLevel() == "Graduate") {
+                $pager->addWhere('level', "Graduate", null, 'OR', 'grad_level');
             }
 
             // Major
-            if ($level == 'ugrad' && isset($ugradMajor) && $ugradMajor != -1) {
+            if ($sLevel->getLevel() == "Undergraduate" && isset($ugradMajor) && $ugradMajor != -1) {
                 // Undergrad major
                 $pager->addWhere('major_code', $ugradMajor);
-            } else if ($level == 'grad' && isset($gradProg) && $gradProg != -1) {
+            } else if ($sLevel->getLevel() == "Graduate" && isset($gradProg) && $gradProg != -1) {
                 // Graduate program
                 $pager->addWhere('major_code', $gradProg);
             }

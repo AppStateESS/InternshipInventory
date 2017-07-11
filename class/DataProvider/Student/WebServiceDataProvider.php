@@ -42,13 +42,6 @@ class WebServiceDataProvider extends StudentDataProvider {
     // Campus: main campus, distance ed
     const MAIN_CAMPUS = 'Main Campus';
 
-    // Student level: grad, undergrad
-    const UNDERGRAD = 'U';
-    const GRADUATE  = 'G';
-    const GRADUATE2 = 'G2';
-    const DOCTORAL  = 'D';
-    const POSTDOC   = 'P'; // Guessing at the name here, not sure what 'P' really is
-
     /**
      * @param string $currentUserName - Username of the user currently logged in. Will be sent to web service
      */
@@ -274,19 +267,11 @@ class WebServiceDataProvider extends StudentDataProvider {
             //throw new \InvalidArgumentException("Unrecognized campus ({$data->campus}) for {$data->banner_id}.");
         }
 
-        // Level (grad vs undergrad)
-        if($data->level == self::UNDERGRAD) {
-            $student->setLevel(Student::UNDERGRAD);
-        } else if ($data->level == self::GRADUATE) {
-            $student->setLevel(Student::GRADUATE);
-        } else if ($data->level == self::GRADUATE2) {
-            $student->setLevel(Student::GRADUATE2);
-        } else if ($data->level == self::DOCTORAL) {
-            $student->setLevel(Student::DOCTORAL);
-        } else if ($data->level == self::POSTDOC) {
-            $student->setLevel(Student::POSTDOC);
+
+        if(LevelFactory::checkLevelExist($data->level)){
+          $student->setLevel($data->level);
         } else {
-            $student->setLevel(null);
+          throw new \Intern\Exception\MissingDataException("The code: {$data->level} does not exist. Please use the administrative options to <a href=\"index.php?module=intern&action=edit_level\">add student levels.</a>");
         }
 
         // Credit Hours

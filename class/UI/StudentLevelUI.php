@@ -7,7 +7,7 @@ use \Intern\AssetResolver;
 /**
  *
  * @author Cydney Caldwell
- * @license http://opensource.org/licenses/gpl-3.0.html
+ *
  */
 class StudentLevelUI implements UI {
 
