@@ -1,5 +1,4 @@
 <?php
-
 namespace Intern\WorkflowState;
 use Intern\WorkflowState;
 
