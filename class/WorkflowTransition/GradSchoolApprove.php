@@ -8,7 +8,7 @@ class GradSchoolApprove extends WorkflowTransition {
 
     const sourceState = 'DeanApprovedGradPendingState';
     const destState   = 'GradSchoolApprovedState';
-    const actionName  = 'Mark as Grad School Approved';
+    const actionName  = 'Mark as Graduate School Approved';
 
     public function getAllowedPermissionList(){
         return array('grad_school_approve');
