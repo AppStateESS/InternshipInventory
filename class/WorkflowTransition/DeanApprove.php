@@ -13,21 +13,25 @@ class DeanApprove extends WorkflowTransition {
         return array('dean_approve');
     }
 
+    public function isApplicable(Internship $i){
+        if ($i->isUndergraduate()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     public function doNotification(Internship $i, $note = null)
     {
         $settings = \Intern\InternSettings::getInstance();
-        
-        // If this is an undergrad internship, then send the Registrar an email
-        // Graduate level internships have another workflow state to go through before we alert the Registrar
-        if($i->isUndergraduate()){
-            $email = new \Intern\Email\ReadyToRegisterEmail($settings, $i);
-            $email->send();
-        }
 
-        // If this is a graduate email, send the notification email to the grad school office
-        if($i->isGraduate()){
-            $email = new \Intern\Email\GradSchoolNotificationEmail($settings, $i);
-            $email->send();
-        }
+        /**
+         * Send the Registrar an email.
+         * Graduate level internships have another workflow state to go through
+         * before we alert the Registrar.
+         */
+        $email = new \Intern\Email\ReadyToRegisterEmail($settings, $i);
+        $email->send();
+
     }
 }

@@ -4,11 +4,11 @@ namespace Intern\WorkflowTransition;
 use Intern\WorkflowTransition;
 use Intern\Internship;
 
-class UndoDeanApprove extends WorkflowTransition {
+class UndoDeanApprovalGradPending extends WorkflowTransition {
 
-    const sourceState = 'DeanApprovedState';
-    const destState   = 'SigAuthApprovedState';
-    const actionName  = 'Return for Dean Approval';
+    const sourceState = 'DeanApprovedGradPendingState';
+    const destState = 'SigAuthApprovedState';
+    const actionName = 'Return for Dean Approval';
 
     const sortIndex = 6;
 
@@ -17,11 +17,10 @@ class UndoDeanApprove extends WorkflowTransition {
     }
 
     public function isApplicable(Internship $i) {
-        if ($i->isUndergraduate()) {
+        if ($i->isGraduate()) {
             return true;
         } else {
             return false;
         }
     }
-
 }

@@ -90,10 +90,4 @@ class WorkflowTransitionFactory {
         }
         return ($a->getSortIndex() < $b->getSortIndex()) ? -1 : 1;
     }
-
-    //getAllowedPermissionList(?
-    public static getAllowedPermissionList()
-    {
-
-    }
 }
