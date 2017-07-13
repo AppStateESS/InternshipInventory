@@ -58,6 +58,7 @@ class Internship {
     public $first_name;
     public $middle_name;
     public $last_name;
+    public $preferred_name;
     public $birth_date = 0;
 
     // Metaphones for fuzzy search
@@ -1092,6 +1093,13 @@ class Internship {
         $this->drug_check = $check;
     }
 
+    public function getPreferredName(){
+        return $this->preferred_name;
+    }
+
+    public function setPreferredName($pname){
+        $this->preferred_name = $pname;
+    }
     /**
     * Sets the location state (i.e. One of the 50 states of the USA, not the approval status)
     */

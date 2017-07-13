@@ -260,10 +260,12 @@ class SaveInternship
         $i->first_name = self::trimField($_REQUEST['student_first_name']);
         $i->middle_name = self::trimField($_REQUEST['student_middle_name']);
         $i->last_name = self::trimField($_REQUEST['student_last_name']);
+        $i->preferred_name = self::trimField($_REQUEST['student_preferred_name']);
 
         $i->setFirstNameMetaphone(self::trimField($_REQUEST['student_first_name']));
         $i->setMiddleNameMetaphone(self::trimField($_REQUEST['student_middle_name']));
         $i->setLastNameMetaphone(self::trimField($_REQUEST['student_last_name']));
+        $i->setPreferredNameMetaphone(self::trimField($_REQUEST['student_preferred_name']));
 
         $i->phone = self::trimField($_REQUEST['student_phone']);
         $i->email = self::trimField($_REQUEST['student_email']);
