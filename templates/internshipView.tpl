@@ -73,6 +73,11 @@
           <div class="col-lg-6">{STUDENT_LAST_NAME}</div>
         </div>
 
+        <div class="form-group">
+          <label class="col-lg-3 control-label" for="{STUDENT_PREFERRED_NAME_ID}">{STUDENT_PREFERRED_NAME_LABEL_TEXT}</label>
+          <div class="col-lg-6">{STUDENT_PREFERRED_NAME}</div>
+        </div>
+
         <div class="form-group required">
           <label class="col-lg-3 control-label" for="{STUDENT_EMAIL_ID}">{STUDENT_EMAIL_LABEL_TEXT}</label>
           <div class="col-lg-6">

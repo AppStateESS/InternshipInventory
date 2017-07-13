@@ -215,10 +215,12 @@ class SaveInternship {
         $i->first_name = $_REQUEST['student_first_name'];
         $i->middle_name = $_REQUEST['student_middle_name'];
         $i->last_name = $_REQUEST['student_last_name'];
+        $i->preferred_name = $_REQUEST['student_preferred_name'];
 
         $i->setFirstNameMetaphone($_REQUEST['student_first_name']);
         $i->setMiddleNameMetaphone($_REQUEST['student_middle_name']);
         $i->setLastNameMetaphone($_REQUEST['student_last_name']);
+        $i->setPreferredNameMetaphone($_REQUEST['student_preferred_name']);
 
         $i->phone = $_REQUEST['student_phone'];
         $i->email = $_REQUEST['student_email'];
