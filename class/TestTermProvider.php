@@ -166,6 +166,19 @@ class TestTermProvider extends BannerTermProvider {
                 $responseObj->part_term[] = $partTerm;
 
                 break;
+            case '201820':
+                $responseObj->term_start_date   = '1/16/2018';
+                $responseObj->term_end_date     = '5/1/2018';
+                $responseObj->census_date       = '1/28/2018';
+
+                $partTerm = new \stdClass();
+                $partTerm->part_term_code   = 'SD';
+                $partTerm->part_term_desc   = 'Special Term';
+                $partTerm->part_start_date  = '12/18/2017';
+                $partTerm->part_end_date    = '5/28/2018';
+                $responseObj->part_term[] = $partTerm;
+
+                break;
             default:
                 throw new \Exception('Missing fake census date for ' . $this->term);
         }
@@ -173,7 +186,7 @@ class TestTermProvider extends BannerTermProvider {
 
         // This is a backup to make sure we have at least one part of term, if we haven't set one in the switch statement above
         // The dates will always be in 2016, but at least we'll have a part of term object to use
-        if(sizeof($reponseObj->part_term) === 0){
+        if(sizeof($responseObj->part_term) === 0){
 
             $partTerm = new \stdClass();
 
