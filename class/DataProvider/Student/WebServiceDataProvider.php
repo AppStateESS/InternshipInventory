@@ -43,8 +43,8 @@ class WebServiceDataProvider extends StudentDataProvider {
     const MAIN_CAMPUS = 'Main Campus';
 
     /**
-     * @param string $currentUserName - Username of the user currently logged in. Will be sent to web service
-     */
+    * @param string $currentUserName - Username of the user currently logged in. Will be sent to web service
+    */
     public function __construct($currentUserName)
     {
         $this->currentUserName = $currentUserName;
@@ -57,17 +57,24 @@ class WebServiceDataProvider extends StudentDataProvider {
     }
 
     /**
+<<<<<<< 765a998d5d59b9e08a836c990bcac7053157d0ef:class/DataProvider/Student/WebServiceDataProvider.php
      * Returns a Student object with hard-coded data
      * @return \Intern\Student
      */
     public function getStudent($studentId)
+=======
+    * Returns a Student object with hard-coded data
+    * @return Student
+    */
+    public function getStudent($studentId, $term)
+>>>>>>> fix request, need to add request by level:class/WebServiceDataProvider.php
     {
         if($studentId === null || $studentId == ''){
             throw new \InvalidArgumentException('Missing student ID.');
         }
 
         $params = array('BannerID' => $studentId,
-                        'UserName' => $this->currentUserName);
+        'UserName' => $this->currentUserName);
 
         try {
             $response = $this->sendRequest($params);
@@ -137,8 +144,8 @@ class WebServiceDataProvider extends StudentDataProvider {
         }
 
         $params = array('BannerID'  => $studentId,
-                        'Term'      => $term,
-                        'UserName'  => $this->currentUserName);
+        'Term'      => $term,
+        'UserName'  => $this->currentUserName);
 
         try {
             $response = $this->client->GetCreditHours($params);
@@ -163,7 +170,7 @@ class WebServiceDataProvider extends StudentDataProvider {
         }
 
         $params = array('BannerID' => $facultyId,
-                        'UserName' => $this->currentUserName);
+        'UserName' => $this->currentUserName);
 
         try {
             $response = $this->client->getInternInfo($params);
@@ -210,17 +217,17 @@ class WebServiceDataProvider extends StudentDataProvider {
     }
 
     /**
-     * Takes a reference to a Student object and a SOAP response,
-     * Plugs the SOAP values into Student object.
-     *
-     * @param Student $student
-     * @param stdClass $data
-     */
+    * Takes a reference to a Student object and a SOAP response,
+    * Plugs the SOAP values into Student object.
+    *
+    * @param Student $student
+    * @param stdClass $data
+    */
     protected function plugValues(&$student, \stdClass $data)
     {
         /**********************
-         * Basic Demographics *
-         **********************/
+        * Basic Demographics *
+        **********************/
         $student->setStudentId($data->banner_id);
         $student->setUsername($data->user_name);
 
@@ -251,8 +258,8 @@ class WebServiceDataProvider extends StudentDataProvider {
         }
 
         /*****************
-         * Academic Info *
-         *****************/
+        * Academic Info *
+        *****************/
 
         // Campus
         if($data->campus == WebServiceDataProvider::MAIN_CAMPUS) {
@@ -267,12 +274,7 @@ class WebServiceDataProvider extends StudentDataProvider {
             //throw new \InvalidArgumentException("Unrecognized campus ({$data->campus}) for {$data->banner_id}.");
         }
 
-
-        if(LevelFactory::checkLevelExist($data->level)){
-          $student->setLevel($data->level);
-        } else {
-          throw new \Intern\Exception\MissingDataException("The code: {$data->level} does not exist. Please use the administrative options to <a href=\"index.php?module=intern&action=edit_level\">add student levels.</a>");
-        }
+        $student->setLevel($data->level);
 
         // Credit Hours
         // Removed built-in credit hour fetching, since we don't always have a term
@@ -311,8 +313,8 @@ class WebServiceDataProvider extends StudentDataProvider {
     }
 
     /**
-     * Logs this request to PHPWS' soap.log file
-     */
+    * Logs this request to PHPWS' soap.log file
+    */
     private function logRequest($functionName, $result, Array $params)
     {
         $args = implode(', ', $params);

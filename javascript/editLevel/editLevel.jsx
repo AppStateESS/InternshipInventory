@@ -23,8 +23,8 @@ var AddData = React.createClass({
 						<div className="row">
 							<div className="col-md-8">
 								<div className="form-group">
-								    <input id="codeName" type="text" className="form-control" ref="addNewCode" />
-                </div>
+									<input id="codeName" type="text" className="form-control" ref="addNewCode" />
+								</div>
 							</div>
 						</div>
 						<div className="row">
@@ -35,8 +35,8 @@ var AddData = React.createClass({
 						<div className="row">
 							<div className="col-md-8">
 								<div className="form-group">
-								    <input id="desName" type="text" className="form-control" ref="addNewDesc" />
-                </div>
+									<input id="desName" type="text" className="form-control" ref="addNewDesc" />
+								</div>
 							</div>
 						</div>
 						<div className="row">
@@ -47,20 +47,19 @@ var AddData = React.createClass({
 						<div className="row">
 							<div className="col-md-8">
 								<div className="forCodem-group">
-								    <input id="levName" type="text" className="form-control" ref="addNewLevel" />
-                </div>
+									<input id="levName" type="text" className="form-control" ref="addNewLevel" />
+								</div>
 							</div>
 							<div className="col-md-4">
 								<div className="form-group">
-								    <button className="btn btn-default btn-md" onClick={this.handleClick}>Create Code</button>
-                </div>
+									<button className="btn btn-default btn-md" onClick={this.handleClick}>Create Code</button>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		);
-
 	}
 });
 
@@ -88,17 +87,17 @@ var DisplayData = React.createClass({
 	render: function() {
 		var textDes = null;
 		var textLev = null;
-    var eButton = null;
-    var textName = <span className="text-muted"> {this.props.code} </span>;
+		var eButton = null;
+		var textName = <span className="text-muted"> {this.props.code} </span>;
 		var desName = <span className="text-muted"> {this.props.description} </span>;;
 		var levelName = <span className="text-muted">{this.props.level} </span>;;
 		if (this.state.editMode) {
 			textDes = <div id={this.props.description} >
-					 				 <input type="text" className="form-control" defaultValue={this.props.description} ref="savedDesData" />
-					 			 </div>
+				<input type="text" className="form-control" defaultValue={this.props.description} ref="savedDesData" />
+			</div>
 			textLev = <div id={this.props.level} >
-									 <input type="text" className="form-control" defaultValue={this.props.level} ref="savedLevelData" />
-								 </div>
+				<input type="text" className="form-control" defaultValue={this.props.level} ref="savedLevelData" />
+			</div>
 			eButton = <button className="btn btn-default btn-xs" type="submit" onClick={this.handleSave}> Save </button>
 		} else {
 			textDes = desName;
@@ -115,7 +114,6 @@ var DisplayData = React.createClass({
 		);
 	}
 });
-
 
 var Manager = React.createClass({
 	getInitialState: function() {
@@ -184,60 +182,59 @@ var Manager = React.createClass({
 		});
 	},
 	render: function() {
-    var data = null;
+		var data = null;
 		if (this.state.mainData != null) {
 			var onSave = this.onSave;
 			data = this.state.mainData.map(function (data) {
-			return (
-				<DisplayData key={data.code}
-						   code={data.code}
-							 description={data.description}
-							 level={data.level}
-						   onSave={onSave} />
+				return (
+					<DisplayData key={data.code}
+						code={data.code}
+						description={data.description}
+						level={data.level}
+						onSave={onSave} />
 				);
 			});
 
 		} else {
-			data = <tr><td></td></tr>;
+				data = <tr><td></td></tr>;
 		}
 
 		return (
 			<div className="data">
 
-			<div id="success" className="alert alert-success alert-dismissible" role="alert" hidden>
-				<button type="button"  className="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<strong>Success!</strong> {this.state.success}
-			</div>
+				<div id="success" className="alert alert-success alert-dismissible" role="alert" hidden>
+					<button type="button"  className="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<strong>Success!</strong> {this.state.success}
+				</div>
 
-			<div id="warningError" className="alert alert-warning alert-dismissible" role="alert" hidden>
-				<button type="button"  className="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<strong>Warning!</strong> {this.state.errorWarning}
-			</div>
+				<div id="warningError" className="alert alert-warning alert-dismissible" role="alert" hidden>
+					<button type="button"  className="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<strong>Warning!</strong> {this.state.errorWarning}
+				</div>
 
 				<div className="row">
 					<div className="col-md-5">
 						<h1> Student Levels</h1>
-							<table className="table table-condensed table-striped">
-								<thead>
-									<tr>
-										<th>Code</th>
-										<th>Description</th>
-										<th>Level</th>
-										<th>Options</th>
-										<th></th>
-									</tr>
-								</thead>
-								<tbody>
-									{data}
-								</tbody>
-							</table>
+						<table className="table table-condensed table-striped">
+							<thead>
+								<tr>
+									<th>Code</th>
+									<th>Description</th>
+									<th>Level</th>
+									<th>Options</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								{data}
+							</tbody>
+						</table>
 					</div>
 					<AddData onCreate={this.onCreate}
-							     buttonTitle={this.props.buttonTitle}
-						       panelTitle={this.props.panelTitle}  />
-
+						buttonTitle={this.props.buttonTitle}
+						panelTitle={this.props.panelTitle}  />
+					</div>
 				</div>
-			</div>
 		);
 	}
 });

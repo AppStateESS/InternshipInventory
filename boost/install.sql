@@ -571,6 +571,13 @@ create table intern_student_autocomplete (
     PRIMARY KEY(banner_id)
 );
 
+CREATE TABLE intern_student_level(
+  code varchar NOT NULL,
+  description varchar,
+  level varchar NOT NULL,
+  PRIMARY KEY(code)
+);
+
 CREATE TABLE intern_internship (
        id INT NOT NULL,
        term character varying NOT NULL REFERENCES intern_term(term),
@@ -594,7 +601,7 @@ CREATE TABLE intern_internship (
        middle_name VARCHAR,
        last_name VARCHAR NOT NULL,
        gpa VARCHAR NULL,
-       level VARCHAR NOT NULL,
+       level VARCHAR NOT NULL REFERENCES intern_student_level,
        phone VARCHAR,
        email VARCHAR NOT NULL,
        major_code character varying,
@@ -660,13 +667,6 @@ CREATE TABLE intern_admin (
     username VARCHAR NOT NULL,
     department_id INT NOT NULL,
     PRIMARY KEY (id)
-);
-
-CREATE TABLE intern_student_level(
-  code varchar NOT NULL,
-  description varchar,
-  level varchar NOT NULL,
-  PRIMARY KEY(code)
 );
 
 CREATE TABLE intern_change_history (

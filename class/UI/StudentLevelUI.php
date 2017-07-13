@@ -5,10 +5,10 @@ namespace Intern\UI;
 use \Intern\AssetResolver;
 
 /**
- *
- * @author Cydney Caldwell
- *
- */
+*
+* @author Cydney Caldwell
+*
+*/
 class StudentLevelUI implements UI {
 
     public function display()

@@ -92,15 +92,15 @@ class Student {
         $limit = 0;
         $level = LevelFactory::getLevelObjectById($code);
         if(($semester == Term::FALL || $semester == Term::SPRING)) {
-            if($level->getLevel() == 'Undergraduate'){
+            if($level->getLevel() == Level::UNDERGRAD){
                 $limit = self::HOURS_LIMIT_UNDERGRAD_REG;
-            } else {
+            } else if($level->getLevel() == Level::GRADUATE){
                 $limit = self::HOURS_LIMIT_GRADUATE_REG;
             }
         } else if (($semester == Term::SUMMER1 || $semester == Term::SUMMER2)) {
-            if($level->getLevel() == 'Undergraduate'){
+            if($level->getLevel() == Level::UNDERGRAD){
                 $limit = self::HOURS_LIMIT_UNDERGRAD_SUMMER;
-            } else {
+            } else if($level->getLevel() == Level::GRADUATE){
                 $limit = self::HOURS_LIMIT_GRADUATE_SUMMER;
             }
         }
@@ -113,8 +113,8 @@ class Student {
     }
 
     /*****
-     * Accessor / Mutator Methods *
-     */
+    * Accessor / Mutator Methods *
+    */
 
     public function getStudentId() {
         return $this->studentId;
@@ -173,9 +173,9 @@ class Student {
     }
 
     /**
-     * Sets birth date
-     * @param $date String - Date, formatted as mm/dd/yyyy, ex: 6/20/1995
-     */
+    * Sets birth date
+    * @param $date String - Date, formatted as mm/dd/yyyy, ex: 6/20/1995
+    */
     public function setBirthDateFromString($date) {
         $this->birthDate = strtotime($date);
     }
@@ -210,20 +210,20 @@ class Student {
     }
 
     /**
-     * Returns an array of AcademicMajor objects corresponding to this
-     * student's majors.
-     *
-     * @return Array<AcademicMajor> Array of AcademicMajor objects for this student's majors.
-     */
+    * Returns an array of AcademicMajor objects corresponding to this
+    * student's majors.
+    *
+    * @return Array<AcademicMajor> Array of AcademicMajor objects for this student's majors.
+    */
     public function getMajors() {
         return $this->majors;
     }
 
     /**
-     * Adds a major to the array of majors for this student.
-     * Exepcts a stdClass object from the student info web service
-     * @param \stdClass $major A major object
-     */
+    * Adds a major to the array of majors for this student.
+    * Exepcts a stdClass object from the student info web service
+    * @param \stdClass $major A major object
+    */
     public function addMajor(AcademicMajor $major) {
         $this->majors[] = $major;
     }
@@ -242,9 +242,9 @@ class Student {
     }
 
     /**
-     * Sets graduation date
-     * @param $date String - Date, formatted as mm/dd/yyyy, ex: 6/20/1995
-     */
+    * Sets graduation date
+    * @param $date String - Date, formatted as mm/dd/yyyy, ex: 6/20/1995
+    */
     public function setGradDateFromString($date) {
         $this->gradDate = strtotime($date);
     }
@@ -265,15 +265,15 @@ class Student {
     */
 
     /**
-     * @param $flag bool
-     */
+    * @param $flag bool
+    */
     public function setStudentFlag($flag) {
         $this->isStudent = $flag;
     }
 
     /**
-     * @param $flag bool
-     */
+    * @param $flag bool
+    */
     public function setStaffFlag($flag) {
         $this->isStaff = $flag;
     }
