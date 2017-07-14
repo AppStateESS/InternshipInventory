@@ -203,7 +203,7 @@ class ResultsUI implements UI
              */
             $tokenLimit = 2; // Max number of tokens
             // The fields (db column names) to fuzzy match against, in decreasing order of importance
-            // $fuzzyFields = array('last_name', 'first_name', 'middle_name'); //NB: Unused
+            // $fuzzyFields = array('last_name', 'first_name', 'preferred_name'); //NB: Unused
             $fuzzyTolerance = 3; // Levenshtein distance allowed between the metaphones of a token and a $fuzzyField
             // Initalization
             $orderByList = array();
@@ -227,8 +227,8 @@ class ResultsUI implements UI
             // Foreach token
             for ($i = 0; $i < $tokenCount; $i++) {
 
-                $fuzzyDb->addColumnRaw("LEAST(levenshtein('{$tokens[$i]}', lower(last_name)),levenshtein('{$tokens[$i]}', lower(first_name))) as t{$i}_lev");
-                $fuzzyDb->addColumnRaw("LEAST(levenshtein(metaphone('{$tokens[$i]}', 10), last_name_meta),levenshtein(metaphone('{$tokens[$i]}', 10), first_name_meta)) as t{$i}_metalev");
+                $fuzzyDb->addColumnRaw("LEAST(levenshtein('{$tokens[$i]}', lower(last_name)),levenshtein('{$tokens[$i]}', lower(first_name)),levenshtein('{$tokens[$i]}', lower(preferred_name))) as t{$i}_lev");
+                $fuzzyDb->addColumnRaw("LEAST(levenshtein(metaphone('{$tokens[$i]}', 10), last_name_meta),levenshtein(metaphone('{$tokens[$i]}', 10), first_name_meta),levenshtein(metaphone('{$tokens[$i]}', 10), preferred_name_meta)) as t{$i}_metalev");
 
                 $pager->db->addWhere("fuzzy.t{$i}_lev", 3, '<', 'OR',
                         'lev_where');
@@ -348,7 +348,7 @@ class ResultsUI implements UI
         }
 
         /**
-         * Sort Headers 
+         * Sort Headers
          */
         $pager->setAutoSort(false);
         $pager->addSortHeader('term', 'Term');

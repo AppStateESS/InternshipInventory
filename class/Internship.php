@@ -295,10 +295,11 @@ class Internship {
         $csv = array();
 
         // Student data
-        $csv['Banner ID']   = $this->banner;
-        $csv['First Name']  = $this->first_name;
-        $csv['Middle Name'] = $this->middle_name;
-        $csv['Last Name']   = $this->last_name;
+        $csv['Banner ID']      = $this->banner;
+        $csv['First Name']     = $this->first_name;
+        $csv['Middle Name']    = $this->middle_name;
+        $csv['Last Name']      = $this->last_name;
+        $csv['Preferred Name'] = $this->preferred_name;
 
         // Academic Info
         $csv['Level'] = $this->getLevel();
