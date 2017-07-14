@@ -16,7 +16,7 @@ class CancelTransition extends WorkflowTransition {
     }
 
     public function getSourceState(){
-        return array('NewState', 'SigAuthReadyState', 'SigAuthApprovedState', 'DeanApprovedState', 'GradSchoolApprovedState', 'RegistrationIssueState');
+        return array('NewState', 'SigAuthReadyState', 'SigAuthApprovedState', 'DeanApprovedState', 'DeanApprovedGradPendingState', 'GradSchoolApprovedState', 'RegistrationIssueState');
     }
 
     public function doNotification(Internship $i, $note = null)
