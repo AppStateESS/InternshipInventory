@@ -13,6 +13,12 @@ class StudentLevelUI implements UI {
 
     public function display()
     {
+        /* Permission check */
+        if(!\Current_User::allow('intern', 'edit_level')){
+            \NQ::simple('intern', NotifyUI::ERROR, "You do not have permission to edit student levels.");
+            return ;
+        }
+
         $tpl = array();
 
         $tpl['vendor_bundle'] = AssetResolver::resolveJsPath('assets.json', 'vendor');
