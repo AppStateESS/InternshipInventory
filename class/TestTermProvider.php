@@ -173,7 +173,7 @@ class TestTermProvider extends BannerTermProvider {
 
         // This is a backup to make sure we have at least one part of term, if we haven't set one in the switch statement above
         // The dates will always be in 2016, but at least we'll have a part of term object to use
-        if(sizeof($reponseObj->part_term) === 0){
+        if(sizeof($responseObj->part_term) === 0){
 
             $partTerm = new \stdClass();
 
