@@ -274,7 +274,13 @@ class WebServiceDataProvider extends StudentDataProvider {
             //throw new \InvalidArgumentException("Unrecognized campus ({$data->campus}) for {$data->banner_id}.");
         }
 
-        $student->setLevel($data->level);
+        // Check if level exist, if not add it
+        if(LevelFactory::checkLevelExist($data->level)){
+            $student->setLevel($data->level);
+        } else {
+            $newLevel = LevelFactory::saveNewCode($data->level);
+            $student->setLevel($newLevel);
+        }
 
         // Credit Hours
         // Removed built-in credit hour fetching, since we don't always have a term

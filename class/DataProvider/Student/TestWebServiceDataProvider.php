@@ -86,7 +86,7 @@ class TestWebServiceDataProvider extends WebServiceDataProvider {
         $obj->zip   = '28602';
 
         // Academic Info
-        $obj->level     = 'A';   // 'U' or 'G'
+        $obj->level     = 'G';   // 'U' or 'G'
         //$obj->level     = 'G2';
         $obj->campus    = WebServiceDataProvider::MAIN_CAMPUS; // TODO verify values in SOAP
         //$obj->gpa       = '3.8129032260';

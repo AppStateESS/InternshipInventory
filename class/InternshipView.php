@@ -148,6 +148,15 @@ class InternshipView {
             return;
         }
 
+        $level = $this->student->getLevel();
+        var_dump($level);
+        $code = LevelFactory::getLevelObjectById($level);
+        var_dump($code->getLevel());
+        if($code->getLevel() == 'Unknown')
+        {
+            \NQ::simple('intern', UI\NotifyUI::WARNING, "This student's level of {$code->getCode()} did not exist. It was created and set to Unknown. Please ask an administrator for help.");
+        }
+
         // Show warning if graduation date is prior to start date
         $gradDate = $this->student->getGradDate();
         if(isset($gradDate) && $gradDate < $this->intern->getStartDate())

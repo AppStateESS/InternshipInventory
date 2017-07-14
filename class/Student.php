@@ -228,7 +228,6 @@ class Student {
         $this->majors[] = $major;
     }
 
-    // TODO: test for valid values ('Graduate' ...)
     public function setLevel($level) {
         $this->level = $level;
     }

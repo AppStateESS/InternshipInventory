@@ -404,7 +404,7 @@ class Internship {
     public function isUndergraduate()
     {
         $level = LevelFactory::getLevelObjectById($this->getLevel());
-        if($level->getLevel() == 'Undergraduate') {
+        if($level->getLevel() == Level::UNDERGRAD) {
             return true;
         }
         return false;
@@ -417,7 +417,7 @@ class Internship {
     public function isGraduate()
     {
         $level = LevelFactory::getLevelObjectById($this->getLevel());
-        if($level->getLevel() == "Graduate") {
+        if($level->getLevel() == Level::GRADUATE) {
             return true;
         }
         return false;
