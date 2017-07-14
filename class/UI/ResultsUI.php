@@ -292,7 +292,7 @@ class ResultsUI implements UI {
 
         //var_dump($pager);exit;
         //$pager->db->setTestMode();
-		//$pager->db->select();
+		    //$pager->db->select();
 
         /**
          * * Sort Headers **
