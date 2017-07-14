@@ -8,7 +8,6 @@ namespace Intern;
 * Represents a level for student.
 *
 * @author Cydney Caldwell
-* @package Hms
 */
 
 class Level {

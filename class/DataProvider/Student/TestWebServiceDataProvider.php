@@ -89,8 +89,8 @@ class TestWebServiceDataProvider extends WebServiceDataProvider {
         $obj->level     = 'G';   // 'U' or 'G'
         //$obj->level     = 'G2';
         $obj->campus    = WebServiceDataProvider::MAIN_CAMPUS; // TODO verify values in SOAP
-        //$obj->gpa       = '3.8129032260';
-        $obj->gpa       = '1.8129032260';
+        $obj->gpa       = '3.8129032260';
+        //$obj->gpa       = '1.8129032260';
 
         $obj->grad_date = '';
         //$obj->grad_date = '12/23/2015'; // Can be empty, or format 12/12/2015 (MM/DD/YYYY)
