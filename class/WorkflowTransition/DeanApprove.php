@@ -3,6 +3,9 @@
 namespace Intern\WorkflowTransition;
 use Intern\WorkflowTransition;
 use Intern\Internship;
+use Intern\ExpectedCourseFactory;
+use Intern\Email\UnusualCourseEmail;
+use \Intern\InternSettings;
 
 class DeanApprove extends WorkflowTransition {
     const sourceState = 'SigAuthApprovedState';
@@ -33,10 +36,11 @@ class DeanApprove extends WorkflowTransition {
         $email = new \Intern\Email\ReadyToRegisterEmail($settings, $i);
         $email->send();
 
+        // If the subject and course number are not registered with InternshipInventory,
+        // send an email to the appropriate receiver.
         if (!ExpectedCourseFactory::isExpectedCourse($i->getSubject(), $i->getCourseNumber())) {
             $email = new UnusualCourseEmail(InternSettings::getInstance(), $i);
             $email->send();
         }
-
     }
 }
