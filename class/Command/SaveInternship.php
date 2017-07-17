@@ -368,7 +368,7 @@ class SaveInternship {
         $agency->supervisor_city = $_REQUEST['agency_sup_city'];
         $agency->supervisor_zip = $_REQUEST['agency_sup_zip'];
         if($i->isDomestic()){
-            $agency->supervisor_state = $_REQUEST['agency_sup_state'];
+            $agency->supervisor_state = $_REQUEST['agency_sup_state'] == '-1' ? null : $_REQUEST['agency_sup_state'];
         } else {
             $agency->supervisor_province = $_REQUEST['agency_sup_province'];
             $agency->supervisor_country = $_REQUEST['agency_sup_country'] == '-1' ? null : $_REQUEST['agency_sup_country'];
