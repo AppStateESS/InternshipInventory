@@ -109,6 +109,17 @@ class InternshipView {
         if($this->student instanceof Student && $this->student->getLevel() == null){
             \NQ::simple('intern', \Intern\UI\NotifyUI::WARNING, "This student's 'level' is not set in Banner. This could mean this student is not currently enrolled.");
         }
+
+        // Show a warning if the start date selected is outside of the term start date
+        $part = $this->termInfo->getLongestTermPart();
+        if($this->intern->start_date != 0 && ($this->intern->start_date < strtotime($part->part_start_date) || $this->intern->start_date > strtotime($part->part_end_date))){
+          \NQ::simple('intern', UI\NotifyUI::WARNING, "The start date you selected is ouside the dates of the term. If correct, fill out the <a target='_blank' href=\"https:\/\/registrar.appstate.edu\/\/sites/registrar.appstate.edu/files/academic_course_meeting_dates_exception_form_102416_1.pdf\">Meeting Dates Exception Form</a>.");
+        }
+
+        // Show a warning if the ending date selected is outside of the term end date
+        if($this->intern->end_date != 0 && ($this->intern->end_date > strtotime($part->part_end_date) || $this->intern->end_date < strtotime($part->part_start_date))){
+          \NQ::simple('intern', UI\NotifyUI::WARNING, "The end date you selected is ouside the dates of the term. If correct, fill out the <a target='_blank' href=\"https:\/\/registrar.appstate.edu\/\/sites/registrar.appstate.edu/files/academic_course_meeting_dates_exception_form_102416_1.pdf\">Meeting Dates Exception Form</a>.");
+        }
     }
 
     private function showStudentWarnings()
