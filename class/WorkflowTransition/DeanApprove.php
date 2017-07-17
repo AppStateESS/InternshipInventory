@@ -33,5 +33,10 @@ class DeanApprove extends WorkflowTransition {
         $email = new \Intern\Email\ReadyToRegisterEmail($settings, $i);
         $email->send();
 
+        if (!ExpectedCourseFactory::isExpectedCourse($i->getSubject(), $i->getCourseNumber())) {
+            $email = new UnusualCourseEmail(InternSettings::getInstance(), $i);
+            $email->send();
+        }
+
     }
 }
