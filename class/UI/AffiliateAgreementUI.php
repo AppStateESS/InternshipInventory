@@ -1,5 +1,6 @@
 <?php
 namespace Intern\UI;
+use \Intern\AssetResolver;
 
 class AffiliateAgreementUI implements UI
 {
@@ -10,51 +11,30 @@ class AffiliateAgreementUI implements UI
             \NQ::simple('intern', \Intern\UI\NotifyUI::WARNING, 'You do not have permission to edit graduate programs.');
             return false;
         }
+        $tpl = array();
 
-        // TODO: Filtering by name should probably be done using DPager's built-in functionality
-        if(isset($_POST['search'])){
-            $name = $_POST['search'];
-        } else {
-            $name = null;
-        }
+        $tpl['vendor_bundle'] = AssetResolver::resolveJsPath('assets.json', 'vendor');
+        $tpl['entry_bundle'] = AssetResolver::resolveJsPath('assets.json', 'affiliateList');
 
-        $tpl['PAGER'] = AffiliateAgreementUI::doPager($name);
-
-        if(isset($_POST['search'])){
-          $tpl['CLEAR'] = 'index.php?module=intern&action=showAffiliateAgreement';
-        }
-
-        /* Form for  */
-        $form = new \PHPWS_Form('add_affil');
-
-        $form->addText('search');
-        $form->setLabel('search', 'Search by Name');
-        $form->addCssClass('search', 'form-control');
-
-        $form->setAction('index.php?module=intern&action=showAffiliateAgreement');
-
-        $form->mergeTemplate($tpl);
-        $v = \PHPWS_Template::process($form->getTemplate(), 'intern', 'affiliateList.tpl');
-
-        return $v;
-    }
-
-    public static function doPager($name)
-    {
-        \PHPWS_Core::initCoreClass('DBPager.php');
-
-        $pager = new \DBPager('intern_affiliation_agreement', '\Intern\AffiliationAgreement');
-        $pager->db->addColumn("*");
-
-        if($name !== null) {
-          $pager->db->addWhere("name", '%' . $name . '%', 'ILIKE');
-        }
-
-        $pager->setModule('intern');
-        $pager->setTemplate('affiliatePager.tpl');
-        $pager->setEmptyMessage('No Affiliate Agreements Found.');
-        $pager->addRowTags('getRowTags');
-
-        return $pager->get();
+        return \PHPWS_Template::process($tpl, 'intern','affiliateList.tpl');
     }
 }
+
+// public static function doPager($name)
+// {
+//     \PHPWS_Core::initCoreClass('DBPager.php');
+//
+//     $pager = new \DBPager('intern_affiliation_agreement', '\Intern\AffiliationAgreement');
+//     $pager->db->addColumn("*");
+//
+//     if($name !== null) {
+//         $pager->db->addWhere("name", '%' . $name . '%', 'ILIKE');
+//     }
+//
+//     $pager->setModule('intern');
+//     $pager->setTemplate('affiliatePager.tpl');
+//     $pager->setEmptyMessage('No Affiliate Agreements Found.');
+//     $pager->addRowTags('getRowTags');
+//
+//     return $pager->get();
+// }

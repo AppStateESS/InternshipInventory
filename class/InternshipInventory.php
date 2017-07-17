@@ -119,8 +119,16 @@ class InternshipInventory {
                 $ctrl = new Command\AffiliateRest();
                 $ctrl->execute();
                 break;
+            case 'AffiliateListRest':
+                $ctrl = new Command\AffiliateListRest();
+                $ctrl->execute();
+                break;
             case 'AffiliateDeptRest':
                 $ctrl = new Command\AffiliateDeptRest();
+                $ctrl->execute();
+                break;
+            case 'AffiliateDeptAgreementRest':
+                $ctrl = new Command\AffiliateDeptAgreementRest();
                 $ctrl->execute();
                 break;
             case 'AffiliateStateRest':
