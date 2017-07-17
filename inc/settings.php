@@ -10,5 +10,6 @@ $settings = array('registrarEmail'              => null,
                   'emailDomain'                 => null,
                   'checkEmail'                  => null,
                   'systemName'                  => 'Internship Inventory',
-                  'wsdlUri'                     => ''
+                  'wsdlUri'                     => '',
+                  'unusualCourseEmail'          => null
             );

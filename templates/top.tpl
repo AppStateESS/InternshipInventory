@@ -44,6 +44,9 @@
           <!-- BEGIN affiliation_agreement -->
           <li>{AFFIL_AGREE_LINK}</li>
           <!-- END affiliation_agreement -->
+          <!-- BEGIN courses -->
+          <li>{EDIT_COURSES_LINK}</li>
+          <!-- END courses -->
           <!-- BEGIN ctrl_panel -->
           <li>{CONTROL_PANEL}</li>
           <!-- END ctrl_panel -->
