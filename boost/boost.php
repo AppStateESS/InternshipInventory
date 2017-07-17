@@ -4,7 +4,7 @@
  */
 
 $proper_name  = 'Intern Inventory';
-$version      = '0.1.25';
+$version      = '0.1.26';
 $register     = false;
 $unregister   = false;
 $import_sql   = true;
