@@ -105,29 +105,8 @@ class SearchUI implements UI
         // Hidden field for selected faculty member
         $form->addHidden('faculty_id');
 
-        // Student level radio button
-        javascriptMod('intern', 'majorSelector', array('form_id'=>$form->id));
-
-        // Student Major dummy box (gets replaced by dropdowns below using JS when student_level is selected)
-        $levels = array('-1' => 'Choose student level first');
-        $form->addDropBox('student_major', $levels);
-        $form->setLabel('student_major', 'Major / Program');
-        $form->addCssClass('student_major', 'form-control');
-
-        // Get the majors list
-        $majorsList = MajorsProviderFactory::getProvider()->getMajors(Term::timeToTerm(time()));
-
-        // Undergrad major drop down
-        $undergradMajors = array('-1'=>'Select Undergraduate Major') + $majorsList->getUndergradMajorsAssoc();
-        $form->addSelect('undergrad_major', $undergradMajors);
-        $form->setMatch('undergrad_major', '-1');
-        $form->setClass('undergrad_major', 'form-control');
-
-        // Graduate major drop down
-        $graduateMajors = array('-1'=>'Select Graduate Major') + $majorsList->getGraduateMajorsAssoc();
-        $form->addSelect('graduate_major', $graduateMajors);
-        $form->setMatch('graduate_major', '-1');
-        $form->setClass('graduate_major', 'form-control');
+        // Student level radio button, Undergrad major drop down, Graduate major drop down
+        // Are all handled in JSX
 
         /*******************
          * Internship Type *
@@ -167,6 +146,7 @@ class SearchUI implements UI
         $tpl = array();
         $tpl['vendor_bundle'] = AssetResolver::resolveJsPath('assets.json', 'vendor');
         $tpl['entry_bundle'] = AssetResolver::resolveJsPath('assets.json', 'searchInterface');
+        $tpl['major_bundle'] = AssetResolver::resolveJsPath('assets.json', 'majorSelector');
 
         $form->mergeTemplate($tpl);
 

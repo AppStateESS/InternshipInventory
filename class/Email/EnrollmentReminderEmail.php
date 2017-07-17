@@ -1,9 +1,10 @@
 <?php
 
-namespace \Intern\Email;
+namespace Intern\Email;
 
 use \Intern\InternSettings;
 use \Intern\Term;
+use \Intern\Internship;
 
 class EnrollmentReminderEmail extends Email {
 

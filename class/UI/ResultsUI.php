@@ -52,12 +52,12 @@ class ResultsUI implements UI {
             $term = $_REQUEST['term_select'];
         if (isset($_REQUEST['name']))
             $name = $_REQUEST['name'];
-        if (isset($_REQUEST['undergrad_major']))
-            $ugradMajor = $_REQUEST['undergrad_major'];
-        if (isset($_REQUEST['graduate_major']))
-            $gradProg = $_REQUEST['graduate_major'];
-        if (isset($_REQUEST['student_level']) && $_REQUEST['student_level'] != '-1')
-            $level = $_REQUEST['student_level'];
+        if (isset($_REQUEST['ugrad']))
+            $ugradMajor = $_REQUEST['ugrad'];
+        if (isset($_REQUEST['grad']))
+            $gradProg = $_REQUEST['grad'];
+        if (isset($_REQUEST['level']) && $_REQUEST['level'] != '-1')
+            $level = $_REQUEST['level'];
         if (isset($_REQUEST['type']))
             $type = $_REQUEST['type'];
         if (isset($_REQUEST['campus']))
@@ -210,11 +210,11 @@ class ResultsUI implements UI {
 
         // Student level
         if (isset($level)) {
-
             if($level == Student::UNDERGRAD){
                 $pager->addWhere('level', Student::UNDERGRAD);
             } else if ($level == Student::GRADUATE || $level == Student::DOCTORAL || $level == Student::POSTDOC) {
                 $pager->addWhere('level', Student::GRADUATE, null, 'OR', 'grad_level');
+                $pager->addWhere('level', Student::GRADUATE2, null, 'OR', 'grad_level');
                 $pager->addWhere('level', Student::DOCTORAL, null, 'OR', 'grad_level');
                 $pager->addWhere('level', Student::POSTDOC, null, 'OR', 'grad_level');
             }

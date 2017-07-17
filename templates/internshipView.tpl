@@ -54,7 +54,7 @@
         <legend>Student</legend>
 
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="bannerid}">Banner Id</label>
+          <label class="col-lg-3 control-label" for="bannerid">Banner Id</label>
           <div id="bannerid" class="col-lg-6"><p class="form-control-static">{BANNER}</p></div>
         </div>
 

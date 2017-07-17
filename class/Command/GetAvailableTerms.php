@@ -36,10 +36,16 @@ class GetAvailableTerms {
             $part = $termInfo->getLongestTermPart();
 
             if($part === null){
-                throw new \Exception('Couldn\'t find a part of term for ' . $term);
+                // The parts of term may not exist yet, so use the overall term dates instead
+                $startDate = $termInfo->getTermStartDate();
+                $endDate = $termInfo->getTermEndDate();
+            } else {
+                // Use the specific term-part dates that were provided for the longest part of term
+                $startDate = $part->part_start_date;
+                $endDate = $part->part_end_date;
             }
 
-            $terms[$term] = array('description' => $description, 'startDate' => $part->part_start_date, 'endDate' => $part->part_end_date);
+            $terms[$term] = array('description' => $description, 'startDate' => $startDate, 'endDate' => $endDate);
         }
 
         echo json_encode($terms);
