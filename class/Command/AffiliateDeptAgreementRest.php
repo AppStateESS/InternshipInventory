@@ -33,7 +33,7 @@ class AffiliateDeptAgreementRest {
             throw new \InvalidArgumentException('Missing Department ID.');
         }
 
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
         $pdo = $db->getPDO();
 
 		$sql = "SELECT intern_affiliation_agreement.name, intern_affiliation_agreement.end_date, intern_affiliation_agreement.id, intern_affiliation_agreement.auto_renew

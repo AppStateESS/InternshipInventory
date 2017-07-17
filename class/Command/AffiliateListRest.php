@@ -27,7 +27,7 @@ class AffiliateListRest {
     // TODO: this should return the table of affiliation agreement objects
     public function get()
     {
-        $db = \Database::newDB();
+        $db = \phpws2\Database::newDB();
 		$pdo = $db->getPDO();
 
 		$sql = "SELECT intern_affiliation_agreement.name,
