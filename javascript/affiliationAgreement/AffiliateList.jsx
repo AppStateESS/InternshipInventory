@@ -51,7 +51,6 @@ var ShowAffiliate = React.createClass({
         var green = false, yellow = false, red = false;
 
         var expiration = (a - b)/1000;
-        console.log(expiration);
 
         if(this.props.auto_renew){
             green = true;
