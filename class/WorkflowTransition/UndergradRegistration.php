@@ -8,7 +8,7 @@ use Intern\Exception\MissingDataException;
 class UndergradRegistration extends WorkflowTransition {
     const sourceState = 'DeanApprovedState';
     const destState   = 'RegisteredState';
-    const actionName  = 'Mark as Registered / Enrollment Complete';
+    const actionName  = 'Mark as Registered / Enrollment Complete (undergrad)';
 
     public function getAllowedPermissionList(){
         return array('register');

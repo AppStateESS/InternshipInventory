@@ -35,6 +35,7 @@ class WorkflowStateFactory {
 
                 // Instantiate each one
                 $states[] = new $className;
+
             }
         }
 

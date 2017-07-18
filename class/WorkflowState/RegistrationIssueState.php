@@ -4,5 +4,5 @@ use Intern\WorkflowState;
 
 class RegistrationIssueState extends WorkflowState {
     const friendlyName = 'Registration Issue';
-    const sortIndex    = 7;
+    const sortIndex    = 8;
 }
