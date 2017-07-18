@@ -484,9 +484,20 @@
         </div>
       </fieldset>
 
+      <!-- Contract & Affiliation -->
+      <fieldset>
+          <legend> Contract &amp; Affiliation Agreements</legend>
+          <div class="row">
+              <!-- React Contract -->
+              <div class="col-md-12">
+                  <div id="contract-affiliation"></div>
+              </div>
+          </div>
+      </fieldset>
+
       <!-- Document List -->
       <fieldset>
-        <legend>Contract &amp; Documents</legend>
+        <legend>Other Documents</legend>
         <div class="row">
           <div class="col-lg-9">
             <ul class="list-group">
