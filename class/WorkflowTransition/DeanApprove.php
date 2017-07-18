@@ -6,6 +6,7 @@ use Intern\Internship;
 use Intern\ExpectedCourseFactory;
 use Intern\Email\UnusualCourseEmail;
 use \Intern\InternSettings;
+use Intern\Exception\MissingDataException;
 
 class DeanApprove extends WorkflowTransition {
     const sourceState = 'SigAuthApprovedState';
@@ -14,6 +15,13 @@ class DeanApprove extends WorkflowTransition {
 
     public function getAllowedPermissionList(){
         return array('dean_approve');
+    }
+
+    public function checkRequiredFields(Internship $i){
+        // Course number is required so we can check against the expected insurance list in doNotification()
+        if($i->getCourseNumber() === null || $i->getCourseNumber() === ''){
+            throw new MissingDataException("Please enter a course number.");
+        }
     }
 
     public function doNotification(Internship $i, $note = null)

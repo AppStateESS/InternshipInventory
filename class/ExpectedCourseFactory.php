@@ -19,6 +19,10 @@ class ExpectedCourseFactory {
      */
     public static function isExpectedCourse(Subject $subject, $courseNumber)
     {
+        if($courseNumber === null || $courseNumber === ''){
+            throw new \InvalidArgumentException('Missing course number.');
+        }
+
         $db = Database::newDB();
         $pdo = $db->getPDO();
         $sql = "SELECT id FROM intern_courses
