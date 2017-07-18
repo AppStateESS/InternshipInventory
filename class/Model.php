@@ -74,7 +74,7 @@ abstract class Model {
             $result = $db->saveObject($this);
         } catch (\Exception $e) {
             // rethrow any exceptions
-            throw $e->getMessage();
+            throw $e;
         }
 
         if (PHPWS_Error::logIfError($result)) {
