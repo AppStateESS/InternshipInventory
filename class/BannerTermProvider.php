@@ -103,12 +103,15 @@ class BannerTermProvider {
             $termInfo->setCensusDate($data->census_date);
         }
 
-        if(is_array($data->part_term)){
-            foreach($data->part_term as $termPart){
-                $termInfo->addTermPart($termPart);
+        // Part of term data may not be available yet. If not, we'll skip plugging in those values.
+        if(isset($data->part_term)){
+            if(is_array($data->part_term)){
+                foreach($data->part_term as $termPart){
+                    $termInfo->addTermPart($termPart);
+                }
+            }else{
+                $termInfo->addTermPart($data->part_term);
             }
-        }else{
-            $termInfo->addTermPart($data->part_term);
         }
     }
 
