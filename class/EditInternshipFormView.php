@@ -687,7 +687,11 @@ class EditInternshipFormView {
         $this->formVals['end_date'] = $this->intern->end_date ? date('m/d/Y', $this->intern->end_date) : null;
 
         $part = $this->termInfo->getLongestTermPart();
-        $this->tpl['TERM_DATES'] = $part->part_start_date . ' through ' . $part->part_end_date;
+        if($part === null){
+            $this->tpl['TERM_DATES'] = $this->termInfo->getTermStartDate() . ' through ' . $this->termInfo->getTermEndDate() . ' (provisional)';
+        } else {
+            $this->tpl['TERM_DATES'] = $part->part_start_date . ' through ' . $part->part_end_date;
+        }
 
         $this->formVals['credits'] = $this->intern->credits;
         $this->formVals['avg_hours_week'] = $this->intern->avg_hours_week;
