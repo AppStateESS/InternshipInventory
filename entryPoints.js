@@ -19,6 +19,8 @@ module.exports = {
       editExpectedCourses: JS_DIR + '/editCourses/courseEditor.jsx',
       majorSelector: JS_DIR + '/majorSelector/MajorSelector.jsx',
       adminSettings: JS_DIR + '/settings/settings.jsx',
+      contractAffiliation: JS_DIR + '/contractAffiliation/ContractAffiliation.jsx',
+      otherDocuments: JS_DIR + '/otherDocuments/OtherDocuments.jsx',
       vendor: ['jquery', 'react', 'react-dom', 'react-bootstrap']
     }
 }

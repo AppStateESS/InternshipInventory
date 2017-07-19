@@ -495,6 +495,17 @@
           </div>
       </fieldset>
 
+      <!-- New Document List -->
+      <fieldset>
+          <legend> New Other Documents</legend>
+          <div class="row">
+              <!-- React Contract -->
+              <div class="col-md-12">
+                  <div id="other-documents"></div>
+              </div>
+          </div>
+      </fieldset>
+
       <!-- Document List -->
       <fieldset>
         <legend>Other Documents</legend>
@@ -692,4 +703,6 @@
 </script>
 
 <script type="text/javascript" src="{vendor_bundle}"></script>
-<script type="text/javascript" src="{entry_bundle}"></script>
+<script type="text/javascript" src="{emergency_entry_bundle}"></script>
+<script type="text/javascript" src="{contract_entry_bundle}"></script>
+<script type="text/javascript" src="{documents_entry_bundle}"></script>

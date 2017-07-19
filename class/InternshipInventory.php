@@ -219,12 +219,8 @@ class InternshipInventory {
                 \NQ::close();
                 \PHPWS_Core::goBack();
                 break;
-            case 'addEmergencyContact':
-                $ctrl = new Command\AddEmergencyContact();
-                $ctrl->execute();
-                break;
-            case 'removeEmergencyContact':
-                $ctrl = new Command\RemoveEmergencyContact();
+            case 'documentRest':
+                $ctrl = new Command\DocumentRest();
                 $ctrl->execute();
                 break;
             case 'edit_faculty':

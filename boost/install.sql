@@ -635,6 +635,8 @@ CREATE TABLE intern_internship (
        background_check SMALLINT DEFAULT 0,
        drug_check SMALLINT DEFAULT 0,
        form_token character varying,
+       contract_type varchar,
+       affiliation_agreement_id INT,
        PRIMARY KEY(id)
 );
 
