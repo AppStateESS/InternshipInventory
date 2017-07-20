@@ -5,7 +5,7 @@ import Dropzone from 'react-dropzone';
 /*********************
  * Documents *
  *********************/
-/*var DocumentInfo = React.createClass({
+var DocumentInfo = React.createClass({
     getDefaultProps: function() {
         return {files: []}
     },
@@ -15,23 +15,34 @@ import Dropzone from 'react-dropzone';
     onOpenClick: function(){
         this.refs.dropzone.open();
     },
+    update(files){
+
+    },
     render: function() {
         var files;
-        var filesLink = null;
         var fileName;
-        files = (<div className="clickme">
-          <i className="fa fa-file"></i><br/>
-          <p>Click or drag file here</p>
-        </div>);
+
+        if (this.props.files.length > 0) {
+            files = this.props.files.map(f => <li>{f.name}</li>)
+        } else {
+            files = (
+                <div className="clickme">
+                  <i className="fa fa-file"></i>
+                  <p>Click or drag files here.</p>
+                </div>
+            );
+        }
         return (
-                <div className="dropzone">
-                    <Dropzone ref="dropzone" onDrop={this.onDrop}>
+            <section>
+                <div className="dropzone text-center pointer">
+                    <Dropzone ref="dropzone" accept="file/pdf, file/doc, file/odt" onDropAccepted={this.onDrop}>
                         {files}
                     </Dropzone>
                 </div>
+            </section>
         );
     }
-});*/
+});
 
 var Test = React.createClass({
     render: function() {
@@ -44,6 +55,6 @@ var Test = React.createClass({
 });
 
 ReactDOM.render(
-    <Test internshipId={window.internshipId}/>,
+    <DocumentInfo internshipId={window.internshipId}/>,
     document.getElementById('other-documents')
 );

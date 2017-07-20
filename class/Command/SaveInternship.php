@@ -168,7 +168,10 @@ class SaveInternship {
         $i->paid = $_REQUEST['payment'] == 'paid';
         $i->stipend = isset($_REQUEST['stipend']) && $i->paid;
         $i->pay_rate = self::trimField($_REQUEST['pay_rate']);
-
+        $i->contract_type = $_REQUEST['contract_type'];
+        if($_REQUEST['contract_type'] == 'affiliation'){
+            $i->affiliation_agreement_id = $_REQUEST['aff_agre_id'];
+        }
         if (\Current_User::isDeity()) {
             $i->term = $_REQUEST['term'];
         }

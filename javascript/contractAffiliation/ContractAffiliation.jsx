@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import Dropzone from 'react-dropzone';
 import $ from 'jquery';
 
-/*var AffiliationList = React.createClass({
+var AffiliationList = React.createClass({
   render: function() {
     return (
      	<option value={this.props.id}>{this.props.name}</option>
@@ -15,7 +15,8 @@ var AffiliationSelected = React.createClass({
     getInitialState: function() {
         return {showContract: false,
             showAffil: false,
-            affilData: null};
+            affilData: null,
+            dropData: ""};
     },
     onAffilationSelected(){
         this.setState({showAffil: true});
@@ -24,10 +25,22 @@ var AffiliationSelected = React.createClass({
         this.getData();
     },
     handleDrop: function(e) {
-		this.setState({dropData: e.target.value});
-	},
-    onSave: function(aff){
-        this.setType('affiliation', aff.id);
+
+        if(e.target.value !== -1){
+            this.setState({dropData: this.state.dropData});
+            console.log(this.state.dropData, "hit");
+            $.ajax({
+                url: 'index.php?module=intern&action=SaveInternship&internshipId='+this.props.internshipId+'&contract_type=affiliation&aff_agre_id='+this.state.dropData.id,
+                dataType: 'json',
+                success: function(data) {
+                    this.getData();
+                }.bind(this),
+                error: function(xhr, status, err) {
+                    alert("Failed to save affiliation data.")
+                    console.error(this.props.url, status, err.toString());
+                }.bind(this)
+            });
+        }
     },
     getData: function(){
         // Grabs the affiliation data
@@ -36,6 +49,8 @@ var AffiliationSelected = React.createClass({
             type: 'GET',
             dataType: 'json',
             success: function(data) {
+                console.log(data[0]);
+                data.unshift({name: "Select an agreement", id: "-1"});
                 this.setState({affilData: data});
             }.bind(this),
             error: function(xhr, status, err) {
@@ -46,8 +61,9 @@ var AffiliationSelected = React.createClass({
     },
     render: function() {
         var aData = null;
-        if (this.state.affilData != null) {
-			aData = this.state.deptData.map(function (affilData) {
+        if (this.state.affilData !== null) {
+            console.log(this.state.affilData[0])
+			aData = this.state.affilData.map(function (affilData) {
 			return (
 					<AffiliationList key={affilData.id}
 						name={affilData.name}
@@ -60,6 +76,7 @@ var AffiliationSelected = React.createClass({
 		}
         return (
             <div>
+                <label>Affiliation Agreements:</label>
                 <select className="form-control" onChange={this.handleDrop}>
                     {aData}
                 </select>
@@ -68,7 +85,7 @@ var AffiliationSelected = React.createClass({
     }
 });
 
-var ContractSelected = React.createClass({
+/*var ContractSelected = React.createClass({
     getInitialState: function() {
         return {showContract: false,
             showAffil: false};
@@ -113,18 +130,18 @@ var ContractSelected = React.createClass({
 });*/
 
 var ContractAffiliation = React.createClass({
-    /*getInitialState: function() {
+    getInitialState: function() {
         return {showContract: false,
             showAffil: false};
     },
     setType: function(type, id){
         //send ajax to set type & id
-        if(id == null){
+        if(id === null){
             //contract type set
         }else{
             //affiliation type set
         }
-    },*/
+    },
     render: function() {
         return (
             <div className="row">
@@ -156,6 +173,6 @@ var Test = React.createClass({
 });
 
 ReactDOM.render(
-    <ContractAffiliation internshipId={window.internshipId}/>,
+    <AffiliationSelected internshipId={window.internshipId}/>,
     document.getElementById('contract-affiliation')
 );
