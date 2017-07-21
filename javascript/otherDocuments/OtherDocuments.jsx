@@ -16,7 +16,7 @@ var DocumentInfo = React.createClass({
         this.refs.dropzone.open();
     },
     update(files){
-
+        //console.log(files);
     },
     render: function() {
         var files;
@@ -35,21 +35,11 @@ var DocumentInfo = React.createClass({
         return (
             <section>
                 <div className="dropzone text-center pointer">
-                    <Dropzone ref="dropzone" accept="file/pdf, file/doc, file/odt" onDropAccepted={this.onDrop}>
+                    <Dropzone style={{width: 'auto', height: 'auto', border: '2px dashed gray'}} multiple={false} ref="dropzone" accept="file/pdf, file/doc, file/odt" onDropAccepted={this.onDrop}>
                         {files}
                     </Dropzone>
                 </div>
             </section>
-        );
-    }
-});
-
-var Test = React.createClass({
-    render: function() {
-        return (
-            <div>
-                <p>Test Other Doc</p>
-            </div>
         );
     }
 });

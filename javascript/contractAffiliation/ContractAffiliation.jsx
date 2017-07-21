@@ -4,11 +4,17 @@ import Dropzone from 'react-dropzone';
 import $ from 'jquery';
 
 var AffiliationList = React.createClass({
-  render: function() {
-    return (
-     	<option value={this.props.id}>{this.props.name}</option>
-    )
-  }
+    render: function() {
+        var optionSelect = null;
+        var date = Math.round(new Date().getTime()/1000);
+        console.log(date, this.props.end_date);
+        if(date > this.props.end_date){
+            optionSelect = 	<option value={this.props.id} disabled>{this.props.name} Expried</option>
+        } else {
+            optionSelect = 	<option value={this.props.id}>{this.props.name}</option>
+        }
+        return (optionSelect);
+    }
 });
 
 var AffiliationSelected = React.createClass({
@@ -18,22 +24,18 @@ var AffiliationSelected = React.createClass({
             affilData: null,
             dropData: ""};
     },
-    onAffilationSelected(){
-        this.setState({showAffil: true});
-    },
     componentWillMount: function(){
         this.getData();
     },
     handleDrop: function(e) {
-
         if(e.target.value !== -1){
-            this.setState({dropData: this.state.dropData});
-            console.log(this.state.dropData, "hit");
+            console.log("hit", "Hit");
             $.ajax({
                 url: 'index.php?module=intern&action=SaveInternship&internshipId='+this.props.internshipId+'&contract_type=affiliation&aff_agre_id='+this.state.dropData.id,
+                type:'PUT',
                 dataType: 'json',
                 success: function(data) {
-                    this.getData();
+
                 }.bind(this),
                 error: function(xhr, status, err) {
                     alert("Failed to save affiliation data.")
@@ -45,7 +47,7 @@ var AffiliationSelected = React.createClass({
     getData: function(){
         // Grabs the affiliation data
         $.ajax({
-            url: 'index.php?module=intern&action=AffiliateListRest&internshipId='+this.props.internshipId,
+            url: 'index.php?module=intern&action=AffiliateListRest',
             type: 'GET',
             dataType: 'json',
             success: function(data) {
@@ -63,12 +65,12 @@ var AffiliationSelected = React.createClass({
         var aData = null;
         if (this.state.affilData !== null) {
             console.log(this.state.affilData[0])
-			aData = this.state.affilData.map(function (affilData) {
+			aData = this.state.affilData.map(function (data) {
 			return (
-					<AffiliationList key={affilData.id}
-						name={affilData.name}
-						begin={affilData.begin_date}
-                        end={affilData.end_date}/>
+					<AffiliationList key={data.id}
+						name={data.name}
+						begin={data.begin_date}
+                        end={data.end_date}/>
 				);
 			});
 		} else {
@@ -85,16 +87,11 @@ var AffiliationSelected = React.createClass({
     }
 });
 
-/*var ContractSelected = React.createClass({
-    getInitialState: function() {
-        return {showContract: false,
-            showAffil: false};
-    },
-    onContractSelect(){
-        this.setState({showContract: true});
-    },
+var ContractSelected = React.createClass({
     getDefaultProps: function(){
-        return{doc: []}
+        return{showContract: false,
+            showAffil: false,
+            doc: []}
     },
     onDrop: function(doc){
         this.props.update(doc);
@@ -103,35 +100,35 @@ var AffiliationSelected = React.createClass({
         this.refs.dropzone.open();
     },
     onSave: function(){
-        this.setType('contract');
+        //this.setType('contract');
     },
     render: function() {
         var doc;
         if(this.props.doc.length > 0){
-
+            doc = this.props.files.map(f => <li>{f.name}</li>)
         } else {
             doc = (
                 <div className="clickme">
-                    <i class="fa fa-file"></i><br/>
-                    <p>Click or drag document here.</p>
+                    <i className="fa fa-file"></i>
+                    <p>Click or drag contract here.</p>
                 </div>
             );
         }
         return (
             <div>
-                <div className="row">
-                    <Dropzone ref="dropzone" onDrop={this.onDrop} className="dropzone text-center">
-                        {doc}
-                    </Dropzone>
+                <div className="dropzone text-center pointer">
+                    <Dropzone style={{width: 'auto', height: 'auto', border: '2px dashed gray'}} ref="dropzone" accept="file/pdf, file/doc, file/odt" onDropAccepted={this.onDrop}>
+                    {doc}
+                </Dropzone>
                 </div>
             </div>
         );
     }
-});*/
+});
 
 var ContractAffiliation = React.createClass({
     getInitialState: function() {
-        return {showContract: false,
+        return {showContract: true,
             showAffil: false};
     },
     setType: function(type, id){
@@ -142,37 +139,46 @@ var ContractAffiliation = React.createClass({
             //affiliation type set
         }
     },
+    onAffilationSelected(){
+        this.setState({showAffil: true,
+                    showContract: false});
+    },
+    onContractSelect(){
+        this.setState({showContract: true,
+                    showAffil: false});
+    },
     render: function() {
+        var selection;
+        if(this.state.showContract){
+            selection = <ContractSelected show={this.state.showContract} />
+        } else {
+            selection = <AffiliationSelected show={this.state.showAffil} />
+        }
         return (
-            <div className="row">
-                <div className="col-lg-6">
-                    <div class="btn-group" data-toggle="buttons" role="group">
-                        <label class="btn btn-primary active">
-                            <input type="radio" name="option" autocomplete="off" checked onChange={this.onContractSelect}> Contract</input>
-                        </label>
-                        <label class="btn btn-primary">
-                            <input type="radio" name="option" autocomplete="off" onChange={this.onAffilationSelected}> Affiliation Agreement</input>
-                        </label>
+            <div>
+                <div className="row">
+                    <div className="col-lg-6">
+                        <div className="btn-group" data-toggle="buttons" role="group">
+                            <label className="btn btn-default active" onClick={this.onContractSelect}>
+                                <input type="radio" name="option" /> Contract
+                            </label>
+                            <label className="btn btn-default" onClick={this.onAffilationSelected}>
+                                <input type="radio" name="option" /> Affiliation Agreement
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-lg-12">
+                    <br />{selection}<br />
                     </div>
                 </div>
             </div>
         );
     }
 });
-//<ContractSelected show={this.state.showContract} />
-//<AffiliationSelected show={this.state.showAffil} />
-
-var Test = React.createClass({
-    render: function() {
-        return (
-            <div>
-                <p>Test Contract</p>
-            </div>
-        );
-    }
-});
 
 ReactDOM.render(
-    <AffiliationSelected internshipId={window.internshipId}/>,
+    <ContractAffiliation internshipId={window.internshipId}/>,
     document.getElementById('contract-affiliation')
 );
