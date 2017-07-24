@@ -102,19 +102,21 @@ var CreateCourse = React.createClass({
 		{
 			this.props.saveCourse(this.state.subject, courseNum);
 		}
+    //this.setState({value = courseNum});
 	},
   handleKeyPress: function(e) {
     // Making the Enter button on keyboard work for Create Course button.
     if (e.charCode === 13){
       console.log('Enter button pressed.');
       this.handleSubmit();
+      this.handleFocus();
+
     }
   },
-  /*handleFocus: function() {
-    console.log('focus!!');
+  handleFocus: function() {
+    //Select text field after Enter used.
     this.refs.courseNum.select();
-
-  },*/
+  },
 	render: function() {
 		return (
 			<div className="panel panel-default">
