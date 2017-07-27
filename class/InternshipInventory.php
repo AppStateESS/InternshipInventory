@@ -223,6 +223,10 @@ class InternshipInventory {
                 $ctrl = new Command\DocumentRest();
                 $ctrl->execute();
                 break;
+            case'agreementType':
+                $ctrl = new Command\AgreementTypeRest();
+                $ctrl->execute();
+                break;
             case 'edit_faculty':
                 $facultyUI = new UI\FacultyUI();
                 $this->content = $facultyUI->display();

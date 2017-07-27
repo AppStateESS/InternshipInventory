@@ -2,14 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Dropzone from 'react-dropzone';
 import $ from 'jquery';
+import classNames from 'classnames';
 
 var AffiliationList = React.createClass({
     render: function() {
         var optionSelect = null;
         var date = Math.round(new Date().getTime()/1000);
-        console.log(date, this.props.end_date);
-        if(date > this.props.end_date){
-            optionSelect = 	<option value={this.props.id} disabled>{this.props.name} Expried</option>
+        if(date > this.props.end){
+            optionSelect = 	<option value={this.props.id} disabled>{this.props.name} *Expried*</option>
         } else {
             optionSelect = 	<option value={this.props.id}>{this.props.name}</option>
         }
@@ -22,21 +22,19 @@ var AffiliationSelected = React.createClass({
         return {showContract: false,
             showAffil: false,
             affilData: null,
-            dropData: ""};
+            dropData: "",
+            selected: ''};
     },
     componentWillMount: function(){
         this.getData();
     },
     handleDrop: function(e) {
         if(e.target.value !== -1){
-            console.log("hit", "Hit");
             $.ajax({
-                url: 'index.php?module=intern&action=SaveInternship&internshipId='+this.props.internshipId+'&contract_type=affiliation&aff_agre_id='+this.state.dropData.id,
+                url: 'index.php?module=intern&action=agreementType&affilId='+e.target.value+'&internId='+window.internshipId,
                 type:'PUT',
-                dataType: 'json',
-                success: function(data) {
-
-                }.bind(this),
+                success: function() {
+                },
                 error: function(xhr, status, err) {
                     alert("Failed to save affiliation data.")
                     console.error(this.props.url, status, err.toString());
@@ -51,7 +49,6 @@ var AffiliationSelected = React.createClass({
             type: 'GET',
             dataType: 'json',
             success: function(data) {
-                console.log(data[0]);
                 data.unshift({name: "Select an agreement", id: "-1"});
                 this.setState({affilData: data});
             }.bind(this),
@@ -63,13 +60,13 @@ var AffiliationSelected = React.createClass({
     },
     render: function() {
         var aData = null;
+        console.log(this.state.selected);
         if (this.state.affilData !== null) {
-            console.log(this.state.affilData[0])
 			aData = this.state.affilData.map(function (data) {
 			return (
 					<AffiliationList key={data.id}
 						name={data.name}
-						begin={data.begin_date}
+                        id={data.id}
                         end={data.end_date}/>
 				);
 			});
@@ -79,7 +76,7 @@ var AffiliationSelected = React.createClass({
         return (
             <div>
                 <label>Affiliation Agreements:</label>
-                <select className="form-control" onChange={this.handleDrop}>
+                <select className="form-control" onChange={this.handleDrop} value={this.state.selected}>
                     {aData}
                 </select>
             </div>
@@ -129,40 +126,79 @@ var ContractSelected = React.createClass({
 var ContractAffiliation = React.createClass({
     getInitialState: function() {
         return {showContract: true,
-            showAffil: false};
+            showAffil: false,
+            agreementType: null};
     },
-    setType: function(type, id){
-        //send ajax to set type & id
-        if(id === null){
-            //contract type set
-        }else{
-            //affiliation type set
-        }
+    componentWillMount: function(){
+        this.getData();
+    },
+    getData: function(){
+        // Grabs the affiliation data
+        $.ajax({
+            url: 'index.php?module=intern&action=agreementType&internId='+this.props.internshipId,
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                this.setState({agreementType: data[0].contract_type});
+                if(data[0].contract_type == null){
+                    this.setType('contract', null);
+                }
+            }.bind(this),
+            error: function(xhr, status, err) {
+                alert("Failed to load type information.")
+                console.error(this.props.url, status, err.toString());
+            }.bind(this)
+        });
+    },
+    setType: function(type){
+        //send ajax to set type
+        $.ajax({
+            url: 'index.php?module=intern&action=agreementType&agreeType='+type+'&internId='+this.props.internshipId,
+            type: 'PUT',
+            success: function() {
+            },
+            error: function(xhr, status, err) {
+                alert("Failed to save type.")
+                console.error(this.props.url, status, err.toString());
+            }.bind(this)
+        });
     },
     onAffilationSelected(){
         this.setState({showAffil: true,
                     showContract: false});
+        this.setType('affiliation');
     },
     onContractSelect(){
         this.setState({showContract: true,
                     showAffil: false});
+        this.setType('contract');
     },
     render: function() {
         var selection;
-        if(this.state.showContract){
+        if(this.state.showContract && this.state.agreementType !== 'affiliation'){
             selection = <ContractSelected show={this.state.showContract} />
         } else {
             selection = <AffiliationSelected show={this.state.showAffil} />
         }
+        var contractActive = classNames({
+            'btn': true,
+            'btn-default': true,
+            'active': this.state.showContract && this.state.agreementType !== 'affiliation'
+        });
+        var affiliationActive = classNames({
+            'btn': true,
+            'btn-default': true,
+            'active': this.state.showContract && this.state.agreementType === 'affiliation'
+        });
         return (
             <div>
                 <div className="row">
                     <div className="col-lg-6">
                         <div className="btn-group" data-toggle="buttons" role="group">
-                            <label className="btn btn-default active" onClick={this.onContractSelect}>
+                            <label className={contractActive} onClick={this.onContractSelect}>
                                 <input type="radio" name="option" /> Contract
                             </label>
-                            <label className="btn btn-default" onClick={this.onAffilationSelected}>
+                            <label className={affiliationActive} onClick={this.onAffilationSelected}>
                                 <input type="radio" name="option" /> Affiliation Agreement
                             </label>
                         </div>

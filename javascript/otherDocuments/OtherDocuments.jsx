@@ -20,7 +20,6 @@ var DocumentInfo = React.createClass({
     },
     render: function() {
         var files;
-        var fileName;
 
         if (this.props.files.length > 0) {
             files = this.props.files.map(f => <li>{f.name}</li>)
