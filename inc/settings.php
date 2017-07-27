@@ -8,7 +8,7 @@ $settings = array('registrarEmail'              => null,
                   'internationalOfficeEmail'    => null,
                   'fromEmail'                   => null,
                   'emailDomain'                 => null,
-                  'checkEmail'                  => null,
+                  'backgroundCheckEmail'        => null,
                   'systemName'                  => 'Internship Inventory',
                   'wsdlUri'                     => '',
                   'unusualCourseEmail'          => null

@@ -47,6 +47,9 @@
           <!-- BEGIN courses -->
           <li>{EDIT_COURSES_LINK}</li>
           <!-- END courses -->
+          <!-- BEGIN settings -->
+          <li>{ADMIN_SETTINGS}</li>
+          <!-- END settings -->
           <!-- BEGIN ctrl_panel -->
           <li>{CONTROL_PANEL}</li>
           <!-- END ctrl_panel -->

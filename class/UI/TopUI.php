@@ -58,6 +58,7 @@ class TopUI implements UI
 
         if(\Current_User::isDeity()){
             $adminOptions['CONTROL_PANEL']         = \PHPWS_Text::secureLink('Control Panel','controlpanel');
+            $adminOptions['ADMIN_SETTINGS']      = \PHPWS_Text::secureLink('Admin Settings','intern',array('action' => 'showAdminSettings'));
             $adminOptions['EDIT_ADMINS_LINK']      = \PHPWS_Text::secureLink('Edit Administrators','intern',array('action' => 'showEditAdmins'));
         }
 
