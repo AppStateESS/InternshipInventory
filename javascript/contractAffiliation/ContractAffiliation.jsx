@@ -4,12 +4,17 @@ import Dropzone from 'react-dropzone';
 import $ from 'jquery';
 import classNames from 'classnames';
 
+// Checks to see if the affiliation agreement has expired
 var AffiliationList = React.createClass({
     render: function() {
         var optionSelect = null;
+        // Date format in jsx is in milliseconds, date saved to agreement is in seconds
         var date = Math.round(new Date().getTime()/1000);
-        if(date > this.props.end){
-            optionSelect = 	<option value={this.props.id} disabled>{this.props.name} *Expried*</option>
+        if(date > this.props.end && this.props.arenew !== 1){
+            optionSelect = 	<option value={this.props.id} disabled>{this.props.name} *Expired*</option>
+        } else if(date < this.props.start){
+            var startD = new Date(this.props.start*1000).toLocaleDateString();
+            optionSelect = 	<option value={this.props.id}>{this.props.name} *Starts {startD}*</option>
         } else {
             optionSelect = 	<option value={this.props.id}>{this.props.name}</option>
         }
@@ -23,18 +28,21 @@ var AffiliationSelected = React.createClass({
             showAffil: false,
             affilData: null,
             dropData: "",
-            selected: ''};
+            selected: this.props.selected};
     },
     componentWillMount: function(){
         this.getData();
     },
     handleDrop: function(e) {
+        // saves the users selected affiliation
         if(e.target.value !== -1){
+            var choose = e.target.value;
             $.ajax({
-                url: 'index.php?module=intern&action=agreementType&affilId='+e.target.value+'&internId='+window.internshipId,
+                url: 'index.php?module=intern&action=agreementType&affilId='+choose+'&internId='+window.internshipId,
                 type:'PUT',
                 success: function() {
-                },
+                    this.setState({selected: choose});
+                }.bind(this),
                 error: function(xhr, status, err) {
                     alert("Failed to save affiliation data.")
                     console.error(this.props.url, status, err.toString());
@@ -43,9 +51,9 @@ var AffiliationSelected = React.createClass({
         }
     },
     getData: function(){
-        // Grabs the affiliation data
+        // Grabs the list of affiliations
         $.ajax({
-            url: 'index.php?module=intern&action=AffiliateListRest',
+            url: 'index.php?module=intern&action=AffiliateListRest&NameASC=yes',
             type: 'GET',
             dataType: 'json',
             success: function(data) {
@@ -60,14 +68,15 @@ var AffiliationSelected = React.createClass({
     },
     render: function() {
         var aData = null;
-        console.log(this.state.selected);
         if (this.state.affilData !== null) {
 			aData = this.state.affilData.map(function (data) {
 			return (
 					<AffiliationList key={data.id}
 						name={data.name}
                         id={data.id}
-                        end={data.end_date}/>
+                        end={data.end_date}
+                        start={data.begin_date}
+                        arenew={data.auto_renew}/>
 				);
 			});
 		} else {
@@ -127,19 +136,20 @@ var ContractAffiliation = React.createClass({
     getInitialState: function() {
         return {showContract: true,
             showAffil: false,
-            agreementType: null};
+            agreementType: null,
+            affilSelect: null};
     },
     componentWillMount: function(){
         this.getData();
     },
     getData: function(){
-        // Grabs the affiliation data
+        // Grabs the affiliation data, if none then sets it to contract
         $.ajax({
             url: 'index.php?module=intern&action=agreementType&internId='+this.props.internshipId,
             type: 'GET',
             dataType: 'json',
             success: function(data) {
-                this.setState({agreementType: data[0].contract_type});
+                this.setState({agreementType: data[0].contract_type, affilSelect: data[0].affiliation_agreement_id});
                 if(data[0].contract_type == null){
                     this.setType('contract', null);
                 }
@@ -151,12 +161,13 @@ var ContractAffiliation = React.createClass({
         });
     },
     setType: function(type){
-        //send ajax to set type
+        // Sets the type of agreement selected
         $.ajax({
             url: 'index.php?module=intern&action=agreementType&agreeType='+type+'&internId='+this.props.internshipId,
             type: 'PUT',
             success: function() {
-            },
+                this.setState({agreementType: type});
+            }.bind(this),
             error: function(xhr, status, err) {
                 alert("Failed to save type.")
                 console.error(this.props.url, status, err.toString());
@@ -178,13 +189,15 @@ var ContractAffiliation = React.createClass({
         if(this.state.showContract && this.state.agreementType !== 'affiliation'){
             selection = <ContractSelected show={this.state.showContract} />
         } else {
-            selection = <AffiliationSelected show={this.state.showAffil} />
+            selection = <AffiliationSelected show={this.state.showAffil} selected={this.state.affilSelect} />
         }
+        // Class for contract button active
         var contractActive = classNames({
             'btn': true,
             'btn-default': true,
             'active': this.state.showContract && this.state.agreementType !== 'affiliation'
         });
+        // Class for affiliation button active
         var affiliationActive = classNames({
             'btn': true,
             'btn-default': true,

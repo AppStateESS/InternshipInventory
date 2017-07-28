@@ -27,9 +27,9 @@ class AffiliateListRest {
     public function execute()
     {
         /* Check if user should have access to Affiliate Agreement page */
-        if(!\Current_User::allow('intern', 'affiliation_agreement')){
-            \NQ::simple('intern', \Intern\UI\NotifyUI::WARNING, 'You do not have permission to add Affiliation Agreements.');
-            throw new \Intern\Exception\PermissionException('You do not have permission to add Affiliation Agreements.');
+        if(!\Current_User::isLogged()){
+            \NQ::simple('intern', \Intern\UI\NotifyUI::WARNING, 'You do not have permission to view Affiliation Agreements.');
+            throw new \Intern\Exception\PermissionException('You do not have permission to view Affiliation Agreements.');
         }
 
         switch($_SERVER['REQUEST_METHOD']) {
@@ -49,13 +49,23 @@ class AffiliateListRest {
         $db = \phpws2\Database::newDB();
 		$pdo = $db->getPDO();
 
-		$sql = "SELECT intern_affiliation_agreement.name,
-					   intern_affiliation_agreement.end_date,
-                       intern_affiliation_agreement.id,
-                       intern_affiliation_agreement.auto_renew
-				FROM intern_affiliation_agreement
-                ORDER BY intern_affiliation_agreement.end_date ASC";
-
+        if(isset($_REQUEST['NameASC'])){
+            $sql = "SELECT intern_affiliation_agreement.name,
+                            intern_affiliation_agreement.end_date,
+                            intern_affiliation_agreement.begin_date,
+                            intern_affiliation_agreement.id,
+                            intern_affiliation_agreement.auto_renew
+                    FROM intern_affiliation_agreement
+                    ORDER BY intern_affiliation_agreement.name ASC";
+        }
+        else{
+            $sql = "SELECT intern_affiliation_agreement.name,
+                            intern_affiliation_agreement.end_date,
+                            intern_affiliation_agreement.id,
+                            intern_affiliation_agreement.auto_renew
+                    FROM intern_affiliation_agreement
+                    ORDER BY intern_affiliation_agreement.end_date ASC";
+        }
 		$sth = $pdo->prepare($sql);
 
 		$sth->execute();
