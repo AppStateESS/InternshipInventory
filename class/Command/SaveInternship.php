@@ -167,16 +167,8 @@ class SaveInternship {
         $i->avg_hours_week = $avg_hours_week ? $avg_hours_week : null;
         $i->paid = $_REQUEST['payment'] == 'paid';
         $i->stipend = isset($_REQUEST['stipend']) && $i->paid;
-<<<<<<< f43d958587655d0a75da7e3c572c148554813177
         $i->pay_rate = self::trimField($_REQUEST['pay_rate']);
-        $i->contract_type = $_REQUEST['contract_type'];
-        if($_REQUEST['contract_type'] == 'affiliation'){
-            $i->affiliation_agreement_id = $_REQUEST['aff_agre_id'];
-        }
-=======
-        $i->pay_rate = $_REQUEST['pay_rate'];
-        
->>>>>>> selected based on saved type
+
         if (\Current_User::isDeity()) {
             $i->term = $_REQUEST['term'];
         }
