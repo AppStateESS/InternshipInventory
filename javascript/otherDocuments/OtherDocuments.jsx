@@ -3,78 +3,10 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import Dropzone from 'react-dropzone';
 
-/*var DocumentInfo = React.createClass({
-    getDefaultProps: function(){
-        return{filesSaved: []};
-    },
-    onDrop: function(files){
-        this.setState({filesSaved: files});
-        var data = new FormData();
-        $.each(this.state.filesSaved, function(key, value){
-            data.append(key, value);
-        });
-        $.ajax({
-            url: 'index.php?module=intern&action=documentRest',
-            type: 'POST',
-            data: data,
-            cache: false,
-            dataType: 'json',
-            processData: false,
-            contentType: false,
-            success: function (data) {
-                this.props.reload();
-            }.bind(this),
-            error: function(){
-                alert('Faild to save files.');
-            }
-        });
-    },
-    onOpenClick: function(){
+
+/*    onOpenClick: function(){
         this.refs.dropzone.open();
     },
-    render: function() {
-        return (
-            <section>
-                <div className="dropzone text-center pointer">
-                    <Dropzone ref="dropzone" accept="file/pdf, file/doc, file/odt" onDrop={this.onDrop}>
-                    <div className="clickme">
-                      <i className="fa fa-file"></i>
-                      <p>Click or drag files here.</p>
-                    </div>
-                    <ul>{this.state.filesSaved.map(f => <li key={f.name}>{f.name}</li>)}</ul>
-                    </Dropzone>
-                </div>
-            </section>
-        );
-    }
-});*/
-
-/*var DocumentInfo = React.creatClass({
-    getInitialState: function(){
-        super()
-        this.state = {files: []}
-    },
-    onDrop: function(files) {
-        var req = request.post('index.php?module=intern&action=documentRest');
-        files.forEach(file => {req.attach(file.name, file);});
-        req.end(callback);
-    },
-    onOpenClick: function(){
-        this.refs.dropzone.open();
-    },
-    render: function() {
-        var files;
-
-        if (this.props.files.length > 0) {
-            files = this.props.files.map(f => <li>{f.name}</li>)
-        } else {
-            files = (
-                <div className="clickme">
-                  <i className="fa fa-file"></i>
-                  <p>Click or drag files here.</p>
-                </div>
-            );
-        }
         return (
             <section>
                 <div className="dropzone text-center pointer">
@@ -116,15 +48,16 @@ class DocumentInfo extends Component{
         let currentFiles = []
         this.clearNewFiles();
         $.each(files, function (key, value) {
-            console.log(key, value);
+            let formData = new FormData()
+            formData.append(key, value);
             $.ajax({
                 url: 'index.php?module=intern&action=documentRest&internship_id=' + this.props.internshipId,
                 type: 'POST',
-                data: value,
+                data: formData,
                 cache: false,
                 dataType: 'json',
-                processData: false,
                 contentType: false,
+                processData: false,
                 success: function (data) {
                     console.log('pass');
                     currentFiles = this.state.currentFiles
@@ -138,11 +71,9 @@ class DocumentInfo extends Component{
                     status[key] = data.success
                     this.setState({status: status, currentPhotos: currentFiles, newPhotos: newFiles})*/
                 }.bind(this),
-                failure: function (data) {
-                    console.log('fail');
-                    /*newFiles.push(data.photo)
-                    status[key] = false*/
-                    this.setState({status: status, newPhotos: newFiles})
+                error: function(xhr, status, err) {
+                    alert("Failed.")
+                    console.error(this.props.url, status, err.toString());
                 }.bind(this)
             })
         }.bind(this))
@@ -191,6 +122,7 @@ class DocumentInfo extends Component{
         )
     }
 }
+//onDropRejected={this.onDropRejected} for when file size is too big, see if maxSize is varying
 ReactDOM.render(
     <DocumentInfo internshipId={window.internshipId}/>,
     document.getElementById('other-documents')

@@ -23,8 +23,8 @@ class DocumentRest {
 			}
 	}
 
-	function post(){
-		var_dump($_FILES);exit;
+	public function post(){
+		var_dump($_FILES);
 		$db = Database::newDB();
 		$pdo = $db->getPDO();
 
@@ -38,7 +38,7 @@ class DocumentRest {
 		postFc($params);
 	}
 
-	function postFc($data){
+	public function postFc($data){
 		if($_FILES['event_image']['size'] > 0 and $_FILES['event_image']['size'] < 2097152)
 		{
 			$tempFile = $_FILES['event_image']['tmp_name'];
