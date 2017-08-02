@@ -55,6 +55,7 @@ var ShowAffiliate = React.createClass({
 
         if(this.props.auto_renew){
             green = true;
+            active = 'Active (auto-renewed)';
         }else if(expiration < 0){
             red = true;
             active = 'Expired';
@@ -195,40 +196,47 @@ var AffiliateList = React.createClass({
     },
     sortBy: function(e) {
         var sort = e.target.value;
-        /*for (var i = 0; i < this.state.mainData.length; i++) {
-            var item = this.state.mainData[i];
-          }
-          item.name.toLowerCase();
-          sorted = item.name.sort();
-          */
+        var sorted = [];
+
+        var data = this.state.mainData;
+
         switch(sort) {
             case 'sortByAZ':
-                //sorted = this.getData();
-                /*for (var i = 0; i < this.state.mainData.length; i++) {
-                    var items = this.state.mainData[i];
+                this.setState({searchName: name,
+                              sortBy: AtoZ});
+                for (var i = 0; i < this.state.mainData.length - 2; i++) {
+                    var item1 = this.state.mainData[i];
+                    var item2 = this.state.mainData[i + 1];
+
+                    if (item1.name < item2.name){
+                        return -1;
+                    }
+                    if (item1.name > item1.name){
+                        return 1;
+                    }
+                    if (item1.name === item2.name){
+                        return 0;
+                    }
                   }
-                items.sort();*/
 
 
                 break;
             case 'sortByZA':
+                this.setState({sortBy: ZtoA});
                 break;
             case 'OlderToSooner':
+                this.setState({sortBy: OldToSoon});
                 break;
             case 'SoonerToOlder':
+                this.setState({sortBy: SoonToOld});
                 break;
             default:
-                //sorted = this.getData();
+                this.setState({sortBy: ''});
+                this.getData();
+                return;
         }
-        //if option was name a-z blahblah
-        //if (e.target.value === sortByAZ) {
 
-        this.setState({displayData: items});
-        //if option was name z-a blahblah
-        //else if (e.target.value)
-        //if option was exp date new to old
-
-        //if option was exp date old to new
+        this.setState({displayData: sorted});
 
     },
     onToggle: function() {
