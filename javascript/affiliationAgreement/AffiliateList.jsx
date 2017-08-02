@@ -47,6 +47,7 @@ var ShowAffiliate = React.createClass({
         var month = a.getMonth() + 1;
         var date = a.getDate();
         var dateForm = month + '/' + date + '/' + year;
+        var active = 'Active';
 
         var green = false, yellow = false, red = false;
 
@@ -56,6 +57,7 @@ var ShowAffiliate = React.createClass({
             green = true;
         }else if(expiration < 0){
             red = true;
+            active = 'Expired';
         } else if(expiration < 7884000) {
             yellow = true;
         } else {
@@ -73,6 +75,7 @@ var ShowAffiliate = React.createClass({
 
                 <td>{this.props.name}</td>
                 <td>{dateForm}</td>
+                <td>{active}</td>
 
             </tr>
         );
@@ -91,7 +94,9 @@ var AffiliateList = React.createClass({
             messageType: null,
             searchDept: null,
             searchName: '',
-            textData: ""
+            textData: "",
+            sortBy: '',
+            toggleActive: false
         });
     },
     componentWillMount: function() {
@@ -188,6 +193,47 @@ var AffiliateList = React.createClass({
 			}.bind(this)
         });
     },
+    sortBy: function(e) {
+        var sort = e.target.value;
+        /*for (var i = 0; i < this.state.mainData.length; i++) {
+            var item = this.state.mainData[i];
+          }
+          item.name.toLowerCase();
+          sorted = item.name.sort();
+          */
+        switch(sort) {
+            case 'sortByAZ':
+                //sorted = this.getData();
+                /*for (var i = 0; i < this.state.mainData.length; i++) {
+                    var items = this.state.mainData[i];
+                  }
+                items.sort();*/
+
+
+                break;
+            case 'sortByZA':
+                break;
+            case 'OlderToSooner':
+                break;
+            case 'SoonerToOlder':
+                break;
+            default:
+                //sorted = this.getData();
+        }
+        //if option was name a-z blahblah
+        //if (e.target.value === sortByAZ) {
+
+        this.setState({displayData: items});
+        //if option was name z-a blahblah
+        //else if (e.target.value)
+        //if option was exp date new to old
+
+        //if option was exp date old to new
+
+    },
+    onToggle: function() {
+        this.setState({toggleActive: !this.state.toggleActive});
+    },
     render: function() {
         var AffiliateData = null;
         if (this.state.mainData != null) {
@@ -256,9 +302,13 @@ var AffiliateList = React.createClass({
                     </div>
                     <div className="col-md-3">
                         <div className="form-group">
-                            <label>Sort By:</label>
-                            <select className="form-control">
-                                {}
+                            <label>Sort By</label>
+                            <select className="form-control" onChange={this.sortBy} value={this.state.value}>
+                                <option value="">Select an option</option>
+                                <option value="sortByAZ">Name: A-Z</option>
+                                <option value="sortByZA">Name: Z-A</option>
+                                <option value="SoonerToOlder">Expiration Date: Sooner to Older</option>
+                                <option value="OlderToSooner">Expiration Date: Older to Sooner</option>
                             </select>
                         </div>
                     </div>
@@ -270,6 +320,7 @@ var AffiliateList = React.createClass({
                                 <tr>
                                     <th>Name</th>
                                     <th>Expiration Date</th>
+                                    <th>Active/Expired</th>
                                 </tr>
                             </thead>
                             <tbody>
