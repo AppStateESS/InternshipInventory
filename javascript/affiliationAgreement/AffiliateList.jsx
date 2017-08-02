@@ -254,6 +254,14 @@ var AffiliateList = React.createClass({
                             </select>
                         </div>
                     </div>
+                    <div className="col-md-3">
+                        <div className="form-group">
+                            <label>Sort By:</label>
+                            <select className="form-control">
+                                {}
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <div className="row">
                     <div className="col-md-12">
