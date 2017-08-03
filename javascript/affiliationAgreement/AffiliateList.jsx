@@ -211,7 +211,8 @@ var AffiliateList = React.createClass({
         var sorted = [];
         var unsorted = this.state.mainData;
 
-        //Different logic for different types of sorts.
+        // Different logic for different types of sorts,
+        // all utilizing sort function.
         switch(sort) {
             case 'sortByAZ':
 
@@ -251,9 +252,30 @@ var AffiliateList = React.createClass({
 
         this.setState({displayData: sorted});
     },
-    toggleActive: function(e) {
+    createList: function() {
+        var unchanged = this.state.mainData;
+
+        if (this.state.searchDept === null &&
+            this.state.sortBy === '' &&
+            this.state.displayData === null) {
+            //nothing happens, return unchanged list
+        }
+        //if (this.state.searchDept)
 
     },
+    /*toggleActive: function(e) {
+        var currentState = this.state.toggleActive;
+        this.setState({toggleActive: !currentState});
+
+        var untoggled = this.state.mainData;
+        var toggled = [];
+
+        if (currentState === true) {
+            toggled = untoggled.sort(function (a,b) {
+                if (a.)
+            })
+        }
+    },*/
     render: function() {
         var AffiliateData = null;
         if (this.state.mainData != null) {
@@ -340,7 +362,7 @@ var AffiliateList = React.createClass({
                                 <tr>
                                     <th>Name</th>
                                     <th>Expiration Date</th>
-                                    <th onClick={this.toggleActive}>Active/Expired</th>
+                                    <th>Active/Expired</th>
                                 </tr>
                             </thead>
                             <tbody>
