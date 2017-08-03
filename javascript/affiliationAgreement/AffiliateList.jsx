@@ -138,6 +138,7 @@ var AffiliateList = React.createClass({
         });
     },
     searchListByName: function(e) {
+
         var name = null;
 
         try {
@@ -160,6 +161,7 @@ var AffiliateList = React.createClass({
                 filtered.push(item);
             }
         }
+
 
         this.setState({displayData: filtered});
     },
@@ -195,52 +197,62 @@ var AffiliateList = React.createClass({
         });
     },
     sortBy: function(e) {
-        var sort = e.target.value;
+        var sort = null;
+
+        try {
+            //Saves sorting option that was clicked.
+            sort = e.target.value;
+            this.setState({sortBy: sort});
+        }
+        catch (error) {
+            sort = this.state.sortBy;
+        }
+
         var sorted = [];
+        var unsorted = this.state.mainData;
 
-        var data = this.state.mainData;
-
+        //Different logic for different types of sorts.
         switch(sort) {
             case 'sortByAZ':
-                this.setState({searchName: name,
-                              sortBy: AtoZ});
-                for (var i = 0; i < this.state.mainData.length - 2; i++) {
-                    var item1 = this.state.mainData[i];
-                    var item2 = this.state.mainData[i + 1];
 
-                    if (item1.name < item2.name){
-                        return -1;
-                    }
-                    if (item1.name > item1.name){
-                        return 1;
-                    }
-                    if (item1.name === item2.name){
-                        return 0;
-                    }
-                  }
-
-
+                sorted = unsorted.sort(function (a, b) {
+                    if (a.name < b.name) return -1;
+                    if (a.name > b.name) return 1;
+                    return 0;
+                });
                 break;
             case 'sortByZA':
-                this.setState({sortBy: ZtoA});
+
+                sorted = unsorted.sort(function (a, b) {
+                    if (a.name > b.name) return -1;
+                    if (a.name < b.name) return 1;
+                    return 0;
+                });
                 break;
-            case 'OlderToSooner':
-                this.setState({sortBy: OldToSoon});
+            case 'SoonerToLater':
+
+                sorted = unsorted.sort(function (a,b) {
+                    if (a.end_date < b.end_date) return -1;
+                    if (a.end_date > b.end_date) return 1;
+                    return 0;
+                });
                 break;
-            case 'SoonerToOlder':
-                this.setState({sortBy: SoonToOld});
-                break;
+            case 'LaterToSooner':
+
+                sorted = unsorted.sort(function (a,b) {
+                    if (a.end_date > b.end_date) return -1;
+                    if (a.end_date < b.end_date) return 1;
+                    return 0;
+                });
+                    break;
             default:
-                this.setState({sortBy: ''});
-                this.getData();
-                return;
+                sorted = unsorted;
         }
 
         this.setState({displayData: sorted});
-
     },
-    onToggle: function() {
-        this.setState({toggleActive: !this.state.toggleActive});
+    toggleActive: function(e) {
+
     },
     render: function() {
         var AffiliateData = null;
@@ -312,11 +324,11 @@ var AffiliateList = React.createClass({
                         <div className="form-group">
                             <label>Sort By</label>
                             <select className="form-control" onChange={this.sortBy} value={this.state.value}>
-                                <option value="">Select an option</option>
+                                <option value="-1">Select an option</option>
                                 <option value="sortByAZ">Name: A-Z</option>
                                 <option value="sortByZA">Name: Z-A</option>
-                                <option value="SoonerToOlder">Expiration Date: Sooner to Older</option>
-                                <option value="OlderToSooner">Expiration Date: Older to Sooner</option>
+                                <option value="SoonerToLater">Expiration Date: Sooner to Later</option>
+                                <option value="LaterToSooner">Expiration Date: Later to Sooner</option>
                             </select>
                         </div>
                     </div>
@@ -328,7 +340,7 @@ var AffiliateList = React.createClass({
                                 <tr>
                                     <th>Name</th>
                                     <th>Expiration Date</th>
-                                    <th>Active/Expired</th>
+                                    <th onClick={this.toggleActive}>Active/Expired</th>
                                 </tr>
                             </thead>
                             <tbody>
