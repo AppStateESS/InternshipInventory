@@ -18,9 +18,13 @@ class DeanApprove extends WorkflowTransition {
     }
 
     public function checkRequiredFields(Internship $i){
-        // Course number is required so we can check against the expected insurance list in doNotification()
+        // Course number and subject are required so we can check against the expected insurance list in doNotification()
         if($i->getCourseNumber() === null || $i->getCourseNumber() === ''){
             throw new MissingDataException("Please enter a course number.");
+        }
+
+        if($i->getSubject() === null){
+            throw new MissingDataException("Please select a course subject.");
         }
     }
 
