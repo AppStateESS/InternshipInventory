@@ -162,7 +162,12 @@ class WebServiceDataProvider extends ExternalDataProvider {
         if(isset($response->GetInternInfoResult->DirectoryInfo)) {
             $response = $response->GetInternInfoResult->DirectoryInfo;
         } else {
-            throw new \Intern\Exception\StudentNotFoundException("Could not locate student: $studentId");
+            throw new \Intern\Exception\StudentNotFoundException("Could not locate faculty member with id: $studentId");
+        }
+
+        // Check for an arry of results
+        if(is_array($response)){
+            $response = $response[0];
         }
 
         // Check for an InvalidUsername error (i.e. the user doesn't have banner permissions)
