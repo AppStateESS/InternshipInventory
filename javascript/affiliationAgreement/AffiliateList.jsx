@@ -137,6 +137,7 @@ var AffiliateList = React.createClass({
 			}.bind(this)
         });
     },
+    // Returns filtered array to be used in createList function
     searchListByName: function(e) {
 
         var name = null;
@@ -144,7 +145,7 @@ var AffiliateList = React.createClass({
         try {
             // Saves the name that the user is looking for.
             name = e.target.value.toLowerCase();
-            this.setState({searchName: name});
+            //this.setState({searchName: name});
         }
         catch (err) {
             name = this.state.searchName;
@@ -162,9 +163,11 @@ var AffiliateList = React.createClass({
             }
         }
 
+        return filtered;
 
-        this.setState({displayData: filtered});
+        //this.setState({displayData: filtered});
     },
+    // Returns filtered array to be used in createList function
     searchListByDept: function(e) {
         var dept = null;
 
@@ -196,13 +199,14 @@ var AffiliateList = React.createClass({
 			}.bind(this)
         });
     },
+    // Returns sorted array to be used in createList function
     sortBy: function(e) {
         var sort = null;
 
         try {
             //Saves sorting option that was clicked.
             sort = e.target.value;
-            this.setState({sortBy: sort});
+            //this.setState({sortBy: sort});
         }
         catch (error) {
             sort = this.state.sortBy;
@@ -250,17 +254,21 @@ var AffiliateList = React.createClass({
                 sorted = unsorted;
         }
 
-        this.setState({displayData: sorted});
+        //this.setState({displayData: sorted});
     },
     createList: function() {
         var unchanged = this.state.mainData;
+        var changed = [];
 
-        if (this.state.searchDept === null &&
-            this.state.sortBy === '' &&
-            this.state.displayData === null) {
-            //nothing happens, return unchanged list
+        if (this.state.searchDept !== null &&
+            this.state.sortBy !== '' &&
+            this.state.searchName !== null) {
+
+            this.searchListByDept();
+            this.sortBy();
+            this.searchListByName();
         }
-        //if (this.state.searchDept)
+        else if
 
     },
     /*toggleActive: function(e) {
@@ -331,13 +339,13 @@ var AffiliateList = React.createClass({
                     <div className="col-md-3">
                         <div className="input-group">
                             <label>Search by Name</label>
-                            <input type="text" className="form-control" placeholder="Search for..." onChange={this.searchListByName} />
+                            <input type="text" className="form-control" placeholder="Search for..." onChange={this.createList} />
                         </div>
                     </div>
                     <div className="col-md-3">
                         <div className="form-group">
                             <label>Search by Department</label>
-                            <select className="form-control" onChange={this.searchListByDept}>
+                            <select className="form-control" onChange={this.createList}>
                                 {dData}
                             </select>
                         </div>
@@ -345,7 +353,7 @@ var AffiliateList = React.createClass({
                     <div className="col-md-3">
                         <div className="form-group">
                             <label>Sort By</label>
-                            <select className="form-control" onChange={this.sortBy} value={this.state.value}>
+                            <select className="form-control" onChange={this.createList} value={this.state.value}>
                                 <option value="-1">Select an option</option>
                                 <option value="sortByAZ">Name: A-Z</option>
                                 <option value="sortByZA">Name: Z-A</option>
