@@ -26,50 +26,57 @@ class DocumentInfo extends Component{
     constructor(props) {
         super(props)
         this.state = {show: false,
-            newFiles: [],
             currentFiles: [],
-            status: []}
-        this.addFiles = this.addFiles.bind(this)
-        this.clearNewFiles = this.clearNewFiles.bind(this)
-        this.delete = this.delete.bind(this)
+            status: [],
+            toDownload: []}
+        this.addFiles = this.addFiles.bind(this);
+        this.clearNewFiles = this.clearNewFiles.bind(this);
+        this.delete = this.delete.bind(this);
+        this.download = this.delete.bind(this);
     }
     componentDidMount(){
-        /*if(currentFiles.length > 0) {
-            this.setState({currentFiles: currentFiles})
-        }*/
+        $.ajax({
+            url: 'index.php?module=intern&action=documentRest&internship_id=' + this.props.internshipId,
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                this.setState({currentFiles: data});
+            }.bind(this)
+        });
     }
     clearNewFiles() {
-        this.setState({newFiles: []})
+        this.setState({newFiles: []});
     }
     addFiles(files){
-        console.log(files);
-        let status = this.state.status
-        let newFiles = []
-        let currentFiles = []
+        let status = this.state.status;
+        let currentfiles = [];
         this.clearNewFiles();
         $.each(files, function (key, value) {
             let formData = new FormData()
-            formData.append(key, value);
+            formData.append('file', value);
+            let data = value;
             $.ajax({
-                url: 'index.php?module=intern&action=documentRest&internship_id=' + this.props.internshipId,
+                url: 'index.php?module=intern&action=documentRest&type=other&internship_id=' + this.props.internshipId,
                 type: 'POST',
+                enctype: 'multipart/form-data',
                 data: formData,
                 cache: false,
                 dataType: 'json',
                 contentType: false,
                 processData: false,
-                success: function (data) {
-                    console.log('pass');
-                    currentFiles = this.state.currentFiles
-                    /*if (data.success === true) {
-                        currentFiles.push(data.photo)
-                    } else if (data.success === false) {
-                        alert('A server error prevented uploading of your file. Contact the site administrators')
+                success: function (stat) {
+                    console.log('stat:', stat);
+                    currentfiles = this.state.currentFiles
+                    console.log(currentfiles, this.state.currentFiles);
+                    if (stat === null) {
+                        currentfiles.push(data)
+                    } else {
+                        alert(stat)
                         return
                     }
-                    newFiles.push(data.photo)
+                    alert("Passed.")
                     status[key] = data.success
-                    this.setState({status: status, currentPhotos: currentFiles, newPhotos: newFiles})*/
+                    this.setState({status: status, currentFiles: currentfiles})
                 }.bind(this),
                 error: function(xhr, status, err) {
                     alert("Failed.")
@@ -78,10 +85,23 @@ class DocumentInfo extends Component{
             })
         }.bind(this))
     }
+    download(){
+        $.ajax({
+            url: 'index.php?module=intern&action=documentRest&type=other&internship_id=' + this.props.internshipId,
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                this.setState({toDownload: data})
+            }.bind(this),
+            error: function(xhr, status, err) {
+                alert("Unable to download file.")
+                console.error(this.props.url, status, err.toString());
+            }.bind(this)
+        })
+    }
     delete(file, key) {
         $.ajax({
-            url: '',
-            dataType: 'json',
+            url: 'index.php?module=intern&action=documentRest&type=other&internship_id=' + this.props.internshipId,
             method: 'DELETE',
             success: function (data) {
                 let files = this.state.currentFiles
@@ -90,32 +110,41 @@ class DocumentInfo extends Component{
                 }
                 this.setState({currentFiles: files})
             }.bind(this),
-            error: function () {}
+            error: function(xhr, status, err) {
+                alert("Unable to delete file.")
+                console.error(this.props.url, status, err.toString());
+            }.bind(this)
         })
     }
     render(){
-        let files = (<div style={{paddingTop: '5%'}}>
-            <i className="fa fa-file fa-5x"></i><br/>
-            <h4>Click to browse<br/>- or -<br/>drag file(s) here</h4>
-        </div>)
-        if (this.state.newFiles.length > 0) {
-            files = this.state.newFiles.map(function (value, key) {
-                let status
-                if (this.state.status[key] !== undefined) {
-                    status = this.state.status[key]
-                }
-
-            }.bind(this))}
+        let list
+        console.log('currentFiles: ',this.state.currentFiles);
+        if (this.state.currentFiles.length > 0) {
+            list = this.state.currentFiles.map(f =>
+                <li className="list-group-item" onClick={this.download}><i className="fa fa-file"></i> {f.name} &nbsp;
+                <button type="button" className="close" onClick={this.delete}><span aria-hidden="true"><i className='fa fa-trash-o'></i></span></button> </li>
+            );
+        }
+        //if files
+        //let list = <li class="list-group-item"><i class="fa fa-file"></i> {this.download} &nbsp;{this.delete}</li>
+        /*list = <li className="list-group-item"><i className="fa fa-file"></i> test &nbsp;
+            <button type="button" className="close" onClick={this.delete}><span aria-hidden="true"><i className='fa fa-trash-o'></i></span></button> </li>*/
         return(
             <section>
                 <div>
                     <div className="dropzone text-center pointer">
-                        <Dropzone ref="dropzone" onDrop={this.addFiles}>
-                            {files}
+                        <Dropzone ref="dropzone" style={{width: 'auto', height: 'auto', border: '2px dashed gray'}} onDrop={this.addFiles}>
+                            <div style={{paddingTop: '1%'}}>
+                                <i className="fa fa-file"></i><br/>
+                                <p>Click to browse or drag file(s) here.</p>
+                            </div>
                         </Dropzone>
                     </div>
                     <div>
-                        <button className="btn btn-default" onClick={this.clearNewFiles}>Clear</button>
+                        <h4>Added Files:</h4>
+                        <ul className="list-group">
+                            {list}
+                        </ul>
                     </div>
                 </div>
             </section>
