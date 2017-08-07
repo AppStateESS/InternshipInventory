@@ -97,7 +97,6 @@ var AffiliateList = React.createClass({
             searchName: '',
             textData: "",
             sortBy: '',
-            toggleActive: false
         });
     },
     componentWillMount: function() {
@@ -137,37 +136,40 @@ var AffiliateList = React.createClass({
 			}.bind(this)
         });
     },
-    // Returns filtered array to be used in createList function
-    searchListByName: function(e) {
+    onSearchListChange: function(e) {
 
         var name = null;
 
         try {
             // Saves the name that the user is looking for.
             name = e.target.value.toLowerCase();
-            //this.setState({searchName: name});
+            this.setState({searchName: name});
         }
         catch (err) {
             name = this.state.searchName;
         }
+        //filter list method seperate, use parameter not state for mainData
 
-        var filtered = [];
+        this.updateDisplayData(name, this.state.sortBy);
 
-        // Looks for the name by filtering the mainData
-        for (var i = 0; i < this.state.mainData.length; i++) {
-            var item = this.state.mainData[i];
-
-            // Make the item, name lowercase for easier searching
-            if (item.name.toLowerCase().includes(name)) {
-                filtered.push(item);
-            }
-        }
-
-        return filtered;
-
-        //this.setState({displayData: filtered});
     },
-    // Returns filtered array to be used in createList function
+    //Method for taking an array and searching it by name, returns array.
+    searchListByName: function(mainData, name) {
+      var filtered = [];
+
+      // Looks for the name by filtering the mainData
+      for (var i = 0; i < this.state.mainData.length; i++) {
+          var item = this.state.mainData[i];
+
+          // Make the item, name lowercase for easier searching
+          if (item.name.toLowerCase().includes(name)) {
+              filtered.push(item);
+          }
+      }
+
+      return filtered;
+
+    },
     searchListByDept: function(e) {
         var dept = null;
 
@@ -200,90 +202,92 @@ var AffiliateList = React.createClass({
         });
     },
     // Returns sorted array to be used in createList function
-    sortBy: function(e) {
+    onSortByChange: function(e) {
         var sort = null;
+        var sortedFinal = [];
 
         try {
             //Saves sorting option that was clicked.
             sort = e.target.value;
-            //this.setState({sortBy: sort});
+            this.setState({sortBy: sort});
         }
         catch (error) {
             sort = this.state.sortBy;
         }
 
-        var sorted = [];
-        var unsorted = this.state.mainData;
+        sortedFinal = this.sortBy(this.state.mainData, sort);
+        this.updateDisplayData(this.state.searchName, sort);
 
-        // Different logic for different types of sorts,
-        // all utilizing sort function.
-        switch(sort) {
-            case 'sortByAZ':
-
-                sorted = unsorted.sort(function (a, b) {
-                    if (a.name < b.name) return -1;
-                    if (a.name > b.name) return 1;
-                    return 0;
-                });
-                break;
-            case 'sortByZA':
-
-                sorted = unsorted.sort(function (a, b) {
-                    if (a.name > b.name) return -1;
-                    if (a.name < b.name) return 1;
-                    return 0;
-                });
-                break;
-            case 'SoonerToLater':
-
-                sorted = unsorted.sort(function (a,b) {
-                    if (a.end_date < b.end_date) return -1;
-                    if (a.end_date > b.end_date) return 1;
-                    return 0;
-                });
-                break;
-            case 'LaterToSooner':
-
-                sorted = unsorted.sort(function (a,b) {
-                    if (a.end_date > b.end_date) return -1;
-                    if (a.end_date < b.end_date) return 1;
-                    return 0;
-                });
-                    break;
-            default:
-                sorted = unsorted;
-        }
-
-        //this.setState({displayData: sorted});
     },
-    createList: function() {
+    //Method for storing the selected sort order and setting sortBy state.
+    sortBy: function(unsorted, typeOfSort) {
+      var sorted = [];
+      //define unsorted?
+
+      // Different logic for different types of sorts,
+      // all utilizing sort function.
+      switch(sort) {
+          case 'sortByAZ':
+
+              sorted = unsorted.sort(function (a, b) {
+                  if (a.name < b.name) return -1;
+                  if (a.name > b.name) return 1;
+                  return 0;
+              });
+              break;
+          case 'sortByZA':
+
+              sorted = unsorted.sort(function (a, b) {
+                  if (a.name > b.name) return -1;
+                  if (a.name < b.name) return 1;
+                  return 0;
+              });
+              break;
+          case 'SoonerToLater':
+
+              sorted = unsorted.sort(function (a,b) {
+                  if (a.end_date < b.end_date) return -1;
+                  if (a.end_date > b.end_date) return 1;
+                  return 0;
+              });
+              break;
+          case 'LaterToSooner':
+
+              sorted = unsorted.sort(function (a,b) {
+                  if (a.end_date > b.end_date) return -1;
+                  if (a.end_date < b.end_date) return 1;
+                  return 0;
+              });
+              break;
+          default:
+              sorted = unsorted;
+      }
+      return sorted;
+
+    },
+    // Organizes the order of the sort/filter functions to update the data displayed.
+    // searchName and sort are both states.
+    updateDisplayData: function(searchName, sort) {
         var unchanged = this.state.mainData;
-        var changed = [];
+        var filtered = [];
 
-        if (this.state.searchDept !== null &&
-            this.state.sortBy !== '' &&
-            this.state.searchName !== null) {
-
-            this.searchListByDept();
-            this.sortBy();
-            this.searchListByName();
+        if (searchName !== null) {
+            filtered = this.searchListByName(unchanged, searchName);
         }
-        else if
+        else {
+            filtered = unchanged;
+        }
+
+        if (sort !== null) {
+            filtered = this.sortBy(filtered, sort);
+        }
+        else {
+            filtered = this.sortBy(filtered, 'sortByAZ');
+        }
+
+        this.setState({displayData: filtered});
 
     },
-    /*toggleActive: function(e) {
-        var currentState = this.state.toggleActive;
-        this.setState({toggleActive: !currentState});
-
-        var untoggled = this.state.mainData;
-        var toggled = [];
-
-        if (currentState === true) {
-            toggled = untoggled.sort(function (a,b) {
-                if (a.)
-            })
-        }
-    },*/
     render: function() {
         var AffiliateData = null;
         if (this.state.mainData != null) {
@@ -339,13 +343,13 @@ var AffiliateList = React.createClass({
                     <div className="col-md-3">
                         <div className="input-group">
                             <label>Search by Name</label>
-                            <input type="text" className="form-control" placeholder="Search for..." onChange={this.createList} />
+                            <input type="text" className="form-control" placeholder="Search for..." onChange={this.onSearchListChange} />
                         </div>
                     </div>
                     <div className="col-md-3">
                         <div className="form-group">
                             <label>Search by Department</label>
-                            <select className="form-control" onChange={this.createList}>
+                            <select className="form-control" onChange={this.searchListByDept}>
                                 {dData}
                             </select>
                         </div>
@@ -353,7 +357,7 @@ var AffiliateList = React.createClass({
                     <div className="col-md-3">
                         <div className="form-group">
                             <label>Sort By</label>
-                            <select className="form-control" onChange={this.createList} value={this.state.value}>
+                            <select className="form-control" onChange={this.onSortByChange} value={this.state.value}>
                                 <option value="-1">Select an option</option>
                                 <option value="sortByAZ">Name: A-Z</option>
                                 <option value="sortByZA">Name: Z-A</option>
