@@ -4,39 +4,19 @@ import $ from 'jquery';
 import Dropzone from 'react-dropzone';
 
 
-/*    onOpenClick: function(){
-        this.refs.dropzone.open();
-    },
-        return (
-            <section>
-                <div className="dropzone text-center pointer">
-                    <Dropzone ref="dropzone" accept="file/pdf, file/doc, file/odt" onDrop={this.onDrop}>
-                    <div className="clickme">
-                      <i className="fa fa-file"></i>
-                      <p>Click or drag files here.</p>
-                    </div>
-                    <ul>{this.state.accepted.map(f => <li key={f.name}>{f.name}</li>)}</ul>
-                    </Dropzone>
-                </div>
-            </section>
-        );
-    }
-});*/
+/*
+    <Dropzone ref="dropzone" accept="file/pdf, file/doc, file/odt" onDrop={this.onDrop}>
+*/
 class DocumentInfo extends Component{
     constructor(props) {
         super(props)
         this.state = {show: false,
-            currentFiles: [],
-            status: [],
-            toDownload: []}
+            currentFiles: []}
         this.addFiles = this.addFiles.bind(this);
-        this.clearNewFiles = this.clearNewFiles.bind(this);
-        this.delete = this.delete.bind(this);
-        this.download = this.delete.bind(this);
     }
     componentDidMount(){
         $.ajax({
-            url: 'index.php?module=intern&action=documentRest&internship_id=' + this.props.internshipId,
+            url: 'index.php?module=intern&action=documentRest&type=other&internship_id=' + this.props.internshipId,
             type: 'GET',
             dataType: 'json',
             success: function (data) {
@@ -44,13 +24,9 @@ class DocumentInfo extends Component{
             }.bind(this)
         });
     }
-    clearNewFiles() {
-        this.setState({newFiles: []});
-    }
     addFiles(files){
-        let status = this.state.status;
         let currentfiles = [];
-        this.clearNewFiles();
+        let add = {'name':'','newName':''};
         $.each(files, function (key, value) {
             let formData = new FormData()
             formData.append('file', value);
@@ -65,49 +41,55 @@ class DocumentInfo extends Component{
                 contentType: false,
                 processData: false,
                 success: function (stat) {
-                    console.log('stat:', stat);
+                    console.log('stat:', stat.message);
                     currentfiles = this.state.currentFiles
                     console.log(currentfiles, this.state.currentFiles);
-                    if (stat === null) {
-                        currentfiles.push(data)
+                    if (stat.name !== null) {
+                        add['name'] = data.name;
+                        add['store_name'] = stat.name;
+                        currentfiles.push(add);
                     } else {
                         alert(stat)
                         return
                     }
-                    alert("Passed.")
-                    status[key] = data.success
-                    this.setState({status: status, currentFiles: currentfiles})
+                    this.setState({currentFiles: currentfiles})
                 }.bind(this),
                 error: function(xhr, status, err) {
-                    alert("Failed.")
+                    alert("File failed to save.")
                     console.error(this.props.url, status, err.toString());
                 }.bind(this)
             })
         }.bind(this))
     }
-    download(){
+    download(file){
         $.ajax({
-            url: 'index.php?module=intern&action=documentRest&type=other&internship_id=' + this.props.internshipId,
+            url: 'index.php?module=intern&action=documentRest&type=other&name='+file.store_name+'&internship_id=' + this.props.internshipId,
             type: 'GET',
             dataType: 'json',
             success: function (data) {
-                this.setState({toDownload: data})
-            }.bind(this),
+                window.open(data);
+            },
             error: function(xhr, status, err) {
                 alert("Unable to download file.")
                 console.error(this.props.url, status, err.toString());
             }.bind(this)
         })
     }
-    delete(file, key) {
+    deleteFile(file) {
+        // Find key of file in currentFiles
+        let key;
+        for(let i=0; i<this.state.currentFiles.length;i++){
+            if(file.name === this.state.currentFiles[i]){
+                key = i;
+                break;
+            }
+        }
         $.ajax({
-            url: 'index.php?module=intern&action=documentRest&type=other&internship_id=' + this.props.internshipId,
+            url: 'index.php?module=intern&action=documentRest&type=other&name='+file.store_name+'&internship_id=' + this.props.internshipId,
             method: 'DELETE',
             success: function (data) {
                 let files = this.state.currentFiles
-                if (data.success === true) {
-                    files.splice(key, 1)
-                }
+                files.splice(key, 1)
                 this.setState({currentFiles: files})
             }.bind(this),
             error: function(xhr, status, err) {
@@ -121,14 +103,10 @@ class DocumentInfo extends Component{
         console.log('currentFiles: ',this.state.currentFiles);
         if (this.state.currentFiles.length > 0) {
             list = this.state.currentFiles.map(f =>
-                <li className="list-group-item" onClick={this.download}><i className="fa fa-file"></i> {f.name} &nbsp;
-                <button type="button" className="close" onClick={this.delete}><span aria-hidden="true"><i className='fa fa-trash-o'></i></span></button> </li>
+                <li className="list-group-item"><i className="fa fa-file"></i> <a onClick={this.download.bind(this, f)}>{f.name}</a> &nbsp;
+                <button type="button" className="close" onClick={this.deleteFile.bind(this, f)}><span aria-hidden="true"><i className='fa fa-trash-o close'></i></span></button> </li>
             );
         }
-        //if files
-        //let list = <li class="list-group-item"><i class="fa fa-file"></i> {this.download} &nbsp;{this.delete}</li>
-        /*list = <li className="list-group-item"><i className="fa fa-file"></i> test &nbsp;
-            <button type="button" className="close" onClick={this.delete}><span aria-hidden="true"><i className='fa fa-trash-o'></i></span></button> </li>*/
         return(
             <section>
                 <div>
@@ -151,7 +129,7 @@ class DocumentInfo extends Component{
         )
     }
 }
-//onDropRejected={this.onDropRejected} for when file size is too big, see if maxSize is varying
+
 ReactDOM.render(
     <DocumentInfo internshipId={window.internshipId}/>,
     document.getElementById('other-documents')

@@ -497,7 +497,7 @@
 
       <!-- New Document List -->
       <fieldset>
-          <legend> New Other Documents</legend>
+          <legend>Other Documents</legend>
           <div class="row">
               <!-- React Contract -->
               <div class="col-md-12">
@@ -508,7 +508,7 @@
 
       <!-- Document List -->
       <fieldset>
-        <legend>Other Documents</legend>
+        <legend>Old Other Documents</legend>
         <div class="row">
           <div class="col-lg-9">
             <ul class="list-group">

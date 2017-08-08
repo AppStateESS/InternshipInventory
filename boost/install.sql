@@ -640,6 +640,17 @@ CREATE TABLE intern_internship (
        PRIMARY KEY(id)
 );
 
+CREATE TABLE intern_contract_documents(
+    id INT NOT NULL,
+    internship_id INT REFERENCES intern_internship(id),
+    name VARCHAR, store_name VARCHAR,
+    path_name VARCHAR,
+    type VARCHAR,
+    primary key (id)
+);
+
+CREATE SEQUENCE intern_contract_documents_seq;
+
 CREATE TABLE intern_emergency_contact (
     id          INT NOT NULL,
     internship_id INT REFERENCES intern_internship(id),

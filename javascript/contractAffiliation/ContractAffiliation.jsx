@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import Dropzone from 'react-dropzone';
 import $ from 'jquery';
@@ -92,45 +92,127 @@ var AffiliationSelected = React.createClass({
         );
     }
 });
-
-var ContractSelected = React.createClass({
-    getDefaultProps: function(){
-        return{showContract: false,
-            showAffil: false,
-            doc: []}
-    },
-    onDrop: function(doc){
-        this.props.update(doc);
-    },
-    onOpenClick: function(){
-        this.refs.dropzone.open();
-    },
-    onSave: function(){
-        //this.setType('contract');
-    },
-    render: function() {
-        var doc;
-        if(this.props.doc.length > 0){
-            doc = this.props.files.map(f => <li>{f.name}</li>)
-        } else {
-            doc = (
-                <div className="clickme">
-                    <i className="fa fa-file"></i>
-                    <p>Click or drag contract here.</p>
-                </div>
-            );
+class ContractSelected extends Component{
+    constructor(props) {
+        super(props)
+        this.state = {showDrop: true,
+            currentFiles: []}
+            this.addFiles = this.addFiles.bind(this);
         }
-        return (
-            <div>
-                <div className="dropzone text-center pointer">
-                    <Dropzone style={{width: 'auto', height: 'auto', border: '2px dashed gray'}} ref="dropzone" accept="file/pdf, file/doc, file/odt" onDropAccepted={this.onDrop}>
-                    {doc}
-                </Dropzone>
-                </div>
-            </div>
-        );
-    }
-});
+        componentDidMount(){
+            $.ajax({
+                url: 'index.php?module=intern&action=documentRest&type=contract&internship_id=' + this.props.internshipId,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    if(data !== null){
+                        this.setState({currentFiles: data, showDrop: false});
+                    }
+                }.bind(this)
+            });
+        }
+        addFiles(files){
+            let currentfiles = [];
+            let add = {'name':'','newName':''};
+            $.each(files, function (key, value) {
+                let formData = new FormData()
+                formData.append('file', value);
+                let data = value;
+                $.ajax({
+                    url: 'index.php?module=intern&action=documentRest&type=contract&internship_id=' + this.props.internshipId,
+                    type: 'POST',
+                    enctype: 'multipart/form-data',
+                    data: formData,
+                    cache: false,
+                    dataType: 'json',
+                    contentType: false,
+                    processData: false,
+                    success: function (stat) {
+                        currentfiles = this.state.currentFiles
+                        if (stat.name !== null) {
+                            add['name'] = data.name;
+                            add['store_name'] = stat.name;
+                            currentfiles.push(add);
+                        } else {
+                            alert(stat)
+                            return
+                        }
+                        this.setState({currentFiles: currentfiles})
+                    }.bind(this),
+                    error: function(xhr, status, err) {
+                        alert("File failed to save.")
+                        console.error(this.props.url, status, err.toString());
+                    }.bind(this)
+                })
+            }.bind(this))
+        }
+        download(file){
+            $.ajax({
+                url: 'index.php?module=intern&action=documentRest&type=contract&name='+file.store_name+'&internship_id=' + this.props.internshipId,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    window.open(data);
+                },
+                error: function(xhr, status, err) {
+                    alert("Unable to download file.")
+                    console.error(this.props.url, status, err.toString());
+                }.bind(this)
+            })
+        }
+        deleteFile(file) {
+            // Find key of file in currentFiles
+            let key;
+            for(let i=0; i<this.state.currentFiles.length;i++){
+                if(file.name === this.state.currentFiles[i]){
+                    key = i;
+                    break;
+                }
+            }
+            $.ajax({
+                url: 'index.php?module=intern&action=documentRest&type=contract&name='+file.store_name+'&internship_id=' + this.props.internshipId,
+                method: 'DELETE',
+                success: function (data) {
+                    let files = this.state.currentFiles
+                    files.splice(key, 1)
+                    this.setState({currentFiles: files, showDrop: true})
+                }.bind(this),
+                error: function(xhr, status, err) {
+                    alert("Unable to delete file.")
+                    console.error(this.props.url, status, err.toString());
+                }.bind(this)
+            })
+        }
+        render(){
+            let list
+            if (this.state.currentFiles.length > 0) {
+                list = this.state.currentFiles.map(f =>
+                    <li className="list-group-item"><i className="fa fa-file"></i> <a onClick={this.download.bind(this, f)}>{f.name}</a> &nbsp;
+                    <button type="button" className="close" onClick={this.deleteFile.bind(this, f)}><span aria-hidden="true"><i className='fa fa-trash-o close'></i></span></button> </li>
+                );
+            }
+            return(
+                <section>
+                    <div>
+                        <div className="dropzone text-center pointer" show={this.state.showDrop}>
+                            <Dropzone ref="dropzone" style={{width: 'auto', height: 'auto', border: '2px dashed gray'}} onDrop={this.addFiles}>
+                                <div style={{paddingTop: '1%'}}>
+                                    <i className="fa fa-file"></i><br/>
+                                    <p>Click to browse or drag file(s) here.</p>
+                                </div>
+                            </Dropzone>
+                        </div>
+                        <div>
+                            <h4>Added Files:</h4>
+                            <ul className="list-group">
+                                {list}
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+            )
+        }
+}
 
 var ContractAffiliation = React.createClass({
     getInitialState: function() {
