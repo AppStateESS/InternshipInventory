@@ -3,16 +3,14 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import Dropzone from 'react-dropzone';
 
-
-/*
-    <Dropzone ref="dropzone" accept="file/pdf, file/doc, file/odt" onDrop={this.onDrop}>
-*/
 class DocumentInfo extends Component{
     constructor(props) {
         super(props)
         this.state = {show: false,
             currentFiles: []}
         this.addFiles = this.addFiles.bind(this);
+        this.componentDidMount = this.componentDidMount.bind(this);
+        this.deleteFile = this.deleteFile.bind(this);
     }
     componentDidMount(){
         $.ajax({
@@ -26,13 +24,11 @@ class DocumentInfo extends Component{
     }
     addFiles(files){
         let currentfiles = [];
-        let add = {'name':'','newName':''};
         $.each(files, function (key, value) {
             let formData = new FormData()
-            formData.append('file', value);
-            let data = value;
+            formData.append(key, value);
             $.ajax({
-                url: 'index.php?module=intern&action=documentRest&type=other&internship_id=' + this.props.internshipId,
+                url: 'index.php?module=intern&action=documentRest&type=other&key='+key+'&internship_id=' + this.props.internshipId,
                 type: 'POST',
                 enctype: 'multipart/form-data',
                 data: formData,
@@ -41,15 +37,11 @@ class DocumentInfo extends Component{
                 contentType: false,
                 processData: false,
                 success: function (stat) {
-                    console.log('stat:', stat.message);
                     currentfiles = this.state.currentFiles
-                    console.log(currentfiles, this.state.currentFiles);
-                    if (stat.name !== null) {
-                        add['name'] = data.name;
-                        add['store_name'] = stat.name;
-                        currentfiles.push(add);
+                    if (stat.id !== null) {
+                        currentfiles.push(stat);
                     } else {
-                        alert(stat)
+                        alert(stat.message)
                         return
                     }
                     this.setState({currentFiles: currentfiles})
@@ -61,31 +53,17 @@ class DocumentInfo extends Component{
             })
         }.bind(this))
     }
-    download(file){
-        $.ajax({
-            url: 'index.php?module=intern&action=documentRest&type=other&name='+file.store_name+'&internship_id=' + this.props.internshipId,
-            type: 'GET',
-            dataType: 'json',
-            success: function (data) {
-                window.open(data);
-            },
-            error: function(xhr, status, err) {
-                alert("Unable to download file.")
-                console.error(this.props.url, status, err.toString());
-            }.bind(this)
-        })
-    }
     deleteFile(file) {
         // Find key of file in currentFiles
         let key;
         for(let i=0; i<this.state.currentFiles.length;i++){
-            if(file.name === this.state.currentFiles[i]){
+            if(file.id === this.state.currentFiles[i]['id']){
                 key = i;
                 break;
             }
         }
         $.ajax({
-            url: 'index.php?module=intern&action=documentRest&type=other&name='+file.store_name+'&internship_id=' + this.props.internshipId,
+            url: 'index.php?module=intern&action=documentRest&type=other&docId='+file.id+'&internship_id=' + this.props.internshipId,
             method: 'DELETE',
             success: function (data) {
                 let files = this.state.currentFiles
@@ -100,12 +78,12 @@ class DocumentInfo extends Component{
     }
     render(){
         let list
-        console.log('currentFiles: ',this.state.currentFiles);
         if (this.state.currentFiles.length > 0) {
-            list = this.state.currentFiles.map(f =>
-                <li className="list-group-item"><i className="fa fa-file"></i> <a onClick={this.download.bind(this, f)}>{f.name}</a> &nbsp;
-                <button type="button" className="close" onClick={this.deleteFile.bind(this, f)}><span aria-hidden="true"><i className='fa fa-trash-o close'></i></span></button> </li>
-            );
+            list = this.state.currentFiles.map(function(f){
+                let url = "index.php?module=intern&action=documentRest&type=other&docId="+f.id+"&internship_id="+this.props.internshipId;
+                return(<li className="list-group-item" key={f.id}><i className="fa fa-file"></i> <a href={url} >{f.name}</a> &nbsp;
+                <button type="button" className="close" onClick={this.deleteFile.bind(this, f)}><span aria-hidden="true"><i className='fa fa-trash-o'></i></span></button> </li>
+            )}.bind(this));
         }
         return(
             <section>
