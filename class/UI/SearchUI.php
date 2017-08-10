@@ -9,7 +9,7 @@ use Intern\Major;
 use Intern\GradProgram;
 use Intern\Subject;
 use Intern\WorkflowStateFactory;
-use Intern\MajorsProviderFactory;
+use Intern\DataProvider\Major\MajorsProviderFactory;
 use Intern\AssetResolver;
 
   /**

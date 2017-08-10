@@ -1,6 +1,8 @@
 <?php
 
-namespace Intern;
+namespace Intern\DataProvider\Term;
+
+use Intern\TermInfo;
 
 use \SoapFault;
 
@@ -10,7 +12,7 @@ use \SoapFault;
  * Returns a Term object with data pulled from a web service connected to Banner.
  * Usually created through the TermProviderFactory.
  *
- * @see \Intern\TermProviderFactory
+ * @see \Intern\DataProvider\Term\TermProviderFactory
  * @author Jeremy Booker
  * @package Intern
  */

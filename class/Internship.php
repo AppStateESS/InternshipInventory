@@ -486,7 +486,7 @@ class Internship {
         if($this->course_subj === null || $this->course_subj === 0){
             return null;
         }
-        
+
         return new Subject($this->course_subj);
     }
 

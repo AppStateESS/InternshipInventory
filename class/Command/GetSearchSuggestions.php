@@ -2,7 +2,7 @@
 
 namespace Intern\Command;
 
-use Intern\ExternalDataProviderFactory;
+use Intern\DataProvider\Student\ExternalDataProviderFactory;
 use Intern\Term;
 
 use Intern\Exception\StudentNotFoundException;
@@ -189,7 +189,7 @@ class GetSearchSuggestions {
 
             // Get the students list of majors
             $majors = $student->getMajors();
-            
+
             $majorNames = array();
             if(!empty($majors)) {
                 foreach($majors as $m) {

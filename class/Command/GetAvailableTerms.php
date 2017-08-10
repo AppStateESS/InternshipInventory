@@ -2,7 +2,7 @@
 namespace Intern\Command;
 
 use \Intern\Term as Term;
-use \Intern\TermProviderFactory;
+use \Intern\DataProvider\Term\TermProviderFactory;
 
 /**
  * JSON endpoint for getting begin/end date and census date information for a term.

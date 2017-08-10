@@ -1,6 +1,8 @@
 <?php
 
-namespace Intern;
+namespace Intern\DataProvider\Major;
+
+use Intern\AcademicMajorList;
 
 use \SoapFault;
 

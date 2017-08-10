@@ -5,7 +5,7 @@ namespace Intern\Command;
 use Intern\Internship;
 use Intern\DepartmentFactory;
 use Intern\Agency;
-use Intern\ExternalDataProviderFactory;
+use Intern\DataProvider\Student\ExternalDataProviderFactory;
 use Intern\WorkflowStateFactory;
 use Intern\ChangeHistory;
 use Intern\Department;

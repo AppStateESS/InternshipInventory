@@ -4,8 +4,8 @@ namespace Intern\Command;
 use \Intern\InternshipFactory;
 use \Intern\AgencyFactory;
 use \Intern\InternshipView;
-use \Intern\ExternalDataProviderFactory;
-use \Intern\TermProviderFactory;
+use \Intern\DataProvider\Student\ExternalDataProviderFactory;
+use \Intern\DataProvider\Term\TermProviderFactory;
 
 class ShowInternship {
 

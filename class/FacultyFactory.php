@@ -2,6 +2,8 @@
 
 namespace Intern;
 
+use \Intern\DataProvider\Student\ExternalDataProviderFactory;
+
 use \phpws2\Database;
 
 class FacultyFactory {

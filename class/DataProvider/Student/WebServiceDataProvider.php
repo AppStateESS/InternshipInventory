@@ -1,6 +1,9 @@
 <?php
 
-namespace Intern;
+namespace Intern\DataProvider\Student;
+
+use Intern\Student;
+use Intern\AcademicMajor;
 
 use \SoapFault;
 

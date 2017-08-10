@@ -3,7 +3,7 @@ namespace Intern\Command;
 
 use Intern\WorkflowStateFactory;
 use Intern\ChangeHistory;
-use Intern\TermProviderFactory;
+use Intern\DataProvider\Term\TermProviderFactory;
 use Intern\Term;
 use Intern\InternshipFactory;
 use Intern\Email;

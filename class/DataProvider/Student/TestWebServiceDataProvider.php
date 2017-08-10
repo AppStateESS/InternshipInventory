@@ -1,6 +1,6 @@
 <?php
 
-namespace Intern;
+namespace Intern\DataProvider\Student;
 
 /**
  * TestStudentProvider - Always returns student objects with hard-coded testing data

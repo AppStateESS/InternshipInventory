@@ -27,9 +27,9 @@ class AcademicMajorList {
                 continue;
             }
 
-            if($major->levl == MajorsProvider::LEVEL_UNDERGRAD) {
+            if($major->levl == Major::LEVEL_UNDERGRAD) {
                 $this->addIfNotDuplicate($major, $undergradMajors);
-            } else if($major->levl == MajorsProvider::LEVEL_GRADUATE) {
+            } else if($major->levl == Major::LEVEL_GRADUATE) {
                 $this->addIfNotDuplicate($major, $graduateMajors);
             }
         }

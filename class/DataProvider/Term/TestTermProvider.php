@@ -1,13 +1,16 @@
 <?php
 
-namespace Intern;
+namespace Intern\DataProvider\Term;
+
+use Intern\Term;
+use Intern\TermInfo;
 
 /**
  * TestStudentProvider - Always returns student objects with hard-coded testing data
  *
  * Usually created through the TermProviderFactory.
  *
- * @see \Intern\TermProviderFactory
+ * @see \Intern\DataProvider\Term\TermProviderFactory
  * @author Jeremy Booker
  * @package Intern
  */

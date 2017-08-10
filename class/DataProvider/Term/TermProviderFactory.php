@@ -1,6 +1,6 @@
 <?php
 
-namespace Intern;
+namespace Intern\DataProvider\Term;
 
 /**
  * StudentDataProviderFactory
@@ -19,7 +19,7 @@ class TermProviderFactory {
     public static function getProvider()
     {
         if(STUDENT_DATA_TEST){
-            
+
             return new TestTermProvider(\Current_User::getUsername());
         }
 

@@ -15,6 +15,9 @@ class Major extends Model
     public $name;
     public $hidden;
 
+    const LEVEL_UNDERGRAD   = 'U';
+    const LEVEL_GRADUATE    = 'G';
+
     /**
      * @Override Model::getDb
      */

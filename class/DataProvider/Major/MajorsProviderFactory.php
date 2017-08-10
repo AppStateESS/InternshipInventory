@@ -1,6 +1,6 @@
 <?php
 
-namespace Intern;
+namespace Intern\DataProvider\Major;
 
 /**
  * Majors Provider Factor - Creates a Majors Provider based on settings.

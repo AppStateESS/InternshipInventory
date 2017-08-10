@@ -1,6 +1,6 @@
 <?php
 
-namespace Intern;
+namespace Intern\DataProvider\Student;
 
 /**
  * StudentProvider

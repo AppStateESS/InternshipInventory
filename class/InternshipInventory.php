@@ -170,7 +170,7 @@ class InternshipInventory {
             case 'pdf':
                 $i = InternshipFactory::getInternshipById($_REQUEST['internship_id']);
                 $emgContacts = EmergencyContactFactory::getContactsForInternship($i);
-                $termProvider = TermProviderFactory::getProvider();
+                $termProvider = DataProvider\Term\TermProviderFactory::getProvider();
                 $pdfView = new InternshipContractPdfView($i, $emgContacts, $termProvider);
                 $pdf = $pdfView->getPdf();
                 $pdf->output();

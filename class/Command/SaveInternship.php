@@ -5,7 +5,7 @@ use \Intern\WorkflowStateFactory;
 use \Intern\ChangeHistory;
 use \Intern\AgencyFactory;
 use \Intern\DatabaseStorage;
-use \Intern\ExternalDataProviderFactory;
+use \Intern\DataProvider\Student\ExternalDataProviderFactory;
 use \Intern\Exception\StudentNotFoundException;
 
 /**

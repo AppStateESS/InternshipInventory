@@ -1,12 +1,9 @@
 <?php
 
-namespace Intern;
+namespace Intern\DataProvider\Major;
 
 
 abstract class MajorsProvider {
-
-    const LEVEL_UNDERGRAD   = 'U';
-    const LEVEL_GRADUATE    = 'G';
 
     /**
      * Returns an array of AcademicMajor objects for the given term.
