@@ -100,7 +100,7 @@ class InternshipView {
 
     private function showWarnings()
     {
-
+        //TODO change to tell if there should be a doc uploaded or affiliation selected
         // Show warning if no documents uploaded but workflow state suggests there should be documents
         if(($this->wfState instanceof WorkflowState\SigAuthReadyState || $this->wfState instanceof WorkflowState\SigAuthApprovedState || $this->wfState instanceof WorkflowState\DeanApprovedState || $this->wfState instanceof WorkflowState\RegisteredState) && (sizeof($this->docs) < 1) && (!$this->intern->isSecondaryPart()))
         {

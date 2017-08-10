@@ -28,8 +28,7 @@ class AffiliationSelected extends Component{
         this.state = {showContract: false,
             showAffil: false,
             affilData: null,
-            dropData: "",
-            selected: this.props.selected};
+            selected: this.props.selected}
         this.handleDrop = this.handleDrop.bind(this);
         this.getData = this.getData.bind(this);
     }
@@ -131,7 +130,7 @@ class ContractSelected extends Component{
                 processData: false,
                 success: function (stat) {
                     currentfiles = this.state.currentFiles
-                    if (stat.id !== null) {
+                    if (stat.message === "") {
                         currentfiles.push(stat);
                     } else {
                         alert(stat.message)
@@ -140,31 +139,23 @@ class ContractSelected extends Component{
                     this.setState({currentFiles: currentfiles})
                 }.bind(this),
                 error: function(xhr, status, err) {
-                    alert("File failed to save.")
+                    alert("Contract failed to save.")
                     console.error(this.props.url, status, err.toString());
                 }.bind(this)
             })
         }.bind(this))
     }
     deleteFile(file) {
-        // Find key of file in currentFiles
-        let key;
-        for(let i=0; i<this.state.currentFiles.length;i++){
-            if(file.id === this.state.currentFiles[i]['id']){
-                key = i;
-                break;
-            }
-        }
         $.ajax({
             url: 'index.php?module=intern&action=documentRest&type=contract&docId='+file.id+'&internship_id=' + this.props.internshipId,
             method: 'DELETE',
             success: function (data) {
                 let files = this.state.currentFiles
-                files.splice(key, 1)
+                files.splice(0, 1)
                 this.setState({currentFiles: files})
             }.bind(this),
             error: function(xhr, status, err) {
-                alert("Unable to delete file.")
+                alert("Unable to delete contract.")
                 console.error(this.props.url, status, err.toString());
             }.bind(this)
         })

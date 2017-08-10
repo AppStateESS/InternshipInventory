@@ -2,6 +2,7 @@
 
 namespace Intern\Command;
 use \phpws2\Database;
+use \Intern\Command\AffiliationAgreementFactory;
 
 class DocumentRest {
 
@@ -206,6 +207,53 @@ class DocumentRest {
 		$sth->execute(array('name'=>$name, 'type'=>$type));
 		$result = $sth->fetchAll(\PDO::FETCH_ASSOC);
 		return $result[0]['id'];
+	}
+
+	public static function contractAffilationSelected($id){
+		/* Check if user should have access to folders */
+		if(!\Current_User::isLogged()){
+			\NQ::simple('intern', \Intern\UI\NotifyUI::WARNING, 'You do not have permission to files.');
+			throw new \Intern\Exception\PermissionException('You do not have permission to files.');
+		}
+
+		$db = Database::newDB();
+		$pdo = $db->getPDO();
+		$sql = "SELECT contract_type, affiliation_agreement_id
+				FROM intern_internship
+				WHERE id=:id";
+
+		$sth = $pdo->prepare($sql);
+		$sth->execute(array('id'=>$id));
+		$result = $sth->fetchAll(\PDO::FETCH_ASSOC);
+
+		$info['type'] = $result[0]['contract_type'];
+		$affilNum = $result[0]['affiliation_agreement_id'];
+		if($info['type'] == 'contract'){
+			$dbC = Database::newDB();
+			$pdoC = $dbC->getPDO();
+
+			$sqlC = "SELECT id
+					FROM intern_contract_documents
+					WHERE internship_id=:id AND type=:type";
+
+			$sthC = $pdoC->prepare($sqlC);
+			$sthC->execute(array('id'=>$id, 'type'=>'contract'));
+			$resultCon = $sthC->fetchAll(\PDO::FETCH_ASSOC);
+			if(sizeof($resultCon)>0){
+				$info['value'] = 'Yes';
+			} else{
+				$info['value'] = 'No';
+			}
+
+		} else{
+			if($affilNum != null){
+				$affil = AffiliationAgreementFactory::getAffiliationById($affilNum);
+				$info['value'] = $affil->getName();
+			} else{
+				$info['value'] = 'No';
+			}
+		}
+		return $info;
 	}
 
 }

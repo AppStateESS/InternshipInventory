@@ -506,21 +506,6 @@
           </div>
       </fieldset>
 
-      <!-- Document List -->
-      <fieldset>
-        <legend>Old Other Documents</legend>
-        <div class="row">
-          <div class="col-lg-9">
-            <ul class="list-group">
-              <!-- BEGIN docs -->
-              <li class="list-group-item"><i class="fa fa-file"></i> {DOWNLOAD} &nbsp;{DELETE}</li>
-              <!-- END docs -->
-            </ul>
-          </div>
-          <div class="col-lg-2">{UPLOAD_DOC}</div>
-        </div>
-      </fieldset>
-
       <!-- Agency info -->
       <fieldset>
         <legend>Host Details</legend>

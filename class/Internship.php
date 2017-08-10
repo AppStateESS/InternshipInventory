@@ -21,6 +21,7 @@
 namespace Intern;
 
 use \Intern\Student;
+use \Intern\Command\DocumentRest;
 
 use \PHPWS_Text;
 
@@ -370,16 +371,18 @@ class Internship {
         $a = $this->getAgency();
         $f = $this->getFaculty();
         $d = $this->getDepartment();
-        $c = $this->getDocuments();
+        //TODO change to get selected type contract/affiliation then if there is one
+        $c = DocumentRest::contractAffilationSelected($this->id);
 
         // Merge data from other objects.
         $csv = array_merge($csv, $a->getCSV());
 
-		if(count($c) > 0) {
-			$csv['Document Uploaded']  = 'Yes';
-		} else {
-			$csv['Document Uploaded']  = 'No';
-		}
+        $csv['Agreement Type'] = $c['type'];
+       if($c['type'] = 'contract') {
+           $csv['Contract Uploaded']  = $c['value'];
+       } else {
+           $csv['Affiliation Uploaded']  = $c['value'];
+       }
 
         if ($f instanceof Faculty) {
             $csv = array_merge($csv, $f->getCSV());
@@ -523,16 +526,6 @@ class Internship {
         }
 
         return new Subject($this->course_subj);
-    }
-
-    /**
-     * Get Document objects associated with this internship.
-     */
-    public function getDocuments()
-    {
-        $db = InternDocument::getDB();
-        $db->addWhere('internship_id', $this->id);
-        return $db->getObjects('\Intern\InternDocument');
     }
 
     /**

@@ -7,6 +7,7 @@ CREATE TABLE intern_contract_documents(
     name VARCHAR, store_name VARCHAR,
     path_name VARCHAR,
     type VARCHAR,
+    file_type VARCHAR,
     primary key (id)
 );
 

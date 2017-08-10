@@ -6,8 +6,7 @@ import Dropzone from 'react-dropzone';
 class DocumentInfo extends Component{
     constructor(props) {
         super(props)
-        this.state = {show: false,
-            currentFiles: []}
+        this.state = {currentFiles: []}
         this.addFiles = this.addFiles.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
         this.deleteFile = this.deleteFile.bind(this);
@@ -25,7 +24,7 @@ class DocumentInfo extends Component{
     addFiles(files){
         let currentfiles = [];
         $.each(files, function (key, value) {
-            let formData = new FormData()
+            let formData = new FormData();
             formData.append(key, value);
             $.ajax({
                 url: 'index.php?module=intern&action=documentRest&type=other&key='+key+'&internship_id=' + this.props.internshipId,
@@ -38,7 +37,7 @@ class DocumentInfo extends Component{
                 processData: false,
                 success: function (stat) {
                     currentfiles = this.state.currentFiles
-                    if (stat.id !== null) {
+                    if (stat.message === "") {
                         currentfiles.push(stat);
                     } else {
                         alert(stat.message)
