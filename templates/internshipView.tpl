@@ -410,6 +410,7 @@
             <!-- END workflow_action_repeat -->
           </div>
         </div>
+        <!-- BEGIN international_certification -->
         <div class="form-group">
           <div class="col-lg-10">
             <div class="checkbox">
@@ -417,6 +418,8 @@
             </div>
           </div>
         </div>
+        <!-- BEGIN international_certification -->
+
       </fieldset>
 
       <!-- Faculty info -->

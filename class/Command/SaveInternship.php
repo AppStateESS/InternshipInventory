@@ -8,6 +8,7 @@ use \Intern\DatabaseStorage;
 use \Intern\DataProvider\Student\StudentDataProviderFactory;
 use \Intern\TermFactory;
 use \Intern\Exception\StudentNotFoundException;
+use \Intern\InternSettings;
 
 /**
  * Controller class to save changes (on create or update) to an Internship
@@ -37,6 +38,9 @@ class SaveInternship {
 
     public function execute()
     {
+
+        $settings = InternSettings::getInstance();
+
         /**************
          * Sanity Checks
          */
@@ -276,20 +280,25 @@ class SaveInternship {
         /************
          * OIED Certification
         */
-        // Check if this has changed from non-certified->certified so we can log it later
-        if($i->oied_certified == 0 && $_POST['oied_certified_hidden'] == 'true'){
-            // note the change for later
-            $oiedCertified = true;
-        }else{
-            $oiedCertified = false;
-        }
+        if($settings->getRequireIntlCertification()){
+            // Check if this has changed from non-certified->certified so we can log it later
+            if($i->oied_certified == 0 && $_POST['oied_certified_hidden'] == 'true'){
+                // note the change for later
+                $oiedCertified = true;
+            }else{
+                $oiedCertified = false;
+            }
 
-        if($_POST['oied_certified_hidden'] == 'true'){
-            $i->oied_certified = 1;
-        }else if($_POST['oied_certified_hidden'] == 'false'){
-            $i->oied_certified = 0;
-        }else{
-            $i->oied_certified = 0;
+            if($_POST['oied_certified_hidden'] == 'true'){
+                $i->oied_certified = 1;
+            }else if($_POST['oied_certified_hidden'] == 'false'){
+                $i->oied_certified = 0;
+            }else{
+                $i->oied_certified = 0;
+            }
+        } else {
+            // International approval not required, so always set this to false
+            $oiedCertified = false;
         }
 
         /************

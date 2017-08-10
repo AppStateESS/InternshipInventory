@@ -207,7 +207,6 @@ class InternSettings {
         return $result;
     }
 
-
     /**
      * Returns the name of the student data provider to use.
      *
@@ -223,5 +222,10 @@ class InternSettings {
         }
 
         return $result;
+    }
+
+    public function getRequireIntlCertification()
+    {
+        return \PHPWS_Settings::get('intern', 'requireIntlCertification');
     }
 }

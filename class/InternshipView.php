@@ -2,6 +2,8 @@
 
 namespace Intern;
 
+use Intern\InternSettings;
+
 /**
  * This class holds the form for adding/editing an internship.
  */
@@ -22,7 +24,11 @@ class InternshipView {
     private $term;
     private $studentExistingCreditHours;
 
+    private $termInfo;
+    private $settings;
+
     public function __construct(Internship $internship, Student $student = null, WorkflowState $wfState, Agency $agency, Array $docs, Term $term, $studentExistingCreditHours)
+
     {
         $this->intern = $internship;
         $this->student = $student;
@@ -38,7 +44,11 @@ class InternshipView {
         $tpl = array();
 
         // Setup the form
+<<<<<<< 43eb7481b3d232675f84988ff313df7fbf1ada1b
         $internshipForm = new EditInternshipFormView($this->intern, $this->student, $this->agency, $this->docs, $this->term, $this->studentExistingCreditHours);
+=======
+        $internshipForm = new EditInternshipFormView($this->intern, $this->student, $this->agency, $this->docs, $this->termInfo, $this->settings);
+>>>>>>> Add setting for requireIntlCertification, hide intl certification checkbox on internship edit interface if setting is disabled, don't try to save field if setting is disabled.
 
         // Get the Form object
         $form = $internshipForm->getForm();
@@ -87,9 +97,11 @@ class InternshipView {
             \NQ::simple('intern', UI\NotifyUI::WARNING, "No documents have been uploaded yet. Usually a copy of the signed contract document should be uploaded.");
         }
 
-        // Show a warning if in SigAuthReadyState, is international, and not OIED approved
-        if ($this->wfState instanceof WorkflowState\SigAuthReadyState && $this->intern->isInternational() && !$this->intern->isOiedCertified()) {
-            \NQ::simple('intern', UI\NotifyUI::WARNING, 'This internship can not be approved by the Signature Authority bearer until the internship is certified by the Office of International Education and Development.');
+        // Show a warning if International certification required, internship is in SigAuthReadyState, is international, and not OIED approved
+        if($this->settings->getRequireIntlCertification()){
+            if ($this->wfState instanceof WorkflowState\SigAuthReadyState && $this->intern->isInternational() && !$this->intern->isOiedCertified()) {
+                \NQ::simple('intern', UI\NotifyUI::WARNING, 'This internship can not be approved by the Signature Authority bearer until the internship is certified by the Office of International Education and Development.');
+            }
         }
 
         // Show a warning if in DeanApproved state and is distance_ed campus

@@ -5,6 +5,7 @@ namespace Intern;
 use Intern\ChangeHistoryView;
 use Intern\DepartmentFactory;
 use Intern\TermFactory;
+use Intern\InternSettings;
 
 /**
  * View class for showing the big internship form for
@@ -148,17 +149,20 @@ class EditInternshipFormView {
         /*****************
          * OIED Approval *
          */
-        $this->form->addCheck('oied_certified');
-        $this->form->setLabel('oied_certified', 'Certified by Office of International Education and Development');
+        // If enabled in settings, then add international office certification checkbox
+        if($this->settings->getRequireIntlCertification()){
+            $this->form->addCheck('oied_certified');
+            $this->form->setLabel('oied_certified', 'Certified by Office of International Education and Development');
 
-        // If the user is not allowed to do OIED certification, disable the checkbox
-        if(!\Current_User::allow('intern', 'oied_certify') || $this->intern->isDomestic()){
-            $this->form->setExtra('oied_certified', 'disabled="disabled" disabled');
+            // If the user is not allowed to do OIED certification, disable the checkbox
+            if(!\Current_User::allow('intern', 'oied_certify') || $this->intern->isDomestic()){
+                $this->form->setExtra('oied_certified', 'disabled="disabled" disabled');
+            }
+
+            // Hidden field that shadows the real field, to ensure a value is always submitted,
+            // because disabled fields are not submitted
+            $this->form->addHidden('oied_certified_hidden');
         }
-
-        // Hidden field that shadows the real field, to ensure a value is always submitted,
-        // because disabled fields are not submitted
-        $this->form->addHidden('oied_certified_hidden');
 
         /******************
          * Student fields *
@@ -747,11 +751,15 @@ class EditInternshipFormView {
 
         $this->formVals['pay_rate'] = $this->intern->pay_rate;
 
-        if ($this->intern->oied_certified) {
-            $this->form->setMatch('oied_certified', true);
-            $this->form->setValue('oied_certified_hidden', 'true');
-        } else {
-            $this->form->setValue('oied_certified_hidden', 'false');
+        // If OIED certification is enabled, check certification status
+        // and set the checkbox and hidden field accordingly
+        if($this->settings->getRequireIntlCertification()){
+            if ($this->intern->oied_certified) {
+                $this->form->setMatch('oied_certified', true);
+                $this->form->setValue('oied_certified_hidden', 'true');
+            } else {
+                $this->form->setValue('oied_certified_hidden', 'false');
+            }
         }
     }
 

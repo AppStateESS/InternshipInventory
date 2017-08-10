@@ -12,5 +12,6 @@ $settings = array('registrarEmail'              => null,
                   'systemName'                  => 'Internship Inventory',
                   'wsdlUri'                     => '',
                   'unusualCourseEmail'          => null,
-                  'studentDataSource'           => 'localDataProvider' // 'localDataProvider', 'webServiceDataProvider', 'webServiceTestProvider'
+                  'studentDataSource'           => 'localDataProvider', // 'localDataProvider', 'webServiceDataProvider', 'webServiceTestProvider'
+                  'requireIntlCertification'    => true
             );
