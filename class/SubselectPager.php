@@ -1289,7 +1289,6 @@ class SubselectPager extends \DBPager {
                     $result = & $foo;
                 }
             }
-
             if (!$index_set) {
                 $index_keys = array_keys($result);
                 $row = fputcsv($fp, $index_keys);
@@ -1299,7 +1298,6 @@ class SubselectPager extends \DBPager {
             //$row = self::formatCSVRow($result);
             //fwrite($fp, $row);
         }
-
         fclose($fp);
 
         $new_file = time() . '_pager.csv';

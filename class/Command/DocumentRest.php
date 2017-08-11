@@ -44,7 +44,6 @@ class DocumentRest {
 	}
 
 	public function post(){
-		$data = array('message' => '');
 		$known_documents = array('csv', 'doc', 'docx', 'odt', 'pdf', 'ppt', 'pptx', 'rtf',
     			'tar', 'tgz', 'txt', 'xls', 'xlsx', 'xml', 'zip', 'gz', 'rar', 'ods', 'odp');
 		$id = $_REQUEST['internship_id'];
@@ -55,7 +54,7 @@ class DocumentRest {
 		$name = $_FILES[$key]['name'];
 		$fileName = $id . $name;
 		$type = $_REQUEST['type'];
-		// See where file is to be saved
+		// See where the file is to be saved
 		if($type == 'other'){
 			$target_dir = "/var/www/html/files/documents/otherDocuments/";
 		} else{
@@ -97,8 +96,8 @@ class DocumentRest {
 		return $data;
 	}
 
+	// For database save
 	public function saveFile($id, $name, $fileName, $target_file, $type, $fileLongType){
-		//save in database
 		$db = Database::newDB();
 		$pdo = $db->getPDO();
 
@@ -130,13 +129,13 @@ class DocumentRest {
 	public function get(){
 		$id = $_REQUEST['internship_id'];
 		$type = $_REQUEST['type'];
-		// If name is set then we're getting the download link
+		// If the document's id is set then we're downloading the file
 		if(isset($_REQUEST['docId'])){
 			$docId = $_REQUEST['docId'];
 			$this->getDownLoad($docId);
 			return;
 		}
-		// If type is contract get the contract, else get all the otherDocuments
+		// If type is contract get the contract or it get all the otherDocuments
 		$db = Database::newDB();
 		$pdo = $db->getPDO();
 
@@ -152,6 +151,7 @@ class DocumentRest {
 		return $result;
 	}
 
+	// Makes the call to download the selected document
 	public function getDownLoad($docId){
 		$target_file = $this->getPath($docId);
 		if(!file_exists($target_file)){
@@ -183,6 +183,7 @@ class DocumentRest {
 		exit;
 	}
 
+	// Gets the location of the file in the folders from the database
 	public function getPath($docId){
 		$db = Database::newDB();
 		$pdo = $db->getPDO();
@@ -196,6 +197,7 @@ class DocumentRest {
 		return $result[0]['path_name'];
 	}
 
+	// Gets the id for the document uploaded
 	public function getIdByName($name, $type){
 		$db = Database::newDB();
 		$pdo = $db->getPDO();
@@ -209,13 +211,15 @@ class DocumentRest {
 		return $result[0]['id'];
 	}
 
+	// Used to see if there are any contracts uploaded or affiliation selected
 	public static function contractAffilationSelected($id){
-		/* Check if user should have access to folders */
+		/* Check if user should have access to folders since this method does not go through execute*/
 		if(!\Current_User::isLogged()){
 			\NQ::simple('intern', \Intern\UI\NotifyUI::WARNING, 'You do not have permission to files.');
 			throw new \Intern\Exception\PermissionException('You do not have permission to files.');
 		}
 
+		// Gets what type of contract and if affiliation id is set
 		$db = Database::newDB();
 		$pdo = $db->getPDO();
 		$sql = "SELECT contract_type, affiliation_agreement_id
@@ -228,13 +232,15 @@ class DocumentRest {
 
 		$info['type'] = $result[0]['contract_type'];
 		$affilNum = $result[0]['affiliation_agreement_id'];
+
+		// If contract then check if there is one uploaded, else see if the affiliation id is set and get its name
 		if($info['type'] == 'contract'){
 			$dbC = Database::newDB();
 			$pdoC = $dbC->getPDO();
 
 			$sqlC = "SELECT id
-					FROM intern_contract_documents
-					WHERE internship_id=:id AND type=:type";
+					 FROM intern_contract_documents
+					 WHERE internship_id=:id AND type=:type";
 
 			$sthC = $pdoC->prepare($sqlC);
 			$sthC->execute(array('id'=>$id, 'type'=>'contract'));

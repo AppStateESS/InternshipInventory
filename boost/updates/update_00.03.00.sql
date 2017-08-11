@@ -12,3 +12,5 @@ CREATE TABLE intern_contract_documents(
 );
 
 CREATE SEQUENCE intern_contract_documents_seq;
+
+INSERT INTO intern_contract_documents (id, internship_id, name, store_name, path_name, type, file_type) VALUES (nextval('intern_contract_documents_seq'));

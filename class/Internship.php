@@ -376,13 +376,14 @@ class Internship {
         // Merge data from other objects.
         $csv = array_merge($csv, $a->getCSV());
 
+        // Sets the type and if there are contracts, else sets the name of affiliation if one
         $csv['Agreement Type'] = $c['type'];
-        if($c['type'] == 'contract') {
+        if($c['type'] == "contract") {
             $csv['Contract Uploaded']  = $c['value'];
-            $csv['Affiliation Uploaded']  = '';
+            $csv['Affiliation Uploaded']  = null;
         } else {
+            $csv['Contract Uploaded'] = null;
             $csv['Affiliation Uploaded']  = $c['value'];
-            $csv['Contract Uploaded']  = '';
         }
 
         if ($f instanceof Faculty) {

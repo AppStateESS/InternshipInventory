@@ -103,7 +103,7 @@ class InternshipView {
     {
         // Get state of documents or affiliation
         $conAffil = DocumentRest::contractAffilationSelected($this->intern->getId());
-        // Show warning if no documents uploaded but workflow state suggests there should be documents
+        // Show warning if no documents uploaded or affiliation agreement selected but workflow state suggests there should be
         if(($this->wfState instanceof WorkflowState\SigAuthReadyState || $this->wfState instanceof WorkflowState\SigAuthApprovedState || $this->wfState instanceof WorkflowState\DeanApprovedState || $this->wfState instanceof WorkflowState\RegisteredState) && ($conAffil['value'] == 'No') && (!$this->intern->isSecondaryPart()))
         {
             \NQ::simple('intern', UI\NotifyUI::WARNING, "No contract has been uploaded or affiliation agreement selected. Usually a copy of the signed contract should be uploaded or an affiliation agreement selected.");

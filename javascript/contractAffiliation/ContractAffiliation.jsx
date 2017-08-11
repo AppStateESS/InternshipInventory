@@ -37,20 +37,18 @@ class AffiliationSelected extends Component{
     }
     handleDrop(e) {
         // saves the users selected affiliation
-        if(e.target.value !== '-1'){
-            let choose = e.target.value;
-            $.ajax({
-                url: 'index.php?module=intern&action=agreementType&affilId='+choose+'&internId='+ this.props.internshipId,
-                type:'PUT',
-                success: function() {
-                    this.setState({selected: choose});
-                }.bind(this),
-                error: function(xhr, status, err) {
-                    alert("Failed to save affiliation data.")
-                    console.error(this.props.url, status, err.toString());
-                }.bind(this)
-            });
-        }
+        let choose = e.target.value;
+        $.ajax({
+            url: 'index.php?module=intern&action=agreementType&affilId='+choose+'&internId='+ this.props.internshipId,
+            type:'PUT',
+            success: function() {
+                this.setState({selected: choose});
+            }.bind(this),
+            error: function(xhr, status, err) {
+                alert("Failed to save affiliation data.")
+                console.error(this.props.url, status, err.toString());
+            }.bind(this)
+        });
     }
     getData(){
         // Grabs the list of affiliations
