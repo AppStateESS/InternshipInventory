@@ -2,7 +2,7 @@
 
 namespace Intern\Command;
 use \phpws2\Database;
-use \Intern\Command\AffiliationAgreementFactory;
+use \Intern\AffiliationAgreementFactory;
 
 class DocumentRest {
 

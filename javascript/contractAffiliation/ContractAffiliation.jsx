@@ -37,7 +37,7 @@ class AffiliationSelected extends Component{
     }
     handleDrop(e) {
         // saves the users selected affiliation
-        if(e.target.value !== -1){
+        if(e.target.value !== '-1'){
             let choose = e.target.value;
             $.ajax({
                 url: 'index.php?module=intern&action=agreementType&affilId='+choose+'&internId='+ this.props.internshipId,

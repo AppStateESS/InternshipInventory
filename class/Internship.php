@@ -371,18 +371,19 @@ class Internship {
         $a = $this->getAgency();
         $f = $this->getFaculty();
         $d = $this->getDepartment();
-        //TODO change to get selected type contract/affiliation then if there is one
         $c = DocumentRest::contractAffilationSelected($this->id);
 
         // Merge data from other objects.
         $csv = array_merge($csv, $a->getCSV());
 
         $csv['Agreement Type'] = $c['type'];
-       if($c['type'] = 'contract') {
-           $csv['Contract Uploaded']  = $c['value'];
-       } else {
-           $csv['Affiliation Uploaded']  = $c['value'];
-       }
+        if($c['type'] == 'contract') {
+            $csv['Contract Uploaded']  = $c['value'];
+            $csv['Affiliation Uploaded']  = '';
+        } else {
+            $csv['Affiliation Uploaded']  = $c['value'];
+            $csv['Contract Uploaded']  = '';
+        }
 
         if ($f instanceof Faculty) {
             $csv = array_merge($csv, $f->getCSV());
