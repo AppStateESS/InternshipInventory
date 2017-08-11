@@ -4,11 +4,13 @@ import $ from 'jquery';
 import classNames from 'classnames';
 import Bloodhound from 'corejs-typeahead';
 
-var SearchBox = React.createClass({
-    getInitialState: function() {
-        return {dataError: null};
-    },
-    componentDidMount: function() {
+class SearchBox extends React.Component {
+    constructor(props) {
+      super(props);
+
+      this.state = {dataError: null};
+    }
+    componentDidMount() {
 
     	var searchSuggestions = new Bloodhound({
             datumTokenizer: function(datum){
@@ -83,12 +85,12 @@ var SearchBox = React.createClass({
         $(element).blur(function(e){
             handleSearch($(element).typeahead('val'));
         });
-    },
-    componentWillUnmount: function() {
+    }
+    componentWillUnmount() {
         var element = ReactDOM.findDOMNode(this);
         $(element).typeahead('destroy');
-    },
-    render: function() {
+    }
+    render() {
         var errorNotice = null;
 
         if(this.state.dataError !== null){
@@ -104,11 +106,11 @@ var SearchBox = React.createClass({
             </div>
         );
     }
-});
+}
 
 // Student Preview
-var StudentPreview = React.createClass({
-    render: function() {
+class StudentPreview extends React.Component {
+    render() {
         return (
             <div>
                 <span className="lead"> {this.props.student.name}</span><br />
@@ -118,15 +120,17 @@ var StudentPreview = React.createClass({
             </div>
         );
     }
-});
+}
 
 // Student Search Parent Component
-var StudentSearch = React.createClass({
-    getInitialState: function() {
-        return {student: null, studentFound: false, hasError: false};
-    },
+class StudentSearch extends React.Component {
+    constructor(props) {
+      super(props);
+
+      this.state = {student: null, studentFound: false, hasError: false};
+    }
     // Performs a search and handles the response
-    doSearch: function(searchString) {
+    doSearch(searchString) {
         $.ajax({
             url: 'index.php?module=intern&action=GetSearchSuggestions',
             dataType: 'json',
@@ -140,18 +144,18 @@ var StudentSearch = React.createClass({
                 console.error(status, err.toString());
             }
         });
-    },
-    studentFound: function() {
+    }
+    studentFound() {
         return this.state.studentFound;
-    },
+    }
     // Clears results from current state, resets for next search
-    resetPreview: function() {
+    resetPreview() {
         this.setState({student: null, studentFound: false});
-    },
-    setError: function(status) {
+    }
+    setError(status) {
         this.setState({hasError: status});
-    },
-    render: function() {
+    }
+    render() {
         var fgClasses = classNames({
             'form-group': true,
             'has-success': this.state.studentFound || this.state.hasError,
@@ -183,6 +187,6 @@ var StudentSearch = React.createClass({
             </div>
         );
     }
-});
+}
 
 export default StudentSearch;

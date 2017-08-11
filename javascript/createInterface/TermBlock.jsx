@@ -6,11 +6,13 @@ import classNames from 'classnames';
 /*********
  * Terms *
  *********/
-var TermBlock = React.createClass({
-    getInitialState: function() {
-        return ({terms: null, hasError: false, selectedTerm: null, dataError: null, dataLoading: true});
-    },
-    componentWillMount: function() {
+class TermBlock extends React.Component {
+    constructor(props) {
+      super(props);
+
+      this.state = {terms: null, hasError: false, selectedTerm: null, dataError: null, dataLoading: true};
+    }
+    componentWillMount() {
         $.ajax({
             url: 'index.php?module=intern&action=GetAvailableTerms',
             dataType: 'json',
@@ -28,14 +30,14 @@ var TermBlock = React.createClass({
                 this.setState({dataLoading: false, dataError: 'There was an error loading the Term information. Please contact the site administrators.'});
             }.bind(this)
         });
-    },
-    setError: function(status){
+    }
+    setError(status){
         this.setState({hasError: status});
-    },
-    handleChange: function(clickEvent){
+    }
+    handleChange(clickEvent){
         this.setState({selectedTerm: clickEvent.target.childNodes[0].value});
-    },
-    render: function() {
+    }
+    render() {
 
         // If we have no data, and it's still loading, then return an empty div
         if(this.state.terms === null && this.state.dataLoading === true){
@@ -91,6 +93,6 @@ var TermBlock = React.createClass({
 
         );
     }
-});
+}
 
 export default TermBlock;

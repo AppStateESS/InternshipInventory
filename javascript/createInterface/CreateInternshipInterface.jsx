@@ -12,14 +12,16 @@ import Department from './DepartmentBlock.jsx';
 /*********************
  * Host Agency Field *
  *********************/
-var HostAgency = React.createClass({
-    getInitialState: function() {
-        return ({hasError: false});
-    },
-    setError: function(status){
+class HostAgency extends React.Component {
+    constructor(props) {
+      super(props);
+
+      this.state = {hasError: false};
+    }
+    setError(status){
         this.setState({hasError: status});
-    },
-    render: function() {
+    }
+    render() {
         var fgClasses = classNames({
                         'form-group': true,
                         'has-error': this.state.hasError
@@ -35,14 +37,14 @@ var HostAgency = React.createClass({
             </div>
         );
     }
-});
+}
 
 
 /*****************
  * Submit Button *
  *****************/
-var CreateInternshipButton = React.createClass({
-    render: function() {
+class CreateInternshipButton extends React.Component {
+    render() {
         var button = null;
         if(this.props.submitted) {
             button = <button type="submit" className="btn btn-lg btn-primary pull-right" id="create-btn" disabled ><i className="fa fa-spinner fa-spin"></i> Saving...</button>;
@@ -57,10 +59,10 @@ var CreateInternshipButton = React.createClass({
             </div>
         );
     }
-});
+}
 
-var ErrorMessagesBlock = React.createClass({
-    render: function() {
+class ErrorMessagesBlock extends React.Component {
+    render() {
         if(this.props.errors === null){
             return '';
         }
@@ -84,17 +86,19 @@ var ErrorMessagesBlock = React.createClass({
             </div>
         );
     }
-});
+}
 
 /*********************************
  * Top level Interface Component *
  *********************************/
-var CreateInternshipInterface = React.createClass({
-    getInitialState: function(){
-        return ({submitted: false, errorMessages: null});
-    },
+class CreateInternshipInterface extends React.Component {
+    constructor(props){
+      super(props);
+
+      this.state = {submitted: false, errorMessages: null};
+    }
     // Top-level onSubmit handler for the creation form
-    handleSubmit: function(e) {
+    handleSubmit(e) {
         // Stop the browser from immediately sending the post
         e.preventDefault();
 
@@ -118,8 +122,8 @@ var CreateInternshipInterface = React.createClass({
             // If we get here, then validation was successful
             formElement.submit();
         });
-    },
-    validate: function(form, thisComponent) {
+    }
+    validate(form, thisComponent) {
 
         // Assume everything is valid, change this if we detect otherwise
         var valid = true;
@@ -194,11 +198,11 @@ var CreateInternshipInterface = React.createClass({
         }
 
         return valid;
-    },
-    setErrorMessages: function(messages) {
+    }
+    setErrorMessages(messages) {
         this.setState({errorMessages: messages});
-    },
-    render: function() {
+    }
+    render() {
         var errors;
         if(this.state.errorMessages == null){
             errors = '';
@@ -230,7 +234,7 @@ var CreateInternshipInterface = React.createClass({
             </form>
         );
     }
-});
+}
 
 ReactDOM.render(
     <CreateInternshipInterface />, document.getElementById('createInternshipInterface')
