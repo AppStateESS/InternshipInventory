@@ -2,7 +2,7 @@
 
 namespace Intern\Command;
 
-use Intern\DataProvider\Student\ExternalDataProviderFactory;
+use Intern\DataProvider\Student\StudentDataProviderFactory;
 use Intern\Term;
 
 use Intern\Exception\StudentNotFoundException;
@@ -76,7 +76,7 @@ class GetSearchSuggestions {
      */
     private function studentIdSearch($studentId)
     {
-        $student = ExternalDataProviderFactory::getProvider()->getStudent($studentId, Term::timeToTerm(time()));
+        $student = StudentDataProviderFactory::getProvider()->getStudent($studentId, Term::timeToTerm(time()));
 
         return $student;
     }

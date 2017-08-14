@@ -3,12 +3,12 @@
 namespace Intern\DataProvider\Student;
 
 /**
- * ExternalDataProviderFactory
+ * StudentDataProviderFactory
  *
  * @author Jeremy Booker
  * @package Intern
  */
-class ExternalDataProviderFactory {
+class StudentDataProviderFactory {
 
     /**
      * Returns a concrete instance of a StudenDataProvider object,

@@ -4,7 +4,7 @@ namespace Intern\Command;
 use \Intern\InternshipFactory;
 use \Intern\AgencyFactory;
 use \Intern\InternshipView;
-use \Intern\DataProvider\Student\ExternalDataProviderFactory;
+use \Intern\DataProvider\Student\StudentDataProviderFactory;
 use \Intern\DataProvider\Term\TermProviderFactory;
 
 class ShowInternship {
@@ -34,7 +34,7 @@ class ShowInternship {
 
         // Load a fresh copy of the student data from the web service
         try {
-            $student = ExternalDataProviderFactory::getProvider()->getStudent($intern->getBannerId(), $intern->getTerm());
+            $student = StudentDataProviderFactory::getProvider()->getStudent($intern->getBannerId(), $intern->getTerm());
         } catch(\Intern\Exception\StudentNotFoundException $e) {
             $studentId = $intern->getBannerId();
             $student = null;

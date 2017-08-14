@@ -5,7 +5,7 @@ use \Intern\WorkflowStateFactory;
 use \Intern\ChangeHistory;
 use \Intern\AgencyFactory;
 use \Intern\DatabaseStorage;
-use \Intern\DataProvider\Student\ExternalDataProviderFactory;
+use \Intern\DataProvider\Student\StudentDataProviderFactory;
 use \Intern\Exception\StudentNotFoundException;
 
 /**
@@ -130,7 +130,7 @@ class SaveInternship {
 
         // Load the student object
         try {
-            $student = ExternalDataProviderFactory::getProvider()->getStudent($i->getBannerId(), $i->getTerm());
+            $student = StudentDataProviderFactory::getProvider()->getStudent($i->getBannerId(), $i->getTerm());
         } catch (StudentNotFoundException $e){
             $student = null;
 
