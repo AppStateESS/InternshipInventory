@@ -14,20 +14,20 @@ class DocumentRest {
 			throw new \Intern\Exception\PermissionException('You do not have permission to files.');
 		}
 
-		// Makes sure the folder of documents, contract, and otherDocuments are made
-		if(!file_exists("/var/www/html/files/documents")){
-			mkdir("/var/www/html/files/documents");
+		$otherDir = \PHPWS_Settings::get('filecabinet', 'base_doc_directory') . "otherDocuments/";
+		$contractDir = \PHPWS_Settings::get('filecabinet', 'base_doc_directory') . "contract/";
+
+		// Makes sure the folder of contract and otherDocuments are made
+		if(!file_exists($otherDir)){
+			mkdir($otherDir);
 		}
-		if(!file_exists("/var/www/html/files/documents/contract")){
-			mkdir("/var/www/html/files/documents/contract");
-		}
-		if(!file_exists("/var/www/html/files/documents/otherDocuments")){
-			mkdir("/var/www/html/files/documents/otherDocuments");
+		if(!file_exists($contractDir)){
+			mkdir($contractDir);
 		}
 
 		switch($_SERVER['REQUEST_METHOD']) {
             case 'POST':
-                $data = $this->post();
+                $data = $this->post($contractDir, $otherDir);
 				echo (json_encode($data));
                 exit;
             case 'GET':
@@ -43,7 +43,7 @@ class DocumentRest {
 			}
 	}
 
-	public function post(){
+	public function post($contractDir, $otherDir){
 		$known_documents = array('csv', 'doc', 'docx', 'odt', 'pdf', 'ppt', 'pptx', 'rtf',
     			'tar', 'tgz', 'txt', 'xls', 'xlsx', 'xml', 'zip', 'gz', 'rar', 'ods', 'odp');
 		$id = $_REQUEST['internship_id'];
@@ -56,11 +56,12 @@ class DocumentRest {
 		$type = $_REQUEST['type'];
 		// See where the file is to be saved
 		if($type == 'other'){
-			$target_dir = "/var/www/html/files/documents/otherDocuments/";
+			$target_dir = $otherDir;
 		} else{
-			$target_dir = "/var/www/html/files/documents/contract/";
+			$target_dir = $contractDir;
 		}
 		$target_file = $target_dir.basename($fileName);
+
 		// Check is the file type is one of the accepted ones
 		$fileType = pathinfo($target_file, PATHINFO_EXTENSION);
 		for($i = 0; $i < sizeof($known_documents); $i++){
@@ -211,7 +212,7 @@ class DocumentRest {
 		return $result[0]['id'];
 	}
 
-	// Used to see if there are any contracts uploaded or affiliation selected
+	// Used to see if there are any contracts uploaded or affiliation selected for notifications and export spreadsheet
 	public static function contractAffilationSelected($id){
 		/* Check if user should have access to folders since this method does not go through execute*/
 		if(!\Current_User::isLogged()){

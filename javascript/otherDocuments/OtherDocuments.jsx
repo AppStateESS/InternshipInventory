@@ -70,7 +70,7 @@ class DocumentInfo extends Component{
                 this.setState({currentFiles: files})
             }.bind(this),
             error: function(xhr, status, err) {
-                alert("Unable to delete file.")
+                alert("Unable to delete file. File does not exist.")
                 console.error(this.props.url, status, err.toString());
             }.bind(this)
         })

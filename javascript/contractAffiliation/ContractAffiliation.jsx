@@ -153,7 +153,7 @@ class ContractSelected extends Component{
                 this.setState({currentFiles: files})
             }.bind(this),
             error: function(xhr, status, err) {
-                alert("Unable to delete contract.")
+                alert("Unable to delete contract. Contract does not exist.")
                 console.error(this.props.url, status, err.toString());
             }.bind(this)
         })
