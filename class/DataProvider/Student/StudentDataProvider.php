@@ -8,7 +8,7 @@ namespace Intern\DataProvider\Student;
  * Abstract class to define the interface for various ways
  * to get Student objects.
  */
-abstract class ExternalDataProvider {
+abstract class StudentDataProvider {
 
     /**
      * Returns a Student object corresponding to the given studentId.

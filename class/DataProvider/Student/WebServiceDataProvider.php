@@ -15,7 +15,7 @@ use \SoapFault;
  * @author Jeremy Booker
  * @package Intern
  */
-class WebServiceDataProvider extends ExternalDataProvider {
+class WebServiceDataProvider extends StudentDataProvider {
 
     protected $currentUserName;
 
