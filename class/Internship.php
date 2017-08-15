@@ -299,14 +299,14 @@ class Internship {
         $csv['Level'] = $this->getLevel();
         $level = LevelFactory::getLevelObjectById($this->getLevel());
         if($level->getLevel() == Level::UNDERGRAD){
-            //$csv['Undergrad Major'] = $this->getUgradMajor()->getName();
+            $csv['Undergrad Major'] = $this->major_description;
             $csv['Grduate Program'] = '';
         }else if($level->getLevel() == Level::GRADUATE){
             $csv['Undergrad Major'] = '';
-            //$csv['Graduate Program'] = $this->getGradProgram()->getName();
+            $csv['Graduate Program'] = $this->major_description;
         }else{
             $csv['Undergrad Major'] = '';
-            $csv['Graduate Program'] = '';
+            $csv['Grduate Program'] = '';
         }
         $csv['GPA']             = $this->getGpa();
         $csv['Campus']          = $this->getCampus();
