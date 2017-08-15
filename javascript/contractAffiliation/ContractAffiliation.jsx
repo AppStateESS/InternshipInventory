@@ -10,7 +10,10 @@ class AffiliationList extends Component{
         let optionSelect = null;
         // Date format in jsx is in milliseconds, date saved to agreement is in seconds
         let date = Math.round(new Date().getTime()/1000);
-        if(date > this.props.end && this.props.arenew !== 1){
+        // Checks for terminated first since it could also be expired, but knowing if it was terminated is more important
+        if(this.props.terminate){
+            optionSelect = 	<option value={this.props.id} disabled>{this.props.name} *Terminated*</option>
+        } else if(date > this.props.end && this.props.arenew !== 1){
             optionSelect = 	<option value={this.props.id} disabled>{this.props.name} *Expired*</option>
         } else if(date < this.props.start){
             let startD = new Date(this.props.start*1000).toLocaleDateString();
@@ -51,7 +54,7 @@ class AffiliationSelected extends Component{
         });
     }
     getData(){
-        // Grabs the list of affiliations
+        // Grabs the list of affiliations asc by name
         $.ajax({
             url: 'index.php?module=intern&action=AffiliateListRest&NameASC=yes',
             type: 'GET',
@@ -76,7 +79,8 @@ class AffiliationSelected extends Component{
                         id={data.id}
                         end={data.end_date}
                         start={data.begin_date}
-                        arenew={data.auto_renew}/>
+                        arenew={data.auto_renew}
+                        terminate={data.terminated}/>
 				);
 			});
 		} else {
@@ -114,6 +118,7 @@ class ContractSelected extends Component{
     }
     addFiles(files){
         let currentfiles = [];
+        // Though there are not multiple files, data has to be sent as FormData
         $.each(files, function (key, value) {
             let formData = new FormData()
             formData.append(key, value);
@@ -161,6 +166,7 @@ class ContractSelected extends Component{
     render(){
         let list
         let DropZone = <div></div>
+        // If there is a file uploaded it shows the file, else it shows dropzone so you can upload one
         if (this.state.currentFiles.length > 0) {
             list = this.state.currentFiles.map(function(f){
                 let url = "index.php?module=intern&action=documentRest&type=contract&docId="+f.id+"&internship_id="+this.props.internshipId;
@@ -182,7 +188,7 @@ class ContractSelected extends Component{
                 <div>
                     {DropZone}
                     <div>
-                        <h4>Added Contract:</h4>
+                        <label>Added Contract:</label>
                         <ul className="list-group">
                             {list}
                         </ul>
@@ -252,6 +258,7 @@ class ContractAffiliation extends Component{
     }
     render() {
         let selection;
+        // Preselects the contract button for new internships
         if(this.state.showContract && this.state.agreementType !== 'affiliation'){
             selection = <ContractSelected show={this.state.showContract} internshipId={this.props.internshipId}/>
         } else {

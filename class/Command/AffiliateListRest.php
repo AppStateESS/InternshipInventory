@@ -54,7 +54,8 @@ class AffiliateListRest {
                             intern_affiliation_agreement.end_date,
                             intern_affiliation_agreement.begin_date,
                             intern_affiliation_agreement.id,
-                            intern_affiliation_agreement.auto_renew
+                            intern_affiliation_agreement.auto_renew,
+                            intern_affiliation_agreement.terminated
                     FROM intern_affiliation_agreement
                     ORDER BY intern_affiliation_agreement.name ASC";
         }

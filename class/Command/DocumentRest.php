@@ -44,6 +44,7 @@ class DocumentRest {
 	}
 
 	public function post($contractDir, $otherDir){
+		// List of known types taken from filecabinet. Only these accepted, update list of accept more.
 		$known_documents = array('csv', 'doc', 'docx', 'odt', 'pdf', 'ppt', 'pptx', 'rtf',
     			'tar', 'tgz', 'txt', 'xls', 'xlsx', 'xml', 'zip', 'gz', 'rar', 'ods', 'odp');
 		$id = $_REQUEST['internship_id'];
@@ -81,8 +82,11 @@ class DocumentRest {
 		}
 
 		$size = $_FILES[$key]['size'];
-		if($size > 2000000){
-			$data['message'] = "Did not save. The file size was greater than 2MB";
+		// This is how filecabinet was getting the max file size, assuming it will always be in the format #M
+		$maxSize = ini_get('upload_max_filesize');
+		$sysSize = str_replace('M', '', $maxSize) * 1000000;
+		if($size > $sysSize){
+			$data['message'] = "Did not save. The file size was greater than " . $maxSize . ".";
 		}
 
 		if($data['message'] == null){

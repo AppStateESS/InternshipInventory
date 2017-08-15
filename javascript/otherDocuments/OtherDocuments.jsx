@@ -12,6 +12,7 @@ class DocumentInfo extends Component{
         this.deleteFile = this.deleteFile.bind(this);
     }
     componentDidMount(){
+        // Gets saved files if any
         $.ajax({
             url: 'index.php?module=intern&action=documentRest&type=other&internship_id=' + this.props.internshipId,
             type: 'GET',
@@ -23,6 +24,7 @@ class DocumentInfo extends Component{
     }
     addFiles(files){
         let currentfiles = [];
+        // Sends a seperate request for each file uploaded since there can be multiple at once
         $.each(files, function (key, value) {
             let formData = new FormData();
             formData.append(key, value);
@@ -53,7 +55,7 @@ class DocumentInfo extends Component{
         }.bind(this))
     }
     deleteFile(file) {
-        // Find key of file in currentFiles
+        // Find key of file in currentFiles to be used for splice
         let key;
         for(let i=0; i<this.state.currentFiles.length;i++){
             if(file.id === this.state.currentFiles[i]['id']){
@@ -96,7 +98,7 @@ class DocumentInfo extends Component{
                         </Dropzone>
                     </div>
                     <div>
-                        <h4>Added Files:</h4>
+                        <label>Added Files:</label>
                         <ul className="list-group">
                             {list}
                         </ul>
