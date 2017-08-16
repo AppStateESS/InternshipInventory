@@ -522,6 +522,18 @@ CREATE TABLE intern_affiliation_agreement(
   PRIMARY KEY(id)
 );
 
+CREATE TABLE intern_affiliation_documents(
+    id INT NOT NULL,
+    affiliation_id INT REFERENCES intern_affiliation_agreement(id),
+    name VARCHAR,
+    store_name VARCHAR,
+    path_name VARCHAR,
+    file_type VARCHAR,
+    primary key (id)
+);
+
+CREATE SEQUENCE intern_affiliation_documents_seq;
+
 CREATE TABLE intern_agreement_department(
   agreement_id int NOT NULL REFERENCES intern_affiliation_agreement(id),
   department_id int NOT NULL REFERENCES intern_department(id),

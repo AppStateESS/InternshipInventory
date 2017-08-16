@@ -108,7 +108,7 @@ class ContractSelected extends Component{
     }
     componentDidMount(){
         $.ajax({
-            url: 'index.php?module=intern&action=documentRest&type=contract&internship_id=' + this.props.internshipId,
+            url: 'index.php?module=intern&action=documentRest&type=contract&id=' + this.props.internshipId,
             type: 'GET',
             dataType: 'json',
             success: function (data) {
@@ -123,7 +123,7 @@ class ContractSelected extends Component{
             let formData = new FormData()
             formData.append(key, value);
             $.ajax({
-                url: 'index.php?module=intern&action=documentRest&type=contract&key='+key+'&internship_id=' + this.props.internshipId,
+                url: 'index.php?module=intern&action=documentRest&type=contract&key='+key+'&id=' + this.props.internshipId,
                 type: 'POST',
                 enctype: 'multipart/form-data',
                 data: formData,
@@ -139,7 +139,7 @@ class ContractSelected extends Component{
                         alert(stat.message)
                         return
                     }
-                    this.setState({currentFiles: currentfiles})
+                    this.setState({currentFiles: currentfiles});
                 }.bind(this),
                 error: function(xhr, status, err) {
                     alert("Contract failed to save.")
@@ -150,7 +150,7 @@ class ContractSelected extends Component{
     }
     deleteFile(file) {
         $.ajax({
-            url: 'index.php?module=intern&action=documentRest&type=contract&docId='+file.id+'&internship_id=' + this.props.internshipId,
+            url: 'index.php?module=intern&action=documentRest&type=contract&docId='+file.id+'&id=' + this.props.internshipId,
             method: 'DELETE',
             success: function (data) {
                 let files = this.state.currentFiles
@@ -169,7 +169,7 @@ class ContractSelected extends Component{
         // If there is a file uploaded it shows the file, else it shows dropzone so you can upload one
         if (this.state.currentFiles.length > 0) {
             list = this.state.currentFiles.map(function(f){
-                let url = "index.php?module=intern&action=documentRest&type=contract&docId="+f.id+"&internship_id="+this.props.internshipId;
+                let url = "index.php?module=intern&action=documentRest&type=contract&docId="+f.id+"&id="+this.props.internshipId;
                 return(<li className="list-group-item" key={f.id}><i className="fa fa-file"></i> <a href={url} >{f.name}</a> &nbsp;
                 <button type="button" className="close" onClick={this.deleteFile.bind(this, f)}><span aria-hidden="true"><i className='fa fa-trash-o'></i></span></button> </li>
             )}.bind(this));

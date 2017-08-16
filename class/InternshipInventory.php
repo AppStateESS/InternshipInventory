@@ -153,24 +153,6 @@ class InternshipInventory {
                 $ctrl = new Command\AffiliateStateRest();
                 $ctrl->execute();
                 break;
-            case 'uploadAffiliationAgreemenet':
-                $docManager = new AffiliationContractDocumentManager();
-                echo $docManager->edit();
-                exit();
-            case 'postAffiliationUpload':
-                $docManager = new AffiliationContractDocumentManager();
-                $docManager->postDocumentUpload();
-                break;
-            case 'delete_affiliation_contract':
-                AffiliationContractFactory::deleteByDocId($_REQUEST['doc_id']);
-                \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, 'Document deleted.');
-                \NQ::close();
-                \PHPWS_Core::goBack();
-                break;
-            case 'settingsRest':
-                $ctrl = new Command\SettingsRest();
-                $ctrl->execute();
-                break;
             case 'edit_states':
                 if (!\Current_User::allow('intern', 'edit_state')) {
                     disallow();

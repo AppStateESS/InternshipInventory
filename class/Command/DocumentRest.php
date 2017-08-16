@@ -16,18 +16,22 @@ class DocumentRest {
 
 		$otherDir = \PHPWS_Settings::get('filecabinet', 'base_doc_directory') . "otherDocuments/";
 		$contractDir = \PHPWS_Settings::get('filecabinet', 'base_doc_directory') . "contract/";
+		$affiliationDir = \PHPWS_Settings::get('filecabinet', 'base_doc_directory') . "affiliation/";
 
-		// Makes sure the folder of contract and otherDocuments are made
+		// Makes sure the folder of affiliation, contract, and otherDocuments are made
 		if(!file_exists($otherDir)){
 			mkdir($otherDir);
 		}
 		if(!file_exists($contractDir)){
 			mkdir($contractDir);
 		}
+		if(!file_exists($affiliationDir)){
+			mkdir($affiliationDir);
+		}
 
 		switch($_SERVER['REQUEST_METHOD']) {
             case 'POST':
-                $data = $this->post($contractDir, $otherDir);
+                $data = $this->post($contractDir, $otherDir, $affiliationDir);
 				echo (json_encode($data));
                 exit;
             case 'GET':
@@ -43,13 +47,14 @@ class DocumentRest {
 			}
 	}
 
-	public function post($contractDir, $otherDir){
-		// List of known types taken from filecabinet. Only these accepted, update list of accept more.
+	public function post($contractDir, $otherDir, $affiliationDir){
+		// List of known types taken from fileca$target_dir = $otherDir;binet. Only these accepted, update list of accept more.
 		$known_documents = array('csv', 'doc', 'docx', 'odt', 'pdf', 'ppt', 'pptx', 'rtf',
     			'tar', 'tgz', 'txt', 'xls', 'xlsx', 'xml', 'zip', 'gz', 'rar', 'ods', 'odp');
-		$id = $_REQUEST['internship_id'];
+		$id = $_REQUEST['id'];
 
-		// Name based on internship_id + users file name, ex. 71Document.txt
+		// Name based on internship_id + users file name, ex. 71Document.txt for intern contracts and otherDocuments
+		//Name based on affiliation_id + users file name for affiliation agreements uploaded
 		$key = $_REQUEST['key'];
 		$fileLongType = $_FILES[$key]['type'];
 		$name = $_FILES[$key]['name'];
@@ -58,6 +63,8 @@ class DocumentRest {
 		// See where the file is to be saved
 		if($type == 'other'){
 			$target_dir = $otherDir;
+		} else if($type == 'affiliation'){
+			$target_dir = $affiliationDir;
 		} else{
 			$target_dir = $contractDir;
 		}
@@ -106,59 +113,81 @@ class DocumentRest {
 		$db = Database::newDB();
 		$pdo = $db->getPDO();
 
-		$sql = "INSERT INTO intern_contract_documents (id, internship_id, name, store_name, path_name, type, file_type)
-				VALUES (nextval('intern_contract_documents_seq'), :internId, :name, :store, :pathN, :type, :fileT)";
+		if($type != 'affiliation'){
+			$sql = "INSERT INTO intern_contract_documents (id, internship_id, name, store_name, path_name, type, file_type)
+					VALUES (nextval('intern_contract_documents_seq'), :internId, :name, :store, :pathN, :type, :fileT)";
+			$sth = $pdo->prepare($sql);
+			$sth->execute(array('internId'=>$id, 'name'=>$name, 'store'=>$fileName, 'pathN'=>$target_file, 'type'=>$type, 'fileT'=>$fileLongType));
+		} else{
+			$sql = "INSERT INTO intern_affiliation_documents (id, affiliation_id, name, store_name, path_name, file_type)
+					VALUES (nextval('intern_affiliation_documents_seq'), :affilId, :name, :store, :pathN, :fileT)";
 
-		$sth = $pdo->prepare($sql);
-		$sth->execute(array('internId'=>$id, 'name'=>$name, 'store'=>$fileName, 'pathN'=>$target_file, 'type'=>$type, 'fileT'=>$fileLongType));
+			$sth = $pdo->prepare($sql);
+			$sth->execute(array('affilId'=>$id, 'name'=>$name, 'store'=>$fileName, 'pathN'=>$target_file, 'fileT'=>$fileLongType));
+		}
 	}
 
 	public function deleteFile(){
-		$id = $_REQUEST['internship_id'];
+		$id = $_REQUEST['id'];
 		$docId = $_REQUEST['docId'];
+		$type = $_REQUEST['type'];
 
 		// From folder
-		$target_file = $this->getPath($docId);
+		$target_file = $this->getPath($docId, $type);
 		unlink($target_file);
 
 		// From database
 		$db = Database::newDB();
 		$pdo = $db->getPDO();
-		$sql = "DELETE FROM intern_contract_documents
-				WHERE id=:id";
+		if($type == 'affiliation'){
+			$sql = "DELETE FROM intern_affiliation_documents
+					WHERE id=:id";
+		} else{
+			$sql = "DELETE FROM intern_contract_documents
+					WHERE id=:id";
+		}
 
 		$sth = $pdo->prepare($sql);
 		$sth->execute(array('id'=>$docId));
 	}
 
 	public function get(){
-		$id = $_REQUEST['internship_id'];
+		$id = $_REQUEST['id'];
 		$type = $_REQUEST['type'];
 		// If the document's id is set then we're downloading the file
 		if(isset($_REQUEST['docId'])){
 			$docId = $_REQUEST['docId'];
-			$this->getDownLoad($docId);
+			$this->getDownLoad($docId, $type);
 			return;
 		}
 		// If type is contract get the contract or it get all the otherDocuments
 		$db = Database::newDB();
 		$pdo = $db->getPDO();
 
-		$sql = "SELECT id, name
-				FROM intern_contract_documents
-				WHERE internship_id=:id AND type=:type
-				ORDER BY name ASC";
+		if($type != 'affiliation'){
+			$sql = "SELECT id, name
+					FROM intern_contract_documents
+					WHERE internship_id=:id AND type=:type
+					ORDER BY name ASC";
+			$sth = $pdo->prepare($sql);
+			$sth->execute(array('id'=>$id, 'type'=>$type));
+		} else{
+			$sql = "SELECT id, name
+					FROM intern_affiliation_documents
+					WHERE affiliation_id=:id
+					ORDER BY name ASC";
+			$sth = $pdo->prepare($sql);
+			$sth->execute(array('id'=>$id));
+		}
 
-		$sth = $pdo->prepare($sql);
-		$sth->execute(array('id'=>$id, 'type'=>$type));
 		$result = $sth->fetchAll(\PDO::FETCH_ASSOC);
 
 		return $result;
 	}
 
 	// Makes the call to download the selected document
-	public function getDownLoad($docId){
-		$target_file = $this->getPath($docId);
+	public function getDownLoad($docId, $type){
+		$target_file = $this->getPath($docId, $type);
 		if(!file_exists($target_file)){
 			\NQ::simple('intern', \Intern\UI\NotifyUI::WARNING, 'The file could not be found to download.');
 			throw new \Intern\Exception\WebServiceException('The file could not be found to download.');
@@ -166,9 +195,15 @@ class DocumentRest {
 		$db = Database::newDB();
 		$pdo = $db->getPDO();
 
-		$sql = "SELECT file_type
-				FROM intern_contract_documents
-				WHERE id=:id";
+		if($type != 'affiliation'){
+			$sql = "SELECT file_type
+					FROM intern_contract_documents
+					WHERE id=:id";
+		} else {
+			$sql = "SELECT file_type
+					FROM intern_affiliation_documents
+					WHERE id=:id";
+		}
 
 		$sth = $pdo->prepare($sql);
 		$sth->execute(array('id'=>$docId));
@@ -189,13 +224,18 @@ class DocumentRest {
 	}
 
 	// Gets the location of the file in the folders from the database
-	public function getPath($docId){
+	public function getPath($docId, $type){
 		$db = Database::newDB();
 		$pdo = $db->getPDO();
-		$sql = "SELECT path_name
-				FROM intern_contract_documents
-				WHERE id=:id";
-
+		if($type != 'affiliation'){
+			$sql = "SELECT path_name
+					FROM intern_contract_documents
+					WHERE id=:id";
+		} else{
+			$sql = "SELECT path_name
+					FROM intern_affiliation_documents
+					WHERE id=:id";
+		}
 		$sth = $pdo->prepare($sql);
 		$sth->execute(array('id'=>$docId));
 		$result = $sth->fetchAll(\PDO::FETCH_ASSOC);
@@ -206,12 +246,21 @@ class DocumentRest {
 	public function getIdByName($name, $type){
 		$db = Database::newDB();
 		$pdo = $db->getPDO();
-		$sql = "SELECT id
-				FROM intern_contract_documents
-				WHERE store_name=:name AND type=:type";
+		if($type != 'affiliation'){
+			$sql = "SELECT id
+					FROM intern_contract_documents
+					WHERE store_name=:name AND type=:type";
 
-		$sth = $pdo->prepare($sql);
-		$sth->execute(array('name'=>$name, 'type'=>$type));
+				$sth = $pdo->prepare($sql);
+			$sth->execute(array('name'=>$name, 'type'=>$type));
+		} else{
+			$sql = "SELECT id
+					FROM intern_affiliation_documents
+					WHERE store_name=:name";
+
+			$sth = $pdo->prepare($sql);
+			$sth->execute(array('name'=>$name));
+		}
 		$result = $sth->fetchAll(\PDO::FETCH_ASSOC);
 		return $result[0]['id'];
 	}
