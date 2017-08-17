@@ -66,12 +66,12 @@
     <div class="col-md-6 col-md-offset-1">
         <div class="row">
             <h3>Contracts</h3>
-            <!-- React Affiliation -->
             <div class="col-md-9">
                 <div id="affiliation-upload"></div>
             </div>
         </div>
     </div>
+</div>
 
 <div class="row">
     <div class="col-md-12">
@@ -108,4 +108,4 @@
 <script type="text/javascript" src="{department_bundle}"></script>
 <script type="text/javascript" src="{location_bundle}"></script>
 <script type="text/javascript" src="{terminate_bundle}"></script>
-<script type="text/javascript" src="{upload_bundle}"></script>
+<script type="text/javascript" src="{uploadAffil_bundle}"></script>

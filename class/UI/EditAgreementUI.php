@@ -47,7 +47,7 @@ class EditAgreementUI implements UI
         $tpl['department_bundle'] = AssetResolver::resolveJsPath('assets.json', 'affiliationDepartments');
         $tpl['location_bundle'] = AssetResolver::resolveJsPath('assets.json', 'affiliationLocation');
         $tpl['terminate_bundle'] = AssetResolver::resolveJsPath('assets.json', 'affiliationTerminate');
-        $tpl['upload_bundle'] = AssetResolver::resolveJsPath('assets.json', 'affiliationUpload');
+        $tpl['uploadAffil_bundle'] = AssetResolver::resolveJsPath('assets.json', 'affiliationUpload');
 
         /* Form for adding new grad program */
         $form = new \PHPWS_Form('edit_affil');

@@ -160,7 +160,7 @@ class DocumentRest {
 			$this->getDownLoad($docId, $type);
 			return;
 		}
-		// If type is contract get the contract or it get all the otherDocuments
+		// If type is contract get the contract or it get all the otherDocuments or affiliations
 		$db = Database::newDB();
 		$pdo = $db->getPDO();
 
