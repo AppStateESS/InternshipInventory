@@ -149,7 +149,7 @@ var AffiliateList = React.createClass({
             name = this.state.searchName;
         }
         //filter list method seperate, use parameter not state for mainData
-
+        this.searchListByName(mainData, name);
         this.updateDisplayData(name, this.state.sortBy);
 
     },
@@ -271,14 +271,14 @@ var AffiliateList = React.createClass({
         var unchanged = this.state.mainData;
         var filtered = [];
 
-        if (searchName !== null) {
+        if (this.state.searchName !== null) {
             filtered = this.searchListByName(unchanged, searchName);
         }
         else {
             filtered = unchanged;
         }
 
-        if (sort !== null) {
+        if (this.state.sortBy !== null) {
             filtered = this.sortBy(filtered, sort);
         }
         else {
