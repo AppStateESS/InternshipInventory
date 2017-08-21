@@ -86,7 +86,7 @@ class TestWebServiceDataProvider extends WebServiceDataProvider {
         $major1->program_admit = '';
 
         $major2 = new \stdClass();
-        $major2->major_code = '224A';
+        $major2->major_code = '219A';
         $major2->major_desc = 'Computer Science';
         $major2->program_admit = '';
 

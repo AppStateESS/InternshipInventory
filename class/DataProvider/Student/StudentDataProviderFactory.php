@@ -2,6 +2,8 @@
 
 namespace Intern\DataProvider\Student;
 
+use Intern\InternSettings;
+
 /**
  * StudentDataProviderFactory
  *
@@ -18,12 +20,21 @@ class StudentDataProviderFactory {
      */
     public static function getProvider()
     {
+        // First, check if the test flag override is on
         if(STUDENT_DATA_TEST){
             return new TestWebServiceDataProvider(\Current_User::getUsername());
         }
 
-        // Other data providers could be used here..
+        $provider = InternSettings::getInstance()->getStudentDataSource();
 
-        return new WebServiceDataProvider(\Current_User::getUsername());
+        switch($provider){
+            case 'localDataProvider':
+                return new LocalDbStudentDataProvider();
+            case 'webServiceDataProvider':
+                return new WebServiceDataProvider(\Current_User::getUsername());
+        }
+
+        // If we're still here, throw an exception
+        throw new \InvalidArgumentException('No configuration for student data provider.');
     }
 }

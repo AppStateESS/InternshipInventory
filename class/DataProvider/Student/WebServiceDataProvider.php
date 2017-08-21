@@ -276,6 +276,7 @@ class WebServiceDataProvider extends StudentDataProvider {
         $student->setCreditHours($data->creditHours);
 
         // Majors - Can be an array of objects, or just a single object
+        // TODO: Fix hard-coded 'U' level passed to AcademicMajor
         if(is_array($data->majors)) {
             foreach($data->majors as $major){
                 $student->addMajor(new AcademicMajor($major->major_code, $major->major_desc, 'U'));
