@@ -913,8 +913,9 @@ CREATE TABLE intern_local_student_data (
     level               character varying,
     campus              character varying,
     gpa                 double precision,
+    credit_hours        integer default 0,
     major_code          character varying,
-    major_desciprtion   character varying,
+    major_description   character varying,
     grad_date           character varying,
 
     phone               character varying,
