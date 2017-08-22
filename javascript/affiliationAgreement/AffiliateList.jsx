@@ -140,29 +140,29 @@ var AffiliateList = React.createClass({
 
         var name = null;
 
-        try {
             // Saves the name that the user is looking for.
-            name = e.target.value.toLowerCase();
-            this.setState({searchName: name});
-        }
-        catch (err) {
-            name = this.state.searchName;
-        }
+        name = e.target.value.toLowerCase();
+        this.setState({searchName: name});
+
+        //data = this.state.mainData;
         //filter list method seperate, use parameter not state for mainData
-        this.searchListByName(mainData, name);
+        //var changedData = this.searchListByName(this.state.mainData, name);
         this.updateDisplayData(name, this.state.sortBy);
 
     },
     //Method for taking an array and searching it by name, returns array.
-    searchListByName: function(mainData, name) {
+    searchListByName: function(data, nameToSearch) {
       var filtered = [];
 
       // Looks for the name by filtering the mainData
-      for (var i = 0; i < this.state.mainData.length; i++) {
-          var item = this.state.mainData[i];
+      //for (var i = 0; i < this.state.mainData.length; i++) {
+      for (var i = 0; i < data.length; i++) {
+
+          //var item = this.state.mainData[i];
+          var item = data[i];
 
           // Make the item, name lowercase for easier searching
-          if (item.name.toLowerCase().includes(name)) {
+          if (item.name.toLowerCase().includes(nameToSearch)) {
               filtered.push(item);
           }
       }
@@ -204,7 +204,7 @@ var AffiliateList = React.createClass({
     // Returns sorted array to be used in createList function
     onSortByChange: function(e) {
         var sort = null;
-        var sortedFinal = [];
+        //var sortedFinal = [];
 
         try {
             //Saves sorting option that was clicked.
@@ -215,18 +215,18 @@ var AffiliateList = React.createClass({
             sort = this.state.sortBy;
         }
 
-        sortedFinal = this.sortBy(this.state.mainData, sort);
+        // **help**
+        //sortedFinal = this.sortBy(this.state.mainData, sort);
         this.updateDisplayData(this.state.searchName, sort);
 
     },
     //Method for storing the selected sort order and setting sortBy state.
     sortBy: function(unsorted, typeOfSort) {
       var sorted = [];
-      //define unsorted?
 
       // Different logic for different types of sorts,
       // all utilizing sort function.
-      switch(sort) {
+      switch(typeOfSort) {
           case 'sortByAZ':
 
               sorted = unsorted.sort(function (a, b) {
@@ -267,18 +267,21 @@ var AffiliateList = React.createClass({
     },
     // Organizes the order of the sort/filter functions to update the data displayed.
     // searchName and sort are both states.
-    updateDisplayData: function(searchName, sort) {
-        var unchanged = this.state.mainData;
+    updateDisplayData: function(typedName, sort) {
+        // **help** where to get data from?
+        //var unchanged = this.state.mainData;
+        //sort = this.state.sortBy;
         var filtered = [];
-
-        if (this.state.searchName !== null) {
-            filtered = this.searchListByName(unchanged, searchName);
+        //typedName = this.state.searchName;
+        //if (this.state.searchName !== null) {
+        if (typedName !== null) {
+            filtered = this.searchListByName(this.state.mainData, typedName);
         }
         else {
-            filtered = unchanged;
+            filtered = this.state.mainData;
         }
 
-        if (this.state.sortBy !== null) {
+        if (sort !== null) {
             filtered = this.sortBy(filtered, sort);
         }
         else {
