@@ -8,9 +8,17 @@ import classNames from 'classnames';
  *********/
 class TermBlock extends React.Component {
     constructor(props) {
-      super(props);
+        super(props);
 
-      this.state = {terms: null, hasError: false, selectedTerm: null, dataError: null, dataLoading: true};
+        this.state = {
+            terms: null,
+            hasError: false,
+            selectedTerm: null,
+            dataError: null,
+            dataLoading: true
+        };
+
+        this.handleChange = this.handleChange.bind(this);
     }
     componentWillMount() {
         $.ajax({

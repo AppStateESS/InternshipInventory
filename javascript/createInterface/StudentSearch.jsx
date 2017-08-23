@@ -128,6 +128,9 @@ class StudentSearch extends React.Component {
       super(props);
 
       this.state = {student: null, studentFound: false, hasError: false};
+
+      this.resetPreview = this.resetPreview.bind(this);
+      this.doSearch = this.doSearch.bind(this);
     }
     // Performs a search and handles the response
     doSearch(searchString) {

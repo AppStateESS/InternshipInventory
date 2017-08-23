@@ -93,9 +93,11 @@ class ErrorMessagesBlock extends React.Component {
  *********************************/
 class CreateInternshipInterface extends React.Component {
     constructor(props){
-      super(props);
+        super(props);
 
-      this.state = {submitted: false, errorMessages: null};
+        this.state = {submitted: false, errorMessages: null};
+
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
     // Top-level onSubmit handler for the creation form
     handleSubmit(e) {
@@ -159,19 +161,19 @@ class CreateInternshipInterface extends React.Component {
         // Check the location's state/internal drop down's value
         if(form.elements.location.value === 'domestic'){
             if(form.elements.state.value === '-1'){
-                thisComponent.refs.locationBlock.refs.state.setError(true);
+                thisComponent.refs.locationBlock.stateDropDown.setError(true);
                 errors.push('State');
                 valid = false;
             }else{
-                thisComponent.refs.locationBlock.refs.state.setError(false);
+                thisComponent.refs.locationBlock.stateDropDown.setError(false);
             }
         } else if(form.elements.location.value === 'international') {
             if(form.elements.country.value === '-1') {
-                thisComponent.refs.locationBlock.refs.country.setError(true);
+                thisComponent.refs.locationBlock.countryDropDown.setError(true);
                 errors.push('Country');
                 valid = false;
             }else{
-                thisComponent.refs.locationBlock.refs.country.setError(false);
+                thisComponent.refs.locationBlock.countryDropDown.setError(false);
             }
         }
 

@@ -11,15 +11,18 @@ import StateDropDown from './StateDropDown.jsx';
  *************/
 class LocationBlock extends React.Component {
     constructor(props) {
-      super(props);
+        super(props);
 
-      this.state =  {
+        this.state =  {
             domestic: null,
             international: null,
             availableStates: null,
             availableCountries: null,
             hasError: false
-            };
+        };
+
+        this.domestic = this.domestic.bind(this);
+        this.international = this.international.bind(this);
     }
     componentDidMount() {
         // Fetch list of states
@@ -66,9 +69,9 @@ class LocationBlock extends React.Component {
         if(this.state.domestic === null) {
             dropdown = '';
         } else if (this.state.domestic) {
-            dropdown = <StateDropDown key="states" ref="state" states={this.state.availableStates}/>;
+            dropdown = <StateDropDown key="states" ref={(element) => {this.stateDropDown = element}} states={this.state.availableStates}/>;
         } else {
-            dropdown = <InternationalDropDown key="countries" ref="country" countries={this.state.availableCountries}/>;
+            dropdown = <InternationalDropDown key="countries" ref={(element) => {this.countryDropDown = element}} countries={this.state.availableCountries}/>;
         }
         return (
             <div>
