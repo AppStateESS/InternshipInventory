@@ -19,11 +19,12 @@ class DeanApprove extends WorkflowTransition {
 
     public function checkRequiredFields(Internship $i){
         // Course number and subject are required so we can check against the expected insurance list in doNotification()
-        if($i->getCourseNumber() === null || $i->getCourseNumber() === ''){
+        // NB: Course subject and number are not required for secondary parts of multi-part internships
+        if(!$i->isSecondaryPart() && $i->getCourseNumber() === null || $i->getCourseNumber() === ''){
             throw new MissingDataException("Please enter a course number.");
         }
 
-        if($i->getSubject() === null){
+        if(!$i->isSecondaryPart() && $i->getSubject() === null){
             throw new MissingDataException("Please select a course subject.");
         }
     }
@@ -47,7 +48,8 @@ class DeanApprove extends WorkflowTransition {
 
         // If the subject and course number are not registered with InternshipInventory,
         // send an email to the appropriate receiver.
-        if (!ExpectedCourseFactory::isExpectedCourse($i->getSubject(), $i->getCourseNumber())) {
+        // Does not apply to secondary parts of multi-part internships
+        if (!$i->isSecondaryPart() && !ExpectedCourseFactory::isExpectedCourse($i->getSubject(), $i->getCourseNumber())) {
             $email = new UnusualCourseEmail(InternSettings::getInstance(), $i);
             $email->send();
         }
