@@ -9,17 +9,19 @@ import StateDropDown from './StateDropDown.jsx';
 /*************
  * Locations *
  *************/
-var LocationBlock = React.createClass({
-    getInitialState: function() {
-        return ({
+class LocationBlock extends React.Component {
+    constructor(props) {
+      super(props);
+
+      this.state =  {
             domestic: null,
             international: null,
             availableStates: null,
             availableCountries: null,
             hasError: false
-            });
-    },
-    componentDidMount: function() {
+            };
+    }
+    componentDidMount() {
         // Fetch list of states
         $.ajax({
             url: 'index.php?module=intern&action=GetStates',
@@ -44,17 +46,17 @@ var LocationBlock = React.createClass({
                 console.error(status, err.toString());
             }
         });
-    },
-    domestic: function() {
+    }
+    domestic() {
         this.setState({domestic: true, international: false});
-    },
-    international: function() {
+    }
+    international() {
         this.setState({domestic: false, international: true});
-    },
-    setError: function(status){
+    }
+    setError(status){
         this.setState({hasError: status});
-    },
-    render: function () {
+    }
+    render() {
         var fgClasses = classNames({
                         'form-group': true,
                         'has-error': this.state.hasError
@@ -92,6 +94,6 @@ var LocationBlock = React.createClass({
             </div>
         );
     }
-});
+}
 
 export default LocationBlock;
