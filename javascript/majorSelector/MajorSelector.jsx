@@ -5,17 +5,22 @@ import classNames from 'classnames';
 
 import MajorsDropDown from './MajorsDropDown.jsx';
 
-var MajorSelector = React.createClass({
-    getInitialState: function() {
-        return ({
+class MajorSelector extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
             undergrad: false,
             graduate: false,
             availableUndergradMajors: false,
             availableGradMajors: false,
             hasError: false
-        });
-    },
-    componentDidMount: function() {
+        };
+
+        this.undergrad = this.undergrad.bind(this);
+        this.graduate = this.graduate.bind(this);
+        this.anyLevel = this.anyLevel.bind(this);
+    }
+    componentDidMount() {
         // Fetch list of available undergrad majors
         $.ajax({
             url: 'index.php?module=intern&action=GetUndergradMajors',
@@ -39,17 +44,17 @@ var MajorSelector = React.createClass({
                 console.error(status, err.toString());
             }
         });
-    },
-    undergrad: function() {
+    }
+    undergrad() {
         this.setState({undergrad: true, graduate: false});
-    },
-    graduate: function() {
+    }
+    graduate() {
         this.setState({undergrad: false, graduate: true});
-    },
-    anyLevel: function() {
+    }
+    anyLevel() {
         this.setState({undergrad: false, graduate: false});
-    },
-    render: function() {
+    }
+    render() {
         var majorsDropdown;
 
         if(!this.state.undergrad && !this.state.graduate) {
@@ -101,7 +106,7 @@ var MajorSelector = React.createClass({
             </div>
         );
     }
-});
+}
 
 
 ReactDOM.render(

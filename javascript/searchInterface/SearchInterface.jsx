@@ -8,17 +8,22 @@ import StateDropDown from '../createInterface/StateDropDown.jsx';
 
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
-var LocationSelector = React.createClass({
-    getInitialState: function() {
-        return ({
+class LocationSelector extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
             domestic: false,
             international: false,
             availableStates: null,
             availableCountries: null,
             hasError: false
-            });
-    },
-    componentDidMount: function() {
+            };
+
+        this.domestic = this.domestic.bind(this);
+        this.international = this.international.bind(this);
+        this.anyLocation = this.anyLocation.bind(this);
+    }
+    componentDidMount() {
         // Fetch list of available states
         $.ajax({
             url: 'index.php?module=intern&action=GetStates',
@@ -42,17 +47,17 @@ var LocationSelector = React.createClass({
                 console.error(status, err.toString());
             }
         });
-    },
-    domestic: function() {
+    }
+    domestic() {
         this.setState({domestic: true, international: false});
-    },
-    international: function() {
+    }
+    international() {
         this.setState({domestic: false, international: true});
-    },
-    anyLocation: function() {
+    }
+    anyLocation() {
         this.setState({domestic: false, international: false});
-    },
-    render: function () {
+    }
+    render() {
 
         var dropdown;
         if(!this.state.domestic && !this.state.international) {
@@ -106,7 +111,7 @@ var LocationSelector = React.createClass({
             </div>
         );
     }
-});
+}
 
 ReactDOM.render(
     <LocationSelector />, document.getElementById('LocationSelector')
