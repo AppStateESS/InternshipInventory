@@ -5,14 +5,16 @@ import classNames from 'classnames';
 /***********************
  * Department Dropdown *
  ***********************/
-var Department = React.createClass({
-    getInitialState: function() {
-        return {departments: null, hasError: false};
-    },
-    setError: function(status){
+class Department extends React.Component {
+    constructor(props) {
+      super(props);
+
+      this.state = {departments: null, hasError: false};
+    }
+    setError(status){
         this.setState({hasError: status});
-    },
-    componentWillMount: function() {
+    }
+    componentWillMount() {
         $.ajax({
             url: 'index.php?module=intern&action=GetDepartments',
             dataType: 'json',
@@ -23,8 +25,8 @@ var Department = React.createClass({
                 console.error(status, err.toString());
             }
         });
-    },
-    render: function() {
+    }
+    render() {
         var departments = this.state.departments;
         if(departments === null) {
             return (<div></div>);
@@ -50,6 +52,6 @@ var Department = React.createClass({
             </div>
         );
     }
-});
+}
 
 export default Department;

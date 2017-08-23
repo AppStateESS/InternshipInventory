@@ -1,14 +1,16 @@
 import React from 'react';
 import classNames from 'classnames';
 
-var InternationalDropDown = React.createClass({
-    getInitialState: function(){
-        return ({hasError: false});
-    },
-    setError: function(status){
+class InternationalDropDown extends React.Component {
+    constructor(props){
+      super(props);
+
+      this.state = {hasError: false};
+    }
+    setError(status){
         this.setState({hasError: status});
-    },
-    render: function() {
+    }
+    render() {
         var fgClasses = classNames({
                         'form-group': true,
                         'has-error': this.state.hasError
@@ -50,6 +52,6 @@ var InternationalDropDown = React.createClass({
 
         return output;
     }
-});
+}
 
 export default InternationalDropDown;
