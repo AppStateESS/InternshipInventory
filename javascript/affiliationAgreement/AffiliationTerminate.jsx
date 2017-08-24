@@ -4,6 +4,11 @@ import $ from 'jquery';
 
 
 class TerminateButton extends React.Component {
+    constructor(props){
+        super(props);
+
+        this.clicked = this.clicked.bind(this);
+    }
     clicked() {
         this.props.clicked();
     }
@@ -37,6 +42,9 @@ class TerminateBox extends React.Component {
     constructor(props) {
       super(props);
       this.state = {agreement: null};
+
+      this.getData = this.getData.bind(this);
+      this.clicked = this.clicked.bind(this);
     }
     componentWillMount(){
         this.getData();
