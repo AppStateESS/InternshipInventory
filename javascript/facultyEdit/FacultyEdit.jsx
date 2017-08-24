@@ -51,7 +51,12 @@ class BannerSearch extends React.Component {
 /**
  * Form for editing faculty details
  */
-class FacultyForm extends React.CreateComponent {
+class FacultyForm extends React.Component {
+    constructor(props){
+        super(props);
+
+        this.handleSave = this.handleSave.bind(this);
+    }
     // Event handler for Save button. Captures the data and passes
     // it as an object to the parent's handleSave() method.
     handleSave() {
@@ -145,17 +150,24 @@ class FacultyForm extends React.CreateComponent {
 
 // Modal Pop-up for adding/editing faculty members
 // !This uses ReactBoostrap!
-class FacultyModal extends React.CreateComponent {
+class FacultyModal extends React.Component {
 	constructor(props) {
         super(props);
 
-		this.state = {
+		this.state = this.getInitialState();
+
+        this.handleSave = this.handleSave.bind(this);
+        this.clearStateAndHide = this.clearStateAndHide.bind(this);
+        this.handleSearch = this.handleSearch.bind(this);
+	}
+    getInitialState(){
+        return {
 			errorWarning: '',
 			showModalNotification: false,
 			showModalForm: false,
 			showModalSearch: true,
 		};
-	}
+    }
 	componentWillMount() {
 		// Used for editing a user (see edit handler).
 		// Disables/enables modal form and then grabs and displays the data.
@@ -271,7 +283,7 @@ class FacultyModal extends React.CreateComponent {
 
 
 
-class FacultyTableRow extends React.CreateComponent {
+class FacultyTableRow extends React.Component {
     constructor(props){
         super(props);
         this.state = {
@@ -285,6 +297,7 @@ class FacultyTableRow extends React.CreateComponent {
         this.handleRemove = this.handleRemove.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
         this.hideModal = this.hideModal.bind(this);
+        this.getFacultyDetails = this.getFacultyDetails.bind(this);
     }
     getFacultyDetails(idNum){
 		// Grabs the facuitly data from restFacultyById and sets the
@@ -342,10 +355,7 @@ class FacultyTableRow extends React.CreateComponent {
 }
 
 
-
-
-
-class DepartmentList extends React.CreateComponent {
+class DepartmentList extends React.Component {
 	render() {
 		// Creates each department in the dropdown
 	    return (
@@ -355,7 +365,7 @@ class DepartmentList extends React.CreateComponent {
 }
 
 
-class FacultyTable extends React.CreateComponent {
+class FacultyTable extends React.Component {
 	render() {
 
         var faculty = null;
@@ -411,7 +421,7 @@ class FacultyTable extends React.CreateComponent {
 
 
 
-class EditFaculty extends React.CreateComponent {
+class EditFaculty extends React.Component {
 	constructor(props) {
         super(props);
 		this.state = {
@@ -430,6 +440,8 @@ class EditFaculty extends React.CreateComponent {
         this.handleDrop = this.handleDrop.bind(this);
         this.showModal = this.showModal.bind(this);
         this.hideModal = this.hideModal.bind(this);
+        this.getFacultyDetails = this.getFacultyDetails.bind(this);
+        this.getDeptFaculty = this.getDeptFaculty.bind(this);
 	}
 	componentWillMount(){
 		// Setting the department data in the state
