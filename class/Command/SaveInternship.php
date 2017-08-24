@@ -383,6 +383,10 @@ class SaveInternship {
             throw $e;
         }
 
+        //Commit to save changes in case of workflow error
+        \PHPWS_DB::commit();
+        \PHPWS_DB::begin();
+
         /***************************
          * State/Workflow Handling *
         ***************************/
