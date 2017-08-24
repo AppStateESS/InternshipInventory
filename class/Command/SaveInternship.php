@@ -147,7 +147,7 @@ class SaveInternship {
         $i->avg_hours_week = $avg_hours_week ? $avg_hours_week : null;
         $i->paid = $_REQUEST['payment'] == 'paid';
         $i->stipend = isset($_REQUEST['stipend']) && $i->paid;
-        $i->pay_rate = $_REQUEST['pay_rate'];
+        $i->pay_rate = self::trimField($_REQUEST['pay_rate']);
 
         if (\Current_User::isDeity()) {
             $i->term = $_REQUEST['term'];
@@ -160,12 +160,12 @@ class SaveInternship {
 
         if($i->isInternational()){
             // Set province
-            $i->loc_province = $_POST['loc_province'];
+            $i->loc_province = self::trimField($_POST['loc_province']);
         }
 
         // Address, city, zip are always set (no matter domestic or international)
-        $i->loc_address = strip_tags($_POST['loc_address']);
-        $i->loc_city = strip_tags($_POST['loc_city']);
+        $i->loc_address = self::trimField(strip_tags($_POST['loc_address']));
+        $i->loc_city = self::trimField(strip_tags($_POST['loc_city']));
         $i->loc_zip = strip_tags($_POST['loc_zip']);
 
         // Save Country if international
@@ -185,9 +185,9 @@ class SaveInternship {
         }
 
         // Course info
-        $i->course_no = !isset($_POST['course_no']) ? null : strip_tags($_POST['course_no']);
-        $i->course_sect = !isset($_POST['course_sect']) ? null : strip_tags($_POST['course_sect']);
-        $i->course_title = !isset($_POST['course_title']) ? null : strip_tags($_POST['course_title']);
+        $i->course_no = !isset($_POST['course_no']) ? null : self::trimField(strip_tags($_POST['course_no']));
+        $i->course_sect = !isset($_POST['course_sect']) ? null : self::trimField(strip_tags($_POST['course_sect']));
+        $i->course_title = !isset($_POST['course_title']) ? null : self::trimField(strip_tags($_POST['course_title']));
 
         // Multipart course
         if(isset($_POST['multipart'])){
@@ -212,19 +212,19 @@ class SaveInternship {
         }
 
         // Student Information
-        $i->first_name = $_REQUEST['student_first_name'];
-        $i->middle_name = $_REQUEST['student_middle_name'];
-        $i->last_name = $_REQUEST['student_last_name'];
+        $i->first_name = self::trimField($_REQUEST['student_first_name']);
+        $i->middle_name = self::trimField($_REQUEST['student_middle_name']);
+        $i->last_name = self::trimField($_REQUEST['student_last_name']);
 
-        $i->setFirstNameMetaphone($_REQUEST['student_first_name']);
-        $i->setMiddleNameMetaphone($_REQUEST['student_middle_name']);
-        $i->setLastNameMetaphone($_REQUEST['student_last_name']);
+        $i->setFirstNameMetaphone(self::trimField($_REQUEST['student_first_name']));
+        $i->setMiddleNameMetaphone(self::trimField($_REQUEST['student_middle_name']));
+        $i->setLastNameMetaphone(self::trimField($_REQUEST['student_last_name']));
 
-        $i->phone = $_REQUEST['student_phone'];
-        $i->email = $_REQUEST['student_email'];
+        $i->phone = self::trimField($_REQUEST['student_phone']);
+        $i->email = self::trimField($_REQUEST['student_email']);
 
-        $i->student_address = $_REQUEST['student_address'];
-        $i->student_city = $_REQUEST['student_city'];
+        $i->student_address = self::trimField($_REQUEST['student_address']);
+        $i->student_city = self::trimField($_REQUEST['student_city']);
         if($_REQUEST['student_state'] != '-1'){
             $i->student_state = $_REQUEST['student_state'];
         }else{
@@ -344,33 +344,33 @@ class SaveInternship {
         }
 
         // Agency Info
-        $agency->name = $_REQUEST['agency_name'];
-        $agency->address = $_REQUEST['agency_address'];
-        $agency->city = $_REQUEST['agency_city'];
+        $agency->name = self::trimField($_REQUEST['agency_name']);
+        $agency->address = self::trimField($_REQUEST['agency_address']);
+        $agency->city = self::trimField($_REQUEST['agency_city']);
         $agency->zip = $_REQUEST['agency_zip'];
-        $agency->phone = $_REQUEST['agency_phone'];
+        $agency->phone = self::trimField($_REQUEST['agency_phone']);
 
         if($i->isDomestic()){
             $agency->state = $_REQUEST['agency_state'] == '-1' ? null : $_REQUEST['agency_state'];
         } else {
-            $agency->province = $_REQUEST['agency_province'];
+            $agency->province = self::trimField($_REQUEST['agency_province']);
             $agency->country = $_REQUEST['agency_country']== '-1' ? null : $_REQUEST['agency_country'];
         }
 
         // Agency Supervisor Info
-        $agency->supervisor_first_name = $_REQUEST['agency_sup_first_name'];
-        $agency->supervisor_last_name = $_REQUEST['agency_sup_last_name'];
-        $agency->supervisor_title = $_REQUEST['agency_sup_title'];
-        $agency->supervisor_phone = $_REQUEST['agency_sup_phone'];
-        $agency->supervisor_email = $_REQUEST['agency_sup_email'];
-        $agency->supervisor_fax = $_REQUEST['agency_sup_fax'];
-        $agency->supervisor_address = $_REQUEST['agency_sup_address'];
-        $agency->supervisor_city = $_REQUEST['agency_sup_city'];
+        $agency->supervisor_first_name = self::trimField($_REQUEST['agency_sup_first_name']);
+        $agency->supervisor_last_name = self::trimField($_REQUEST['agency_sup_last_name']);
+        $agency->supervisor_title = self::trimField($_REQUEST['agency_sup_title']);
+        $agency->supervisor_phone = self::trimField($_REQUEST['agency_sup_phone']);
+        $agency->supervisor_email = self::trimField($_REQUEST['agency_sup_email']);
+        $agency->supervisor_fax = self::trimField($_REQUEST['agency_sup_fax']);
+        $agency->supervisor_address = self::trimField($_REQUEST['agency_sup_address']);
+        $agency->supervisor_city = self::trimField($_REQUEST['agency_sup_city']);
         $agency->supervisor_zip = $_REQUEST['agency_sup_zip'];
         if($i->isDomestic()){
             $agency->supervisor_state = $_REQUEST['agency_sup_state'] == '-1' ? null : $_REQUEST['agency_sup_state'];
         } else {
-            $agency->supervisor_province = $_REQUEST['agency_sup_province'];
+            $agency->supervisor_province = self::trimField($_REQUEST['agency_sup_province']);
             $agency->supervisor_country = $_REQUEST['agency_sup_country'] == '-1' ? null : $_REQUEST['agency_sup_country'];
         }
         $agency->address_same_flag = isset($_REQUEST['copy_address']) ? 't' : 'f';
@@ -461,5 +461,17 @@ class SaveInternship {
         }
 
         return $vals;
+    }
+
+    /**
+    *  Trim fields for all user input text fields
+    */
+    private static function trimField(string $info)
+    {
+      //trims whitespaces from beginning and end of string
+      $info = trim($info);
+      //trims extra spaces from middle of two words
+      $info = preg_replace('!\s+!', ' ', $info);
+      return $info;
     }
 }
