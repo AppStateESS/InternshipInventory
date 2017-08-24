@@ -97,6 +97,9 @@ var AffiliateList = React.createClass({
             searchName: '',
             textData: "",
             sortBy: '',
+            showAll: null,
+            showActive: null,
+            showExpired: null,
         });
     },
     componentWillMount: function() {
@@ -140,14 +143,11 @@ var AffiliateList = React.createClass({
 
         var name = null;
 
-            // Saves the name that the user is looking for.
+        // Saves the name that the user is looking for.
         name = e.target.value.toLowerCase();
         this.setState({searchName: name});
 
-        //data = this.state.mainData;
-        //filter list method seperate, use parameter not state for mainData
-        //var changedData = this.searchListByName(this.state.mainData, name);
-        this.updateDisplayData(name, this.state.sortBy);
+        this.updateDisplayData(name, this.state.sortBy, this.state.isToggleOn);
 
     },
     //Method for taking an array and searching it by name, returns array.
@@ -155,10 +155,7 @@ var AffiliateList = React.createClass({
       var filtered = [];
 
       // Looks for the name by filtering the mainData
-      //for (var i = 0; i < this.state.mainData.length; i++) {
       for (var i = 0; i < data.length; i++) {
-
-          //var item = this.state.mainData[i];
           var item = data[i];
 
           // Make the item, name lowercase for easier searching
@@ -204,19 +201,11 @@ var AffiliateList = React.createClass({
     // Returns sorted array to be used in createList function
     onSortByChange: function(e) {
         var sort = null;
-        //var sortedFinal = [];
 
-        try {
-            //Saves sorting option that was clicked.
-            sort = e.target.value;
-            this.setState({sortBy: sort});
-        }
-        catch (error) {
-            sort = this.state.sortBy;
-        }
+        //Saves sorting option that was clicked.
+        sort = e.target.value;
+        this.setState({sortBy: sort});
 
-        // **help**
-        //sortedFinal = this.sortBy(this.state.mainData, sort);
         this.updateDisplayData(this.state.searchName, sort);
 
     },
@@ -267,13 +256,89 @@ var AffiliateList = React.createClass({
     },
     // Organizes the order of the sort/filter functions to update the data displayed.
     // searchName and sort are both states.
-    updateDisplayData: function(typedName, sort) {
-        // **help** where to get data from?
-        //var unchanged = this.state.mainData;
-        //sort = this.state.sortBy;
+    /*onToggle: function(e) {
+        //reads action
+        var toggle = null;
+
+        toggle = e.target.value;
+        this.setState({toggleActive: !toggle});
+        event.preventDefault();
+
+        this.updateDisplayData(this.state.searchName, this.state.sortBy, toggle);
+        //calls update display data*/
+
+
+        /*if (toggleOption) {
+            for (var i = 0; i < data.length; i++) {
+                var item0 = data[i];
+
+                if (item0.active === 'Active') {
+                    filtered.push(item0);
+                }
+            }
+            for (var j = 0; j < data.length; j++) {
+                var item1 = data[j];
+
+                if (item1.active === 'Active (auto-renewed)') {
+                    filtered.push(item1);
+                }
+            }
+            for (var x = 0; x < data.length; x++) {
+                var item2 = data[x];
+
+                if (item2.active === 'Expired') {
+                    filtered.push(item2);
+                }
+            }
+        }
+        else {
+            for (var a = 0; a < data.length; a++) {
+                var item3 = data[a];
+
+                if (item3.active === 'Expired') {
+                    filtered.push(item3);
+                }
+            }
+            for (var b = 0; b < data.length; b++) {
+                var item4 = data[b];
+
+                if (item4.active === 'Active (auto-renewed)') {
+                    filtered.push(item4);
+                }
+            }
+            for (var c = 0; c < data.length; c++) {
+                var item5 = data[c];
+
+                if (item5.active === 'Active') {
+                    filtered.push(item5);
+                }
+            }
+        }*/
+    onShowAll: function() {
+        this.setState({showAll: true, showActive: false, showExpired: false});
+
+        this.updateDisplayData(this.state.searchName, this.state.sortBy, this.state.showAll,
+                              this.state.showActive, this.state.showExpired);
+    },
+    onShowActive: function() {
+        this.setState({showAll: false, showActive: true, showExpired: false});
+
+        this.updateDisplayData(this.state.searchName, this.state.sortBy, this.state.showAll,
+                              this.state.showActive, this.state.showExpired);
+    },
+    onShowExpired: function() {
+        this.setState({showAll: false, showActive: false, showExpired: true});
+
+        this.updateDisplayData(this.state.searchName, this.state.sortBy, this.state.showAll,
+                              this.state.showActive, this.state.showExpired);
+    },
+    updateDisplayData: function(typedName, sort, allClicked, activeClicked, expiredClicked) {
         var filtered = [];
-        //typedName = this.state.searchName;
-        //if (this.state.searchName !== null) {
+
+        /*if (allClicked) {
+            filtered = this.
+        }*/
+
         if (typedName !== null) {
             filtered = this.searchListByName(this.state.mainData, typedName);
         }
@@ -343,6 +408,9 @@ var AffiliateList = React.createClass({
                     <div className="col-md-3">
                         <a href="index.php?module=intern&action=addAgreementView" className="btn btn-md btn-success"><i className="fa fa-plus"></i> Add New Agreement </a>
                     </div>
+                </div>
+                <br></br>
+                <div className="row">
                     <div className="col-md-3">
                         <div className="input-group">
                             <label>Search by Name</label>
@@ -367,6 +435,20 @@ var AffiliateList = React.createClass({
                                 <option value="SoonerToLater">Expiration Date: Sooner to Later</option>
                                 <option value="LaterToSooner">Expiration Date: Later to Sooner</option>
                             </select>
+                        </div>
+                    </div>
+                    <div className="col-md-3">
+                        <label className="control-label">Filter</label> <br />
+                        <div className="btn-group" data-toggle="buttons">
+                            <label className="btn btn-default" onClick={this.onShowAll}>
+                                <input type="radio" value="all" />All
+                            </label>
+                            <label className="btn btn-default" onClick={this.onShowActive}>
+                                <input type="radio" value="active" />Active
+                            </label>
+                            <label className="btn btn-default" onClick={this.onShowExpired}>
+                                <input type="radio" value="expired"/>Expired
+                            </label>
                         </div>
                     </div>
                 </div>
