@@ -6,7 +6,7 @@ import $ from 'jquery';
 /**
  * Notification component used for adding or delete courses.
  **/
-class Notifications extends React.CreateComponent {
+class Notifications extends React.Component {
     render(){
         var notification;
 
@@ -35,7 +35,7 @@ class Notifications extends React.CreateComponent {
 }
 
 // Component creates a row for the courses
-class CourseRow extends React.CreateComponent {
+class CourseRow extends React.Component {
     constructor(props){
         super(props);
         this.handleChange = this.handleChange.bind(this);
@@ -55,7 +55,7 @@ class CourseRow extends React.CreateComponent {
 }
 
 // Component helps create the table
-class CourseList extends React.CreateComponent {
+class CourseList extends React.Component {
 	render() {
 		var deleteCourse = this.props.deleteCourse;
 		// Determines if it needs to create a row.
@@ -92,7 +92,7 @@ class CourseList extends React.CreateComponent {
 }
 
 // Component used to create a course
-class CreateCourse extends React.CreateComponent {
+class CreateCourse extends React.Component {
 	constructor(props) {
         super(props);
 
@@ -142,7 +142,7 @@ class CreateCourse extends React.CreateComponent {
 	}
 }
 
-class CourseSelector extends React.CreateComponent {
+class CourseSelector extends React.Component {
 	constructor(props) {
         super(props);
 		this.state = {
@@ -150,6 +150,10 @@ class CourseSelector extends React.CreateComponent {
 			msgNotification: '',
             msgType: ''
 		};
+
+        this.getCourseData = this.getCourseData.bind(this);
+        this.saveCourse = this.saveCourse.bind(this);
+        this.deleteCourse = this.deleteCourse.bind(this);
 	}
 	componentWillMount(){
 		this.getCourseData();

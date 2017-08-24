@@ -129,7 +129,10 @@ class Manager extends React.Component {
 			success: ''
 		};
 
-
+        this.getData = this.getData.bind(this);
+        this.onHidden = this.onHidden.bind(this);
+        this.onSave = this.onSave.bind(this);
+        this.onCreate = this.onCreate.bind(this);
 	}
 	componentWillMount(){
 		this.getData();

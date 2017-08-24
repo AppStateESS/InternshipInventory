@@ -76,6 +76,10 @@ class SearchAdmin extends React.Component {
         this.handleDrop = this.handleDrop.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.searchList = this.searchList.bind(this);
+        this.getData = this.getData.bind(this);
+        this.getDept = this.getDept.bind(this);
+        this.onAdminDelete = this.onAdminDelete.bind(this);
+        this.onAdminCreate = this.onAdminCreate.bind(this);
 	}
 	componentWillMount() {
 		// Grabs the department data and admin data
