@@ -63,9 +63,9 @@ class LocationSelector extends React.Component {
         if(!this.state.domestic && !this.state.international) {
             dropdown = '';
         } else if (this.state.domestic) {
-            dropdown = <StateDropDown key="states" ref="state" states={this.state.availableStates} formStyle='horizontal'/>;
+            dropdown = <StateDropDown key="states" ref={(element) => {this.stateDropDown = element}} states={this.state.availableStates} formStyle='horizontal'/>;
         } else {
-            dropdown = <InternationalDropDown key="countries" ref="country" countries={this.state.availableCountries} formStyle='horizontal'/>;
+            dropdown = <InternationalDropDown key="countries" ref={(element) => {this.countryDropDown = element}} countries={this.state.availableCountries} formStyle='horizontal'/>;
         }
 
         var anyLabelClass = classNames({
