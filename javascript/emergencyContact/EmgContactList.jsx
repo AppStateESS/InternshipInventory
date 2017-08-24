@@ -135,6 +135,7 @@ class EmergencyContactList extends React.Component {
         };
 
         this.handleNewContact = this.handleNewContact.bind(this);
+        this.onContactRemove = this.onContactRemove.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.openAddModal = this.openAddModal.bind(this);
         this.closeAddModal = this.closeAddModal.bind(this);
