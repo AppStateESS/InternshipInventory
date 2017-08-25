@@ -254,98 +254,70 @@ var AffiliateList = React.createClass({
       return sorted;
 
     },
-    // Organizes the order of the sort/filter functions to update the data displayed.
-    // searchName and sort are both states.
-    /*onToggle: function(e) {
-        //reads action
-        var toggle = null;
-
-        toggle = e.target.value;
-        this.setState({toggleActive: !toggle});
-        event.preventDefault();
-
-        this.updateDisplayData(this.state.searchName, this.state.sortBy, toggle);
-        //calls update display data*/
-
-
-        /*if (toggleOption) {
-            for (var i = 0; i < data.length; i++) {
-                var item0 = data[i];
-
-                if (item0.active === 'Active') {
-                    filtered.push(item0);
-                }
-            }
-            for (var j = 0; j < data.length; j++) {
-                var item1 = data[j];
-
-                if (item1.active === 'Active (auto-renewed)') {
-                    filtered.push(item1);
-                }
-            }
-            for (var x = 0; x < data.length; x++) {
-                var item2 = data[x];
-
-                if (item2.active === 'Expired') {
-                    filtered.push(item2);
-                }
-            }
-        }
-        else {
-            for (var a = 0; a < data.length; a++) {
-                var item3 = data[a];
-
-                if (item3.active === 'Expired') {
-                    filtered.push(item3);
-                }
-            }
-            for (var b = 0; b < data.length; b++) {
-                var item4 = data[b];
-
-                if (item4.active === 'Active (auto-renewed)') {
-                    filtered.push(item4);
-                }
-            }
-            for (var c = 0; c < data.length; c++) {
-                var item5 = data[c];
-
-                if (item5.active === 'Active') {
-                    filtered.push(item5);
-                }
-            }
-        }*/
     onShowAll: function() {
         this.setState({showAll: true, showActive: false, showExpired: false});
 
-        this.updateDisplayData(this.state.searchName, this.state.sortBy, this.state.showAll,
-                              this.state.showActive, this.state.showExpired);
+        this.updateDisplayData(this.state.searchName, this.state.sortBy, true, false, false);
     },
     onShowActive: function() {
         this.setState({showAll: false, showActive: true, showExpired: false});
 
-        this.updateDisplayData(this.state.searchName, this.state.sortBy, this.state.showAll,
-                              this.state.showActive, this.state.showExpired);
+        this.updateDisplayData(this.state.searchName, this.state.sortBy, false, true, false);
+    },
+    viewActive: function(data) {
+        var filtered = [];
+
+        for (var i = 0; i < data.length; i++) {
+            var item = data[i];
+
+            if (item.active.value === 'Active' || item.active.value === 'Active (auto-renewed)') {
+                filtered.push(item);
+            }
+        }
+        return filtered;
     },
     onShowExpired: function() {
         this.setState({showAll: false, showActive: false, showExpired: true});
 
-        this.updateDisplayData(this.state.searchName, this.state.sortBy, this.state.showAll,
-                              this.state.showActive, this.state.showExpired);
+        this.updateDisplayData(this.state.searchName, this.state.sortBy, false, false, true);
     },
+    viewExpired: function(data) {
+        var filtered = [];
+
+        for (var i = 0; i < data.length; i++) {
+            var item = data[i];
+
+            if (item.active.value === 'Expired') {
+                filtered.push(item);
+            }
+        }
+        return filtered;
+    },
+    // Organizes the order of the sort/filter functions to update the data displayed.
+    // searchName and sort are both states.
     updateDisplayData: function(typedName, sort, allClicked, activeClicked, expiredClicked) {
         var filtered = [];
 
-        /*if (allClicked) {
-            filtered = this.
-        }*/
-
-        if (typedName !== null) {
-            filtered = this.searchListByName(this.state.mainData, typedName);
-        }
-        else {
+        // First filters data.
+        if (allClicked) {
             filtered = this.state.mainData;
         }
+        else if (activeClicked) {
+            filtered = this.viewActive(this.state.mainData);
+        }
+        else if (expiredClicked) {
+            filtered = this.viewExpired(this.state.mainData);
+        }
 
+        // Second searches list for name.
+        if (typedName !== null) {
+            filtered = this.searchListByName(filtered, typedName);
+        }
+        else {
+            filtered = filtered;
+        }
+
+        // Third sorts list.
         if (sort !== null) {
             filtered = this.sortBy(filtered, sort);
         }
@@ -357,6 +329,7 @@ var AffiliateList = React.createClass({
 
     },
     render: function() {
+
         var AffiliateData = null;
         if (this.state.mainData != null) {
             AffiliateData = this.state.displayData.map(function (affil) {
@@ -391,6 +364,8 @@ var AffiliateList = React.createClass({
         } else {
             errors = <ErrorMessagesBlock key="errorSet" errors={this.state.errorWarning} messageType={this.state.messageType} />
         }
+
+        var active = this.props.active;
 
         return (
             <div className="affiliateList">
@@ -441,13 +416,13 @@ var AffiliateList = React.createClass({
                         <label className="control-label">Filter</label> <br />
                         <div className="btn-group" data-toggle="buttons">
                             <label className="btn btn-default" onClick={this.onShowAll}>
-                                <input type="radio" value="all" />All
+                                <input type="radio" value={active} />All
                             </label>
                             <label className="btn btn-default" onClick={this.onShowActive}>
-                                <input type="radio" value="active" />Active
+                                <input type="radio" value={active} />Active
                             </label>
                             <label className="btn btn-default" onClick={this.onShowExpired}>
-                                <input type="radio" value="expired"/>Expired
+                                <input type="radio" value={active} />Expired
                             </label>
                         </div>
                     </div>
