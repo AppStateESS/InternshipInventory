@@ -35,7 +35,9 @@
                 <i class="fa fa-copy"></i> Continue Internship <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
-                <li><a href="index.php?module=intern&action=copyInternshipToNextTerm&internship_id={INTERN_ID}"><i class="fa fa-fast-forward"></i> Continue in {NEXT_TERM}</a></li>
+                <li><a href="index.php?module=intern&action=copyInternshipToNextTerm&next=one&internship_id={INTERN_ID}"><i class="fa fa-fast-forward"></i> Continue in {NEXT_TERM}</a></li>
+                <li style='display:{TWO_DIS}'><a href="index.php?module=intern&action=copyInternshipToNextTerm&next=two&internship_id={INTERN_ID}"><i class="fa fa-fast-forward"></i> Continue in {NEXT_SEC_TERM}</a></li>
+                <li style='display:{THREE_DIS}'><a href="index.php?module=intern&action=copyInternshipToNextTerm&next=three&internship_id={INTERN_ID}"><i class="fa fa-fast-forward"></i> Continue in {NEXT_SEC_TERM}</a></li>
             </ul>
         </div>
         <!-- END copy_to_next_term -->
