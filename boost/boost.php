@@ -1,10 +1,10 @@
 <?php
 /*
- * @author Micah Carter 
+ * @author Micah Carter
  */
 
 $proper_name  = 'Internship Inventory';
-$version      = '0.5.1';
+$version      = '0.5.2';
 $register     = false;
 $unregister   = false;
 $import_sql   = true;
