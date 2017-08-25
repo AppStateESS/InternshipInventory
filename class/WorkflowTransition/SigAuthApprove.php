@@ -33,9 +33,9 @@ class SigAuthApprove extends WorkflowTransition {
 
     public function checkRequiredFields(Internship $i)
     {
-      $emergName = $i->getEmergencyContactName();
-      if(!isset($emergName)){
-        throw new MissingDataException("Please add an emergency contact.");
-      }
+        $emergName = $i->getEmergencyContactName();
+        if(!isset($emergName)){
+            throw new MissingDataException("Please add an emergency contact.");
+        }
     }
 }
