@@ -270,6 +270,7 @@ var AffiliateList = React.createClass({
         for (var i = 0; i < data.length; i++) {
             var item = data[i];
 
+            //use end date and exp date instead
             if (item.active.value === 'Active' || item.active.value === 'Active (auto-renewed)') {
                 filtered.push(item);
             }
@@ -287,6 +288,7 @@ var AffiliateList = React.createClass({
         for (var i = 0; i < data.length; i++) {
             var item = data[i];
 
+            //use end date and exp date instead
             if (item.active.value === 'Expired') {
                 filtered.push(item);
             }
