@@ -21,35 +21,38 @@ class CopyInternshipToNextTerm {
 
     public function execute()
     {
-      $internship = InternshipFactory::getInternshipById($_REQUEST['internship_id']);
+        // Load the existing internship using its ID
+        $internship = InternshipFactory::getInternshipById($_REQUEST['internshipId']);
 
-      // Clear values from the existing internship that must be reset
-      $internship->setId(null);
+        // Clear the ID so that insert a new internship into the database the
+        // next time we call save()
+        $internship->setId(null);
 
-      $internship->setStartDate(null);
-      $internship->setEndDate(null);
+        // Clear/reset additional values from the existing internship
+        $internship->setStartDate(null);
+        $internship->setEndDate(null);
 
-      $state = WorkflowStateFactory::getState('CreationState');
-      $internship->setState($state); // Set this initial value
+        $state = WorkflowStateFactory::getState('CreationState');
+        $internship->setState($state); // Set initial WorkflowState
 
 
-      // Calculate the new term(s) and set it
-      $term = Term::getNextTerm($internship->getTerm());
-      if($_REQUEST['next'] == 'two'){
-        $newTerm = Term::getNextTerm($term);
-      } else if($_REQUEST['next'] == 'three'){
-        $twoTerm = Term::getNextTerm($term);
-        $newTerm = Term::getNextTerm($twoTerm);
-      }
-      else{
-        $newTerm = $term;
-      }
-      $internship->setTerm($newTerm);
-      $copyId = $internship->save();
+        // Get the requested destination term
+        $destTerm = $_REQUEST['destinationTerm'];
 
-      // Show message if user edited internship
-      \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, 'Continued internship for ' . $internship->getFullName() . ' to ' . Term::rawToRead($newTerm) . '.');
-      \NQ::close();
-      return \PHPWS_Core::reroute('index.php?module=intern&action=ShowInternship&internship_id=' . $copyId);
+        // Check if the destination term exists
+        if(!Term::termExists($destTerm)){
+            throw new \InvalidArgumentException('Requested term does not exist: ' . $destTerm);
+        }
+        $internship->setTerm($destTerm);
+
+        // Save the new internship
+        $copyId = $internship->save();
+
+        // Show confirmation message
+        \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, 'Continued internship for ' . $internship->getFullName() . ' to ' . Term::rawToRead($destTerm) . '.');
+        \NQ::close();
+
+        // Redirect to the new internship
+        return \PHPWS_Core::reroute('index.php?module=intern&action=ShowInternship&internship_id=' . $copyId);
     }
 }
