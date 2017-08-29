@@ -97,9 +97,9 @@ var AffiliateList = React.createClass({
             searchName: '',
             textData: "",
             sortBy: '',
-            showAll: null,
-            showActive: null,
-            showExpired: null,
+            showAll: true,
+            showActive: false,
+            showExpired: false,
         });
     },
     componentWillMount: function() {
@@ -147,7 +147,8 @@ var AffiliateList = React.createClass({
         name = e.target.value.toLowerCase();
         this.setState({searchName: name});
 
-        this.updateDisplayData(name, this.state.sortBy, this.state.isToggleOn);
+        this.updateDisplayData(name, this.state.sortBy, this.state.showAll,
+                              this.state.showActive, this.state.showExpired);
 
     },
     //Method for taking an array and searching it by name, returns array.
@@ -206,7 +207,8 @@ var AffiliateList = React.createClass({
         sort = e.target.value;
         this.setState({sortBy: sort});
 
-        this.updateDisplayData(this.state.searchName, sort);
+        this.updateDisplayData(this.state.searchName, sort, this.state.showAll,
+                              this.state.showActive, this.state.showExpired);
 
     },
     //Method for storing the selected sort order and setting sortBy state.
@@ -270,8 +272,14 @@ var AffiliateList = React.createClass({
         for (var i = 0; i < data.length; i++) {
             var item = data[i];
 
+            //finding out if expired or not.
+            var current = new Date().getTime();
+            var itemDate = new Date(item.end_date * 1000);
+            var expiration = (itemDate - current)/1000;
+
+
             //use end date and exp date instead
-            if (item.active.value === 'Active' || item.active.value === 'Active (auto-renewed)') {
+            if (item.auto_renew || expiration > 0) {
                 filtered.push(item);
             }
         }
@@ -289,7 +297,12 @@ var AffiliateList = React.createClass({
             var item = data[i];
 
             //use end date and exp date instead
-            if (item.active.value === 'Expired') {
+            var current = new Date().getTime();
+            var itemDate = new Date(item.end_date * 1000);
+            var expiration = (itemDate - current)/1000;
+
+            //use end date and exp date instead
+            if (!item.auto_renew && expiration < 0) {
                 filtered.push(item);
             }
         }
@@ -310,13 +323,13 @@ var AffiliateList = React.createClass({
         else if (expiredClicked) {
             filtered = this.viewExpired(this.state.mainData);
         }
+        else {
+            filtered = this.state.mainData;
+        }
 
         // Second searches list for name.
         if (typedName !== null) {
             filtered = this.searchListByName(filtered, typedName);
-        }
-        else {
-            filtered = filtered;
         }
 
         // Third sorts list.
@@ -367,8 +380,6 @@ var AffiliateList = React.createClass({
             errors = <ErrorMessagesBlock key="errorSet" errors={this.state.errorWarning} messageType={this.state.messageType} />
         }
 
-        var active = this.props.active;
-
         return (
             <div className="affiliateList">
 
@@ -418,13 +429,13 @@ var AffiliateList = React.createClass({
                         <label className="control-label">Filter</label> <br />
                         <div className="btn-group" data-toggle="buttons">
                             <label className="btn btn-default" onClick={this.onShowAll}>
-                                <input type="radio" value={active} />All
+                                <input type="radio"/>All
                             </label>
                             <label className="btn btn-default" onClick={this.onShowActive}>
-                                <input type="radio" value={active} />Active
+                                <input type="radio"/>Active
                             </label>
                             <label className="btn btn-default" onClick={this.onShowExpired}>
-                                <input type="radio" value={active} />Expired
+                                <input type="radio"/>Expired
                             </label>
                         </div>
                     </div>
