@@ -97,9 +97,7 @@ var AffiliateList = React.createClass({
             searchName: '',
             textData: "",
             sortBy: '',
-            showAll: true,
-            showActive: false,
-            showExpired: false,
+            showFilter: ''
         });
     },
     componentWillMount: function() {
@@ -147,8 +145,7 @@ var AffiliateList = React.createClass({
         name = e.target.value.toLowerCase();
         this.setState({searchName: name});
 
-        this.updateDisplayData(name, this.state.sortBy, this.state.showAll,
-                              this.state.showActive, this.state.showExpired);
+        this.updateDisplayData(name, this.state.sortBy, this.state.showFilter);
 
     },
     //Method for taking an array and searching it by name, returns array.
@@ -207,8 +204,7 @@ var AffiliateList = React.createClass({
         sort = e.target.value;
         this.setState({sortBy: sort});
 
-        this.updateDisplayData(this.state.searchName, sort, this.state.showAll,
-                              this.state.showActive, this.state.showExpired);
+        this.updateDisplayData(this.state.searchName, sort, this.state.showFilter);
 
     },
     //Method for storing the selected sort order and setting sortBy state.
@@ -256,53 +252,37 @@ var AffiliateList = React.createClass({
       return sorted;
 
     },
-    onShowAll: function() {
-        this.setState({showAll: true, showActive: false, showExpired: false});
+    onShow: function(e) {
+        var option = null;
 
-        this.updateDisplayData(this.state.searchName, this.state.sortBy, true, false, false);
-    },
-    onShowActive: function() {
-        this.setState({showAll: false, showActive: true, showExpired: false});
+        // Saves filter option.
+        option = e.target.value;
+        this.setState({showFilter: option});
 
-        this.updateDisplayData(this.state.searchName, this.state.sortBy, false, true, false);
+        this.updateDisplayData(this.state.searchName, this.state.sortBy, option);
     },
-    viewActive: function(data) {
+    viewShowFilter: function(data, filter) {
         var filtered = [];
 
         for (var i = 0; i < data.length; i++) {
             var item = data[i];
 
-            //finding out if expired or not.
+            // Finding out if expired or not.
             var current = new Date().getTime();
             var itemDate = new Date(item.end_date * 1000);
             var expiration = (itemDate - current)/1000;
 
-
-            //use end date and exp date instead
-            if (item.auto_renew || expiration > 0) {
-                filtered.push(item);
+            if (filter === 'active') {
+                if (item.auto_renew || expiration > 0) {
+                    filtered.push(item);
+                }
             }
-        }
-        return filtered;
-    },
-    onShowExpired: function() {
-        this.setState({showAll: false, showActive: false, showExpired: true});
-
-        this.updateDisplayData(this.state.searchName, this.state.sortBy, false, false, true);
-    },
-    viewExpired: function(data) {
-        var filtered = [];
-
-        for (var i = 0; i < data.length; i++) {
-            var item = data[i];
-
-            //use end date and exp date instead
-            var current = new Date().getTime();
-            var itemDate = new Date(item.end_date * 1000);
-            var expiration = (itemDate - current)/1000;
-
-            //use end date and exp date instead
-            if (!item.auto_renew && expiration < 0) {
+            else if (filter ==='expired') {
+                if (!item.auto_renew && expiration < 0) {
+                    filtered.push(item);
+                }
+            }
+            else {
                 filtered.push(item);
             }
         }
@@ -310,18 +290,12 @@ var AffiliateList = React.createClass({
     },
     // Organizes the order of the sort/filter functions to update the data displayed.
     // searchName and sort are both states.
-    updateDisplayData: function(typedName, sort, allClicked, activeClicked, expiredClicked) {
+    updateDisplayData: function(typedName, sort, showFilter) {
         var filtered = [];
 
         // First filters data.
-        if (allClicked) {
-            filtered = this.state.mainData;
-        }
-        else if (activeClicked) {
-            filtered = this.viewActive(this.state.mainData);
-        }
-        else if (expiredClicked) {
-            filtered = this.viewExpired(this.state.mainData);
+        if (showFilter !== null) {
+            filtered = this.viewShowFilter(this.state.mainData, showFilter);
         }
         else {
             filtered = this.state.mainData;
@@ -427,16 +401,10 @@ var AffiliateList = React.createClass({
                     </div>
                     <div className="col-md-3">
                         <label className="control-label">Filter</label> <br />
-                        <div className="btn-group" data-toggle="buttons">
-                            <label className="btn btn-default" onClick={this.onShowAll}>
-                                <input type="radio"/>All
-                            </label>
-                            <label className="btn btn-default" onClick={this.onShowActive}>
-                                <input type="radio"/>Active
-                            </label>
-                            <label className="btn btn-default" onClick={this.onShowExpired}>
-                                <input type="radio"/>Expired
-                            </label>
+                        <div className="btn-group" data-toggle="buttons" onClick={this.onShow} value={this.state.value}>
+                            <option className="btn btn-default" type="radio" value="all">All</option>
+                            <option className="btn btn-default" type="radio" value="active">Active</option>
+                            <option className="btn btn-default" type="radio" value="expired">Expired</option>
                         </div>
                     </div>
                 </div>
