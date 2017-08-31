@@ -7,14 +7,14 @@ class SettingsRest {
     public function execute(){
 
         if(!\Current_User::allow('intern', 'affiliation_agreement')){
-            \NQ::simple('intern', \Intern\UI\NotifyUI::WARNING, 'You do not have permission to add Affiliation Agreements.');
-            throw new \Intern\Exception\PermissionException('You do not have permission to add Affiliation Agreements.');
+            \NQ::simple('intern', \Intern\UI\NotifyUI::WARNING, 'You do not have permission to edit admin settings.');
+            throw new \Intern\Exception\PermissionException('You do not have permission to edit admin settings.');
         }
 
         switch($_SERVER['REQUEST_METHOD']) {
             case 'POST':
                 $this->post();
-                echo (json_encode("Nice"));
+                echo (json_encode("Done"));
                 exit;
             case 'GET':
                 $data = $this->get();
