@@ -161,7 +161,6 @@ var AffiliateList = React.createClass({
               filtered.push(item);
           }
       }
-
       return filtered;
 
     },
@@ -260,6 +259,7 @@ var AffiliateList = React.createClass({
         this.setState({showFilter: option});
 
         this.updateDisplayData(this.state.searchName, this.state.sortBy, option);
+        
     },
     viewShowFilter: function(data, filter) {
         var filtered = [];
@@ -287,6 +287,7 @@ var AffiliateList = React.createClass({
             }
         }
         return filtered;
+
     },
     // Organizes the order of the sort/filter functions to update the data displayed.
     // searchName and sort are both states.
@@ -296,8 +297,7 @@ var AffiliateList = React.createClass({
         // First filters data.
         if (showFilter !== null) {
             filtered = this.viewShowFilter(this.state.mainData, showFilter);
-        }
-        else {
+        } else {
             filtered = this.state.mainData;
         }
 
@@ -309,8 +309,7 @@ var AffiliateList = React.createClass({
         // Third sorts list.
         if (sort !== null) {
             filtered = this.sortBy(filtered, sort);
-        }
-        else {
+        } else {
             filtered = this.sortBy(filtered, 'sortByAZ');
         }
 
@@ -402,9 +401,15 @@ var AffiliateList = React.createClass({
                     <div className="col-md-3">
                         <label className="control-label">Filter</label> <br />
                         <div className="btn-group" data-toggle="buttons" onClick={this.onShow} value={this.state.value}>
-                            <option className="btn btn-default" type="radio" value="all">All</option>
-                            <option className="btn btn-default" type="radio" value="active">Active</option>
-                            <option className="btn btn-default" type="radio" value="expired">Expired</option>
+                            <button className="btn btn-default" value="all">
+                                <input  type="radio"/>All
+                            </button>
+                            <button className="btn btn-default" value="active">
+                                <input type="radio"/>Active
+                            </button>
+                            <button className="btn btn-default" value="expired">
+                                <input  type="radio"/>Expired
+                            </button>
                         </div>
                     </div>
                 </div>
