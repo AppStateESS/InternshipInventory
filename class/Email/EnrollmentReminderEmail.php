@@ -44,7 +44,7 @@ class EnrollmentReminderEmail extends Email {
         $this->tpl['EMAIL']   = $this->internship->getEmailAddress() . $this->emailSettings->getEmailDomain();
         $this->tpl['TERM']    = Term::rawToRead($this->internship->getTerm(), false);
 
-        if($this->internship->getSubject()->getId() != 0) {
+        if($this->internship->getSubject() !== null && $this->internship->getSubject()->getId() != 0) {
             $this->tpl['SUBJECT'] = $this->internship->getSubject()->getName();
         }
 
