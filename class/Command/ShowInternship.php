@@ -55,7 +55,7 @@ class ShowInternship {
 
         // Load the term info for this internship
         $termProvider = TermProviderFactory::getProvider();
-        $termInfo = $termProvider->getTerm($intern->getTerm());
+        $termInfo = $termProvider->getTermInfo($intern->getTerm());
 
         $view = new InternshipView($intern, $student, $wfState, $agency, $docs, $termInfo);
 

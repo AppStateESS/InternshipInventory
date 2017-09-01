@@ -24,7 +24,7 @@ class GetAvailableTerms {
 
             try {
                 // Fetch info from web service for this particular term
-                $termInfo = $termProvider->getTerm($term);
+                $termInfo = $termProvider->getTermInfo($term);
             } catch (\Intern\Exception\BannerPermissionException $e){
                 // Catch permission errors
                 $error = array('error'=>'You do not have Banner student data permissions. Please click the \'Get Help\' button in the top navigation bar to open a support request.');

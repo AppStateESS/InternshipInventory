@@ -18,23 +18,23 @@ class StudentDataProviderFactory {
      *
      * @return StudentDataProvider
      */
-    public static function getProvider()
+    public static function getProvider(): StudentDataProvider
     {
         // First, check if the test flag override is on
         if(STUDENT_DATA_TEST){
             return new TestWebServiceDataProvider(\Current_User::getUsername());
         }
 
-        $provider = InternSettings::getInstance()->getStudentDataSource();
+        $providerName = InternSettings::getInstance()->getStudentDataSource();
 
-        switch($provider){
+        switch($providerName){
             case 'localDataProvider':
                 return new LocalDbStudentDataProvider();
             case 'webServiceDataProvider':
                 return new WebServiceDataProvider(\Current_User::getUsername());
-        }
+            default:
+                throw new \UnexpectedValueException('No configuration for student data provider.');
 
-        // If we're still here, throw an exception
-        throw new \InvalidArgumentException('No configuration for student data provider.');
+        }
     }
 }

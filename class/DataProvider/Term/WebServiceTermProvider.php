@@ -16,7 +16,7 @@ use \SoapFault;
  * @author Jeremy Booker
  * @package Intern
  */
-class BannerTermProvider {
+class WebServiceTermProvider extends TermDataProvider {
 
     protected $currentUserName;
 
@@ -41,7 +41,7 @@ class BannerTermProvider {
      * Returns a Term object with hard-coded data
      * @return Term
      */
-    public function getTerm($term)
+    public function getTermInfo($term): TermInfo
     {
         $term .= "0";
 

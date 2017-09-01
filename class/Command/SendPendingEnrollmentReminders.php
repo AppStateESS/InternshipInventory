@@ -33,7 +33,7 @@ class SendPendingEnrollmentReminders
             $pendingInternships = InternshipFactory::getPendingInternshipsByTerm($term);
 
             // Get the census date for this term
-            $termInfo = $provider->getTerm($term);
+            $termInfo = $provider->getTermInfo($term);
             $censusDate = $termInfo->getCensusDate();
             $censusTimestamp = strtotime($censusDate);
 

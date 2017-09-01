@@ -14,7 +14,7 @@ use Intern\TermInfo;
  * @author Jeremy Booker
  * @package Intern
  */
-class TestTermProvider extends BannerTermProvider {
+class TestWebServiceTermProvider extends WebServiceTermProvider {
 
     private $term;
 
