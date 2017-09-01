@@ -899,7 +899,6 @@ CREATE TABLE intern_local_student_data (
     student_id          character varying not null,
     user_name           character varying not null,
     email               character varying not null,
-    term_code           character varying,
 
     first_name          character varying,
     middle_name         character varying,
