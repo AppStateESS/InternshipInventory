@@ -6,5 +6,5 @@ use Intern\TermInfo;
 
 abstract class TermDataProvider {
 
-    public abstract function getTermInfo($termCode): TermInfo;
+    public abstract function getTermInfo(string $termCode): TermInfo;
 }

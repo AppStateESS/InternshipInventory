@@ -927,4 +927,15 @@ CREATE TABLE intern_local_student_data (
     primary key(student_id)
 );
 
+CREATE TABLE intern_local_term_data (
+
+    term_code character varying not null,
+    start_date integer not null,
+    end_date integer not null,
+    census_date integer not null,
+    description character varying not null,
+
+    primary key(term_code)
+);
+
 COMMIT;

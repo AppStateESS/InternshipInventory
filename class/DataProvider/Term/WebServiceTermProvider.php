@@ -41,15 +41,15 @@ class WebServiceTermProvider extends TermDataProvider {
      * Returns a Term object with hard-coded data
      * @return Term
      */
-    public function getTermInfo($term): TermInfo
+    public function getTermInfo(string $termCode): TermInfo
     {
-        $term .= "0";
+        $termCode .= "0";
 
-        if($term === null || $term== '0'){
+        if($termCode === null || $termCode == '0'){
             throw new \InvalidArgumentException('Missing term.');
         }
 
-        $params = array('Term' => $term,
+        $params = array('Term' => $termCode,
                         'UserName' => $this->currentUserName);
 
         try {

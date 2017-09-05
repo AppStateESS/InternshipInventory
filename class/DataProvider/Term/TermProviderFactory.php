@@ -29,9 +29,8 @@ class TermProviderFactory {
 
         switch($providerName){
             case 'localDataProvider':
-                //return new LocalDbTermDataProvider();
-                // TODO: Return an actual local data provider based on the db
-                return new TestWebServiceTermProvider(\Current_User::getUsername());
+                return new LocalDbTermDataProvider();
+                //return new TestWebServiceTermProvider(\Current_User::getUsername());
             case 'webServiceDataProvider':
                 return new WebServiceTermProvider(\Current_User::getUsername());
             default:
