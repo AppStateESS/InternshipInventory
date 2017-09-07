@@ -189,6 +189,19 @@ class TestWebServiceTermInfoProvider extends WebServiceTermInfoProvider {
                 $responseObj->part_term[] = $partTerm;
 
                 break;
+            case '201830':
+                $responseObj->term_start_date   = '7/6/2018';
+                $responseObj->term_end_date     = '8/8/2018';
+                $responseObj->census_date       = '7/10/2018';
+
+                $partTerm = new \stdClass();
+                $partTerm->part_term_code   = 'SE';
+                $partTerm->part_term_desc   = 'Summer Term Special';
+                $partTerm->part_start_date  = '7/1/2018';
+                $partTerm->part_end_date    = '8/14/2018';
+                $responseObj->part_term[] = $partTerm;
+                break;
+                
             default:
                 throw new \Exception('Missing fake census date for ' . $this->term);
         }
