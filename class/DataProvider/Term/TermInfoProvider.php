@@ -4,7 +4,7 @@ namespace Intern\DataProvider\Term;
 
 use Intern\TermInfo;
 
-abstract class TermDataProvider {
+abstract class TermInfoProvider {
 
     public abstract function getTermInfo(string $termCode): TermInfo;
 }

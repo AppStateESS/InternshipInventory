@@ -5,7 +5,7 @@ namespace Intern\DataProvider\Term;
 use Intern\TermInfo;
 use Intern\PdoFactory;
 
-class LocalDbTermDataProvider extends TermDataProvider {
+class LocalDbTermInfoProvider extends TermInfoProvider {
 
     public function getTermInfo(string $termCode): TermInfo
     {
@@ -16,18 +16,20 @@ class LocalDbTermDataProvider extends TermDataProvider {
         $stmt = $db->prepare($query);
         $stmt->execute(array('termCode' => $termCode));
 
-        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
 
         if(sizeof($result) === 0){
-            // Term not found
-            return null;
+            throw new \UnexpectedValueException('No term exists for term code: ' . $termCode);
         }
 
         // Result size should never be greater than one because of the primary key on the intern_local_term_data table.
         // We'll double check, just in case.
         if(sizeof($result) > 1) {
-            throw new \UnexpectedValueException('Multiple terms exist with the same term code.');
+            throw new \UnexpectedValueException('Multiple terms exist with the same term code for: ' . $termCode);
         }
+
+        $result = $result[0];
 
         // Plug the results into a TermInfo object
         $termInfo = new TermInfo();

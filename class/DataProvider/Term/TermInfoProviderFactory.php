@@ -10,7 +10,7 @@ use Intern\InternSettings;
  * @author Jeremy Booker
  * @package Intern
  */
-class TermProviderFactory {
+class TermInfoProviderFactory {
 
     /**
      * Returns a concrete instance of a StudenDataProvider object,
@@ -19,7 +19,7 @@ class TermProviderFactory {
      * @throws \Exception
      * @return StudentDataProvider
      */
-    public static function getProvider(): TermDataProvider
+    public static function getProvider(): TermInfoProvider
     {
         if(STUDENT_DATA_TEST){
             return new TestWebServiceTermProvider(\Current_User::getUsername());
@@ -29,10 +29,11 @@ class TermProviderFactory {
 
         switch($providerName){
             case 'localDataProvider':
-                return new LocalDbTermDataProvider();
-                //return new TestWebServiceTermProvider(\Current_User::getUsername());
+                return new LocalDbTermInfoProvider();
+            case 'webServiceTestProvider':
+                return new TestWebServiceTermInfoProvider(\Current_User::getUsername());
             case 'webServiceDataProvider':
-                return new WebServiceTermProvider(\Current_User::getUsername());
+                return new WebServiceTermInfoProvider(\Current_User::getUsername());
             default:
                 throw new \UnexpectedValueException('No term data provider configured.');
         }

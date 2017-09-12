@@ -10,13 +10,13 @@ use \SoapFault;
  * BannerTermProvider
  *
  * Returns a Term object with data pulled from a web service connected to Banner.
- * Usually created through the TermProviderFactory.
+ * Usually created through the TermInfoProviderFactory.
  *
- * @see \Intern\DataProvider\Term\TermProviderFactory
+ * @see \Intern\DataProvider\Term\TermInfoProviderFactory
  * @author Jeremy Booker
  * @package Intern
  */
-class WebServiceTermProvider extends TermDataProvider {
+class WebServiceTermInfoProvider extends TermInfoProvider {
 
     protected $currentUserName;
 

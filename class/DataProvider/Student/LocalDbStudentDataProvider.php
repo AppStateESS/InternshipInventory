@@ -32,12 +32,8 @@ class LocalDbStudentDataProvider extends StudentDataProvider {
             throw new StudentNotFoundException('Could not find student in local data with id: ' . $studentId);
         }
 
-        var_dump($result);
-
         $student = new Student();
         $this->plugValues($student, $result);
-
-        var_dump($student);exit;
 
         return $student;
     }

@@ -3,7 +3,7 @@ namespace Intern\Command;
 
 use Intern\WorkflowStateFactory;
 use Intern\ChangeHistory;
-use Intern\DataProvider\Term\TermProviderFactory;
+use Intern\DataProvider\Term\TermInfoProviderFactory;
 use Intern\Term;
 use Intern\InternshipFactory;
 use Intern\Email;
@@ -22,7 +22,7 @@ class SendPendingEnrollmentReminders
     public function execute()
     {
         // Get the list of future terms
-        $provider = TermProviderFactory::getProvider();
+        $provider = TermInfoProviderFactory::getProvider();
         $terms = array_keys(Term::getFutureTermsAssoc());
 
         // Get email settings

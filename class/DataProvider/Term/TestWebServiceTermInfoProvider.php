@@ -8,13 +8,13 @@ use Intern\TermInfo;
 /**
  * TestStudentProvider - Always returns student objects with hard-coded testing data
  *
- * Usually created through the TermProviderFactory.
+ * Usually created through the TermInfoProviderFactory.
  *
- * @see \Intern\DataProvider\Term\TermProviderFactory
+ * @see \Intern\DataProvider\Term\TermInfoProviderFactory
  * @author Jeremy Booker
  * @package Intern
  */
-class TestWebServiceTermProvider extends WebServiceTermProvider {
+class TestWebServiceTermInfoProvider extends WebServiceTermInfoProvider {
 
     private $term;
 
