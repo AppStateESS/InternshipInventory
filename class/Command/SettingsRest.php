@@ -39,6 +39,7 @@ class SettingsRest {
         \PHPWS_Settings::set('intern','backgroundCheckEmail',$_REQUEST['backgroundCheckEmail']);
         \PHPWS_Settings::set('intern','wsdlUri',$_REQUEST['wsdlUri']);
         \PHPWS_Settings::set('intern','unusualCourseEmail',$_REQUEST['unusualCourseEmail']);
+        \PHPWS_Settings::set('intern','uncaughtExceptionEmail',$_REQUEST['uncaughtExceptionEmail']);
 
         \PHPWS_Settings::save('intern');
     }

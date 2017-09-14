@@ -8,8 +8,9 @@ $settings = array('registrarEmail'              => null,
                   'internationalOfficeEmail'    => null,
                   'fromEmail'                   => null,
                   'emailDomain'                 => null,
-                  'backgroundCheckEmail'        => null,
+                  'checkEmail'                  => null,
                   'systemName'                  => 'Internship Inventory',
                   'wsdlUri'                     => '',
-                  'unusualCourseEmail'          => null
-            );
+                  'unusualCourseEmail'          => null,
+                  'uncaughtExceptionEmail'      => null
+          );

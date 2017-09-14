@@ -54,7 +54,8 @@ class Settings extends Component {
                     internationalOfficeEmail: this.internationalOfficeEmailInput.value,
                     wsdlUri: this.wsdlUriInput.value,
                     fromEmail: this.fromEmailInput.value,
-                    unusualCourseEmail: this.unusualCourseEmailInput.value};
+                    unusualCourseEmail: this.unusualCourseEmailInput.value,
+                    uncaughtExceptionEmail: this.uncaughtExceptionEmailInput.value};
 
         this.setState({submitted: true}, function(){
             $.ajax({
@@ -172,6 +173,10 @@ class Settings extends Component {
                 <div className="form-group col-md-6">
                     <label>Unusual Course Email:</label>
                     <input className="form-control" type="text" defaultValue={this.state.data.unusualCourseEmail} id="unusualCourseEmail" name="unusualCourseEmail" ref={input => this.unusualCourseEmailInput = input}></input>
+                </div>
+                <div className="form-group col-md-6">
+                    <label>Uncaught Exception Email:</label>
+                    <input className="form-control" type="text" defaultValue={this.state.data.uncaughtExceptionEmail} id="uncaughtExceptionEmail" name="uncaughtExceptionEmail" ref={input => this.uncaughtExceptionEmailInput = input}></input>
                 </div>
             </form>
 

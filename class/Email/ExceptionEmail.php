@@ -34,7 +34,7 @@ class ExceptionEmail extends Email {
     protected function buildMessage()
     {
         // TODO: Use a setting instead of harding my email address
-        $this->to[] = 'jb67803@appstate.edu';
+        $this->to[] = \PHPWS_Settings::get('intern','uncaughtExceptionEmail');
         $this->subject = 'Uncaught Exception';
 
         ob_start();
