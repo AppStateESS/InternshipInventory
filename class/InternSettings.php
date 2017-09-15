@@ -292,14 +292,4 @@ class InternSettings {
 
         return $result;
     }
-
-    public function getGenerateContractEnabled(){
-        $result = \PHPWS_Settings::get('intern', 'generateContractEnabled');
-
-        if (!isset($result) || is_null($result)) {
-            throw new \InvalidArgumentException('Missing configuration for generate contract enabled.');
-        }
-
-        return $result;
-    }
 }
