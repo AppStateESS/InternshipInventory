@@ -14,10 +14,13 @@ class TopUI implements UI
 
     public static function plug()
     {
-	$tpl = array();
+        $tpl = array();
         $tpl['HOME_LINK']    = \PHPWS_Text::moduleLink('Menu', 'intern');
         $tpl['ADD_LINK']     = \PHPWS_Text::moduleLink('Add Student', 'intern', array('action' => 'ShowInternship'));
         $tpl['SEARCH_LINK']  = \PHPWS_Text::moduleLink('Search', 'intern', array('action' => 'search'));
+
+        $tpl['SYSTEM_NAME'] = \PHPWS_Settings::get('intern', 'systemName');
+
         $auth = \Current_User::getAuthorization();
 
         $tpl['USER_FULL_NAME'] = \Current_User::getDisplayName();
