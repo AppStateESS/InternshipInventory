@@ -136,6 +136,12 @@ class EditInternshipFormView {
             $this->tpl['CONTINUE_TERM_NO_TERMS'] = 'No future terms available.';
         }
 
+        /****************************
+         * Generate Contract Button *
+         ****************************/
+        if($this->settings->getGenerateContractEnabled()){
+            $this->tpl['GENERATE_CONTACT_BUTTON_ENABLE'] = ''; // Dummy var to toggle code block in template
+        }
 
         /*********************
          * Workflow / Status *

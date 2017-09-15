@@ -45,9 +45,12 @@
         </div>
     </div>
 
+    <!-- BEGIN generateContractButton -->
+    {GENERATE_CONTACT_BUTTON_ENABLE}
     <div class="col-lg-1 col-lg-offset-1">
       <button type="button" id="contract-button" class="btn btn-default pull-right generateContract"><i class="fa fa-file"></i> Generate Contract</button>
     </div>
+    <!-- END generateContractButton -->
   </div>
 
   <div class="row">

@@ -15,5 +15,6 @@ $settings = array('registrarEmail'              => null,
                   'wsdlUri'                     => '',
                   'unusualCourseEmail'          => null,
                   'studentDataSource'           => 'localDataProvider', // 'localDataProvider', 'webServiceDataProvider', 'webServiceTestProvider'
-                  'requireIntlCertification'    => true
+                  'requireIntlCertification'    => true,
+                  'generateContractEnabled'     => null
             );
