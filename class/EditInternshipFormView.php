@@ -538,6 +538,9 @@ class EditInternshipFormView {
         $this->form->setLabel('pay_rate', 'Pay Rate');
         $this->form->addCssClass('pay_rate', 'form-control');
 
+        $this->form->addCheck('co_op');
+        $this->form->setLabel('co_op', 'Co-op');
+
         /*******************
          * Internship Type *
          */
@@ -747,6 +750,10 @@ class EditInternshipFormView {
             $this->form->setMatch('stipend', $this->intern->stipend);
         } else {
             $this->form->setMatch('payment', 'unpaid');
+        }
+
+        if($this->intern->isCoOp()){
+            $this->form->setMatch('co_op', true);
         }
 
         $this->formVals['pay_rate'] = $this->intern->pay_rate;

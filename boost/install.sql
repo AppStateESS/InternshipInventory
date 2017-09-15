@@ -629,6 +629,7 @@ CREATE TABLE intern_internship (
        paid SMALLINT,
        stipend SMALLINT,
        pay_rate VARCHAR NULL,
+       co_op smallint default 0,
        multi_part SMALLINT,
        secondary_part SMALLINT,
        experience_type varchar default 'internship',

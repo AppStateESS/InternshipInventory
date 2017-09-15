@@ -94,6 +94,7 @@ class Internship {
     public $paid;
     public $stipend;
     public $pay_rate;
+    public $co_op;
 
 
     // Course Info
@@ -1054,6 +1055,14 @@ class Internship {
 
     public function hasStipend() {
         if($this->stipend == 1){
+            return true;
+        }
+
+        return false;
+    }
+
+    public function isCoOp(){
+        if($this->co_op == 1){
             return true;
         }
 

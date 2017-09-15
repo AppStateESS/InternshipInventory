@@ -153,6 +153,7 @@ class SaveInternship {
         $i->paid = $_REQUEST['payment'] == 'paid';
         $i->stipend = isset($_REQUEST['stipend']) && $i->paid;
         $i->pay_rate = self::trimField($_REQUEST['pay_rate']);
+        $i->co_op = isset($_REQUEST['co_op']);
 
         if (\Current_User::isDeity()) {
             $i->term = $_REQUEST['term'];

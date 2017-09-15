@@ -640,6 +640,10 @@
             <div class="checkbox">
               <label>{STIPEND}&nbsp;{STIPEND_LABEL_TEXT}</label>
             </div>
+
+            <div class="checkbox">
+              <label>{CO_OP}&nbsp;{CO_OP_LABEL_TEXT}</label>
+            </div>
           </div>
         </div>
 
