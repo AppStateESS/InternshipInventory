@@ -191,6 +191,38 @@ class InternSettings {
     }
 
     /**
+     * Returns true if the background check request button should be enabled. False by default or if setting doesn't exist.
+     *
+     * @return boolean True if the background check request button should be enabled, false otherwise.
+     */
+    public function getBackgroundCheckRequestEnabled()
+    {
+        $result = \PHPWS_Settings::get('intern', 'backgroundCheckRequestEnabled');
+
+        if (!isset($result) || is_null($result)) {
+            return false;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Returns true if the drug check request button should be enabled. False by default or if the setting doesn't exist.
+     *
+     * @return boolean True if the drug check request button should be enabled, false otherwise.
+     */
+    public function getDrugCheckRequestEnabled()
+    {
+        $result = \PHPWS_Settings::get('intern', 'drugCheckRequestEnabled');
+
+        if (!isset($result) || is_null($result)) {
+            return false;
+        }
+
+        return $result;
+    }
+
+    /**
      * Returns the name background/drug check user email.
      *
      * @throws InvalidArgumentException

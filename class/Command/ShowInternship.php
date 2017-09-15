@@ -65,6 +65,10 @@ class ShowInternship {
             $docs = array(); // if no docs, setup an empty array
         }
 
+        // Load the system settings
+        $settings = InternSettings::getInstance();
+        var_dump($settings);
+
         // Load the term info for this internship
         $term = TermFactory::getTermByTermCode($intern->getTerm());
 

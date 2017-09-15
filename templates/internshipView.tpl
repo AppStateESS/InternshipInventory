@@ -159,10 +159,11 @@
           <div id="credit-hours" class="col-lg-6"><p class="form-control-static">{ENROLLED_CREDIT_HORUS}</p></div>
         </div>
 
+        <!-- BEGIN BACK_ACTIVE -->
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{BACKGROUND_CHECK_ID}">Background Check Needed?</label>
+          <label class="col-lg-3 control-label" for="backgroundCheck">Background Check Needed?</label>
           <div class="col-lg-6">
-              <div class="btn-group" data-toggle="buttons" role="group" aria-label="background selector">
+              <div id="backgroundCheck" class="btn-group" data-toggle="buttons" role="group" aria-label="background selector">
                 <label class="btn btn-default {BACK_ACTIVE}">
                   <input type="radio" name="background_code" autocomplete="off" value="1" {BACK_CHECKED}> Yes
                 </label>
@@ -172,11 +173,13 @@
               </div>
           </div>
         </div>
+        <!-- END BACK_ACTIVE -->
 
+        <!-- BEGIN DRUG_ACTIVE -->
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{BACKGROUND_CHECK_ID}">Drug Test Needed?</label>
+          <label class="col-lg-3 control-label" for="drugCheck">Drug Test Needed?</label>
           <div class="col-lg-6">
-              <div class="btn-group" data-toggle="buttons" role="group" aria-label="drug selector">
+              <div id="drugCheck" class="btn-group" data-toggle="buttons" role="group" aria-label="drug selector">
                 <label class="btn btn-default {DRUG_ACTIVE}">
                   <input type="radio" name="drug_code" autocomplete="off" value="1" {DRUG_CHECKED}> Yes
                 </label>
@@ -186,6 +189,7 @@
               </div>
           </div>
       </div>
+      <!-- END DRUG_ACTIVE -->
 
       </fieldset>
 
