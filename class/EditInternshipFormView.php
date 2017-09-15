@@ -608,13 +608,15 @@ class EditInternshipFormView {
 
         $this->tpl['STUDENT_GPA'] = $this->intern->getGpa();
 
-        if (\Current_User::isDeity()) {
-            $campus = Internship::getCampusAssoc();
-            $this->form->addSelect('campus', $campus);
-            $this->form->setMatch('campus', $this->intern->campus);
-            $this->form->addCssClass('campus', 'form-control');
-        }else{
-            $this->tpl['CAMPUS'] = $this->intern->getCampusFormatted();
+        if($this->settings->getMultiCampusEnabled()){
+            if (\Current_User::isDeity()) {
+                $campus = Internship::getCampusAssoc();
+                $this->form->addSelect('campus', $campus);
+                $this->form->setMatch('campus', $this->intern->campus);
+                $this->form->addCssClass('campus', 'form-control');
+            } else {
+                $this->tpl['CAMPUS'] = $this->intern->getCampusFormatted();
+            }
         }
 
         $this->tpl['LEVEL'] = $this->intern->getLevelFormatted();

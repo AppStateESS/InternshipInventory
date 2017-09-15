@@ -124,10 +124,12 @@
           <div class="col-lg-6"><p class="form-control-static">{STUDENT_GPA}</p></div>
         </div>
 
+        <!-- BEGIN campus -->
         <div class="form-group">
           <label class="col-lg-3 control-label" for="campus">Campus</label>
           <div id="campus" class="col-lg-6"><p class="form-control-static">{CAMPUS}</p></div>
         </div>
+        <!-- END campus -->
 
         <div class="form-group">
           <label class="col-lg-3 control-label" for="level">Level</label>

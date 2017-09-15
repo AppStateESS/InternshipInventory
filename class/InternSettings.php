@@ -233,7 +233,23 @@ class InternSettings {
         $result = \PHPWS_Settings::get('intern', 'backgroundCheckEmail');
 
         if (!isset($result) || is_null($result)) {
-            throw new \InvalidArgumentException('Missing configuration for background/drug check address.');
+            return false;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Returns true if multiple campuses are allowed (i.e. main campus and distance ed.) Default false.
+     *
+     * @return boolean True if multiple campuses are allowed (i.e. main campus and distance ed), false otherwise.
+     */
+    public function getMultiCampusEnabled()
+    {
+        $result = \PHPWS_Settings::get('intern', 'multiCampusEnabled');
+
+        if (!isset($result) || is_null($result)) {
+            return false;
         }
 
         return $result;

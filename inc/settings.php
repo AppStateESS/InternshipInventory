@@ -17,4 +17,5 @@ $settings = array('registrarEmail'              => null,
                   'studentDataSource'           => 'localDataProvider', // 'localDataProvider', 'webServiceDataProvider', 'webServiceTestProvider'
                   'requireIntlCertification'    => true,
                   'generateContractEnabled'     => null
+                  'multiCampusEnabled'          => true,
             );
