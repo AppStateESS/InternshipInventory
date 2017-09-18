@@ -4,6 +4,7 @@ namespace Intern;
 
 use Intern\ChangeHistoryView;
 use Intern\DepartmentFactory;
+use Intern\TermFactory;
 
 /**
  * View class for showing the big internship form for
@@ -24,7 +25,7 @@ class EditInternshipFormView {
     private $agency;
     private $department;
     private $docs;
-    private $termInfo;
+    private $term;
 
     private $formVals;
 
@@ -34,7 +35,7 @@ class EditInternshipFormView {
      * @param string $pagetitle
      * @param Internship $i
      */
-    public function __construct(Internship $i, Student $student = null, Agency $agency, Array $docs, TermInfo $termInfo)
+    public function __construct(Internship $i, Student $student = null, Agency $agency, Array $docs, Term $term)
     {
         \Layout::addPageTitle('Edit Internship');
 
@@ -44,7 +45,7 @@ class EditInternshipFormView {
         $this->agency = $agency;
         $this->department = $this->intern->getDepartment();
         $this->docs = $docs;
-        $this->termInfo = $termInfo;
+        $this->term = $term;
 
         $this->tpl = array();
 
@@ -93,9 +94,9 @@ class EditInternshipFormView {
         }
 
         // Determine if we can copy to the next term (i.e. the next term exists)
-        $nextTerm = Term::getNextTerm($this->intern->getTerm());
-        if(Term::termExists($nextTerm)){
-            $this->tpl['NEXT_TERM'] = Term::rawToRead($nextTerm);
+        $nextTerm = TermFactory::getNextTerm($this->term);
+        if($nextTerm !== null){
+            $this->tpl['NEXT_TERM'] = $nextTerm->getDescription();
         }
 
 
@@ -419,7 +420,7 @@ class EditInternshipFormView {
 
 
         if (\Current_User::isDeity()) {
-            $terms = Term::getTermsAssoc();
+            $terms = TermFactory::getTermsAssoc();
             $this->form->addSelect('term', $terms);
             $this->form->setMatch('term', $this->intern->term);
             $this->form->addCssClass('term', 'form-control');
@@ -686,12 +687,7 @@ class EditInternshipFormView {
         $this->formVals['start_date'] = $this->intern->start_date ? date('m/d/Y', $this->intern->start_date) : null;
         $this->formVals['end_date'] = $this->intern->end_date ? date('m/d/Y', $this->intern->end_date) : null;
 
-        $part = $this->termInfo->getLongestTermPart();
-        if($part === null){
-            $this->tpl['TERM_DATES'] = $this->termInfo->getTermStartDate() . ' through ' . $this->termInfo->getTermEndDate() . ' (provisional)';
-        } else {
-            $this->tpl['TERM_DATES'] = $part->part_start_date . ' through ' . $part->part_end_date;
-        }
+        $this->tpl['TERM_DATES'] = $this->term->getStartDateFormatted() . ' through ' . $this->term->getEndDateFormatted();
 
         $this->formVals['credits'] = $this->intern->credits;
         $this->formVals['avg_hours_week'] = $this->intern->avg_hours_week;

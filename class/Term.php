@@ -50,6 +50,24 @@ class Term {
         return $this->description;
     }
 
+    public function getStartTimestamp(): int {
+        return $this->start_timestamp;
+    }
+
+    public function getStartDateFormatted(): string
+    {
+        return date('n/h/Y', $this->start_timestamp);
+    }
+
+    public function getEndTimestamp(): int {
+        return $this->end_timestamp;
+    }
+
+    public function getEndDateFormatted(): string
+    {
+        return date('n/h/Y', $this->end_timestamp);
+    }
+
     // public function getCSV()
     // {
     //     return array('Term' => Term::rawToRead($this->term, false));

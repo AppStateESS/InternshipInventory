@@ -4,6 +4,16 @@ namespace Intern;
 class TermFactory
 {
 
+    public static function getTermByTermCode(string $termCode): Term {
+        $db = PdoFactory::getPdoInstance();
+
+        $stmt = $db->prepare('SELECT * from intern_term where term = :termCode');
+        $stmt->execute(array('termCode' => $termCode));
+        $stmt->setFetchMode(\PDO::FETCH_CLASS, '\Intern\TermRestored');
+
+        return $stmt->fetch();
+    }
+
     /**
     * Get an associative array of every term
     * in the database. Looks like: { 201840 => 'Fall 2018' }
@@ -15,7 +25,7 @@ class TermFactory
 
         $stmt = $db->prepare('SELECT * from intern_term');
         $stmt->execute();
-        $stmt->setFetchMode(\PDO::FETCH_CLASS, 'Term');
+        $stmt->setFetchMode(\PDO::FETCH_CLASS, '\Intern\TermRestored');
 
         $results = $stmt->fetchAll();
 
@@ -28,6 +38,23 @@ class TermFactory
         return $terms;
     }
 
+    public static function getNextTerm(Term $term) {
+
+        $db = PdoFactory::getPdoInstance();
+
+        $stmt = $db->prepare('SELECT * FROM intern_term WHERE start_timestamp > :currentTermStart ORDER BY start_timestamp ASC LIMIT 1');
+        $stmt->execute(array('currentTermStart' => $term->getStartTimestamp()));
+        $stmt->setFetchMode(\PDO::FETCH_CLASS, '\Intern\TermRestored');
+
+        $result = $stmt->fetch();
+
+        if($result === false){
+            return null;
+        }
+
+        return $result;
+    }
+
     /**
      * Get an associative array of terms > current term
      * in the database. Looks like: { raw_term => readable_string }
@@ -38,7 +65,7 @@ class TermFactory
 
         $stmt = $db->prepare('SELECT * from intern_term where term > :currentTerm ORDER BY term asc');
         $stmt->execute(array('currentTerm'=>$baseTerm));
-        $stmt->setFetchMode(\PDO::FETCH_CLASS, 'Term');
+        $stmt->setFetchMode(\PDO::FETCH_CLASS, '\Intern\TermRestored');
 
         $results = $stmt->fetchAll();
 
