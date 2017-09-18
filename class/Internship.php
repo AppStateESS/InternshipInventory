@@ -702,8 +702,9 @@ class Internship {
             // Makes this cell in the table a clickable link, even if there's no faculty name
             $tags['FACULTY_NAME'] = PHPWS_Text::moduleLink('&nbsp;', 'intern', array('action' => 'ShowInternship', 'internship_id' => $this->id));
         }
-
-        $tags['TERM'] = PHPWS_Text::moduleLink(Term::rawToRead($this->term), 'intern', array('action' => 'ShowInternship', 'internship_id' => $this->id));
+        
+        $term = TermFactory::getTermByTermCode($this->term);
+        $tags['TERM'] = PHPWS_Text::moduleLink($term->getDescription(), 'intern', array('action' => 'ShowInternship', 'internship_id' => $this->id));
 
         $tags['WORKFLOW_STATE'] = PHPWS_Text::moduleLink($this->getWorkflowState()->getFriendlyName(), 'intern', array('action' => 'ShowInternship', 'internship_id' => $this->id));
 
