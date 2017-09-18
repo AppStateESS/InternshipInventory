@@ -425,7 +425,7 @@ class EditInternshipFormView {
             $this->form->setMatch('term', $this->intern->term);
             $this->form->addCssClass('term', 'form-control');
         }else{
-            $this->tpl['TERM'] = Term::rawToRead($this->intern->term);
+            $this->tpl['TERM'] = $this->term->getDescription();
         }
 
 
