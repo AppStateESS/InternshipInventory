@@ -5,7 +5,7 @@ use \Intern\InternshipFactory;
 use \Intern\AgencyFactory;
 use \Intern\InternshipView;
 use \Intern\DataProvider\Student\StudentDataProviderFactory;
-use \Intern\DataProvider\Term\TermInfoProviderFactory;
+use \Intern\TermFactory;
 
 class ShowInternship {
 
@@ -54,10 +54,9 @@ class ShowInternship {
         }
 
         // Load the term info for this internship
-        $termProvider = TermInfoProviderFactory::getProvider();
-        $termInfo = $termProvider->getTermInfo($intern->getTerm());
+        $term = TermFactory::getTermByTermCode($intern->getTerm());
 
-        $view = new InternshipView($intern, $student, $wfState, $agency, $docs, $termInfo);
+        $view = new InternshipView($intern, $student, $wfState, $agency, $docs, $term);
 
         return $view->display();
     }
