@@ -3,6 +3,7 @@
 namespace Intern\WorkflowTransition;
 use Intern\WorkflowTransition;
 use Intern\Internship;
+use Intern\TermFactory;
 
 class CancelTransition extends WorkflowTransition {
     //const sourceState = '*';
@@ -23,11 +24,13 @@ class CancelTransition extends WorkflowTransition {
     {
         $settings = \Intern\InternSettings::getInstance();
 
-        $email = new \Intern\Email\CancelInternshipNotice($settings, $i);
+        $term = TermFactory::getTermByTermCode($i->getTerm());
+
+        $email = new \Intern\Email\CancelInternshipNotice($settings, $i, $term);
         $email->send();
 
         if($i->isInternational()){
-            $email = new \Intern\Email\IntlInternshipCancelNotice($settings, $i);
+            $email = new \Intern\Email\IntlInternshipCancelNotice($settings, $i, $term);
             $email->send();
         }
     }
