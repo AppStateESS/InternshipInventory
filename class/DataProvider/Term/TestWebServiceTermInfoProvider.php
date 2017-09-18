@@ -170,9 +170,9 @@ class TestWebServiceTermInfoProvider extends WebServiceTermInfoProvider {
 
                 break;
             case '201820':
-                $responseObj->term_start_date   = '1/16/2018';
-                $responseObj->term_end_date     = '5/1/2018';
-                $responseObj->census_date       = '1/28/2018';
+                $responseObj->term_start_date   = '5/30/2018';
+                $responseObj->term_end_date     = '6/30/2018';
+                $responseObj->census_date       = '6/1/2018';
 
                 $partTerm = new \stdClass();
                 $partTerm->part_term_code   = 'SD';
