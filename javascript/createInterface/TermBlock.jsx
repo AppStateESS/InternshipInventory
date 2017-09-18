@@ -57,7 +57,10 @@ var TermBlock = React.createClass({
 
         var termDates = null;
         if(this.state.selectedTerm !== null){
-            termDates = this.state.terms[this.state.selectedTerm].startDate + " through " + this.state.terms[this.state.selectedTerm].endDate;
+            let startDate = new Date(this.state.terms[this.state.selectedTerm].start_timestamp * 1000);
+            let endDate = new Date(this.state.terms[this.state.selectedTerm].end_timestamp * 1000);
+
+            termDates = startDate.toDateString() + " through " + endDate.toDateString();
         }else{
             termDates = '';
         }

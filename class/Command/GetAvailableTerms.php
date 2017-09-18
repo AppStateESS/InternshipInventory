@@ -3,6 +3,7 @@ namespace Intern\Command;
 
 use \Intern\Term as Term;
 use \Intern\DataProvider\Term\TermInfoProviderFactory;
+use Intern\TermFactory;
 
 /**
  * JSON endpoint for getting begin/end date and census date information for a term.
@@ -15,9 +16,12 @@ class GetAvailableTerms {
 
     public function execute()
     {
-        $futureTerms = Term::getFutureTermsAssoc();
+        $availableTerms = TermFactory::getAvailableTerms();
 
-        $termProvider = TermInfoProviderFactory::getProvider();
+        echo json_encode($availableTerms);
+        exit;
+
+        //$termProvider = TermInfoProviderFactory::getProvider();
 
         $terms = array();
         foreach($futureTerms as $term => $description){
