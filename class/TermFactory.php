@@ -59,21 +59,15 @@ class TermFactory
      * Get an associative array of terms > current term
      * in the database. Looks like: { raw_term => readable_string }
      */
-    public static function getFutureTermsAssoc(string $baseTerm): array
+    public static function getFutureTermsAssoc(): array
     {
         $db = PdoFactory::getPdoInstance();
 
-        $stmt = $db->prepare('SELECT * from intern_term where term > :currentTerm ORDER BY term asc');
-        $stmt->execute(array('currentTerm'=>$baseTerm));
+        $stmt = $db->prepare('SELECT * from intern_term where census_date_timestamp > :currentTimestamp ORDER BY term asc');
+        $stmt->execute(array('currentTimestamp'=>time()));
         $stmt->setFetchMode(\PDO::FETCH_CLASS, '\Intern\TermRestored');
 
-        $results = $stmt->fetchAll();
-
-        $terms = array();
-
-        foreach ($results as $term) {
-            $terms[$term->getTermCode()] = $term->getDescription();
-        }
+        $terms = $stmt->fetchAll();
 
         return $terms;
     }
