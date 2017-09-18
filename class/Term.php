@@ -23,9 +23,10 @@ class Term {
     public $census_date_timestamp;
     public $start_timestamp;
     public $end_timestamp;
+    public $semester_type; // The type of semester this is. E.g. Fall, Spring, Summer 1, Summer 2. See class constants below.
 
 
-    // General "time of year" defines. NB: There can be multiple terms for a given semster.
+    // Semester constants. For general "time of year". NB: There can be multiple terms for a given semster.
     const SPRING    = 1;
     const SUMMER1   = 2;
     const SUMMER2   = 3;
@@ -66,6 +67,10 @@ class Term {
     public function getEndDateFormatted(): string
     {
         return date('n/h/Y', $this->end_timestamp);
+    }
+
+    public function getSemesterType(): int{
+        return $this->semester_type;
     }
 
     // public function getCSV()

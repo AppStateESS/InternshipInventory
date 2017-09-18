@@ -47,6 +47,7 @@ alter table intern_term add column available_on_timestamp integer;
 alter table intern_term add column census_date_timestamp integer;
 alter table intern_term add column start_timestamp integer;
 alter table intern_term add column end_timestamp integer;
+alter table intern_term add column semester_type integer;
 
 alter table intern_term drop column id;
 alter table intern_term add primary key (term);

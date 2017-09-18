@@ -70,7 +70,7 @@ class Student {
      * @param $term integer The term the internship will be in. Used to check existing credit hours.
      * @return boolean
      */
-    public function isCreditHourLimited($internHours, $term)
+    public function isCreditHourLimited($internHours, Term $term)
     {
         if(!isset($this->creditHours)){
             return;
@@ -78,7 +78,7 @@ class Student {
 
         $totalHours = $this->creditHours + $internHours;
 
-        $semester = Term::getSemester($term);
+        $semester = $term->getSemesterType();
         $level = $this->getLevel();
         $limit = 0;
         if(($semester == Term::FALL || $semester == Term::SPRING)) {

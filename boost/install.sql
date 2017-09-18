@@ -546,7 +546,7 @@ CREATE TABLE intern_term (
        census_date_timestamp integer NOT NULL,
        start_timestamp integer NOT NULL,
        end_timestamp integer NOT NULL,
-
+       semester_type integer NOT NULL,
        PRIMARY KEY (term)
 );
 
