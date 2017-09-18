@@ -3,7 +3,7 @@
 namespace Intern\UI;
 
 use Intern\Internship;
-use Intern\Term;
+use Intern\TermFactory;
 use Intern\DepartmentFactory;
 use Intern\Major;
 use Intern\GradProgram;
@@ -44,7 +44,7 @@ class SearchUI implements UI
         /***************
          * Course Info *
          ***************/
-        $terms = Term::getTermsAssoc();
+        $terms = TermFactory::getTermsAssoc();
         $form->addSelect('term_select', array(-1 => 'All') + $terms);
         $form->setLabel('term_select', 'Term');
         $form->setClass('term_select', 'form-control');
