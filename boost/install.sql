@@ -540,9 +540,14 @@ CREATE SEQUENCE intern_affiliation_agreement_seq;
 
 -- Term format YYYY# (e.g. 20111 is Spring 2011, 20113 is Fall 2011)
 CREATE TABLE intern_term (
-       id INT NOT NULL,
-       term INT NOT NULL UNIQUE,
-       PRIMARY KEY (id)
+       term character varying NOT NULL,
+       description character varying NOT NULL,
+       available_on_timestamp integer NOT NULL,
+       census_date_timestamp integer NOT NULL,
+       start_timestamp integer NOT NULL,
+       end_timestamp integer NOT NULL,
+
+       PRIMARY KEY (term)
 );
 
 create table intern_student_autocomplete (
@@ -564,7 +569,7 @@ create table intern_student_autocomplete (
 
 CREATE TABLE intern_internship (
        id INT NOT NULL,
-       term INT NOT NULL REFERENCES intern_term(term),
+       term character varying NOT NULL REFERENCES intern_term(term),
 
        agency_id INT NOT NULL REFERENCES intern_agency(id),
        faculty_id integer REFERENCES intern_faculty(id),
@@ -925,17 +930,6 @@ CREATE TABLE intern_local_student_data (
     zip                 character varying,
 
     primary key(student_id)
-);
-
-CREATE TABLE intern_local_term_data (
-
-    term_code character varying not null,
-    start_date integer not null,
-    end_date integer not null,
-    census_date integer not null,
-    description character varying not null,
-
-    primary key(term_code)
 );
 
 COMMIT;

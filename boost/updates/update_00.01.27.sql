@@ -30,13 +30,23 @@ CREATE TABLE intern_local_student_data (
     primary key(student_id)
 );
 
-CREATE TABLE intern_local_term_data (
+alter table intern_internship drop constraint intern_internship_term_fkey;
 
-    term_code character varying not null,
-    start_date integer not null,
-    end_date integer not null,
-    census_date integer not null,
-    description character varying not null,
+alter table intern_term drop constraint intern_term_term_key;
 
-    primary key(term_code)
-);
+alter table intern_term alter column term TYPE character varying;
+alter table intern_term alter column term drop default;
+alter table intern_term alter column term set not null;
+
+alter table intern_internship alter column term TYPE character varying;
+
+alter table intern_internship add constraint intern_internship_term_fkey FOREIGN KEY (term) REFERENCES intern_term(term);
+
+alter table intern_term add column description character varying;
+alter table intern_term add column available_on_timestamp integer;
+alter table intern_term add column census_date_timestamp integer;
+alter table intern_term add column start_timestamp integer;
+alter table intern_term add column end_timestamp integer;
+
+alter table intern_term drop column id;
+alter table intern_term add primary key (term);
