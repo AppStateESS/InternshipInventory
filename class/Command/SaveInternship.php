@@ -6,6 +6,7 @@ use \Intern\ChangeHistory;
 use \Intern\AgencyFactory;
 use \Intern\DatabaseStorage;
 use \Intern\DataProvider\Student\StudentDataProviderFactory;
+use \Intern\TermFactory;
 use \Intern\Exception\StudentNotFoundException;
 
 /**
@@ -130,7 +131,7 @@ class SaveInternship {
 
         // Load the student object
         try {
-            $student = StudentDataProviderFactory::getProvider()->getStudent($i->getBannerId(), $i->getTerm());
+            $student = StudentDataProviderFactory::getProvider()->getStudent($i->getBannerId());
         } catch (StudentNotFoundException $e){
             $student = null;
 
@@ -152,6 +153,8 @@ class SaveInternship {
         if (\Current_User::isDeity()) {
             $i->term = $_REQUEST['term'];
         }
+
+        $term = TermFactory::getTermByTermCode($i->term);
 
         // Internship experience type
         if(isset($_REQUEST['experience_type'])){
@@ -411,7 +414,7 @@ class SaveInternship {
 
         // If the background check or drug check status changed to true (computed earlier), then send a notification
         if($backgroundCheck || $drugCheck) {
-            $email = new \Intern\Email\BackgroundCheckEmail(\Intern\InternSettings::getInstance(), $i, $agency, $backgroundCheck, $drugCheck);
+            $email = new \Intern\Email\BackgroundCheckEmail(\Intern\InternSettings::getInstance(), $i, $term, $agency, $backgroundCheck, $drugCheck);
             $email->send();
         }
 
