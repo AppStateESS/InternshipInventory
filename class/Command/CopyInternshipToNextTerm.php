@@ -3,7 +3,7 @@ namespace Intern\Command;
 
 use \Intern\InternshipFactory;
 use \Intern\WorkflowStateFactory;
-use \Intern\Term;
+use \Intern\TermFactory;
 
 /**
  * Controller class to save a copy of an Internship for the next term
@@ -33,13 +33,15 @@ class CopyInternshipToNextTerm {
         $internship->setState($state); // Set this initial value
 
         // Calculate the new term and set it
-        $newTerm = Term::getNextTerm($internship->getTerm());
-        $internship->setTerm($newTerm);
+        $existingTerm = TermFactory::getTermByTermCode($internship->getTerm());
+        $newTerm = TermFactory::getNextTerm($existingTerm);
+
+        $internship->setTerm($newTerm->getTermCode());
 
         $copyId = $internship->save();
 
         // Show message if user edited internship
-        \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, 'Continued internship for ' . $internship->getFullName() . ' to ' . Term::rawToRead($newTerm) . '.');
+        \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, 'Continued internship for ' . $internship->getFullName() . ' to ' . $newTerm->getDescription() . '.');
         \NQ::close();
         return \PHPWS_Core::reroute('index.php?module=intern&action=ShowInternship&internship_id=' . $copyId);
     }
