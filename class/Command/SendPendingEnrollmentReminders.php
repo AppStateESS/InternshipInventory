@@ -4,7 +4,7 @@ namespace Intern\Command;
 use Intern\WorkflowStateFactory;
 use Intern\ChangeHistory;
 use Intern\DataProvider\Term\TermInfoProviderFactory;
-use Intern\Term;
+use Intern\TermFactory;
 use Intern\InternshipFactory;
 use Intern\Email;
 
@@ -22,8 +22,7 @@ class SendPendingEnrollmentReminders
     public function execute()
     {
         // Get the list of future terms
-        $provider = TermInfoProviderFactory::getProvider();
-        $terms = array_keys(Term::getFutureTermsAssoc());
+        $terms = TermFactory::getFutureTermsAssoc();
 
         // Get email settings
         $emailSettings = \Intern\InternSettings::getInstance();
@@ -33,13 +32,14 @@ class SendPendingEnrollmentReminders
             $pendingInternships = InternshipFactory::getPendingInternshipsByTerm($term);
 
             // Get the census date for this term
-            $termInfo = $provider->getTermInfo($term);
-            $censusDate = $termInfo->getCensusDate();
-            $censusTimestamp = strtotime($censusDate);
+            $censusTimestamp = $term->getCensusDateTimestamp();
+
+            // Get the human-readable description
+            $termDesc = $term->getDescription();
 
             // Double check that we have a valid census timestamp. Try to avoid sending emails with the date set to December 31, 1969
             if($censusTimestamp === 0 || $censusTimestamp === '' || $censusTimestamp === null || !isset($censusTimestamp) || empty($censusTimestamp)){
-                throw new \InvalidArgumentException("Census timestamp is 0, null, empty, or not set for $term.");
+                throw new \InvalidArgumentException("Census timestamp is 0, null, empty, or not set for $termDesc.");
             }
 
             // Calculate timestamps for 1 week and 4 weeks into the future
@@ -49,14 +49,14 @@ class SendPendingEnrollmentReminders
             if($oneWeekOut > $censusTimestamp){
                 // We're within one week of census
                 $withinOneWeek = true;
-                echo "Within one week of $term\n\n";
+                echo "Within one week of $termDesc\n\n";
             }else if ($fourWeeksOut > $censusTimestamp){
                 // We're more than one week, but less than 4 weeks from census
                 $withinOneWeek = false;
-                echo "Within four weeks of $term\n\n";
+                echo "Within four weeks of $termDesc\n\n";
             }else{
                 // If we're not within four weeks, then we can skip this term completely
-                echo "Not within range of $term\n\n";
+                echo "Not within range of $termDesc\n\n";
                 continue;
             }
 
@@ -68,12 +68,12 @@ class SendPendingEnrollmentReminders
                 $currState = WorkflowStateFactory::getState($i->getStateName());
                 if(!is_null($faculty)){
                     if($withinOneWeek){
-                        $email = new \Intern\Email\EnrollmentReminderEmail($emailSettings, $i, $censusTimestamp, $faculty->getUsername(), 'FacultyReminderEmail1Week.tpl');
+                        $email = new \Intern\Email\EnrollmentReminderEmail($emailSettings, $i, $term, $censusTimestamp, $faculty->getUsername(), 'FacultyReminderEmail1Week.tpl');
                         $email->send();
 
                         $ch = new ChangeHistory($i, null, time(), $currState, $currState, 'Faculty 1-Week Census Date Reminder Sent');
                     }else{
-                        $email = new \Intern\Email\EnrollmentReminderEmail($emailSettings, $i, $censusTimestamp, $faculty->getUsername(), 'FacultyReminderEmail4Weeks.tpl');
+                        $email = new \Intern\Email\EnrollmentReminderEmail($emailSettings, $i, $term, $censusTimestamp, $faculty->getUsername(), 'FacultyReminderEmail4Weeks.tpl');
                         $email->send();
 
                         $ch = new ChangeHistory($i, null, time(), $currState, $currState, 'Faculty Census Date Reminder Sent');
@@ -84,12 +84,12 @@ class SendPendingEnrollmentReminders
 
                 // Email the student
                 if($withinOneWeek){
-                    $email = new \Intern\Email\EnrollmentReminderEmail($emailSettings, $i, $censusTimestamp, $i->getEmailAddress(), 'StudentReminderEmail1Week.tpl');
+                    $email = new \Intern\Email\EnrollmentReminderEmail($emailSettings, $i, $term, $censusTimestamp, $i->getEmailAddress(), 'StudentReminderEmail1Week.tpl');
                     $email->send();
 
                     $ch = new ChangeHistory($i, null, time(), $currState, $currState, 'Student 1-Week Census Date Reminder Sent');
                 }else{
-                    $email = new \Intern\Email\EnrollmentReminderEmail($emailSettings, $i, $censusTimestamp, $i->getEmailAddress(), 'StudentReminderEmail4Weeks.tpl');
+                    $email = new \Intern\Email\EnrollmentReminderEmail($emailSettings, $i, $term, $censusTimestamp, $i->getEmailAddress(), 'StudentReminderEmail4Weeks.tpl');
                     $email->send();
 
                     $ch = new ChangeHistory($i, null, time(), $currState, $currState, 'Student Census Date Reminder Sent');
