@@ -19,9 +19,12 @@ class InternshipInventory {
     public function handleRequest()
     {
         /* Check if it is time to insert more terms into DB */
+        // TODO: Remove this. Maybe add warning if no available terms.
+        /*
         if (Term::isTimeToUpdate()) {
             Term::doTermUpdate();
         }
+        */
 
 
 
@@ -170,8 +173,8 @@ class InternshipInventory {
             case 'pdf':
                 $i = InternshipFactory::getInternshipById($_REQUEST['internship_id']);
                 $emgContacts = EmergencyContactFactory::getContactsForInternship($i);
-                $termProvider = DataProvider\Term\TermInfoProviderFactory::getProvider();
-                $pdfView = new InternshipContractPdfView($i, $emgContacts, $termProvider);
+                $term = \Intern\TermFactory::getTermByTermCode($i->getTerm());
+                $pdfView = new InternshipContractPdfView($i, $emgContacts, $term);
                 $pdf = $pdfView->getPdf();
                 $pdf->output();
                 exit;

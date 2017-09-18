@@ -17,6 +17,7 @@ class InternshipContractPdfView {
 
     private $internship;
     private $emergencyContacts;
+    private $term;
 
     private $pdf;
 
@@ -27,11 +28,11 @@ class InternshipContractPdfView {
      * @param Array<EmergencyContact> $emergencyContacts
      * @param BannerTermProvider $termProvider
      */
-    public function __construct(Internship $i, Array $emergencyContacts, $termProvider)
+    public function __construct(Internship $i, Array $emergencyContacts, Term $term)
     {
         $this->internship = $i;
         $this->emergencyContacts = $emergencyContacts;
-        $this->termProvider = $termProvider;
+        $this->term = $term;
 
         $this->generatePdf();
     }
@@ -134,15 +135,13 @@ class InternshipContractPdfView {
 
         /* Term right aligned*/
         $this->pdf->setXY(8, 106);
-        $this->pdf->cell(27, 6, Term::rawToRead($this->internship->getTerm()), 0, 0, 'R');
+        $this->pdf->cell(27, 6, $this->term->getDescription(), 0, 0, 'R');
 
         /* Dates for begining and end of term center aligned*/
-        $termInfo = $this->termProvider->getTerm($this->internship->getTerm());
-        $part = $termInfo->getLongestTermPart();
         $this->pdf->setXY(100, 106);
-        $this->pdf->cell(30, 5, $part->part_start_date, 0, 0, 'C');
+        $this->pdf->cell(30, 5, $this->term->getStartDateFormatted(), 0, 0, 'C');
         $this->pdf->setXY(173, 106);
-        $this->pdf->cell(30, 5, $part->part_end_date, 0, 0, 'C');
+        $this->pdf->cell(30, 5, $this->term->getEndDateFormatted(), 0, 0, 'C');
 
         /***
          * Faculty supervisor information.
