@@ -49,7 +49,7 @@ class WebServiceDataProvider extends StudentDataProvider {
      * Returns a Student object with hard-coded data
      * @return Student
      */
-    public function getStudent($studentId, $term)
+    public function getStudent($studentId)
     {
         $term .= "0";
 
@@ -102,7 +102,7 @@ class WebServiceDataProvider extends StudentDataProvider {
         // Log the request
         $this->logRequest('getStudent', 'success', $params);
 
-        $response->creditHours = $this->getCreditHours($studentId, $term);
+        //$response->creditHours = $this->getCreditHours($studentId, $term);
 
         // Create the Student object and plugin the values
         $student = new Student();

@@ -18,7 +18,7 @@ abstract class StudentDataProvider {
      * @param string term
      * @return Student
      */
-    public abstract function getStudent($studentId, $term);
+    public abstract function getStudent($studentId);
 
     /**
      * Returns the number of credit hours the given student is currently

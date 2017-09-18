@@ -18,7 +18,7 @@ class LocalDbStudentDataProvider extends StudentDataProvider {
     const DOCTORAL  = 'D';
     const POSTDOC   = 'P'; // Guessing at the name here, not sure what 'P' really is
 
-    public function getStudent($studentId, $term){
+    public function getStudent($studentId){
         $db = PdoFactory::getPdoInstance();
 
         $query = 'SELECT * FROM intern_local_student_data WHERE student_id = :studentId';

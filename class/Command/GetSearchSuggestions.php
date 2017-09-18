@@ -76,7 +76,7 @@ class GetSearchSuggestions {
      */
     private function studentIdSearch($studentId)
     {
-        $student = StudentDataProviderFactory::getProvider()->getStudent($studentId, Term::timeToTerm(time()));
+        $student = StudentDataProviderFactory::getProvider()->getStudent($studentId);
 
         return $student;
     }
