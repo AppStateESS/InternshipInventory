@@ -186,7 +186,7 @@ class Internship {
 
         // Majors - If double major, just take index 0
         $majors = $student->getMajors();
-        if(is_array($majors)) {
+        if(is_array($majors) && sizeof($majors) > 0) {
             $this->major_code = $majors[0]->getCode();
             $this->major_description = $majors[0]->getDescription();
         } else if (is_object($majors)) {
