@@ -73,6 +73,10 @@ class Term {
         return $this->semester_type;
     }
 
+    public function getCensusDateTimestamp(): int {
+        return $this->census_date_timestamp;
+    }
+
     // public function getCSV()
     // {
     //     return array('Term' => Term::rawToRead($this->term, false));
