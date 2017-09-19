@@ -26,6 +26,7 @@ CREATE TABLE intern_department (
        name VARCHAR NOT NULL UNIQUE,
        hidden SMALLINT NULL DEFAULT 0,
        corequisite SMALLINT NOT NULL DEFAULT 0,
+       college_name character varying,
        PRIMARY KEY(id)
 );
 
