@@ -16,6 +16,7 @@ use \Intern\InternSettings;
 class IntlInternshipReinstateNotice extends Email {
 
     private $internship;
+    private $term;
 
     /**
     *  Sends the  reinstate notification email to OIED.
@@ -23,10 +24,11 @@ class IntlInternshipReinstateNotice extends Email {
     * @param InternSettings $emailSettings
     * @param Internship $internship
     */
-    public function __construct(InternSettings $emailSettings, Internship $internship) {
+    public function __construct(InternSettings $emailSettings, Internship $internship, Term $term) {
         parent::__construct($emailSettings);
 
         $this->internship = $internship;
+        $this->term = $term;
     }
 
     protected function getTemplateFileName() {
@@ -37,7 +39,7 @@ class IntlInternshipReinstateNotice extends Email {
     {
         $this->tpl['NAME'] = $this->internship->getFullName();
         $this->tpl['BANNER'] = $this->internship->banner;
-        $this->tpl['TERM'] = Term::rawToRead($this->internship->term, false);
+        $this->tpl['TERM'] = $this->term->getDescription();
 
         $countries = \Intern\CountryFactory::getCountries();
         $this->tpl['COUNTRY'] = $countries[$this->internship->loc_country];

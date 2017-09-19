@@ -16,15 +16,17 @@ use \Intern\Term;
 class IntlInternshipCreateNotice extends Email {
 
     private $internship;
+    private $term;
 
     /**
      * @param InternSettings $emailSettings
      * @param Internship $internship
      */
-    public function __construct(InternSettings $emailSettings, Internship $internship) {
+    public function __construct(InternSettings $emailSettings, Internship $internship, Term $term) {
         parent::__construct($emailSettings);
 
         $this->internship = $internship;
+        $this->term = $term;
     }
 
     protected function getTemplateFileName(){
@@ -37,7 +39,7 @@ class IntlInternshipCreateNotice extends Email {
         $this->tpl['BANNER'] = $this->internship->banner;
         $this->tpl['USER'] = $this->internship->email;
         $this->tpl['PHONE'] = $this->internship->phone;
-        $this->tpl['TERM'] = Term::rawToRead($this->internship->term);
+        $this->tpl['TERM'] = $this->term->getDescription();
         $this->tpl['COUNTRY'] = $this->internship->loc_country;
 
         $dept = new Department($this->internship->department_id);

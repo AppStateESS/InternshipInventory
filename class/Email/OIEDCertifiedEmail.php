@@ -16,15 +16,17 @@ class OIEDCertifiedEmail extends Email{
 
     private $internship;
     private $agency;
+    private $term;
 
     /**
     * @param InternSettings $emailSettings
     * @param Internship $internship
     */
-    public function __construct(InternSettings $emailSettings, Internship $internship) {
+    public function __construct(InternSettings $emailSettings, Internship $internship, Term $term) {
         parent::__construct($emailSettings);
 
         $this->internship = $internship;
+        $this->term = $term;
         $this->agency = $internship->getAgency();
     }
 
@@ -38,7 +40,7 @@ class OIEDCertifiedEmail extends Email{
 
         $this->tpl['NAME'] = $this->internship->getFullName();
         $this->tpl['BANNER'] = $this->internship->getBannerId();
-        $this->tpl['TERM'] = Term::rawToRead($this->internship->getTerm(), false);
+        $this->tpl['TERM'] = $this->term->getDescription();
         $this->tpl['FACULTY'] = $faculty->getFullName();
         $this->tpl['AGENCY'] = $this->agency->getName();
 

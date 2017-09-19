@@ -407,7 +407,7 @@ class SaveInternship {
 
             // Notify the faculty member that OIED has certified the internship
             if ($i->getFaculty() != null) {
-                $email = new \Intern\Email\OIEDCertifiedEmail(\Intern\InternSettings::getInstance(), $i);
+                $email = new \Intern\Email\OIEDCertifiedEmail(\Intern\InternSettings::getInstance(), $i, $term);
                 $email->send();
             }
         }

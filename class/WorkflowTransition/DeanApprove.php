@@ -1,11 +1,14 @@
 <?php
 
 namespace Intern\WorkflowTransition;
+
 use Intern\WorkflowTransition;
 use Intern\Internship;
 use Intern\ExpectedCourseFactory;
 use Intern\Email\UnusualCourseEmail;
 use \Intern\InternSettings;
+use Intern\TermFactory;
+
 use Intern\Exception\MissingDataException;
 
 class DeanApprove extends WorkflowTransition {
@@ -32,23 +35,25 @@ class DeanApprove extends WorkflowTransition {
     {
         $settings = \Intern\InternSettings::getInstance();
 
+        $term = TermFactory::getTermByTermCode($i->getTerm());
+
         // If this is an undergrad internship, then send the Registrar an email
         // Graduate level internships have another workflow state to go through before we alert the Registrar
         if($i->isUndergraduate()){
-            $email = new \Intern\Email\ReadyToRegisterEmail($settings, $i);
+            $email = new \Intern\Email\ReadyToRegisterEmail($settings, $i, $term);
             $email->send();
         }
 
         // If this is a graduate email, send the notification email to the grad school office
         if($i->isGraduate()){
-            $email = new \Intern\Email\GradSchoolNotificationEmail($settings, $i);
+            $email = new \Intern\Email\GradSchoolNotificationEmail($settings, $i, $term);
             $email->send();
         }
 
         // If the subject and course number are not registered with InternshipInventory,
         // send an email to the appropriate receiver.
         if (!ExpectedCourseFactory::isExpectedCourse($i->getSubject(), $i->getCourseNumber())) {
-            $email = new UnusualCourseEmail(InternSettings::getInstance(), $i);
+            $email = new UnusualCourseEmail(InternSettings::getInstance(), $i, $term);
             $email->send();
         }
     }
