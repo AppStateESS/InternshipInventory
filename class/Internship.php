@@ -119,6 +119,10 @@ class Internship {
     // Form token
     public $form_token;
 
+
+    // Static vars - Used to avoid repeated DB queries when looping over Internship objects
+    private static $termDescriptionList;
+
     /**
      * Constructs a new Internship object.
      */
@@ -258,6 +262,12 @@ class Internship {
      */
     public function getCSV()
     {
+        // Initalize term description list, if needed
+        // Store term list in a static var, so hopefully we only do this once per export
+        if(!isset(self::$termDescriptionList)){
+            self::$termDescriptionList = TermFactory::getTermsAssoc();
+        }
+
         $csv = array();
 
         // Student data
@@ -302,7 +312,7 @@ class Internship {
         $csv['Emergency Contact Phone']    = $this->getEmergencyContactPhoneNumber();
 
         // Internship Data
-        $csv['Term']                   = Term::rawToRead($this->term, false);
+        $csv['Term']                   = self::$termDescriptionList[$this->term];
         $csv['Start Date']             = $this->getStartDate(true);
         $csv['End Date']               = $this->getEndDate(true);
         $csv['Credits']                = $this->credits;
@@ -326,7 +336,13 @@ class Internship {
         // Course Info
         $csv['Multi-part']             = $this->isMultipart() ? 'Yes' : 'No';
         $csv['Secondary Part']         = $this->isSecondaryPart() ? 'Yes' : 'No';
-        $csv['Course Subject']         = $this->getSubject()->getName();
+
+        if($this->getSubject() !== null){
+            $csv['Course Subject']     = $this->getSubject()->getName();
+        }else {
+            $csv['Course Subject']     = '';
+        }
+        
         $csv['Course Number']          = $this->course_no;
         $csv['Course Section']         = $this->course_sect;
         $csv['Course Title']           = $this->course_title;
@@ -702,7 +718,7 @@ class Internship {
             // Makes this cell in the table a clickable link, even if there's no faculty name
             $tags['FACULTY_NAME'] = PHPWS_Text::moduleLink('&nbsp;', 'intern', array('action' => 'ShowInternship', 'internship_id' => $this->id));
         }
-        
+
         $term = TermFactory::getTermByTermCode($this->term);
         $tags['TERM'] = PHPWS_Text::moduleLink($term->getDescription(), 'intern', array('action' => 'ShowInternship', 'internship_id' => $this->id));
 
