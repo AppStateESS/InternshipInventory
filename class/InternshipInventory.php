@@ -2,6 +2,8 @@
 
 namespace Intern;
 
+use Intern\UI\NotifyUI;
+
 class InternshipInventory {
 
     private $content;
@@ -18,13 +20,11 @@ class InternshipInventory {
 
     public function handleRequest()
     {
-        /* Check if it is time to insert more terms into DB */
-        // TODO: Remove this. Maybe add warning if no available terms.
-        /*
-        if (Term::isTimeToUpdate()) {
-            Term::doTermUpdate();
+        // Check if it is time to add more term. If so, show a warning to admins.
+        $futureTerms = TermFactory::getFutureTermsAssoc();
+        if(sizeof($futureTerms) < 3 && \Current_User::isDeity()){
+            \NQ::simple('intern', NotifyUI::WARNING, "There are less than three future terms avaialble. It's probably time to add a new term.");
         }
-        */
 
 
 
