@@ -11,7 +11,7 @@ class TestMajorsProvider extends BannerMajorsProvider {
         $this->currentUserName = $currentUserName;
     }
 
-    public function getMajors($term)
+    public function getMajors($term): AcademicMajorList
     {
         $m1 = $this->createMajor('219A', 'Computer Science', 'UCERT_219A', 'Computer Science', 'ND', 'Co College Designated', 'G', 'CERT', 'C S', 'Computer Science');
         $m2 = $this->createMajor('301A', 'Accounting', 'BSB_301A', 'Accounting', 'CB', 'College of Business', 'G', 'BSB', 'ACC', 'Accounting');

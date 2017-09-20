@@ -2,6 +2,7 @@
 
 namespace Intern\DataProvider\Major;
 
+use Intern\AcademicMajorList;
 
 abstract class MajorsProvider {
 
@@ -11,6 +12,6 @@ abstract class MajorsProvider {
      * @param $term
      * @return AcademicMajorList
      */
-    public abstract function getMajors($term);
+    public abstract function getMajors($term): AcademicMajorList;
 
 }

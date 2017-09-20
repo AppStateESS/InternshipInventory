@@ -23,7 +23,7 @@ class BannerMajorsProvider extends MajorsProvider {
         $this->client = new \SoapClient($wsdlUri, array('WSDL_CACHE_MEMORY'));
     }
 
-    public function getMajors($term)
+    public function getMajors($term): AcademicMajorList
     {
         if($term === null || $term == '') {
             throw new \InvalidArgumentException('Missing term.');
