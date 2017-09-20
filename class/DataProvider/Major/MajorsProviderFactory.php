@@ -2,6 +2,8 @@
 
 namespace Intern\DataProvider\Major;
 
+use Intern\InternSettings;
+
 /**
  * Majors Provider Factor - Creates a Majors Provider based on settings.
  *
@@ -19,9 +21,23 @@ class MajorsProviderFactory {
     public static function getProvider()
     {
         if(STUDENT_DATA_TEST){
+            var_dump('in here');exit;
             return new TestMajorsProvider(\Current_User::getUsername());
         }
 
-        return new BannerMajorsProvider(\Current_User::getUsername());
+        $providerName = InternSettings::getInstance()->getStudentDataSource();
+
+        switch($providerName){
+            case 'localDataProvider':
+                //return new LocalDbMajorsProvider();
+                return new TestMajorsProvider(\Current_User::getUsername());
+            case 'webServiceTestProvider':
+                return new TestMajorsProvider(\Current_User::getUsername());
+            case 'webServiceDataProvider':
+                return new BannerMajorsProvider(\Current_User::getUsername());
+            default:
+                throw new \UnexpectedValueException('No term data provider configured.');
+        }
+
     }
 }
