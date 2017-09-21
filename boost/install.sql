@@ -24,9 +24,9 @@ CREATE TABLE intern_grad_prog (
 CREATE TABLE intern_department (
        id INT NOT NULL,
        name VARCHAR NOT NULL UNIQUE,
+       college_name character varying,
        hidden SMALLINT NULL DEFAULT 0,
        corequisite SMALLINT NOT NULL DEFAULT 0,
-       college_name character varying,
        PRIMARY KEY(id)
 );
 
@@ -687,45 +687,45 @@ CREATE TABLE intern_courses(
 CREATE SEQUENCE intern_courses_seq;
 
 -- Add Departments
-INSERT INTO intern_department VALUES  (1, 'Accounting');
-INSERT INTO intern_department VALUES  (2, 'Anthropology');
-INSERT INTO intern_department VALUES  (3, 'Art');
-INSERT INTO intern_department VALUES  (4, 'Biology');
-INSERT INTO intern_department VALUES  (5, 'Chemistry');
+INSERT INTO intern_department VALUES  (1, 'Accounting', 'College of Business');
+INSERT INTO intern_department VALUES  (2, 'Anthropology', 'Arts and Sciences');
+INSERT INTO intern_department VALUES  (3, 'Art', 'Fine and Applied Arts');
+INSERT INTO intern_department VALUES  (4, 'Biology', 'Arts and Sciences');
+INSERT INTO intern_department VALUES  (5, 'Chemistry', 'Arts and Sciences');
 INSERT INTO intern_department VALUES  (6, 'Communication Sciences & Disorder');
-INSERT INTO intern_department VALUES  (7, 'Communication');
-INSERT INTO intern_department VALUES  (8, 'Computer Information Systems');
-INSERT INTO intern_department VALUES  (9, 'Computer Science');
-INSERT INTO intern_department VALUES (10, 'Curriculum & Instruction');
-INSERT INTO intern_department VALUES (11, 'Economics');
-INSERT INTO intern_department VALUES (12, 'Educational Leadership');
-INSERT INTO intern_department VALUES (13, 'English');
-INSERT INTO intern_department VALUES (14, 'Family Languages & Literatures');
-INSERT INTO intern_department VALUES (15, 'Finance and Banking & Insurance');
-INSERT INTO intern_department VALUES (16, 'Foreign Languages & Literatures');
-INSERT INTO intern_department VALUES (17, 'Geography & Planning');
-INSERT INTO intern_department VALUES (18, 'Geology');
-INSERT INTO intern_department VALUES (19, 'Government & Justice Studies');
-INSERT INTO intern_department VALUES (20, 'Health, Leisure & Exercise Science');
-INSERT INTO intern_department VALUES (21, 'History');
-INSERT INTO intern_department VALUES (22, 'Hospitality and Tourism Management');
-INSERT INTO intern_department VALUES (23, 'Human Development & Psychological Counseling');
-INSERT INTO intern_department VALUES (24, 'Language & Educational Studies');
-INSERT INTO intern_department VALUES (25, 'Management');
-INSERT INTO intern_department VALUES (26, 'Marketing');
-INSERT INTO intern_department VALUES (27, 'Mathematical Sciences');
-INSERT INTO intern_department VALUES (28, 'Military Science & Leadership');
-INSERT INTO intern_department VALUES (29, 'Music');
-INSERT INTO intern_department VALUES (30, 'Nursing');
-INSERT INTO intern_department VALUES (31, 'Nutrition & Health Care Management');
-INSERT INTO intern_department VALUES (32, 'Philosophy & Religion');
-INSERT INTO intern_department VALUES (33, 'Physics & Astronomy');
-INSERT INTO intern_department VALUES (34, 'Psychology');
-INSERT INTO intern_department VALUES (35, 'Social Work');
-INSERT INTO intern_department VALUES (36, 'Sociology');
-INSERT INTO intern_department VALUES (37, 'Technology');
-INSERT INTO intern_department VALUES (38, 'Theatre and Dance');
-INSERT INTO intern_department VALUES (39, 'University College');
+INSERT INTO intern_department VALUES  (7, 'Communication', 'Fine & Applied Arts');
+INSERT INTO intern_department VALUES  (8, 'Computer Information Systems', 'College of Business');
+INSERT INTO intern_department VALUES  (9, 'Computer Science', 'Arts and Sciences');
+INSERT INTO intern_department VALUES (10, 'Curriculum & Instruction', 'College of Education');
+INSERT INTO intern_department VALUES (11, 'Economics', 'College of Business');
+INSERT INTO intern_department VALUES (12, 'Educational Leadership', 'College of Education');
+INSERT INTO intern_department VALUES (13, 'English', 'Arts and Sciences');
+INSERT INTO intern_department VALUES (14, 'Family Languages & Literatures', 'Arts and Sciences');
+INSERT INTO intern_department VALUES (15, 'Finance and Banking & Insurance', 'College of Business');
+INSERT INTO intern_department VALUES (16, 'Foreign Languages & Literatures', 'Arts and Sciences');
+INSERT INTO intern_department VALUES (17, 'Geography & Planning', 'Arts and Sciences');
+INSERT INTO intern_department VALUES (18, 'Geology', 'Arts and Sciences');
+INSERT INTO intern_department VALUES (19, 'Government & Justice Studies', 'Arts and Sciences');
+INSERT INTO intern_department VALUES (20, 'Health, Leisure & Exercise Science', 'College of Health Sciences');
+INSERT INTO intern_department VALUES (21, 'History', 'Arts and Sciences');
+INSERT INTO intern_department VALUES (22, 'Hospitality and Tourism Management', 'College of Business');
+INSERT INTO intern_department VALUES (23, 'Human Development & Psychological Counseling', 'College of Education');
+INSERT INTO intern_department VALUES (24, 'Language & Educational Studies', 'College of Education');
+INSERT INTO intern_department VALUES (25, 'Management', 'College of Business');
+INSERT INTO intern_department VALUES (26, 'Marketing', 'College of Business');
+INSERT INTO intern_department VALUES (27, 'Mathematical Sciences', 'Arts and Sciences');
+INSERT INTO intern_department VALUES (28, 'Military Science & Leadership', 'Arts and Sciences');
+INSERT INTO intern_department VALUES (29, 'Music', 'School of Music');
+INSERT INTO intern_department VALUES (30, 'Nursing', 'College of Health Sciences');
+INSERT INTO intern_department VALUES (31, 'Nutrition & Health Care Management', 'College of Health Sciences');
+INSERT INTO intern_department VALUES (32, 'Philosophy & Religion', 'Arts and Sciences');
+INSERT INTO intern_department VALUES (33, 'Physics & Astronomy', 'Arts and Sciences');
+INSERT INTO intern_department VALUES (34, 'Psychology', 'Arts and Sciences');
+INSERT INTO intern_department VALUES (35, 'Social Work', 'College of Health Sciences');
+INSERT INTO intern_department VALUES (36, 'Sociology', 'Arts and Sciences');
+INSERT INTO intern_department VALUES (37, 'Technology', 'Fine and Applied Arts');
+INSERT INTO intern_department VALUES (38, 'Theatre and Dance', 'Fine and Applied Arts');
+INSERT INTO intern_department VALUES (39, 'University College', 'University College');
 -- End departments
 
 -- Add undergraduate majors
