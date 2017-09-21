@@ -4,13 +4,15 @@ BEGIN;
 CREATE TABLE intern_major (
        id INT NOT NULL,
        code varchar NOT NULL UNIQUE,
-       name VARCHAR NOT NULL UNIQUE,
+       description VARCHAR NOT NULL,
        lavel VARCHAR NOT NULL,
        hidden SMALLINT NOT NULL DEFAULT 0,
        PRIMARY KEY(id)
 );
 
--- Defaults to not hidden.
+alter table intern_major add constraint intern_major_description_level_key UNIQUE (description, level);
+
+-- TODO: remove this table
 CREATE TABLE intern_grad_prog (
        id INT NOT NULL,
        name VARCHAR NOT NULL UNIQUE,

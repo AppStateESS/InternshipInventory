@@ -54,4 +54,11 @@ alter table intern_term add primary key (term);
 
 
 alter table intern_major add column level character varying;
+update intern_major set level = 'U';
+
 alter table intern_major add column code character varying unique;
+alter table intern_major rename column name to description;
+
+
+alter table intern_major drop constraint intern_major_name_key;
+alter table intern_major add constraint intern_major_description_level_key UNIQUE (description, level);
