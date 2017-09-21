@@ -51,3 +51,7 @@ alter table intern_term add column semester_type integer;
 
 alter table intern_term drop column id;
 alter table intern_term add primary key (term);
+
+
+alter table intern_major add column level character varying;
+alter table intern_major add column code character varying unique;

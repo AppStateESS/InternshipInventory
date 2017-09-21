@@ -3,7 +3,9 @@ BEGIN;
 -- Defaults to not hidden.
 CREATE TABLE intern_major (
        id INT NOT NULL,
+       code varchar NOT NULL UNIQUE,
        name VARCHAR NOT NULL UNIQUE,
+       lavel VARCHAR NOT NULL,
        hidden SMALLINT NOT NULL DEFAULT 0,
        PRIMARY KEY(id)
 );
