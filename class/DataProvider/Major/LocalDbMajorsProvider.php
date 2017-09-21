@@ -2,23 +2,35 @@
 
 namespace Intern\DataProvider\Major;
 use Intern\AcademicMajorList;
+use Intern\AcademicMajor;
+use Intern\PdoFactory;
 
 class LocalDbMajorsProvider extends MajorsProvider {
 
     /**
      * Returns an array of AcademicMajor objects for the given term.
      *
-     * @param $term
+     * NB: The $term param is unused in this provider.
+     *
+     * @param string $term
      * @return AcademicMajorList
      */
-    public function getMajors($term)
+    public function getMajors($term): AcademicMajorList
     {
         $db = PdoFactory::getPdoInstance();
 
-        $stmt = $db->prepare('SELECT * from intern_term where term = :termCode');
-        $stmt->execute(array('termCode' => $termCode));
-        $stmt->setFetchMode(\PDO::FETCH_CLASS, '\Intern\TermRestored');
+        $stmt = $db->prepare('SELECT * from intern_major');
+        $stmt->execute();
+        $stmt->setFetchMode(\PDO::FETCH_ASSOC);
 
-        return $stmt->fetchAll();
+        $results = $stmt->fetchAll();
+
+        $majorsList = new AcademicMajorList();
+
+        foreach ($results as $row){
+            $majorsList->addMajor(new AcademicMajor($row['code'], $row['description'], $row['level']));
+        }
+
+        return $majorsList;
     }
 }

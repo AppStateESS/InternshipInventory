@@ -29,8 +29,7 @@ class MajorsProviderFactory {
 
         switch($providerName){
             case 'localDataProvider':
-                //return new LocalDbMajorsProvider();
-                return new TestMajorsProvider(\Current_User::getUsername());
+                return new LocalDbMajorsProvider();
             case 'webServiceTestProvider':
                 return new TestMajorsProvider(\Current_User::getUsername());
             case 'webServiceDataProvider':
