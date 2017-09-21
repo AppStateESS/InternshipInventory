@@ -1,7 +1,8 @@
 <?php
 
 namespace Intern\Command;
-use \phpws2\Database;
+
+use Intern\PdoFactory;
 
 class MajorRest {
 
@@ -25,6 +26,23 @@ class MajorRest {
         }
 	}
 
+    public function get()
+    {
+        $pdo = PdoFactory::getPdoInstance();
+
+        $sql = "SELECT code, description, level
+                FROM intern_major
+                ORDER BY description ASC";
+
+        $sth = $pdo->prepare($sql);
+
+        $sth->execute();
+        $result = $sth->fetchAll(\PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+    // TODO: Update this to match new majors editor.
 	public function post()
 	{
 		$major = $_REQUEST['create'];
@@ -36,8 +54,7 @@ class MajorRest {
             exit;
 		}
 
-		$db = Database::newDB();
-		$pdo = $db->getPDO();
+		$pdo = PdoFactory::getPdoInstance();
 
 		$sql = "INSERT INTO intern_major (id, name, hidden)
 				VALUES (nextval('intern_major_seq'), :major, :hidden)";
@@ -47,6 +64,8 @@ class MajorRest {
 		$sth->execute(array('major'=>$major, 'hidden'=>0));
 
 	}
+
+    // TODO: Update this to match new majors editor.
 	public function put()
 	{
 		$db = Database::newDB();
@@ -78,22 +97,5 @@ class MajorRest {
 
 			$sth->execute(array('mname'=>$mname, 'id'=>$id));
 		}
-	}
-
-	public function get()
-	{
-		$db = Database::newDB();
-		$pdo = $db->getPDO();
-
-		$sql = "SELECT id, name, hidden
-				FROM intern_major
-				ORDER BY name ASC";
-
-		$sth = $pdo->prepare($sql);
-
-		$sth->execute();
-		$result = $sth->fetchAll(\PDO::FETCH_ASSOC);
-
-		return $result;
 	}
 }
