@@ -3,6 +3,7 @@
 namespace Intern\DataProvider\Major;
 
 use Intern\AcademicMajorList;
+use Intern\AcademicMajor;
 
 class TestMajorsProvider extends BannerMajorsProvider {
 
@@ -49,7 +50,7 @@ class TestMajorsProvider extends BannerMajorsProvider {
         $major->dept_code = $deptCode;
         $major->dept_desc = $deptDesc;
         */
-        
+
         return $major;
     }
 

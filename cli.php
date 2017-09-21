@@ -35,7 +35,7 @@ require_once PHPWS_SOURCE_DIR . 'src/Bootstrap.php';
 
 // For older versions of PHPWS, uncomment these
 //require_once PHPWS_SOURCE_DIR . 'core/conf/defines.php';
-require_once PHPWS_SOURCE_DIR . 'Global/Functions.php';
+//require_once PHPWS_SOURCE_DIR . 'Global/Functions.php';
 //require_once PHPWS_SOURCE_DIR . 'Global/Implementations.php';
 //require_once PHPWS_SOURCE_DIR . 'config/core/source.php';
 require_once PHPWS_SOURCE_DIR . 'src/Autoloader.php';

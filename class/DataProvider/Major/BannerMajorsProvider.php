@@ -6,7 +6,7 @@ use Intern\AcademicMajorList;
 
 use \SoapFault;
 
-Tclass BannerMajorsProvider extends MajorsProvider {
+class BannerMajorsProvider extends MajorsProvider {
 
     protected $currentUserName;
 

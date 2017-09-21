@@ -30,10 +30,10 @@ class TermInfoProviderFactory {
         switch($providerName){
             case 'localDataProvider':
                 return new LocalDbTermInfoProvider();
-            case 'webServiceTestProvider':
-                return new TestWebServiceTermInfoProvider(\Current_User::getUsername());
             case 'webServiceDataProvider':
                 return new WebServiceTermInfoProvider(\Current_User::getUsername());
+            case 'webServiceTestProvider':
+                return new TestWebServiceTermInfoProvider(\Current_User::getUsername());
             default:
                 throw new \UnexpectedValueException('No term data provider configured.');
         }

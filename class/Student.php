@@ -70,7 +70,7 @@ class Student {
      * @param $term integer The term the internship will be in. Used to check existing credit hours.
      * @return boolean
      */
-    public static function isCreditHourLimited(int $internHours, int $existingHours, Term $term): bool
+    public function isCreditHourLimited(int $internHours, int $existingHours, Term $term): bool
     {
         $totalHours = $existingHours + $internHours;
 
@@ -80,13 +80,13 @@ class Student {
         if(($semester == Term::FALL || $semester == Term::SPRING)) {
             if($level == self::UNDERGRAD){
                 $limit = self::HOURS_LIMIT_UNDERGRAD_REG;
-            } else if($level == self::GRADUATE) {
+            } else {
                 $limit = self::HOURS_LIMIT_GRADUATE_REG;
             }
         } else if (($semester == Term::SUMMER1 || $semester == Term::SUMMER2)) {
             if($level == self::UNDERGRAD){
                 $limit = self::HOURS_LIMIT_UNDERGRAD_SUMMER;
-            } else if($level == self::GRADUATE) {
+            } else {
                 $limit = self::HOURS_LIMIT_GRADUATE_SUMMER;
             }
         }

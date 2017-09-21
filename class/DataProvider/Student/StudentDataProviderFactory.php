@@ -32,7 +32,7 @@ class StudentDataProviderFactory {
                 return new LocalDbStudentDataProvider();
             case 'webServiceDataProvider':
                 return new WebServiceDataProvider(\Current_User::getUsername());
-            case 'testDataProvider':
+            case 'webServiceTestProvider':
                 return new TestWebServiceDataProvider(\Current_User::getUsername());
             default:
                 throw new \UnexpectedValueException('No configuration for student data provider.');

@@ -108,8 +108,15 @@ class SendPendingEnrollmentReminders
         $userId = \PHPWS_DB::getOne("SELECT id FROM users WHERE username = 'jb67803'");
 
         $user = new \PHPWS_User($userId);
+
+        // Auth for production
         $user->auth_script = 'shibbolethnocreate.php';
         $user->auth_name = 'shibbolethnocreate';
+
+        // Auth for local testing. Uncomment for local testing.
+        //$user->auth_script = 'local.php';
+        //$user->auth_name = 'local';
+        
         //$user->login();
         $user->setLogged(true);
 

@@ -342,7 +342,7 @@ class Internship {
         }else {
             $csv['Course Subject']     = '';
         }
-        
+
         $csv['Course Number']          = $this->course_no;
         $csv['Course Section']         = $this->course_sect;
         $csv['Course Title']           = $this->course_title;

@@ -95,10 +95,44 @@ class EditInternshipFormView {
             $this->tpl['DELETE_URL'] = 'index.php?module=intern&action=DeleteInternship&internship_id=' . $this->intern->getId();
         }
 
-        // Determine if we can copy to the next term (i.e. the next term exists)
-        $nextTerm = TermFactory::getNextTerm($this->term);
+        /*********************
+         * Copy to Next Term *
+        *********************/
+
+        // Get next three terms
+        $term = TermFactory::getTermByTermCode($this->intern->getTerm());
+
+        $nextTerm = TermFactory::getNextTerm($term);
+
         if($nextTerm !== null){
-            $this->tpl['NEXT_TERM'] = $nextTerm->getDescription();
+            $nextTwoTerm = TermFactory::getNextTerm($nextTerm);
+        } else {
+            $nextTwoTerm = null;
+        }
+
+        if($nextTwoTerm !== null){
+            $nextThreeTerm = TermFactory::getNextTerm($nextTwoTerm);
+        } else {
+            $nextThreeTerm = null;
+        }
+
+        $this->tpl['CONTINUE_TERM_LIST'] = array();
+
+        // Determine if we can copy to the next term (i.e. the next term exists)
+        if($nextTerm !== null){
+            $this->tpl['CONTINUE_TERM_LIST'][] = array('DEST_TERM'=>$nextTerm->getTermCode(), 'DEST_TERM_TEXT'=>$nextTerm->getDescription());
+        }
+
+        // Copy if it's Spring and exist, else if it's Summer 1 and exist.
+        if($nextThreeTerm !== null && Term::getSemester($this->intern->getTerm()) == Term::SPRING){
+            $this->tpl['CONTINUE_TERM_LIST'][] = array('DEST_TERM'=>$nextThreeTerm->getTermCode(), 'DEST_TERM_TEXT'=>$nextThreeTerm->getDescription());
+        } else if($nextTwoTerm !== null && Term::getSemester($this->intern->getTerm()) == Term::SUMMER1){
+            $this->tpl['CONTINUE_TERM_LIST'][] = array('DEST_TERM'=>$nextTwoTerm->getTermCode(), 'DEST_TERM_TEXT'=>$nextTwoTerm->getDescription());
+        }
+
+        // If no terms are available to copy to, show a helpful message
+        if(sizeof($this->tpl['CONTINUE_TERM_LIST']) == 0) {
+            $this->tpl['CONTINUE_TERM_NO_TERMS'] = 'No future terms available.';
         }
 
 

@@ -4,7 +4,13 @@ namespace Intern;
 class TermFactory
 {
 
-    public static function getTermByTermCode(string $termCode): Term {
+    /**
+     * Get a term object using its term code.
+     *
+     * @param string $termCode
+     * @return Mixed<Term|bool> Returns the requested Term object, or fasle if it doesn't exist in the intern_term table.
+     */
+    public static function getTermByTermCode(string $termCode) {
         $db = PdoFactory::getPdoInstance();
 
         $stmt = $db->prepare('SELECT * from intern_term where term = :termCode');

@@ -30,12 +30,12 @@ class MajorsProviderFactory {
         switch($providerName){
             case 'localDataProvider':
                 return new LocalDbMajorsProvider();
-            case 'webServiceTestProvider':
-                return new TestMajorsProvider(\Current_User::getUsername());
             case 'webServiceDataProvider':
                 return new BannerMajorsProvider(\Current_User::getUsername());
+            case 'webServiceTestProvider':
+                return new TestMajorsProvider(\Current_User::getUsername());
             default:
-                throw new \UnexpectedValueException('No term data provider configured.');
+                throw new \UnexpectedValueException('No majors provider configured.');
         }
 
     }
