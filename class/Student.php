@@ -41,7 +41,7 @@ class Student {
     private $gpa;
     private $gradDate;
     private $holds;
-    private $creditHours;
+    //private $creditHours;
 
     // Person type flags
     private $isStaff;
@@ -70,13 +70,9 @@ class Student {
      * @param $term integer The term the internship will be in. Used to check existing credit hours.
      * @return boolean
      */
-    public function isCreditHourLimited($internHours, Term $term)
+    public static function isCreditHourLimited(int $internHours, int $existingHours, Term $term): bool
     {
-        if(!isset($this->creditHours)){
-            return;
-        }
-
-        $totalHours = $this->creditHours + $internHours;
+        $totalHours = $existingHours + $internHours;
 
         $semester = $term->getSemesterType();
         $level = $this->getLevel();
@@ -244,6 +240,7 @@ class Student {
         return $this->gradDate;
     }
 
+    /*
     public function getCreditHours() {
         return $this->creditHours;
     }
@@ -251,6 +248,7 @@ class Student {
     public function setCreditHours($hours) {
         $this->creditHours = $hours;
     }
+    */
 
     /**
      * @param $flag bool

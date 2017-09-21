@@ -26,6 +26,7 @@ class EditInternshipFormView {
     private $department;
     private $docs;
     private $term;
+    private $studentExistingCreditHours;
 
     private $formVals;
 
@@ -35,7 +36,7 @@ class EditInternshipFormView {
      * @param string $pagetitle
      * @param Internship $i
      */
-    public function __construct(Internship $i, Student $student = null, Agency $agency, Array $docs, Term $term)
+    public function __construct(Internship $i, Student $student = null, Agency $agency, Array $docs, Term $term, $studentExistingCreditHours)
     {
         \Layout::addPageTitle('Edit Internship');
 
@@ -46,6 +47,7 @@ class EditInternshipFormView {
         $this->department = $this->intern->getDepartment();
         $this->docs = $docs;
         $this->term = $term;
+        $this->studentExistingCreditHours = $studentExistingCreditHours;
 
         $this->tpl = array();
 
@@ -574,7 +576,7 @@ class EditInternshipFormView {
         // TODO: newer PHP versions provide syntax to clean up this logic
         if(isset($this->student)){
             // Credit Hours
-            $creditHours = $this->student->getCreditHours();
+            $creditHours = $this->studentExistingCreditHours;
             if(isset($creditHours)) {
                 $this->tpl['ENROLLED_CREDIT_HORUS'] = $creditHours;
             } else {

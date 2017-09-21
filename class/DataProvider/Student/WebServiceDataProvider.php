@@ -100,6 +100,7 @@ class WebServiceDataProvider extends StudentDataProvider {
         // Log the request
         $this->logRequest('getStudent', 'success', $params);
 
+        // Removed built-in credit-hour fetching because we don't always have a term (but still need to lookup a student)
         //$response->creditHours = $this->getCreditHours($studentId, $term);
 
         // Create the Student object and plugin the values
@@ -114,7 +115,7 @@ class WebServiceDataProvider extends StudentDataProvider {
         return $this->client->GetInternInfo($params);
     }
 
-    public function getCreditHours($studentId, $term)
+    public function getCreditHours(string $studentId, string $term)
     {
         if($studentId === null || $studentId == ''){
             throw new \InvalidArgumentException('Missing student ID.');
@@ -271,7 +272,7 @@ class WebServiceDataProvider extends StudentDataProvider {
         }
 
         // Credit Hours
-        // TODO: fix this, since we don't have a term to ask for
+        // Removed built-in credit hour fetching, since we don't always have a term
         //$student->setCreditHours($data->creditHours);
 
         // Majors - Can be an array of objects, or just a single object

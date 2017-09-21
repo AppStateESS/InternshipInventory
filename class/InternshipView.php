@@ -20,8 +20,9 @@ class InternshipView {
     private $agency;
     private $docs;
     private $term;
+    private $studentExistingCreditHours;
 
-    public function __construct(Internship $internship, Student $student = null, WorkflowState $wfState, Agency $agency, Array $docs, Term $term)
+    public function __construct(Internship $internship, Student $student = null, WorkflowState $wfState, Agency $agency, Array $docs, Term $term, $studentExistingCreditHours)
     {
         $this->intern = $internship;
         $this->student = $student;
@@ -29,6 +30,7 @@ class InternshipView {
         $this->agency = $agency;
         $this->docs = $docs;
         $this->term = $term;
+        $this->studentExistingCreditHours = $studentExistingCreditHours;
     }
 
     public function display()
@@ -36,7 +38,7 @@ class InternshipView {
         $tpl = array();
 
         // Setup the form
-        $internshipForm = new EditInternshipFormView($this->intern, $this->student, $this->agency, $this->docs, $this->term);
+        $internshipForm = new EditInternshipFormView($this->intern, $this->student, $this->agency, $this->docs, $this->term, $this->studentExistingCreditHours);
 
         // Get the Form object
         $form = $internshipForm->getForm();
@@ -143,7 +145,8 @@ class InternshipView {
 
         // Show warning if student is enrolled for more than the credit hour limit for the term
         $internHours = $this->intern->getCreditHours();
-        if(isset($internHours) && $this->student->isCreditHourLimited($internHours, $this->term)) {
+
+        if(isset($internHours) && Student::isCreditHourLimited($internHours, $this->studentExistingCreditHours, $this->term)) {
             \NQ::simple('intern', UI\NotifyUI::WARNING, 'This internship will cause the student to exceed the semester credit hour limit. This student will need an Overload Permit from their Dean\'s Office.');
         }
 

@@ -20,7 +20,7 @@ class TestWebServiceDataProvider extends WebServiceDataProvider {
         //return $this->getFakeErrorResponse();
     }
 
-    public function getCreditHours($studentId, $term)
+    public function getCreditHours(string $studentId, string $term)
     {
         return 16;
     }

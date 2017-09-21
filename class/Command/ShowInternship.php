@@ -34,11 +34,19 @@ class ShowInternship {
 
         // Load a fresh copy of the student data from the web service
         try {
-            $student = StudentDataProviderFactory::getProvider()->getStudent($intern->getBannerId(), $intern->getTerm());
+            $student = StudentDataProviderFactory::getProvider()->getStudent($intern->getBannerId());
         } catch(\Intern\Exception\StudentNotFoundException $e) {
             $studentId = $intern->getBannerId();
             $student = null;
             \NQ::simple('intern', \Intern\UI\NotifyUI::WARNING, "We couldn't find a student with an ID of {$studentId} in Banner. This probably means this person is not an active student.");
+        }
+
+        try {
+            $existingCreditHours = StudentDataProviderFactory::getProvider()->getCreditHours($intern->getBannerId(), $intern->getTerm());
+        } catch(\Exception $e){
+            $studentId = $intern->getBannerId();
+            $student = null;
+            \NQ::simple('intern', \Intern\UI\NotifyUI::WARNING, "We couldn't get the credit hours for {$studentId}. This probably means this person is not an active student.");
         }
 
         // Load the WorkflowState
@@ -56,7 +64,7 @@ class ShowInternship {
         // Load the term info for this internship
         $term = TermFactory::getTermByTermCode($intern->getTerm());
 
-        $view = new InternshipView($intern, $student, $wfState, $agency, $docs, $term);
+        $view = new InternshipView($intern, $student, $wfState, $agency, $docs, $term, $existingCreditHours);
 
         return $view->display();
     }

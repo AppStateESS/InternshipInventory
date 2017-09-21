@@ -28,7 +28,7 @@ abstract class StudentDataProvider {
      * @param string StudentId
      * @return int
      */
-    public abstract function getCreditHours($studentId, $term);
+    public abstract function getCreditHours(string $studentId, string $term);
 
     /**
      * Returns a stdClass object representing a faculty member, or throws an exception if not Found

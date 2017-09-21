@@ -91,7 +91,7 @@ class LocalDbStudentDataProvider extends StudentDataProvider {
         }
 
         // Credit Hours
-        $student->setCreditHours($data['credit_hours']);
+        //$student->setCreditHours($data['credit_hours']);
 
         // Majors - Only one allowed here (this differs from WebServiceDataProvider)
         // code and description fields must both be not null and not empty string to add a major
@@ -118,9 +118,22 @@ class LocalDbStudentDataProvider extends StudentDataProvider {
         $student->setZip($data['zip']);
     }
 
-    public function getCreditHours($studentId, $term)
+    public function getCreditHours(string $studentId, string $term)
     {
-        // TODO
+        $db = PdoFactory::getPdoInstance();
+
+        $query = 'SELECT * FROM intern_local_student_data WHERE student_id = :studentId';
+
+        $stmt = $db->prepare($query);
+        $stmt->execute(array('studentId' => $studentId));
+
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        if($result === false){
+            throw new StudentNotFoundException('Could not find student in local data with id: ' . $studentId);
+        }
+
+        return $result['credit_hours'];
     }
 
     public function getFacultyMember($facultyId)
