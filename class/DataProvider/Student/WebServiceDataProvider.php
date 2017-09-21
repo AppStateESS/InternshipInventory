@@ -51,8 +51,6 @@ class WebServiceDataProvider extends StudentDataProvider {
      */
     public function getStudent($studentId)
     {
-        $term .= "0";
-
         if($studentId === null || $studentId == ''){
             throw new \InvalidArgumentException('Missing student ID.');
         }
@@ -273,7 +271,8 @@ class WebServiceDataProvider extends StudentDataProvider {
         }
 
         // Credit Hours
-        $student->setCreditHours($data->creditHours);
+        // TODO: fix this, since we don't have a term to ask for
+        //$student->setCreditHours($data->creditHours);
 
         // Majors - Can be an array of objects, or just a single object
         // TODO: Fix hard-coded 'U' level passed to AcademicMajor
