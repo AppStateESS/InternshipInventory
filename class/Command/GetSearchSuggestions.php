@@ -38,7 +38,6 @@ class GetSearchSuggestions {
             try {
                 $students = array($this->studentIdSearch($searchString));
             } catch(StudentNotFoundException $e) {
-                // TODO Return something more useful here, that says we couldn't find that banner ID.
                 $error = array('studentId'=>$searchString, 'error'=>'No matching student found. This student ID may not be valid.');
                 echo json_encode(array($error));
                 exit;
