@@ -1,13 +1,14 @@
 import React from 'react';
 
-var MajorsDropDown = React.createClass({
-    getInitialState: function(){
-        return ({hasError: false});
-    },
-    setError: function(status){
+class MajorsDropDown extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {hasError: false};
+    }
+    setError(status){
         this.setState({hasError: status});
-    },
-    render: function() {
+    }
+    render() {
         var majors = this.props.majors;
         var level = this.props.level;
 
@@ -32,6 +33,6 @@ var MajorsDropDown = React.createClass({
             </div>
         );
     }
-});
+}
 
 export default MajorsDropDown;
