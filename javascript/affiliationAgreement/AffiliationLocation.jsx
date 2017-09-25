@@ -5,11 +5,11 @@ import $ from 'jquery';
 // Components for adding states (locations) to an Affiliation Agreement
 // on the Edit Affiliation interface.
 
-var LocationItem = React.createClass({
-    remove: function() {
+class LocationItem extends React.Component {
+    remove() {
         this.props.remove(this.props.location)
-    },
-    render: function() {
+    }
+    render() {
         return (
             <li className="list-group-item">
                 {this.props.location.full_name}
@@ -17,11 +17,11 @@ var LocationItem = React.createClass({
             </li>
         );
     }
-});
+}
 
 
-var LocationList = React.createClass({
-    render: function() {
+class LocationList extends React.Component {
+    render() {
         var listNodes = this.props.locations.map(function(location){
             return (
                 <LocationItem key={location.abbr} remove={this.props.removeClick} location={location}/>
@@ -34,15 +34,15 @@ var LocationList = React.createClass({
             </ul>
         );
     }
-});
+}
 
 
-var LocationDropdown = React.createClass({
-    add: function() {
+class LocationDropdown extends React.Component {
+    add() {
         var locToAdd = this.refs.locChoices.value;
         this.props.onAdd(locToAdd);
-    },
-    render: function() {
+    }
+    render() {
         var options = this.props.locations;
 
         var selectOptions = options.map(function(location){
@@ -79,24 +79,26 @@ var LocationDropdown = React.createClass({
             </div>
         );
     }
-});
+}
 
 
-var LocationBox = React.createClass({
-    getInitialState: function() {
-        return {locs: null, usedLocs: null};
-    },
-    addloc: function(nameToAdd) {
+class LocationBox extends React.Component {
+    constructor(props) {
+      super(props);
+
+      this.state = {locs: null, usedLocs: null};
+    }
+    addloc(nameToAdd) {
         this.postData(nameToAdd);
-    },
-    removeLoc: function(loc) {
+    }
+    removeLoc(loc) {
         this.deleteData(loc);
-    },
-    componentWillMount: function() {
+    }
+    componentWillMount() {
         // Get data on inital load
         this.getData();
-    },
-    getData: function() {
+    }
+    getData() {
         // Get the full list of all states
         $.ajax({
             url: 'index.php?module=intern&action=stateRest',
@@ -124,8 +126,8 @@ var LocationBox = React.createClass({
                 console.error(status, err.toString());
             }
         });
-    },
-    postData: function(state){
+    }
+    postData(state){
         $.ajax({
             url: 'index.php?module=intern&action=AffiliateStateRest&affiliation_agreement_id='+this.props.affiliationId+'&state='+state,
             type: 'POST',
@@ -137,8 +139,8 @@ var LocationBox = React.createClass({
                 console.error(status, err.toString());
             }
         });
-    },
-    deleteData: function(state){
+    }
+    deleteData(state){
         $.ajax({
             url: 'index.php?module=intern&action=AffiliateStateRest&affiliation_agreement_id='+this.props.affiliationId+'&state='+state.abbr,
             type: 'DELETE',
@@ -150,8 +152,8 @@ var LocationBox = React.createClass({
                 console.error(status, err.toString());
             }
         });
-    },
-    render: function() {
+    }
+    render() {
         // If we don't have location data yet, don't even bother rendering
         if(this.state.locs == null || this.state.usedLocs == null){
             return (<div></div>);
@@ -164,7 +166,7 @@ var LocationBox = React.createClass({
             </div>
         );
     }
-});
+}
 
 
 ReactDOM.render(<LocationBox affiliationId={window.aaId}/>,

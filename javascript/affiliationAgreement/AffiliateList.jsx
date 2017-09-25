@@ -4,8 +4,8 @@ import $ from 'jquery';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import classNames from 'classnames';
 
-var ErrorMessagesBlock = React.createClass({
-    render: function() {
+class ErrorMessagesBlock extends React.Component {
+    render() {
         if(this.props.errors === null){
             return '';
         }
@@ -23,24 +23,30 @@ var ErrorMessagesBlock = React.createClass({
             </div>
         );
     }
-});
+}
 
-var DepartmentList = React.createClass({
-    render: function() {
+class DepartmentList extends React.Component {
+    render() {
         return (
             <option value={this.props.id}>{this.props.name}</option>
         )
     }
-});
+}
 
-var ShowAffiliate = React.createClass({
-    handleChange: function() {
+class ShowAffiliate extends React.Component {
+    constructor(props){
+        super(props);
+
+        this.handleChange = this.handleChange.bind(this);
+        this.onShowAffiliate = this.onShowAffiliate.bind(this);
+    }
+    handleChange() {
         this.props.onShowAffiliate(this.props.id);
-    },
-    onShowAffiliate: function() {
+    }
+    onShowAffiliate() {
         window.location =  "index.php?module=intern&action=showAffiliateEditView&affiliation_agreement_id=" + this.props.id;
-    },
-    render: function(){
+    }
+    render(){
         var b = new Date().getTime();
         var a = new Date(this.props.end_date * 1000);
         var year = a.getFullYear();
@@ -77,13 +83,15 @@ var ShowAffiliate = React.createClass({
             </tr>
         );
     }
-});
+}
 
 // Main module that calls several components to build
 // the affiliate agreements list screen.
-var AffiliateList = React.createClass({
-    getInitialState: function() {
-        return ({
+class AffiliateList extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
             mainData: null,
             displayData: null,
             deptData: null,
@@ -92,15 +100,18 @@ var AffiliateList = React.createClass({
             searchDept: null,
             searchName: '',
             textData: ""
-        });
-    },
-    componentWillMount: function() {
+        };
+
+        this.searchListByName = this.searchListByName.bind(this);
+        this.searchListByDept = this.searchListByDept.bind(this);
+    }
+    componentWillMount() {
         // Grabs department and affiliate agreement
         // data at start of execution.
         this.getData();
         this.getDept();
-    },
-    getData: function() {
+    }
+    getData() {
         $.ajax({
             url: 'index.php?module=intern&action=AffiliateListRest',
             type: 'GET',
@@ -114,8 +125,8 @@ var AffiliateList = React.createClass({
                 console.error(this.props.url, status, err.toString());
             }.bind(this)
         });
-    },
-    getDept: function() {
+    }
+    getDept() {
         //Fetch list of departments
         $.ajax({
             url: 'index.php?module=intern&action=deptRest',
@@ -130,8 +141,8 @@ var AffiliateList = React.createClass({
 				console.error(this.props.url, status, err.toString());
 			}.bind(this)
         });
-    },
-    searchListByName: function(e) {
+    }
+    searchListByName(e) {
         var name = null;
 
         try {
@@ -156,8 +167,8 @@ var AffiliateList = React.createClass({
         }
 
         this.setState({displayData: filtered});
-    },
-    searchListByDept: function(e) {
+    }
+    searchListByDept(e) {
         var dept = null;
 
         try {
@@ -187,8 +198,8 @@ var AffiliateList = React.createClass({
 				console.error(this.props.url, status, err.toString());
 			}.bind(this)
         });
-    },
-    render: function() {
+    }
+    render() {
         var AffiliateData = null;
         if (this.state.mainData != null) {
             AffiliateData = this.state.displayData.map(function (affil) {
@@ -274,7 +285,7 @@ var AffiliateList = React.createClass({
 
         );
     }
-});
+}
 
 ReactDOM.render(
     <AffiliateList />,

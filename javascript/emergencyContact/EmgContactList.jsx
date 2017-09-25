@@ -14,11 +14,14 @@ import {Button, Modal} from 'react-bootstrap';
  * Modal Form
  * This uses ReactBoostrap!!
  ****************************/
-var ModalForm = React.createClass({
-    getInitialState: function() {
-        return {showError: false};
-    },
-    handleSave: function() {
+class ModalForm extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {showError: false};
+
+        this.handleSave = this.handleSave.bind(this);
+    }
+    handleSave() {
         if (this.refs.emg_name.value === '' || this.refs.emg_relation.value === '' ||  this.refs.emg_phone.value === '') {
             // If any field is left empty, it will display an error message in the modal form.
             this.setState({showError: true});
@@ -35,8 +38,8 @@ var ModalForm = React.createClass({
 
         // Call parent's save handler
         this.props.handleSaveContact(contact);
-    },
-    render: function() {
+    }
+    render() {
         var warning = <div id="warningError" className="alert alert-warning alert-dismissable" role="alert">
                         <button type="button"  className="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <strong>Warning!</strong> Please input a value into any empty text fields.
@@ -75,33 +78,39 @@ var ModalForm = React.createClass({
             </Modal>
         );
     }
-});
+}
 
 
 /*********************
  * Emergency Contact *
  *********************/
-var EmergencyContact = React.createClass({
-    getInitialState: function() {
-        return {showModal: false};
-    },
-    closeModal: function() {
+class EmergencyContact extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {showModal: false};
+
+        this.closeModal = this.closeModal.bind(this);
+        this.openModal = this.openModal.bind(this);
+        this.handleSaveContact = this.handleSaveContact.bind(this);
+        this.handleRemove = this.handleRemove.bind(this);
+    }
+    closeModal() {
         this.setState({ showModal: false });
-    },
-    openModal: function() {
+    }
+    openModal() {
         this.setState({ showModal: true });
-    },
-    handleSaveContact: function(contact){
+    }
+    handleSaveContact(contact){
         this.closeModal(); // Close the modal box
         this.props.handleSave(contact); // Call parent's handleSave method
-    },
-    handleRemove: function(event) {
+    }
+    handleRemove(event) {
         // Prevents the modal trigger from occuring when presing
         // the remove button.
         event.stopPropagation();
         this.props.onContactRemove(this.props.id);
-    },
-    render: function() {
+    }
+    render() {
         var contactInfo = <span>
                             {this.props.name} {'\u2022'} {this.props.relation} {'\u2022'} {this.props.phone} {'\u2022'} {this.props.email}
                           </span>
@@ -115,29 +124,36 @@ var EmergencyContact = React.createClass({
                 </li>
         );
     }
-});
+}
 
-var EmergencyContactList = React.createClass({
-    getInitialState: function() {
-        return {
+class EmergencyContactList extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
             emgConData: null,
             showAddModal: false
         };
-    },
-    componentWillMount: function(){
+
+        this.handleNewContact = this.handleNewContact.bind(this);
+        this.onContactRemove = this.onContactRemove.bind(this);
+        this.handleSave = this.handleSave.bind(this);
+        this.openAddModal = this.openAddModal.bind(this);
+        this.closeAddModal = this.closeAddModal.bind(this);
+    }
+    componentWillMount(){
         this.getData();
-    },
-    closeAddModal: function() {
+    }
+    closeAddModal() {
         this.setState({ showAddModal: false });
-    },
-    openAddModal: function() {
+    }
+    openAddModal() {
         this.setState({ showAddModal: true });
-    },
-    handleNewContact: function(contact){
+    }
+    handleNewContact(contact){
         this.closeAddModal(); // Close the modal box
         this.handleSave(contact); // Call parent's handleSave method
-    },
-    getData: function(){
+    }
+    getData(){
         // Grabs the emergency contact data
         $.ajax({
             url: 'index.php?module=intern&action=emergencyContactRest&internshipId='+this.props.internshipId,
@@ -151,8 +167,8 @@ var EmergencyContactList = React.createClass({
                 console.error(this.props.url, status, err.toString());
             }.bind(this)
         });
-    },
-    handleSave: function(contact) {
+    }
+    handleSave(contact) {
         // Event handler to save the comments.
 
         // Updates or adds a new emergency contact
@@ -176,8 +192,8 @@ var EmergencyContactList = React.createClass({
                 console.error(this.props.url, status, err.toString());
             }.bind(this)
         });
-    },
-    onContactRemove: function(contactId){
+    }
+    onContactRemove(contactId){
         // Deletes the emergency contact.
         $.ajax({
             url: 'index.php?module=intern&action=emergencyContactRest&contactId='+contactId+'&internshipId='+this.props.internshipId,
@@ -191,8 +207,8 @@ var EmergencyContactList = React.createClass({
                 console.error(this.props.url, status, err.toString());
             }.bind(this)
         });
-    },
-    render: function() {
+    }
+    render() {
         var eData = null;
         if(this.state.emgConData != null){
             eData = this.state.emgConData.map(function (conData) {
@@ -231,7 +247,7 @@ var EmergencyContactList = React.createClass({
             </div>
         );
     }
-});
+}
 
 
 ReactDOM.render(

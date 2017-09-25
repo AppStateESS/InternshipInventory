@@ -6,12 +6,12 @@ import $ from 'jquery';
 /**
  * Notification component used for adding or delete courses.
  **/
-var Notifications = React.createClass({
-    render: function(){
+class Notifications extends React.Component {
+    render(){
         var notification;
+
         // Determine if the screen should render a notification.
-        if (this.props.msg !== '')
-        {
+        if (this.props.msg !== '') {
             if (this.props.msgType === 'success')
             {
                 notification = <div className="alert alert-success" role="alert">
@@ -24,24 +24,27 @@ var Notifications = React.createClass({
                                 	<i className="fa fa-times fa-2x pull-left"></i> {this.props.msg}
                                </div>
             }
-        }
-        else
-        {
+        } else {
             notification = '';
         }
+
         return (
             <div>{notification}</div>
         );
     }
-});
+}
 
 // Component creates a row for the courses
-var CourseRow = React.createClass({
-	handleChange: function(e) {
+class CourseRow extends React.Component {
+    constructor(props){
+        super(props);
+        this.handleChange = this.handleChange.bind(this);
+    }
+	handleChange(e) {
 		var name = this.props.abbr + " - " + this.props.name;
 		this.props.deleteCourse(this.props.id, name, this.props.cnum);
-	},
-	render: function() {
+	}
+	render() {
 		return (
 			<tr>
 				<td> {this.props.abbr} - {this.props.name} {this.props.cnum}</td>
@@ -49,11 +52,11 @@ var CourseRow = React.createClass({
 			</tr>
 		);
 	}
-});
+}
 
 // Component helps create the table
-var CourseList = React.createClass({
-	render: function() {
+class CourseList extends React.Component {
+	render() {
 		var deleteCourse = this.props.deleteCourse;
 		// Determines if it needs to create a row.
         var cRow = null;
@@ -71,6 +74,7 @@ var CourseList = React.createClass({
 		} else{
 			cRow = null;
 		}
+
 		return (
 			<table className="table table-condensed table-striped">
 				<thead>
@@ -85,25 +89,30 @@ var CourseList = React.createClass({
 			</table>
 		);
 	}
-});
+}
 
 // Component used to create a course
-var CreateCourse = React.createClass({
-	getInitialState: function() {
-		return {subject: "_-1"};
-	},
-	handleDrop: function(e) {
+class CreateCourse extends React.Component {
+	constructor(props) {
+        super(props);
+
+        this.state = {subject: "_-1"};
+
+        this.handleDrop = this.handleDrop.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+	}
+	handleDrop(e) {
 		this.setState({subject: e.target.value});
-	},
-	handleSubmit: function(){
+	}
+	handleSubmit(){
 		// Trims the value and then determines if its length is = 4 and if it's all numbers.
 		var courseNum = ReactDOM.findDOMNode(this.refs.courseNum).value.trim();
 		if (courseNum.length === 4 && /^\d+$/.test(courseNum) && this.state.subject !== '_-1')
 		{
 			this.props.saveCourse(this.state.subject, courseNum);
 		}
-	},
-	render: function() {
+	}
+	render() {
 		return (
 			<div className="panel panel-default">
 				<div className="panel-body">
@@ -131,25 +140,30 @@ var CreateCourse = React.createClass({
 			</div>
 		);
 	}
-});
+}
 
-var CourseSelector = React.createClass({
-	getInitialState: function() {
-		return {
+class CourseSelector extends React.Component {
+	constructor(props) {
+        super(props);
+		this.state = {
 			subjectData: null,
 			msgNotification: '',
             msgType: ''
 		};
-	},
-	componentWillMount: function(){
+
+        this.getCourseData = this.getCourseData.bind(this);
+        this.saveCourse = this.saveCourse.bind(this);
+        this.deleteCourse = this.deleteCourse.bind(this);
+	}
+	componentWillMount(){
 		this.getCourseData();
-	},
-	getCourseData: function(){
+	}
+	getCourseData(){
 		$.ajax({
 			url: 'index.php?module=intern&action=NormalCoursesRest',
 			type: 'GET',
 			dataType: 'json',
-			success: function(data) {
+    			success: function(data) {
 				this.setState({subjectData: data});
 			}.bind(this),
 			error: function(xhr, status, err) {
@@ -157,8 +171,8 @@ var CourseSelector = React.createClass({
 				console.error(this.props.url, status, err.toString());
 			}.bind(this)
 		});
-	},
-	saveCourse: function(subjectId, course_num){
+	}
+	saveCourse(subjectId, course_num){
 		$.ajax({
 			url: 'index.php?module=intern&action=NormalCoursesRest&subjectId=' + subjectId + '&cnum=' + course_num,
 			type: 'POST',
@@ -175,8 +189,8 @@ var CourseSelector = React.createClass({
 				this.setState({msgNotification:msg + http.responseText, msgType:'error'})
 			}.bind(this)
 		});
-	},
-	deleteCourse: function(id, name, course_num){
+	}
+	deleteCourse(id, name, course_num){
 		$.ajax({
 			url: 'index.php?module=intern&action=NormalCoursesRest&courseId='+id,
 			type: 'DELETE',
@@ -194,8 +208,8 @@ var CourseSelector = React.createClass({
 				this.setState({msgNotification:msg + http.responseText, msgType:'error'})
 			}.bind(this)
 		});
-	},
-	render: function() {
+	}
+	render() {
 		return (
 			<div>
 				<Notifications msg={this.state.msgNotification} msgType={this.state.msgType} />
@@ -212,10 +226,10 @@ var CourseSelector = React.createClass({
 			</div>
 		);
 	}
-});
+}
 
 
 ReactDOM.render(
 	<CourseSelector subjects={window.subjects}/>,
 	document.getElementById('edit_courses')
-	);
+);

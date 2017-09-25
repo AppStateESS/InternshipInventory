@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 
 
-var StateList = React.createClass({
+class StateList extends React.Component {
 	// Disables/Enables the state in the dropdown
-    render: function() {
+    render() {
         var optionSelect = null;
   	    if (this.props.active === 1) {
   	        optionSelect = <option value={this.props.sAbbr} disabled>{this.props.stateName}</option>
@@ -15,15 +15,19 @@ var StateList = React.createClass({
 
         return (optionSelect);
     }
-});
+}
 
 
-var TableStates = React.createClass({
-	handleClick: function(){
+class TableStates extends React.Component {
+    constructor(props){
+        super(props);
+        this.handleClick = this.handleClick.bind(this);
+    }
+	handleClick(){
 		this.props.onStateDelete(this.props.sAbbr);
-	},
+	}
 	// If the state is active rendering the html elements otherwise do nothing.
-	render: function() {
+	render() {
 		if (this.props.active === 1)
 		{
 			var row1 = <td>{this.props.stateName}</td>
@@ -36,20 +40,25 @@ var TableStates = React.createClass({
 			</tr>
 		);
 	}
-});
+}
 
 
-var States = React.createClass({
-	getInitialState: function() {
-		return {
+class States extends React.Component {
+	constructor(props) {
+        super(props);
+		this.state = {
 			mainData: null,
 			dropData: null
 		};
-	},
-	componentWillMount: function(){
+
+        this.getData = this.getData.bind(this);
+        this.handleDrop = this.handleDrop.bind(this);
+        this.onStateDelete = this.onStateDelete.bind(this);
+	}
+	componentWillMount(){
 		this.getData();
-	},
-	getData: function(){
+	}
+	getData(){
 		$.ajax({
 			url: 'index.php?module=intern&action=stateRest',
 			type: 'GET',
@@ -64,8 +73,8 @@ var States = React.createClass({
 				console.error(this.props.url, status, err.toString());
 			}.bind(this)
 		});
-	},
-	handleDrop: function(e){
+	}
+	handleDrop(e){
 		//Event handler for the dropdown box.
 		if (e.target.value !== 'AA')
 		{
@@ -107,8 +116,8 @@ var States = React.createClass({
 			}.bind(this)
 			});
 		}
-	},
-	onStateDelete: function(abbr){
+	}
+	onStateDelete(abbr){
 		// No longer makes the state active
 		for (var j = 0, k = this.state.dropData.length; j < k; j++)
 		{
@@ -135,8 +144,8 @@ var States = React.createClass({
 				console.error(this.props.url, status, err.toString());
 			}.bind(this)
 		});
-	},
-	render: function() {
+	}
+	render() {
         var states = null;
 
 		if (this.state.dropData != null) {
@@ -167,6 +176,7 @@ var States = React.createClass({
 		} else {
 			row = <tr><td></td></tr>;
 		}
+
 		return (
 			<div className="State List">
 				<div className="col-md-5 col-md-offset-1">
@@ -198,7 +208,7 @@ var States = React.createClass({
 			</div>
 		);
 	}
-});
+}
 
 
 ReactDOM.render(
