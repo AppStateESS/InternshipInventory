@@ -38,6 +38,9 @@ alter table intern_term alter column term TYPE character varying;
 alter table intern_term alter column term drop default;
 alter table intern_term alter column term set not null;
 
+alter table intern_term drop column id;
+alter table intern_term add primary key (term);
+
 alter table intern_internship alter column term TYPE character varying;
 
 alter table intern_internship add constraint intern_internship_term_fkey FOREIGN KEY (term) REFERENCES intern_term(term);
@@ -49,9 +52,6 @@ alter table intern_term add column start_timestamp integer;
 alter table intern_term add column end_timestamp integer;
 alter table intern_term add column semester_type integer;
 
-alter table intern_term drop column id;
-alter table intern_term add primary key (term);
-
 
 alter table intern_major add column level character varying;
 update intern_major set level = 'U';
@@ -62,9 +62,6 @@ alter table intern_major rename column name to description;
 
 alter table intern_major drop constraint intern_major_name_key;
 alter table intern_major add constraint intern_major_description_level_key UNIQUE (description, level);
-
-
-update mod_settings set small_char = 'webServiceDataProvider' where setting_name = 'studentDataSource';
 
 UPDATE intern_term SET available_on_timestamp=1504584000, census_date_timestamp=1531108800, start_timestamp=1530331200, end_timestamp= 1534219200, description='Summer 2 2018', semester_type = 3 WHERE term='20183';
 UPDATE intern_term SET available_on_timestamp=1499659200, census_date_timestamp=1527739200, start_timestamp=1525320000, end_timestamp= 1534219200, description='Summer 1 2018', semester_type = 2 WHERE term='20182';
