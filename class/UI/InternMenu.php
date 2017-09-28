@@ -34,7 +34,7 @@ class InternMenu implements UI {
         }
 
         // Example form link
-        $tags['EXAMPLE_LINK'] = \PHPWS_Text::secureLink('Example form', 'intern', array('action' => 'example_form'));
+        $tags['EXAMPLE_LINK'] = \PHPWS_Text::secureLink('Example Contract', 'intern', array('action' => 'example_form'));
 
 
         return \PHPWS_Template::process($tags, 'intern', 'menu.tpl');
