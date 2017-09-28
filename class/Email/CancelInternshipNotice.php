@@ -59,12 +59,12 @@ class CancelInternshipNotice extends Email {
         }
 
         //CC student
-        $this->cc = $this->internship->email . $this->emailSettings->getEmailDomain();
+        $this->cc[] = $this->internship->email . $this->emailSettings->getEmailDomain();
 
         //CC faculty members
         $faculty = $this->internship->getFaculty();
         if ($faculty instanceof Faculty) {
-            $this->cc[] = $faculty->getUsername() . $this->emailSettings->getEmailDomain();
+            $this->cc[] = ($faculty->getUsername() . $this->emailSettings->getEmailDomain());
         }
 
         $this->subject = 'Internship Cancelled ' . Term::rawToRead($this->internship->getTerm()) . '[' . $this->internship->getBannerId() . '] ' . $this->internship->getFullName();
