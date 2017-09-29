@@ -275,13 +275,13 @@ class WebServiceDataProvider extends StudentDataProvider {
         // Removed built-in credit hour fetching, since we don't always have a term
         //$student->setCreditHours($data->creditHours);
 
-        // Majors - Can be an array of objects, or just a single object
+        // Majors - Can be an array of objects, or just a single object, or not set at all
         // TODO: Fix hard-coded 'U' level passed to AcademicMajor
-        if(is_array($data->majors)) {
+        if(isset($data->majors) && is_array($data->majors)) {
             foreach($data->majors as $major){
                 $student->addMajor(new AcademicMajor($major->major_code, $major->major_desc, 'U'));
             }
-        } else if(is_object($data->majors)){
+        } else if(isset($data->majors) &&  is_object($data->majors)){
             $student->addMajor(new AcademicMajor($data->majors->major_code, $data->majors->major_desc, 'U'));
         }
 
