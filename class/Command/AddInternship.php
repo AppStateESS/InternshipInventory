@@ -55,7 +55,7 @@ class AddInternship {
         $term = $_POST['term'];
 
         // Create the student object
-        $student = StudentDataProviderFactory::getProvider()->getStudent($studentId, $term);
+        $student = StudentDataProviderFactory::getProvider()->getStudent($studentId);
 
         // Double check the student's level field
         if($student->getLevel() == null){
