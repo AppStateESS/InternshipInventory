@@ -16,7 +16,7 @@ abstract class StudentDataProvider {
      * @abstract
      * @param string studentId
      * @param string term
-     * @return Student
+     * @return Intern\Student
      */
     public abstract function getStudent($studentId);
 
