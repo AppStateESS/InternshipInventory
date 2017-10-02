@@ -60,7 +60,7 @@ if(DEBUG){
             $notifyUI->display();
 
             \PHPWS_Core::goBack();
-        }catch(Exception $e){
+        }catch(\Exception $e){
             $message2 = formatException($e);
             echo "The Intern Inventory has experienced a major internal error.  Attempting to email an admin and then exit.";
             $message = "Something terrible has happened, and the exception catch-all threw an exception.\n\nThe first exception was:\n\n$message\n\nThe second exception was:\n\n$message2";
