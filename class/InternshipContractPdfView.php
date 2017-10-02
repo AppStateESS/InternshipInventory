@@ -56,11 +56,12 @@ class InternshipContractPdfView {
         $a = $this->internship->getAgency();
         $d = $this->internship->getDepartment();
         $f = $this->internship->getFaculty();
-        $m = $this->internship->getUgradMajor();
-        $g = $this->internship->getGradProgram();
+        //$m = $this->internship->getUgradMajor();
+        //$g = $this->internship->getGradProgram();
         //$subject = $this->internship->getSubject();
 
-        $pagecount = $this->pdf->setSourceFile(PHPWS_SOURCE_DIR . 'mod/intern/pdf/AppStateInternshipContractNew.pdf');
+        //$pagecount = $this->pdf->setSourceFile(PHPWS_SOURCE_DIR . 'mod/intern/pdf/AppStateInternshipContractNew.pdf');
+        $this->pdf->setSourceFile(PHPWS_SOURCE_DIR . 'mod/intern/pdf/AppStateInternshipContractNew.pdf');
         $tplidx = $this->pdf->importPage(1);
         $this->pdf->addPage();
         $this->pdf->useTemplate($tplidx);
