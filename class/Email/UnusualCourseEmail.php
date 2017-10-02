@@ -35,8 +35,6 @@ class UnusualCourseEmail extends Email {
     {
         $subjects = Subject::getSubjects();
 
-        $faculty = $this->internship->getFaculty();
-
         $this->tpl['NAME'] = $this->internship->getFullName();
         $this->tpl['BANNER'] = $this->internship->getBannerId();
         $this->tpl['USER'] = $this->internship->getEmailAddress();
