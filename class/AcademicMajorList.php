@@ -41,6 +41,8 @@ class AcademicMajorList {
             }
         }
 
+        $this->sortList($filteredMajors);
+
         return $filteredMajors;
     }
 
@@ -67,8 +69,7 @@ class AcademicMajorList {
         foreach($this->majors as $m){
             // If the sub-array we're looking at matches the single major we were given, then we've
             // found a duplicate and we can stop looking any further
-            if($m->getMajorCode() === $major->getMajorCode()
-                && $m->getLevel() === $major->getLevel()
+            if($m->getLevel() === $major->getLevel()
                 && $m->getDescription() === $major->getDescription()){
                 return;
             }
