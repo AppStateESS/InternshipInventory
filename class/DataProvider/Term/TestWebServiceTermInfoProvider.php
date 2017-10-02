@@ -31,7 +31,6 @@ class TestWebServiceTermInfoProvider extends WebServiceTermInfoProvider {
 
     private function getFakeResponse()
     {
-        $obj = new \stdClass();
         $responseObj = new \stdClass();
 
         $responseObj->term_code             = $this->term;
@@ -192,29 +191,6 @@ class TestWebServiceTermInfoProvider extends WebServiceTermInfoProvider {
                 break;
             default:
                 throw new \Exception('Missing fake census date for ' . $this->term);
-        }
-
-
-        // This is a backup to make sure we have at least one part of term, if we haven't set one in the switch statement above
-        // The dates will always be in 2016, but at least we'll have a part of term object to use
-        if(sizeof($responseObj->part_term) === 0){
-
-            $partTerm = new \stdClass();
-
-            $semester = Term::getSemester($this->term);
-            if($semester == Term::SPRING || $semester == Term::FALL){
-                $partTerm->part_term_code   = '4';
-            } else if($semester == Term::SUMMER1){
-                $partTerm->part_term_code   = 'SD';
-            } else if($semester == Term::SUMMER2){
-                $partTerm->part_term_code   = 'SE';
-            }
-
-            $partTerm->part_term_desc   = 'Special Term';
-            $partTerm->part_start_date  = '6/7/2016';
-            $partTerm->part_end_date    = '7/14/2016';
-
-            $responseObj->part_term[] = $partTerm;
         }
 
         $parentObj = new \stdClass();
