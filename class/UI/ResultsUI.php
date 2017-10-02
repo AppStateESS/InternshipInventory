@@ -161,12 +161,11 @@ class ResultsUI implements UI {
             $tokenLimit = 2; // Max number of tokens
 
             // The fields (db column names) to fuzzy match against, in decreasing order of importance
-            $fuzzyFields = array('last_name', 'first_name', 'middle_name');
+            // $fuzzyFields = array('last_name', 'first_name', 'middle_name'); //NB: Unused
             $fuzzyTolerance = 3; // Levenshtein distance allowed between the metaphones of a token and a $fuzzyField
 
             // Initalization
             $orderByList = array();
-            $whereSet = array();
 
             // Tokenize the passed in string
             $tokenCount = 0;
