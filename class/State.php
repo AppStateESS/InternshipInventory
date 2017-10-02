@@ -16,7 +16,7 @@ class State {
     {
         $db = new \PHPWS_DB('intern_state');
         $db->addWhere('abbr', $abbr);
-        return $db->loadObject($this);
+        $db->loadObject($this);
     }
 
     public function save()
