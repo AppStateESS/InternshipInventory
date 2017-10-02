@@ -21,7 +21,6 @@ class MajorsProviderFactory {
     public static function getProvider()
     {
         if(STUDENT_DATA_TEST){
-            var_dump('in here');exit;
             return new TestMajorsProvider(\Current_User::getUsername());
         }
 
