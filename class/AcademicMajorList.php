@@ -11,7 +11,6 @@ class AcademicMajorList {
      * undergraduate and graduate majors, and potentially including duplicates (from BannerMajorsProvider).
      *
      * @see BannerMajorsProvider
-     * @param Array<AcademicMajor> $majorsArray Array of majors, one major per object
      */
     public function __construct()
     {
@@ -46,22 +45,11 @@ class AcademicMajorList {
         return $filteredMajors;
     }
 
-    private function toAssocList($majorList){
-        $list = array();
-
-        foreach($majorList as $major){
-            $list[$major->getCode()] = $major->getDescription();
-        }
-
-        return $list;
-    }
-
     /**
      * Adds the array represnting a major to the set of majors if it is not already in the list.
      * Prevents duplciate major arrays from being added to the list.
      *
      * @param Array $major The array holding a single major
-     * @param Array $destArray A reference to an array of Major arrays, which we'll conditionally append $major to
      */
     public function addIfNotDuplicate(AcademicMajor $major)
     {
