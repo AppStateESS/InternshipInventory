@@ -88,8 +88,6 @@ class TermFactory
                                     extract(epoch from now())::int >= available_on_timestamp AND
                                     extract(epoch from now())::int < census_date_timestamp');
         $stmt->execute();
-
-        $reflection = new \ReflectionClass('Intern\Term');
         $stmt->setFetchMode(\PDO::FETCH_CLASS, '\Intern\TermRestored');
 
         $results = $stmt->fetchAll();
