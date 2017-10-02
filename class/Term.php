@@ -37,7 +37,7 @@ class Term {
     {
         $this->term                     = $term;
         $this->description              = $description;
-        $this->available_on_timesamp    = $availableOnTimestamp;
+        $this->available_on_timestamp   = $availableOnTimestamp;
         $this->census_date_timestamp    = $censusDateTimestamp;
         $this->start_timestamp          = $startTimestamp;
         $this->end_timestamp            = $endTimestamp;
