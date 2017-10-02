@@ -3,6 +3,7 @@
 namespace Intern\WorkflowTransition;
 use Intern\WorkflowTransition;
 use Intern\Internship;
+use Intern\TermFactory;
 
 class GradSchoolApprove extends WorkflowTransition {
 
@@ -24,7 +25,9 @@ class GradSchoolApprove extends WorkflowTransition {
 
     public function doNotification(Internship $i, $note = null)
     {
-        $email = new \Intern\Email\ReadyToRegisterEmail(\Intern\InternSettings::getInstance(), $i);
+        $term = TermFactory::getTermByTermCode($i->getTerm());
+
+        $email = new \Intern\Email\ReadyToRegisterEmail(\Intern\InternSettings::getInstance(), $i, $term);
         $email->send();
     }
 }
