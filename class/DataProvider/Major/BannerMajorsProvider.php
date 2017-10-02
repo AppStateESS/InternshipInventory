@@ -2,6 +2,7 @@
 
 namespace Intern\DataProvider\Major;
 
+use Intern\AcademicMajor;
 use Intern\AcademicMajorList;
 
 use \SoapFault;
@@ -29,7 +30,7 @@ class BannerMajorsProvider extends MajorsProvider {
             throw new \InvalidArgumentException('Missing term.');
         }
 
-        $params = array('Term'      => $term,
+        $params = array('Term'      => $term->geTermCode(),
                         'UserName'  => $this->currentUserName);
 
         try {
@@ -53,6 +54,6 @@ class BannerMajorsProvider extends MajorsProvider {
             $majorsList->addIfNotDuplicate(new AcademicMajor($major->major_code, $major->major_desc, $major->levl));
         }
 
-        return new $majorsList;
+        return $majorsList;
     }
 }
