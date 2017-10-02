@@ -124,9 +124,9 @@ class EditInternshipFormView {
         }
 
         // Copy if it's Spring and exist, else if it's Summer 1 and exist.
-        if($nextThreeTerm !== null && Term::getSemester($this->intern->getTerm()) == Term::SPRING){
+        if($nextThreeTerm !== null && $term->getSemesterType() == Term::SPRING){
             $this->tpl['CONTINUE_TERM_LIST'][] = array('DEST_TERM'=>$nextThreeTerm->getTermCode(), 'DEST_TERM_TEXT'=>$nextThreeTerm->getDescription());
-        } else if($nextTwoTerm !== null && Term::getSemester($this->intern->getTerm()) == Term::SUMMER1){
+        } else if($nextTwoTerm !== null && $term->getSemesterType() == Term::SUMMER1){
             $this->tpl['CONTINUE_TERM_LIST'][] = array('DEST_TERM'=>$nextTwoTerm->getTermCode(), 'DEST_TERM_TEXT'=>$nextTwoTerm->getDescription());
         }
 
