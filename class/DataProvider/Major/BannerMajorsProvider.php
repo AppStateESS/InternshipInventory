@@ -30,7 +30,7 @@ class BannerMajorsProvider extends MajorsProvider {
             throw new \InvalidArgumentException('Missing term.');
         }
 
-        $params = array('Term'      => $term->geTermCode(),
+        $params = array('Term'      => $term->getTermCode(),
                         'UserName'  => $this->currentUserName);
 
         try {
