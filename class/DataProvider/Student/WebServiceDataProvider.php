@@ -47,7 +47,7 @@ class WebServiceDataProvider extends StudentDataProvider {
 
     /**
      * Returns a Student object with hard-coded data
-     * @return Student
+     * @return \Intern\Student
      */
     public function getStudent($studentId)
     {
