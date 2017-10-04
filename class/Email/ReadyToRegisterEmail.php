@@ -16,6 +16,7 @@ use \Intern\Term;
 class ReadyToRegisterEmail extends Email {
 
     private $internship;
+    private $term;
 
     /**
      * Constructor
@@ -23,10 +24,11 @@ class ReadyToRegisterEmail extends Email {
      * @param InternSettings $emailSettings
      * @param Internship $internship
      */
-    public function __construct(InternSettings $emailSettings, Internship $internship) {
+    public function __construct(InternSettings $emailSettings, Internship $internship, Term $term) {
         parent::__construct($emailSettings);
 
         $this->internship = $internship;
+        $this->term = $term;
     }
 
     protected function getTemplateFileName(){
@@ -44,7 +46,7 @@ class ReadyToRegisterEmail extends Email {
         $this->tpl['USER'] = $this->internship->email;
         $this->tpl['PHONE'] = $this->internship->phone;
 
-        $term = Term::rawToRead($this->internship->getTerm(), false);
+        $term = $this->term->getDescription();
         $this->tpl['TERM'] = $term;
 
         if(isset($this->internship->course_subj)){

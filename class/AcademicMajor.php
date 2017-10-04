@@ -9,9 +9,13 @@ namespace Intern;
  */
 class AcademicMajor {
 
-    private $code;
-    private $description;
-    private $level;
+    // Fields must be public for json_encode()
+    public $code;
+    public $description;
+    public $level;
+
+    const LEVEL_UNDERGRAD   = 'U';
+    const LEVEL_GRADUATE    = 'G';
 
     public function __construct($code, $description, $level)
     {

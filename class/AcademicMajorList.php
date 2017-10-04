@@ -4,70 +4,45 @@ namespace Intern;
 
 class AcademicMajorList {
 
-    private $undergradMajors;
-    private $graduateMajors;
+    private $majors;
 
     /**
      * Creates an AcademicMajorList object given an array of stdClass objects containing
      * undergraduate and graduate majors, and potentially including duplicates (from BannerMajorsProvider).
      *
      * @see BannerMajorsProvider
-     * @param Array<stdClass> $majorsArray Array of majors, one major per object
      */
-    public function __construct(Array $majorsArray)
+    public function __construct()
     {
-        $undergradMajors = array();
-        $graduateMajors = array();
+        $this->majors = array();
+    }
 
-        // Check for duplicate majors while sorting the majors into undergrad vs grad
-        foreach($majorsArray as $major)
-        {
-            // Skip majors/programs in University College
-            if($major->college_code === 'GC'){
-                continue;
+    public function addMajorsArray(Array $majorsArray)
+    {
+        // Add each of the given majors to list, checking for duplicates
+        foreach($majorsArray as $major){
+            $this->addIfNotDuplicate($major);
+        }
+    }
+
+    public function addMajor(AcademicMajor $major)
+    {
+        $this->majors[] = $major;
+    }
+
+    public function getMajorsByLevel(string $level): array
+    {
+        $filteredMajors = array();
+
+        foreach($this->majors as $m){
+            if($m->getLevel() === $level){
+                $filteredMajors[] = $m;
             }
-
-            if($major->levl == MajorsProvider::LEVEL_UNDERGRAD) {
-                $this->addIfNotDuplicate($major, $undergradMajors);
-            } else if($major->levl == MajorsProvider::LEVEL_GRADUATE) {
-                $this->addIfNotDuplicate($major, $graduateMajors);
-            }
         }
 
-        // Translate each stdClass object into an AcademicMajor object and store it in the member variables
-        $this->undergradMajors = array();
-        $this->graduateMajors = array();
+        $this->sortList($filteredMajors);
 
-        foreach($undergradMajors as $major){
-            $this->undergradMajors[] = new AcademicMajor($major->major_code, $major->major_desc, $major->levl);
-        }
-
-        foreach($graduateMajors as $major){
-            $this->graduateMajors[] = new AcademicMajor($major->major_code, $major->major_desc, $major->levl);
-        }
-
-        $this->sortList($this->undergradMajors);
-        $this->sortList($this->graduateMajors);
-    }
-
-    public function getUndergradMajorsAssoc()
-    {
-        return $this->toAssocList($this->undergradMajors);
-    }
-
-    public function getGraduateMajorsAssoc()
-    {
-        return $this->toAssocList($this->graduateMajors);
-    }
-
-    private function toAssocList($majorList){
-        $list = array();
-
-        foreach($majorList as $major){
-            $list[$major->getCode()] = $major->getDescription();
-        }
-
-        return $list;
+        return $filteredMajors;
     }
 
     /**
@@ -75,21 +50,21 @@ class AcademicMajorList {
      * Prevents duplciate major arrays from being added to the list.
      *
      * @param Array $major The array holding a single major
-     * @param Array $destArray A reference to an array of Major arrays, which we'll conditionally append $major to
      */
-    private function addIfNotDuplicate(\stdClass $major, Array &$destArray)
+    public function addIfNotDuplicate(AcademicMajor $major)
     {
         // Look through each sub-array in the set of majors
-        foreach($destArray as $m){
+        foreach($this->majors as $m){
             // If the sub-array we're looking at matches the single major we were given, then we've
             // found a duplicate and we can stop looking any further
-            if($m->major_code == $major->major_code){
+            if($m->getLevel() === $major->getLevel()
+                && $m->getDescription() === $major->getDescription()){
                 return;
             }
         }
 
         // If we didn't find any duplicates (i.e. $major did not exist in $destArray), then add it
-        $destArray[] = $major;
+        $this->majors[] = $major;
     }
 
     private function sortList(&$list)

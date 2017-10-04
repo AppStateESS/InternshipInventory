@@ -206,4 +206,22 @@ class InternSettings {
 
         return $result;
     }
+
+
+    /**
+     * Returns the name of the student data provider to use.
+     *
+     * @throws InvalidArgumentException
+     * @return string - name of the student data provider to use
+     */
+    public function getStudentDataSource()
+    {
+        $result = \PHPWS_Settings::get('intern', 'studentDataSource');
+
+        if (!isset($result) || is_null($result)) {
+            throw new \InvalidArgumentException('Missing configuration for student data source.');
+        }
+
+        return $result;
+    }
 }

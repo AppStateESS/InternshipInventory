@@ -2,11 +2,13 @@
 
 namespace Intern;
 
+use \Intern\DataProvider\Student\StudentDataProviderFactory;
+
 class StudentFactory {
 
     public static function getStudent($studentId, $term)
     {
-        $provider = ExternalDataProviderFactory::getProvider();
+        $provider = StudentDataProviderFactory::getProvider();
         return $provider->getStudent($studentId, $term);
     }
 }

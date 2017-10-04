@@ -1,6 +1,9 @@
 <?php
 
-namespace Intern;
+namespace Intern\DataProvider\Student;
+
+use Intern\Student;
+use Intern\AcademicMajor;
 
 use \SoapFault;
 
@@ -12,7 +15,7 @@ use \SoapFault;
  * @author Jeremy Booker
  * @package Intern
  */
-class WebServiceDataProvider extends ExternalDataProvider {
+class WebServiceDataProvider extends StudentDataProvider {
 
     protected $currentUserName;
 
@@ -44,12 +47,10 @@ class WebServiceDataProvider extends ExternalDataProvider {
 
     /**
      * Returns a Student object with hard-coded data
-     * @return Student
+     * @return \Intern\Student
      */
-    public function getStudent($studentId, $term)
+    public function getStudent($studentId)
     {
-        $term .= "0";
-
         if($studentId === null || $studentId == ''){
             throw new \InvalidArgumentException('Missing student ID.');
         }
@@ -99,7 +100,8 @@ class WebServiceDataProvider extends ExternalDataProvider {
         // Log the request
         $this->logRequest('getStudent', 'success', $params);
 
-        $response->creditHours = $this->getCreditHours($studentId, $term);
+        // Removed built-in credit-hour fetching because we don't always have a term (but still need to lookup a student)
+        //$response->creditHours = $this->getCreditHours($studentId, $term);
 
         // Create the Student object and plugin the values
         $student = new Student();
@@ -113,7 +115,7 @@ class WebServiceDataProvider extends ExternalDataProvider {
         return $this->client->GetInternInfo($params);
     }
 
-    public function getCreditHours($studentId, $term)
+    public function getCreditHours(string $studentId, string $term)
     {
         if($studentId === null || $studentId == ''){
             throw new \InvalidArgumentException('Missing student ID.');
@@ -270,14 +272,16 @@ class WebServiceDataProvider extends ExternalDataProvider {
         }
 
         // Credit Hours
-        $student->setCreditHours($data->creditHours);
+        // Removed built-in credit hour fetching, since we don't always have a term
+        //$student->setCreditHours($data->creditHours);
 
-        // Majors - Can be an array of objects, or just a single object
-        if(is_array($data->majors)) {
+        // Majors - Can be an array of objects, or just a single object, or not set at all
+        // TODO: Fix hard-coded 'U' level passed to AcademicMajor
+        if(isset($data->majors) && is_array($data->majors)) {
             foreach($data->majors as $major){
                 $student->addMajor(new AcademicMajor($major->major_code, $major->major_desc, 'U'));
             }
-        } else if(is_object($data->majors)){
+        } else if(isset($data->majors) &&  is_object($data->majors)){
             $student->addMajor(new AcademicMajor($data->majors->major_code, $data->majors->major_desc, 'U'));
         }
 

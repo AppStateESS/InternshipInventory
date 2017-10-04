@@ -33,8 +33,13 @@ class ChangeHistory extends Model{
             }
 
             // Strip namespace from start of from and to states, all four backspaces are required to escaping backslash
-            $this->from_state   = preg_replace("/Intern\\\\WorkflowState\\\\/", '', $fromState->getName());
-            $this->to_state     = preg_replace("/Intern\\\\WorkflowState\\\\/", '', $toState->getName());
+            if($fromState !== null){
+                $this->from_state   = preg_replace("/Intern\\\\WorkflowState\\\\/", '', $fromState->getName());
+            }
+
+            if($toState !== null){
+                $this->to_state     = preg_replace("/Intern\\\\WorkflowState\\\\/", '', $toState->getName());
+            }
 
             $this->note = $note;
         }

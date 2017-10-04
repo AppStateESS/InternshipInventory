@@ -114,6 +114,8 @@ function intern_update(&$content, $currentVersion)
             internRunDbMigration('update_00.01.21.sql');
         case version_compare($currentVersion, '0.1.22', '<') :
             internRunDbMigration('update_00.01.22.sql');
+        case version_compare($currentVersion, '0.1.27', '<') :
+            internRunDbMigration('update_00.01.27.sql');
     }
 
     return TRUE;

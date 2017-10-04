@@ -19,16 +19,18 @@ class InternshipView {
     private $wfState;
     private $agency;
     private $docs;
-    private $termInfo;
+    private $term;
+    private $studentExistingCreditHours;
 
-    public function __construct(Internship $internship, Student $student = null, WorkflowState $wfState, Agency $agency, Array $docs, TermInfo $termInfo)
+    public function __construct(Internship $internship, Student $student = null, WorkflowState $wfState, Agency $agency, Array $docs, Term $term, $studentExistingCreditHours)
     {
         $this->intern = $internship;
         $this->student = $student;
         $this->wfState = $wfState;
         $this->agency = $agency;
         $this->docs = $docs;
-        $this->termInfo = $termInfo;
+        $this->term = $term;
+        $this->studentExistingCreditHours = $studentExistingCreditHours;
     }
 
     public function display()
@@ -36,7 +38,7 @@ class InternshipView {
         $tpl = array();
 
         // Setup the form
-        $internshipForm = new EditInternshipFormView($this->intern, $this->student, $this->agency, $this->docs, $this->termInfo);
+        $internshipForm = new EditInternshipFormView($this->intern, $this->student, $this->agency, $this->docs, $this->term, $this->studentExistingCreditHours);
 
         // Get the Form object
         $form = $internshipForm->getForm();
@@ -111,13 +113,12 @@ class InternshipView {
         }
 
         // Show a warning if the start date selected is outside of the term start date
-        $part = $this->termInfo->getLongestTermPart();
-        if($this->intern->start_date != 0 && ($this->intern->start_date < strtotime($part->part_start_date) || $this->intern->start_date > strtotime($part->part_end_date))){
+        if($this->intern->start_date != 0 && ($this->intern->start_date < $this->term->getStartTimestamp() || $this->intern->start_date > $this->term->getEndTimestamp())){
           \NQ::simple('intern', UI\NotifyUI::WARNING, "The start date you selected is ouside the dates of the term. If correct, fill out the <a target='_blank' href=\"https:\/\/registrar.appstate.edu\/\/sites/registrar.appstate.edu/files/academic_course_meeting_dates_exception_form_102416_1.pdf\">Meeting Dates Exception Form</a>.");
         }
 
         // Show a warning if the ending date selected is outside of the term end date
-        if($this->intern->end_date != 0 && ($this->intern->end_date > strtotime($part->part_end_date) || $this->intern->end_date < strtotime($part->part_start_date))){
+        if($this->intern->end_date != 0 && ($this->intern->end_date > $this->term->getEndTimestamp() || $this->intern->end_date < $this->term->getStartTimestamp())){
           \NQ::simple('intern', UI\NotifyUI::WARNING, "The end date you selected is ouside the dates of the term. If correct, fill out the <a target='_blank' href=\"https:\/\/registrar.appstate.edu\/\/sites/registrar.appstate.edu/files/academic_course_meeting_dates_exception_form_102416_1.pdf\">Meeting Dates Exception Form</a>.");
         }
     }
@@ -144,7 +145,8 @@ class InternshipView {
 
         // Show warning if student is enrolled for more than the credit hour limit for the term
         $internHours = $this->intern->getCreditHours();
-        if(isset($internHours) && $this->student->isCreditHourLimited($internHours, $this->intern->getTerm())) {
+
+        if(isset($internHours) && $this->student->isCreditHourLimited($internHours, $this->studentExistingCreditHours, $this->term)) {
             \NQ::simple('intern', UI\NotifyUI::WARNING, 'This internship will cause the student to exceed the semester credit hour limit. This student will need an Overload Permit from their Dean\'s Office.');
         }
 

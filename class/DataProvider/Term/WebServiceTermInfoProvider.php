@@ -1,6 +1,8 @@
 <?php
 
-namespace Intern;
+namespace Intern\DataProvider\Term;
+
+use Intern\TermInfo;
 
 use \SoapFault;
 
@@ -8,13 +10,13 @@ use \SoapFault;
  * BannerTermProvider
  *
  * Returns a Term object with data pulled from a web service connected to Banner.
- * Usually created through the TermProviderFactory.
+ * Usually created through the TermInfoProviderFactory.
  *
- * @see \Intern\TermProviderFactory
+ * @see \Intern\DataProvider\Term\TermInfoProviderFactory
  * @author Jeremy Booker
  * @package Intern
  */
-class BannerTermProvider {
+class WebServiceTermInfoProvider extends TermInfoProvider {
 
     protected $currentUserName;
 
@@ -39,15 +41,15 @@ class BannerTermProvider {
      * Returns a Term object with hard-coded data
      * @return Term
      */
-    public function getTerm($term)
+    public function getTermInfo(string $termCode): TermInfo
     {
-        $term .= "0";
+        $termCode .= "0";
 
-        if($term === null || $term== '0'){
+        if($termCode === null || $termCode == '0'){
             throw new \InvalidArgumentException('Missing term.');
         }
 
-        $params = array('Term' => $term,
+        $params = array('Term' => $termCode,
                         'UserName' => $this->currentUserName);
 
         try {

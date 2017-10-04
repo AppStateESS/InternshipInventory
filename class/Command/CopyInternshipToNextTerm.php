@@ -3,7 +3,7 @@ namespace Intern\Command;
 
 use \Intern\InternshipFactory;
 use \Intern\WorkflowStateFactory;
-use \Intern\Term;
+use \Intern\TermFactory;
 
 /**
  * Controller class to save a copy of an Internship for the next term
@@ -35,21 +35,21 @@ class CopyInternshipToNextTerm {
         $state = WorkflowStateFactory::getState('CreationState');
         $internship->setState($state); // Set initial WorkflowState
 
+        // Get the requested destination term and set it
+        $destTermCode = $_REQUEST['destinationTerm'];
+        $newTerm = TermFactory::getTermByTermCode($destTermCode);
 
-        // Get the requested destination term
-        $destTerm = $_REQUEST['destinationTerm'];
-
-        // Check if the destination term exists
-        if(!Term::termExists($destTerm)){
-            throw new \InvalidArgumentException('Requested term does not exist: ' . $destTerm);
+        if($newTerm === null || $newTerm === false){
+            throw new \InvalidArgumentException('Requested term does not exist: ' . $destTermCode);
         }
-        $internship->setTerm($destTerm);
+
+        $internship->setTerm($newTerm->getTermCode());
 
         // Save the new internship
         $copyId = $internship->save();
 
-        // Show confirmation message
-        \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, 'Continued internship for ' . $internship->getFullName() . ' to ' . Term::rawToRead($destTerm) . '.');
+        // Show message if user edited internship
+        \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, 'Continued internship for ' . $internship->getFullName() . ' to ' . $newTerm->getDescription() . '.');
         \NQ::close();
 
         // Redirect to the new internship

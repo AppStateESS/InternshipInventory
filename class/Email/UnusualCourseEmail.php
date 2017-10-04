@@ -17,12 +17,14 @@ use \Intern\Term;
 class UnusualCourseEmail extends Email {
 
     private $internship;
+    private $term;
 
-    public function __construct(InternSettings $emailSettings, Internship $internship)
+    public function __construct(InternSettings $emailSettings, Internship $internship, Term $term)
     {
         parent::__construct($emailSettings);
 
         $this->internship = $internship;
+        $this->term = $term;
     }
 
     protected function getTemplateFileName(){
@@ -33,14 +35,12 @@ class UnusualCourseEmail extends Email {
     {
         $subjects = Subject::getSubjects();
 
-        $faculty = $this->internship->getFaculty();
-
         $this->tpl['NAME'] = $this->internship->getFullName();
         $this->tpl['BANNER'] = $this->internship->getBannerId();
         $this->tpl['USER'] = $this->internship->getEmailAddress();
         $this->tpl['PHONE'] = $this->internship->getPhoneNumber();
 
-        $term = Term::rawToRead($this->internship->term, false);
+        $term = $this->term->getDescription();
 
         $this->tpl['TERM'] = $term;
 

@@ -16,17 +16,20 @@ use \Intern\InternSettings;
 class CancelInternshipNotice extends Email {
 
     private $internship;
+    private $term;
 
     /**
     * Constructor
     *
     * @param InternSettings $emailSettings
+    * @param Term $term
     * @param Internship $internship
     */
-    public function __construct(InternSettings $emailSettings, Internship $internship) {
+    public function __construct(InternSettings $emailSettings, Internship $internship, Term $term) {
         parent::__construct($emailSettings);
 
         $this->internship = $internship;
+        $this->term = $term;
     }
 
     protected function getTemplateFileName()
@@ -38,7 +41,7 @@ class CancelInternshipNotice extends Email {
     {
         $this->tpl['NAME'] = $this->internship->getFullName();
         $this->tpl['BANNER'] = $this->internship->banner;
-        $this->tpl['TERM'] = Term::rawToRead($this->internship->term);
+        $this->tpl['TERM'] = $this->term->getDescription();
 
         $dept = new Department($this->internship->department_id);
         $this->tpl['DEPARTMENT'] = $dept->getName();
@@ -67,6 +70,6 @@ class CancelInternshipNotice extends Email {
             $this->cc[] = ($faculty->getUsername() . $this->emailSettings->getEmailDomain());
         }
 
-        $this->subject = 'Internship Cancelled ' . Term::rawToRead($this->internship->getTerm()) . '[' . $this->internship->getBannerId() . '] ' . $this->internship->getFullName();
+        $this->subject = 'Internship Cancelled ' . $this->term->getDescription() . '[' . $this->internship->getBannerId() . '] ' . $this->internship->getFullName();
     }
 }

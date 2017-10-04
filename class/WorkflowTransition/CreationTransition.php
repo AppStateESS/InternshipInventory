@@ -3,6 +3,7 @@
 namespace Intern\WorkflowTransition;
 use Intern\WorkflowTransition;
 use Intern\Internship;
+use Intern\TermFactory;
 
 class CreationTransition extends WorkflowTransition {
     const sourceState = 'CreationState';
@@ -18,10 +19,12 @@ class CreationTransition extends WorkflowTransition {
         if(!$i->isDomestic()){
             $settings = \Intern\InternSettings::getInstance();
 
-            $email = new \Intern\Email\IntlInternshipCreateNotice($settings, $i);
+            $term = TermFactory::getTermByTermCode($i->getTerm());
+
+            $email = new \Intern\Email\IntlInternshipCreateNotice($settings, $i, $term);
             $email->send();
 
-            $email = new \Intern\Email\IntlInternshipCreateNoticeStudent($settings, $i);
+            $email = new \Intern\Email\IntlInternshipCreateNoticeStudent($settings, $i, $term);
             $email->send();
         }
     }

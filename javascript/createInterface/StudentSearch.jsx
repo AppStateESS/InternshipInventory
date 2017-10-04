@@ -101,7 +101,9 @@ class SearchBox extends React.Component {
 
         return (
             <div>
-                <input type="search" name="studentId" id="studentSearch" className="form-control typeahead input-lg" placeholder="Banner ID, User name, or Full Name" ref="typeahead" autoComplete="off" autoFocus={true}/>
+                <div>
+                    <input type="search" name="studentId" id="studentSearch" className="form-control typeahead input-lg" placeholder="Banner ID, User name, or Full Name" ref="typeahead" autoComplete="off" autoFocus={true}/>
+                </div>
                 {errorNotice}
             </div>
         );

@@ -1,6 +1,6 @@
 <?php
 
-namespace Intern;
+namespace Intern\DataProvider\Student;
 
 /**
  * StudentProvider
@@ -8,7 +8,7 @@ namespace Intern;
  * Abstract class to define the interface for various ways
  * to get Student objects.
  */
-abstract class ExternalDataProvider {
+abstract class StudentDataProvider {
 
     /**
      * Returns a Student object corresponding to the given studentId.
@@ -16,9 +16,9 @@ abstract class ExternalDataProvider {
      * @abstract
      * @param string studentId
      * @param string term
-     * @return Student
+     * @return Intern\Student
      */
-    public abstract function getStudent($studentId, $term);
+    public abstract function getStudent($studentId);
 
     /**
      * Returns the number of credit hours the given student is currently
@@ -28,7 +28,7 @@ abstract class ExternalDataProvider {
      * @param string StudentId
      * @return int
      */
-    public abstract function getCreditHours($studentId, $term);
+    public abstract function getCreditHours(string $studentId, string $term);
 
     /**
      * Returns a stdClass object representing a faculty member, or throws an exception if not Found

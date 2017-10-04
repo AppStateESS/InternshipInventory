@@ -119,6 +119,10 @@ class Internship {
     // Form token
     public $form_token;
 
+
+    // Static vars - Used to avoid repeated DB queries when looping over Internship objects
+    private static $termDescriptionList;
+
     /**
      * Constructs a new Internship object.
      */
@@ -186,7 +190,7 @@ class Internship {
 
         // Majors - If double major, just take index 0
         $majors = $student->getMajors();
-        if(is_array($majors)) {
+        if(is_array($majors) && sizeof($majors) > 0) {
             $this->major_code = $majors[0]->getCode();
             $this->major_description = $majors[0]->getDescription();
         } else if (is_object($majors)) {
@@ -256,116 +260,121 @@ class Internship {
      * @Override Model::getCSV
      * Get a CSV formatted for for this internship.
      */
-     public function getCSV()
-     {
-         $csv = array();
+    public function getCSV()
+    {
+        // Initalize term description list, if needed
+        // Store term list in a static var, so hopefully we only do this once per export
+        if(!isset(self::$termDescriptionList)){
+            self::$termDescriptionList = TermFactory::getTermsAssoc();
+        }
 
-         // Student data
-         $csv['Banner ID']   = $this->banner;
-         $csv['First Name']  = $this->first_name;
-         $csv['Middle Name'] = $this->middle_name;
-         $csv['Last Name']   = $this->last_name;
+        $csv = array();
 
-         // Academic Info
-         $csv['Level']           = $this->getLevel();
-         if($this->getLevel() == 'ugrad'){
-             //$csv['Undergrad Major'] = $this->getUgradMajor()->getName();
-             //$csv['Graduate Program'] = ' ';
-         }else if($this->getLevel() == 'grad'){
-             //$csv['Undergrad Major'] = ' ';
-             //$csv['Graduate Program'] = $this->getGradProgram()->getName();
-         }else{
-             //$csv['Undergrad Major'] = ' ';
-             //$csv['Graduate Program'] = ' ';
-         }
-         $csv['GPA']             = $this->getGpa();
-         $csv['Campus']          = $this->getCampus();
+        // Student data
+        $csv['Banner ID']   = $this->banner;
+        $csv['First Name']  = $this->first_name;
+        $csv['Middle Name'] = $this->middle_name;
+        $csv['Last Name']   = $this->last_name;
 
-         // Status Info
-         $csv['Status']                 = $this->getWorkflowState()->getFriendlyName();
-         $csv['OIED Certified']         = $this->isOiedCertified() == 1 ? 'Yes' : 'No';
+        // Academic Info
+        $csv['Level']           = $this->getLevel();
+        if($this->getLevel() == 'ugrad'){
+            //$csv['Undergrad Major'] = $this->getUgradMajor()->getName();
+            $csv['Grduate Program'] = '';
+        }else if($this->getLevel() == 'grad'){
+            $csv['Undergrad Major'] = '';
+            //$csv['Graduate Program'] = $this->getGradProgram()->getName();
+        }else{
+            $csv['Undergrad Major'] = '';
+            $csv['Grduate Program'] = '';
+        }
+        $csv['GPA']             = $this->getGpa();
+        $csv['Campus']          = $this->getCampus();
 
-         // Student Academic Info
-         $csv['Phone #']     = $this->phone;
-         $csv['Email']       = $this->email;
+        // Status Info
+        $csv['Status']                 = $this->getWorkflowState()->getFriendlyName();
+        $csv['OIED Certified']         = $this->isOiedCertified() == 1 ? 'Yes' : 'No';
 
-         // Student Address
-         $csv['Student Address']        = $this->student_address;
-         $csv['Student Address 2']      = $this->student_address2;
-         $csv['Student City']           = $this->student_city;
-         $csv['Student State']          = $this->student_state;
-         $csv['Student Zip']            = $this->student_zip;
+        // Student Academic Info
+        $csv['Phone #']     = $this->phone;
+        $csv['Email']       = $this->email;
 
-         // Emergency Contact
-         $csv['Emergency Contact Name']     = $this->getEmergencyContactName();
-         $csv['Emergency Contact Relation'] = $this->getEmergencyContactRelation();
-         $csv['Emergency Contact Phone']    = $this->getEmergencyContactPhoneNumber();
+        // Student Address
+        $csv['Student Address']        = $this->student_address;
+        $csv['Student Address 2']      = $this->student_address2;
+        $csv['Student City']           = $this->student_city;
+        $csv['Student State']          = $this->student_state;
+        $csv['Student Zip']            = $this->student_zip;
 
-         // Internship Data
-         $csv['Term']                   = Term::rawToRead($this->term, false);
-         $csv['Start Date']             = $this->getStartDate(true);
-         $csv['End Date']               = $this->getEndDate(true);
-         $csv['Credits']                = $this->credits;
-         $csv['Average Hours Per Week'] = $this->avg_hours_week;
-         $csv['Paid']                   = $this->paid == 1 ? 'Yes' : 'No';
-         $csv['Stipend']                = $this->stipend == 1 ? 'Yes' : 'No';
+        // Emergency Contact
+        $csv['Emergency Contact Name']     = $this->getEmergencyContactName();
+        $csv['Emergency Contact Relation'] = $this->getEmergencyContactRelation();
+        $csv['Emergency Contact Phone']    = $this->getEmergencyContactPhoneNumber();
 
-         // Internship Type
-         $csv['Experience Type']          = $this->getExperienceType();
+        // Internship Data
+        $csv['Term']                   = self::$termDescriptionList[$this->term];
+        $csv['Start Date']             = $this->getStartDate(true);
+        $csv['End Date']               = $this->getEndDate(true);
+        $csv['Credits']                = $this->credits;
+        $csv['Average Hours Per Week'] = $this->avg_hours_week;
+        $csv['Paid']                   = $this->paid == 1 ? 'Yes' : 'No';
+        $csv['Stipend']                = $this->stipend == 1 ? 'Yes' : 'No';
 
-         // Internship location data
-         $csv['Domestic']               = $this->isDomestic() ? 'Yes' : 'No';
-         $csv['International']          = $this->isInternational() ? 'Yes' : 'No';
-         $csv['Location Address']       = $this->loc_address;
-         $csv['Location City']          = $this->loc_city;
-         $csv['Location State']         = $this->loc_state;
-         $csv['Location Zip']           = $this->loc_zip;
-         $csv['Province']               = $this->loc_province;
-         $csv['Country']                = $this->loc_country;
+        // Internship Type
+        $csv['Experience Type']          = $this->getExperienceType();
 
-         // Course Info
-         $csv['Multi-part']             = $this->isMultipart() ? 'Yes' : 'No';
-         $csv['Secondary Part']         = $this->isSecondaryPart() ? 'Yes' : 'No';
+        // Internship location data
+        $csv['Domestic']               = $this->isDomestic() ? 'Yes' : 'No';
+        $csv['International']          = $this->isInternational() ? 'Yes' : 'No';
+        $csv['Location Address']       = $this->loc_address;
+        $csv['Location City']          = $this->loc_city;
+        $csv['Location State']         = $this->loc_state;
+        $csv['Location Zip']           = $this->loc_zip;
+        $csv['Province']               = $this->loc_province;
+        $csv['Country']                = $this->loc_country;
 
-         $courseSubject = $this->getSubject();
-         if($courseSubject === null){
-             $csv['Course Subject']         = ' ';
-         } else {
-             $csv['Course Subject']         = $this->getSubject()->getName();
-         }
+        // Course Info
+        $csv['Multi-part']             = $this->isMultipart() ? 'Yes' : 'No';
+        $csv['Secondary Part']         = $this->isSecondaryPart() ? 'Yes' : 'No';
 
-         $csv['Course Number']          = $this->course_no;
-         $csv['Course Section']         = $this->course_sect;
-         $csv['Course Title']           = $this->course_title;
+        if($this->getSubject() !== null){
+            $csv['Course Subject']     = $this->getSubject()->getName();
+        }else {
+            $csv['Course Subject']     = '';
+        }
 
-         // Get external objects
-         $a = $this->getAgency();
-         $f = $this->getFaculty();
-         $d = $this->getDepartment();
-         $c = $this->getDocuments();
+        $csv['Course Number']          = $this->course_no;
+        $csv['Course Section']         = $this->course_sect;
+        $csv['Course Title']           = $this->course_title;
 
-         // Merge data from other objects.
-         $csv = array_merge($csv, $a->getCSV());
+        // Get external objects
+        $a = $this->getAgency();
+        $f = $this->getFaculty();
+        $d = $this->getDepartment();
+        $c = $this->getDocuments();
 
- 		if(count($c) > 0) {
- 			$csv['Document Uploaded']  = 'Yes';
- 		} else {
- 			$csv['Document Uploaded']  = 'No';
- 		}
+        // Merge data from other objects.
+        $csv = array_merge($csv, $a->getCSV());
 
-         if ($f instanceof Faculty) {
-             $csv = array_merge($csv, $f->getCSV());
-         } else {
-             $csv['Faculty Super. First Name'] = '';
-             $csv['Faculty Super. Last Name']  = '';
-             $csv['Faculty Super. Phone']      = '';
-             $csv['Faculty Super. Email']      = '';
-         }
+		if(count($c) > 0) {
+			$csv['Document Uploaded']  = 'Yes';
+		} else {
+			$csv['Document Uploaded']  = 'No';
+		}
 
-         $csv = array_merge($csv, $d->getCSV());
+        if ($f instanceof Faculty) {
+            $csv = array_merge($csv, $f->getCSV());
+        } else {
+            $csv['Faculty Super. First Name'] = '';
+            $csv['Faculty Super. Last Name']  = '';
+            $csv['Faculty Super. Phone']      = '';
+            $csv['Faculty Super. Email']      = '';
+        }
 
-         return $csv;
-     }
+        $csv = array_merge($csv, $d->getCSV());
+
+        return $csv;
+    }
 
     /**
      * Returns true if this internship is at the undergraduate level, false otherwise.
@@ -710,7 +719,8 @@ class Internship {
             $tags['FACULTY_NAME'] = PHPWS_Text::moduleLink('&nbsp;', 'intern', array('action' => 'ShowInternship', 'internship_id' => $this->id));
         }
 
-        $tags['TERM'] = PHPWS_Text::moduleLink(Term::rawToRead($this->term), 'intern', array('action' => 'ShowInternship', 'internship_id' => $this->id));
+        $term = TermFactory::getTermByTermCode($this->term);
+        $tags['TERM'] = PHPWS_Text::moduleLink($term->getDescription(), 'intern', array('action' => 'ShowInternship', 'internship_id' => $this->id));
 
         $tags['WORKFLOW_STATE'] = PHPWS_Text::moduleLink($this->getWorkflowState()->getFriendlyName(), 'intern', array('action' => 'ShowInternship', 'internship_id' => $this->id));
 

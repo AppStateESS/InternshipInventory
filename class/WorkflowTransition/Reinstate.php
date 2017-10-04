@@ -3,6 +3,7 @@
 namespace Intern\WorkflowTransition;
 use Intern\WorkflowTransition;
 use Intern\Internship;
+use Intern\TermFactory;
 
 class Reinstate extends WorkflowTransition {
     const sourceState = 'CancelledState';
@@ -16,7 +17,9 @@ class Reinstate extends WorkflowTransition {
     public function doNotification(Internship $i, $note = null)
     {
         if($i->isInternational()){
-            $email = new \Intern\Email\IntlInternshipReinstateNotice(\Intern\InternSettings::getInstance(), $i);
+            $term = TermFactory::getTermByTermCode($i->getTerm());
+
+            $email = new \Intern\Email\IntlInternshipReinstateNotice(\Intern\InternSettings::getInstance(), $i, $term);
             $email->send();
         }
     }

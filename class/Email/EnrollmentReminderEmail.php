@@ -9,15 +9,17 @@ use \Intern\Internship;
 class EnrollmentReminderEmail extends Email {
 
     private $internship;
+    private $term;
     private $censusTimestamp;
     private $toUsername;
     private $templateFile;
 
-    public function __construct(InternSettings $emailSettings, Internship $internship, $censusTimestamp, $toUsername, $templateFile)
+    public function __construct(InternSettings $emailSettings, Internship $internship, Term $term, $censusTimestamp, $toUsername, $templateFile)
     {
         parent::__construct($emailSettings);
 
         $this->internship = $internship;
+        $this->term = $term;
 
         // Double check that we have a valid census timestamp. Try to avoid sending emails with the date set to December 31, 1969
         if($censusTimestamp === 0 || $censusTimestamp === '' || $censusTimestamp === null || !isset($censusTimestamp) || empty($censusTimestamp)){
@@ -42,7 +44,7 @@ class EnrollmentReminderEmail extends Email {
         $this->tpl['NAME']    = $this->internship->getFullName();
         $this->tpl['BANNER']  = $this->internship->getBannerId();
         $this->tpl['EMAIL']   = $this->internship->getEmailAddress() . $this->emailSettings->getEmailDomain();
-        $this->tpl['TERM']    = Term::rawToRead($this->internship->getTerm(), false);
+        $this->tpl['TERM']    = $this->term->getDescription();
 
         if($this->internship->getSubject() !== null && $this->internship->getSubject()->getId() != 0) {
             $this->tpl['SUBJECT'] = $this->internship->getSubject()->getName();

@@ -2,6 +2,8 @@
 
 namespace Intern;
 
+use \Intern\DataProvider\Student\StudentDataProviderFactory;
+
 use \phpws2\Database;
 
 class FacultyFactory {
@@ -20,7 +22,7 @@ class FacultyFactory {
 
         // If no results from database, try to lookup the faculty member in Banner
         if(!$result){
-            $provider = ExternalDataProviderFactory::getProvider();
+            $provider = StudentDataProviderFactory::getProvider();
             $result = $provider->getFacultyMember($id);
             $result->id = $result->banner_id;
             $result->username = $result->user_name;

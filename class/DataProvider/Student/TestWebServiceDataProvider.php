@@ -1,6 +1,6 @@
 <?php
 
-namespace Intern;
+namespace Intern\DataProvider\Student;
 
 /**
  * TestStudentProvider - Always returns student objects with hard-coded testing data
@@ -20,7 +20,7 @@ class TestWebServiceDataProvider extends WebServiceDataProvider {
         //return $this->getFakeErrorResponse();
     }
 
-    public function getCreditHours($studentId, $term)
+    public function getCreditHours(string $studentId, string $term)
     {
         return 16;
     }
@@ -86,7 +86,7 @@ class TestWebServiceDataProvider extends WebServiceDataProvider {
         $major1->program_admit = '';
 
         $major2 = new \stdClass();
-        $major2->major_code = '224A';
+        $major2->major_code = '219A';
         $major2->major_desc = 'Computer Science';
         $major2->program_admit = '';
 

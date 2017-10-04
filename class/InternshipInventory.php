@@ -2,6 +2,8 @@
 
 namespace Intern;
 
+use Intern\UI\NotifyUI;
+
 class InternshipInventory {
 
     private $content;
@@ -18,9 +20,10 @@ class InternshipInventory {
 
     public function handleRequest()
     {
-        /* Check if it is time to insert more terms into DB */
-        if (Term::isTimeToUpdate()) {
-            Term::doTermUpdate();
+        // Check if it is time to add more term. If so, show a warning to admins.
+        $futureTerms = TermFactory::getFutureTermsAssoc();
+        if(sizeof($futureTerms) < 3 && \Current_User::isDeity()){
+            \NQ::simple('intern', NotifyUI::WARNING, "There are less than three future terms avaialble. It's probably time to add a new term.");
         }
 
 
@@ -170,8 +173,8 @@ class InternshipInventory {
             case 'pdf':
                 $i = InternshipFactory::getInternshipById($_REQUEST['internship_id']);
                 $emgContacts = EmergencyContactFactory::getContactsForInternship($i);
-                $termProvider = TermProviderFactory::getProvider();
-                $pdfView = new InternshipContractPdfView($i, $emgContacts, $termProvider);
+                $term = \Intern\TermFactory::getTermByTermCode($i->getTerm());
+                $pdfView = new InternshipContractPdfView($i, $emgContacts, $term);
                 $pdf = $pdfView->getPdf();
                 $pdf->output();
                 exit;

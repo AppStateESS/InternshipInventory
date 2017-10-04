@@ -5,7 +5,7 @@ namespace Intern\Command;
 use Intern\Internship;
 use Intern\DepartmentFactory;
 use Intern\Agency;
-use Intern\ExternalDataProviderFactory;
+use Intern\DataProvider\Student\StudentDataProviderFactory;
 use Intern\WorkflowStateFactory;
 use Intern\ChangeHistory;
 use Intern\Department;
@@ -55,7 +55,7 @@ class AddInternship {
         $term = $_POST['term'];
 
         // Create the student object
-        $student = ExternalDataProviderFactory::getProvider()->getStudent($studentId, $term);
+        $student = StudentDataProviderFactory::getProvider()->getStudent($studentId);
 
         // Double check the student's level field
         if($student->getLevel() == null){

@@ -5,6 +5,7 @@ use \Intern\Internship;
 use \Intern\Agency;
 use \Intern\InternSettings;
 use \Intern\Term;
+use \Intern\TermFactory;
 
 /**
  * Generates an email to the background check coordinator, notifying
@@ -18,6 +19,7 @@ use \Intern\Term;
 class BackgroundCheckEmail extends Email{
 
     private $internship;
+    private $term;
     private $agency;
 
     private $backgroundCheck;
@@ -28,14 +30,16 @@ class BackgroundCheckEmail extends Email{
     *
     * @param InternSettings $emailSettings
     * @param Internship $internship
+    * @param Term $term
     * @param Agency $agency
     * @param bool $backgroundCheck
     * @param bool $drugCheck
     */
-    public function __construct(InternSettings $emailSettings, Internship $internship, Agency $agency, $backgroundCheck, $drugCheck) {
+    public function __construct(InternSettings $emailSettings, Internship $internship, Term $term, Agency $agency, $backgroundCheck, $drugCheck) {
         parent::__construct($emailSettings);
 
         $this->internship = $internship;
+        $this->term = $term;
         $this->agency = $agency;
         $this->backgroundCheck = $backgroundCheck;
         $this->drugCheck = $drugCheck;
@@ -51,7 +55,7 @@ class BackgroundCheckEmail extends Email{
 
         $this->tpl['NAME'] = $this->internship->getFullName();
         $this->tpl['BANNER'] = $this->internship->banner;
-        $this->tpl['TERM'] = Term::rawToRead($this->internship->getTerm());
+        $this->tpl['TERM'] = $this->term->getDescription();
         $this->tpl['LEVEL'] = $this->internship->getLevel();
         $this->tpl['BIRTHDAY'] = $this->internship->getBirthDateFormatted();
         $this->tpl['EMAIL'] = $this->internship->getEmailAddress() . $this->emailSettings->getEmailDomain();

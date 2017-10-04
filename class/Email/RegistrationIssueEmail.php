@@ -10,6 +10,7 @@ use \Intern\Term;
 class RegistrationIssueEmail extends Email {
 
     private $internship;
+    private $term;
     private $note;
 
     /**
@@ -19,10 +20,11 @@ class RegistrationIssueEmail extends Email {
     * @param Internship $internship
     * @param string $note
     */
-    public function __construct(InternSettings $emailSettings, Internship $internship, $note) {
+    public function __construct(InternSettings $emailSettings, Internship $internship, Term $term, $note) {
         parent::__construct($emailSettings);
 
         $this->internship = $internship;
+        $this->term = $term;
         $this->note = $note;
     }
 
@@ -42,7 +44,7 @@ class RegistrationIssueEmail extends Email {
         $this->tpl['BANNER'] = $this->internship->banner;
         $this->tpl['USER'] = $this->internship->email;
         $this->tpl['PHONE'] = $this->internship->phone;
-        $this->tpl['TERM'] = Term::rawToRead($this->internship->term, false);
+        $this->tpl['TERM'] = $this->term->getDescription();
 
         if(isset($this->internship->course_subj)){
             $this->tpl['SUBJECT'] = $subjects[$this->internship->course_subj];
