@@ -65,13 +65,10 @@ class ShowInternship {
             $docs = array(); // if no docs, setup an empty array
         }
 
-        // Load the system settings
-        $settings = InternSettings::getInstance();
-
         // Load the term info for this internship
         $term = TermFactory::getTermByTermCode($intern->getTerm());
 
-        $view = new InternshipView($intern, $student, $wfState, $agency, $docs, $term, $existingCreditHours);
+        $view = new InternshipView($intern, $student, $wfState, $agency, $docs, $term, $existingCreditHours, $settings);
 
         return $view->display();
     }
