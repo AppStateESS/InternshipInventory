@@ -23,7 +23,7 @@ class InternshipInventory {
         // Check if it is time to add more term. If so, show a warning to admins.
         $futureTerms = TermFactory::getFutureTermsAssoc();
         if(sizeof($futureTerms) < 3 && \Current_User::isDeity()){
-            \NQ::simple('intern', NotifyUI::WARNING, "There are less than three future terms avaialble. It's probably time to add a new term.");
+            \NQ::simple('intern', \Intern\UI\NotifyUI::WARNING, "There are less than three future terms avaialble. It's probably time to add a new term.");
         }
 
 
