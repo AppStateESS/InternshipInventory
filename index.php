@@ -11,6 +11,9 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
 }
 
+// Setup autoloader for Composer
+require_once(PHPWS_SOURCE_DIR . 'mod/intern/vendor/autoload.php');
+
 require_once(PHPWS_SOURCE_DIR . 'mod/intern/inc/defines.php');
 
 // Check some permissions

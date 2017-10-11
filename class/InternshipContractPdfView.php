@@ -2,8 +2,6 @@
 
 namespace Intern;
 
-require_once PHPWS_SOURCE_DIR . 'mod/intern/vendor/autoload.php';
-
 /**
  * InternshipContractPdfView
  *
