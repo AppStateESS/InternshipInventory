@@ -30,3 +30,19 @@ function connectToDB()
 
     return $db;
 }
+
+function connectPDO()
+{
+    $dbhost = trim(readline("Host name: "));
+    $dbname = trim(readline("Database name: "));
+    $dbuser = trim(readline("User name: "));
+    // A bit of hackery here to avoid echoing the password
+    echo "Database Password: ";
+    system('stty -echo');
+    $dbpasswd = trim(fgets(STDIN));
+    system('stty echo');
+    // add a new line since the users CR didn't echo
+    echo "\n";
+    // Connect to the database
+    return new PDO("pgsql:host=$dbhost;dbname=$dbname;user=$dbuser;password=$dbpasswd", null, null, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING));
+}
