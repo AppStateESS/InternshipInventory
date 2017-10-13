@@ -424,23 +424,14 @@ class SaveInternship {
 
             // Notify the faculty member that OIED has certified the internship
             if ($i->getFaculty() != null) {
-<<<<<<< 6e4d928017f9f6e03296104ace46e95788019299
                 $email = new \Intern\Email\OIEDCertifiedEmail(\Intern\InternSettings::getInstance(), $i, $term);
-=======
-                $email = new \Intern\Email\OIEDCertifiedEmail($internSettings, $i);
->>>>>>> Add Multi-campus toggle setting (#6)
                 $email->send();
             }
         }
 
         // If the background check or drug check status changed to true (computed earlier), then send a notification
-<<<<<<< 6e4d928017f9f6e03296104ace46e95788019299
-        if($backgroundCheck || $drugCheck) {
-            $email = new \Intern\Email\BackgroundCheckEmail(\Intern\InternSettings::getInstance(), $i, $term, $agency, $backgroundCheck, $drugCheck);
-=======
         if(($internSettings->getBackgroundCheckRequestEnabled() || $internSettings->getDrugCheckRequestEnabled()) && ($backgroundCheck || $drugCheck)) {
-            $email = new \Intern\Email\BackgroundCheckEmail($internSettings, $i, $agency, $backgroundCheck, $drugCheck);
->>>>>>> Add Multi-campus toggle setting (#6)
+            $email = new \Intern\Email\BackgroundCheckEmail($internSettings, $i, $term, $agency, $backgroundCheck, $drugCheck);
             $email->send();
         }
 
