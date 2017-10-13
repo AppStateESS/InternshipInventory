@@ -38,7 +38,7 @@ class GetSearchSuggestions {
 
         // If search string is exactly 9 digits, it must be a student id
         // Do an exact lookup and see if we can find the requested student
-        if(preg_match('/^([0-9]){9}$/', $searchString)) {
+        if(preg_match('/^([A-z0-9]){9}$/', $searchString)) {
             $students = array();
 
             try {
