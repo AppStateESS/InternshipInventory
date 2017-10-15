@@ -5,7 +5,7 @@ CREATE TABLE intern_major (
        id INT NOT NULL,
        code varchar NOT NULL UNIQUE,
        description VARCHAR NOT NULL,
-       lavel VARCHAR NOT NULL,
+       level VARCHAR NOT NULL,
        hidden SMALLINT NOT NULL DEFAULT 0,
        PRIMARY KEY(id)
 );
