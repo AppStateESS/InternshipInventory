@@ -44,6 +44,9 @@
           <!-- BEGIN level -->
           <li>{EDIT_STUDENT_LEVEL}</li>
           <!-- END level -->
+          <!-- BEGIN terms -->
+          <li>{EDIT_TERMS_LINK}</li>
+          <!-- END terms -->
           <!-- BEGIN affiliation_agreement -->
           <li>{AFFIL_AGREE_LINK}</li>
           <!-- END affiliation_agreement -->
