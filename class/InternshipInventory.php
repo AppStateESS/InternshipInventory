@@ -187,6 +187,11 @@ class InternshipInventory {
                     disallow();
                 }
                 $view = new UI\StudentLevelUI();
+            case 'edit_terms':
+                if (!\Current_User::allow('intern', 'edit_state')) {
+                    disallow();
+                }
+                $view = new UI\TermUI();
                 $this->content = $view->display();
                 break;
             case 'showEditAdmins':
