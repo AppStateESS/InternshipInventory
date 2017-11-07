@@ -4,23 +4,42 @@ import $ from 'jquery';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
 //got from editAdmin.jsx
-class ErrorMessagesBlock extends React.Component {
+
+//error or notification block?
+
+
+class TermRow extends React.Component {
+
+}
+
+class TermList extends React.Component {
     render() {
-        if (this.props.errors == null) {
-            return '';
-        }
-
-        var errors = this.props.errors;
-
         return (
-          <div className="row">
-              <div className="col-sm-12 col-md-6 col-md-push-3">
-                  <div className="alert alert-warning" role="alert">
-                      <p><i className="fa fa-exclamation-circle fa-2x"></i> Warning: {errors}</p>
+            <table className="table table-condensed table-striped">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
 
-                  </div>
-              </div>
-          </div>
+              </tbody>
+            </table>
         );
     }
 }
+
+class CreateTerm extends React.Component {
+
+}
+
+class TermSelector extends React.Component {
+
+}
+
+
+ReactDOM.render(
+    <TermList />,
+    document.getElementById('edit_terms')
+);
