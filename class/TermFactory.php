@@ -29,7 +29,7 @@ class TermFactory
     {
         $db = PdoFactory::getPdoInstance();
 
-        $stmt = $db->prepare('SELECT * from intern_term');
+        $stmt = $db->prepare('SELECT * from intern_term ORDER BY term DESC');
         $stmt->execute();
         $stmt->setFetchMode(\PDO::FETCH_CLASS, '\Intern\TermRestored');
 
