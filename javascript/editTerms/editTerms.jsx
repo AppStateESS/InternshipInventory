@@ -43,7 +43,51 @@ class CreateTerm extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {subject: "_-1"}
+        this.state = {semesterType: "_-1"};
+
+        //this.handleDrop = this.handleDrop.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+    handleDrop(e) {
+        this.setState({semesterType: e.target.value});
+    }
+    handleSubmit() {
+        this.props.saveTerm(term_code, census, descr, available, start, end, this.state.semesterType);
+    }
+    render() {
+        return (
+            <div className="panel panel-default">
+              <div className="panel-body">
+                <div className="row">
+                  <div className="col-md-6">
+                    <label></label>
+
+                  </div>
+                  <div className="col-md-6">
+                    //label2
+                  </div>
+                  <div className="col-md-6">
+                    //label3
+                  </div>
+                  <div className="col-md-6">
+                    //label4
+                  </div>
+                  <div className="col-md-6">
+                    //label 5
+                  </div>
+                  <div className="col-md-6">
+                    //label 6
+                  </div>
+                  <div className="col-md-6"> //drop down for semester type here
+
+                  </div>
+                </div>
+                <div className="row">
+
+                </div>
+              </div>
+            </div>
+        )
     }
 }
 
@@ -51,24 +95,24 @@ class TermSelector extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            termData: null,
+            mainData: null,
             //notification?
         };
 
-        this.getTermData = this.getTermData.bind(this);
+        this.getData = this.getData.bind(this);
         this.saveTerm = this.saveTerm.bind(this);
         this.editTerm = this.editTerm.bind(this);
     }
     componentDidMount() {
         this.getTermData();
     }
-    getTermData() {
+    getData() {
         $.ajax({
             url: 'index.php?module=intern&action=TermRest',
             type: 'GET',
             dataType: 'json',
             success: function(data) {
-                this.setState({termData: data});
+                this.setState({mainData: data});
             }.bind(this);
             error: function(xhr, status, err) {
                 alert("Failed to grab term data.")
@@ -118,6 +162,6 @@ class TermSelector extends React.Component {
 
 
 ReactDOM.render(
-    <TermSelector subjects={}/>,
+    <TermSelector />,
     document.getElementById('edit_terms')// what is supposed to go in here?
 );
