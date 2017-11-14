@@ -26,7 +26,7 @@ class InternshipContractPdfView {
      *
      * @param Internship $i
      * @param Array<EmergencyContact> $emergencyContacts
-     * @param BannerTermProvider $termProvider
+     * @param Term $term
      */
     public function __construct(Internship $i, Array $emergencyContacts, Term $term)
     {
