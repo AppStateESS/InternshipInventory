@@ -57,7 +57,7 @@ class Term {
 
     public function getStartDateFormatted(): string
     {
-        return date('n/h/Y', $this->start_timestamp);
+        return date('n/j/Y', $this->start_timestamp);
     }
 
     public function getEndTimestamp(): int {
@@ -66,7 +66,7 @@ class Term {
 
     public function getEndDateFormatted(): string
     {
-        return date('n/h/Y', $this->end_timestamp);
+        return date('n/j/Y', $this->end_timestamp);
     }
 
     public function getSemesterType(): int{
