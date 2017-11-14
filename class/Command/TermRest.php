@@ -36,41 +36,47 @@ class TermRest {
         if ($code == '') {
             header('HTTP/1.1 500 Internal Server Error');
             echo("Missing a term code.");
+            exit;
         }
 
         if ($census == '') {
             header('HTTP/1.1 500 Internal Server Error');
             echo("Missing a census date.");
+            exit;
         }
 
         if ($descr == '') {
             header('HTTP/1.1 500 Internal Server Error');
             echo("Missing a term description.");
+            exit;
         }
 
         if ($available == '') {
             header('HTTP/1.1 500 Internal Server Error');
             echo("Missing an available date.");
+            exit;
         }
 
         if ($start == '') {
             header('HTTP/1.1 500 Internal Server Error');
             echo("Missing a start date.");
+            exit;
         }
 
-        if ($end == '') {
+        if ($end_date == '') {
             header('HTTP/1.1 500 Internal Server Error');
             echo("Missing an end date.");
+            exit;
         }
 
         if ($type == '') {
             header('HTTP/1.1 500 Internal Server Error');
-            echo("Missing a semester type(1-4).");
+            echo("Missing a semester type (1-4).");
+            exit;
         }
 
-        $db = Database::newDB();
-        $pdo = $db->getPDO();
-        //$sql = "SELECT "
+        
+
     }
 
     public function get() {
