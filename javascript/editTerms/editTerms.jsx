@@ -9,8 +9,16 @@ import $ from 'jquery';
 
 
 class TermRow extends React.Component {
+    constructor(props) {
+        super(props);
+        //this.handleChange = this.handleChange.bind(this);
+    }
     render () {
-          return
+        return (
+            <tr>
+              <td></td>
+            </tr>
+        );
     }
 }
 
@@ -18,14 +26,30 @@ class TermList extends React.Component {
     render() {
         var tRow = null;
 
-        if ()
+        if (this.props.mainData != null) {
+            tRow = this.props.mainData.map(function(sub) {
+              return (
+                <TermRow
+                      code={sub.term_code}
+                      descr={sub.descr}
+                      census={sub.census}
+                      start={sub.start}
+                      end={sub.end} />
+              );
+            }); // what is sub?
+        }
+        else {
+          tRow = null;
+        }
 
         return (
             <table className="table table-condensed table-striped">
               <thead>
                 <tr>
+                  <th>Semester Type</th>
                   <th>Code</th>
                   <th>Description</th>
+                  <th>Available Date</th>
                   <th>Census Date</th>
                   <th>Start Date</th>
                   <th>End Date</th>
@@ -43,16 +67,18 @@ class CreateTerm extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {semesterType: "_-1"};
+        //this.state = {semesterType: "_-1"};
 
         //this.handleDrop = this.handleDrop.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-    handleDrop(e) {
+    // make it show up at all before making drop down.
+    //TO DO
+    /*handleDrop(e) {
         this.setState({semesterType: e.target.value});
-    }
+    }*/
     handleSubmit() {
-        this.props.saveTerm(term_code, census, descr, available, start, end, this.state.semesterType);
+        this.props.saveTerm(term_code, census, descr, available, start, end, type);//this.state.semesterType);
     }
     render() {
         return (
@@ -60,30 +86,39 @@ class CreateTerm extends React.Component {
               <div className="panel-body">
                 <div className="row">
                   <div className="col-md-6">
-                    <label></label>
-
+                    <label>Semester Type: </label>
+                    <input type="text" className="form-control" placeholder="0" ref="type" />
                   </div>
                   <div className="col-md-6">
-                    //label2
+                    <label>Code: </label>//label2
+                    <input type="text" className="form-control" placeholder="00000" ref="term_code" />
                   </div>
                   <div className="col-md-6">
-                    //label3
+                    <label>Description: </label>//label3
+                    <input type="text" className="form-control" placeholder="Season 20XX" ref="descr" />
                   </div>
                   <div className="col-md-6">
-                    //label4
+                    <label>Available: </label>//label4
+                    <input type="text" className="form-control" placeholder="00/00/0000" ref="available" />
                   </div>
                   <div className="col-md-6">
-                    //label 5
+                    <label>Census: </label>//label 5
+                    <input type="text" className="form-control" placeholder="00/00/0000" ref="census" />
                   </div>
                   <div className="col-md-6">
-                    //label 6
+                    <label>Start: </label>//label 6
+                    <input type="text" className="form-control" placeholder="00/00/0000" ref="start" />
                   </div>
                   <div className="col-md-6"> //drop down for semester type here
-
+                    <label>End: </label>
+                    <input type="text" className="form-control" placeholder="00/00/0000" ref="end" />
                   </div>
                 </div>
                 <div className="row">
-
+                  <br />
+                  <div className="col-md-3 col-md-offset-6">
+                    <button type="button" className="btn btn-default" onClick={this.handleSubmit}> Create Course </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -129,7 +164,7 @@ class TermSelector extends React.Component {
                 + '&start=' + start + '&end=' + end + '&type=' + type,
             type: 'POST',
             success: function() {
-                this.getTermData();
+                this.getData();
 
                 // success message
                 // idk what to do here yet
