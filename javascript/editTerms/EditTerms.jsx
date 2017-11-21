@@ -5,8 +5,33 @@ import $ from 'jquery';
 
 //got from editAdmin.jsx
 
-//error or notification block?
+class Notifications extends React.Component {
+    render(){
+        var notification;
 
+        // Determine if the screen should render a notification.
+        if (this.props.msg !== '') {
+            if (this.props.msgType === 'success')
+            {
+                notification = <div className="alert alert-success" role="alert">
+                                <i className="fa fa-check fa-2x pull-left"></i> {this.props.msg}
+                            </div>
+            }
+            else if (this.props.msgType === 'error')
+            {
+                notification = <div className="alert alert-danger" role="alert">
+                                	<i className="fa fa-times fa-2x pull-left"></i> {this.props.msg}
+                               </div>
+            }
+        } else {
+            notification = '';
+        }
+
+        return (
+            <div>{notification}</div>
+        );
+    }
+}
 
 class TermRow extends React.Component {
     constructor(props) {
@@ -16,7 +41,9 @@ class TermRow extends React.Component {
     render () {
         return (
             <tr>
-              <td></td>
+              <td> {this.props.code} {this.props.census} {this.props.descr}
+                    {this.props.available} {this.props.start} {this.props.end}
+                    {this.props.type} </td>
             </tr>
         );
     }
@@ -30,11 +57,13 @@ class TermList extends React.Component {
             tRow = this.props.mainData.map(function(sub) {
               return (
                 <TermRow
-                      code={sub.term_code}
-                      descr={sub.descr}
-                      census={sub.census}
-                      start={sub.start}
-                      end={sub.end} />
+                      code={sub.code}
+                      census={sub.census_date_timestamp}
+                      descr={sub.description}
+                      available={sub.available_on_timestamp}
+                      start={sub.start_timestamp}
+                      end={sub.end_timestamp}
+                      type={sub.semester_type} />
               );
             }); // what is sub?
         }
@@ -46,13 +75,13 @@ class TermList extends React.Component {
             <table className="table table-condensed table-striped">
               <thead>
                 <tr>
-                  <th>Semester Type</th>
-                  <th>Code</th>
+                  <th>Term Code</th>
+                  <th>Census Date</th>
                   <th>Description</th>
                   <th>Available Date</th>
-                  <th>Census Date</th>
                   <th>Start Date</th>
                   <th>End Date</th>
+                  <th>Semester Type</th>
                 </tr>
               </thead>
               <tbody>
@@ -70,28 +99,28 @@ class CreateTerm extends React.Component {
         //this.state = {semesterType: "_-1"};
 
         //this.handleDrop = this.handleDrop.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        //this.handleSubmit = this.handleSubmit.bind(this);
     }
     // make it show up at all before making drop down.
     //TO DO
     /*handleDrop(e) {
         this.setState({semesterType: e.target.value});
     }*/
-    handleSubmit() {
-        this.props.saveTerm(term_code, census, descr, available, start, end, type);//this.state.semesterType);
-    }
+    //handleSubmit() {
+    //    this.props.saveTerm(code, census, descr, available, start, end, type);//this.state.semesterType);
+    //}
     render() {
         return (
             <div className="panel panel-default">
               <div className="panel-body">
                 <div className="row">
                   <div className="col-md-6">
-                    <label>Semester Type: </label>
-                    <input type="text" className="form-control" placeholder="0" ref="type" />
+                    <label>Term Code: </label>
+                    <input type="text" className="form-control" placeholder="0" ref="code" />
                   </div>
                   <div className="col-md-6">
-                    <label>Code: </label>//label2
-                    <input type="text" className="form-control" placeholder="00000" ref="term_code" />
+                    <label>Census: </label>//label 5
+                    <input type="text" className="form-control" placeholder="00/00/0000" ref="census" />
                   </div>
                   <div className="col-md-6">
                     <label>Description: </label>//label3
@@ -102,16 +131,16 @@ class CreateTerm extends React.Component {
                     <input type="text" className="form-control" placeholder="00/00/0000" ref="available" />
                   </div>
                   <div className="col-md-6">
-                    <label>Census: </label>//label 5
-                    <input type="text" className="form-control" placeholder="00/00/0000" ref="census" />
-                  </div>
-                  <div className="col-md-6">
                     <label>Start: </label>//label 6
                     <input type="text" className="form-control" placeholder="00/00/0000" ref="start" />
                   </div>
                   <div className="col-md-6"> //drop down for semester type here
                     <label>End: </label>
                     <input type="text" className="form-control" placeholder="00/00/0000" ref="end" />
+                  </div>
+                  <div className="col-md-6">
+                    <label>Semester Type: </label>//label2
+                    <input type="text" className="form-control" placeholder="00000" ref="type" />
                   </div>
                 </div>
                 <div className="row">
@@ -139,7 +168,7 @@ class TermSelector extends React.Component {
         this.editTerm = this.editTerm.bind(this);
     }
     componentDidMount() {
-        this.getTermData();
+        this.getData();
     }
     getData() {
         $.ajax({
@@ -148,7 +177,7 @@ class TermSelector extends React.Component {
             dataType: 'json',
             success: function(data) {
                 this.setState({mainData: data});
-            }.bind(this);
+            }.bind(this),
             error: function(xhr, status, err) {
                 alert("Failed to grab term data.")
                 console.error(this.props.url, status, err.toString());
@@ -157,9 +186,9 @@ class TermSelector extends React.Component {
     }
     // Adding a term includes the term code, census date, description,
     // available date, start date, end date, and semester type (1 - 4)
-    saveTerm(term_code, census, descr, available, start, end, type) {
+    saveTerm(code, census, descr, available, start, end, type) {
         $.ajax({
-            url: 'index.php?module=intern&action=TermRest&term_code=' + term_code
+            url: 'index.php?module=intern&action=TermRest&code=' + code
                 + '&census=' + census + '&descr=' + descr + '&available=' + available
                 + '&start=' + start + '&end=' + end + '&type=' + type,
             type: 'POST',
@@ -179,15 +208,15 @@ class TermSelector extends React.Component {
     render() {
         return (
             <div>
-              // notifications?
+              <Notifications msg={this.state.msgNotification} msgType={this.state.msgType}/>
 
               <div className="row">
                 <div className="col-lg-5">
-                  <TermList /> //subjectData?
+                  <TermList subjectData={this.state.mainData}/> //subjectData?
                 </div>
 
                 <div className="col-lg-5 col-lg-offset-1">
-                  <CreateTerm /> //term, saveterm
+                  <CreateTerm saveTerm={this.saveTerm}/> //term, saveterm
                 </div>
               </div>
             </div>

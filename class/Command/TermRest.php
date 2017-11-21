@@ -75,12 +75,35 @@ class TermRest {
             exit;
         }
 
-        
+        // Need to add any checks.
 
+        $db = Database::newDB();
+        $pdo = $db->getPDO();
+
+        $sql = "INSERT INTO intern_term (term, census_date_timestamp,
+                description, available_on_timestamp, start_timestamp,
+                end_timestamp, semester_type) VALUES
+                (:code, :census, :descr, :available, :start, :end_date, :type)";
+
+        $sql = $pdo->prepare($sql);
+
+        $sth->execute(array('code'=>$code, 'census'=>$census, 'descr'=>$descr,
+                      'available'=>$available, 'start'=>$start,
+                      'end_date'=>$end_date, 'type'=>$type));
+        // use intern_term_seq?
     }
 
     public function get() {
 
+        $db = Database::newDB();
+        $pdo = $db->getPDO();
+        $sql = "SELECT * from intern_term";
+
+        $sth = $pdo->prepare($sql);
+        $sth->execute();
+        $result = $sth->fetchAll(\PDO::FETCH_ASSOC);
+
+        return $result;
     }
 
     //function for editing?
