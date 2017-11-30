@@ -71,7 +71,7 @@ class TermRest {
 
         if ($type == '') {
             header('HTTP/1.1 500 Internal Server Error');
-            echo("Missing a semester type (1-4).");
+            echo("Missing a semester type.");
             exit;
         }
 
@@ -97,7 +97,11 @@ class TermRest {
 
         $db = Database::newDB();
         $pdo = $db->getPDO();
-        $sql = "SELECT * from intern_term";
+
+        $sql = "SELECT term, census_date_timestamp, description,
+                available_on_timestamp, start_timestamp, end_timestamp,
+                semester_type
+                FROM intern_term";
 
         $sth = $pdo->prepare($sql);
         $sth->execute();
