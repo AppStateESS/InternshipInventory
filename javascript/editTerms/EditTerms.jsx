@@ -21,15 +21,20 @@ class TermRow extends React.Component {
     }
 }
 
-class TermSelector extends React.Component {
+class TermSelector extends React.Component
+{
     constructor(props) {
         super(props);
         this.state = {
             mainData: null,
-            displayData: null
+            displayData: null,
+            errorWarning: null,
+            messageType: null
         };
 
         //this.function blah
+        this.getData = this.getData.bind(this);
+        this.onTermCreate = this.onTermCreate.bind(this);
     }
     componentWillMount() {
         // Get the term data at the start of execution
@@ -39,7 +44,7 @@ class TermSelector extends React.Component {
         // Sends an ajax request to TermRest to grab the
         // display data.
         $.ajax({
-            url: 'index.php?module=intern&action=TermRest',
+            url: 'index.php?module=intern&action=termRest',
             type: 'GET',
             dataType: 'json',
             success: function(data) {
@@ -52,7 +57,37 @@ class TermSelector extends React.Component {
             }.bind(this)
         });
     }
-    render() {
+    onTermCreate(tcode, stype, descr, census, available, start, end) {
+        $.ajax({
+            url: 'index.php?module=intern&action=termRest&code='+tcode+'&type='+stype+
+            '&descr='+descr+'&census='+census+'&available='+available+'&start='+start+
+            '&end='+end,
+            type: 'POST',
+            dataType: 'json',
+            success: function(data) {
+                this.getData();
+                var message = "Term successfully added.";
+                this.setState({errorWarning: message, messageType: "success"});
+            }.bind(this),
+            error: function(xhr, status, err) {
+                alert("Failed to add term.")
+                console.error(this.props.url, status, err.toString());
+            }.bind(this)
+        });
+    }
+    handleSubmit() {
+        var tcode = ReactDOM.findDOMNode(this.refs.term_code).value.trim();
+        var stype = ReactDOM.findDOMNode(this.refs.sem_type).value.trim();
+        var descr = ReactDOM.findDOMNode(this.refs.description).value;
+        var census = ReactDOM.findDOMNode(this.refs.census_date).value.trim();
+        var available = ReactDOM.findDOMNode(this.refs.available_date).value.trim();
+        var start = ReactDOM.findDOMNode(this.refs.start_date).value.trim();
+        var end = ReactDOM.findDOMNode(this.refs.end_date).value.trim();
+
+        this.onTermCreate(tcode, stype, descr, census, available, start, end);
+    }
+    render()
+    {
         var TermData = null;
         if (this.state.mainData != null) {
             TermData = this.state.displayData.map(function (term) {

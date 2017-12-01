@@ -170,6 +170,13 @@ class InternshipInventory {
                 $view = new UI\CoursesUI();
                 $this->content = $view->display();
                 break;
+            case 'edit_terms':
+                if (!\Current_User::allow('intern', 'edit_terms')) {
+                    disallow();
+                }
+                $view = new UI\TermUI();
+                $this->content = $view->display();
+                break;
             case 'pdf':
                 $i = InternshipFactory::getInternshipById($_REQUEST['internship_id']);
                 $emgContacts = EmergencyContactFactory::getContactsForInternship($i);
@@ -249,10 +256,6 @@ class InternshipInventory {
                 $ctrl = new Command\AdminRest();
                 $ctrl->execute();
                 break;
-            case 'termRest':
-                $ctrl = new Command\TermRest();
-                $ctrl->execute();
-                break;
             case 'majorRest':
                 $ctrl = new Command\MajorRest();
                 $ctrl->execute();
@@ -267,6 +270,10 @@ class InternshipInventory {
                 break;
             case 'stateRest':
                 $ctrl = new Command\StateRest();
+                $ctrl->execute();
+                break;
+            case 'termRest':
+                $ctrl = new Command\TermRest();
                 $ctrl->execute();
                 break;
             case 'emergencyContactRest':
