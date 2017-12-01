@@ -178,7 +178,6 @@ class InternshipInventory {
                 $view = new UI\StateUI();
                 $this->content = $view->display();
                 break;
-<<<<<<< HEAD
             case 'showAdminSettings':
                 $view = new UI\SettingsUI();
                 $this->content = $view->display();
@@ -195,8 +194,6 @@ class InternshipInventory {
                 $view = new UI\TermUI();
                 $this->content = $view->display();
                 break;
-=======
->>>>>>> Working on database connection.
             case 'showEditAdmins':
                 $view = new UI\AdminUI();
                 $this->content = $view->display();
