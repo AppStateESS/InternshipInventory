@@ -6,6 +6,11 @@ import $ from 'jquery';
 // on the Edit Affiliation interface.
 
 class LocationItem extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.remove = this.remove.bind(this);
+    }
     remove() {
         this.props.remove(this.props.location)
     }
@@ -38,6 +43,11 @@ class LocationList extends React.Component {
 
 
 class LocationDropdown extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.add = this.add.bind(this);
+    }
     add() {
         var locToAdd = this.refs.locChoices.value;
         this.props.onAdd(locToAdd);
@@ -87,6 +97,12 @@ class LocationBox extends React.Component {
       super(props);
 
       this.state = {locs: null, usedLocs: null};
+
+      this.addloc = this.addloc.bind(this);
+      this.removeLoc = this.removeLoc.bind(this);
+      this.getData = this.getData.bind(this);
+      this.postData = this.postData.bind(this);
+      this.deleteData = this.deleteData.bind(this);
     }
     addloc(nameToAdd) {
         this.postData(nameToAdd);

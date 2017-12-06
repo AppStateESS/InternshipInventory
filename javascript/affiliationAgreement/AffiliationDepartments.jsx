@@ -7,6 +7,11 @@ import $ from 'jquery';
 
 
 class DepartmentItem extends React.Component {
+    constructor(props){
+        super(props);
+
+        this.remove = this.remove.bind(this);
+    }
     remove() {
         this.props.onRemoveClick(this.props.dept);
     }
@@ -22,6 +27,11 @@ class DepartmentItem extends React.Component {
 
 
 class DepartmentList extends React.Component {
+    constructor(props){
+        super(props);
+
+        this.removeClick = this.removeClick.bind(this);
+    }
     removeClick(deptToRemove) {
         this.props.removeClick(deptToRemove);
     }
@@ -42,6 +52,11 @@ class DepartmentList extends React.Component {
 
 
 class DepartmentDropdown extends React.Component {
+    constructor(props){
+        super(props);
+
+        this.add = this.add.bind(this);
+    }
     add() {
         var deptToAdd = this.refs.deptChoices.value;
         this.props.onAdd(deptToAdd);
@@ -91,6 +106,12 @@ class DepartmentBox extends React.Component {
       super(props);
 
       this.state = {depts: null, usedDepts: null};
+
+      this.addDept = this.addDept.bind(this);
+      this.removeClick = this.removeClick.bind(this);
+      this.getData = this.getData.bind(this);
+      this.postData = this.postData.bind(this);
+      this.deleteData = this.deleteData.bind(this);
     }
     addDept(nameToAdd) {
         this.postData(nameToAdd);
