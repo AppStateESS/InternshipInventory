@@ -25,7 +25,7 @@ class TermFactory
     * in the database. Looks like: { 201840 => 'Fall 2018' }
     * @return Array Associative array of term codes and their descriptions
     */
-    public static function getTermsAssoc(): array
+    public static function getTermsAssoc()
     {
         $db = PdoFactory::getPdoInstance();
 
@@ -65,7 +65,7 @@ class TermFactory
      * Get an associative array of terms > current term
      * in the database. Looks like: { raw_term => readable_string }
      */
-    public static function getFutureTermsAssoc(): array
+    public static function getFutureTermsAssoc()
     {
         $db = PdoFactory::getPdoInstance();
 
@@ -78,7 +78,7 @@ class TermFactory
         return $terms;
     }
 
-    public static function getAvailableTerms(): array
+    public static function getAvailableTerms()
     {
 
         $db = PdoFactory::getPdoInstance();
@@ -102,7 +102,7 @@ class TermFactory
      * @param $targetTerm Term to decide if exists or not
      * @return bool True if the given term eixsts in the database, false otherwise
      */
-    public static function termExists(string $targetTermCode): bool
+    public static function termExists(string $targetTermCode)
     {
         $terms = self::getTermsAssoc();
 
