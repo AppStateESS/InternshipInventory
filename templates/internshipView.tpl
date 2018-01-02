@@ -31,7 +31,7 @@
     <div class="col-lg-2">
         <div class="btn-group">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fa fa-copy"></i> Continue Internship <span class="caret"></span>
+                <i class="fa fa-copy"></i> Continue This Internship <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
                 <!-- BEGIN CONTINUE_TERM_LIST -->
