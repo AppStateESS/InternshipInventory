@@ -47,7 +47,7 @@ class SaveAffiliate {
             return \PHPWS_Core::reroute($url);
         }
 
-        // Course start date must be before end date
+        // Begin date must be before end date
         if(!empty($_REQUEST['begin_date']) && !empty($_REQUEST['end_date'])){
             $start = strtotime($_REQUEST['begin_date']);
             $end   = strtotime($_REQUEST['end_date']);

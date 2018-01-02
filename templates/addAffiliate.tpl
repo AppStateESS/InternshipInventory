@@ -24,17 +24,17 @@
         </div>
 
         <div class="form-group {begin_date_ERROR}">
-            <label for="{BEGIN_DATE_ID}" class="control-label">
-                {BEGIN_DATE_LABEL_TEXT}
+            <label for="begin_date" class="control-label">
+                Beginning Date
             </label>
-            {BEGIN_DATE}
+            <input type="date" id="begin_date" name="begin_date" class="form-control" required>
         </div>
 
         <div class="form-group {end_date_ERROR}">
-            <label for="{END_DATE_ID}" class="control-label">
-                {END_DATE_LABEL_TEXT}
+            <label for="end_date" class="control-label">
+                Ending Date
             </label>
-            {END_DATE}
+            <input type="date" id="end_date" name="end_date" class="form-control" required>
         </div>
 
         <div class="checkbox">

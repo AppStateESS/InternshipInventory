@@ -21,13 +21,7 @@ class AddAgreementUI implements UI
         $form->setLabel('name', 'Affiliate Name');
         $form->addCssClass('name', 'form-control');
 
-        $form->addText('begin_date');
-        $form->setLabel('begin_date', 'Beginning Date');
-        $form->addCssClass('begin_date', 'form-control');
-
-        $form->addText('end_date');
-        $form->setLabel('end_date', 'Ending Date');
-        $form->addCssClass('end_date', 'form-control');
+        // Begin and end date fields handled directly in template
 
         $form->addCheck('auto_renew');
         $form->setLabel('auto_renew', 'Auto-Renew');
