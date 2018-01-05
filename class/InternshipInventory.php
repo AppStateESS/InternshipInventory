@@ -170,11 +170,19 @@ class InternshipInventory {
                 \NQ::close();
                 \PHPWS_Core::goBack();
                 break;
+            case 'settingsRest':
+                $ctrl = new Command\SettingsRest();
+                $ctrl->execute();
+                break;
             case 'edit_states':
                 if (!\Current_User::allow('intern', 'edit_state')) {
                     disallow();
                 }
                 $view = new UI\StateUI();
+                $this->content = $view->display();
+                break;
+            case 'showAdminSettings':
+                $view = new UI\SettingsUI();
                 $this->content = $view->display();
                 break;
             case 'showEditAdmins':
