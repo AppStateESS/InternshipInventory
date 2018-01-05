@@ -18,6 +18,7 @@ module.exports = {
       affiliationTerminate: JS_DIR + '/affiliationAgreement/AffiliationTerminate.jsx',
       editExpectedCourses: JS_DIR + '/editCourses/courseEditor.jsx',
       majorSelector: JS_DIR + '/majorSelector/MajorSelector.jsx',
+      adminSettings: JS_DIR + '/settings/settings.jsx',
       vendor: ['jquery', 'react', 'react-dom', 'react-bootstrap']
     }
 }
