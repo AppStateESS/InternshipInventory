@@ -5,17 +5,42 @@ import $ from 'jquery';
 class TermRow extends React.Component {
     constructor(props) {
         super(props);
+
+        this.timestampToDate = this.timestampToDate.bind(this);
     }
+    timestampToDate(timestamp) {
+        //var temp = new Date(timestamp);
+        //var date = temp.format("mm/dd/yyyy");
+        var date = new Date(timestamp * 1000);
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var day = date.getDate();
+        var formattedDate = month + "/" + day + "/" + year;
+
+        return formattedDate;
+    }
+    //move to parent component and use in inTermCreate
+    //date will come in as a string
+    //dateToTimestamp(date) {
+    //    var timestamp = new Date(date);
+    //    return timestamp;
+    //}
     render() {
+
+      let censusDate = this.timestampToDate(this.props.census);
+      let availDate = this.timestampToDate(this.props.available);
+      let startDate = this.timestampToDate(this.props.start);
+      let endDate = this.timestampToDate(this.props.end);
+
         return (
             <tr>
                 <td>{this.props.tcode}</td>
                 <td>{this.props.stype}</td>
                 <td>{this.props.descr}</td>
-                <td>{this.props.census}</td>
-                <td>{this.props.available}</td>
-                <td>{this.props.start}</td>
-                <td>{this.props.end}</td>
+                <td>{censusDate}</td>
+                <td>{availDate}</td>
+                <td>{startDate}</td>
+                <td>{endDate}</td>
             </tr>
         )
     }
@@ -35,6 +60,7 @@ class TermSelector extends React.Component
         //this.function blah
         this.getData = this.getData.bind(this);
         this.onTermCreate = this.onTermCreate.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
     componentWillMount() {
         // Get the term data at the start of execution
@@ -63,7 +89,7 @@ class TermSelector extends React.Component
             '&descr='+descr+'&census='+census+'&available='+available+'&start='+start+
             '&end='+end,
             type: 'POST',
-            dataType: 'json',
+            //dataType: 'json',
             success: function(data) {
                 this.getData();
                 var message = "Term successfully added.";
@@ -85,6 +111,10 @@ class TermSelector extends React.Component
         var end = ReactDOM.findDOMNode(this.refs.end_date).value.trim();
 
         this.onTermCreate(tcode, stype, descr, census, available, start, end);
+    }
+    dateToTimestamp(dateString) {
+        var timestamp = Date.parse(dateString);
+        return timestamp
     }
     render()
     {
@@ -110,47 +140,61 @@ class TermSelector extends React.Component
                         <div className="form-group" style={{margin: '1em'}}>
                             <div className="row">
                                 <div className="col-lg-3">
-                                    <label>Term Code: </label>
-                                    <input type="text" className="form-control" placeholder="00000"/>
-                                    <br></br>
+                                    <div className="form-group">
+                                        <label>Term Code: </label>
+                                        <input type="text" className="form-control" placeholder="00000" ref="term_code"/>
+                                        <br></br>
+                                    </div>
                                 </div>
                                 <div className="col-lg-3">
-                                    <label>Semester Type: </label>
-                                    <input type="text" className="form-control" placeholder="0"/>
-                                    <br></br>
+                                    <div className="form-group">
+                                        <label>Semester Type: </label>
+                                        <input type="text" className="form-control" placeholder="0" ref="sem_type"/>
+                                        <br></br>
+                                    </div>
                                 </div>
                                 <div className="col-lg-3">
-                                    <label>Description: </label>
-                                    <input type="text" className="form-control" placeholder="Season 0 0000"/>
-                                    <br></br>
+                                    <div className="form-group">
+                                        <label>Description: </label>
+                                        <input type="text" className="form-control" placeholder="Season 0 0000" ref="description"/>
+                                        <br></br>
+                                    </div>
                                 </div>
                                 <div className="col-lg-3">
-                                    <label>Census Date: </label>
-                                    <input type="text" className="form-control" placeholder="00/00/0000"/>
-                                    <br></br>
+                                    <div className="form-group">
+                                        <label>Census Date: </label>
+                                        <input type="text" className="form-control" placeholder="00/00/0000" ref="census_date"/>
+                                        <br></br>
+                                    </div>
                                 </div>
 
                             </div>
                             <div className="row">
                                 <div className="col-lg-3">
-                                    <label>Available On Date: </label>
-                                    <br></br>
-                                    <input type="text" className="form-control" placeholder="00/00/0000"/>
+                                    <div className="form-group">
+                                        <label>Available On Date: </label>
+                                        <br></br>
+                                        <input type="text" className="form-control" placeholder="00/00/0000" ref="available_date"/>
+                                    </div>
                                 </div>
                                 <div className="col-lg-3">
-                                    <label>Start Date: </label>
-                                    <br></br>
-                                    <input type="text" className="form-control" placeholder="00/00/0000"/>
+                                    <div className="form-group">
+                                        <label>Start Date: </label>
+                                        <br></br>
+                                        <input type="text" className="form-control" placeholder="00/00/0000" ref="start_date"/>
+                                    </div>
                                 </div>
                                 <div className="col-lg-3">
-                                    <label>End Date: </label>
-                                    <br></br>
-                                    <input type="text" className="form-control" placeholder="00/00/0000"/>
+                                    <div className="form-group">
+                                        <label>End Date: </label>
+                                        <br></br>
+                                        <input type="text" className="form-control" placeholder="00/00/0000" ref="end_date"/>
+                                    </div>
                                 </div>
                                 <div className="col-lg-3">
                                     <div className="form-group">
                                         <br></br>
-                                        <button className="btn btn-block" onClick=""><strong>Create Term</strong></button>
+                                        <button className="btn btn-block" onClick={this.handleSubmit}><strong>Create Term</strong></button>
                                     </div>
                                 </div>
                             </div>
