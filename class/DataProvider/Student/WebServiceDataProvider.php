@@ -164,7 +164,7 @@ class WebServiceDataProvider extends StudentDataProvider {
         if(isset($response->GetInternInfoResult->DirectoryInfo)) {
             $response = $response->GetInternInfoResult->DirectoryInfo;
         } else {
-            throw new \Intern\Exception\StudentNotFoundException("Could not locate faculty member with id: $studentId");
+            throw new \Intern\Exception\StudentNotFoundException("Could not locate faculty member with id: $facultyId");
         }
 
         // Check for an arry of results
@@ -179,15 +179,15 @@ class WebServiceDataProvider extends StudentDataProvider {
 
         // Check for a web service system error
         if($response->error_num == 1 && $response->error_desc == 'SYSTEM'){
-            throw new \Intern\Exception\WebServiceException("Web service system error while looking up {$studentId}");
+            throw new \Intern\Exception\WebServiceException("Web service system error while looking up {$facultyId}");
         }
 
         if($response->error_num == 1101 && $response->error_desc == 'LookupBannerID'){
-            throw new \Intern\Exception\StudentNotFoundException("Invalid banner id: {$studentId}");
+            throw new \Intern\Exception\StudentNotFoundException("Invalid banner id: {$facultyId}");
         }
 
         if($response->error_num == 1001 && $response->error_desc == 'InvalidBannerID'){
-            throw new \Intern\Exception\StudentNotFoundException("Invalid banner id: {$studentId}");
+            throw new \Intern\Exception\StudentNotFoundException("Invalid banner id: {$facultyId}");
 
         }
 
