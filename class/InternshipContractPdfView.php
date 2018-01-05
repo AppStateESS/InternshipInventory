@@ -135,13 +135,13 @@ class InternshipContractPdfView {
         $this->pdf->cell(12, 5, $this->internship->getAvgHoursPerWeek());
 
         /* Term right aligned*/
-        $this->pdf->setXY(8, 106);
-        $this->pdf->cell(27, 6, $this->term->getDescription(), 0, 0, 'R');
+        //$this->pdf->setXY(8, 106);
+        //$this->pdf->cell(27, 6, $this->term->getDescription(), 0, 0, 'R');
 
         /* Dates for begining and end of term center aligned*/
-        $this->pdf->setXY(100, 106);
+        $this->pdf->setXY(87, 106);
         $this->pdf->cell(30, 5, $this->term->getStartDateFormatted(), 0, 0, 'C');
-        $this->pdf->setXY(173, 106);
+        $this->pdf->setXY(160, 106);
         $this->pdf->cell(30, 5, $this->term->getEndDateFormatted(), 0, 0, 'C');
 
         /***
