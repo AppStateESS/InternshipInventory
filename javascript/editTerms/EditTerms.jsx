@@ -1,6 +1,27 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+
+class ErrorMessagesBlock extends React.Component {
+    render() {
+        if (this.props.errors === null) {
+            return '';
+        }
+
+        var errors = this.props.errors;
+
+        return (
+            <div className="row">
+                <div className="col-sm-12 col-md-6 col-md-push-3">
+                    <div className="alert alert-warning" role="alert">
+                        <p><i className="fa fa-exclamation-circle fa-2x"></i> Warning: {errors}</p>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+}
 
 class TermRow extends React.Component {
     constructor(props) {
@@ -58,6 +79,7 @@ class TermSelector extends React.Component
         };
 
         //this.function blah
+        this.dateToTimestamp = this.getData.bind(this);
         this.getData = this.getData.bind(this);
         this.onTermCreate = this.onTermCreate.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -84,6 +106,53 @@ class TermSelector extends React.Component
         });
     }
     onTermCreate(tcode, stype, descr, census, available, start, end) {
+
+        var errorMessage = null;
+        var displayData
+
+        if (tcode === '') {
+            errorMessage = "Please enter a term code.";
+            this.setState({errorWarning: errorMessage, messageType: "error"});
+            return;
+        }
+        if (stype === '') {
+            errorMessage = "Please enter a semester type.";
+            this.setState({errorWarning: errorMessage});
+            return;
+        }
+        if (descr === '') {
+            errorMessage = "Please enter a term description.";
+            this.setState({errorWarning: errorMessage});
+            return;
+        }
+        if (census === '') {
+            errorMessage = "Please enter a census date.";
+            this.setState({errorWarning: errorMessage});
+            return;
+        }
+        if (available === '') {
+            errorMessage = "Please enter the date the term is available.";
+            this.setState({errorWarning: errorMessage});
+            return;
+        }
+        if (start === '') {
+            errorMessage = "Please enter a start date.";
+            this.setState({errorWarning: errorMessage});
+            return;
+        }
+        if (end === '') {
+            errorMessage = "Please enter an end date.";
+            this.setState({errorWarning: errorMessage});
+            return;
+        }
+
+        census = this.dateToTimestamp(census);
+        available = this.dateToTimestamp(available);
+        start = this.dateToTimestamp(start);
+        end = this.dateToTimestamp(end);
+
+
+
         $.ajax({
             url: 'index.php?module=intern&action=termRest&code='+tcode+'&type='+stype+
             '&descr='+descr+'&census='+census+'&available='+available+'&start='+start+
@@ -113,8 +182,9 @@ class TermSelector extends React.Component
         this.onTermCreate(tcode, stype, descr, census, available, start, end);
     }
     dateToTimestamp(dateString) {
-        var timestamp = Date.parse(dateString);
-        return timestamp
+        //var timestamp = Date.parse(dateString);
+        //return timestamp
+        return new Date(dateString).getTime() / 1000;
     }
     render()
     {
@@ -122,7 +192,8 @@ class TermSelector extends React.Component
         if (this.state.mainData != null) {
             TermData = this.state.displayData.map(function (term) {
                 return (
-                    <TermRow tcode={term.term}
+                    <TermRow  key={term.term}
+                        tcode={term.term}
                         stype={term.semester_type}
                         descr={term.description}
                         census={term.census_date_timestamp}
@@ -131,9 +202,23 @@ class TermSelector extends React.Component
                         end={term.end_timestamp} />
                 );
             });
+        } else {
+            TermData = "";
+        }
+
+        var errors;
+        if (this.state.errorWarning == null) {
+            errors = '';
+        } else {
+            errors = <ErrorMessageBlock key="errorSet" errors={this.state.errorWarning} messageType={this.state.messageType} />
         }
         return (
             <div className="terms">
+
+              <ReactCSSTransitionGroup transitionName="example" transitionEnterTimeout={500} transitionLeaveTimeout={500}>
+                  {errors}
+              </ReactCSSTransitionGroup>
+
                 <h3>Add Term: </h3>
                 <div className="addTerm">
                     <div className="panel panel-default">

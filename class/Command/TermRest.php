@@ -82,8 +82,10 @@ class TermRest {
 
         $sql = "INSERT INTO intern_term (term, census_date_timestamp,
                 description, available_on_timestamp, start_timestamp,
-                end_timestamp, semester_type) VALUES
-                (:code, :census, :descr, :available, :start, :end_date, :type)";
+                end_timestamp, semester_type)
+                VALUES (:code, :census, :descr, :available, :start, :end_date, :type)";
+
+        echo($sql);
 
         $sql = $pdo->prepare($sql);
 
