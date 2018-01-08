@@ -303,6 +303,14 @@ class InternshipInventory {
                 $ctrl = new Command\NormalCoursesRest();
                 $ctrl->execute();
                 break;
+            case 'RequestBackgroundCheck':
+                $ctrl = new Command\RequestBackgroundCheck();
+                $ctrl->execute();
+                break;
+            case 'RequestDrugScreening':
+                $ctrl = new Command\RequestDrugScreening();
+                $ctrl->execute();
+                break;
             default:
                 $menu = new UI\InternMenu();
                 $this->content = $menu->display();
