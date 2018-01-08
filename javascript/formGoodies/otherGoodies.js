@@ -332,7 +332,7 @@ function initRequestBackCheck()
             url: 'index.php?module=intern&action=RequestBackgroundCheck&internship_id=' + $('#internship_internship_id').val(),
 
             success: function() {
-                console.log('Background Request Sent');
+                //console.log('Background Request Sent');
             },
 
             error: function() {
@@ -356,7 +356,7 @@ function initRequestDrugCheck()
             url: 'index.php?module=intern&action=RequestDrugScreening&internship_id=' + $('#internship_internship_id').val(),
 
             success: function() {
-                console.log('Drug Request Sent');
+                //console.log('Drug Request Sent');
             },
 
             error: function() {
