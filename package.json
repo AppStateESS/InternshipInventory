@@ -10,38 +10,36 @@
   "dependencies": {
     "classnames": "^2.2.5",
     "corejs-typeahead": "^1.1.1",
-    "react": "~15.3.0",
-    "react-dom": "~15.3.0",
-    "react-addons-css-transition-group": "~15.3.0",
-    "react-dropzone": "~3.5.3"
+    "react": "~15.6.1",
+    "react-dom": "~15.6.1",
+    "react-addons-css-transition-group": "~15.6.0",
+    "react-dropzone": "~3.13.3"
   },
   "devDependencies": {
     "assets-webpack-plugin": "^3.4.0",
-    "babel-core": "~6.13.2",
-    "babel-eslint": "6.1.2",
-    "babel-loader": "~6.2.4",
+    "babel-core": "~6.25.0",
+    "babel-eslint": "7.2.3",
+    "babel-loader": "~7.1.1",
     "babel-preset-es2015": "^6.16.0",
-    "babel-preset-react": "~6.11.1",
-    "css-loader": "~0.23.1",
-    "es6-promise": "~3.2.1",
-    "eslint": "3.5.0",
-    "eslint-config-react-app": "^0.2.1",
-    "eslint-loader": "1.5.0",
-    "eslint-plugin-flowtype": "2.18.1",
-    "eslint-plugin-import": "1.12.0",
-    "eslint-plugin-jsx-a11y": "^2.2.2",
-    "eslint-plugin-react": "6.3.0",
+    "babel-preset-react": "~6.24.1",
+    "css-loader": "~0.28.4",
+    "es6-promise": "~4.1.1",
+    "eslint": "4.1.1",
+    "eslint-loader": "1.8.0",
+    "eslint-plugin-flowtype": "2.34.1",
+    "eslint-plugin-import": "2.6.1",
+    "eslint-plugin-react": "7.1.0",
     "json-loader": "0.5.4",
     "react-a11y": "^0.3.3",
-    "react-bootstrap": "^0.30.5",
-    "react-dev-utils": "^0.2.1",
+    "react-bootstrap": "^0.31.0",
+    "react-dev-utils": "^3.0.1",
     "strip-loader": "~0.1.2",
-    "style-loader": "~0.13.1",
-    "webpack": "~1.13.1"
+    "style-loader": "~0.18.2",
+    "webpack": "^3.0.0"
   },
   "scripts": {
     "dev": "webpack --config webpack.config.dev.js -d --watch",
-    "build": "webpack --config webpack.config.prod.js -p"
+    "build": "webpack --config webpack.config.prod.js"
   },
   "repository": {
     "type": "git",

@@ -1,10 +1,29 @@
 <?php
+/**
+ * This file is part of Internship Inventory.
+ *
+ * Internship Inventory is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * Internship Inventory is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License version 3
+ * along with Internship Inventory.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Copyright 2011-2018 Appalachian State University
+ */
 
 namespace Intern\Email;
 use \Intern\Internship;
 use \Intern\Agency;
 use \Intern\InternSettings;
 use \Intern\Term;
+use \Intern\TermFactory;
 
 /**
  * Generates an email to the background check coordinator, notifying
@@ -18,6 +37,7 @@ use \Intern\Term;
 class BackgroundCheckEmail extends Email{
 
     private $internship;
+    private $term;
     private $agency;
 
     private $backgroundCheck;
@@ -28,14 +48,16 @@ class BackgroundCheckEmail extends Email{
     *
     * @param InternSettings $emailSettings
     * @param Internship $internship
+    * @param Term $term
     * @param Agency $agency
     * @param bool $backgroundCheck
     * @param bool $drugCheck
     */
-    public function __construct(InternSettings $emailSettings, Internship $internship, Agency $agency, $backgroundCheck, $drugCheck) {
+    public function __construct(InternSettings $emailSettings, Internship $internship, Term $term, Agency $agency, $backgroundCheck, $drugCheck) {
         parent::__construct($emailSettings);
 
         $this->internship = $internship;
+        $this->term = $term;
         $this->agency = $agency;
         $this->backgroundCheck = $backgroundCheck;
         $this->drugCheck = $drugCheck;
@@ -51,7 +73,7 @@ class BackgroundCheckEmail extends Email{
 
         $this->tpl['NAME'] = $this->internship->getFullName();
         $this->tpl['BANNER'] = $this->internship->banner;
-        $this->tpl['TERM'] = Term::rawToRead($this->internship->getTerm());
+        $this->tpl['TERM'] = $this->term->getDescription();
         $this->tpl['LEVEL'] = $this->internship->getLevel();
         $this->tpl['BIRTHDAY'] = $this->internship->getBirthDateFormatted();
         $this->tpl['EMAIL'] = $this->internship->getEmailAddress() . $this->emailSettings->getEmailDomain();

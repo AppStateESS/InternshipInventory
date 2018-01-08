@@ -1,4 +1,22 @@
 <?php
+/**
+ * This file is part of Internship Inventory.
+ *
+ * Internship Inventory is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * Internship Inventory is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License version 3
+ * along with Internship Inventory.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Copyright 2011-2018 Appalachian State University
+ */
 
 namespace Intern\Email;
 
@@ -17,6 +35,7 @@ use \Intern\InternSettings;
 class IntlInternshipCreateNoticeStudent extends Email {
 
     private $internship;
+    private $term;
 
     /**
      * Constructor
@@ -24,10 +43,11 @@ class IntlInternshipCreateNoticeStudent extends Email {
      * @param InternSettings $emailSettings
      * @param Internship $internship
      */
-    public function __construct(InternSettings $emailSettings, Internship $internship) {
+    public function __construct(InternSettings $emailSettings, Internship $internship, Term $term) {
         parent::__construct($emailSettings);
 
         $this->internship = $internship;
+        $this->term = $term;
     }
 
     protected function getTemplateFileName() {
@@ -40,7 +60,7 @@ class IntlInternshipCreateNoticeStudent extends Email {
         $this->tpl['BANNER'] = $this->internship->banner;
         $this->tpl['USER'] = $this->internship->email;
         $this->tpl['PHONE'] = $this->internship->phone;
-        $this->tpl['TERM'] = Term::rawToRead($this->internship->term);
+        $this->tpl['TERM'] = $this->term->getDescription();
         $this->tpl['COUNTRY'] = $this->internship->loc_country;
 
         $dept = new Department($this->internship->department_id);

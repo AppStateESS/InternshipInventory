@@ -1,8 +1,27 @@
 <?php
+/**
+ * This file is part of Internship Inventory.
+ *
+ * Internship Inventory is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * Internship Inventory is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License version 3
+ * along with Internship Inventory.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Copyright 2011-2018 Appalachian State University
+ */
 
 namespace Intern;
 
 use \phpws2\Database;
+use \Intern\Term;
 
 class InternshipFactory {
 
@@ -45,7 +64,7 @@ class InternshipFactory {
      * @return Array<Internship> Array of all pending Internship objects in the given term
      * @throws InvalidArgumentException
      */
-    public static function getPendingInternshipsByTerm($term)
+    public static function getPendingInternshipsByTerm(Term $term)
     {
         $db = Database::newDB();
         $pdo = $db->getPDO();
@@ -54,7 +73,7 @@ class InternshipFactory {
                                FROM intern_internship
                                WHERE state IN ('NewState', 'SigAuthReadyState', 'RegistrationIssueState')
                                     AND term = :term");
-        $stmt->execute(array('term'  => $term));
+        $stmt->execute(array('term'  => $term->getTermCode()));
         $stmt->setFetchMode(\PDO::FETCH_CLASS, 'Intern\InternshipRestored');
 
         return $stmt->fetchAll();

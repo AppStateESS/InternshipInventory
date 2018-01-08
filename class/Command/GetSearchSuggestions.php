@@ -1,8 +1,26 @@
 <?php
+/**
+ * This file is part of Internship Inventory.
+ *
+ * Internship Inventory is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * Internship Inventory is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License version 3
+ * along with Internship Inventory.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Copyright 2011-2018 Appalachian State University
+ */
 
 namespace Intern\Command;
 
-use Intern\ExternalDataProviderFactory;
+use Intern\DataProvider\Student\StudentDataProviderFactory;
 use Intern\Term;
 
 use Intern\Exception\StudentNotFoundException;
@@ -30,6 +48,12 @@ class GetSearchSuggestions {
     {
         $searchString = $_REQUEST['searchString'];
 
+        // If there was no search string, return an empty array to avoid front-end errors
+        if($searchString === ''){
+            echo json_encode(array());
+            exit;
+        }
+
         // If search string is exactly 9 digits, it must be a student id
         // Do an exact lookup and see if we can find the requested student
         if(preg_match('/^([0-9]){9}$/', $searchString)) {
@@ -38,7 +62,6 @@ class GetSearchSuggestions {
             try {
                 $students = array($this->studentIdSearch($searchString));
             } catch(StudentNotFoundException $e) {
-                // TODO Return something more useful here, that says we couldn't find that banner ID.
                 $error = array('studentId'=>$searchString, 'error'=>'No matching student found. This student ID may not be valid.');
                 echo json_encode(array($error));
                 exit;
@@ -76,7 +99,7 @@ class GetSearchSuggestions {
      */
     private function studentIdSearch($studentId)
     {
-        $student = ExternalDataProviderFactory::getProvider()->getStudent($studentId, Term::timeToTerm(time()));
+        $student = StudentDataProviderFactory::getProvider()->getStudent($studentId);
 
         return $student;
     }
@@ -189,7 +212,7 @@ class GetSearchSuggestions {
 
             // Get the students list of majors
             $majors = $student->getMajors();
-            
+
             $majorNames = array();
             if(!empty($majors)) {
                 foreach($majors as $m) {

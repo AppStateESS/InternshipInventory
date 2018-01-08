@@ -3,12 +3,16 @@ BEGIN;
 -- Defaults to not hidden.
 CREATE TABLE intern_major (
        id INT NOT NULL,
-       name VARCHAR NOT NULL UNIQUE,
+       code varchar NOT NULL UNIQUE,
+       description VARCHAR NOT NULL,
+       lavel VARCHAR NOT NULL,
        hidden SMALLINT NOT NULL DEFAULT 0,
        PRIMARY KEY(id)
 );
 
--- Defaults to not hidden.
+alter table intern_major add constraint intern_major_description_level_key UNIQUE (description, level);
+
+-- TODO: remove this table
 CREATE TABLE intern_grad_prog (
        id INT NOT NULL,
        name VARCHAR NOT NULL UNIQUE,
@@ -540,9 +544,14 @@ CREATE SEQUENCE intern_affiliation_agreement_seq;
 
 -- Term format YYYY# (e.g. 20111 is Spring 2011, 20113 is Fall 2011)
 CREATE TABLE intern_term (
-       id INT NOT NULL,
-       term INT NOT NULL UNIQUE,
-       PRIMARY KEY (id)
+       term character varying NOT NULL,
+       description character varying NOT NULL,
+       available_on_timestamp integer NOT NULL,
+       census_date_timestamp integer NOT NULL,
+       start_timestamp integer NOT NULL,
+       end_timestamp integer NOT NULL,
+       semester_type integer NOT NULL,
+       PRIMARY KEY (term)
 );
 
 create table intern_student_autocomplete (
@@ -564,7 +573,7 @@ create table intern_student_autocomplete (
 
 CREATE TABLE intern_internship (
        id INT NOT NULL,
-       term INT NOT NULL REFERENCES intern_term(term),
+       term character varying NOT NULL REFERENCES intern_term(term),
 
        agency_id INT NOT NULL REFERENCES intern_agency(id),
        faculty_id integer REFERENCES intern_faculty(id),
@@ -893,5 +902,38 @@ CREATE SEQUENCE intern_term_seq;
 CREATE SEQUENCE intern_internship_seq;
 CREATE SEQUENCE intern_document_seq;
 CREATE SEQUENCE intern_admin_seq;
+
+-- Local table for import and storage of student info
+CREATE TABLE intern_local_student_data (
+    student_id          character varying not null,
+    user_name           character varying not null,
+    email               character varying not null,
+
+    first_name          character varying,
+    middle_name         character varying,
+    last_name           character varying,
+    preferred_name      character varying,
+    confidential        character varying,
+
+    birth_date          character varying,
+    gender              character varying,
+
+    level               character varying,
+    campus              character varying,
+    gpa                 double precision,
+    credit_hours        integer default 0,
+    major_code          character varying,
+    major_description   character varying,
+    grad_date           character varying,
+
+    phone               character varying,
+    address             character varying,
+    address2            character varying,
+    city                character varying,
+    state               character varying,
+    zip                 character varying,
+
+    primary key(student_id)
+);
 
 COMMIT;

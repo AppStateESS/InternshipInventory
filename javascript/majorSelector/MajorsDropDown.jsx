@@ -1,43 +1,38 @@
 import React from 'react';
 
-var MajorsDropDown = React.createClass({
-    getInitialState: function(){
-        return ({hasError: false});
-    },
-    setError: function(status){
+class MajorsDropDown extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {hasError: false};
+    }
+    setError(status){
         this.setState({hasError: status});
-    },
-    render: function() {
+    }
+    render() {
         var majors = this.props.majors;
         var level = this.props.level;
 
-        var output = null;
+        var options = null;
 
         if(level === 'ugrad' || level === 'grad'){
-            output = (
-                <select id={level} name={level} className="form-control">
-                    {Object.keys(majors).map(function(key) {
-                        return <option key={key} value={key}>{majors[key]}</option>;
-                    })}
-                </select>
-            );
+            options = Object.keys(majors).map(function(index) {
+                        return <option key={majors[index].code} value={majors[index].code}>{majors[index].description}</option>;
+                    });
         } else {
-            output = (
-                <select id="def" name="def" className="form-control">
-                    <option >Choose a level first</option>
-                </select>
-            );
+            options = (<option >Choose a level first</option>);
         }
 
         return (
             <div className="form-group">
                 <label htmlFor="majors" className="col-lg-3 control-label">Major/Program</label>
                 <div className="col-lg-8">
-                    {output}
+                    <select id={level} name={level} className="form-control">
+                        {options}
+                    </select>
                 </div>
             </div>
         );
     }
-});
+}
 
 export default MajorsDropDown;

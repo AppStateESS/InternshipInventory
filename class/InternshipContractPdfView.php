@@ -1,4 +1,22 @@
 <?php
+/**
+ * This file is part of Internship Inventory.
+ *
+ * Internship Inventory is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * Internship Inventory is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License version 3
+ * along with Internship Inventory.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Copyright 2011-2018 Appalachian State University
+ */
 
 namespace Intern;
 
@@ -17,6 +35,7 @@ class InternshipContractPdfView {
 
     private $internship;
     private $emergencyContacts;
+    private $term;
 
     private $pdf;
 
@@ -25,13 +44,13 @@ class InternshipContractPdfView {
      *
      * @param Internship $i
      * @param Array<EmergencyContact> $emergencyContacts
-     * @param BannerTermProvider $termProvider
+     * @param Term $term
      */
-    public function __construct(Internship $i, Array $emergencyContacts, $termProvider)
+    public function __construct(Internship $i, Array $emergencyContacts, Term $term)
     {
         $this->internship = $i;
         $this->emergencyContacts = $emergencyContacts;
-        $this->termProvider = $termProvider;
+        $this->term = $term;
 
         $this->generatePdf();
     }
@@ -55,11 +74,12 @@ class InternshipContractPdfView {
         $a = $this->internship->getAgency();
         $d = $this->internship->getDepartment();
         $f = $this->internship->getFaculty();
-        $m = $this->internship->getUgradMajor();
-        $g = $this->internship->getGradProgram();
+        //$m = $this->internship->getUgradMajor();
+        //$g = $this->internship->getGradProgram();
         //$subject = $this->internship->getSubject();
 
-        $pagecount = $this->pdf->setSourceFile(PHPWS_SOURCE_DIR . 'mod/intern/pdf/AppStateInternshipContractNew.pdf');
+        //$pagecount = $this->pdf->setSourceFile(PHPWS_SOURCE_DIR . 'mod/intern/pdf/AppStateInternshipContractNew.pdf');
+        $this->pdf->setSourceFile(PHPWS_SOURCE_DIR . 'mod/intern/pdf/AppStateInternshipContractNew.pdf');
         $tplidx = $this->pdf->importPage(1);
         $this->pdf->addPage();
         $this->pdf->useTemplate($tplidx);
@@ -133,16 +153,14 @@ class InternshipContractPdfView {
         $this->pdf->cell(12, 5, $this->internship->getAvgHoursPerWeek());
 
         /* Term right aligned*/
-        $this->pdf->setXY(8, 106);
-        $this->pdf->cell(27, 6, Term::rawToRead($this->internship->getTerm()), 0, 0, 'R');
+        //$this->pdf->setXY(8, 106);
+        //$this->pdf->cell(27, 6, $this->term->getDescription(), 0, 0, 'R');
 
         /* Dates for begining and end of term center aligned*/
-        $termInfo = $this->termProvider->getTerm($this->internship->getTerm());
-        $part = $termInfo->getLongestTermPart();
-        $this->pdf->setXY(100, 106);
-        $this->pdf->cell(30, 5, $part->part_start_date, 0, 0, 'C');
-        $this->pdf->setXY(173, 106);
-        $this->pdf->cell(30, 5, $part->part_end_date, 0, 0, 'C');
+        $this->pdf->setXY(87, 106);
+        $this->pdf->cell(30, 5, $this->term->getStartDateFormatted(), 0, 0, 'C');
+        $this->pdf->setXY(160, 106);
+        $this->pdf->cell(30, 5, $this->term->getEndDateFormatted(), 0, 0, 'C');
 
         /***
          * Faculty supervisor information.

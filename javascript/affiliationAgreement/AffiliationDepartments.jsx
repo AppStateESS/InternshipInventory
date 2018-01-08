@@ -6,11 +6,16 @@ import $ from 'jquery';
 // on the Edit Affiliation interface.
 
 
-var DepartmentItem = React.createClass({
-    remove: function() {
+class DepartmentItem extends React.Component {
+    constructor(props){
+        super(props);
+
+        this.remove = this.remove.bind(this);
+    }
+    remove() {
         this.props.onRemoveClick(this.props.dept);
-    },
-    render: function() {
+    }
+    render() {
         return (
             <li className="list-group-item">
                 {this.props.dept.name}
@@ -18,14 +23,19 @@ var DepartmentItem = React.createClass({
             </li>
         );
     }
-});
+  }
 
 
-var DepartmentList = React.createClass({
-    removeClick: function(deptToRemove) {
+class DepartmentList extends React.Component {
+    constructor(props){
+        super(props);
+
+        this.removeClick = this.removeClick.bind(this);
+    }
+    removeClick(deptToRemove) {
         this.props.removeClick(deptToRemove);
-    },
-    render: function() {
+    }
+    render() {
         var listNodes = this.props.departments.map(function(department){
             return (
                 <DepartmentItem key={department.id} onRemoveClick={this.removeClick} dept={department}/>
@@ -38,15 +48,20 @@ var DepartmentList = React.createClass({
             </ul>
         );
     }
-});
+}
 
 
-var DepartmentDropdown = React.createClass({
-    add: function() {
+class DepartmentDropdown extends React.Component {
+    constructor(props){
+        super(props);
+
+        this.add = this.add.bind(this);
+    }
+    add() {
         var deptToAdd = this.refs.deptChoices.value;
         this.props.onAdd(deptToAdd);
-    },
-    render: function() {
+    }
+    render() {
         var options = this.props.departments;
 
         var selectOptions = options.map(function(department){
@@ -83,24 +98,32 @@ var DepartmentDropdown = React.createClass({
             </div>
         );
     }
-});
+}
 
 
-var DepartmentBox = React.createClass({
-    getInitialState: function() {
-        return {depts: null, usedDepts: null};
-    },
-    addDept: function(nameToAdd) {
+class DepartmentBox extends React.Component {
+    constructor(props) {
+      super(props);
+
+      this.state = {depts: null, usedDepts: null};
+
+      this.addDept = this.addDept.bind(this);
+      this.removeClick = this.removeClick.bind(this);
+      this.getData = this.getData.bind(this);
+      this.postData = this.postData.bind(this);
+      this.deleteData = this.deleteData.bind(this);
+    }
+    addDept(nameToAdd) {
         this.postData(nameToAdd);
-    },
-    removeClick: function(dept) {
+    }
+    removeClick(dept) {
         this.deleteData(dept);
-    },
-    componentWillMount: function() {
+    }
+    componentWillMount() {
         // Get the department data on initial load
         this.getData();
-    },
-    getData: function() {
+    }
+    getData() {
         // Fetch the full list of departments
         $.ajax({
             url: 'index.php?module=intern&action=deptRest',
@@ -127,8 +150,8 @@ var DepartmentBox = React.createClass({
                 console.error(status, err.toString());
             }
         });
-    },
-    postData: function(department) {
+    }
+    postData(department) {
         $.ajax({
             url: 'index.php?module=intern&action=AffiliateDeptRest&department='+department+'&affiliation_agreement_id='+this.props.affiliationId,
             type: 'POST',
@@ -140,8 +163,8 @@ var DepartmentBox = React.createClass({
                 console.error(status, err.toString());
             }
         });
-    },
-    deleteData: function(department) {
+    }
+    deleteData(department) {
         $.ajax({
             url: 'index.php?module=intern&action=AffiliateDeptRest&department='+department.id+'&affiliation_agreement_id='+this.props.affiliationId,
             type: 'DELETE',
@@ -153,8 +176,8 @@ var DepartmentBox = React.createClass({
                 console.error(status, err.toString());
             }
         });
-    },
-    render: function() {
+    }
+    render() {
 
         if(this.state.depts == null || this.state.usedDepts == null){
             return (<div></div>);
@@ -167,7 +190,7 @@ var DepartmentBox = React.createClass({
             </div>
         );
     }
-});
+}
 
 ReactDOM.render(
     <DepartmentBox affiliationId={window.aaId}/>,

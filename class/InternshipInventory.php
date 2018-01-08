@@ -1,6 +1,26 @@
 <?php
+/**
+ * This file is part of Internship Inventory.
+ *
+ * Internship Inventory is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * Internship Inventory is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License version 3
+ * along with Internship Inventory.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Copyright 2011-2018 Appalachian State University
+ */
 
 namespace Intern;
+
+use Intern\UI\NotifyUI;
 
 class InternshipInventory {
 
@@ -18,9 +38,10 @@ class InternshipInventory {
 
     public function handleRequest()
     {
-        /* Check if it is time to insert more terms into DB */
-        if (Term::isTimeToUpdate()) {
-            Term::doTermUpdate();
+        // Check if it is time to add more term. If so, show a warning to admins.
+        $futureTerms = TermFactory::getFutureTermsAssoc();
+        if(sizeof($futureTerms) < 3 && \Current_User::isDeity()){
+            \NQ::simple('intern', \Intern\UI\NotifyUI::WARNING, "There are less than three future terms avaialble. It's probably time to add a new term.");
         }
 
 
@@ -149,11 +170,19 @@ class InternshipInventory {
                 \NQ::close();
                 \PHPWS_Core::goBack();
                 break;
+            case 'settingsRest':
+                $ctrl = new Command\SettingsRest();
+                $ctrl->execute();
+                break;
             case 'edit_states':
                 if (!\Current_User::allow('intern', 'edit_state')) {
                     disallow();
                 }
                 $view = new UI\StateUI();
+                $this->content = $view->display();
+                break;
+            case 'showAdminSettings':
+                $view = new UI\SettingsUI();
                 $this->content = $view->display();
                 break;
             case 'showEditAdmins':
@@ -170,8 +199,8 @@ class InternshipInventory {
             case 'pdf':
                 $i = InternshipFactory::getInternshipById($_REQUEST['internship_id']);
                 $emgContacts = EmergencyContactFactory::getContactsForInternship($i);
-                $termProvider = TermProviderFactory::getProvider();
-                $pdfView = new InternshipContractPdfView($i, $emgContacts, $termProvider);
+                $term = \Intern\TermFactory::getTermByTermCode($i->getTerm());
+                $pdfView = new InternshipContractPdfView($i, $emgContacts, $term);
                 $pdf = $pdfView->getPdf();
                 $pdf->output();
                 exit;
@@ -272,6 +301,14 @@ class InternshipInventory {
                 break;
             case 'NormalCoursesRest':
                 $ctrl = new Command\NormalCoursesRest();
+                $ctrl->execute();
+                break;
+            case 'RequestBackgroundCheck':
+                $ctrl = new Command\RequestBackgroundCheck();
+                $ctrl->execute();
+                break;
+            case 'RequestDrugScreening':
+                $ctrl = new Command\RequestDrugScreening();
                 $ctrl->execute();
                 break;
             default:

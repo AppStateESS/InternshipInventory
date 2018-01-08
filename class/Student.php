@@ -1,4 +1,22 @@
 <?php
+/**
+ * This file is part of Internship Inventory.
+ *
+ * Internship Inventory is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * Internship Inventory is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License version 3
+ * along with Internship Inventory.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Copyright 2011-2018 Appalachian State University
+ */
 
 namespace Intern;
 
@@ -41,7 +59,7 @@ class Student {
     private $gpa;
     private $gradDate;
     private $holds;
-    private $creditHours;
+    //private $creditHours;
 
     // Person type flags
     private $isStaff;
@@ -70,27 +88,23 @@ class Student {
      * @param $term integer The term the internship will be in. Used to check existing credit hours.
      * @return boolean
      */
-    public function isCreditHourLimited($internHours, $term)
+    public function isCreditHourLimited(int $internHours, int $existingHours, Term $term): bool
     {
-        if(!isset($this->creditHours)){
-            return;
-        }
+        $totalHours = $existingHours + $internHours;
 
-        $totalHours = $this->creditHours + $internHours;
-
-        $semester = Term::getSemester($term);
+        $semester = $term->getSemesterType();
         $level = $this->getLevel();
         $limit = 0;
         if(($semester == Term::FALL || $semester == Term::SPRING)) {
             if($level == self::UNDERGRAD){
                 $limit = self::HOURS_LIMIT_UNDERGRAD_REG;
-            } else if($level == self::GRADUATE) {
+            } else {
                 $limit = self::HOURS_LIMIT_GRADUATE_REG;
             }
         } else if (($semester == Term::SUMMER1 || $semester == Term::SUMMER2)) {
             if($level == self::UNDERGRAD){
                 $limit = self::HOURS_LIMIT_UNDERGRAD_SUMMER;
-            } else if($level == self::GRADUATE) {
+            } else {
                 $limit = self::HOURS_LIMIT_GRADUATE_SUMMER;
             }
         }
@@ -244,6 +258,7 @@ class Student {
         return $this->gradDate;
     }
 
+    /*
     public function getCreditHours() {
         return $this->creditHours;
     }
@@ -251,6 +266,7 @@ class Student {
     public function setCreditHours($hours) {
         $this->creditHours = $hours;
     }
+    */
 
     /**
      * @param $flag bool
