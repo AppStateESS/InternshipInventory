@@ -52,7 +52,7 @@ class CoursesUI implements UI {
         $tpl['SUBJECTS'] = $subjects;
         $tpl['vendor_bundle'] = AssetResolver::resolveJsPath('assets.json', 'vendor');
         $tpl['entry_bundle'] = AssetResolver::resolveJsPath('assets.json', 'editExpectedCourses');
-
+        
         return \PHPWS_Template::process($tpl, 'intern','edit_courses.tpl');
 
     }
