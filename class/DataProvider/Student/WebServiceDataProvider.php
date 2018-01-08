@@ -1,6 +1,27 @@
 <?php
+/**
+ * This file is part of Internship Inventory.
+ *
+ * Internship Inventory is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-namespace Intern;
+ * Internship Inventory is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License version 3
+ * along with Internship Inventory.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Copyright 2011-2018 Appalachian State University
+ */
+
+namespace Intern\DataProvider\Student;
+
+use Intern\Student;
+use Intern\AcademicMajor;
 
 use \SoapFault;
 
@@ -12,7 +33,7 @@ use \SoapFault;
  * @author Jeremy Booker
  * @package Intern
  */
-class WebServiceDataProvider extends ExternalDataProvider {
+class WebServiceDataProvider extends StudentDataProvider {
 
     protected $currentUserName;
 
@@ -44,12 +65,10 @@ class WebServiceDataProvider extends ExternalDataProvider {
 
     /**
      * Returns a Student object with hard-coded data
-     * @return Student
+     * @return \Intern\Student
      */
-    public function getStudent($studentId, $term)
+    public function getStudent($studentId)
     {
-        $term .= "0";
-
         if($studentId === null || $studentId == ''){
             throw new \InvalidArgumentException('Missing student ID.');
         }
@@ -99,7 +118,8 @@ class WebServiceDataProvider extends ExternalDataProvider {
         // Log the request
         $this->logRequest('getStudent', 'success', $params);
 
-        $response->creditHours = $this->getCreditHours($studentId, $term);
+        // Removed built-in credit-hour fetching because we don't always have a term (but still need to lookup a student)
+        //$response->creditHours = $this->getCreditHours($studentId, $term);
 
         // Create the Student object and plugin the values
         $student = new Student();
@@ -113,7 +133,7 @@ class WebServiceDataProvider extends ExternalDataProvider {
         return $this->client->GetInternInfo($params);
     }
 
-    public function getCreditHours($studentId, $term)
+    public function getCreditHours(string $studentId, string $term)
     {
         if($studentId === null || $studentId == ''){
             throw new \InvalidArgumentException('Missing student ID.');
@@ -162,7 +182,12 @@ class WebServiceDataProvider extends ExternalDataProvider {
         if(isset($response->GetInternInfoResult->DirectoryInfo)) {
             $response = $response->GetInternInfoResult->DirectoryInfo;
         } else {
-            throw new \Intern\Exception\StudentNotFoundException("Could not locate student: $studentId");
+            throw new \Intern\Exception\StudentNotFoundException("Could not locate faculty member with id: $facultyId");
+        }
+
+        // Check for an arry of results
+        if(is_array($response)){
+            $response = $response[0];
         }
 
         // Check for an InvalidUsername error (i.e. the user doesn't have banner permissions)
@@ -172,15 +197,15 @@ class WebServiceDataProvider extends ExternalDataProvider {
 
         // Check for a web service system error
         if($response->error_num == 1 && $response->error_desc == 'SYSTEM'){
-            throw new \Intern\Exception\WebServiceException("Web service system error while looking up {$studentId}");
+            throw new \Intern\Exception\WebServiceException("Web service system error while looking up {$facultyId}");
         }
 
         if($response->error_num == 1101 && $response->error_desc == 'LookupBannerID'){
-            throw new \Intern\Exception\StudentNotFoundException("Invalid banner id: {$studentId}");
+            throw new \Intern\Exception\StudentNotFoundException("Invalid banner id: {$facultyId}");
         }
 
         if($response->error_num == 1001 && $response->error_desc == 'InvalidBannerID'){
-            throw new \Intern\Exception\StudentNotFoundException("Invalid banner id: {$studentId}");
+            throw new \Intern\Exception\StudentNotFoundException("Invalid banner id: {$facultyId}");
 
         }
 
@@ -265,14 +290,16 @@ class WebServiceDataProvider extends ExternalDataProvider {
         }
 
         // Credit Hours
-        $student->setCreditHours($data->creditHours);
+        // Removed built-in credit hour fetching, since we don't always have a term
+        //$student->setCreditHours($data->creditHours);
 
-        // Majors - Can be an array of objects, or just a single object
-        if(is_array($data->majors)) {
+        // Majors - Can be an array of objects, or just a single object, or not set at all
+        // TODO: Fix hard-coded 'U' level passed to AcademicMajor
+        if(isset($data->majors) && is_array($data->majors)) {
             foreach($data->majors as $major){
                 $student->addMajor(new AcademicMajor($major->major_code, $major->major_desc, 'U'));
             }
-        } else if(is_object($data->majors)){
+        } else if(isset($data->majors) &&  is_object($data->majors)){
             $student->addMajor(new AcademicMajor($data->majors->major_code, $data->majors->major_desc, 'U'));
         }
 

@@ -1,6 +1,26 @@
 <?php
+/**
+ * This file is part of Internship Inventory.
+ *
+ * Internship Inventory is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-namespace Intern;
+ * Internship Inventory is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License version 3
+ * along with Internship Inventory.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Copyright 2011-2018 Appalachian State University
+ */
+
+namespace Intern\DataProvider\Term;
+
+use Intern\TermInfo;
 
 use \SoapFault;
 
@@ -8,13 +28,13 @@ use \SoapFault;
  * BannerTermProvider
  *
  * Returns a Term object with data pulled from a web service connected to Banner.
- * Usually created through the TermProviderFactory.
+ * Usually created through the TermInfoProviderFactory.
  *
- * @see \Intern\TermProviderFactory
+ * @see \Intern\DataProvider\Term\TermInfoProviderFactory
  * @author Jeremy Booker
  * @package Intern
  */
-class BannerTermProvider {
+class WebServiceTermInfoProvider extends TermInfoProvider {
 
     protected $currentUserName;
 
@@ -39,15 +59,15 @@ class BannerTermProvider {
      * Returns a Term object with hard-coded data
      * @return Term
      */
-    public function getTerm($term)
+    public function getTermInfo(string $termCode): TermInfo
     {
-        $term .= "0";
+        $termCode .= "0";
 
-        if($term === null || $term== '0'){
+        if($termCode === null || $termCode == '0'){
             throw new \InvalidArgumentException('Missing term.');
         }
 
-        $params = array('Term' => $term,
+        $params = array('Term' => $termCode,
                         'UserName' => $this->currentUserName);
 
         try {
@@ -103,12 +123,15 @@ class BannerTermProvider {
             $termInfo->setCensusDate($data->census_date);
         }
 
-        if(is_array($data->part_term)){
-            foreach($data->part_term as $termPart){
-                $termInfo->addTermPart($termPart);
+        // Part of term data may not be available yet. If not, we'll skip plugging in those values.
+        if(isset($data->part_term)){
+            if(is_array($data->part_term)){
+                foreach($data->part_term as $termPart){
+                    $termInfo->addTermPart($termPart);
+                }
+            }else{
+                $termInfo->addTermPart($data->part_term);
             }
-        }else{
-            $termInfo->addTermPart($data->part_term);
         }
     }
 

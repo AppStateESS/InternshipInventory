@@ -3,13 +3,12 @@ Hello {NAME},
 Your internship has not been approved and enrollment is not complete.
 
 As a result, your financial aid can be negatively impacted if you are not
-registered for the course before Drop/Add closes on the 5th day of 
-classes (Summer: 2nd day of class).
+registered for the course before Drop/Add closes on {CENSUS_DATE}.
 
-If you still intend to complete this internship this semester, you need to have
-the entire approval process completed no later than 12:00 noon on the last day
-of the Drop/Add period (Fall/Spring: 5th day of class; Summer: 2nd day of class).
-This is to ensure registration can be completed before the close of business.
+If you intend for this internship to go forward for this semester, you need to
+have the entire approval process completed no later than 12:00 noon on {CENSUS_DATE},
+the last day of the Drop/Add period. This is to ensure registration can be completed
+before the close of business.
 
 You may NOT report to your internship site until you are fully registered! If
 this internship needs to be canceled, please notify your departmental

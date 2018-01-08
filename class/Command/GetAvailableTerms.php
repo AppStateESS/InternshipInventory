@@ -1,12 +1,32 @@
 <?php
+/**
+ * This file is part of Internship Inventory.
+ *
+ * Internship Inventory is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * Internship Inventory is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License version 3
+ * along with Internship Inventory.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Copyright 2011-2018 Appalachian State University
+ */
+
 namespace Intern\Command;
 
 use \Intern\Term as Term;
-use \Intern\TermProviderFactory;
+use \Intern\DataProvider\Term\TermInfoProviderFactory;
+use Intern\TermFactory;
 
 /**
  * JSON endpoint for getting begin/end date and census date information for a term.
- * Uses the TermProviderFactory to load TermInfo objects.
+ * Uses the TermInfoProviderFactory to load TermInfo objects.
  *
  * @author jbooker
  * @package Intern
@@ -15,34 +35,15 @@ class GetAvailableTerms {
 
     public function execute()
     {
-        $futureTerms = Term::getFutureTermsAssoc();
+        $availableTerms = TermFactory::getAvailableTerms();
 
-        $termProvider = TermProviderFactory::getProvider();
+        $termList = array();
 
-        $terms = array();
-        foreach($futureTerms as $term => $description){
-
-            try {
-                // Fetch info from web service for this particular term
-                $termInfo = $termProvider->getTerm($term);
-            } catch (\Intern\Exception\BannerPermissionException $e){
-                // Catch permission errors
-                $error = array('error'=>'You do not have Banner student data permissions. Please click the \'Get Help\' button in the top navigation bar to open a support request.');
-                echo json_encode($error);
-                exit;
-            }
-
-
-            $part = $termInfo->getLongestTermPart();
-
-            if($part === null){
-                throw new \Exception('Couldn\'t find a part of term for ' . $term);
-            }
-
-            $terms[$term] = array('description' => $description, 'startDate' => $part->part_start_date, 'endDate' => $part->part_end_date);
+        foreach ($availableTerms as $term){
+            $termList[$term->getTermCode()] = $term;
         }
 
-        echo json_encode($terms);
+        echo json_encode($termList);
         exit;
     }
 }

@@ -3,19 +3,24 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import classNames from 'classnames';
 
-import MajorsDropDown from '../createInterface/MajorsDropDown.jsx';
+import MajorsDropDown from './MajorsDropDown.jsx';
 
-var MajorSelector = React.createClass({
-    getInitialState: function() {
-        return ({
+class MajorSelector extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
             undergrad: false,
             graduate: false,
             availableUndergradMajors: false,
             availableGradMajors: false,
             hasError: false
-        });
-    },
-    componentDidMount: function() {
+        };
+
+        this.undergrad = this.undergrad.bind(this);
+        this.graduate = this.graduate.bind(this);
+        this.anyLevel = this.anyLevel.bind(this);
+    }
+    componentDidMount() {
         // Fetch list of available undergrad majors
         $.ajax({
             url: 'index.php?module=intern&action=GetUndergradMajors',
@@ -39,22 +44,23 @@ var MajorSelector = React.createClass({
                 console.error(status, err.toString());
             }
         });
-    },
-    undergrad: function() {
+    }
+    undergrad() {
         this.setState({undergrad: true, graduate: false});
-    },
-    graduate: function() {
+    }
+    graduate() {
         this.setState({undergrad: false, graduate: true});
-    },
-    anyLevel: function() {
+    }
+    anyLevel() {
         this.setState({undergrad: false, graduate: false});
-    },
-    render: function() {
+    }
+    render() {
         var majorsDropdown;
+
         if(!this.state.undergrad && !this.state.graduate) {
             majorsDropdown = <MajorsDropDown formStyle='horizontal'/>;
         } else if (this.state.undergrad) {
-            majorsDropdown = <MajorsDropDown key="undergradMajors" ref="undergrad" majors={this.state.availableUndergradMajors} level='undergrad' formStyle='horizontal'/>;
+            majorsDropdown = <MajorsDropDown key="undergradMajors" ref="undergrad" majors={this.state.availableUndergradMajors} level='ugrad' formStyle='horizontal'/>;
         } else {
             majorsDropdown = <MajorsDropDown key="gradMajors" ref="graduate" majors={this.state.availableGradMajors} level='grad' formStyle='horizontal'/>;
         }
@@ -79,28 +85,28 @@ var MajorSelector = React.createClass({
 
         return (
             <div>
-            <div className="form-group">
-                <label className="col-lg-3 control-label" htmlFor="level">Level</label>
-                <div className="col-lg-8">
-                    <div className="btn-group">
-                      <label className={anyLevelClass}>Any Level
-                        <input type="radio" name="level" value="-1" style={{position: "absolute", clip: "rect(0, 0, 0, 0)"}}  onClick={this.anyLevel} />
-                      </label>
-                      <label className={undergradLevelClass}>Undergraduate
-                        <input type="radio" name="level" value="undergraduate" style={{position: "absolute", clip: "rect(0, 0, 0, 0)"}} onClick={this.undergrad}/>
-                      </label>
-                      <label className={graduateLevelClass}>Graduate
-                        <input type="radio" name="level" value="graduate" style={{position: "absolute", clip: "rect(0, 0, 0, 0)"}} onClick={this.graduate} />
-                      </label>
+                <div className="form-group">
+                    <label className="col-lg-3 control-label" htmlFor="level">Level</label>
+                    <div className="col-lg-8">
+                        <div className="btn-group">
+                            <label className={anyLevelClass}>Any Level
+                                <input type="radio" name="level" value="-1" style={{position: "absolute", clip: "rect(0, 0, 0, 0)"}}  onClick={this.anyLevel} />
+                            </label>
+                            <label className={undergradLevelClass}>Undergraduate
+                                <input type="radio" name="level" value="ugrad" style={{position: "absolute", clip: "rect(0, 0, 0, 0)"}} onClick={this.undergrad}/>
+                            </label>
+                            <label className={graduateLevelClass}>Graduate
+                                <input type="radio" name="level" value="grad" style={{position: "absolute", clip: "rect(0, 0, 0, 0)"}} onClick={this.graduate} />
+                            </label>
+                        </div>
                     </div>
                 </div>
-            </div>
 
                 {majorsDropdown}
             </div>
         );
     }
-});
+}
 
 
 ReactDOM.render(

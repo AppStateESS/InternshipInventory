@@ -9,17 +9,22 @@ import StateDropDown from './StateDropDown.jsx';
 /*************
  * Locations *
  *************/
-var LocationBlock = React.createClass({
-    getInitialState: function() {
-        return ({
+class LocationBlock extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state =  {
             domestic: null,
             international: null,
             availableStates: null,
             availableCountries: null,
             hasError: false
-            });
-    },
-    componentDidMount: function() {
+        };
+
+        this.domestic = this.domestic.bind(this);
+        this.international = this.international.bind(this);
+    }
+    componentDidMount() {
         // Fetch list of states
         $.ajax({
             url: 'index.php?module=intern&action=GetStates',
@@ -44,17 +49,17 @@ var LocationBlock = React.createClass({
                 console.error(status, err.toString());
             }
         });
-    },
-    domestic: function() {
+    }
+    domestic() {
         this.setState({domestic: true, international: false});
-    },
-    international: function() {
+    }
+    international() {
         this.setState({domestic: false, international: true});
-    },
-    setError: function(status){
+    }
+    setError(status){
         this.setState({hasError: status});
-    },
-    render: function () {
+    }
+    render() {
         var fgClasses = classNames({
                         'form-group': true,
                         'has-error': this.state.hasError
@@ -64,9 +69,9 @@ var LocationBlock = React.createClass({
         if(this.state.domestic === null) {
             dropdown = '';
         } else if (this.state.domestic) {
-            dropdown = <StateDropDown key="states" ref="state" states={this.state.availableStates}/>;
+            dropdown = <StateDropDown key="states" ref={(element) => {this.stateDropDown = element}} states={this.state.availableStates}/>;
         } else {
-            dropdown = <InternationalDropDown key="countries" ref="country" countries={this.state.availableCountries}/>;
+            dropdown = <InternationalDropDown key="countries" ref={(element) => {this.countryDropDown = element}} countries={this.state.availableCountries}/>;
         }
         return (
             <div>
@@ -92,6 +97,6 @@ var LocationBlock = React.createClass({
             </div>
         );
     }
-});
+}
 
 export default LocationBlock;

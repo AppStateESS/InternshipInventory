@@ -1,7 +1,26 @@
 <?php
+/**
+ * This file is part of Internship Inventory.
+ *
+ * Internship Inventory is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * Internship Inventory is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License version 3
+ * along with Internship Inventory.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Copyright 2011-2018 Appalachian State University
+ */
 
 namespace Intern\Command;
-use \phpws2\Database;
+
+use Intern\PdoFactory;
 
 class MajorRest {
 
@@ -25,6 +44,23 @@ class MajorRest {
         }
 	}
 
+    public function get()
+    {
+        $pdo = PdoFactory::getPdoInstance();
+
+        $sql = "SELECT code, description, level
+                FROM intern_major
+                ORDER BY description ASC";
+
+        $sth = $pdo->prepare($sql);
+
+        $sth->execute();
+        $result = $sth->fetchAll(\PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+    // TODO: Update this to match new majors editor.
 	public function post()
 	{
 		$major = $_REQUEST['create'];
@@ -36,8 +72,7 @@ class MajorRest {
             exit;
 		}
 
-		$db = Database::newDB();
-		$pdo = $db->getPDO();
+		$pdo = PdoFactory::getPdoInstance();
 
 		$sql = "INSERT INTO intern_major (id, name, hidden)
 				VALUES (nextval('intern_major_seq'), :major, :hidden)";
@@ -47,6 +82,8 @@ class MajorRest {
 		$sth->execute(array('major'=>$major, 'hidden'=>0));
 
 	}
+
+    // TODO: Update this to match new majors editor.
 	public function put()
 	{
 		$db = Database::newDB();
@@ -78,22 +115,5 @@ class MajorRest {
 
 			$sth->execute(array('mname'=>$mname, 'id'=>$id));
 		}
-	}
-
-	public function get()
-	{
-		$db = Database::newDB();
-		$pdo = $db->getPDO();
-
-		$sql = "SELECT id, name, hidden
-				FROM intern_major
-				ORDER BY name ASC";
-
-		$sth = $pdo->prepare($sql);
-
-		$sth->execute();
-		$result = $sth->fetchAll(\PDO::FETCH_ASSOC);
-
-		return $result;
 	}
 }

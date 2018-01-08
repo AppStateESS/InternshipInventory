@@ -6,7 +6,7 @@ php:
 install:
     - nvm install 6
     - npm install -g yarn
-    - yarn global add bower
+    #- yarn global add bower
     #- "npm config set spin false"
     #- npm install -g bower
     - yarn install

@@ -3,13 +3,12 @@ Hello {FACULTY},
 The internship for {NAME} has not been approved and enrollment is not complete.
 
 Students' financial aid can be negatively impacted if registration does not
-occur before Drop/Add closes on the 5th day of classes (Summer: 2nd day of class).
+occur before Drop/Add closes on {CENSUS_DATE}.
 
-If you intend for these internships to go forward for this semester, you need to
+If you intend for this internship to go forward for this semester, you need to
 have the entire approval process, including the Dean’s level approval, completed
-no later than 12:00 noon on the last day of the Drop/Add period
-(Fall/Spring: 5th day of class; Summer: 2nd day of class). This is to ensure
-registration can be completed before the close of business.
+no later than 12:00 noon on {CENSUS_DATE}, the last day of the Drop/Add period.
+This is to ensure registration can be completed before the close of business.
 
 Remember, students may NOT report to their internship site until they are fully
 registered! If this internship needs to be canceled, please notify your

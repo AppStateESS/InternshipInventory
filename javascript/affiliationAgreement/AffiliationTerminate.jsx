@@ -3,11 +3,16 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 
 
-var TerminateButton = React.createClass({
-    clicked: function() {
+class TerminateButton extends React.Component {
+    constructor(props){
+        super(props);
+
+        this.clicked = this.clicked.bind(this);
+    }
+    clicked() {
         this.props.clicked();
-    },
-    render:function() {
+    }
+    render() {
         var btnClass;
         var btnText;
         var btnAwesome;
@@ -30,17 +35,21 @@ var TerminateButton = React.createClass({
             </div>
         );
     }
-});
+}
 
 
-var TerminateBox = React.createClass({
-    getInitialState: function() {
-        return {agreement: null};
-    },
-    componentWillMount: function(){
+class TerminateBox extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {agreement: null};
+
+      this.getData = this.getData.bind(this);
+      this.clicked = this.clicked.bind(this);
+    }
+    componentWillMount(){
         this.getData();
-    },
-    getData: function(){
+    }
+    getData(){
         $.ajax({
             url: 'index.php?module=intern&action=AffiliateRest&affiliation_agreement_id='+this.props.affiliationId,
             type: 'GET',
@@ -52,8 +61,8 @@ var TerminateBox = React.createClass({
                 console.error(this.props.url, status, err.toString());
             }.bind(this)
         });
-    },
-    clicked: function(){
+    }
+    clicked(){
         $.ajax({
             url:'index.php?module=intern&action=AffiliateRest&affiliation_agreement_id='+this.props.affiliationId,
             type: 'POST',
@@ -64,8 +73,8 @@ var TerminateBox = React.createClass({
                 console.error(this.props.url, status, err.toString());
             }.bind(this)
         });
-    },
-    render: function() {
+    }
+    render() {
 
         if(this.state.agreement == null){
             return (<div></div>);
@@ -77,7 +86,7 @@ var TerminateBox = React.createClass({
             </div>
         );
     }
-});
+}
 
 
 ReactDOM.render(<TerminateBox affiliationId={window.aaId}/>,

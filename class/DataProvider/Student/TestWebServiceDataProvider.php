@@ -1,6 +1,24 @@
 <?php
+/**
+ * This file is part of Internship Inventory.
+ *
+ * Internship Inventory is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-namespace Intern;
+ * Internship Inventory is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License version 3
+ * along with Internship Inventory.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Copyright 2011-2018 Appalachian State University
+ */
+
+namespace Intern\DataProvider\Student;
 
 /**
  * TestStudentProvider - Always returns student objects with hard-coded testing data
@@ -20,7 +38,7 @@ class TestWebServiceDataProvider extends WebServiceDataProvider {
         //return $this->getFakeErrorResponse();
     }
 
-    public function getCreditHours($studentId, $term)
+    public function getCreditHours(string $studentId, string $term)
     {
         return 16;
     }
@@ -86,7 +104,7 @@ class TestWebServiceDataProvider extends WebServiceDataProvider {
         $major1->program_admit = '';
 
         $major2 = new \stdClass();
-        $major2->major_code = '224A';
+        $major2->major_code = '219A';
         $major2->major_desc = 'Computer Science';
         $major2->program_admit = '';
 

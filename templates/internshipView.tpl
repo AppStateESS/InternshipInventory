@@ -29,16 +29,20 @@
     </div>
 
     <div class="col-lg-2">
-        <!-- BEGIN copy_to_next_term -->
         <div class="btn-group">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fa fa-copy"></i> Continue Internship <span class="caret"></span>
+                <i class="fa fa-copy"></i> Continue This Internship <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
-                <li><a href="index.php?module=intern&action=copyInternshipToNextTerm&internship_id={INTERN_ID}"><i class="fa fa-fast-forward"></i> Continue in {NEXT_TERM}</a></li>
+                <!-- BEGIN CONTINUE_TERM_LIST -->
+                <li><a href="index.php?module=intern&action=copyInternshipToNextTerm&internshipId={INTERN_ID}&destinationTerm={DEST_TERM}"><i class="fa fa-fast-forward"></i> Continue in {DEST_TERM_TEXT}</a></li>
+                <!-- END CONTINUE_TERM_LIST -->
+
+                <!-- BEGIN CONTINUE_TERM_NO_TERMS -->
+                <li><a href="" class="text-muted" style="color:#777; pointer-events: none" disabled>{CONTINUE_TERM_NO_TERMS}</a></li>
+                <!-- END CONTINUE_TERM_NO_TERMS -->
             </ul>
         </div>
-        <!-- END copy_to_next_term -->
     </div>
 
     <div class="col-lg-1 col-lg-offset-1">

@@ -1,9 +1,28 @@
 <?php
+/**
+ * This file is part of Internship Inventory.
+ *
+ * Internship Inventory is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * Internship Inventory is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License version 3
+ * along with Internship Inventory.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Copyright 2011-2018 Appalachian State University
+ */
 
 namespace Intern;
 
 use Intern\ChangeHistoryView;
 use Intern\DepartmentFactory;
+use Intern\TermFactory;
 
 /**
  * View class for showing the big internship form for
@@ -24,7 +43,8 @@ class EditInternshipFormView {
     private $agency;
     private $department;
     private $docs;
-    private $termInfo;
+    private $term;
+    private $studentExistingCreditHours;
 
     private $formVals;
 
@@ -34,7 +54,7 @@ class EditInternshipFormView {
      * @param string $pagetitle
      * @param Internship $i
      */
-    public function __construct(Internship $i, Student $student = null, Agency $agency, Array $docs, TermInfo $termInfo)
+    public function __construct(Internship $i, Student $student = null, Agency $agency, Array $docs, Term $term, $studentExistingCreditHours)
     {
         \Layout::addPageTitle('Edit Internship');
 
@@ -44,7 +64,8 @@ class EditInternshipFormView {
         $this->agency = $agency;
         $this->department = $this->intern->getDepartment();
         $this->docs = $docs;
-        $this->termInfo = $termInfo;
+        $this->term = $term;
+        $this->studentExistingCreditHours = $studentExistingCreditHours;
 
         $this->tpl = array();
 
@@ -92,10 +113,44 @@ class EditInternshipFormView {
             $this->tpl['DELETE_URL'] = 'index.php?module=intern&action=DeleteInternship&internship_id=' . $this->intern->getId();
         }
 
+        /*********************
+         * Copy to Next Term *
+        *********************/
+
+        // Get next three terms
+        $term = TermFactory::getTermByTermCode($this->intern->getTerm());
+
+        $nextTerm = TermFactory::getNextTerm($term);
+
+        if($nextTerm !== null){
+            $nextTwoTerm = TermFactory::getNextTerm($nextTerm);
+        } else {
+            $nextTwoTerm = null;
+        }
+
+        if($nextTwoTerm !== null){
+            $nextThreeTerm = TermFactory::getNextTerm($nextTwoTerm);
+        } else {
+            $nextThreeTerm = null;
+        }
+
+        $this->tpl['CONTINUE_TERM_LIST'] = array();
+
         // Determine if we can copy to the next term (i.e. the next term exists)
-        $nextTerm = Term::getNextTerm($this->intern->getTerm());
-        if(Term::termExists($nextTerm)){
-            $this->tpl['NEXT_TERM'] = Term::rawToRead($nextTerm);
+        if($nextTerm !== null){
+            $this->tpl['CONTINUE_TERM_LIST'][] = array('DEST_TERM'=>$nextTerm->getTermCode(), 'DEST_TERM_TEXT'=>$nextTerm->getDescription());
+        }
+
+        // Copy if it's Spring and exist, else if it's Summer 1 and exist.
+        if($nextThreeTerm !== null && $term->getSemesterType() == Term::SPRING){
+            $this->tpl['CONTINUE_TERM_LIST'][] = array('DEST_TERM'=>$nextThreeTerm->getTermCode(), 'DEST_TERM_TEXT'=>$nextThreeTerm->getDescription());
+        } else if($nextTwoTerm !== null && $term->getSemesterType() == Term::SUMMER1){
+            $this->tpl['CONTINUE_TERM_LIST'][] = array('DEST_TERM'=>$nextTwoTerm->getTermCode(), 'DEST_TERM_TEXT'=>$nextTwoTerm->getDescription());
+        }
+
+        // If no terms are available to copy to, show a helpful message
+        if(sizeof($this->tpl['CONTINUE_TERM_LIST']) == 0) {
+            $this->tpl['CONTINUE_TERM_NO_TERMS'] = 'No future terms available.';
         }
 
 
@@ -407,12 +462,12 @@ class EditInternshipFormView {
 
 
         if (\Current_User::isDeity()) {
-            $terms = Term::getTermsAssoc();
+            $terms = TermFactory::getTermsAssoc();
             $this->form->addSelect('term', $terms);
             $this->form->setMatch('term', $this->intern->term);
             $this->form->addCssClass('term', 'form-control');
         }else{
-            $this->tpl['TERM'] = Term::rawToRead($this->intern->term);
+            $this->tpl['TERM'] = $this->term->getDescription();
         }
 
 
@@ -561,7 +616,7 @@ class EditInternshipFormView {
         // TODO: newer PHP versions provide syntax to clean up this logic
         if(isset($this->student)){
             // Credit Hours
-            $creditHours = $this->student->getCreditHours();
+            $creditHours = $this->studentExistingCreditHours;
             if(isset($creditHours)) {
                 $this->tpl['ENROLLED_CREDIT_HORUS'] = $creditHours;
             } else {
@@ -674,8 +729,7 @@ class EditInternshipFormView {
         $this->formVals['start_date'] = $this->intern->start_date ? date('m/d/Y', $this->intern->start_date) : null;
         $this->formVals['end_date'] = $this->intern->end_date ? date('m/d/Y', $this->intern->end_date) : null;
 
-        $part = $this->termInfo->getLongestTermPart();
-        $this->tpl['TERM_DATES'] = $part->part_start_date . ' through ' . $part->part_end_date;
+        $this->tpl['TERM_DATES'] = $this->term->getStartDateFormatted() . ' through ' . $this->term->getEndDateFormatted();
 
         $this->formVals['credits'] = $this->intern->credits;
         $this->formVals['avg_hours_week'] = $this->intern->avg_hours_week;

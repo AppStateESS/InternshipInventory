@@ -5,8 +5,8 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
 //var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
-var ErrorMessagesBlock = React.createClass({
-    render: function() {
+class ErrorMessagesBlock extends React.Component {
+    render() {
         if(this.props.errors === null){
             return '';
         }
@@ -24,21 +24,26 @@ var ErrorMessagesBlock = React.createClass({
             </div>
         );
     }
-});
+}
 
-var DepartmentList = React.createClass({
-  render: function() {
+class DepartmentList extends React.Component {
+  render() {
     return (
      	<option value={this.props.id}>{this.props.name}</option>
     )
   }
-});
+}
 
-var DeleteAdmin = React.createClass({
-	handleChange: function() {
-		this.props.onAdminDelete(this.props.id);
-	},
-	render: function() {
+class DeleteAdmin extends React.Component {
+    constructor(props){
+        super(props);
+
+        this.handleChange = this.handleChange.bind(this);
+    }
+	handleChange() {
+		this.props.onAdminDelete(this.props.id, this.props.username, this.props.department);
+	}
+	render() {
 		return (
 
 			<tr>
@@ -49,15 +54,15 @@ var DeleteAdmin = React.createClass({
 			</tr>
 
 		);
-
 	}
-});
+}
 
 // Main module that calls several component to build
 // the search admin screen.
-var SearchAdmin = React.createClass({
-	getInitialState: function() {
-		return {
+class SearchAdmin extends React.Component {
+	constructor(props) {
+        super(props);
+        this.state = {
 			mainData: null,
 			displayData: null,
 			deptData: null,
@@ -67,14 +72,22 @@ var SearchAdmin = React.createClass({
 			dropData: "",
 			textData: ""
 		};
-	},
-	componentWillMount: function(){
+
+        this.handleDrop = this.handleDrop.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.searchList = this.searchList.bind(this);
+        this.getData = this.getData.bind(this);
+        this.getDept = this.getDept.bind(this);
+        this.onAdminDelete = this.onAdminDelete.bind(this);
+        this.onAdminCreate = this.onAdminCreate.bind(this);
+	}
+	componentWillMount() {
 		// Grabs the department data and admin data
 		// at the start of execution
 		this.getData();
 		this.getDept();
-	},
-	getData: function(){
+	}
+	getData() {
 		// Sends an ajax request to adminRest to grab the
 		// display data.
 		$.ajax({
@@ -91,8 +104,8 @@ var SearchAdmin = React.createClass({
 				console.error(this.props.url, status, err.toString());
 			}.bind(this)
 		});
-	},
-	getDept: function(){
+	}
+	getDept() {
 		// Sends an ajax request to deptRest to grab the
 		// department data.
 		$.ajax({
@@ -108,8 +121,8 @@ var SearchAdmin = React.createClass({
 				console.error(this.props.url, status, err.toString());
 			}.bind(this)
 		});
-	},
-	onAdminDelete: function(idNum, username, department){
+	}
+	onAdminDelete(idNum, username, department) {
 		// Updating the new state for optimization (snappy response on the client)
 		// When a value is being deleted
 		var newVal = this.state.displayData.filter(function(el){
@@ -126,8 +139,8 @@ var SearchAdmin = React.createClass({
 				this.getData();
 			}.bind(this)
 		});
-	},
-	onAdminCreate: function(username, department)
+	}
+	onAdminCreate(username, department)
 	{
 		//var displayName = '';
 		var displayData = this.state.displayData;
@@ -152,8 +165,9 @@ var SearchAdmin = React.createClass({
 
 		// Finds the index of the array if the department number matches
 		// the id of the object.
+        var departmentId = parseInt(department, 10);
 		var deptIndex = dept.findIndex(function(element, index, arr){
-            if(department === element.id){
+            if(departmentId === element.id){
                 return true;
             } else {
                 return false;
@@ -162,28 +176,16 @@ var SearchAdmin = React.createClass({
 
 		// Determines if the username has multiple entries within
 		// the same department before creating the admin.
-		for (var j = 0, k = displayData.length; j < k; j++)
-		{
-			if (displayData[j].username === username)
-			{
+		for (var j = 0; j < displayData.length; j++) {
+			if (displayData[j].username === username) {
 				//displayName = displayData[j].display_name;
-				if (displayData[j].name === dept[deptIndex].name)
-				{
+				if (displayData[j].name === dept[deptIndex].name) {
 					errorMessage = "Multiple usernames in the same department.";
 					this.setState({errorWarning: errorMessage});
 					return;
 				}
 			}
 		}
-
-		/*
-        var deptName = dept[deptIndex].name;
-		// Updating the displayData so that it can be used in the ajax request.
-		if (displayName != ''){
-			displayData.unshift({username: username, id: -1, name: deptName, display_name: displayName});
-		}
-        */
-
 
 		// Updating the new state for optimization (snappy response on the client)
 		var newVal = this.state.displayData;
@@ -202,8 +204,8 @@ var SearchAdmin = React.createClass({
 				this.setState({errorWarning: errorMessage, messageType: "error"});
 			}.bind(this)
 		});
-	},
-	searchList: function(e)
+	}
+	searchList(e)
 	{
         var phrase = null;
 		try {
@@ -232,17 +234,17 @@ var SearchAdmin = React.createClass({
 		}
 
 		this.setState({displayData:filtered});
-	},
-	handleDrop: function(e) {
+	}
+	handleDrop(e) {
 		this.setState({dropData: e.target.value});
-	},
-	handleSubmit: function() {
+	}
+	handleSubmit() {
 		var username = ReactDOM.findDOMNode(this.refs.username).value.trim();
 		var deptNum = this.state.dropData;
 
 		this.onAdminCreate(username, deptNum);
-	},
-	render: function() {
+	}
+	render() {
         var AdminsData = null;
 		if (this.state.mainData != null) {
 			var onAdminDelete = this.onAdminDelete;
@@ -339,7 +341,7 @@ var SearchAdmin = React.createClass({
                 </div>
 		);
 	}
-});
+}
 
 ReactDOM.render(
 	<SearchAdmin />,

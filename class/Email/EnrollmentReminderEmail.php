@@ -1,4 +1,22 @@
 <?php
+/**
+ * This file is part of Internship Inventory.
+ *
+ * Internship Inventory is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * Internship Inventory is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License version 3
+ * along with Internship Inventory.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Copyright 2011-2018 Appalachian State University
+ */
 
 namespace Intern\Email;
 
@@ -9,15 +27,17 @@ use \Intern\Internship;
 class EnrollmentReminderEmail extends Email {
 
     private $internship;
+    private $term;
     private $censusTimestamp;
     private $toUsername;
     private $templateFile;
 
-    public function __construct(InternSettings $emailSettings, Internship $internship, $censusTimestamp, $toUsername, $templateFile)
+    public function __construct(InternSettings $emailSettings, Internship $internship, Term $term, $censusTimestamp, $toUsername, $templateFile)
     {
         parent::__construct($emailSettings);
 
         $this->internship = $internship;
+        $this->term = $term;
 
         // Double check that we have a valid census timestamp. Try to avoid sending emails with the date set to December 31, 1969
         if($censusTimestamp === 0 || $censusTimestamp === '' || $censusTimestamp === null || !isset($censusTimestamp) || empty($censusTimestamp)){
@@ -42,9 +62,9 @@ class EnrollmentReminderEmail extends Email {
         $this->tpl['NAME']    = $this->internship->getFullName();
         $this->tpl['BANNER']  = $this->internship->getBannerId();
         $this->tpl['EMAIL']   = $this->internship->getEmailAddress() . $this->emailSettings->getEmailDomain();
-        $this->tpl['TERM']    = Term::rawToRead($this->internship->getTerm(), false);
+        $this->tpl['TERM']    = $this->term->getDescription();
 
-        if($this->internship->getSubject()->getId() != 0) {
+        if($this->internship->getSubject() !== null && $this->internship->getSubject()->getId() != 0) {
             $this->tpl['SUBJECT'] = $this->internship->getSubject()->getName();
         }
 
