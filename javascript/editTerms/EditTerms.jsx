@@ -28,6 +28,7 @@ class TermRow extends React.Component {
         super(props);
 
         this.timestampToDate = this.timestampToDate.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
     timestampToDate(timestamp) {
         //var temp = new Date(timestamp);
@@ -40,12 +41,12 @@ class TermRow extends React.Component {
 
         return formattedDate;
     }
-    //move to parent component and use in inTermCreate
-    //date will come in as a string
-    //dateToTimestamp(date) {
-    //    var timestamp = new Date(date);
-    //    return timestamp;
-    //}
+    handleChange() {
+        this.props.onTermEdit(this.props.tcode, this.props.stype, this.props.descr, this.props.census,
+                              this.props.available, this.props.start, this.props.end);
+
+        this.setState({editing: true});
+    }
     render() {
 
       let censusDate = this.timestampToDate(this.props.census);
@@ -62,8 +63,9 @@ class TermRow extends React.Component {
                 <td>{availDate}</td>
                 <td>{startDate}</td>
                 <td>{endDate}</td>
+                <td> <a onClick={this.handleChange} data-toggle="tooltip" title="Edit"><i className="fa fa-pencil"/></a></td>
             </tr>
-        )
+        );
     }
 }
 
@@ -75,11 +77,12 @@ class TermSelector extends React.Component
             mainData: null,
             displayData: null,
             errorWarning: null,
-            messageType: null
+            messageType: null,
+            editing: false
         };
 
         //this.function blah
-        this.dateToTimestamp = this.getData.bind(this);
+        this.dateToTimestamp = this.dateToTimestamp.bind(this);
         this.getData = this.getData.bind(this);
         this.onTermCreate = this.onTermCreate.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -105,10 +108,13 @@ class TermSelector extends React.Component
             }.bind(this)
         });
     }
+    onTermEdit(tcode, stype, descr, census, available, start, end) {
+
+    }
     onTermCreate(tcode, stype, descr, census, available, start, end) {
 
         var errorMessage = null;
-        var displayData
+        var displayData = this.state.displayData;
 
         if (tcode === '') {
             errorMessage = "Please enter a term code.";
@@ -164,9 +170,11 @@ class TermSelector extends React.Component
                 var message = "Term successfully added.";
                 this.setState({errorWarning: message, messageType: "success"});
             }.bind(this),
-            error: function(xhr, status, err) {
-                alert("Failed to add term.")
-                console.error(this.props.url, status, err.toString());
+            //error: function(xhr, status, err) {
+            error: function(http) {
+                var errorMessage = http.responseText;
+                //console.error(this.props.url, status, err.toString());
+                this.setState({errorWarning: errorMessage, messageType: "error"});
             }.bind(this)
         });
     }
@@ -178,7 +186,7 @@ class TermSelector extends React.Component
         var available = ReactDOM.findDOMNode(this.refs.available_date).value.trim();
         var start = ReactDOM.findDOMNode(this.refs.start_date).value.trim();
         var end = ReactDOM.findDOMNode(this.refs.end_date).value.trim();
-
+        return <h3>tcode + stype + descr  </h3>
         this.onTermCreate(tcode, stype, descr, census, available, start, end);
     }
     dateToTimestamp(dateString) {
@@ -279,7 +287,7 @@ class TermSelector extends React.Component
                                 <div className="col-lg-3">
                                     <div className="form-group">
                                         <br></br>
-                                        <button className="btn btn-block" onClick={this.handleSubmit}><strong>Create Term</strong></button>
+                                        <button className="btn btn-block" onClick={this.handleSubmit}>Create Term</button>
                                     </div>
                                 </div>
                             </div>
