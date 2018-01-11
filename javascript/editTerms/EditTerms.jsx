@@ -86,6 +86,7 @@ class TermSelector extends React.Component
         this.getData = this.getData.bind(this);
         this.onTermCreate = this.onTermCreate.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.sortList = this.sortList.bind(this);
     }
     componentWillMount() {
         // Get the term data at the start of execution
@@ -114,8 +115,9 @@ class TermSelector extends React.Component
     onTermCreate(tcode, stype, descr, census, available, start, end) {
 
         var errorMessage = null;
-        var displayData = this.state.displayData;
+        var displayedData = this.state.displayData;
 
+        alert("Hello World");
         if (tcode === '') {
             errorMessage = "Please enter a term code.";
             this.setState({errorWarning: errorMessage, messageType: "error"});
@@ -157,8 +159,9 @@ class TermSelector extends React.Component
         start = this.dateToTimestamp(start);
         end = this.dateToTimestamp(end);
 
-
-
+        displayedData = this.sortList(displayedData);
+        this.setState({displayData: displayedData});
+        //alert("Hello world");
         $.ajax({
             url: 'index.php?module=intern&action=termRest&code='+tcode+'&type='+stype+
             '&descr='+descr+'&census='+census+'&available='+available+'&start='+start+
@@ -170,10 +173,10 @@ class TermSelector extends React.Component
                 var message = "Term successfully added.";
                 this.setState({errorWarning: message, messageType: "success"});
             }.bind(this),
-            //error: function(xhr, status, err) {
-            error: function(http) {
-                var errorMessage = http.responseText;
-                //console.error(this.props.url, status, err.toString());
+            error: function(xhr, status, err) {
+                var errorMessage = "Failed to add term.";
+                //alert("Failed to add the term.");
+                console.error(this.props.url, status, err.toString());
                 this.setState({errorWarning: errorMessage, messageType: "error"});
             }.bind(this)
         });
@@ -186,13 +189,24 @@ class TermSelector extends React.Component
         var available = ReactDOM.findDOMNode(this.refs.available_date).value.trim();
         var start = ReactDOM.findDOMNode(this.refs.start_date).value.trim();
         var end = ReactDOM.findDOMNode(this.refs.end_date).value.trim();
-        return <h3>tcode + stype + descr  </h3>
+
         this.onTermCreate(tcode, stype, descr, census, available, start, end);
     }
     dateToTimestamp(dateString) {
-        //var timestamp = Date.parse(dateString);
-        //return timestamp
         return new Date(dateString).getTime() / 1000;
+    }
+    //sort the list of terms by start date.
+    sortList(unsorted) {
+        var sorted = [];
+
+        //Sorted By: Start Date -> Sooner to Later
+        sorted = unsorted.sort(function (a, b) {
+            if (a.start_timestamp < b.start_timestamp) return -1;
+            if (a.start_timestamp > b.start_timestamp) return 1;
+            return 0;
+        });
+
+        return sorted;
     }
     render()
     {
