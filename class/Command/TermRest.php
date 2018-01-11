@@ -63,7 +63,7 @@ class TermRest {
             exit;
         }
 
-        if ($end_date == '') {
+        if ($end == '') {
             header('HTTP/1.1 500 Internal Server Error');
             echo("Missing an end date.");
             exit;
@@ -85,13 +85,13 @@ class TermRest {
                 end_timestamp, semester_type)
                 VALUES (:code, :census, :descr, :available, :start, :end_date, :type)";
 
-        echo($sql);
+        //echo($sql);
 
-        $sql = $pdo->prepare($sql);
+        $sth = $pdo->prepare($sql);
 
         $sth->execute(array('code'=>$code, 'census'=>$census, 'descr'=>$descr,
                       'available'=>$available, 'start'=>$start,
-                      'end_date'=>$end_date, 'type'=>$type));
+                      'end_date'=>$end, 'type'=>$type));
         // use intern_term_seq?
     }
 
