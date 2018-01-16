@@ -26,9 +26,14 @@ class ErrorMessagesBlock extends React.Component {
 class TermRow extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            editMode: false
+        };
 
+        this.handleEdit = this.handleEdit.bind(this);
+        this.handleSave = this.handleSave.bind(this);
         this.timestampToDate = this.timestampToDate.bind(this);
-        this.handleChange = this.handleChange.bind(this);
+        //this.handleChange = this.handleChange.bind(this);
     }
     timestampToDate(timestamp) {
         //var temp = new Date(timestamp);
@@ -41,20 +46,23 @@ class TermRow extends React.Component {
 
         return formattedDate;
     }
-    handleChange() {
-        this.props.onTermEdit(this.props.tcode, this.props.stype, this.props.descr, this.props.census,
-                              this.props.available, this.props.start, this.props.end);
+    handleEdit() {
+        this.setState({editMode: true});
+    }
+    handleSave() {
 
-        this.setState({editing: true});
     }
     render() {
 
-      let censusDate = this.timestampToDate(this.props.census);
-      let availDate = this.timestampToDate(this.props.available);
-      let startDate = this.timestampToDate(this.props.start);
-      let endDate = this.timestampToDate(this.props.end);
+        let censusDate = this.timestampToDate(this.props.census);
+        let availDate = this.timestampToDate(this.props.available);
+        let startDate = this.timestampToDate(this.props.start);
+        let endDate = this.timestampToDate(this.props.end);
 
-        return (
+        // if you are not editing
+        if (!this.state.editMode)
+        {
+            return (
             <tr>
                 <td>{this.props.tcode}</td>
                 <td>{this.props.stype}</td>
@@ -63,11 +71,65 @@ class TermRow extends React.Component {
                 <td>{availDate}</td>
                 <td>{startDate}</td>
                 <td>{endDate}</td>
-                <td> <a onClick={this.handleChange} data-toggle="tooltip" title="Edit"><i className="fa fa-pencil"/></a></td>
+                <td> <a onClick={this.handleEdit} data-toggle="tooltip" title="Edit"><i className="fa fa-pencil"/></a></td>
             </tr>
-        );
+            );
+        }
+        //if this.state.editMode ((true))
+        //if you are editing
+        else
+        {
+            return (
+            <tr>
+                <td><input type="text" className="form-control" defaultValue={this.props.tcode}/></td>
+                <td>{this.props.stype}</td>
+                <td>{this.props.descr}</td>
+                <td>{censusDate}</td>
+                <td>{availDate}</td>
+                <td>{startDate}</td>
+                <td>{endDate}</td>
+                <td><a onClick={this.handleSave} data-toggle="tooltip" title="Save"><i className="icon-save"/></a></td>
+            </tr>
+          );
+        }
     }
 }
+
+/*class EditData extends React.Component {
+      constructor(props) {
+          super(props);
+          this.state = {
+              editMode: false
+          };
+
+          this.handleEdit = this.handleEdit.bind(this);
+          this.handleSave = this.handleSave.bind(this);
+      }
+      handleEdit() {
+          this.setState({editMode: true});
+      }
+      handleSave() {
+          this.setState({editMode: false});
+
+
+      }
+      render() {
+          var text = null;
+          var editButton = null;
+
+          if (this.state.editMode) {
+              text = <div id={this.props.id}>
+                        <input type="text" className="form-control" defaultValue={this.props.name} ref="savedData"/>
+                     </div>
+
+              editButton = <button className="btn btn-default btn-xs" type="submit" onClick={this.handleSave}> Save </button>
+          } else {
+              text = name;
+
+              editButton = <button> Edit </button>
+          }
+      }
+}*/
 
 class TermSelector extends React.Component
 {
@@ -117,7 +179,7 @@ class TermSelector extends React.Component
         var errorMessage = null;
         var displayedData = this.state.displayData;
 
-        alert("Hello World");
+        alert("Hello World you tried to add something");
         if (tcode === '') {
             errorMessage = "Please enter a term code.";
             this.setState({errorWarning: errorMessage, messageType: "error"});
@@ -196,7 +258,7 @@ class TermSelector extends React.Component
         return new Date(dateString).getTime() / 1000;
     }
     //sort the list of terms by start date.
-    sortList(unsorted) {
+    /*sortList(unsorted) {
         var sorted = [];
 
         //Sorted By: Start Date -> Sooner to Later
@@ -207,7 +269,7 @@ class TermSelector extends React.Component
         });
 
         return sorted;
-    }
+    }*/
     render()
     {
         var TermData = null;

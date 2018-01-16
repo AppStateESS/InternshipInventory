@@ -15,6 +15,9 @@ class TermRest {
                 $data = $this->get();
                 echo (json_encode($data));
                 exit;
+            case 'PUT':
+                $this->put();
+                exit;
             default:
                 header('HTTP/1.1 405 Method Not Allowed');
                 exit;
@@ -112,5 +115,13 @@ class TermRest {
         return $result;
     }
 
-    //function for editing?
+    public function put()
+    {
+        //set it up
+        $db = Database::newDB();
+        $pdo = $db->getPDO();
+
+        
+
+    }
 }
