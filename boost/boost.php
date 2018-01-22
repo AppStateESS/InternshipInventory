@@ -3,7 +3,7 @@
  * @author Micah Carter <mcarter at tux dot appstate dot edu>
  */
 
-$proper_name  = 'Intern Inventory';
+$proper_name  = 'Internship Inventory';
 $version      = '0.2.0';
 $register     = false;
 $unregister   = false;
