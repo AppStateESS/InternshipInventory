@@ -117,11 +117,20 @@ class TermRest {
 
     public function put()
     {
-        //set it up
+        // requested from inside the table, not the same as where to add term.
+        //testing this, not sure if it will work
+        if (isset($_REQUEST['termVal']))
+        {
+            $termVal = $_REQUEST['termVal'];
+
+        }
+
         $db = Database::newDB();
         $pdo = $db->getPDO();
 
-        
+
+
+
 
     }
 }
