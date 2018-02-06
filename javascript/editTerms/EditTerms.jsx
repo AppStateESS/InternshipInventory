@@ -50,6 +50,41 @@ class TermRow extends React.Component {
         this.setState({editMode: true});
     }
     handleSave() {
+        this.setState({editMode: false});
+
+        var newTcode = ReactDOM.findDOMNode(this.refs.savedTcode).value.trim();
+        var newStype = ReactDOM.findDOMNode(this.refs.savedStype).value.trim();
+        var newDescr = ReactDOM.findDOMNode(this.refs.savedDescr).value.trim();
+        var newCensusDate = ReactDOM.findDOMNode(this.refs.savedCensusDate).value.trim();
+        var newAvailDate = ReactDOM.findDOMNode(this.refs.savedAvailDate).value.trim();
+        var newStartDate = ReactDOM.findDOMNode(this.refs.savedStartDate).value.trim();
+        var newEndDate = ReactDOM.findDOMNode(this.refs.savedEndDate).value.trim();
+
+        if (newTcode === '') {
+            newTcode = this.props.tcode;
+        }
+        if (newStype === '') {
+            newStype = this.props.stype;
+        }
+        if (newDescr === '') {
+            newDescr = this.props.descr;
+        }
+        if (newCensusDate === '') {
+            newCensusDate = this.timestampToDate(this.props.census);
+        }
+        if (newAvailDate === '') {
+            newAvailDate = this.timestampToDate(this.props.available);
+        }
+        if (newStartDate === '') {
+            newStartDate = this.timestampToDate(this.props.start);
+        }
+        if (newEndDate === '') {
+            newEndDate = this.timestampToDate(this.props.end);
+        }
+
+        this.props.onTermSave(newTcode, newStype, newDescr, newCensusDate, newAvailDate, newStartDate, newEndDate, this.props.tcode);
+
+
 
     }
     render() {
@@ -81,55 +116,19 @@ class TermRow extends React.Component {
         {
             return (
             <tr>
-                <td><input type="text" className="form-control" defaultValue={this.props.tcode}/></td>
-                <td>{this.props.stype}</td>
-                <td>{this.props.descr}</td>
-                <td>{censusDate}</td>
-                <td>{availDate}</td>
-                <td>{startDate}</td>
-                <td>{endDate}</td>
-                <td><a onClick={this.handleSave} data-toggle="tooltip" title="Save"><i className="icon-save"/></a></td>
+                <td><input type="text" className="form-control" ref="savedTcode" defaultValue={this.props.tcode}/></td>
+                <td><input type="text" className="form-control" ref="savedStype" defaultValue={this.props.stype}/></td>
+                <td><input type="text" className="form-control" ref="savedDescr" defaultValue={this.props.descr}/></td>
+                <td><input type="text" className="form-control" ref="savedCensusDate" defaultValue={censusDate}/></td>
+                <td><input type="text" className="form-control" ref="savedAvailDate" defaultValue={availDate}/></td>
+                <td><input type="text" className="form-control" ref="savedStartDate" defaultValue={startDate}/></td>
+                <td><input type="text" className="form-control" ref="savedEndDate" defaultValue={endDate}/></td>
+                <td style={{"verticalAlign" : "middle"}}><a onClick={this.handleSave} data-toggle="tooltip" title="Save"><i className="glyphicon glyphicon-floppy-save"/></a></td>
             </tr>
           );
         }
     }
 }
-
-/*class EditData extends React.Component {
-      constructor(props) {
-          super(props);
-          this.state = {
-              editMode: false
-          };
-
-          this.handleEdit = this.handleEdit.bind(this);
-          this.handleSave = this.handleSave.bind(this);
-      }
-      handleEdit() {
-          this.setState({editMode: true});
-      }
-      handleSave() {
-          this.setState({editMode: false});
-
-
-      }
-      render() {
-          var text = null;
-          var editButton = null;
-
-          if (this.state.editMode) {
-              text = <div id={this.props.id}>
-                        <input type="text" className="form-control" defaultValue={this.props.name} ref="savedData"/>
-                     </div>
-
-              editButton = <button className="btn btn-default btn-xs" type="submit" onClick={this.handleSave}> Save </button>
-          } else {
-              text = name;
-
-              editButton = <button> Edit </button>
-          }
-      }
-}*/
 
 class TermSelector extends React.Component
 {
@@ -140,15 +139,16 @@ class TermSelector extends React.Component
             displayData: null,
             errorWarning: null,
             messageType: null,
-            editing: false
+            //editing: false
         };
 
         //this.function blah
         this.dateToTimestamp = this.dateToTimestamp.bind(this);
         this.getData = this.getData.bind(this);
         this.onTermCreate = this.onTermCreate.bind(this);
+        this.onTermSave = this.onTermSave.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.sortList = this.sortList.bind(this);
+        //this.sortList = this.sortList.bind(this);
     }
     componentWillMount() {
         // Get the term data at the start of execution
@@ -170,9 +170,6 @@ class TermSelector extends React.Component
               console.error(this.props.url, status, err.toString());
             }.bind(this)
         });
-    }
-    onTermEdit(tcode, stype, descr, census, available, start, end) {
-
     }
     onTermCreate(tcode, stype, descr, census, available, start, end) {
 
@@ -221,7 +218,7 @@ class TermSelector extends React.Component
         start = this.dateToTimestamp(start);
         end = this.dateToTimestamp(end);
 
-        displayedData = this.sortList(displayedData);
+        //displayedData = this.sortList(displayedData);
         this.setState({displayData: displayedData});
         //alert("Hello world");
         $.ajax({
@@ -243,6 +240,31 @@ class TermSelector extends React.Component
             }.bind(this)
         });
     }
+    onTermSave(newtermc, newsemtype, newdescri, newcensusd, newavaild, newstartd, newendd, oldTcode) {
+        //var cleanName = encodeURIComponent(newName)
+        newcensusd = this.dateToTimestamp(newcensusd);
+        newavaild = this.dateToTimestamp(newavaild);
+        newstartd = this.dateToTimestamp(newstartd);
+        newendd = this.dateToTimestamp(newendd);
+
+        $.ajax({
+            url: 'index.php?module=intern&action=termRest&newTcode='+newtermc+'&newSemtype='+newsemtype+
+            '&newDesc='+newdescri+'&newCensus='+newcensusd+'&newAvail='+newavaild+'&newStart='+newstartd+
+            '&newEnd='+newendd+'&oldTcode='+oldTcode,
+            type: 'PUT',
+            success: function(data) {
+                $("#success").show();
+                var added = 'Updated the table.';
+                this.setState({success: added});
+                this.getData();
+            }.bind(this),
+            error: function(xhr, status, err) {
+                var errorMessage = "Failed to update term.";
+                console.error(this.props.url, status, err.toString());
+                this.setState({errorWarning: errorMessage, messageType: "error"});
+            }
+        });
+    }
     handleSubmit() {
         var tcode = ReactDOM.findDOMNode(this.refs.term_code).value.trim();
         var stype = ReactDOM.findDOMNode(this.refs.sem_type).value.trim();
@@ -257,24 +279,12 @@ class TermSelector extends React.Component
     dateToTimestamp(dateString) {
         return new Date(dateString).getTime() / 1000;
     }
-    //sort the list of terms by start date.
-    /*sortList(unsorted) {
-        var sorted = [];
-
-        //Sorted By: Start Date -> Sooner to Later
-        sorted = unsorted.sort(function (a, b) {
-            if (a.start_timestamp < b.start_timestamp) return -1;
-            if (a.start_timestamp > b.start_timestamp) return 1;
-            return 0;
-        });
-
-        return sorted;
-    }*/
     render()
     {
-        var TermData = null;
+        var data = null;
         if (this.state.mainData != null) {
-            TermData = this.state.displayData.map(function (term) {
+            var onTermSave = this.onTermSave;
+            data = this.state.mainData.map(function (term) {
                 return (
                     <TermRow  key={term.term}
                         tcode={term.term}
@@ -287,14 +297,15 @@ class TermSelector extends React.Component
                 );
             });
         } else {
-            TermData = "";
+            data = "";
+            //alert("hi");
         }
 
         var errors;
         if (this.state.errorWarning == null) {
             errors = '';
         } else {
-            errors = <ErrorMessageBlock key="errorSet" errors={this.state.errorWarning} messageType={this.state.messageType} />
+            errors = <ErrorMessagesBlock key="errorSet" errors={this.state.errorWarning} messageType={this.state.messageType} />
         }
         return (
             <div className="terms">
@@ -388,7 +399,7 @@ class TermSelector extends React.Component
                                 </tr>
                             </thead>
                             <tbody>
-                                {TermData}
+                                {data}
                             </tbody>
                         </table>
                     </div>
