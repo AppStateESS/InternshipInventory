@@ -26,7 +26,7 @@ class TermRest {
 
     // for adding a term
     // need to enter: term_code, census date, description,
-    // available date, start date, end date, semester type(1 - 4)
+    // available date, start date, end date, semester type
     public function post() {
         $code = $_REQUEST['code'];
         $census = $_REQUEST['census'];
@@ -117,19 +117,29 @@ class TermRest {
 
     public function put()
     {
-        // requested from inside the table, not the same as where to add term.
-        //testing this, not sure if it will work
-        if (isset($_REQUEST['termVal']))
-        {
-            $termVal = $_REQUEST['termVal'];
-
-        }
+        $newTcode = $_REQUEST['newTcode'];
+        $newSemtype = $_REQUEST['newSemtype'];
+        $newDesc = $_REQUEST['newDesc'];
+        $newCensus = $_REQUEST['newCensus'];
+        $newAvail = $_REQUEST['newAvail'];
+        $newStart = $_REQUEST['newStart'];
+        $newEnd = $_REQUEST['newEnd'];
+        $oldTcode = $_REQUEST['oldTcode'];
 
         $db = Database::newDB();
         $pdo = $db->getPDO();
 
+        $sql = "UPDATE intern_term
+                SET term=:newTcode, semester_type=:newSemtype,
+                description:=newDesc, census_date_timestamp=:newCensus,
+                available_on_timestamp=:newAvail, start_timestamp=:newStart,
+                end_timestamp=:newEnd
+                WHERE term=:oldTerm";
 
-
+        $sth = $pdo->prepare($sql);
+        $sth->execute(array('newTcode'=>$newTcode, 'newSemType'=>$newSemtype, 'newDesc'=>$newDesc,
+                      'newCensus'=>$newCensus, 'newAvail'=>$newAvail, 'newStart'=>$newStart,
+                      'newEnd'=>$newEnd, 'oldTcode'=>$oldTcode));
 
 
     }
