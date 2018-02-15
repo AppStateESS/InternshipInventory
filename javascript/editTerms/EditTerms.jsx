@@ -33,11 +33,9 @@ class TermRow extends React.Component {
         this.handleEdit = this.handleEdit.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.timestampToDate = this.timestampToDate.bind(this);
-        //this.handleChange = this.handleChange.bind(this);
     }
     timestampToDate(timestamp) {
-        //var temp = new Date(timestamp);
-        //var date = temp.format("mm/dd/yyyy");
+
         var date = new Date(timestamp * 1000);
         var year = date.getFullYear();
         var month = date.getMonth() + 1;
@@ -59,6 +57,9 @@ class TermRow extends React.Component {
         var newAvailDate = ReactDOM.findDOMNode(this.refs.savedAvailDate).value.trim();
         var newStartDate = ReactDOM.findDOMNode(this.refs.savedStartDate).value.trim();
         var newEndDate = ReactDOM.findDOMNode(this.refs.savedEndDate).value.trim();
+
+        console.log(newTcode);
+        //exit();
 
         if (newTcode === '') {
             newTcode = this.props.tcode;
@@ -82,12 +83,16 @@ class TermRow extends React.Component {
             newEndDate = this.timestampToDate(this.props.end);
         }
 
+        var wholeTerm = {term: newTcode, stype: newStype, descr: newDescr,
+                        census: newCensusDate, avail: newAvailDate, start: newStartDate,
+                        end: newEndDate};
+
         this.props.onTermSave(newTcode, newStype, newDescr, newCensusDate, newAvailDate, newStartDate, newEndDate, this.props.tcode);
-
-
 
     }
     render() {
+
+        var mainButton = null;
 
         let censusDate = this.timestampToDate(this.props.census);
         let availDate = this.timestampToDate(this.props.available);
@@ -97,6 +102,7 @@ class TermRow extends React.Component {
         // if you are not editing
         if (!this.state.editMode)
         {
+            mainButton = <a onClick={this.handleEdit} data-toggle="tooltip" title="Edit"><i className="fa fa-pencil"/></a>
             return (
             <tr>
                 <td>{this.props.tcode}</td>
@@ -106,7 +112,7 @@ class TermRow extends React.Component {
                 <td>{availDate}</td>
                 <td>{startDate}</td>
                 <td>{endDate}</td>
-                <td> <a onClick={this.handleEdit} data-toggle="tooltip" title="Edit"><i className="fa fa-pencil"/></a></td>
+                <td>{mainButton}</td>
             </tr>
             );
         }
@@ -114,6 +120,7 @@ class TermRow extends React.Component {
         //if you are editing
         else
         {
+            mainButton = <a onClick={this.handleSave} data-toggle="tooltip" title="Save"><i className="glyphicon glyphicon-floppy-save"/></a>
             return (
             <tr>
                 <td><input type="text" className="form-control" ref="savedTcode" defaultValue={this.props.tcode}/></td>
@@ -123,9 +130,9 @@ class TermRow extends React.Component {
                 <td><input type="text" className="form-control" ref="savedAvailDate" defaultValue={availDate}/></td>
                 <td><input type="text" className="form-control" ref="savedStartDate" defaultValue={startDate}/></td>
                 <td><input type="text" className="form-control" ref="savedEndDate" defaultValue={endDate}/></td>
-                <td style={{"verticalAlign" : "middle"}}><a onClick={this.handleSave} data-toggle="tooltip" title="Save"><i className="glyphicon glyphicon-floppy-save"/></a></td>
+                <td style={{"verticalAlign" : "middle"}}>{mainButton}</td>
             </tr>
-          );
+            );
         }
     }
 }
@@ -241,16 +248,28 @@ class TermSelector extends React.Component
         });
     }
     onTermSave(newtermc, newsemtype, newdescri, newcensusd, newavaild, newstartd, newendd, oldTcode) {
-        //var cleanName = encodeURIComponent(newName)
+
         newcensusd = this.dateToTimestamp(newcensusd);
         newavaild = this.dateToTimestamp(newavaild);
         newstartd = this.dateToTimestamp(newstartd);
         newendd = this.dateToTimestamp(newendd);
+        console.log(newtermc);
+
+        var cleanoldTcode = encodeURIComponent(oldTcode)
+        var cleantermc = encodeURIComponent(newtermc);
+        var cleansemtype = encodeURIComponent(newsemtype);
+        var cleandescri = encodeURIComponent(newdescri);
+        var cleancensusd = encodeURIComponent(newcensusd);
+        var cleanavaild = encodeURIComponent(newavaild);
+        var cleanstartd = encodeURIComponent(newstartd);
+        var cleanendd = encodeURIComponent(newendd);
+
+        alert(cleantermc);
 
         $.ajax({
-            url: 'index.php?module=intern&action=termRest&newTcode='+newtermc+'&newSemtype='+newsemtype+
-            '&newDesc='+newdescri+'&newCensus='+newcensusd+'&newAvail='+newavaild+'&newStart='+newstartd+
-            '&newEnd='+newendd+'&oldTcode='+oldTcode,
+            url: 'index.php?module=intern&action=termRest&newTcode='+cleantermc+'&newSemtype='+cleansemtype+
+            '&newDesc='+cleandescri+'&newCensus='+cleancensusd+'&newAvail='+cleanavaild+'&newStart='+cleanstartd+
+            '&newEnd='+cleanendd+'&oldTcode='+cleanoldTcode,
             type: 'PUT',
             success: function(data) {
                 $("#success").show();
@@ -262,7 +281,7 @@ class TermSelector extends React.Component
                 var errorMessage = "Failed to update term.";
                 console.error(this.props.url, status, err.toString());
                 this.setState({errorWarning: errorMessage, messageType: "error"});
-            }
+            }.bind(this)
         });
     }
     handleSubmit() {
@@ -284,21 +303,21 @@ class TermSelector extends React.Component
         var data = null;
         if (this.state.mainData != null) {
             var onTermSave = this.onTermSave;
-            data = this.state.mainData.map(function (term) {
+            data = this.state.mainData.map(function (data) {
                 return (
-                    <TermRow  key={term.term}
-                        tcode={term.term}
-                        stype={term.semester_type}
-                        descr={term.description}
-                        census={term.census_date_timestamp}
-                        available={term.available_on_timestamp}
-                        start={term.start_timestamp}
-                        end={term.end_timestamp} />
+                    <TermRow  key={data.term}
+                        tcode={data.term}
+                        stype={data.semester_type}
+                        descr={data.description}
+                        census={data.census_date_timestamp}
+                        available={data.available_on_timestamp}
+                        start={data.start_timestamp}
+                        end={data.end_timestamp}
+                        onTermSave={onTermSave} />
                 );
             });
         } else {
             data = "";
-            //alert("hi");
         }
 
         var errors;

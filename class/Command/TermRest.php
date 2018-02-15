@@ -131,13 +131,13 @@ class TermRest {
 
         $sql = "UPDATE intern_term
                 SET term=:newTcode, semester_type=:newSemtype,
-                description:=newDesc, census_date_timestamp=:newCensus,
+                description=:newDesc, census_date_timestamp=:newCensus,
                 available_on_timestamp=:newAvail, start_timestamp=:newStart,
                 end_timestamp=:newEnd
-                WHERE term=:oldTerm";
+                WHERE term=:oldTcode";
 
         $sth = $pdo->prepare($sql);
-        $sth->execute(array('newTcode'=>$newTcode, 'newSemType'=>$newSemtype, 'newDesc'=>$newDesc,
+        $sth->execute(array('newTcode'=>$newTcode, 'newSemtype'=>$newSemtype, 'newDesc'=>$newDesc,
                       'newCensus'=>$newCensus, 'newAvail'=>$newAvail, 'newStart'=>$newStart,
                       'newEnd'=>$newEnd, 'oldTcode'=>$oldTcode));
 
