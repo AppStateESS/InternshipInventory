@@ -634,6 +634,7 @@ CREATE TABLE intern_internship (
        experience_type varchar default 'internship',
        background_check SMALLINT DEFAULT 0,
        drug_check SMALLINT DEFAULT 0,
+       form_token character varying,
        PRIMARY KEY(id)
 );
 
