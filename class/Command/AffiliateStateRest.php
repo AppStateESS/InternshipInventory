@@ -20,7 +20,7 @@
 
 namespace Intern\Command;
 
-use \Intern\PdoFactory;
+use \phpws2\Database;
 use \Intern\State;
 
 class AffiliateStateRest {
@@ -32,7 +32,6 @@ class AffiliateStateRest {
             \NQ::simple('intern', \Intern\UI\NotifyUI::WARNING, 'You do not have permission to add Affiliation Agreements.');
             throw new \Intern\Exception\PermissionException('You do not have permission to add Affiliation Agreements.');
         }
-
 		switch($_SERVER['REQUEST_METHOD']) {
 			case 'GET':
 				$data = $this->get();
@@ -58,16 +57,15 @@ class AffiliateStateRest {
 			throw new \InvalidArgumentException('Missing Affiliation ID.');
 		}
 
-		$db = PdoFactory::getPdoInstance();
+		$db = Database::newDB();
+		$pdo = $db->getPDO();
 
 		$query = "SELECT intern_state.* FROM intern_state JOIN intern_agreement_location ON intern_state.abbr = intern_agreement_location.location
                     WHERE intern_agreement_location.agreement_id = :agreementId
                     ORDER BY intern_state.full_name ASC";
 
-		$params= array('agreementId' => $affiliationId);
-
-		$stmt = $db->prepare($query);
-		$stmt->execute($params);
+		$stmt = $pdo->prepare($query);
+		$stmt->execute(array('agreementId' => $affiliationId));
 
 		return $stmt->fetchAll(\PDO::FETCH_CLASS, '\Intern\StateRestored');
 	}
@@ -89,16 +87,15 @@ class AffiliateStateRest {
 		}
 
 
-		$db = PdoFactory::getPdoInstance();
+		$db = Database::newDB();
+		$pdo = $db->getPDO();
 
 		$query = "INSERT INTO intern_agreement_location
 							(agreement_id, location)
 							VALUES (:agreementId, :stateId)";
 
-		$values = array('agreementId' => $affiliationId, 'stateId' => $stateId);
-
-		$stmt = $db->prepare($query);
-		$stmt->execute($values);
+		$stmt = $pdo->prepare($query);
+		$stmt->execute(array('agreementId' => $affiliationId, 'stateId' => $stateId));
 
 	}
 
@@ -116,15 +113,14 @@ class AffiliateStateRest {
 			throw new \InvalidArgumentException('Missing Affiliation ID.');
 		}
 
-		$db = PdoFactory::getPdoInstance();
+		$db = Database::newDB();
+		$pdo = $db->getPDO();
 
 		$query = "DELETE FROM intern_agreement_location
 							WHERE agreement_id = :agreementId AND location = :stateAbbr";
 
-		$values = array('agreementId' => $affiliationId, 'stateAbbr' => $stateAbbr);
-
-		$stmt = $db->prepare($query);
-		$stmt->execute($values);
+		$stmt = $pdo->prepare($query);
+		$stmt->execute(array('agreementId' => $affiliationId, 'stateAbbr' => $stateAbbr));
 	}
 
 }

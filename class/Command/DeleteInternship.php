@@ -53,8 +53,8 @@ class DeleteInternship {
         $pdo->beginTransaction();
 
         try {
-            // Delete all documents relating to the internship
-            $query = 'DELETE FROM intern_document WHERE internship_id = :id';
+            // Delete all files from the table relating to the internship
+            $query = 'DELETE FROM intern_contract_documents WHERE internship_id = :id';
             $sth = $pdo->prepare($query);
             $sth->execute($internId);
 

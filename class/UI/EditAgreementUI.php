@@ -21,8 +21,6 @@
 namespace Intern\UI;
 
 use \Intern\AffiliationAgreementFactory;
-use \Intern\AffiliateFolder;
-use \Intern\AffiliationContract;
 use \Intern\AssetResolver;
 
 class EditAgreementUI implements UI
@@ -49,6 +47,7 @@ class EditAgreementUI implements UI
         $tpl['department_bundle'] = AssetResolver::resolveJsPath('assets.json', 'affiliationDepartments');
         $tpl['location_bundle'] = AssetResolver::resolveJsPath('assets.json', 'affiliationLocation');
         $tpl['terminate_bundle'] = AssetResolver::resolveJsPath('assets.json', 'affiliationTerminate');
+        $tpl['uploadAffil_bundle'] = AssetResolver::resolveJsPath('assets.json', 'affiliationUpload');
 
         /* Form for adding new grad program */
         $form = new \PHPWS_Form('edit_affil');
@@ -92,18 +91,6 @@ class EditAgreementUI implements UI
             /* Plug old values back into form fields. */
             $form->plugIn($_GET);
         }
-
-        /*** Document List ***/
-        $docs = $affiliate_agreement->getDocuments();
-        if (!is_null($docs)) {
-            //$docs = array_reverse($docs);
-            foreach ($docs as $doc) {
-                $tpl['docs'][] = array('DOWNLOAD' => $doc->getDownloadLink('blah'), 'DELETE' => $doc->getDeleteLink());
-            }
-        }
-
-        $folder = new AffiliateFolder(AffiliationContract::getFolderId());
-        $tpl['UPLOAD_DOC'] = $folder->documentUpload($affiliate_agreement->getId());
 
         $form->setAction('index.php?module=intern&action=saveAffiliate&affiliation_agreement_id='.$aaId);
 

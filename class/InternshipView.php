@@ -19,6 +19,7 @@
  */
 
 namespace Intern;
+use \intern\Command\DocumentRest;
 
 /**
  * This class holds the form for adding/editing an internship.
@@ -36,17 +37,15 @@ class InternshipView {
     private $student;
     private $wfState;
     private $agency;
-    private $docs;
     private $term;
     private $studentExistingCreditHours;
 
-    public function __construct(Internship $internship, Student $student = null, WorkflowState $wfState, Agency $agency, Array $docs, Term $term, $studentExistingCreditHours)
+    public function __construct(Internship $internship, Student $student = null, WorkflowState $wfState, Agency $agency, Term $term, $studentExistingCreditHours)
     {
         $this->intern = $internship;
         $this->student = $student;
         $this->wfState = $wfState;
         $this->agency = $agency;
-        $this->docs = $docs;
         $this->term = $term;
         $this->studentExistingCreditHours = $studentExistingCreditHours;
     }
@@ -56,7 +55,7 @@ class InternshipView {
         $tpl = array();
 
         // Setup the form
-        $internshipForm = new EditInternshipFormView($this->intern, $this->student, $this->agency, $this->docs, $this->term, $this->studentExistingCreditHours);
+        $internshipForm = new EditInternshipFormView($this->intern, $this->student, $this->agency, $this->term, $this->studentExistingCreditHours);
 
         // Get the Form object
         $form = $internshipForm->getForm();
@@ -86,7 +85,9 @@ class InternshipView {
         }
 
         $tpl['vendor_bundle'] = AssetResolver::resolveJsPath('assets.json', 'vendor');
-        $tpl['entry_bundle'] = AssetResolver::resolveJsPath('assets.json', 'emergencyContact');
+        $tpl['emergency_entry_bundle'] = AssetResolver::resolveJsPath('assets.json', 'emergencyContact');
+        $tpl['contract_entry_bundle'] = AssetResolver::resolveJsPath('assests.json', 'contractAffiliation');
+        $tpl['documents_entry_bundle'] = AssetResolver::resolveJsPath('assests.json', 'otherDocuments');
 
         $form->mergeTemplate($tpl);
 
@@ -98,11 +99,12 @@ class InternshipView {
 
     private function showWarnings()
     {
-
-        // Show warning if no documents uploaded but workflow state suggests there should be documents
-        if(($this->wfState instanceof WorkflowState\SigAuthReadyState || $this->wfState instanceof WorkflowState\SigAuthApprovedState || $this->wfState instanceof WorkflowState\DeanApprovedState || $this->wfState instanceof WorkflowState\RegisteredState) && (sizeof($this->docs) < 1) && (!$this->intern->isSecondaryPart()))
+        // Get state of documents or affiliation
+        $conAffil = DocumentRest::contractAffilationSelected($this->intern->getId());
+        // Show warning if no documents uploaded or affiliation agreement selected but workflow state suggests there should be
+        if(($this->wfState instanceof WorkflowState\SigAuthReadyState || $this->wfState instanceof WorkflowState\SigAuthApprovedState || $this->wfState instanceof WorkflowState\DeanApprovedState || $this->wfState instanceof WorkflowState\RegisteredState) && ($conAffil['value'] == 'No') && (!$this->intern->isSecondaryPart()))
         {
-            \NQ::simple('intern', UI\NotifyUI::WARNING, "No documents have been uploaded yet. Usually a copy of the signed contract document should be uploaded.");
+            \NQ::simple('intern', UI\NotifyUI::WARNING, "No contract has been uploaded or affiliation agreement selected. Usually a copy of the signed contract should be uploaded or an affiliation agreement selected.");
         }
 
         // Show a warning if in SigAuthReadyState, is international, and not OIED approved

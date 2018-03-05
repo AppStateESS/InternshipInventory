@@ -74,16 +74,10 @@ class ShowInternship {
         // Load the agency
         $agency = AgencyFactory::getAgencyById($intern->getAgencyId());
 
-        // Load the documents
-        $docs = $intern->getDocuments();
-        if($docs === null) {
-            $docs = array(); // if no docs, setup an empty array
-        }
-
         // Load the term info for this internship
         $term = TermFactory::getTermByTermCode($intern->getTerm());
 
-        $view = new InternshipView($intern, $student, $wfState, $agency, $docs, $term, $existingCreditHours);
+        $view = new InternshipView($intern, $student, $wfState, $agency, $term, $existingCreditHours);
 
         return $view->display();
     }

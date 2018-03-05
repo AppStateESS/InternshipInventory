@@ -20,7 +20,7 @@
 
 namespace Intern\Command;
 
-use \Intern\PdoFactory;
+use \phpws2\Database;
 use \Intern\DepartmentFactory;
 
 class AffiliateDeptRest {
@@ -58,15 +58,15 @@ class AffiliateDeptRest {
             throw new \InvalidArgumentException('Missing Affiliation ID.');
         }
 
-        $db = PdoFactory::getPdoInstance();
+        $db = Database::newDB();
+		$pdo = $db->getPDO();
 
         $query = "SELECT intern_department.id, intern_department.name FROM intern_agreement_department JOIN intern_department ON intern_agreement_department.department_id = intern_department.id
-        WHERE agreement_id = :id and hidden = 0
-        ORDER BY intern_department.name ASC";
+                  WHERE agreement_id = :id and hidden = 0
+                  ORDER BY intern_department.name ASC";
 
-        $params= array('id' => $affiliationId);
-        $stmt = $db->prepare($query);
-        $stmt->execute($params);
+        $stmt = $pdo->prepare($query);
+        $stmt->execute(array('id' => $affiliationId));
 
         return $stmt->fetchAll(\PDO::FETCH_CLASS, '\Intern\DepartmentDB');
     }
@@ -86,16 +86,15 @@ class AffiliateDeptRest {
         }
 
 
-        $db = PdoFactory::getPdoInstance();
+        $db = Database::newDB();
+		$pdo = $db->getPDO();
 
         $query = "INSERT INTO intern_agreement_department
         (agreement_id, department_id)
         VALUES (:agreementId, :deptId)";
 
-        $values = array('agreementId' => $affiliationId, 'deptId' => $deptId);
-
-        $stmt = $db->prepare($query);
-        $stmt->execute($values);
+        $stmt = $pdo->prepare($query);
+        $stmt->execute(array('agreementId' => $affiliationId, 'deptId' => $deptId));
     }
 
     public function delete()
@@ -112,15 +111,14 @@ class AffiliateDeptRest {
             throw new \InvalidArgumentException('Missing Affiliation ID.');
         }
 
-        $db = PdoFactory::getPdoInstance();
+        $db = Database::newDB();
+		$pdo = $db->getPDO();
 
         $query = "DELETE FROM intern_agreement_department
-        WHERE agreement_id = :agreementId AND department_id = :deptId";
+                  WHERE agreement_id = :agreementId AND department_id = :deptId";
 
-        $values = array('agreementId' => $affiliationId, 'deptId' => $deptId);
-
-        $stmt = $db->prepare($query);
-        $stmt->execute($values);
+        $stmt = $pdo->prepare($query);
+        $stmt->execute(array('agreementId' => $affiliationId, 'deptId' => $deptId));
     }
 
 }
