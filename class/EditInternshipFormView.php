@@ -42,7 +42,6 @@ class EditInternshipFormView {
 
     private $agency;
     private $department;
-    private $docs;
     private $term;
     private $studentExistingCreditHours;
 
@@ -54,7 +53,7 @@ class EditInternshipFormView {
      * @param string $pagetitle
      * @param Internship $i
      */
-    public function __construct(Internship $i, Student $student = null, Agency $agency, Array $docs, Term $term, $studentExistingCreditHours)
+    public function __construct(Internship $i, Student $student = null, Agency $agency, Term $term, $studentExistingCreditHours)
     {
         \Layout::addPageTitle('Edit Internship');
 
@@ -63,7 +62,6 @@ class EditInternshipFormView {
 
         $this->agency = $agency;
         $this->department = $this->intern->getDepartment();
-        $this->docs = $docs;
         $this->term = $term;
         $this->studentExistingCreditHours = $studentExistingCreditHours;
 

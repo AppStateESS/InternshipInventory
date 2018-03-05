@@ -77,7 +77,7 @@ class ShowInternship {
         // Load the term info for this internship
         $term = TermFactory::getTermByTermCode($intern->getTerm());
 
-        $view = new InternshipView($intern, $student, $wfState, $agency, $docs, $term, $existingCreditHours);
+        $view = new InternshipView($intern, $student, $wfState, $agency, $term, $existingCreditHours);
 
         return $view->display();
     }

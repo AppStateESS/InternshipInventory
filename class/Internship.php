@@ -300,9 +300,11 @@ class Internship {
         $csv['Level']           = $this->getLevel();
         if($this->getLevel() == 'ugrad'){
             //$csv['Undergrad Major'] = $this->getUgradMajor()->getName();
+            $csv['Undergrad Major'] = '';
             $csv['Grduate Program'] = '';
         }else if($this->getLevel() == 'grad'){
             $csv['Undergrad Major'] = '';
+            $csv['Grduate Program'] = '';
             //$csv['Graduate Program'] = $this->getGradProgram()->getName();
         }else{
             $csv['Undergrad Major'] = '';
@@ -372,7 +374,7 @@ class Internship {
         $f = $this->getFaculty();
         $d = $this->getDepartment();
         $c = DocumentRest::contractAffilationSelected($this->id);
-
+        var_dump($c);
         // Merge data from other objects.
         $csv = array_merge($csv, $a->getCSV());
 
