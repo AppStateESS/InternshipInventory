@@ -16,6 +16,7 @@ module.exports = {
       affiliationDepartments: JS_DIR + '/affiliationAgreement/AffiliationDepartments.jsx',
       affiliationLocation: JS_DIR + '/affiliationAgreement/AffiliationLocation.jsx',
       affiliationTerminate: JS_DIR + '/affiliationAgreement/AffiliationTerminate.jsx',
+      affiliationUpload: JS_DIR + '/affiliationAgreement/AffiliationUpload.jsx',
       editExpectedCourses: JS_DIR + '/editCourses/courseEditor.jsx',
       majorSelector: JS_DIR + '/majorSelector/MajorSelector.jsx',
       adminSettings: JS_DIR + '/settings/settings.jsx',

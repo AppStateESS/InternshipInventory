@@ -153,6 +153,10 @@ class InternshipInventory {
                 $ctrl = new Command\AffiliateStateRest();
                 $ctrl->execute();
                 break;
+            case 'settingsRest':
+                $ctrl = new Command\SettingsRest();
+                $ctrl->execute();
+                break;
             case 'edit_states':
                 if (!\Current_User::allow('intern', 'edit_state')) {
                     disallow();
