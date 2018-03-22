@@ -24,8 +24,9 @@ use \Intern\Internship;
 use \Intern\Student;
 use \Intern\Agency;
 use \Intern\Department;
+use PHPUnit\Framework\TestCase;
 
-class InternshipTest extends \PHPUnit\Framework\TestCase
+class InternshipTest extends TestCase
 {
     public function testSetStudentData()
     {
