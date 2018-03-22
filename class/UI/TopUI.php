@@ -64,6 +64,11 @@ class TopUI implements UI
             $adminOptions['EDIT_STATES_LINK'] = \PHPWS_Text::secureLink('Edit States','intern',array('action' => 'edit_states'));
         }
 
+        // Edit list of student levels
+        if(\Current_User::allow('intern', 'edit_level')){
+            $adminOptions['EDIT_STUDENT_LEVEL'] = \PHPWS_Text::secureLink('Edit Student Levels','intern',array('action' => 'edit_level'));
+        }
+
         // Link to the Affiliation Agreements
         if(\Current_User::allow('intern', 'affiliation_agreement')){
             $adminOptions['AFFIL_AGREE_LINK'] = \PHPWS_Text::secureLink('Affiliation Agreements','intern',array('action' => 'showAffiliateAgreement'));

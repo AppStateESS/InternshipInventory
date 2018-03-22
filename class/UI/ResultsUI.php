@@ -23,6 +23,8 @@ namespace Intern\UI;
 use Intern\SubselectPager;
 use Intern\SubselectDatabase;
 use Intern\Student;
+use Intern\Level;
+use Intern\LevelFactory;
 
 /**
  * ResultsUI
@@ -227,20 +229,22 @@ class ResultsUI implements UI {
 
         // Student level
         if (isset($level)) {
-            if($level == Student::UNDERGRAD){
-                $pager->addWhere('level', Student::UNDERGRAD);
-            } else if ($level == Student::GRADUATE || $level == Student::DOCTORAL || $level == Student::POSTDOC) {
-                $pager->addWhere('level', Student::GRADUATE, null, 'OR', 'grad_level');
-                $pager->addWhere('level', Student::GRADUATE2, null, 'OR', 'grad_level');
-                $pager->addWhere('level', Student::DOCTORAL, null, 'OR', 'grad_level');
-                $pager->addWhere('level', Student::POSTDOC, null, 'OR', 'grad_level');
+            $sLevel = LevelFactory::getLevelObjectByLevel($level);
+            if($level == Level::UNDERGRAD){
+                for($i = 0; $i < count($sLevel); $i++) {
+                    $pager->addWhere('level', $sLevel[$i]->code, null, 'OR', 'grad_level');
+                }
+            } else if ($level == Level::GRADUATE) {
+                for($i = 0; $i < count($sLevel); $i++){
+                    $pager->addWhere('level', $sLevel[$i]->code, null, 'OR', 'grad_level');
+                }
             }
 
             // Major
-            if ($level == 'ugrad' && isset($ugradMajor) && $ugradMajor != -1) {
+            if ($level == Level::UNDERGRAD && isset($ugradMajor) && $ugradMajor != -1) {
                 // Undergrad major
                 $pager->addWhere('major_code', $ugradMajor);
-            } else if ($level == 'grad' && isset($gradProg) && $gradProg != -1) {
+            } else if ($level == Level::GRADUATE && isset($gradProg) && $gradProg != -1) {
                 // Graduate program
                 $pager->addWhere('major_code', $gradProg);
             }
