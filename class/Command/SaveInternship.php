@@ -76,7 +76,7 @@ class SaveInternship {
             $this->rerouteWithError($url, "The student's email address is invalid. No changes were saved. Enter only the username portion of the student's email address. The '@appstate.edu' portion is not necessary.");
         }
 
-		// Sanity check student zip
+        // Sanity check student zip
 		if(isset($_REQUEST['student_zip']) && $_REQUEST['student_zip'] != "" && !preg_match('/^[\d]{5}$|^[\d]{5}-[\d]{4}$/', $_REQUEST['student_zip'])) {
             $url = 'index.php?module=intern&action=ShowInternship&missing=student_zip';
             $this->rerouteWithError($url, "The student's zip code is invalid. No changes were saved. The zip code should be 5 digits (no letters, spaces, or punctuation), OR use the extended nine digit form (e.g. 28608-1234).");
@@ -101,7 +101,7 @@ class SaveInternship {
             if(!($_REQUEST['location'] == 'international' && preg_match('/[\w]/',$_REQUEST['loc_zip']))){
                 $url = 'index.php?module=intern&action=ShowInternship&missing=loc_zip';
 			    $this->rerouteWithError($url, "The internship location's zip code is invalid. No changes were saved. Zip codes should be 5 digits only (no letters, spaces, or punctuation).");
-		    }
+		        }
         }
 
         // Sanity check internship acency zip, allows a-z or A-Z if international
@@ -122,9 +122,9 @@ class SaveInternship {
 
 		// Sanity check course number
 		if((isset($_REQUEST['course_no']) && $_REQUEST['course_no'] != '') && (strlen($_REQUEST['course_no']) > 20 || !is_numeric($_REQUEST['course_no']))) {
-			$url = 'index.php?module=intern&action=ShowInternship&missing=course_no';
+            $url = 'index.php?module=intern&action=ShowInternship&missing=course_no';
 			$this->rerouteWithError($url, "The course number provided is invalid. No changes were saved. Course numbers should be less than 20 digits (no letters, spaces, or punctuation).");
-		}
+        }
 
         \PHPWS_DB::begin();
 
