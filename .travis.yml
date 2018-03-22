@@ -13,7 +13,7 @@ install:
 
 script:
 - ".travis-build/phplint ."
-- phpunit
+- phpunit -v
 
 after_script:
 - vendor/bin/test-reporter
