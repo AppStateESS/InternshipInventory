@@ -20,7 +20,6 @@
 
 namespace Intern\Command;
 
-use \Intern\Term as Term;
 use \Intern\DataProvider\Term\TermInfoProviderFactory;
 use Intern\TermFactory;
 

@@ -22,20 +22,12 @@ namespace Intern\DataProvider\Student;
 
 use Intern\PdoFactory;
 use Intern\Student;
+use Intern\Level;
 use Intern\AcademicMajor;
 
 use Intern\Exception\StudentNotFoundException;
 
 class LocalDbStudentDataProvider extends StudentDataProvider {
-
-    // Student level: grad, undergrad
-    // TODO: update these for arbitrary level handling
-    const UNDERGRAD = 'U';
-    const GRADUATE  = 'G';
-    const GRADUATE2 = 'G2';
-    const DOCTORAL  = 'D';
-    const POSTDOC   = 'P'; // Guessing at the name here, not sure what 'P' really is
-
     public function getStudent($studentId){
         $db = PdoFactory::getPdoInstance();
 
@@ -92,21 +84,8 @@ class LocalDbStudentDataProvider extends StudentDataProvider {
             $student->setCampus($data['campus']);
         }
 
-        // Level (grad vs undergrad)
-        // TODO: Merge this with changes for variable levels
-        if($data['level'] == self::UNDERGRAD) {
-            $student->setLevel(self::UNDERGRAD);
-        } else if ($data['level'] == self::GRADUATE) {
-            $student->setLevel(self::GRADUATE);
-        } else if ($data['level'] == self::GRADUATE2) {
-            $student->setLevel(self::GRADUATE2);
-        } else if ($data['level'] == self::DOCTORAL) {
-            $student->setLevel(self::DOCTORAL);
-        } else if ($data['level'] == self::POSTDOC) {
-            $student->setLevel(self::POSTDOC);
-        } else {
-            $student->setLevel(null);
-        }
+        // Level
+        $student->setLevel($data['level']);
 
         // Credit Hours
         //$student->setCreditHours($data['credit_hours']);
