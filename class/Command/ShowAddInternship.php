@@ -19,7 +19,6 @@
  */
 
 namespace Intern\Command;
-use \Intern\Term;
 use \Intern\Department;
 use \Intern\State;
 use \Intern\CountryFactory;

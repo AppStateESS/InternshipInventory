@@ -21,8 +21,6 @@
 namespace Intern\Command;
 
 use Intern\DataProvider\Student\StudentDataProviderFactory;
-use Intern\Term;
-
 use Intern\Exception\StudentNotFoundException;
 use Intern\Exception\BannerPermissionException;
 
