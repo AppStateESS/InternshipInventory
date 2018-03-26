@@ -2,14 +2,18 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
 
-var AddData = React.createClass({
-	handleClick: function() {
+class AddData extends React.Component{
+	constructor(props, context) {
+		super(props, context);
+		this.handleClick = this.handleClick.bind(this);
+	}
+	handleClick(){
 		var textCode = ReactDOM.findDOMNode(this.refs.addNewCode).value.trim();
 		var textDes = ReactDOM.findDOMNode(this.refs.addNewDesc).value.trim();
 		var textLev = ReactDOM.findDOMNode(this.refs.addNewLevel).value.trim();
 		this.props.onCreate(textCode, textDes, textLev);
-	},
-	render: function() {
+	}
+	render() {
 		return (
 			<div className="col-md-5 col-md-offset-1">
 				<br /><br /><br />
@@ -61,20 +65,21 @@ var AddData = React.createClass({
 			</div>
 		);
 	}
-});
+}
 
 
-var DisplayData = React.createClass({
-	getInitialState: function() {
-		return {
-			editMode: false
-		};
-	},
-	handleEdit: function() {
+class DisplayData extends React.Component{
+	constructor(props, context) {
+		super(props, context);
+		this.state = {editMode: false};
+		this.handleEdit = this.handleEdit.bind(this);
+		this.handleSave = this.handleSave.bind(this);
+	}
+	handleEdit() {
 		this.setState({editMode: true});
 
-	},
-	handleSave: function() {
+	}
+	handleSave() {
 		this.setState({editMode: false});
 
 		// Grabs the value in the textbox
@@ -83,8 +88,8 @@ var DisplayData = React.createClass({
 		var newLeve = ReactDOM.findDOMNode(this.refs.savedLevelData).value.trim();
 
 		this.props.onSave(newCode, newDes, newLeve);
-	},
-	render: function() {
+	}
+	render() {
 		var textDes = null;
 		var textLev = null;
 		var eButton = null;
@@ -113,20 +118,23 @@ var DisplayData = React.createClass({
 			</tr>
 		);
 	}
-});
+}
 
-var Manager = React.createClass({
-	getInitialState: function() {
-		return {
-			mainData: null,
+class Manager extends React.Component{
+	constructor(props, context) {
+		super(props, context);
+		this.state = {mainData: null,
 			errorWarning: '',
-			success: ''
-		};
-	},
-	componentWillMount: function(){
+			success: ''};
+		this.componentWillMount = this.componentWillMount.bind(this);
+		this.getData = this.getData.bind(this);
+		this.onSave = this.onSave.bind(this);
+		this.onCreate = this.onCreate.bind(this);
+	}
+	componentWillMount(){
 		this.getData();
-	},
-	getData: function(){
+	}
+	getData(){
 		$.ajax({
 			url: 'index.php?module=intern&action=levelRest',
 			type: 'GET',
@@ -139,8 +147,8 @@ var Manager = React.createClass({
 				console.error(this.props.url, status, err.toString());
 			}.bind(this)
 		});
-	},
-	onSave: function(newCode, newDes, newLev){
+	}
+	onSave(newCode, newDes, newLev){
 		// Saves the value into the database
 		$.ajax({
 			url: 'index.php?module=intern&action=levelRest&code='+newCode+'&descr='+newDes+'&level='+newLev,
@@ -159,8 +167,8 @@ var Manager = React.createClass({
 				$("#success").hide();
 			}.bind(this)
 		});
-	},
-	onCreate: function(code, descrip, level) {
+	}
+	onCreate(code, descrip, level) {
 		// Creates a new value
 		$.ajax({
 			url: 'index.php?module=intern&action=levelRest&code='+code+'&descr='+descrip+'&level='+level,
@@ -180,8 +188,8 @@ var Manager = React.createClass({
 				$("#success").hide();
 			}.bind(this)
 		});
-	},
-	render: function() {
+	}
+	render() {
 		var data = null;
 		if (this.state.mainData != null) {
 			var onSave = this.onSave;
@@ -237,9 +245,6 @@ var Manager = React.createClass({
 				</div>
 		);
 	}
-});
+}
 
-ReactDOM.render(
-	<Manager />,
-	document.getElementById('content')
-);
+ReactDOM.render(<Manager />, document.getElementById('level'));
