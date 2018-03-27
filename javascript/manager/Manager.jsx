@@ -81,7 +81,6 @@ class DisplayData extends React.Component {
 	render() {
         var name = null;
         var hButton = null;
-
 		// Determines which element to show on the page (hide/show and Save/Edit)
 		if (this.props.hidden === 0) {
 			name = this.props.name;
@@ -215,21 +214,24 @@ class Manager extends React.Component {
 		});
 	}
 	render() {
-        var data = null;
-
+        var data = null
+        var description = null
 		if (this.state.mainData != null) {
-			//var buttonTitle = this.props.buttonTitle;
-			//var panelTitle = this.props.panelTitle;
 			var onHidden = this.onHidden;
 			var onSave = this.onSave;
 			data = this.state.mainData.map(function (data) {
-			return (
-				<DisplayData key={data.id}
-						   id={data.id}
-						   name={data.name}
-						   hidden={data.hidden}
-						   onHidden={onHidden}
-						   onSave={onSave} />
+                if(data.name == null){
+                    description = data.description
+                } else{
+                    description = data.name
+                }
+                return (
+                    <DisplayData key={data.id}
+                        id={data.id}
+						name={description}
+						hidden={data.hidden}
+						onHidden={onHidden}
+						onSave={onSave} />
 				);
 			});
 
