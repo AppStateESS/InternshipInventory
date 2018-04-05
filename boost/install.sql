@@ -1,16 +1,16 @@
-BEGIN;
+INTBEGIN;
 
 -- Defaults to not hidden.
 CREATE TABLE intern_major (
        id INT NOT NULL,
-       code varchar UNIQUE DEFAULT NULL,
+       code VARCHAR UNIQUE DEFAULT NULL,
        description VARCHAR NOT NULL ,
        level VARCHAR NOT NULL DEFAULT 'U',
        hidden SMALLINT NOT NULL DEFAULT 0,
        PRIMARY KEY(id)
 );
 
-alter table intern_major add constraint intern_major_description_level_key UNIQUE (description, level);
+ALTER TABLE intern_major add constraint intern_major_description_level_key UNIQUE (description, level);
 
 -- TODO: remove this table
 CREATE TABLE intern_grad_prog (
@@ -29,8 +29,8 @@ CREATE TABLE intern_department (
        PRIMARY KEY(id)
 );
 
-create table intern_faculty (
-    id              integer NOT NULL,
+CREATE TABLE intern_faculty (
+    id              INT NOT NULL,
     username        character varying NOT NULL,
     first_name      character varying NOT NULL,
     last_name       character varying NOT NULL,
@@ -44,14 +44,14 @@ create table intern_faculty (
     PRIMARY KEY(id)
 );
 
-create table intern_faculty_department (
-    faculty_id      integer NOT NULL REFERENCES intern_faculty(id),
-    department_id   integer NOT NULL REFERENCES intern_department(id),
+CREATE TABLE intern_faculty_department (
+    faculty_id      INT NOT NULL REFERENCES intern_faculty(id),
+    department_id   INT NOT NULL REFERENCES intern_department(id),
     PRIMARY KEY (faculty_id, department_id)
 );
 
 CREATE TABLE intern_state (
-       abbr varchar NOT NULL UNIQUE,
+       abbr VARCHAR NOT NULL UNIQUE,
        full_name VARCHAR NOT NULL UNIQUE,
        active SMALLINT NULL DEFAULT 0,
        PRIMARY KEY(abbr)
@@ -383,7 +383,7 @@ CREATE TABLE intern_subject (
     id INT NOT NULL,
     abbreviation character varying(10) NOT NULL,
     description character varying(128) NOT NULL,
-    active smallint not null default 1,
+    active SMALLINT NOT NULL DEFAULT 1,
     PRIMARY KEY(id)
 );
 
@@ -512,13 +512,13 @@ CREATE TABLE intern_agency (
 
 
 CREATE TABLE intern_affiliation_agreement(
-  id int NOT NULL,
-  name varchar NOT NULL,
-  begin_date int NOT NULL,
-  end_date int NOT NULL,
-  auto_renew int NOT NULL DEFAULT 0,
-  notes varchar,
-  terminated smallint NOT NULL DEFAULT 0,
+  id INT NOT NULL,
+  name VARCHAR NOT NULL,
+  begin_date INT NOT NULL,
+  end_date INT NOT NULL,
+  auto_renew INT NOT NULL DEFAULT 0,
+  notes VARCHAR,
+  terminated SMALLINT NOT NULL DEFAULT 0,
   PRIMARY KEY(id)
 );
 
@@ -529,26 +529,26 @@ CREATE TABLE intern_affiliation_documents(
     store_name VARCHAR,
     path_name VARCHAR,
     file_type VARCHAR,
-    primary key (id)
+    PRIMARY KEY (id)
 );
 
 CREATE SEQUENCE intern_affiliation_documents_seq;
 
 CREATE TABLE intern_agreement_department(
-  agreement_id int NOT NULL REFERENCES intern_affiliation_agreement(id),
-  department_id int NOT NULL REFERENCES intern_department(id),
+  agreement_id INT NOT NULL REFERENCES intern_affiliation_agreement(id),
+  department_id INT NOT NULL REFERENCES intern_department(id),
   PRIMARY KEY(agreement_id, department_id)
 );
 
 CREATE TABLE intern_agreement_location(
-  agreement_id int NOT NULL REFERENCES intern_affiliation_agreement(id),
-  location varchar NOT NULL REFERENCES intern_state(abbr),
+  agreement_id INT NOT NULL REFERENCES intern_affiliation_agreement(id),
+  location VARCHAR NOT NULL REFERENCES intern_state(abbr),
   PRIMARY KEY(agreement_id, location)
 );
 
 CREATE TABLE intern_agreement_documents(
-  agreement_id int NOT NULL REFERENCES intern_affiliation_agreement(id),
-  document_id int NOT NULL REFERENCES documents(id),
+  agreement_id INT NOT NULL REFERENCES intern_affiliation_agreement(id),
+  document_id INT NOT NULL REFERENCES documents(id),
   PRIMARY KEY(agreement_id, document_id)
 );
 
@@ -558,16 +558,16 @@ CREATE SEQUENCE intern_affiliation_agreement_seq;
 CREATE TABLE intern_term (
        term character varying NOT NULL,
        description character varying NOT NULL,
-       available_on_timestamp integer NOT NULL,
-       census_date_timestamp integer NOT NULL,
-       start_timestamp integer NOT NULL,
-       end_timestamp integer NOT NULL,
-       semester_type integer NOT NULL,
-       PRIMARY KEY (term)
+       available_on_timestamp INT NOT NULL,
+       census_date_timestamp INT NOT NULL,
+       start_timestamp INT NOT NULL,
+       end_timestamp INT NOT NULL,
+       semester_type INT NOT NULL,
+       PRIMARY KEY(term)
 );
 
-create table intern_student_autocomplete (
-    banner_id           integer NOT NULL,
+CREATE TABLE intern_student_autocomplete (
+    banner_id           INT NOT NULL,
     username            character varying,
     first_name          character varying,
     middle_name         character varying,
@@ -578,29 +578,24 @@ create table intern_student_autocomplete (
     first_name_meta     character varying,
     middle_name_meta    character varying,
     last_name_meta      character varying,
-    start_term          integer,
-    end_term            integer,
+    start_term          INT,
+    end_term            INT,
     PRIMARY KEY(banner_id)
 );
 
 CREATE TABLE intern_internship (
        id INT NOT NULL,
        term character varying NOT NULL REFERENCES intern_term(term),
-
        agency_id INT NOT NULL REFERENCES intern_agency(id),
-       faculty_id integer REFERENCES intern_faculty(id),
+       faculty_id INT REFERENCES intern_faculty(id),
        department_id INT NOT NULL,
-
-       start_date INT default 0,
-       end_date INT default 0,
-
+       start_date INT DEFAULT 0,
+       end_date INT DEFAULT 0,
        internship SMALLINT NOT NULL,
        student_teaching SMALLINT NOT NULL,
        clinical_practica SMALLINT NOT NULL,
-
-       state varchar(128) NOT NULL,
-       oied_certified smallint not null default 0,
-
+       state VARCHAR(128) NOT NULL,
+       oied_certified SMALLINT NOT NULL DEFAULT 0,
        banner VARCHAR NOT NULL,
        first_name VARCHAR NOT NULL,
        middle_name VARCHAR,
@@ -611,27 +606,26 @@ CREATE TABLE intern_internship (
        email VARCHAR NOT NULL,
        major_code character varying,
        major_description character varying,
-       student_address varchar(256),
+       student_address VARCHAR(256),
        student_address2 character varying,
-       student_city varchar(256),
-       student_state varchar(2),
+       student_city VARCHAR(256),
+       student_state VARCHAR(2),
        student_zip VARCHAR NULL,
        campus character varying(128) NOT NULL,
        first_name_meta character varying,
        middle_name_meta character varying,
        last_name_meta character varying,
-       birth_date integer NOT NULL,
-
-       loc_address varchar NULL,
-       loc_city varchar NULL,
-       loc_state varchar NULL,
-       loc_zip varchar NULL,
-       loc_province varchar(255) NULL,
-       loc_country varchar NULL,
-       course_subj integer REFERENCES intern_subject(id),
-       course_no varchar(20) null,
-       course_sect varchar(20) null,
-       course_title varchar(40) null,
+       birth_date INT NOT NULL,
+       loc_address VARCHAR NULL,
+       loc_city VARCHAR NULL,
+       loc_state VARCHAR NULL,
+       loc_zip VARCHAR NULL,
+       loc_province VARCHAR(255) NULL,
+       loc_country VARCHAR NULL,
+       course_subj INT REFERENCES intern_subject(id),
+       course_no VARCHAR(20) NULL,
+       course_sect VARCHAR(20) NULL,
+       course_title VARCHAR(40) NULL,
        credits INT NULL,
        corequisite_number character varying,
        corequisite_section character varying,
@@ -643,11 +637,11 @@ CREATE TABLE intern_internship (
        pay_rate VARCHAR NULL,
        multi_part SMALLINT,
        secondary_part SMALLINT,
-       experience_type varchar default 'internship',
+       experience_type VARCHAR DEFAULT 'internship',
        background_check SMALLINT DEFAULT 0,
        drug_check SMALLINT DEFAULT 0,
        form_token character varying,
-       contract_type varchar,
+       contract_type VARCHAR,
        affiliation_agreement_id INT,
        PRIMARY KEY(id)
 );
@@ -655,11 +649,12 @@ CREATE TABLE intern_internship (
 CREATE TABLE intern_contract_documents(
     id INT NOT NULL,
     internship_id INT REFERENCES intern_internship(id),
-    name VARCHAR, store_name VARCHAR,
+    name VARCHAR,
+    store_name VARCHAR,
     path_name VARCHAR,
     type VARCHAR,
     file_type VARCHAR,
-    primary key (id)
+    PRIMARY KEY (id)
 );
 
 CREATE SEQUENCE intern_contract_documents_seq;
@@ -675,9 +670,9 @@ CREATE TABLE intern_emergency_contact (
 );
 
 CREATE TABLE intern_document (
-    id int NOT NULL,
-    internship_id int NOT NULL REFERENCES intern_internship(id) ,
-    document_fc_id int NOT NULL,
+    id INT NOT NULL,
+    internship_id INT NOT NULL REFERENCES intern_internship(id) ,
+    document_fc_id INT NOT NULL,
     PRIMARY KEY(id)
 );
 
@@ -685,14 +680,14 @@ CREATE TABLE intern_admin (
     id INT NOT NULL,
     username VARCHAR NOT NULL,
     department_id INT NOT NULL,
-    PRIMARY KEY (id)
+    PRIMARY KEY(id)
 );
 
 CREATE TABLE intern_change_history (
     id INT NOT NULL,
     internship_id INT NOT NULL REFERENCES intern_internship(id),
     username character varying(40) NOT NULL,
-    timestamp int NOT NULL,
+    timestamp INT NOT NULL,
     from_state character varying(40) NOT NULL,
     to_state character varying(40) NOT NULL,
     note text,
@@ -704,9 +699,9 @@ CREATE SEQUENCE intern_change_history_seq;
 
 CREATE TABLE intern_courses(
       id INT NOT NULL,
-      subject_id integer REFERENCES intern_subject(id),
+      subject_id INT REFERENCES intern_subject(id),
       course_num INT NOT NULL,
-      primary key (id)
+      PRIMARY KEY(id)
 );
 
 CREATE SEQUENCE intern_courses_seq;
@@ -932,35 +927,30 @@ CREATE SEQUENCE intern_admin_seq;
 
 -- Local table for import and storage of student info
 CREATE TABLE intern_local_student_data (
-    student_id          character varying not null,
-    user_name           character varying not null,
-    email               character varying not null,
-
+    student_id          character varying NOT NULL,
+    user_name           character varying NOT NULL,
+    email               character varying NOT NULL,
     first_name          character varying,
     middle_name         character varying,
     last_name           character varying,
     preferred_name      character varying,
     confidential        character varying,
-
     birth_date          character varying,
     gender              character varying,
-
     level               character varying,
     campus              character varying,
     gpa                 double precision,
-    credit_hours        integer default 0,
+    credit_hours        INT DEFAULT 0,
     major_code          character varying,
     major_description   character varying,
     grad_date           character varying,
-
     phone               character varying,
     address             character varying,
     address2            character varying,
     city                character varying,
     state               character varying,
     zip                 character varying,
-
-    primary key(student_id)
+    PRIMARY KEY(student_id)
 );
 
 COMMIT;

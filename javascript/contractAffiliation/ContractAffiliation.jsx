@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import Dropzone from 'react-dropzone';
 import $ from 'jquery';
 import classNames from 'classnames';
 
 // Checks to see if the affiliation agreement has expired
-class AffiliationList extends Component{
+class AffiliationList extends React.Component{
     render() {
         let optionSelect = null;
         // Date format in jsx is in milliseconds, date saved to agreement is in seconds
@@ -25,7 +25,7 @@ class AffiliationList extends Component{
     }
 }
 
-class AffiliationSelected extends Component{
+class AffiliationSelected extends React.Component{
     constructor(props) {
         super(props)
         this.state = {showContract: false,
@@ -97,7 +97,7 @@ class AffiliationSelected extends Component{
     }
 }
 
-class ContractSelected extends Component{
+class ContractSelected extends React.Component{
     constructor(props) {
         super(props)
         this.state = {show: false,
@@ -199,7 +199,7 @@ class ContractSelected extends Component{
     }
 }
 
-class ContractAffiliation extends Component{
+class ContractAffiliation extends React.Component{
     constructor(props) {
         super(props)
         this.state = {showContract: true,

@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import Dropzone from 'react-dropzone';
 
-class DocumentInfo extends Component{
+class DocumentInfo extends React.Component{
     constructor(props) {
         super(props)
         this.state = {currentFiles: []}
