@@ -138,6 +138,13 @@ class SaveInternship {
             \PHPWS_DB::rollback();
             throw $e;
         }
+        
+        if ($i->state == 'SigAuthApprovedState' && isset($_POST['workflow_action']) && $_POST['workflow_action'] == 'Intern\WorkflowTransition\DeanApprove') {
+            if (empty($_POST['loc_city']) || empty($_POST['loc_zip'])) {
+                $this->rerouteWithError('index.php?module=intern&action=ShowInternship',
+                        'This internship cannot continue to dean approval without the location\'s city and zip code.');
+            }
+        }
 
         // Check that the form token matched before we save anything
         if($i->form_token == $_REQUEST['form_token']) {
