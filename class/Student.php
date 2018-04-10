@@ -86,8 +86,7 @@ class Student {
     public function isCreditHourLimited(int $internHours, int $existingHours, Term $term): bool
     {
         $totalHours = $existingHours + $internHours;
-
-        $semester = Term::getSemester($term);
+        $semester = $term->getSemesterType();
         $code = $this->getLevel();
         $limit = 0;
         $level = LevelFactory::getLevelObjectById($code);
