@@ -142,8 +142,9 @@ class SaveInternship {
         /*
          * Prevents internship moving from signature authority approved to dean status without an address, city, and zip code.
          */
-        if ($i->isDomestic() && $i->state == 'SigAuthApprovedState' && isset($_POST['workflow_action']) && $_POST['workflow_action'] == 'Intern\WorkflowTransition\DeanApprove') {
-            if (empty($_POST['loc_city']) || empty($_POST['loc_zip']) || empty($_POST['loc_address'])) {
+        if ($i->state == 'SigAuthApprovedState' && isset($_POST['workflow_action']) && $_POST['workflow_action'] == 'Intern\WorkflowTransition\DeanApprove') {
+            if (empty($_POST['loc_city']) || empty($_POST['loc_zip']) || empty($_POST['loc_address']) ||
+                    (!$i->isDomestic() && empty($_POST['loc_province']))) {
                 $this->rerouteWithError('index.php?module=intern&action=ShowInternship',
                         'This internship cannot continue to dean approval without a full physical location address.');
             }
