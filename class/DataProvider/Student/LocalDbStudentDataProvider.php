@@ -95,15 +95,15 @@ class LocalDbStudentDataProvider extends StudentDataProvider {
         // Level (grad vs undergrad)
         // TODO: Merge this with changes for variable levels
         if($data['level'] == self::UNDERGRAD) {
-            $student->setLevel(Student::UNDERGRAD);
+            $student->setLevel(self::UNDERGRAD);
         } else if ($data['level'] == self::GRADUATE) {
-            $student->setLevel(Student::GRADUATE);
+            $student->setLevel(self::GRADUATE);
         } else if ($data['level'] == self::GRADUATE2) {
-            $student->setLevel(Student::GRADUATE2);
+            $student->setLevel(self::GRADUATE2);
         } else if ($data['level'] == self::DOCTORAL) {
-            $student->setLevel(Student::DOCTORAL);
+            $student->setLevel(self::DOCTORAL);
         } else if ($data['level'] == self::POSTDOC) {
-            $student->setLevel(Student::POSTDOC);
+            $student->setLevel(self::POSTDOC);
         } else {
             $student->setLevel(null);
         }
