@@ -57,17 +57,10 @@ class WebServiceDataProvider extends StudentDataProvider {
     }
 
     /**
-<<<<<<< 765a998d5d59b9e08a836c990bcac7053157d0ef:class/DataProvider/Student/WebServiceDataProvider.php
      * Returns a Student object with hard-coded data
      * @return \Intern\Student
      */
     public function getStudent($studentId)
-=======
-    * Returns a Student object with hard-coded data
-    * @return Student
-    */
-    public function getStudent($studentId, $term)
->>>>>>> fix request, need to add request by level:class/WebServiceDataProvider.php
     {
         if($studentId === null || $studentId == ''){
             throw new \InvalidArgumentException('Missing student ID.');
