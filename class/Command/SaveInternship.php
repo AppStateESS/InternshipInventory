@@ -94,7 +94,7 @@ class SaveInternship
             $start = strtotime($_REQUEST['start_date']);
             $end = strtotime($_REQUEST['end_date']);
 
-            if ($start > $end) {
+            if ($start >= $end) {
                 $url = 'index.php?module=intern&action=ShowInternship&missing=start_date+end_date';
                 // Restore the values in the fields the user already entered
                 unset($_POST['start_date']);
