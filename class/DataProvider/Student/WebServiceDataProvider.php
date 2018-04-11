@@ -22,6 +22,7 @@ namespace Intern\DataProvider\Student;
 
 use Intern\Student;
 use Intern\AcademicMajor;
+use Intern\LevelFactory;
 
 use \SoapFault;
 
