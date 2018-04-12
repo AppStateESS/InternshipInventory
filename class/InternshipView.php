@@ -161,7 +161,7 @@ class InternshipView {
         $currentC = LevelFactory::getLevelObjectById($currentLevel);
         if($level != $currentLevel)
         {
-            \NQ::simple('intern', UI\NotifyUI::WARNING, "The students current level is {$currentC->getDesc()} and is defferent from the internships level listed.");
+            \NQ::simple('intern', UI\NotifyUI::WARNING, "The students current level is {$currentC->getDesc()} and is different from the internships level listed.");
         }
 
         // Show warning if graduation date is prior to start date
