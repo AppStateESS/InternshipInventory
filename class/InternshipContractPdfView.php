@@ -70,7 +70,7 @@ class InternshipContractPdfView {
      */
     private function generatePdf()
     {
-        $this->pdf = new \FPDI('P', 'mm', 'Letter');
+        $this->pdf = new \setasign\Fpdi\Fpdi('P', 'mm', 'Letter');
         $a = $this->internship->getAgency();
         $d = $this->internship->getDepartment();
         $f = $this->internship->getFaculty();
