@@ -58,10 +58,16 @@ class SaveInternship
 
     public function execute()
     {
-        /*         * ************
+        // We don't want to do certain things like state change or error checks if this is an ajax request.
+        $isAjax = false;
+        if(\Canopy\Request::isAjax()){
+            $isAjax = true;
+        }
+        
+        /** ************
          * Sanity Checks
          */
-
+        
         // Required fields check
         $missing = self::checkRequest();
         if (!is_null($missing) && !empty($missing)) {
@@ -95,12 +101,14 @@ class SaveInternship
             $end = strtotime($_REQUEST['end_date']);
 
             if ($start >= $end) {
-                $url = 'index.php?module=intern&action=ShowInternship&missing=start_date+end_date';
-                // Restore the values in the fields the user already entered
-                unset($_POST['start_date']);
-                unset($_POST['end_date']);
-                $this->rerouteWithError($url,
-                        'The internship start date must be before the end date.');
+                if(!$isAjax){
+                    $url = 'index.php?module=intern&action=ShowInternship&missing=start_date+end_date';
+                    // Restore the values in the fields the user already entered
+                    unset($_POST['start_date']);
+                    unset($_POST['end_date']);
+                    $this->rerouteWithError($url,
+                            'The internship start date must be before the end date.');
+                }
             }
         }
 
@@ -152,17 +160,6 @@ class SaveInternship
             // Rollback and re-throw the exception so that admins gets an email
             \PHPWS_DB::rollback();
             throw $e;
-        }
-
-        /*
-         * Prevents internship moving from signature authority approved to dean status without an address, city, and zip code.
-         */
-        if ($i->state == 'SigAuthReadyState' && isset($_POST['workflow_action']) && $_POST['workflow_action'] == 'Intern\WorkflowTransition\SigAuthApprove') {
-            if (empty($_POST['loc_city']) || empty($_POST['loc_zip']) || empty($_POST['loc_address']) ||
-                    (!$i->isDomestic() && empty($_POST['loc_province']))) {
-                $this->rerouteWithError('index.php?module=intern&action=ShowInternship',
-                        'This internship cannot continue to dean approval without a full physical location address.');
-            }
         }
 
         // Check that the form token matched before we save anything
@@ -411,38 +408,39 @@ class SaveInternship
         \PHPWS_DB::commit();
         \PHPWS_DB::begin();
 
-        /*         * *************************
+        /** *************************
          * State/Workflow Handling *
          * ************************* */
-        $t = \Intern\WorkflowTransitionFactory::getTransitionByName($_POST['workflow_action']);
-        $workflow = new \Intern\WorkflowController($i, $t);
-        try {
-            $workflow->doTransition(isset($_POST['notes']) ? $_POST['notes'] : null);
-        } catch (\Intern\Exception\MissingDataException $e) {
-            \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, $e->getMessage());
-            \NQ::close();
-            return \PHPWS_Core::reroute('index.php?module=intern&action=ShowInternship&internship_id=' . $i->id);
-        }
-
-        // Create a ChangeHisotry for the OIED certification.
-        if ($oiedCertified) {
-            $currState = WorkflowStateFactory::getState($i->getStateName());
-            $ch = new ChangeHistory($i, \Current_User::getUserObj(), time(),
-                    $currState, $currState, 'Certified by OIED');
-            $ch->save();
-
-            // Notify the faculty member that OIED has certified the internship
-            if ($i->getFaculty() != null) {
-                $email = new \Intern\Email\OIEDCertifiedEmail(\Intern\InternSettings::getInstance(),
-                        $i, $term);
-                $email->send();
+        if(!$isAjax){
+            $t = \Intern\WorkflowTransitionFactory::getTransitionByName($_POST['workflow_action']);
+            $workflow = new \Intern\WorkflowController($i, $t);
+            try {
+                $workflow->doTransition(isset($_POST['notes']) ? $_POST['notes'] : null);
+            } catch (\Intern\Exception\MissingDataException $e) {
+                \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, $e->getMessage());
+                \NQ::close();
+                return \PHPWS_Core::reroute('index.php?module=intern&action=ShowInternship&internship_id=' . $i->id);
             }
+                    
+            // Create a ChangeHisotry for the OIED certification.
+            if ($oiedCertified) {
+                $currState = WorkflowStateFactory::getState($i->getStateName());
+                $ch = new ChangeHistory($i, \Current_User::getUserObj(), time(),
+                        $currState, $currState, 'Certified by OIED');
+                $ch->save();
+                
+                // Notify the faculty member that OIED has certified the internship
+                if ($i->getFaculty() != null) {
+                    $email = new \Intern\Email\OIEDCertifiedEmail(\Intern\InternSettings::getInstance(),
+                            $i, $term);
+                    $email->send();
+                }
+            }
+                            
+            \PHPWS_DB::commit();
+
+            $workflow->doNotification(isset($_POST['notes']) ? $_POST['notes'] : null);
         }
-
-        \PHPWS_DB::commit();
-
-        $workflow->doNotification(isset($_POST['notes']) ? $_POST['notes'] : null);
-
         //var_dump($_POST['generateContract']);exit;
         // If the user clicked the 'Generate Contract' button, then redirect to the PDF view
         if (isset($_POST['generateContract']) && $_POST['generateContract'] == 'true') {
