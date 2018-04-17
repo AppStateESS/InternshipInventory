@@ -23,6 +23,8 @@ namespace Intern\Command;
 use \Intern\InternshipFactory;
 use \Intern\WorkflowStateFactory;
 use \Intern\TermFactory;
+use \Intern\EmergencyContactFactory;
+use \Intern\EmergencyContact;
 
 /**
  * Controller class to save a copy of an Internship for the next term
@@ -67,8 +69,19 @@ class CopyInternshipToNextTerm {
         // Save the new internship
         $copyId = $internship->save();
 
+        // Load the emergency contacts from the old internship
+        $contacts = EmergencyContactFactory::getContactsForInternship($internship);
+
+        // Save the emergency contacts
+        $internId = $internship.getId();
+        foreach ($contacts as &$contact) {
+            $contact.setInternshipId($internId);
+            DatabaseStorage::save($contact);
+        }
+
+
         // Show message if user edited internship
-        \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, 'Continued internship for ' . $internship->getFullName() . ' to ' . $newTerm->getDescription() . '.');
+        \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, 'Continued internship for ' . $internship->getFullName() . ' to ' . $newTerm->getDescription());
         \NQ::close();
 
         // Redirect to the new internship
