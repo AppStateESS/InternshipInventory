@@ -179,10 +179,13 @@ class InternshipView {
 
         // Show warning if student is enrolled for more than the credit hour limit for the term
         $internHours = $this->intern->getCreditHours();
-
+        /*
+         * Diabled until proper fix.
         if(isset($internHours) && $this->student->isCreditHourLimited($internHours, $this->studentExistingCreditHours, $this->term)) {
             \NQ::simple('intern', UI\NotifyUI::WARNING, 'This internship will cause the student to exceed the semester credit hour limit. This student will need an Overload Permit from their Dean\'s Office.');
         }
+         * 
+         */
 
         // Show warning if GPA is below the minimum
         if($this->student->getGpa() < Internship::GPA_MINIMUM) {
