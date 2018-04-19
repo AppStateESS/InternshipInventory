@@ -87,7 +87,7 @@ class CopyInternshipToNextTerm {
 
 
         // Show message if user edited internship
-        \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, 'Continued internship for ' . $internship->getFullName() . ' to ' . $newTerm->getDescription());
+        \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, 'Continued internship for ' . $internship->getFullName() . ' to ' . $newTerm->getDescription() . '.');
         \NQ::close();
 
         // Redirect to the new internship
