@@ -1,0 +1,21 @@
+#!/bin/php
+<?php
+/**
+ *
+ *
+
+
+function insertInternship() {
+
+  $query = "SELECT NEXTVAL('sdr_organization_seq')";
+  $id_result = pg_query($query);
+
+  // create new organization
+  if($id_result){
+    $id_result = pg_fetch_row($id_result);
+    $sdr_org_id = $id_result[0];
+}
+
+function insertInternHost(){
+
+}
