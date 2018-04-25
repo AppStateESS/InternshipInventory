@@ -48,7 +48,7 @@ class MajorRest {
     {
         $pdo = PdoFactory::getPdoInstance();
 
-        $sql = "SELECT code, description, level
+        $sql = "SELECT id, description, hidden
                 FROM intern_major
                 ORDER BY description ASC";
 
@@ -60,7 +60,6 @@ class MajorRest {
         return $result;
     }
 
-    // TODO: Update this to match new majors editor.
 	public function post()
 	{
 		$major = $_REQUEST['create'];
@@ -74,7 +73,7 @@ class MajorRest {
 
 		$pdo = PdoFactory::getPdoInstance();
 
-		$sql = "INSERT INTO intern_major (id, name, hidden)
+		$sql = "INSERT INTO intern_major (id, description, hidden)
 				VALUES (nextval('intern_major_seq'), :major, :hidden)";
 
 		$sth = $pdo->prepare($sql);
@@ -83,11 +82,9 @@ class MajorRest {
 
 	}
 
-    // TODO: Update this to match new majors editor.
 	public function put()
 	{
-		$db = Database::newDB();
-		$pdo = $db->getPDO();
+		$pdo = PdoFactory::getPdoInstance();
 
 		if(isset($_REQUEST['val']))
 		{
@@ -108,7 +105,7 @@ class MajorRest {
 			$id = $_REQUEST['id'];
 
 			$sql = "UPDATE intern_major
-					SET name=:mname
+					SET description=:mname
 					WHERE id=:id";
 
 			$sth = $pdo->prepare($sql);

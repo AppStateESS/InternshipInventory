@@ -20,7 +20,6 @@
 
 namespace Intern\DataProvider\Term;
 
-use Intern\Term;
 use Intern\TermInfo;
 
 /**

@@ -12,6 +12,7 @@ module.exports = {
       facultyEdit: JS_DIR + '/facultyEdit/FacultyEdit.jsx',
       editMajor: JS_DIR + '/editMajor/editMajor.jsx',
       editGrad: JS_DIR + '/editGrad/editGrad.jsx',
+      editLevel: JS_DIR + '/editLevel/editLevel.jsx',
       affiliateList: JS_DIR + '/affiliationAgreement/AffiliateList.jsx',
       affiliationDepartments: JS_DIR + '/affiliationAgreement/AffiliationDepartments.jsx',
       affiliationLocation: JS_DIR + '/affiliationAgreement/AffiliationLocation.jsx',
