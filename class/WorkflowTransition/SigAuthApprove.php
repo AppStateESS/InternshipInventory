@@ -60,8 +60,7 @@ class SigAuthApprove extends WorkflowTransition {
          * Prevents internship moving from signature authority approved to dean status without an address, city, and zip code.
          */
         if ($i->state == 'SigAuthReadyState' && isset($_POST['workflow_action']) && $_POST['workflow_action'] == 'Intern\WorkflowTransition\SigAuthApprove') {
-            if (empty($_POST['loc_city']) || empty($_POST['loc_zip']) || empty($_POST['loc_address']) ||
-                    (!$i->isDomestic() && empty($_POST['loc_province']))) {
+            if (empty($_POST['loc_city']) || empty($_POST['loc_zip']) || empty($_POST['loc_address'])) {
                         throw new MissingDataException("This internship cannot continue to dean approval without a full physical location address.");
                 }
         }
