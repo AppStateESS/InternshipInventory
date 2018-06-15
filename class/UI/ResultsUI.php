@@ -117,6 +117,7 @@ class ResultsUI implements UI
 
         $pagerContent = $pager->get();
 
+
         // If there were no results, send the user back to the search interface
         if (sizeof($pager->display_rows) == 0) {
             \NQ::simple('intern', NotifyUI::WARNING,
@@ -140,6 +141,7 @@ class ResultsUI implements UI
      * Get the DBPager object.
      * Search strings can be passed in too.
      */
+
     private static function getPager($name = null, $deptId = null, $term = null,
             $ugradMajor = null, $gradProg = null, $level = null, $type = null,
             $campus = null, $loc = null, $state = null, $country = null,

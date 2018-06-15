@@ -70,8 +70,6 @@
 
       <!-- Level & Major Fieldset -->
       <fieldset>
-        <legend>Level &amp; Major/Program</legend>
-
         <div id="MajorSelector"></div>
       </fieldset>
 
