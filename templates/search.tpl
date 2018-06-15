@@ -70,28 +70,7 @@
 
       <!-- Level & Major Fieldset -->
       <fieldset>
-        <legend>Level &amp; Major/Program</legend>
-        <div class="form-group">
-          <label class="col-md-3 control-label" for="student_level">Level</label>
-          <div class="col-md-8">
-            <div class="btn-group" data-toggle="buttons">
-              <label class="btn btn-default active">Any Level
-                <input type="radio" class="student_level" name="student_level" value="-1" checked>
-              </label>
-              <label class="btn btn-default">Undergraduate
-                <input type="radio" class="student_level" name="student_level" value="ugrad">
-              </label>
-              <label class="btn btn-default">Graduate
-                <input type="radio" class="student_level" name="student_level" value="grad">
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="col-md-3 control-label" for="{MAJOR_ID}">Major / Program</label>
-          <div class="col-md-8">{STUDENT_MAJOR}{UNDERGRAD_MAJOR}{GRADUATE_MAJOR}</div>
-        </div>
+        <div id="MajorSelector"></div>
       </fieldset>
 
       <fieldset>
@@ -208,3 +187,4 @@
 
 <script type="text/javascript" src="{vendor_bundle}"></script>
 <script type="text/javascript" src="{entry_bundle}"></script>
+<script type="text/javascript" src="{major_bundle}"></script>

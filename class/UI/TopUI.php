@@ -1,4 +1,22 @@
 <?php
+/**
+ * This file is part of Internship Inventory.
+ *
+ * Internship Inventory is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * Internship Inventory is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License version 3
+ * along with Internship Inventory.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Copyright 2011-2018 Appalachian State University
+ */
 
 namespace Intern\UI;
 
@@ -46,13 +64,24 @@ class TopUI implements UI
             $adminOptions['EDIT_STATES_LINK'] = \PHPWS_Text::secureLink('Edit States','intern',array('action' => 'edit_states'));
         }
 
+        // Edit list of student levels
+        if(\Current_User::allow('intern', 'edit_level')){
+            $adminOptions['EDIT_STUDENT_LEVEL'] = \PHPWS_Text::secureLink('Edit Student Levels','intern',array('action' => 'edit_level'));
+        }
+
         // Link to the Affiliation Agreements
         if(\Current_User::allow('intern', 'affiliation_agreement')){
             $adminOptions['AFFIL_AGREE_LINK'] = \PHPWS_Text::secureLink('Affiliation Agreements','intern',array('action' => 'showAffiliateAgreement'));
         }
 
+        // Edit list of 'normal' courses
+        if(\Current_User::allow('intern', 'edit_courses')){
+            $adminOptions['EDIT_COURSES_LINK'] = \PHPWS_Text::secureLink('Edit Course List','intern',array('action' => 'edit_courses'));
+        }
+
         if(\Current_User::isDeity()){
             $adminOptions['CONTROL_PANEL']         = \PHPWS_Text::secureLink('Control Panel','controlpanel');
+            $adminOptions['ADMIN_SETTINGS']      = \PHPWS_Text::secureLink('Admin Settings','intern',array('action' => 'showAdminSettings'));
             $adminOptions['EDIT_ADMINS_LINK']      = \PHPWS_Text::secureLink('Edit Administrators','intern',array('action' => 'showEditAdmins'));
         }
 

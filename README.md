@@ -3,7 +3,6 @@ Internship Inventory
 
 [![Build Status](https://travis-ci.org/AppStateESS/InternshipInventory.svg?branch=master)](https://travis-ci.org/AppStateESS/InternshipInventory)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/AppStateESS/InternshipInventory/badges/quality-score.png?s=c90941c8179a4c726384b8b21bcd71536e7f1f36)](https://scrutinizer-ci.com/g/AppStateESS/InternshipInventory/)
-[![Code Climate](https://codeclimate.com/github/AppStateESS/InternshipInventory.png)](https://codeclimate.com/github/AppStateESS/InternshipInventory)
 
 Internship Inventory is a sleek, intunitive, and powerful web-application for tracking and approving student internships in a higher-education setting. It is created and maintained by the core team of [Electronic Student Services](http://ess.appstate.edu) at [Appalachian State University](http://www.appstate.edu) and other contributers.
 
@@ -33,7 +32,7 @@ Have a bug or a feature request? Please first search for existing and closed iss
 ## Contributing
 Community contributions are welcome. Please open a pull request.
 
-By contributing your code, you agree to license your contribution under the [GNU GPL v3](LICENSE). 
+By contributing your code, you agree to license your contribution under the [GNU GPL v3](LICENSE).
 
 ## Versioning
 Internship Inventory is maintained under the Semantic Versioning guidelines. We'll adhere to these rules whenever possible.
@@ -60,4 +59,4 @@ For more information on SemVer, please visit <http://semver.org/>.
 - Chris Detsch
 
 ## Copyright and license
-Code and documentation copyright 2008-2016 Appalachian State University. Code released under the [GNU GPL v3](LICENSE). Docs released under Creative Commons.
+Code and documentation copyright 2008-2018 Appalachian State University. Code released under the [GNU GPL v3](LICENSE). Docs released under Creative Commons Attribution 4.0 International (CC BY 4.0).

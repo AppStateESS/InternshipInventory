@@ -1,14 +1,27 @@
 <?php
+/**
+ * This file is part of Internship Inventory.
+ *
+ * Internship Inventory is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * Internship Inventory is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License version 3
+ * along with Internship Inventory.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Copyright 2011-2018 Appalachian State University
+ */
 
 namespace Intern;
 
 class Student {
     // Defines for Internship Inventory student Data
-    const UNDERGRAD = 'ugrad';
-    const GRADUATE  = 'grad';
-    const GRADUATE2 = 'grad2';
-    const DOCTORAL  = 'doctoral';
-    const POSTDOC   = 'postdoc';
 
     const MAIN_CAMPUS = 'main_campus';
     const DISTANCE_ED = 'distance_ed';
@@ -41,7 +54,7 @@ class Student {
     private $gpa;
     private $gradDate;
     private $holds;
-    private $creditHours;
+    //private $creditHours;
 
     // Person type flags
     private $isStaff;
@@ -70,27 +83,23 @@ class Student {
      * @param $term integer The term the internship will be in. Used to check existing credit hours.
      * @return boolean
      */
-    public function isCreditHourLimited($internHours, $term)
+    public function isCreditHourLimited(int $internHours, int $existingHours, Term $term): bool
     {
-        if(!isset($this->creditHours)){
-            return;
-        }
-
-        $totalHours = $this->creditHours + $internHours;
-
-        $semester = Term::getSemester($term);
-        $level = $this->getLevel();
+        $totalHours = $existingHours + $internHours;
+        $semester = $term->getSemesterType();
+        $code = $this->getLevel();
         $limit = 0;
+        $level = LevelFactory::getLevelObjectById($code);
         if(($semester == Term::FALL || $semester == Term::SPRING)) {
-            if($level == self::UNDERGRAD){
+            if($level->getLevel() == Level::UNDERGRAD){
                 $limit = self::HOURS_LIMIT_UNDERGRAD_REG;
-            } else if($level == self::GRADUATE) {
+            } else if($level->getLevel() == Level::GRADUATE){
                 $limit = self::HOURS_LIMIT_GRADUATE_REG;
             }
         } else if (($semester == Term::SUMMER1 || $semester == Term::SUMMER2)) {
-            if($level == self::UNDERGRAD){
+            if($level->getLevel() == Level::UNDERGRAD){
                 $limit = self::HOURS_LIMIT_UNDERGRAD_SUMMER;
-            } else if($level == self::GRADUATE) {
+            } else if($level->getLevel() == Level::GRADUATE){
                 $limit = self::HOURS_LIMIT_GRADUATE_SUMMER;
             }
         }
@@ -103,8 +112,8 @@ class Student {
     }
 
     /*****
-     * Accessor / Mutator Methods *
-     */
+    * Accessor / Mutator Methods *
+    */
 
     public function getStudentId() {
         return $this->studentId;
@@ -163,9 +172,9 @@ class Student {
     }
 
     /**
-     * Sets birth date
-     * @param $date String - Date, formatted as mm/dd/yyyy, ex: 6/20/1995
-     */
+    * Sets birth date
+    * @param $date String - Date, formatted as mm/dd/yyyy, ex: 6/20/1995
+    */
     public function setBirthDateFromString($date) {
         $this->birthDate = strtotime($date);
     }
@@ -200,25 +209,24 @@ class Student {
     }
 
     /**
-     * Returns an array of AcademicMajor objects corresponding to this
-     * student's majors.
-     *
-     * @return Array<AcademicMajor> Array of AcademicMajor objects for this student's majors.
-     */
+    * Returns an array of AcademicMajor objects corresponding to this
+    * student's majors.
+    *
+    * @return Array<AcademicMajor> Array of AcademicMajor objects for this student's majors.
+    */
     public function getMajors() {
         return $this->majors;
     }
 
     /**
-     * Adds a major to the array of majors for this student.
-     * Exepcts a stdClass object from the student info web service
-     * @param \stdClass $major A major object
-     */
+    * Adds a major to the array of majors for this student.
+    * Exepcts a stdClass object from the student info web service
+    * @param \stdClass $major A major object
+    */
     public function addMajor(AcademicMajor $major) {
         $this->majors[] = $major;
     }
 
-    // TODO: test for valid values ('grad', 'ugrad')
     public function setLevel($level) {
         $this->level = $level;
     }
@@ -232,9 +240,9 @@ class Student {
     }
 
     /**
-     * Sets graduation date
-     * @param $date String - Date, formatted as mm/dd/yyyy, ex: 6/20/1995
-     */
+    * Sets graduation date
+    * @param $date String - Date, formatted as mm/dd/yyyy, ex: 6/20/1995
+    */
     public function setGradDateFromString($date) {
         $this->gradDate = strtotime($date);
     }
@@ -244,6 +252,7 @@ class Student {
         return $this->gradDate;
     }
 
+    /*
     public function getCreditHours() {
         return $this->creditHours;
     }
@@ -251,17 +260,18 @@ class Student {
     public function setCreditHours($hours) {
         $this->creditHours = $hours;
     }
+    */
 
     /**
-     * @param $flag bool
-     */
+    * @param $flag bool
+    */
     public function setStudentFlag($flag) {
         $this->isStudent = $flag;
     }
 
     /**
-     * @param $flag bool
-     */
+    * @param $flag bool
+    */
     public function setStaffFlag($flag) {
         $this->isStaff = $flag;
     }

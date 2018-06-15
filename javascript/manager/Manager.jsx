@@ -2,12 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
 
-var AddData = React.createClass({
-	handleClick: function() {
+class AddData extends React.Component {
+    constructor(props){
+        super(props);
+
+        this.handleClick = this.handleClick.bind(this);
+    }
+	handleClick() {
 		var textName = ReactDOM.findDOMNode(this.refs.addData).value.trim();
 		this.props.onCreate(textName);
-	},
-	render: function() {
+	}
+	render() {
 		return (
 			<div className="col-md-5 col-md-offset-1">
 				<br /><br /><br />
@@ -37,23 +42,28 @@ var AddData = React.createClass({
 		);
 
 	}
-});
+}
 
 
-var DisplayData = React.createClass({
-	getInitialState: function() {
-		return {
+class DisplayData extends React.Component {
+	constructor(props) {
+        super(props);
+		this.state = {
 			editMode: false
 		};
-	},
-	handleEdit: function() {
+
+        this.handleEdit = this.handleEdit.bind(this);
+        this.handleHide = this.handleHide.bind(this);
+        this.handleSave = this.handleSave.bind(this);
+	}
+	handleEdit() {
 		this.setState({editMode: true});
 
-	},
-	handleHide: function() {
+	}
+	handleHide() {
 		this.props.onHidden(this.props.hidden, this.props.id);
-	},
-	handleSave: function() {
+	}
+	handleSave() {
 		this.setState({editMode: false});
 
 		// Grabs the value in the textbox
@@ -67,11 +77,10 @@ var DisplayData = React.createClass({
 		var originalName = this.props.name;
 
 		this.props.onSave(originalName, newName, this.props.id);
-	},
-	render: function() {
+	}
+	render() {
         var name = null;
         var hButton = null;
-
 		// Determines which element to show on the page (hide/show and Save/Edit)
 		if (this.props.hidden === 0) {
 			name = this.props.name;
@@ -107,21 +116,27 @@ var DisplayData = React.createClass({
 		);
 
 	}
-});
+}
 
 
-var Manager = React.createClass({
-	getInitialState: function() {
-		return {
+class Manager extends React.Component {
+	constructor(props) {
+        super(props);
+		this.state = {
 			mainData: null,
 			errorWarning: '',
 			success: ''
 		};
-	},
-	componentWillMount: function(){
+
+        this.getData = this.getData.bind(this);
+        this.onHidden = this.onHidden.bind(this);
+        this.onSave = this.onSave.bind(this);
+        this.onCreate = this.onCreate.bind(this);
+	}
+	componentWillMount(){
 		this.getData();
-	},
-	getData: function(){
+	}
+	getData(){
 		$.ajax({
 			url: 'index.php?module=intern&action='+this.props.ajaxURL,
 			type: 'GET',
@@ -134,8 +149,8 @@ var Manager = React.createClass({
 				console.error(this.props.url, status, err.toString());
 			}.bind(this)
 		});
-	},
-	onHidden: function(val, id){
+	}
+	onHidden(val, id){
 		// Hides the selected value
 		if (val === 0) {
 			val += 1;
@@ -154,8 +169,8 @@ var Manager = React.createClass({
 				console.error(this.props.url, status, err.toString());
 			}.bind(this)
 		});
-	},
-	onSave: function(orgName, newName, id){
+	}
+	onSave(orgName, newName, id){
 		var cleanName = encodeURIComponent(newName)
 
 		// Saves the value into the database
@@ -178,8 +193,8 @@ var Manager = React.createClass({
 				console.error(this.props.url, status, err.toString());
 			}.bind(this)
 		});
-	},
-	onCreate: function(name) {
+	}
+	onCreate(name) {
 		// Creates a new value
 		$.ajax({
 			url: 'index.php?module=intern&action='+this.props.ajaxURL+'&create='+name,
@@ -197,23 +212,26 @@ var Manager = React.createClass({
 				$("#warningError").show();
 			}.bind(this)
 		});
-	},
-	render: function() {
-        var data = null;
-
+	}
+	render() {
+        var data = null
+        var description = null
 		if (this.state.mainData != null) {
-			//var buttonTitle = this.props.buttonTitle;
-			//var panelTitle = this.props.panelTitle;
 			var onHidden = this.onHidden;
 			var onSave = this.onSave;
 			data = this.state.mainData.map(function (data) {
-			return (
-				<DisplayData key={data.id}
-						   id={data.id}
-						   name={data.name}
-						   hidden={data.hidden}
-						   onHidden={onHidden}
-						   onSave={onSave} />
+                if(data.name == null){
+                    description = data.description
+                } else{
+                    description = data.name
+                }
+                return (
+                    <DisplayData key={data.id}
+                        id={data.id}
+						name={description}
+						hidden={data.hidden}
+						onHidden={onHidden}
+						onSave={onSave} />
 				);
 			});
 
@@ -258,7 +276,7 @@ var Manager = React.createClass({
 			</div>
 		);
 	}
-});
+}
 
 
 export default Manager;

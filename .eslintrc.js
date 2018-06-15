@@ -22,7 +22,8 @@ module.exports = {
   parser: 'babel-eslint',
 
   // import plugin is temporarily disabled, scroll below to see why
-  plugins: [/*'import', */'flowtype', 'jsx-a11y', 'react'],
+//  plugins: [/*'import', */'flowtype', 'jsx-a11y', 'react'],
+    plugins: [/*'import', */'flowtype', 'react'], // Disable jsx-a11y until packages are compatible
 
   env: {
     browser: true,
@@ -198,10 +199,10 @@ module.exports = {
     'react/style-prop-object': 'warn',
 
     // https://github.com/evcohen/eslint-plugin-jsx-a11y/tree/master/docs/rules
-    'jsx-a11y/aria-role': 'warn',
-    'jsx-a11y/img-has-alt': 'warn',
-    'jsx-a11y/img-redundant-alt': 'warn',
-    'jsx-a11y/no-access-key': 'warn',
+    //'jsx-a11y/aria-role': 'warn',
+    //'jsx-a11y/img-has-alt': 'warn',
+    //'jsx-a11y/img-redundant-alt': 'warn',
+    //'jsx-a11y/no-access-key': 'warn',
 
     // https://github.com/gajus/eslint-plugin-flowtype
     'flowtype/define-flow-type': 'warn',

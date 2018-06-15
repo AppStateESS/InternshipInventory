@@ -1,6 +1,28 @@
 <?php
+/**
+ * This file is part of Internship Inventory.
+ *
+ * Internship Inventory is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-namespace Intern;
+ * Internship Inventory is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License version 3
+ * along with Internship Inventory.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Copyright 2011-2018 Appalachian State University
+ */
+
+namespace Intern\DataProvider\Student;
+
+use Intern\Student;
+use Intern\AcademicMajor;
+use Intern\LevelFactory;
 
 use \SoapFault;
 
@@ -12,7 +34,7 @@ use \SoapFault;
  * @author Jeremy Booker
  * @package Intern
  */
-class WebServiceDataProvider extends ExternalDataProvider {
+class WebServiceDataProvider extends StudentDataProvider {
 
     protected $currentUserName;
 
@@ -21,16 +43,9 @@ class WebServiceDataProvider extends ExternalDataProvider {
     // Campus: main campus, distance ed
     const MAIN_CAMPUS = 'Main Campus';
 
-    // Student level: grad, undergrad
-    const UNDERGRAD = 'U';
-    const GRADUATE  = 'G';
-    const GRADUATE2 = 'G2';
-    const DOCTORAL  = 'D';
-    const POSTDOC   = 'P'; // Guessing at the name here, not sure what 'P' really is
-
     /**
-     * @param string $currentUserName - Username of the user currently logged in. Will be sent to web service
-     */
+    * @param string $currentUserName - Username of the user currently logged in. Will be sent to web service
+    */
     public function __construct($currentUserName)
     {
         $this->currentUserName = $currentUserName;
@@ -44,18 +59,16 @@ class WebServiceDataProvider extends ExternalDataProvider {
 
     /**
      * Returns a Student object with hard-coded data
-     * @return Student
+     * @return \Intern\Student
      */
-    public function getStudent($studentId, $term)
+    public function getStudent($studentId)
     {
-        $term .= "0";
-
         if($studentId === null || $studentId == ''){
             throw new \InvalidArgumentException('Missing student ID.');
         }
 
         $params = array('BannerID' => $studentId,
-                        'UserName' => $this->currentUserName);
+        'UserName' => $this->currentUserName);
 
         try {
             $response = $this->sendRequest($params);
@@ -99,7 +112,8 @@ class WebServiceDataProvider extends ExternalDataProvider {
         // Log the request
         $this->logRequest('getStudent', 'success', $params);
 
-        $response->creditHours = $this->getCreditHours($studentId, $term);
+        // Removed built-in credit-hour fetching because we don't always have a term (but still need to lookup a student)
+        //$response->creditHours = $this->getCreditHours($studentId, $term);
 
         // Create the Student object and plugin the values
         $student = new Student();
@@ -113,7 +127,7 @@ class WebServiceDataProvider extends ExternalDataProvider {
         return $this->client->GetInternInfo($params);
     }
 
-    public function getCreditHours($studentId, $term)
+    public function getCreditHours(string $studentId, string $term)
     {
         if($studentId === null || $studentId == ''){
             throw new \InvalidArgumentException('Missing student ID.');
@@ -124,7 +138,8 @@ class WebServiceDataProvider extends ExternalDataProvider {
         }
 
         $params = array('BannerID'  => $studentId,
-                        'Term'      => $term);
+        'Term'      => $term,
+        'UserName'  => $this->currentUserName);
 
         try {
             $response = $this->client->GetCreditHours($params);
@@ -135,8 +150,8 @@ class WebServiceDataProvider extends ExternalDataProvider {
         // Log the request
         $this->logRequest('getCreditHours', 'success', $params);
 
-        if(isset($response->GetCreditHoursResponse)){
-            return $response->GetCreditHoursResponse;
+        if(isset($response->GetCreditHoursResult)){
+            return $response->GetCreditHoursResult;
         }else{
             return null;
         }
@@ -149,7 +164,7 @@ class WebServiceDataProvider extends ExternalDataProvider {
         }
 
         $params = array('BannerID' => $facultyId,
-                        'UserName' => $this->currentUserName);
+        'UserName' => $this->currentUserName);
 
         try {
             $response = $this->client->getInternInfo($params);
@@ -161,7 +176,12 @@ class WebServiceDataProvider extends ExternalDataProvider {
         if(isset($response->GetInternInfoResult->DirectoryInfo)) {
             $response = $response->GetInternInfoResult->DirectoryInfo;
         } else {
-            throw new \Intern\Exception\StudentNotFoundException("Could not locate student: $studentId");
+            throw new \Intern\Exception\StudentNotFoundException("Could not locate faculty member with id: $facultyId");
+        }
+
+        // Check for an arry of results
+        if(is_array($response)){
+            $response = $response[0];
         }
 
         // Check for an InvalidUsername error (i.e. the user doesn't have banner permissions)
@@ -171,15 +191,15 @@ class WebServiceDataProvider extends ExternalDataProvider {
 
         // Check for a web service system error
         if($response->error_num == 1 && $response->error_desc == 'SYSTEM'){
-            throw new \Intern\Exception\WebServiceException("Web service system error while looking up {$studentId}");
+            throw new \Intern\Exception\WebServiceException("Web service system error while looking up {$facultyId}");
         }
 
         if($response->error_num == 1101 && $response->error_desc == 'LookupBannerID'){
-            throw new \Intern\Exception\StudentNotFoundException("Invalid banner id: {$studentId}");
+            throw new \Intern\Exception\StudentNotFoundException("Invalid banner id: {$facultyId}");
         }
 
         if($response->error_num == 1001 && $response->error_desc == 'InvalidBannerID'){
-            throw new \Intern\Exception\StudentNotFoundException("Invalid banner id: {$studentId}");
+            throw new \Intern\Exception\StudentNotFoundException("Invalid banner id: {$facultyId}");
 
         }
 
@@ -191,17 +211,17 @@ class WebServiceDataProvider extends ExternalDataProvider {
     }
 
     /**
-     * Takes a reference to a Student object and a SOAP response,
-     * Plugs the SOAP values into Student object.
-     *
-     * @param Student $student
-     * @param stdClass $data
-     */
+    * Takes a reference to a Student object and a SOAP response,
+    * Plugs the SOAP values into Student object.
+    *
+    * @param Student $student
+    * @param stdClass $data
+    */
     protected function plugValues(&$student, \stdClass $data)
     {
         /**********************
-         * Basic Demographics *
-         **********************/
+        * Basic Demographics *
+        **********************/
         $student->setStudentId($data->banner_id);
         $student->setUsername($data->user_name);
 
@@ -232,8 +252,8 @@ class WebServiceDataProvider extends ExternalDataProvider {
         }
 
         /*****************
-         * Academic Info *
-         *****************/
+        * Academic Info *
+        *****************/
 
         // Campus
         if($data->campus == WebServiceDataProvider::MAIN_CAMPUS) {
@@ -248,30 +268,25 @@ class WebServiceDataProvider extends ExternalDataProvider {
             //throw new \InvalidArgumentException("Unrecognized campus ({$data->campus}) for {$data->banner_id}.");
         }
 
-        // Level (grad vs undergrad)
-        if($data->level == self::UNDERGRAD) {
-            $student->setLevel(Student::UNDERGRAD);
-        } else if ($data->level == self::GRADUATE) {
-            $student->setLevel(Student::GRADUATE);
-        } else if ($data->level == self::GRADUATE2) {
-            $student->setLevel(Student::GRADUATE2);
-        } else if ($data->level == self::DOCTORAL) {
-            $student->setLevel(Student::DOCTORAL);
-        } else if ($data->level == self::POSTDOC) {
-            $student->setLevel(Student::POSTDOC);
+        // Check if level exist, if not add it
+        if(LevelFactory::checkLevelExist($data->level)){
+            $student->setLevel($data->level);
         } else {
-            $student->setLevel(null);
+            $newLevel = LevelFactory::saveNewCode($data->level);
+            $student->setLevel($newLevel);
         }
 
         // Credit Hours
-        $student->setCreditHours($data->creditHours);
+        // Removed built-in credit hour fetching, since we don't always have a term
+        //$student->setCreditHours($data->creditHours);
 
-        // Majors - Can be an array of objects, or just a single object
-        if(is_array($data->majors)) {
+        // Majors - Can be an array of objects, or just a single object, or not set at all
+        // TODO: Fix hard-coded 'U' level passed to AcademicMajor
+        if(isset($data->majors) && is_array($data->majors)) {
             foreach($data->majors as $major){
                 $student->addMajor(new AcademicMajor($major->major_code, $major->major_desc, 'U'));
             }
-        } else if(is_object($data->majors)){
+        } else if(isset($data->majors) &&  is_object($data->majors)){
             $student->addMajor(new AcademicMajor($data->majors->major_code, $data->majors->major_desc, 'U'));
         }
 
@@ -298,8 +313,8 @@ class WebServiceDataProvider extends ExternalDataProvider {
     }
 
     /**
-     * Logs this request to PHPWS' soap.log file
-     */
+    * Logs this request to PHPWS' soap.log file
+    */
     private function logRequest($functionName, $result, Array $params)
     {
         $args = implode(', ', $params);

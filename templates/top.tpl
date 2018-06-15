@@ -13,7 +13,7 @@
     <ul class="nav navbar-nav">
       <li><a href="index.php?module=intern&action=ShowAddInternship"><i class="fa fa-plus"></i> Add Internship</a></li>
       <li><a href="index.php?module=intern&action=search"><i class="fa fa-search"></i> Search</a></li>
-      <li><a href="mailto:websupport@tux.appstate.edu?subject=Intern Inventory Help Request"><i class="fa fa-question"></i> Get Help</a></li>
+      <li><a href="mailto:esswebsupport@appstate.edu?subject=Internship Inventory Help Request"><i class="fa fa-question"></i> Get Help</a></li>
     </ul>
 
 
@@ -41,9 +41,18 @@
           <!-- BEGIN states -->
           <li>{EDIT_STATES_LINK}</li>
           <!-- END states -->
+          <!-- BEGIN level -->
+          <li>{EDIT_STUDENT_LEVEL}</li>
+          <!-- END level -->
           <!-- BEGIN affiliation_agreement -->
           <li>{AFFIL_AGREE_LINK}</li>
           <!-- END affiliation_agreement -->
+          <!-- BEGIN courses -->
+          <li>{EDIT_COURSES_LINK}</li>
+          <!-- END courses -->
+          <!-- BEGIN settings -->
+          <li>{ADMIN_SETTINGS}</li>
+          <!-- END settings -->
           <!-- BEGIN ctrl_panel -->
           <li>{CONTROL_PANEL}</li>
           <!-- END ctrl_panel -->

@@ -1,4 +1,23 @@
 <?php
+/**
+ * This file is part of Internship Inventory.
+ *
+ * Internship Inventory is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * Internship Inventory is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License version 3
+ * along with Internship Inventory.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Copyright 2011-2018 Appalachian State University
+ */
+
 namespace Intern\UI;
 
 class AddAgreementUI implements UI
@@ -21,18 +40,10 @@ class AddAgreementUI implements UI
         $form->setLabel('name', 'Affiliate Name');
         $form->addCssClass('name', 'form-control');
 
-        $form->addText('begin_date');
-        $form->setLabel('begin_date', 'Beginning Date');
-        $form->addCssClass('begin_date', 'form-control');
-
-        $form->addText('end_date');
-        $form->setLabel('end_date', 'Ending Date');
-        $form->addCssClass('end_date', 'form-control');
+        // Begin and end date fields handled directly in template
 
         $form->addCheck('auto_renew');
         $form->setLabel('auto_renew', 'Auto-Renew');
-
-        $tpl = array();
 
         $tpl = array();
 

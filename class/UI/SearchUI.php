@@ -1,15 +1,33 @@
 <?php
+/**
+ * This file is part of Internship Inventory.
+ *
+ * Internship Inventory is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * Internship Inventory is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License version 3
+ * along with Internship Inventory.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Copyright 2011-2018 Appalachian State University
+ */
 
 namespace Intern\UI;
 
 use Intern\Internship;
-use Intern\Term;
+use Intern\TermFactory;
 use Intern\DepartmentFactory;
 use Intern\Major;
 use Intern\GradProgram;
 use Intern\Subject;
 use Intern\WorkflowStateFactory;
-use Intern\MajorsProviderFactory;
+use Intern\DataProvider\Major\MajorsProviderFactory;
 use Intern\AssetResolver;
 
   /**
@@ -44,7 +62,7 @@ class SearchUI implements UI
         /***************
          * Course Info *
          ***************/
-        $terms = Term::getTermsAssoc();
+        $terms = TermFactory::getTermsAssoc();
         $form->addSelect('term_select', array(-1 => 'All') + $terms);
         $form->setLabel('term_select', 'Term');
         $form->setClass('term_select', 'form-control');
@@ -105,32 +123,8 @@ class SearchUI implements UI
         // Hidden field for selected faculty member
         $form->addHidden('faculty_id');
 
-        /*************************
-         * Student Level & Major *
-         *************************/
-         // Student level radio button
-        javascriptMod('intern', 'majorSelector', array('form_id'=>$form->id));
-
-        // Student Major dummy box (gets replaced by dropdowns below using JS when student_level is selected)
-        $levels = array('-1' => 'Choose student level first');
-        $form->addDropBox('student_major', $levels);
-        $form->setLabel('student_major', 'Major / Program');
-        $form->addCssClass('student_major', 'form-control');
-
-        // Get the majors list
-        $majorsList = MajorsProviderFactory::getProvider()->getMajors(Term::timeToTerm(time()));
-
-        // Undergrad major drop down
-        $undergradMajors = array('-1'=>'Select Undergraduate Major') + $majorsList->getUndergradMajorsAssoc();
-        $form->addSelect('undergrad_major', $undergradMajors);
-        $form->setMatch('undergrad_major', '-1');
-        $form->setClass('undergrad_major', 'form-control');
-
-        // Graduate major drop down
-        $graduateMajors = array('-1'=>'Select Graduate Major') + $majorsList->getGraduateMajorsAssoc();
-        $form->addSelect('graduate_major', $graduateMajors);
-        $form->setMatch('graduate_major', '-1');
-        $form->setClass('graduate_major', 'form-control');
+        // Student level radio button, Undergrad major drop down, Graduate major drop down
+        // Are all handled in JSX
 
         /*******************
          * Internship Type *
@@ -182,6 +176,7 @@ class SearchUI implements UI
         $tpl = array();
         $tpl['vendor_bundle'] = AssetResolver::resolveJsPath('assets.json', 'vendor');
         $tpl['entry_bundle'] = AssetResolver::resolveJsPath('assets.json', 'searchInterface');
+        $tpl['major_bundle'] = AssetResolver::resolveJsPath('assets.json', 'majorSelector');
 
         $form->mergeTemplate($tpl);
 

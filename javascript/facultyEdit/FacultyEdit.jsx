@@ -7,8 +7,14 @@ import {Button, Modal} from 'react-bootstrap';
 /**
  * Search form for looking up faculty by banner id.
  */
-var BannerSearch = React.createClass({
-    handleSearch: function(){
+class BannerSearch extends React.Component {
+    constructor(props){
+        super(props);
+
+        this.handleSearch = this.handleSearch.bind(this);
+        this.onKeyPress = this.onKeyPress.bind(this);
+    }
+    handleSearch(){
         var bannerId = this.refs.bannerId.value.trim();
 
         // TODO: use a regular exp to make sure it's nine digits, not just nine characters
@@ -18,14 +24,14 @@ var BannerSearch = React.createClass({
             // TODO: show an error alert for invalid format (banner ID must be nine digits)
             this.props.showNotification("Invalid banner ID format: ID must be nine digits");
         }
-    },
-    onKeyPress: function(event){
+    }
+    onKeyPress(event){
         // Capture the enter key and activate searching
         if(event.charCode === 13){
             this.handleSearch();
         }
-    },
-    render: function(){
+    }
+    render(){
         return (
             <div>
                 <div className="form-group">
@@ -39,16 +45,21 @@ var BannerSearch = React.createClass({
             </div>
         );
     }
-});
+}
 
 
 /**
  * Form for editing faculty details
  */
-var FacultyForm = React.createClass({
+class FacultyForm extends React.Component {
+    constructor(props){
+        super(props);
+
+        this.handleSave = this.handleSave.bind(this);
+    }
     // Event handler for Save button. Captures the data and passes
     // it as an object to the parent's handleSave() method.
-    handleSave: function() {
+    handleSave() {
         this.props.handleSave({id: this.props.facultyData.id,
                             username: this.props.facultyData.username,
                             first_name: this.refs.facultyEditFirstName.value,
@@ -61,8 +72,8 @@ var FacultyForm = React.createClass({
                             state: this.refs.facultyEditState.value,
                             zip: this.refs.facultyEditZip.value
                         });
-    },
-    render: function(){
+    }
+    render(){
         return (
             <div className="row">
 				<div className="col-md-offset-1 col-md-10">
@@ -135,20 +146,29 @@ var FacultyForm = React.createClass({
 			</div>
         );
     }
-});
+}
 
 // Modal Pop-up for adding/editing faculty members
 // !This uses ReactBoostrap!
-var FacultyModal = React.createClass({
-	getInitialState: function() {
-		return {
+class FacultyModal extends React.Component {
+	constructor(props) {
+        super(props);
+
+		this.state = this.getInitialState();
+
+        this.handleSave = this.handleSave.bind(this);
+        this.clearStateAndHide = this.clearStateAndHide.bind(this);
+        this.handleSearch = this.handleSearch.bind(this);
+	}
+    getInitialState(){
+        return {
 			errorWarning: '',
 			showModalNotification: false,
 			showModalForm: false,
 			showModalSearch: true,
 		};
-	},
-	componentWillMount: function() {
+    }
+	componentWillMount() {
 		// Used for editing a user (see edit handler).
 		// Disables/enables modal form and then grabs and displays the data.
 		if (this.props.edit === true)
@@ -156,12 +176,12 @@ var FacultyModal = React.createClass({
 			this.setState({showModalForm: true, showModalSearch: false})
 			this.props.getFacultyDetail(this.props.id);
 		}
-	},
-    clearStateAndHide: function() {
+	}
+    clearStateAndHide() {
         this.setState(this.getInitialState());
         this.props.hide();
-    },
-	addFacultyToDept: function(facultyData) {
+    }
+	addFacultyToDept(facultyData) {
         // Connects the faculty member and the department together.
 
 		var idNum = facultyData.id;
@@ -178,12 +198,12 @@ var FacultyModal = React.createClass({
 				console.error(this.props.url, status, err.toString());
 			}.bind(this)
 		});
-	},
-	handleSearch: function(bannerId) {
+	}
+	handleSearch(bannerId) {
 		this.setState({errorWarning:''});
 		this.props.getFacultyDetails(bannerId);
-	},
-	handleSave: function(facultyData) {
+	}
+	handleSave(facultyData) {
 		// Saves the faculty data.
 		$.ajax({
 			url: 'index.php?module=intern&action=restFacultyById',
@@ -215,11 +235,11 @@ var FacultyModal = React.createClass({
 				console.error(this.props.url, status, err.toString());
 			}.bind(this)
 		});
-	},
-	showNotification: function(msg){
+	}
+	showNotification(msg){
 		this.setState({errorWarning:msg});
-	},
-    render: function() {
+	}
+    render() {
     	// Warning notification for invalid Banner size or Banner ID
     	var notification = <div className="alert alert-warning" role="alert">{this.state.errorWarning !== '' ? this.state.errorWarning: this.props.errorWarning}</div>
 
@@ -259,19 +279,27 @@ var FacultyModal = React.createClass({
           </Modal>
         );
     }
-});
+}
 
 
 
-var FacultyTableRow = React.createClass({
-    getInitialState: function() {
-        return {showModal: false,
-        		userData: 	   null,
+class FacultyTableRow extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {
+                showModal: false,
+        		userData: null,
         		showModalSearch: false,
         		showModalForm: true,
-        		errorWarning: ''};
-    },
-    getFacultyDetails: function(idNum){
+        		errorWarning: ''
+            };
+
+        this.handleRemove = this.handleRemove.bind(this);
+        this.handleEdit = this.handleEdit.bind(this);
+        this.hideModal = this.hideModal.bind(this);
+        this.getFacultyDetails = this.getFacultyDetails.bind(this);
+    }
+    getFacultyDetails(idNum){
 		// Grabs the facuitly data from restFacultyById and sets the
 		// data to the state as well as setting the modal form to true and false.
 		$.ajax({
@@ -286,21 +314,21 @@ var FacultyTableRow = React.createClass({
 				console.error(this.props.url, status, err.toString());
 			}.bind(this)
 		});
-	},
-	handleRemove: function() {
+	}
+	handleRemove() {
 		this.props.onFacultyRemove(this.props.id);
-	},
-	handleEdit: function() {
+	}
+	handleEdit() {
 		if (this.state.userData == null)
 		{
 			this.getFacultyDetails(this.props.id);
 		}
 		this.setState({showModal: true});
-	},
-    hideModal: function() {
+	}
+    hideModal() {
         this.setState({showModal: false});
-    },
-	render: function() {
+    }
+	render() {
 		// Creates each row for the name, banner ID, a button with a trigger for modal to edit, and a delete button.
 		return (
 			<tr>
@@ -324,24 +352,21 @@ var FacultyTableRow = React.createClass({
 			</tr>
 		);
 	}
-});
+}
 
 
-
-
-
-var DepartmentList = React.createClass({
-	render: function() {
+class DepartmentList extends React.Component {
+	render() {
 		// Creates each department in the dropdown
 	    return (
 	     	<option value={this.props.id}>{this.props.name}</option>
 	    )
 	}
-});
+}
 
 
-var FacultyTable = React.createClass({
-	render: function() {
+class FacultyTable extends React.Component {
+	render() {
 
         var faculty = null;
 		if (this.props.tableData != null) {
@@ -391,14 +416,15 @@ var FacultyTable = React.createClass({
 
 		);
 	}
-});
+}
 
 
 
 
-var EditFaculty = React.createClass({
-	getInitialState: function() {
-		return {
+class EditFaculty extends React.Component {
+	constructor(props) {
+        super(props);
+		this.state = {
 			dropData: null,
 			deptData: null,
 			facultyData: null,
@@ -409,13 +435,20 @@ var EditFaculty = React.createClass({
 			deptNum: -1,
             showPopup: false
 		};
-	},
-	componentWillMount: function(){
+
+        this.onFacultyRemove = this.onFacultyRemove.bind(this);
+        this.handleDrop = this.handleDrop.bind(this);
+        this.showModal = this.showModal.bind(this);
+        this.hideModal = this.hideModal.bind(this);
+        this.getFacultyDetails = this.getFacultyDetails.bind(this);
+        this.getDeptFaculty = this.getDeptFaculty.bind(this);
+	}
+	componentWillMount(){
 		// Setting the department data in the state
 		// for the dropdown box.
 		this.getData();
-	},
-	getData: function(){
+	}
+	getData(){
 		// Gets the list of departments which the current user has access to
 		$.ajax({
 			url: 'index.php?module=intern&action=facultyDeptRest',
@@ -429,8 +462,8 @@ var EditFaculty = React.createClass({
 				console.error(this.props.url, status, err.toString());
 			}.bind(this)
 		});
-	},
-	getDeptFaculty: function(department_id){
+	}
+	getDeptFaculty(department_id){
 		// Gets the Faculty list for the department selected by the user.
 		// Sets the state for the faculty data and department Id.
 		$.ajax({
@@ -445,8 +478,8 @@ var EditFaculty = React.createClass({
 				console.error(this.props.url, status, err.toString());
 			}.bind(this)
 		});
-	},
-	onFacultyRemove: function(idNum){
+	}
+	onFacultyRemove(idNum){
 		var departNum = this.state.deptNum;
 
 		// 'Deletes' the user from the association with the designated department.
@@ -462,8 +495,8 @@ var EditFaculty = React.createClass({
 			}.bind(this)
 		});
 
-	},
-	getFacultyDetails: function(idNum){
+	}
+	getFacultyDetails(idNum){
 		// Grabs the facuitly data from restFacultyById and sets the
 		// data to the state as well as setting the modal form to true and false.
 		$.ajax({
@@ -488,8 +521,8 @@ var EditFaculty = React.createClass({
 				console.error(this.props.url, status, err.toString());
 			}.bind(this)
 		});
-	},
-	handleDrop: function(e) {
+	}
+	handleDrop(e) {
 		// Event handler for the dropdown box, shows the table if the department is not 'select a department'
 		if (e.target.value === -1)
 		{
@@ -502,14 +535,14 @@ var EditFaculty = React.createClass({
 			this.getDeptFaculty(department_id);
 		}
 
-	},
-    showModal: function(){
+	}
+    showModal(){
         this.setState({showPopup: true, showModalSearch: true, showModalForm: false});
-    },
-    hideModal: function() {
+    }
+    hideModal() {
         this.setState({showPopup: false});
-    },
-	render: function() {
+    }
+	render() {
         var dData = null;
 		if (this.state.dropData != null) {
 			// Maps the dropdown department data and calls the DepartmentList class
@@ -581,7 +614,7 @@ var EditFaculty = React.createClass({
 			</div>
 		);
 	}
-});
+}
 
 
 

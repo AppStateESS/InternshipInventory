@@ -1,4 +1,22 @@
 <?php
+/**
+ * This file is part of Internship Inventory.
+ *
+ * Internship Inventory is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * Internship Inventory is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License version 3
+ * along with Internship Inventory.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Copyright 2011-2018 Appalachian State University
+ */
 
 namespace Intern;
 
@@ -17,9 +35,9 @@ class TermInfo {
     // Basic demographics
     private $termCode;
     private $termDesc;
-    private $termStartDate;
+    private $termStartDate; // Format: '8/22/2017'
     private $termEndDate;
-    private $censusDate;
+    private $censusDate; // Date the term is no longer available for new internships
 
     private $partTerm;
 
@@ -41,6 +59,7 @@ class TermInfo {
 
     public function getLongestTermPart()
     {
+        /*
         $semester = Term::getSemester($this->termCode);
         if($semester == Term::SPRING || $semester == Term::FALL){
             $part = $this->getTermPartByCode('4');
@@ -49,8 +68,27 @@ class TermInfo {
         } else if($semester == Term::SUMMER2){
             $part = $this->getTermPartByCode('SE');
         }
+        */
 
-        return $part;
+        $parts = $this->getTermParts();
+
+        $longestPart = null;
+        $longestPartLength = 0;
+
+        foreach($parts as $part){
+            $beginTimestamp = strtotime($part->part_start_date);
+            $endTimestamp = strtotime($part->part_end_date);
+
+            $length = $beginTimestamp - $endTimestamp;
+
+            if($length > $longestPartLength){
+                // We've found a longer part, so save it
+                $longestPart = $part;
+                $longestPartLength = $length;
+            }
+        }
+
+        return $longestPart;
     }
 
     /*****
@@ -62,9 +100,9 @@ class TermInfo {
         return $this->termCode;
     }
 
-    public function setTermCode($term_code)
+    public function setTermCode($termCode)
     {
-        $this->termCode = $term_code;
+        $this->termCode = $termCode;
     }
 
     public function getTermDesc()
@@ -72,9 +110,9 @@ class TermInfo {
         return $this->termDesc;
     }
 
-    public function setTermDesc($term_desc)
+    public function setTermDesc($termDesc)
     {
-        $this->termDesc = $term_desc;
+        $this->termDesc = $termDesc;
     }
 
     public function getTermStartDate()
@@ -82,9 +120,9 @@ class TermInfo {
         return $this->termStartDate;
     }
 
-    public function setTermStartDate($term_start_date)
+    public function setTermStartDate($termStartDate)
     {
-        $this->termStartDate = $term_start_date;
+        $this->termStartDate = $termStartDate;
     }
 
     public function getTermEndDate()
@@ -92,9 +130,9 @@ class TermInfo {
         return $this->termEndDate;
     }
 
-    public function setTermEndDate($term_end_date)
+    public function setTermEndDate($termEndDate)
     {
-        $this->termEndDate = $term_end_date;
+        $this->termEndDate = $termEndDate;
     }
 
     public function getCensusDate()
@@ -102,9 +140,9 @@ class TermInfo {
         return $this->censusDate;
     }
 
-    public function setCensusDate($census_date)
+    public function setCensusDate($censusDate)
     {
-        $this->censusDate = $census_date;
+        $this->censusDate = $censusDate;
     }
 
     public function getTermParts(){

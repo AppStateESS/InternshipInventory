@@ -12,8 +12,9 @@ $permissions['delete_grad_prog']        = _('Add/Edit/Hide/Delete graduate progr
 $permissions['delete_dept']             = _('Add/Edit/Hide/Delete departments.');
 $permissions['edit_dept']               = _('Add/Edit/Hide departments.');
 $permissions['edit_states']             = _('Add/Edit/Hide states.');
+$permissions['edit_level']              = _('Add/Edit levels.');
 $permissions['affiliation_agreement']   = _('Add/Edit Affiliation Agreements');
-
+$permissions['edit_courses']            = _('Edit Standard Internship Course List.');
 
 // Permissions for workflow transitions
 $permissions['create_internship']= _('Create Internships');

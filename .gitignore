@@ -4,4 +4,8 @@ composer.phar
 node_modules/
 bower_components
 assets.json
+*.*~
+*#
 javascript/dist/
+/nbproject/private/
+/nbproject

@@ -1,10 +1,30 @@
 <?php
+/**
+ * This file is part of Internship Inventory.
+ *
+ * Internship Inventory is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * Internship Inventory is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License version 3
+ * along with Internship Inventory.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Copyright 2011-2018 Appalachian State University
+ */
 
 namespace Intern\UI;
 
 use Intern\SubselectPager;
 use Intern\SubselectDatabase;
 use Intern\Student;
+use Intern\Level;
+use Intern\LevelFactory;
 
 /**
  * ResultsUI
@@ -53,12 +73,12 @@ class ResultsUI implements UI {
             $term = $_REQUEST['term_select'];
         if (isset($_REQUEST['name']))
             $name = $_REQUEST['name'];
-        if (isset($_REQUEST['undergrad_major']))
-            $ugradMajor = $_REQUEST['undergrad_major'];
-        if (isset($_REQUEST['graduate_major']))
-            $gradProg = $_REQUEST['graduate_major'];
-        if (isset($_REQUEST['student_level']) && $_REQUEST['student_level'] != '-1')
-            $level = $_REQUEST['student_level'];
+        if (isset($_REQUEST['ugrad']))
+            $ugradMajor = $_REQUEST['ugrad'];
+        if (isset($_REQUEST['grad']))
+            $gradProg = $_REQUEST['grad'];
+        if (isset($_REQUEST['level']) && $_REQUEST['level'] != '-1')
+            $level = $_REQUEST['level'];
         if (isset($_REQUEST['type']))
             $type = $_REQUEST['type'];
         if (isset($_REQUEST['campus']))
@@ -167,12 +187,11 @@ class ResultsUI implements UI {
             $tokenLimit = 2; // Max number of tokens
 
             // The fields (db column names) to fuzzy match against, in decreasing order of importance
-            $fuzzyFields = array('last_name', 'first_name', 'middle_name');
+            // $fuzzyFields = array('last_name', 'first_name', 'middle_name'); //NB: Unused
             $fuzzyTolerance = 3; // Levenshtein distance allowed between the metaphones of a token and a $fuzzyField
 
             // Initalization
             $orderByList = array();
-            $whereSet = array();
 
             // Tokenize the passed in string
             $tokenCount = 0;
@@ -216,20 +235,22 @@ class ResultsUI implements UI {
 
         // Student level
         if (isset($level)) {
-
-            if($level == Student::UNDERGRAD){
-                $pager->addWhere('level', Student::UNDERGRAD);
-            } else if ($level == Student::GRADUATE || $level == Student::DOCTORAL || $level == Student::POSTDOC) {
-                $pager->addWhere('level', Student::GRADUATE, null, 'OR', 'grad_level');
-                $pager->addWhere('level', Student::DOCTORAL, null, 'OR', 'grad_level');
-                $pager->addWhere('level', Student::POSTDOC, null, 'OR', 'grad_level');
+            $sLevel = LevelFactory::getLevelObjectByLevel($level);
+            if($level == Level::UNDERGRAD){
+                for($i = 0; $i < count($sLevel); $i++) {
+                    $pager->addWhere('level', $sLevel[$i]->code, null, 'OR', 'grad_level');
+                }
+            } else if ($level == Level::GRADUATE) {
+                for($i = 0; $i < count($sLevel); $i++){
+                    $pager->addWhere('level', $sLevel[$i]->code, null, 'OR', 'grad_level');
+                }
             }
 
             // Major
-            if ($level == 'ugrad' && isset($ugradMajor) && $ugradMajor != -1) {
+            if ($level == Level::UNDERGRAD && isset($ugradMajor) && $ugradMajor != -1) {
                 // Undergrad major
                 $pager->addWhere('major_code', $ugradMajor);
-            } else if ($level == 'grad' && isset($gradProg) && $gradProg != -1) {
+            } else if ($level == Level::GRADUATE && isset($gradProg) && $gradProg != -1) {
                 // Graduate program
                 $pager->addWhere('major_code', $gradProg);
             }

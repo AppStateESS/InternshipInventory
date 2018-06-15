@@ -1,4 +1,23 @@
 <?php
+/**
+ * This file is part of Internship Inventory.
+ *
+ * Internship Inventory is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * Internship Inventory is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License version 3
+ * along with Internship Inventory.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Copyright 2011-2018 Appalachian State University
+ */
+
 namespace Intern\Email;
 
 use \Intern\Internship;
@@ -16,6 +35,7 @@ use \Intern\Term;
 class ReadyToRegisterEmail extends Email {
 
     private $internship;
+    private $term;
 
     /**
      * Constructor
@@ -23,10 +43,11 @@ class ReadyToRegisterEmail extends Email {
      * @param InternSettings $emailSettings
      * @param Internship $internship
      */
-    public function __construct(InternSettings $emailSettings, Internship $internship) {
+    public function __construct(InternSettings $emailSettings, Internship $internship, Term $term) {
         parent::__construct($emailSettings);
 
         $this->internship = $internship;
+        $this->term = $term;
     }
 
     protected function getTemplateFileName(){
@@ -44,7 +65,7 @@ class ReadyToRegisterEmail extends Email {
         $this->tpl['USER'] = $this->internship->email;
         $this->tpl['PHONE'] = $this->internship->phone;
 
-        $term = Term::rawToRead($this->internship->getTerm(), false);
+        $term = $this->term->getDescription();
         $this->tpl['TERM'] = $term;
 
         if(isset($this->internship->course_subj)){
@@ -166,6 +187,12 @@ class ReadyToRegisterEmail extends Email {
         }
 
         // Subject line
-        $this->subject = $term . ' ' . $intlSubject . '[' . $this->internship->getBannerId() . '] ' . $this->internship->getFullName();
+        if(isset($this->internship->course_subj)){
+            $courseSubj = $subjects[$this->internship->course_subj];
+        } else {
+            $courseSubj = '';
+        }
+
+        $this->subject = $term . ' ' . $intlSubject . '[' . $this->internship->getBannerId() . '] ' . $this->internship->getFullName() . ' ' . $courseSubj . ' ' . $this->internship->course_no;
     }
 }
