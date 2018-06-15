@@ -162,19 +162,6 @@ class SearchUI implements UI
          ************************/
         // Handeled directly in the html template
 
-
-        /**************
-         * Date Range *
-         **************/
-        $form->addText('start_date');
-        $form->setLabel('start_date', 'Starting After');
-        $form->addCssClass('start_date', 'form-control');
-
-        $form->addText('end_date');
-        $form->setLabel('end_date', 'Ending Before');
-        $form->addCssClass('end_date', 'form-control');
-
-
         $form->addSubmit('submit', 'Search');
 
         // Javascript...
