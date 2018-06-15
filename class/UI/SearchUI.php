@@ -144,6 +144,15 @@ class SearchUI implements UI
         /*******************
          * Workflow States *
          *******************/
+        // Date Range
+        $form->addText('start_date');
+        $form->setLabel('start_date', 'Starting After');
+        $form->addCssClass('start_date', 'form-control');
+
+        $form->addText('end_date');
+        $form->setLabel('end_date', 'Ending Before');
+        $form->addCssClass('end_date', 'form-control');
+
         $workflowStates = WorkflowStateFactory::getStatesAssoc();
         unset($workflowStates['Intern\WorkflowState\CreationState']); // Remove this state, since it's not valid (internal only state for initial creation)
         $form->addCheckAssoc('workflow_state', $workflowStates);
