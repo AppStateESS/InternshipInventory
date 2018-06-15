@@ -483,6 +483,7 @@ INSERT INTO intern_subject (id, abbreviation, description) VALUES (nextval('inte
 INSERT INTO intern_subject (id, abbreviation, description) VALUES (nextval('intern_subject_seq'),'US','University Studies');
 INSERT INTO intern_subject (id, abbreviation, description) VALUES (nextval('intern_subject_seq'),'WGC','Watauga Global Community');
 INSERT INTO intern_subject (id, abbreviation, description) VALUES (nextval('intern_subject_seq'),'WS','Women’s Studies');
+INSERT INTO intern_subject (id, abbreviation, description) VALUES (nextval('intern_subject_seq'),'PHO','Photography');
 
 CREATE TABLE intern_agency (
        id INT NOT NULL,
