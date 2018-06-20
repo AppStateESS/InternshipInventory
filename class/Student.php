@@ -13,12 +13,6 @@ class Student {
     const MAIN_CAMPUS = 'main_campus';
     const DISTANCE_ED = 'distance_ed';
 
-    const HOURS_LIMIT_UNDERGRAD_REG = 18;
-    const HOURS_LIMIT_UNDERGRAD_SUMMER = 7;
-
-    const HOURS_LIMIT_GRADUATE_REG = 12;
-    const HOURS_LIMIT_GRADUATE_SUMMER = 6;
-
     // Basic demographics
     private $studentId;
     private $username;
@@ -77,7 +71,7 @@ class Student {
         $semester = $term->getSemesterType();
         $level = $this->getLevel();
         $limit = 0;
-        if(($semester == Term::FALL || $semester == Term::SPRING)) {
+        /*if(($semester == Term::FALL || $semester == Term::SPRING)) {
             if($level == self::UNDERGRAD){
                 $limit = self::HOURS_LIMIT_UNDERGRAD_REG;
             } else {
@@ -89,6 +83,11 @@ class Student {
             } else {
                 $limit = self::HOURS_LIMIT_GRADUATE_SUMMER;
             }
+        }*/
+        if ($level == self::UNDERGRAD) {
+            $limit = $term->getUndergradOverloadHours();
+        } else if {
+            $limit = $term->getGradOverloadHours();
         }
 
         if($totalHours > $limit){
