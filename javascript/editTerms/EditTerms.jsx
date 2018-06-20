@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import Calendar from 'react-calendar';
 
 class ErrorMessagesBlock extends React.Component {
     render() {
@@ -57,9 +58,8 @@ class TermRow extends React.Component {
         var newAvailDate = ReactDOM.findDOMNode(this.refs.savedAvailDate).value.trim();
         var newStartDate = ReactDOM.findDOMNode(this.refs.savedStartDate).value.trim();
         var newEndDate = ReactDOM.findDOMNode(this.refs.savedEndDate).value.trim();
-
-        console.log(newTcode);
-        //exit();
+        var newUgradOverload = ReactDOM.findDOMNode(this.refs.savedUgradOverload).value.trim();
+        var newGradOverload = ReactDOM.findDOMNode(this.refs.savedGradOverload).value.trim();
 
         if (newTcode === '') {
             newTcode = this.props.tcode;
@@ -82,12 +82,14 @@ class TermRow extends React.Component {
         if (newEndDate === '') {
             newEndDate = this.timestampToDate(this.props.end);
         }
+        if (newUgradOverload === '') {
+            newUgradOverload = this.props.ugradOverload;
+        }
+        if (newGradOverload === '') {
+            newGradOverload = this.props.gradOverload;
+        }
 
-        var wholeTerm = {term: newTcode, stype: newStype, descr: newDescr,
-                        census: newCensusDate, avail: newAvailDate, start: newStartDate,
-                        end: newEndDate};
-
-        this.props.onTermSave(newTcode, newStype, newDescr, newCensusDate, newAvailDate, newStartDate, newEndDate, this.props.tcode);
+        this.props.onTermSave(newTcode, newStype, newDescr, newCensusDate, newAvailDate, newStartDate, newEndDate, newUgradOverload, newGradOverload, this.props.tcode);
 
     }
     render() {
@@ -112,6 +114,8 @@ class TermRow extends React.Component {
                 <td>{availDate}</td>
                 <td>{startDate}</td>
                 <td>{endDate}</td>
+                <td>{this.props.ugradOver}</td>
+                <td>{this.props.gradOver}</td>
                 <td>{mainButton}</td>
             </tr>
             );
@@ -130,10 +134,214 @@ class TermRow extends React.Component {
                 <td><input type="text" className="form-control" ref="savedAvailDate" defaultValue={availDate}/></td>
                 <td><input type="text" className="form-control" ref="savedStartDate" defaultValue={startDate}/></td>
                 <td><input type="text" className="form-control" ref="savedEndDate" defaultValue={endDate}/></td>
+                <td><input type="text" className="form-control" ref="savedUgradOverload" defaultValue={this.props.ugradOver}/></td>
+                <td><input type="text" className="form-control" ref="savedGradOverload" defaultValue={this.props.gradOver}/></td>
                 <td style={{"verticalAlign" : "middle"}}>{mainButton}</td>
             </tr>
             );
         }
+    }
+}
+
+class TermInput extends React.Component
+{
+    constructor(props) {
+        super(props);
+        this.state = {
+            censusDateInput: new Date(),
+            availableDateInput: new Date(),
+            startDateInput: new Date(),
+            endDateInput: new Date(),
+            showCalendarCensus: false,
+            showCalendarAvailable: false,
+            showCalendarStart: false,
+            showCalendarEnd: false
+        };
+
+        this.onChangeCensus = this.onChangeCensus.bind(this);
+        this.onChangeAvailable = this.onChangeAvailable.bind(this);
+        this.onChangeStart = this.onChangeStart.bind(this);
+        this.onChangeEnd = this.onChangeEnd.bind(this);
+        this.showCalendarCensus = this.showCalendarCensus.bind(this);
+        this.showCalendarAvailable = this.showCalendarAvailable.bind(this);
+        this.showCalendarStart = this.showCalendarStart.bind(this);
+        this.showCalendarEnd = this.showCalendarEnd.bind(this);
+    }
+    onChangeCensus(censusDateInput) {
+      this.setState({censusDateInput: censusDateInput});
+      (this.refs.census_date).value = censusDateInput.toLocaleDateString("en-US");
+    }
+    onChangeAvailable(availableDateInput) {
+      this.setState({availableDateInput: availableDateInput});
+      (this.refs.available_date).value = availableDateInput.toLocaleDateString("en-US");
+    }
+    onChangeStart(startDateInput) {
+      this.setState({startDateInput: startDateInput});
+      (this.refs.start_date).value = startDateInput.toLocaleDateString("en-US");
+    }
+    onChangeEnd(endDateInput) {
+       this.setState({endDateInput: endDateInput});
+       (this.refs.end_date).value = endDateInput.toLocaleDateString("en-US");
+    }
+    showCalendarCensus() {
+        if (this.state.showCalendarCensus === false) {
+            this.setState({showCalendarAvailable: false});
+            this.setState({showCalendarStart: false});
+            this.setState({showCalendarEnd: false});
+        }
+        this.setState({showCalendarCensus: !this.state.showCalendarCensus});
+    }
+    showCalendarAvailable() {
+        if (this.state.showCalendarAvailable === false) {
+            this.setState({showCalendarCensus: false});
+            this.setState({showCalendarStart: false});
+            this.setState({showCalendarEnd: false});
+        }
+        this.setState({showCalendarAvailable: !this.state.showCalendarAvailable});
+
+    }
+    showCalendarStart() {
+        if (this.state.showCalendarStart === false) {
+            this.setState({showCalendarCensus: false});
+            this.setState({showCalendarAvailable: false});
+            this.setState({showCalendarEnd: false});
+        }
+        this.setState({showCalendarStart: !this.state.showCalendarStart});
+
+    }
+    showCalendarEnd() {
+        if (this.state.showCalendarEnd === false) {
+            this.setState({showCalendarCensus: false});
+            this.setState({showCalendarAvailable: false});
+            this.setState({showCalendarStart: false});
+        }
+        this.setState({showCalendarEnd: !this.state.showCalendarEnd});
+
+    }
+    render() {
+
+      var censusCalendar = null;
+      var availableCalendar = null;
+      var startCalendar = null;
+      var endCalendar = null;
+
+      if (this.state.showCalendarCensus) {
+          censusCalendar = <div onDoubleClick={this.showCalendarCensus}><Calendar onChange={this.onChangeCensus}
+                            value={this.state.censusDateInput} calendarType="US"/></div>
+      }
+      if (this.state.showCalendarAvailable) {
+          availableCalendar = <div onDoubleClick={this.showCalendarAvailable}><Calendar onChange={this.onChangeAvailable}
+                               value={this.state.availableDateInput} calendarType="US"/></div>
+      }
+      if (this.state.showCalendarStart) {
+          startCalendar = <div onDoubleClick={this.showCalendarStart}><Calendar onChange={this.onChangeStart}
+                           value={this.state.startDateInput} calendarType="US"/></div>
+      }
+      if (this.state.showCalendarEnd) {
+          endCalendar = <div onDoubleClick={this.showCalendarEnd}><Calendar onChange={this.onChangeEnd}
+                         value={this.state.endDateInput} calendarType="US"/></div>
+      }
+
+      return (
+      <div className="form-group" style={{margin: '1em'}}>
+
+          <div className="row">
+
+              <div className="col-sm-3">
+                  <div className="form-group">
+                      <label>Term Code: </label>
+                      <input type="text" className="form-control" placeholder="00000" ref="term_code"/>
+                  </div>
+              </div>
+
+              <div className="col-sm-3">
+                  <div className="form-group">
+                      <label>Semester Type: </label>
+                      <input type="text" className="form-control" placeholder="0" ref="sem_type"/>
+                  </div>
+              </div>
+
+              <div className="col-sm-3">
+                  <div className="form-group">
+                      <label>Description: </label>
+                      <input type="text" className="form-control" placeholder="Season 0 0000" ref="description"/>
+                  </div>
+              </div>
+
+              <div className="col-sm-3">
+                  <div className="form-group">
+                      <label>Census Date:
+                          <i className="fa fa-calendar" aria-hidden="true" onClick={this.showCalendarCensus}
+                             style={{paddingLeft: '5px'}} title="Click for Calendar View"></i>
+                      </label>
+                      <input type="text" className="form-control" placeholder="00/00/0000" ref="census_date"/>
+                      {censusCalendar}
+                  </div>
+              </div>
+
+          </div>
+
+          <div className="row">
+
+              <div className="col-sm-3">
+                  <div className="form-group">
+                      <label>Available On Date:
+                          <i className="fa fa-calendar" aria-hidden="true" onClick={this.showCalendarAvailable}
+                             style={{paddingLeft: '5px'}} title="Click for Calendar View"></i>
+                      </label>
+                      <input type="text" className="form-control" placeholder="00/00/0000" ref="available_date"/>
+                      {availableCalendar}
+                  </div>
+              </div>
+
+              <div className="col-sm-3">
+                  <div className="form-group">
+                      <label>Start Date:
+                          <i className="fa fa-calendar" aria-hidden="true" onClick={this.showCalendarStart}
+                             style={{paddingLeft: '5px'}} title="Click for Calendar View"></i>
+                      </label>
+                      <input type="text" className="form-control" placeholder="00/00/0000" ref="start_date"/>
+                      {startCalendar}
+                  </div>
+              </div>
+
+              <div className="col-sm-3">
+                  <div className="form-group">
+
+                      <label>End Date:
+                          <i className="fa fa-calendar" aria-hidden="true" onClick={this.showCalendarEnd}
+                             style={{paddingLeft: '5px'}} title="Click for Calendar View"></i>
+                      </label>
+                      <input type="text" className="form-control" placeholder="00/00/0000" ref="end_date"/>
+                      {endCalendar}
+                  </div>
+              </div>
+
+              <div className="col-sm-3">
+                  <div className="form-group">
+                      <label>Undergraduate Overload Hours: </label>
+                      <input type="text" className="form-control" placeholder="00" ref="undergrad_overload"/>
+                  </div>
+              </div>
+
+          </div>
+
+          <div className="row">
+
+              <div className="col-sm-3">
+                  <div className="form-group">
+                      <label>Graduate Overload Hours: </label>
+                      <input type="text" className="form-control" placeholder="00" ref="grad_overload"/>
+                  </div>
+              </div>
+
+              <div className="col-sm-9">
+                  <br></br>
+                  <button type="button" className="btn btn-primary btn-block" onClick={this.props.handleSubmit}>Create Term</button>
+              </div>
+
+          </div>
+      </div>);
     }
 }
 
@@ -143,10 +351,9 @@ class TermSelector extends React.Component
         super(props);
         this.state = {
             mainData: null,
-            displayData: null,
             errorWarning: null,
             messageType: null,
-            //editing: false
+            inputData: null
         };
 
         //this.function blah
@@ -169,8 +376,8 @@ class TermSelector extends React.Component
             type: 'GET',
             dataType: 'json',
             success: function(data) {
-                this.setState({mainData: data,
-                          displayData: data});
+                this.setState({mainData: data});
+                          //displayData: data});
             }.bind(this),
             error: function(xhr, status, err) {
               alert("Failed to grab term data.")
@@ -178,12 +385,12 @@ class TermSelector extends React.Component
             }.bind(this)
         });
     }
-    onTermCreate(tcode, stype, descr, census, available, start, end) {
+    onTermCreate(tcode, stype, descr, census, available, start, end, ugradOver, gradOver) {
 
         var errorMessage = null;
-        var displayedData = this.state.displayData;
+        //var displayedData = this.state.displayData;
 
-        alert("Hello World you tried to add something");
+        //alert("Hello World you tried to add something");
         if (tcode === '') {
             errorMessage = "Please enter a term code.";
             this.setState({errorWarning: errorMessage, messageType: "error"});
@@ -219,6 +426,16 @@ class TermSelector extends React.Component
             this.setState({errorWarning: errorMessage});
             return;
         }
+        if (ugradOver === '') {
+            errorMessage = "Please enter undergraduate overload hours.";
+            this.setState({errorWarning: errorMessage});
+            return;
+        }
+        if (gradOver === '') {
+            errorMessage = "Please enter graduate overload hours.";
+            this.setState({errorWarning: errorMessage});
+            return;
+        }
 
         census = this.dateToTimestamp(census);
         available = this.dateToTimestamp(available);
@@ -226,12 +443,12 @@ class TermSelector extends React.Component
         end = this.dateToTimestamp(end);
 
         //displayedData = this.sortList(displayedData);
-        this.setState({displayData: displayedData});
+        //this.setState({displayData: displayedData});
         //alert("Hello world");
         $.ajax({
             url: 'index.php?module=intern&action=termRest&code='+tcode+'&type='+stype+
             '&descr='+descr+'&census='+census+'&available='+available+'&start='+start+
-            '&end='+end,
+            '&end='+end+'&ugradOver='+ugradOver+'&gradOver='+gradOver,
             type: 'POST',
             //dataType: 'json',
             success: function(data) {
@@ -247,13 +464,12 @@ class TermSelector extends React.Component
             }.bind(this)
         });
     }
-    onTermSave(newtermc, newsemtype, newdescri, newcensusd, newavaild, newstartd, newendd, oldTcode) {
+    onTermSave(newtermc, newsemtype, newdescri, newcensusd, newavaild, newstartd, newendd, newugradover, newgradover, oldTcode) {
 
         newcensusd = this.dateToTimestamp(newcensusd);
         newavaild = this.dateToTimestamp(newavaild);
         newstartd = this.dateToTimestamp(newstartd);
         newendd = this.dateToTimestamp(newendd);
-        console.log(newtermc);
 
         var cleanoldTcode = encodeURIComponent(oldTcode)
         var cleantermc = encodeURIComponent(newtermc);
@@ -263,13 +479,13 @@ class TermSelector extends React.Component
         var cleanavaild = encodeURIComponent(newavaild);
         var cleanstartd = encodeURIComponent(newstartd);
         var cleanendd = encodeURIComponent(newendd);
-
-        alert(cleantermc);
+        var cleanugradover = encodeURIComponent(newugradover);
+        var cleangradover = encodeURIComponent(newgradover);
 
         $.ajax({
             url: 'index.php?module=intern&action=termRest&newTcode='+cleantermc+'&newSemtype='+cleansemtype+
             '&newDesc='+cleandescri+'&newCensus='+cleancensusd+'&newAvail='+cleanavaild+'&newStart='+cleanstartd+
-            '&newEnd='+cleanendd+'&oldTcode='+cleanoldTcode,
+            '&newEnd='+cleanendd+'&newUgradOver='+cleanugradover+'&newGradOver='+cleangradover+'&oldTcode='+cleanoldTcode,
             type: 'PUT',
             success: function(data) {
                 $("#success").show();
@@ -292,8 +508,10 @@ class TermSelector extends React.Component
         var available = ReactDOM.findDOMNode(this.refs.available_date).value.trim();
         var start = ReactDOM.findDOMNode(this.refs.start_date).value.trim();
         var end = ReactDOM.findDOMNode(this.refs.end_date).value.trim();
+        var ugradOver = ReactDOM.findDOMNode(this.refs.undergrad_overload).value.trim();
+        var gradOver = ReactDOM.findDOMNode(this.refs.grad_overload).value.trim();
 
-        this.onTermCreate(tcode, stype, descr, census, available, start, end);
+        this.onTermCreate(tcode, stype, descr, census, available, start, end, ugradOver, gradOver);
     }
     dateToTimestamp(dateString) {
         return new Date(dateString).getTime() / 1000;
@@ -301,8 +519,9 @@ class TermSelector extends React.Component
     render()
     {
         var data = null;
+        var inData = null;
         if (this.state.mainData != null) {
-            var onTermSave = this.onTermSave;
+            var termSave = this.onTermSave;
             data = this.state.mainData.map(function (data) {
                 return (
                     <TermRow  key={data.term}
@@ -313,9 +532,14 @@ class TermSelector extends React.Component
                         available={data.available_on_timestamp}
                         start={data.start_timestamp}
                         end={data.end_timestamp}
-                        onTermSave={onTermSave} />
+                        ugradOver={data.undergrad_overload_hours}
+                        gradOver={data.grad_overload_hours}
+                        onTermSave={termSave} />
                 );
             });
+            var termSubmit = this.handleSubmit;
+            inData = <TermInput handleSubmit={termSubmit} />
+
         } else {
             data = "";
         }
@@ -336,68 +560,7 @@ class TermSelector extends React.Component
                 <h3>Add Term: </h3>
                 <div className="addTerm">
                     <div className="panel panel-default">
-                        <div className="form-group" style={{margin: '1em'}}>
-                            <div className="row">
-                                <div className="col-lg-3">
-                                    <div className="form-group">
-                                        <label>Term Code: </label>
-                                        <input type="text" className="form-control" placeholder="00000" ref="term_code"/>
-                                        <br></br>
-                                    </div>
-                                </div>
-                                <div className="col-lg-3">
-                                    <div className="form-group">
-                                        <label>Semester Type: </label>
-                                        <input type="text" className="form-control" placeholder="0" ref="sem_type"/>
-                                        <br></br>
-                                    </div>
-                                </div>
-                                <div className="col-lg-3">
-                                    <div className="form-group">
-                                        <label>Description: </label>
-                                        <input type="text" className="form-control" placeholder="Season 0 0000" ref="description"/>
-                                        <br></br>
-                                    </div>
-                                </div>
-                                <div className="col-lg-3">
-                                    <div className="form-group">
-                                        <label>Census Date: </label>
-                                        <input type="text" className="form-control" placeholder="00/00/0000" ref="census_date"/>
-                                        <br></br>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div className="row">
-                                <div className="col-lg-3">
-                                    <div className="form-group">
-                                        <label>Available On Date: </label>
-                                        <br></br>
-                                        <input type="text" className="form-control" placeholder="00/00/0000" ref="available_date"/>
-                                    </div>
-                                </div>
-                                <div className="col-lg-3">
-                                    <div className="form-group">
-                                        <label>Start Date: </label>
-                                        <br></br>
-                                        <input type="text" className="form-control" placeholder="00/00/0000" ref="start_date"/>
-                                    </div>
-                                </div>
-                                <div className="col-lg-3">
-                                    <div className="form-group">
-                                        <label>End Date: </label>
-                                        <br></br>
-                                        <input type="text" className="form-control" placeholder="00/00/0000" ref="end_date"/>
-                                    </div>
-                                </div>
-                                <div className="col-lg-3">
-                                    <div className="form-group">
-                                        <br></br>
-                                        <button className="btn btn-block" onClick={this.handleSubmit}>Create Term</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        {inData}
                     </div>
                 </div>
 
@@ -415,6 +578,8 @@ class TermSelector extends React.Component
                                     <th>Available On Date</th>
                                     <th>Start Date</th>
                                     <th>End Date</th>
+                                    <th>Undergraduate<br></br>Overload Hours</th>
+                                    <th>Graduate<br></br>Overload Hours</th>
                                 </tr>
                             </thead>
                             <tbody>
