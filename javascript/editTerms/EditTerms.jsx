@@ -10,17 +10,29 @@ class ErrorMessagesBlock extends React.Component {
             return '';
         }
 
-        var errors = this.props.errors;
+        var errors = this.props.errors; // The error or success message.
 
-        return (
-            <div className="row">
-                <div className="col-sm-12 col-md-6 col-md-push-3">
+        // If this is an error notification.
+        if (this.props.messageType === "error") {
+            return (
+                <div className="row">
                     <div className="alert alert-warning" role="alert">
-                        <p><i className="fa fa-exclamation-circle fa-2x"></i> Warning: {errors}</p>
+                        <strong>Warning! </strong> {errors}
                     </div>
                 </div>
-            </div>
-        );
+            );
+        }
+        // If this is a succes notification.
+        else if (this.props.messageType === "success") {
+            return (
+                <div className="row">
+                    <div className="alert alert-success alert-dismissable" role="alert">
+                        <strong>Success! </strong> {errors}
+                        <button type="button" className="close close-alert" data-dismiss="alert" aria-hidden="true">x</button>
+                    </div>
+                </div>
+            );
+        }
     }
 }
 
@@ -34,6 +46,7 @@ class TermRow extends React.Component {
         this.handleEdit = this.handleEdit.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.timestampToDate = this.timestampToDate.bind(this);
+        this.onCancelSave = this.onCancelSave.bind(this);
     }
     timestampToDate(timestamp) {
 
@@ -92,6 +105,9 @@ class TermRow extends React.Component {
         this.props.onTermSave(newTcode, newStype, newDescr, newCensusDate, newAvailDate, newStartDate, newEndDate, newUgradOverload, newGradOverload, this.props.tcode);
 
     }
+    onCancelSave() {
+        this.setState({editMode: false});
+    }
     render() {
 
         var mainButton = null;
@@ -104,7 +120,7 @@ class TermRow extends React.Component {
         // if you are not editing
         if (!this.state.editMode)
         {
-            mainButton = <a onClick={this.handleEdit} data-toggle="tooltip" title="Edit"><i className="fa fa-pencil"/></a>
+            mainButton = <a onClick={this.handleEdit} data-toggle="tooltip" title="Edit"><i className="glyphicon glyphicon-pencil"/></a>
             return (
             <tr>
                 <td>{this.props.tcode}</td>
@@ -120,11 +136,10 @@ class TermRow extends React.Component {
             </tr>
             );
         }
-        //if this.state.editMode ((true))
         //if you are editing
         else
         {
-            mainButton = <a onClick={this.handleSave} data-toggle="tooltip" title="Save"><i className="glyphicon glyphicon-floppy-save"/></a>
+            mainButton = <a onClick={this.handleSave} data-toggle="tooltip" title="Save Changes"><i className="glyphicon glyphicon-floppy-save"/></a>
             return (
             <tr>
                 <td><input type="text" className="form-control" ref="savedTcode" defaultValue={this.props.tcode}/></td>
@@ -137,6 +152,7 @@ class TermRow extends React.Component {
                 <td><input type="text" className="form-control" ref="savedUgradOverload" defaultValue={this.props.ugradOver}/></td>
                 <td><input type="text" className="form-control" ref="savedGradOverload" defaultValue={this.props.gradOver}/></td>
                 <td style={{"verticalAlign" : "middle"}}>{mainButton}</td>
+                <td style={{"verticalAlign" : "middle"}}><a onClick={this.onCancelSave} title="Cancel Changes"><i className="glyphicon glyphicon-remove"/></a></td>
             </tr>
             );
         }
@@ -166,6 +182,7 @@ class TermInput extends React.Component
         this.showCalendarAvailable = this.showCalendarAvailable.bind(this);
         this.showCalendarStart = this.showCalendarStart.bind(this);
         this.showCalendarEnd = this.showCalendarEnd.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
     onChangeCensus(censusDateInput) {
       this.setState({censusDateInput: censusDateInput});
@@ -218,6 +235,29 @@ class TermInput extends React.Component
         this.setState({showCalendarEnd: !this.state.showCalendarEnd});
 
     }
+    handleSubmit() {
+        var tcode = ReactDOM.findDOMNode(this.refs.term_code).value.trim();
+        var stype = ReactDOM.findDOMNode(this.refs.sem_type).value.trim();
+        var descr = ReactDOM.findDOMNode(this.refs.description).value;
+        var census = ReactDOM.findDOMNode(this.refs.census_date).value.trim();
+        var available = ReactDOM.findDOMNode(this.refs.available_date).value.trim();
+        var start = ReactDOM.findDOMNode(this.refs.start_date).value.trim();
+        var end = ReactDOM.findDOMNode(this.refs.end_date).value.trim();
+        var ugradOver = ReactDOM.findDOMNode(this.refs.undergrad_overload).value.trim();
+        var gradOver = ReactDOM.findDOMNode(this.refs.grad_overload).value.trim();
+
+        this.refs.term_code.value = '';
+        this.refs.sem_type.value = '';
+        this.refs.description.value = '';
+        this.refs.census_date.value = '';
+        this.refs.available_date.value = '';
+        this.refs.start_date.value = '';
+        this.refs.end_date.value = '';
+        this.refs.undergrad_overload.value = '';
+        this.refs.grad_overload.value = '';
+
+        this.props.onTermCreate(tcode, stype, descr, census, available, start, end, ugradOver, gradOver);
+    }
     render() {
 
       var censusCalendar = null;
@@ -226,20 +266,20 @@ class TermInput extends React.Component
       var endCalendar = null;
 
       if (this.state.showCalendarCensus) {
-          censusCalendar = <div onDoubleClick={this.showCalendarCensus}><Calendar onChange={this.onChangeCensus}
-                            value={this.state.censusDateInput} calendarType="US"/></div>
+          censusCalendar = <Calendar onChange={this.onChangeCensus}
+                            value={this.state.censusDateInput} calendarType="US"/>
       }
       if (this.state.showCalendarAvailable) {
-          availableCalendar = <div onDoubleClick={this.showCalendarAvailable}><Calendar onChange={this.onChangeAvailable}
-                               value={this.state.availableDateInput} calendarType="US"/></div>
+          availableCalendar = <Calendar onChange={this.onChangeAvailable}
+                               value={this.state.availableDateInput} calendarType="US"/>
       }
       if (this.state.showCalendarStart) {
-          startCalendar = <div onDoubleClick={this.showCalendarStart}><Calendar onChange={this.onChangeStart}
-                           value={this.state.startDateInput} calendarType="US"/></div>
+          startCalendar = <Calendar onChange={this.onChangeStart}
+                           value={this.state.startDateInput} calendarType="US"/>
       }
       if (this.state.showCalendarEnd) {
-          endCalendar = <div onDoubleClick={this.showCalendarEnd}><Calendar onChange={this.onChangeEnd}
-                         value={this.state.endDateInput} calendarType="US"/></div>
+          endCalendar = <Calendar onChange={this.onChangeEnd}
+                         value={this.state.endDateInput} calendarType="US"/>
       }
 
       return (
@@ -337,7 +377,7 @@ class TermInput extends React.Component
 
               <div className="col-sm-9">
                   <br></br>
-                  <button type="button" className="btn btn-primary btn-block" onClick={this.props.handleSubmit}>Create Term</button>
+                  <button type="button" className="btn btn-primary btn-block" onClick={this.handleSubmit}>Create Term</button>
               </div>
 
           </div>
@@ -356,13 +396,10 @@ class TermSelector extends React.Component
             inputData: null
         };
 
-        //this.function blah
         this.dateToTimestamp = this.dateToTimestamp.bind(this);
         this.getData = this.getData.bind(this);
         this.onTermCreate = this.onTermCreate.bind(this);
         this.onTermSave = this.onTermSave.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        //this.sortList = this.sortList.bind(this);
     }
     componentWillMount() {
         // Get the term data at the start of execution
@@ -388,9 +425,7 @@ class TermSelector extends React.Component
     onTermCreate(tcode, stype, descr, census, available, start, end, ugradOver, gradOver) {
 
         var errorMessage = null;
-        //var displayedData = this.state.displayData;
 
-        //alert("Hello World you tried to add something");
         if (tcode === '') {
             errorMessage = "Please enter a term code.";
             this.setState({errorWarning: errorMessage, messageType: "error"});
@@ -398,42 +433,42 @@ class TermSelector extends React.Component
         }
         if (stype === '') {
             errorMessage = "Please enter a semester type.";
-            this.setState({errorWarning: errorMessage});
+            this.setState({errorWarning: errorMessage, messageType: "error"});
             return;
         }
         if (descr === '') {
             errorMessage = "Please enter a term description.";
-            this.setState({errorWarning: errorMessage});
+            this.setState({errorWarning: errorMessage, messageType: "error"});
             return;
         }
         if (census === '') {
             errorMessage = "Please enter a census date.";
-            this.setState({errorWarning: errorMessage});
+            this.setState({errorWarning: errorMessage, messageType: "error"});
             return;
         }
         if (available === '') {
             errorMessage = "Please enter the date the term is available.";
-            this.setState({errorWarning: errorMessage});
+            this.setState({errorWarning: errorMessage, messageType: "error"});
             return;
         }
         if (start === '') {
             errorMessage = "Please enter a start date.";
-            this.setState({errorWarning: errorMessage});
+            this.setState({errorWarning: errorMessage, messageType: "error"});
             return;
         }
         if (end === '') {
             errorMessage = "Please enter an end date.";
-            this.setState({errorWarning: errorMessage});
+            this.setState({errorWarning: errorMessage, messageType: "error"});
             return;
         }
         if (ugradOver === '') {
             errorMessage = "Please enter undergraduate overload hours.";
-            this.setState({errorWarning: errorMessage});
+            this.setState({errorWarning: errorMessage, messageType: "error"});
             return;
         }
         if (gradOver === '') {
             errorMessage = "Please enter graduate overload hours.";
-            this.setState({errorWarning: errorMessage});
+            this.setState({errorWarning: errorMessage, messageType: "error"});
             return;
         }
 
@@ -442,9 +477,6 @@ class TermSelector extends React.Component
         start = this.dateToTimestamp(start);
         end = this.dateToTimestamp(end);
 
-        //displayedData = this.sortList(displayedData);
-        //this.setState({displayData: displayedData});
-        //alert("Hello world");
         $.ajax({
             url: 'index.php?module=intern&action=termRest&code='+tcode+'&type='+stype+
             '&descr='+descr+'&census='+census+'&available='+available+'&start='+start+
@@ -458,7 +490,6 @@ class TermSelector extends React.Component
             }.bind(this),
             error: function(xhr, status, err) {
                 var errorMessage = "Failed to add term.";
-                //alert("Failed to add the term.");
                 console.error(this.props.url, status, err.toString());
                 this.setState({errorWarning: errorMessage, messageType: "error"});
             }.bind(this)
@@ -500,19 +531,6 @@ class TermSelector extends React.Component
             }.bind(this)
         });
     }
-    handleSubmit() {
-        var tcode = ReactDOM.findDOMNode(this.refs.term_code).value.trim();
-        var stype = ReactDOM.findDOMNode(this.refs.sem_type).value.trim();
-        var descr = ReactDOM.findDOMNode(this.refs.description).value;
-        var census = ReactDOM.findDOMNode(this.refs.census_date).value.trim();
-        var available = ReactDOM.findDOMNode(this.refs.available_date).value.trim();
-        var start = ReactDOM.findDOMNode(this.refs.start_date).value.trim();
-        var end = ReactDOM.findDOMNode(this.refs.end_date).value.trim();
-        var ugradOver = ReactDOM.findDOMNode(this.refs.undergrad_overload).value.trim();
-        var gradOver = ReactDOM.findDOMNode(this.refs.grad_overload).value.trim();
-
-        this.onTermCreate(tcode, stype, descr, census, available, start, end, ugradOver, gradOver);
-    }
     dateToTimestamp(dateString) {
         return new Date(dateString).getTime() / 1000;
     }
@@ -537,11 +555,12 @@ class TermSelector extends React.Component
                         onTermSave={termSave} />
                 );
             });
-            var termSubmit = this.handleSubmit;
-            inData = <TermInput handleSubmit={termSubmit} />
+            var termCreate = this.onTermCreate;
+            inData = <TermInput onTermCreate={termCreate} />
 
         } else {
             data = "";
+            inData = "";
         }
 
         var errors;
