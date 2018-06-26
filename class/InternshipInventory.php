@@ -187,8 +187,10 @@ class InternshipInventory {
                     disallow();
                 }
                 $view = new UI\StudentLevelUI();
+                $this->content = $view->display();
+                break;
             case 'edit_terms':
-                if (!\Current_User::allow('intern', 'edit_state')) {
+                if (!\Current_User::allow('intern', 'edit_terms')) {
                     disallow();
                 }
                 $view = new UI\TermUI();
@@ -282,6 +284,10 @@ class InternshipInventory {
                 break;
             case 'adminRest':
                 $ctrl = new Command\AdminRest();
+                $ctrl->execute();
+                break;
+            case 'levelRest':
+                $ctrl = new Command\LevelRest();
                 $ctrl->execute();
                 break;
             case 'termRest':

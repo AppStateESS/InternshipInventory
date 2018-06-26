@@ -246,17 +246,22 @@ class TermInput extends React.Component
         var ugradOver = ReactDOM.findDOMNode(this.refs.undergrad_overload).value.trim();
         var gradOver = ReactDOM.findDOMNode(this.refs.grad_overload).value.trim();
 
-        this.refs.term_code.value = '';
-        this.refs.sem_type.value = '';
-        this.refs.description.value = '';
-        this.refs.census_date.value = '';
-        this.refs.available_date.value = '';
-        this.refs.start_date.value = '';
-        this.refs.end_date.value = '';
-        this.refs.undergrad_overload.value = '';
-        this.refs.grad_overload.value = '';
+
 
         this.props.onTermCreate(tcode, stype, descr, census, available, start, end, ugradOver, gradOver);
+
+        //if (this.props.messageType !== "error" && this.props.messageType !== null) {
+        if (this.props.messageType === "success") {
+            this.refs.term_code.value = '';
+            this.refs.sem_type.value = '';
+            this.refs.description.value = '';
+            this.refs.census_date.value = '';
+            this.refs.available_date.value = '';
+            this.refs.start_date.value = '';
+            this.refs.end_date.value = '';
+            this.refs.undergrad_overload.value = '';
+            this.refs.grad_overload.value = '';
+        }
     }
     render() {
 
@@ -556,7 +561,9 @@ class TermSelector extends React.Component
                 );
             });
             var termCreate = this.onTermCreate;
-            inData = <TermInput onTermCreate={termCreate} />
+            inData = <TermInput tcode={}
+                                onTermCreate={termCreate}
+                                messageType={this.state.messageType} />
 
         } else {
             data = "";
