@@ -123,9 +123,6 @@ class SearchUI implements UI
         // Hidden field for selected faculty member
         $form->addHidden('faculty_id');
 
-        // Student level radio button, Undergrad major drop down, Graduate major drop down
-        // Are all handled in JSX
-
         /*******************
          * Internship Type *
          *******************/
@@ -140,10 +137,18 @@ class SearchUI implements UI
 
         // State & Country search handeled in-browser
 
-
         /*******************
          * Workflow States *
          *******************/
+        // Date Range
+        $form->addText('start_date');
+        $form->setLabel('start_date', 'Starting After');
+        $form->addCssClass('start_date', 'form-control');
+
+        $form->addText('end_date');
+        $form->setLabel('end_date', 'Ending Before');
+        $form->addCssClass('end_date', 'form-control');
+
         $workflowStates = WorkflowStateFactory::getStatesAssoc();
         unset($workflowStates['Intern\WorkflowState\CreationState']); // Remove this state, since it's not valid (internal only state for initial creation)
         $form->addCheckAssoc('workflow_state', $workflowStates);
