@@ -103,7 +103,6 @@ class TermRow extends React.Component {
         }
 
         this.props.onTermSave(newTcode, newStype, newDescr, newCensusDate, newAvailDate, newStartDate, newEndDate, newUgradOverload, newGradOverload, this.props.tcode);
-
     }
     onCancelSave() {
         this.setState({editMode: false});
@@ -159,8 +158,7 @@ class TermRow extends React.Component {
     }
 }
 
-class TermInput extends React.Component
-{
+class TermInput extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -171,7 +169,11 @@ class TermInput extends React.Component
             showCalendarCensus: false,
             showCalendarAvailable: false,
             showCalendarStart: false,
-            showCalendarEnd: false
+            showCalendarEnd: false,
+            inputData: {
+                termCode: null,
+
+            }
         };
 
         this.onChangeCensus = this.onChangeCensus.bind(this);
@@ -246,12 +248,9 @@ class TermInput extends React.Component
         var ugradOver = ReactDOM.findDOMNode(this.refs.undergrad_overload).value.trim();
         var gradOver = ReactDOM.findDOMNode(this.refs.grad_overload).value.trim();
 
-
-
-        this.props.onTermCreate(tcode, stype, descr, census, available, start, end, ugradOver, gradOver);
-
-        //if (this.props.messageType !== "error" && this.props.messageType !== null) {
-        if (this.props.messageType === "success") {
+        if (tcode !== '' && stype !== '' && descr !== '' && census !== '' &&
+            available !== '' && start !== '' && end !== '' && ugradOver !== '' &&
+            gradOver !== '') {
             this.refs.term_code.value = '';
             this.refs.sem_type.value = '';
             this.refs.description.value = '';
@@ -262,6 +261,7 @@ class TermInput extends React.Component
             this.refs.undergrad_overload.value = '';
             this.refs.grad_overload.value = '';
         }
+        this.props.onTermCreate(tcode, stype, descr, census, available, start, end, ugradOver, gradOver);
     }
     render() {
 
@@ -390,8 +390,7 @@ class TermInput extends React.Component
     }
 }
 
-class TermSelector extends React.Component
-{
+class TermSelector extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -407,19 +406,15 @@ class TermSelector extends React.Component
         this.onTermSave = this.onTermSave.bind(this);
     }
     componentWillMount() {
-        // Get the term data at the start of execution
         this.getData();
     }
     getData() {
-        // Sends an ajax request to TermRest to grab the
-        // display data.
         $.ajax({
             url: 'index.php?module=intern&action=termRest',
             type: 'GET',
             dataType: 'json',
             success: function(data) {
                 this.setState({mainData: data});
-                          //displayData: data});
             }.bind(this),
             error: function(xhr, status, err) {
               alert("Failed to grab term data.")
@@ -430,6 +425,7 @@ class TermSelector extends React.Component
     onTermCreate(tcode, stype, descr, census, available, start, end, ugradOver, gradOver) {
 
         var errorMessage = null;
+        var messageType = null;
 
         if (tcode === '') {
             errorMessage = "Please enter a term code.";
@@ -487,7 +483,6 @@ class TermSelector extends React.Component
             '&descr='+descr+'&census='+census+'&available='+available+'&start='+start+
             '&end='+end+'&ugradOver='+ugradOver+'&gradOver='+gradOver,
             type: 'POST',
-            //dataType: 'json',
             success: function(data) {
                 this.getData();
                 var message = "Term successfully added.";
@@ -561,8 +556,7 @@ class TermSelector extends React.Component
                 );
             });
             var termCreate = this.onTermCreate;
-            inData = <TermInput tcode={}
-                                onTermCreate={termCreate}
+            inData = <TermInput onTermCreate={termCreate}
                                 messageType={this.state.messageType} />
 
         } else {

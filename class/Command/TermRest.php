@@ -24,10 +24,10 @@ class TermRest {
         }
     }
 
-    // for adding a term
-    // need to enter: term_code, census date, description,
+    // For adding a term.
+    // Need to enter: term_code, census date, description,
     // available date, start date, end date, semester type,
-    // undergrad overload hours, grad overload hours
+    // undergrad overload hours, grad overload hours.
     public function post() {
         $code = $_REQUEST['code'];
         $census = $_REQUEST['census'];
@@ -86,8 +86,6 @@ class TermRest {
             exit;
         }
 
-        // Need to add any checks.
-
         $db = Database::newDB();
         $pdo = $db->getPDO();
 
@@ -123,8 +121,7 @@ class TermRest {
         return $result;
     }
 
-    public function put()
-    {
+    public function put() {
         $newTcode = $_REQUEST['newTcode'];
         $newSemtype = $_REQUEST['newSemtype'];
         $newDesc = $_REQUEST['newDesc'];
