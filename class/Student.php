@@ -83,7 +83,19 @@ class Student {
         $semester = $term->getSemesterType();
         $code = $this->getLevel();
         $limit = 0;
-
+        /*if(($semester == Term::FALL || $semester == Term::SPRING)) {
+            if($level == self::UNDERGRAD){
+                $limit = self::HOURS_LIMIT_UNDERGRAD_REG;
+            } else {
+                $limit = self::HOURS_LIMIT_GRADUATE_REG;
+            }
+        } else if (($semester == Term::SUMMER1 || $semester == Term::SUMMER2)) {
+            if($level == self::UNDERGRAD){
+                $limit = self::HOURS_LIMIT_UNDERGRAD_SUMMER;
+            } else {
+                $limit = self::HOURS_LIMIT_GRADUATE_SUMMER;
+            }
+        }*/
         if ($level == self::UNDERGRAD) {
             $limit = $term->getUndergradOverloadHours();
         } else if {

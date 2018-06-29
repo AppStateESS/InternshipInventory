@@ -169,11 +169,7 @@ class TermInput extends React.Component {
             showCalendarCensus: false,
             showCalendarAvailable: false,
             showCalendarStart: false,
-            showCalendarEnd: false,
-            inputData: {
-                termCode: null,
-
-            }
+            showCalendarEnd: false
         };
 
         this.onChangeCensus = this.onChangeCensus.bind(this);
@@ -425,7 +421,6 @@ class TermSelector extends React.Component {
     onTermCreate(tcode, stype, descr, census, available, start, end, ugradOver, gradOver) {
 
         var errorMessage = null;
-        var messageType = null;
 
         if (tcode === '') {
             errorMessage = "Please enter a term code.";
