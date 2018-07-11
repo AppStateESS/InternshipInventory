@@ -42,7 +42,8 @@ class Term {
     public $start_timestamp;
     public $end_timestamp;
     public $semester_type; // The type of semester this is. E.g. Fall, Spring, Summer 1, Summer 2. See class constants below.
-
+    public $undergrad_overload_hours;
+    public $grad_overload_hours;
 
     // Semester constants. For general "time of year". NB: There can be multiple terms for a given semster.
     const SPRING    = 1;
@@ -51,7 +52,7 @@ class Term {
     const FALL      = 4;
 
 
-    public function __construct(string $term, string $description, int $availableOnTimestamp, int $censusDateTimestamp, int $startTimestamp, int $endTimestamp)
+    public function __construct(string $term, string $description, int $availableOnTimestamp, int $censusDateTimestamp, int $startTimestamp, int $endTimestamp, int $undergradOverloadHours, int $gradOverloadHours)
     {
         $this->term                     = $term;
         $this->description              = $description;
@@ -59,6 +60,8 @@ class Term {
         $this->census_date_timestamp    = $censusDateTimestamp;
         $this->start_timestamp          = $startTimestamp;
         $this->end_timestamp            = $endTimestamp;
+        $this->undergrad_overload_hours = $undergradOverloadHours;
+        $this->grad_overload_hours      = $gradOverloadHours;
     }
 
     public function getTermCode(): string {
@@ -93,5 +96,13 @@ class Term {
 
     public function getCensusDateTimestamp(): int {
         return $this->census_date_timestamp;
+    }
+
+    public function getUndergradOverloadHours(): int {
+        return $this->undergrad_overload_hours;
+    }
+
+    public function getGradOverloadHours(): int {
+        return $this->grad_overload_hours;
     }
 }

@@ -10,10 +10,13 @@
   "dependencies": {
     "classnames": "^2.2.5",
     "corejs-typeahead": "^1.1.1",
+    "npm": "^6.1.0",
     "react": "~15.6.1",
-    "react-dom": "~15.6.1",
     "react-addons-css-transition-group": "~15.6.0",
-    "react-dropzone": "~3.13.3"
+    "react-calendar": "^2.15.2",
+    "react-dom": "~15.6.1",
+    "react-dropzone": "~3.13.3",
+    "react-input-calendar": "^0.5.3"
   },
   "devDependencies": {
     "assets-webpack-plugin": "^3.4.0",

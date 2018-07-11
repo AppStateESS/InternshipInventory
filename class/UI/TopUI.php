@@ -67,6 +67,11 @@ class TopUI implements UI
         // Edit list of student levels
         if(\Current_User::allow('intern', 'edit_level')){
             $adminOptions['EDIT_STUDENT_LEVEL'] = \PHPWS_Text::secureLink('Edit Student Levels','intern',array('action' => 'edit_level'));
+
+        }
+        // Edit terms
+        if(\Current_User::allow('intern', 'edit_terms')){
+            $adminOptions['EDIT_TERMS_LINK'] = \PHPWS_Text::secureLink('Edit Terms','intern',array('action' => 'edit_terms'));
         }
 
         // Link to the Affiliation Agreements
