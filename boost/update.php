@@ -127,6 +127,10 @@ function intern_update(&$content, $currentVersion)
             internRunDbMigration('update_00.03.00.sql');
             PHPWS_Core::initModClass('users', 'Permission.php');
             Users_Permission::registerPermissions('intern', $content);
+        case version_compare($currentVersion, '0.4.0', '<') :
+            internRunDbMigration('update_00.04.00.sql');
+            PHPWS_Core::initModClass('users', 'Permission.php');
+            Users_Permission::registerPermissions('intern', $content);
     }
 
     return TRUE;
