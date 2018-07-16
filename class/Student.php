@@ -98,7 +98,7 @@ class Student {
         }*/
         if ($level == self::UNDERGRAD) {
             $limit = $term->getUndergradOverloadHours();
-        } else if {
+        } else {
             $limit = $term->getGradOverloadHours();
         }
 
