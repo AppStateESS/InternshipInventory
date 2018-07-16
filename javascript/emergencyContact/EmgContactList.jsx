@@ -84,7 +84,7 @@ class ModalForm extends React.Component {
         }
 
         // If it fails the format check, show error
-        if (!this.formatEmail(this.refs.emg_email.value)){
+        if (this.refs.emg_email.value !== '' && !this.formatEmail(this.refs.emg_email.value)){
             this.setState({showError: true,
                            warningMsg: "Please use a valid email."});
             return
@@ -192,8 +192,13 @@ class EmergencyContact extends React.Component {
         this.props.onContactRemove(this.props.id);
     }
     render() {
+        var email;
+        if (this.props.email !== ''){
+          email = '\u2022 ' + this.props.email;
+        }
+        
         var contactInfo = <span>
-                            {this.props.name} {'\u2022'} {this.props.relation} {'\u2022'} {this.props.phone} {'\u2022'} {this.props.email}
+                            {this.props.name} {'\u2022'} {this.props.relation} {'\u2022'} {this.props.phone} {email}
                           </span>
         return (
                 <li className="list-group-item" onClick={this.openModal} style={{cursor: "pointer"}}>
