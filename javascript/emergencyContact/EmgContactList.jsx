@@ -115,7 +115,8 @@ class ModalForm extends React.Component {
         })
     }
     render() {
-
+        // Create red asterisk for a required field
+        var require = <span style={{color: '#FB0000'}}> *</span>;
         return (
             <Modal show={this.props.show} onHide={this.handleExit} backdrop='static'>
                 <Modal.Header closeButton>
@@ -126,11 +127,11 @@ class ModalForm extends React.Component {
                 <Modal.Body>
                     <form className="form-horizontal">
                         <div className="form-group">
-                            <label className="col-lg-3 control-label">Name</label>
+                            <label className="col-lg-3 control-label">Name {require}</label>
                             <div className="col-lg-9"><input  type="text" className="form-control" id="emg-name" ref="emg_name" defaultValue={this.props.name} /></div>
                         </div>
                         <div className="form-group">
-                            <label className="col-lg-3 control-label">Relation</label>
+                            <label className="col-lg-3 control-label">Relation {require}</label>
                             <div className="col-lg-9"><input  type="text" className="form-control" id="emg-relation" ref="emg_relation" defaultValue={this.props.relation} /></div>
                         </div>
                         <div className="form-group">
@@ -143,7 +144,7 @@ class ModalForm extends React.Component {
                           </div>
                         </div>
                         <div className="form-group">
-                            <label className="col-lg-3 control-label">Phone</label>
+                            <label className="col-lg-3 control-label">Phone {require}</label>
                             <div className="col-lg-9"><input  type="text" className="form-control" id="emg-phone" ref="emg_phone" defaultValue={this.props.phone} onChange={this.formatPhone} /></div>
                         </div>
                         <div className="form-group">
@@ -196,7 +197,6 @@ class EmergencyContact extends React.Component {
         if (this.props.email !== ''){
           email = '\u2022 ' + this.props.email;
         }
-        
         var contactInfo = <span>
                             {this.props.name} {'\u2022'} {this.props.relation} {'\u2022'} {this.props.phone} {email}
                           </span>
