@@ -301,13 +301,13 @@ class Internship {
         $level = LevelFactory::getLevelObjectById($this->getLevel());
         if($level->getLevel() == Level::UNDERGRAD){
             $csv['Undergrad Major'] = $this->major_description;
-            $csv['Grduate Program'] = '';
+            $csv['Graduate Program'] = '';
         }else if($level->getLevel() == Level::GRADUATE){
             $csv['Undergrad Major'] = '';
             $csv['Graduate Program'] = $this->major_description;
         }else{
             $csv['Undergrad Major'] = '';
-            $csv['Grduate Program'] = '';
+            $csv['Graduate Program'] = '';
         }
         $csv['GPA']             = $this->getGpa();
         $csv['Campus']          = $this->getCampus();
@@ -531,23 +531,8 @@ class Internship {
     }
 
     /**
-<<<<<<< HEAD
-    * Get Document objects associated with this internship.
-    */
-    public function getDocuments()
-    {
-        $db = InternDocument::getDB();
-        $db->addWhere('internship_id', $this->id);
-        return $db->getObjects('\Intern\InternDocument');
-    }
-
-    /**
-    * Get the concatenated first name, middle name/initial, and last name.
-    */
-=======
      * Get the concatenated first name, middle name/initial, and last name.
      */
->>>>>>> 123b04392dfc66debce972f6257cb4cd448a4396
     public function getFullName()
     {
         $name = $this->first_name . ' ';
