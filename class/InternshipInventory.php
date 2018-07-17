@@ -153,20 +153,6 @@ class InternshipInventory {
                 $ctrl = new Command\AffiliateStateRest();
                 $ctrl->execute();
                 break;
-            case 'uploadAffiliationAgreemenet':
-                $docManager = new AffiliationContractDocumentManager();
-                echo $docManager->edit();
-                exit();
-            case 'postAffiliationUpload':
-                $docManager = new AffiliationContractDocumentManager();
-                $docManager->postDocumentUpload();
-                break;
-            case 'delete_affiliation_contract':
-                AffiliationContractFactory::deleteByDocId($_REQUEST['doc_id']);
-                \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, 'Document deleted.');
-                \NQ::close();
-                \PHPWS_Core::goBack();
-                break;
             case 'settingsRest':
                 $ctrl = new Command\SettingsRest();
                 $ctrl->execute();
@@ -222,27 +208,12 @@ class InternshipInventory {
                 $pdf = $pdfView->getPdf();
                 $pdf->output();
                 exit;
-            case 'upload_document_form':
-                $docManager = new DocumentManager();
-                echo $docManager->edit();
-                exit();
-            case 'post_document_upload':
-                $docManager = new DocumentManager();
-                $docManager->postDocumentUpload();
-                break;
-            case 'delete_document':
-                $doc = new InternDocument($_REQUEST['doc_id']);
-                $doc->delete();
-                \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, 'Document deleted.');
-                \NQ::close();
-                \PHPWS_Core::goBack();
-                break;
-            case 'addEmergencyContact':
-                $ctrl = new Command\AddEmergencyContact();
+            case 'documentRest':
+                $ctrl = new Command\DocumentRest();
                 $ctrl->execute();
                 break;
-            case 'removeEmergencyContact':
-                $ctrl = new Command\RemoveEmergencyContact();
+            case'agreementType':
+                $ctrl = new Command\AgreementTypeRest();
                 $ctrl->execute();
                 break;
             case 'edit_faculty':

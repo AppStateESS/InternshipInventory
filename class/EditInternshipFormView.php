@@ -42,7 +42,6 @@ class EditInternshipFormView {
 
     private $agency;
     private $department;
-    private $docs;
     private $term;
     private $studentExistingCreditHours;
 
@@ -54,7 +53,7 @@ class EditInternshipFormView {
      * @param string $pagetitle
      * @param Internship $i
      */
-    public function __construct(Internship $i, Student $student = null, Agency $agency, Array $docs, Term $term, $studentExistingCreditHours)
+    public function __construct(Internship $i, Student $student = null, Agency $agency, Term $term, $studentExistingCreditHours)
     {
         \Layout::addPageTitle('Edit Internship');
 
@@ -63,7 +62,6 @@ class EditInternshipFormView {
 
         $this->agency = $agency;
         $this->department = $this->intern->getDepartment();
-        $this->docs = $docs;
         $this->term = $term;
         $this->studentExistingCreditHours = $studentExistingCreditHours;
 
@@ -80,7 +78,6 @@ class EditInternshipFormView {
         // Plug in the existing values from Internship object (sets default/selected values)
         $this->plugInternship();
 
-        $this->setupDocumentList();
         $this->setupChangeHistory();
     }
 
@@ -791,21 +788,6 @@ class EditInternshipFormView {
     {
         // Department
         $this->formVals['department'] = $this->intern->getDepartment()->getId();
-    }
-
-    private function setupDocumentList()
-    {
-        // Document list
-        if (!is_null($this->docs)) {
-            foreach ($this->docs as $doc) {
-                $this->tpl['docs'][] = array('DOWNLOAD' => $doc->getDownloadLink('blah'),
-                                             'DELETE' => $doc->getDeleteLink());
-            }
-        }
-
-        // Document upload button
-        $folder = new InternFolder(InternDocument::getFolderId());
-        $this->tpl['UPLOAD_DOC'] = $folder->documentUpload($this->intern->id);
     }
 
     private function setupChangeHistory()

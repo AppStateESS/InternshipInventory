@@ -484,19 +484,26 @@
         </div>
       </fieldset>
 
-      <!-- Document List -->
+      <!-- Contract & Affiliation -->
       <fieldset>
-        <legend>Contract &amp; Documents</legend>
-        <div class="row">
-          <div class="col-lg-9">
-            <ul class="list-group">
-              <!-- BEGIN docs -->
-              <li class="list-group-item"><i class="fa fa-file"></i> {DOWNLOAD} &nbsp;{DELETE}</li>
-              <!-- END docs -->
-            </ul>
+          <legend> Contract &amp; Affiliation Agreements</legend>
+          <div class="row">
+              <!-- React Contract -->
+              <div class="col-md-12">
+                  <div id="contract-affiliation"></div>
+              </div>
           </div>
-          <div class="col-lg-2">{UPLOAD_DOC}</div>
-        </div>
+      </fieldset>
+
+      <!-- New Document List -->
+      <fieldset>
+          <legend>Other Documents</legend>
+          <div class="row">
+              <!-- React Contract -->
+              <div class="col-md-12">
+                  <div id="other-documents"></div>
+              </div>
+          </div>
       </fieldset>
 
       <!-- Agency info -->
@@ -681,4 +688,6 @@
 </script>
 
 <script type="text/javascript" src="{vendor_bundle}"></script>
-<script type="text/javascript" src="{entry_bundle}"></script>
+<script type="text/javascript" src="{emergency_entry_bundle}"></script>
+<script type="text/javascript" src="{contract_entry_bundle}"></script>
+<script type="text/javascript" src="{documents_entry_bundle}"></script>

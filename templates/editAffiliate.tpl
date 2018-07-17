@@ -62,19 +62,13 @@
         </div>
     </div>
 
+    <!-- Affiliation Upload -->
     <div class="col-md-6 col-md-offset-1">
         <div class="row">
             <h3>Contracts</h3>
-
             <div class="col-md-9">
-                <ul class="list-group">
-                    <!-- BEGIN docs -->
-                    <li class="list-group-item"><i class="fa fa-file"></i> {DOWNLOAD} &nbsp;{DELETE}</li>
-                    <!-- END docs -->
-                </ul>
+                <div id="affiliation-upload"></div>
             </div>
-
-            <div>{UPLOAD_DOC}</div>
         </div>
     </div>
 </div>
@@ -114,3 +108,4 @@
 <script type="text/javascript" src="{department_bundle}"></script>
 <script type="text/javascript" src="{location_bundle}"></script>
 <script type="text/javascript" src="{terminate_bundle}"></script>
+<script type="text/javascript" src="{uploadAffil_bundle}"></script>

@@ -21,6 +21,7 @@
 namespace Intern;
 
 use \Intern\Student;
+use \Intern\Command\DocumentRest;
 
 use \PHPWS_Text;
 
@@ -371,16 +372,20 @@ class Internship {
         $a = $this->getAgency();
         $f = $this->getFaculty();
         $d = $this->getDepartment();
-        $c = $this->getDocuments();
-
+        $c = DocumentRest::contractAffilationSelected($this->id);
+        var_dump($c);
         // Merge data from other objects.
         $csv = array_merge($csv, $a->getCSV());
 
-		if(count($c) > 0) {
-			$csv['Document Uploaded']  = 'Yes';
-		} else {
-			$csv['Document Uploaded']  = 'No';
-		}
+        // Sets the type and if there are contracts, else sets the name of affiliation if one
+        $csv['Agreement Type'] = $c['type'];
+        if($c['type'] == "contract") {
+            $csv['Contract Uploaded']  = $c['value'];
+            $csv['Affiliation Uploaded']  = null;
+        } else {
+            $csv['Contract Uploaded'] = null;
+            $csv['Affiliation Uploaded']  = $c['value'];
+        }
 
         if ($f instanceof Faculty) {
             $csv = array_merge($csv, $f->getCSV());
@@ -526,6 +531,7 @@ class Internship {
     }
 
     /**
+<<<<<<< HEAD
     * Get Document objects associated with this internship.
     */
     public function getDocuments()
@@ -538,6 +544,10 @@ class Internship {
     /**
     * Get the concatenated first name, middle name/initial, and last name.
     */
+=======
+     * Get the concatenated first name, middle name/initial, and last name.
+     */
+>>>>>>> 123b04392dfc66debce972f6257cb4cd448a4396
     public function getFullName()
     {
         $name = $this->first_name . ' ';
