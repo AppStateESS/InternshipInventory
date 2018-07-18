@@ -9,7 +9,6 @@ Banner ID: {BANNER}
 Term: {TERM}
 Level: {LEVEL}
 Email: {EMAIL}
-Birthday: {BIRTHDAY}
 Faculty Supervisor: {FACULTY}
 
 - Internship Inventory

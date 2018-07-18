@@ -197,7 +197,7 @@ class Internship {
         $this->first_name   = $student->getFirstName();
         $this->middle_name  = $student->getMiddleName();
         $this->last_name    = $student->getLastName();
-        $this->birth_date   = $student->getBirthDate();
+        //$this->birth_date   = $student->getBirthDate();
 
         $this->setFirstNameMetaphone($student->getFirstName());
         $this->setMiddleNameMetaphone($student->getMiddleName());

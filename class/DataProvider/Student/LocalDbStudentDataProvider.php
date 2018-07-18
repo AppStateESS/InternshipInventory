@@ -60,7 +60,7 @@ class LocalDbStudentDataProvider extends StudentDataProvider {
         $student->setMiddleName($data['middle_name']);
         $student->setLastName($data['last_name']);
         $student->setPreferredName($data['preferred_name']);
-        $student->setBirthDateFromString($data['birth_date']);
+        //$student->setBirthDateFromString($data['birth_date']);
         $student->setGender($data['gender']);
 
         if($data['confidential'] === 'Y'){

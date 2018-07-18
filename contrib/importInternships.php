@@ -57,7 +57,7 @@ while(($line = fgetcsv($inputFile, 0, ',')) !== FALSE) {
     $values['last_name'] = $line[0];
     $values['first_name'] = $line[1];
     $values['banner'] = $bannerId;
-    $values['birth_date'] = strtotime($line[3]);
+    //$values['birth_date'] = strtotime($line[3]);
     $values['gpa'] = $line[4];
     $email = explode('@',$line[5]);
     $values['email'] = $email[0];

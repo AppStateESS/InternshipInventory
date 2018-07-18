@@ -56,7 +56,6 @@ class InternshipTest extends TestCase
         $student->setFirstName('John');
         $student->setMiddleName('Doe');
         $student->setLastName('Smith');
-        $student->setBirthDateFromString('01/01/1986');
 
         $student->setLevel('U');
         $student->setCampus(Student::MAIN_CAMPUS);

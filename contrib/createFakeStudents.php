@@ -330,7 +330,6 @@ function get_row()
         'middle_name' => $middle_name,
         'last_name' => $last_name,
         'preferred_name' => pref_name($first_name),
-        'birth_date' => dob(),
         'gender' => mt_rand(0, 1) ? 'M' : 'F',
         'level' => $student_level,
         'credit_hours' => credit_for_term(),

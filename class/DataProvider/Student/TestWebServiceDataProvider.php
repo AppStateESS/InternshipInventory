@@ -72,7 +72,7 @@ class TestWebServiceDataProvider extends WebServiceDataProvider {
         $obj->preferred_name = 'j-dogg';
         $obj->title         = 'Senior';
         $obj->gender        = 'M';
-        $obj->birth_date    = '6/20/1995';
+        //$obj->birth_date    = '6/20/1995';
 
         // Phone number
         $obj->phone = '828 123 4567';
