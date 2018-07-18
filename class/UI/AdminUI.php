@@ -23,7 +23,7 @@ use \Intern\AssetResolver;
 
 /**
  * Class for handling UI for Admin editing and creation
- * @author Micah Carter <mcarter at tux dot appstate dot edu>
+ * @author Micah Carter 
  **/
 class AdminUI implements UI {
 

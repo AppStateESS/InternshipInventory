@@ -11,7 +11,7 @@ function internRunDbMigration($fileName)
 
 /**
  *
- * @author Micah Carter <mcarter at tux dot appstate dot edu>
+ * @author Micah Carter 
  *
  */
 function intern_update(&$content, $currentVersion)

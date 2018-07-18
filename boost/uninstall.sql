@@ -1,5 +1,5 @@
 -- Drop all the intern tables
--- @author Micah Carter <mcarter at tux dot appstate dot edu>
+-- @author Micah Carter 
 BEGIN;
 
 DROP TABLE intern_major CASCADE;

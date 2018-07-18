@@ -21,7 +21,7 @@
 namespace Intern;
 
 /**
- * @author Micah Carter <mcarter at tux dot appstate dot edu>
+ * @author Micah Carter 
  */
 // Make sure the source directory is defined
 if (!defined('PHPWS_SOURCE_DIR')) {

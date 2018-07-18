@@ -23,7 +23,7 @@ namespace Intern\UI;
 /**
  * Display the menu page based on what the current (logged in) user can do
  *
- * @author Micah Carter <mcarter at tux dot appstate dot edu>
+ * @author Micah Carter 
  * @author Jeremy Booker <jbooker at tux dot appstate dot edu>
  * @package intern
  */
