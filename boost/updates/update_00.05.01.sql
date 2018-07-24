@@ -1,0 +1,1 @@
+alter table intern_internship alter column birth_date set default 0;
