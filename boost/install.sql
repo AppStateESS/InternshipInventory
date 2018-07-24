@@ -623,7 +623,7 @@ CREATE TABLE intern_internship (
        first_name_meta character varying,
        middle_name_meta character varying,
        last_name_meta character varying,
-       birth_date INT NOT NULL,
+       birth_date INT default 0,
        loc_address VARCHAR NULL,
        loc_city VARCHAR NULL,
        loc_state VARCHAR NULL,
