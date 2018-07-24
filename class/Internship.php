@@ -58,7 +58,7 @@ class Internship {
     public $first_name;
     public $middle_name;
     public $last_name;
-    public $birth_date;
+    public $birth_date = 0;
 
     // Metaphones for fuzzy search
     public $first_name_meta;
