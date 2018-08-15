@@ -87,10 +87,10 @@ class EnrollmentReminderEmail extends Email {
         }
 
         if($this->internship->getStartDate() != 0){
-            $this->tpl['START_DATE'] = $this->internship->getStartDate();
+            $this->tpl['START_DATE'] = $this->internship->getStartDate(true);
         }
         if($this->internship->getEndDate() != 0){
-            $this->tpl['END_DATE'] = $this->internship->getEndDate();
+            $this->tpl['END_DATE'] = $this->internship->getEndDate(true);
         }
 
         if(!is_null($faculty)){
