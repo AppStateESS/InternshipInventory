@@ -2,10 +2,6 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 
 class Message extends Component {
-  constructor(props) {
-    super(props)
-  }
-
   render() {
     let icon = ''
     switch (this.props.type) {
@@ -22,6 +18,9 @@ class Message extends Component {
         break
 
       case 'warning':
+        icon = 'fa fa-hand-paper-o'
+        break
+      default:
         icon = 'fa fa-hand-paper-o'
         break
     }

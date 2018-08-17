@@ -52,34 +52,35 @@ class InternSettings {
         return self::$instance;
     }
 
-    public function getRegistrarEmail()
+    /**
+     * Returns the email domain (e.g. '@appstate.edu') to use for appending to usernames.
+     *
+     * @throws InvalidArgumentException
+     * @return string
+     */
+    public function getEmailDomain()
     {
-        $result = \PHPWS_Settings::get('intern', 'registrarEmail');
+        $result = \PHPWS_Settings::get('intern', 'emailDomain');
 
         if (!isset($result) || is_null($result)) {
-            throw new \InvalidArgumentException('Missing configuration for Registrar Email address.');
+            throw new \InvalidArgumentException('Missing configuration for email domain address.');
         }
 
         return $result;
     }
 
-    public function getDistanceEdEmail()
+    /**
+    * Returns the email address of the Gradudate School approver.
+    *
+    * @throws InvalidArgumentException
+    * @return string Comma separated list of email addresses
+    */
+    public function getGradSchoolEmail()
     {
-        $result = \PHPWS_Settings::get('intern', 'distanceEdEmail');
+        $result = \PHPWS_Settings::get('intern', 'gradSchoolEmail');
 
         if (!isset($result) || is_null($result)) {
-            throw new \InvalidArgumentException('Missing configuration for Distance Ed Email address.');
-        }
-
-        return $result;
-    }
-
-    public function getInternationalRegEmail()
-    {
-        $result = \PHPWS_Settings::get('intern', 'internationalRegEmail');
-
-        if (!isset($result) || is_null($result)) {
-            throw new \InvalidArgumentException('Missing configuration for International Registrar Email address.');
+            throw new \InvalidArgumentException('Missing configuration for Graduate School Email address.');
         }
 
         return $result;
@@ -87,7 +88,7 @@ class InternSettings {
 
     /**
      * Returns list of email addresses to notify when a graduate internship is
-     * ready for registration. NB: Can be a comma separated list.
+     * ready for registration. Can be a comma separated list.
      *
      * @throws InvalidArgumentException
      * @return string Comma separated list of email addresses
@@ -104,34 +105,17 @@ class InternSettings {
     }
 
     /**
-     * Returns the email address of the Gradudate School approver.
+     * Returns list of email addresses for distance education. Must be a fully qualified address.
      *
      * @throws InvalidArgumentException
      * @return string Comma separated list of email addresses
      */
-    public function getGradSchoolEmail()
+    public function getDistanceEdEmail()
     {
-        $result = \PHPWS_Settings::get('intern', 'gradSchoolEmail');
+        $result = \PHPWS_Settings::get('intern', 'distanceEdEmail');
 
         if (!isset($result) || is_null($result)) {
-            throw new \InvalidArgumentException('Missing configuration for Graduate School Email address.');
-        }
-
-        return $result;
-    }
-
-    /**
-     * Returns the email address of the International Approval office.
-     *
-     * @throws InvalidArgumentException
-     * @return string
-     */
-    public function getInternationalOfficeEmail()
-    {
-        $result = \PHPWS_Settings::get('intern', 'internationalOfficeEmail');
-
-        if (!isset($result) || is_null($result)) {
-            throw new \InvalidArgumentException('Missing configuration for International Office address.');
+            throw new \InvalidArgumentException('Missing configuration for Distance Ed Email address.');
         }
 
         return $result;
@@ -155,18 +139,106 @@ class InternSettings {
     }
 
     /**
-     * Returns the email domain (e.g.
-     * '@appstate.edu') to use for appending to usernames.
+     * Returns list of email addresses to notify for uncaught exceptions.
+     * Can be a comma separated list.
      *
      * @throws InvalidArgumentException
-     * @return string
+     * @return string Comma separated list of email addresses
      */
-    public function getEmailDomain()
+    public function getExceptionEmail()
     {
-        $result = \PHPWS_Settings::get('intern', 'emailDomain');
+        $result = \PHPWS_Settings::get('intern', 'uncaughtExceptionEmail');
 
         if (!isset($result) || is_null($result)) {
-            throw new \InvalidArgumentException('Missing configuration for email domain address.');
+            throw new \InvalidArgumentException('Missing configuration for Uncaught Exception Email address.');
+        }
+
+        return $result;
+    }
+
+    /**
+     * Returns list of email addresses to notify when an undergraduate internship is
+     * ready for registration. Can be a comma separated list.
+     *
+     * @throws InvalidArgumentException
+     * @return string Comma separated list of email addresses
+     */
+    public function getRegistrarEmail()
+    {
+        $result = \PHPWS_Settings::get('intern', 'registrarEmail');
+
+        if (!isset($result) || is_null($result)) {
+            throw new \InvalidArgumentException('Missing configuration for Registrar Email address.');
+        }
+
+        return $result;
+    }
+
+    /**
+     * Returns the name background/drug check user email.
+     *
+     * @throws InvalidArgumentException
+     * @return string Comma separated list of email addresses
+     */
+    public function getBackgroundCheckEmail()
+    {
+        $result = \PHPWS_Settings::get('intern', 'backgroundCheckEmail');
+
+        if (!isset($result) || is_null($result)) {
+            throw new \InvalidArgumentException('Missing configuration for background/drug check address.');
+        }
+
+        return $result;
+    }
+
+    /**
+     * Returns list of email addresses to notify when international internship is
+     * ready for registration.
+     *
+     * @throws InvalidArgumentException
+     * @return string Comma separated list of email addresses
+     */
+    public function getInternationalRegEmail()
+    {
+        $result = \PHPWS_Settings::get('intern', 'internationalRegEmail');
+
+        if (!isset($result) || is_null($result)) {
+            throw new \InvalidArgumentException('Missing configuration for International Registrar Email address.');
+        }
+
+        return $result;
+    }
+
+    /**
+     * Returns the email address of the International Approval office.
+     *
+     * @throws InvalidArgumentException
+     * @return string Comma separated list of email addresses
+     */
+    public function getInternationalOfficeEmail()
+    {
+        $result = \PHPWS_Settings::get('intern', 'internationalOfficeEmail');
+
+        if (!isset($result) || is_null($result)) {
+            throw new \InvalidArgumentException('Missing configuration for International Office address.');
+        }
+
+        return $result;
+    }
+
+    /**
+     * Returns the email address of whoever is in charge of
+     * unusual course number / insurance.
+     *
+     * @throws InvalidArgumentException
+     * @return string Comma separated list of email addresses
+     */
+    public function getUnusualCourseEmail()
+    {
+        $result = \PHPWS_Settings::get('intern', 'unusualCourseEmail');
+
+        if (!isset($result) || is_null($result)) {
+            throw new \InvalidArgumentException('Missing configuration for Unusual Course Notification address.');
         }
 
         return $result;
@@ -189,42 +261,6 @@ class InternSettings {
 
         return $result;
     }
-
-    /**
-     * Returns the email address of whoever is in charge of
-     * unusual course number / insurance.
-     *
-     * @throws InvalidArgumentException
-     * @return string
-     */
-    public function getUnusualCourseEmail()
-    {
-        $result = \PHPWS_Settings::get('intern', 'unusualCourseEmail');
-
-        if (!isset($result) || is_null($result)) {
-            throw new \InvalidArgumentException('Missing configuration for Unusual Course Notification address.');
-        }
-
-        return $result;
-    }
-
-    /**
-     * Returns the name background/drug check user email.
-     *
-     * @throws InvalidArgumentException
-     * @return string - Comma separated list of email addresses
-     */
-    public function getBackgroundCheckEmail()
-    {
-        $result = \PHPWS_Settings::get('intern', 'backgroundCheckEmail');
-
-        if (!isset($result) || is_null($result)) {
-            throw new \InvalidArgumentException('Missing configuration for background/drug check address.');
-        }
-
-        return $result;
-    }
-
 
     /**
      * Returns the name of the student data provider to use.

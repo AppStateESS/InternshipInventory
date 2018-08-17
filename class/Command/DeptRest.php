@@ -104,9 +104,15 @@ class DeptRest {
 		$db = Database::newDB();
 		$pdo = $db->getPDO();
 
-		$sql = "SELECT id, name, hidden
-				FROM intern_department
-				ORDER BY name ASC";
+		if(isset($_REQUEST['hidden'])){
+			$sql = "SELECT id, name
+					FROM intern_department
+					WHERE hidden = 0 ORDER BY name ASC";
+		}else{
+			$sql = "SELECT id, name, hidden
+					FROM intern_department
+					ORDER BY name ASC";
+		}
 
 		$sth = $pdo->prepare($sql);
 

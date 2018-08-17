@@ -1,4 +1,4 @@
-INTBEGIN;
+BEGIN;
 
 -- Defaults to not hidden.
 CREATE TABLE intern_major (
@@ -564,6 +564,8 @@ CREATE TABLE intern_term (
        start_timestamp INT NOT NULL,
        end_timestamp INT NOT NULL,
        semester_type INT NOT NULL,
+       undergrad_overload_hours INT default NULL,
+       grad_overload_hours INT default NULL,
        PRIMARY KEY(term)
 );
 

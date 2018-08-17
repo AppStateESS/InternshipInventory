@@ -40,7 +40,7 @@ class SaveInternship
 
     public function __construct()
     {
-        
+
     }
 
     private function rerouteWithError($url, $errorMessage)
@@ -63,11 +63,9 @@ class SaveInternship
         if(\Canopy\Request::isAjax()){
             $isAjax = true;
         }
-        
         /** ************
          * Sanity Checks
          */
-        
         // Required fields check
         $missing = self::checkRequest();
         if (!is_null($missing) && !empty($missing)) {
@@ -412,6 +410,10 @@ class SaveInternship
          * State/Workflow Handling *
          * ************************* */
         if(!$isAjax){
+            if(!isset($_POST['workflow_action'])){
+                $this->rerouteWithError('index.php?module=intern&action=ShowInternship',
+                        'The saving of the current workflow status is unknown.');
+            }
             $t = \Intern\WorkflowTransitionFactory::getTransitionByName($_POST['workflow_action']);
             $workflow = new \Intern\WorkflowController($i, $t);
             try {
@@ -421,14 +423,14 @@ class SaveInternship
                 \NQ::close();
                 return \PHPWS_Core::reroute('index.php?module=intern&action=ShowInternship&internship_id=' . $i->id);
             }
-                    
+
             // Create a ChangeHisotry for the OIED certification.
             if ($oiedCertified) {
                 $currState = WorkflowStateFactory::getState($i->getStateName());
                 $ch = new ChangeHistory($i, \Current_User::getUserObj(), time(),
                         $currState, $currState, 'Certified by OIED');
                 $ch->save();
-                
+
                 // Notify the faculty member that OIED has certified the internship
                 if ($i->getFaculty() != null) {
                     $email = new \Intern\Email\OIEDCertifiedEmail(\Intern\InternSettings::getInstance(),
@@ -436,7 +438,7 @@ class SaveInternship
                     $email->send();
                 }
             }
-                            
+
             \PHPWS_DB::commit();
 
             $workflow->doNotification(isset($_POST['notes']) ? $_POST['notes'] : null);

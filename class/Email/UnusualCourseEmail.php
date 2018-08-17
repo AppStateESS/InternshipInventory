@@ -73,7 +73,7 @@ class UnusualCourseEmail extends Email {
             $this->tpl['COURSE_TITLE'] = $this->internship->getCourseTitle();
         }
 
-        $this->to[] = $this->emailSettings->getUnusualCourseEmail();
+        $this->to = explode(',', $this->emailSettings->getUnusualCourseEmail());
 
         $this->subject = "Unusual internship course: $subj $courseNum for $bannerId";
     }

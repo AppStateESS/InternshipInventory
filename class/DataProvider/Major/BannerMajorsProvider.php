@@ -62,9 +62,12 @@ class BannerMajorsProvider extends MajorsProvider {
         $majorsList = new AcademicMajorList();
 
         foreach($results as $major){
-
+            // Makes sure the data from soap is an object
+            if(!is_object($major)){
+                continue;
+            }
             // Skip majors/programs in University College
-            if($major->college_code === 'GC'){
+            else if($major->college_code === 'GC'){
                 continue;
             }
 

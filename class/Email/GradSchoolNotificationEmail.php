@@ -137,7 +137,7 @@ class GradSchoolNotificationEmail extends Email {
             $intlSubject = '';
         }
 
-        $this->to = explode(',', $this->emailSettings->getGradSchoolEmail()); // NB: Setting is a comma separated array
+        $this->to = explode(',', $this->emailSettings->getGradSchoolEmail());
 
         $this->subject = 'Internship Approval Needed: ' . $intlSubject . '[' . $this->internship->getBannerId() . '] ' . $this->internship->getFullName();
     }

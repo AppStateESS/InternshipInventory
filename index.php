@@ -21,7 +21,7 @@
 namespace Intern;
 
 /**
- * @author Micah Carter 
+ * @author Micah Carter
  */
 // Make sure the source directory is defined
 if (!defined('PHPWS_SOURCE_DIR')) {
@@ -79,9 +79,9 @@ if(DEBUG){
 
             \PHPWS_Core::goBack();
         }catch(\Exception $e){
-            $message2 = formatException($e);
+            $message2 = $e;
             echo "The Intern Inventory has experienced a major internal error.  Attempting to email an admin and then exit.";
-            $message = "Something terrible has happened, and the exception catch-all threw an exception.\n\nThe first exception was:\n\n$message\n\nThe second exception was:\n\n$message2";
+            $message = "Something terrible has happened, and the exception catch-all threw an exception.\n\nThe first exception was:\n\n$message2";
             mail('webmaster@tux.appstate.edu', 'A Major Intern Inventory Error Has Occurred', $message);
             exit();
         }

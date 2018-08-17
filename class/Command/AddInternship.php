@@ -145,16 +145,16 @@ class AddInternship {
         // Check Locations
         if (!isset($_POST['location']) || ($_POST['location'] != 'domestic' && $_POST['location'] != 'international')) {
             $missingFieldList[] = 'location';
-        }
+        } else{
+            // Check state, if domestic
+            if ($_POST['location'] == 'domestic' && (!isset($_POST['state']) || $_POST['state'] == '-1')) {
+                $missingFieldList[] = 'state';
+            }
 
-        // Check state, if domestic
-        if ($_POST['location'] == 'domestic' && (!isset($_POST['state']) || $_POST['state'] == '-1')) {
-            $missingFieldList[] = 'state';
-        }
-
-        // Check county, if international
-        if ($_POST['location'] == 'international' && (!isset($_POST['country']) || $_POST['country'] == '-1')) {
-            $missingFieldList[] = 'country';
+            // Check county, if international
+            if ($_POST['location'] == 'international' && (!isset($_POST['country']) || $_POST['country'] == '-1')) {
+                $missingFieldList[] = 'country';
+            }
         }
 
         // Check Department

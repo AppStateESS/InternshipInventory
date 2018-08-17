@@ -156,7 +156,7 @@ class ReadyToRegisterEmail extends Email {
         }
 
         /***
-        * Figure out who the notification email goes to
+        * Figure out who the notification email goes to, Setting is a comma separated array
         */
         if ($this->internship->isDistanceEd()) {
             // Send distance ed internship to Distance Ed Office
@@ -164,15 +164,15 @@ class ReadyToRegisterEmail extends Email {
             $this->tpl['UNDERGRAD'] = ''; // Dummy template var to use undergrad text
         } else if ($this->internship->isGraduate()) {
             // Send all graduate internships to the graduate school (whether international or not)
-            $this->to = explode(',', $this->emailSettings->getGraduateRegEmail()); // NB: Setting is a comma separated array
+            $this->to = explode(',', $this->emailSettings->getGraduateRegEmail());
             $this->tpl['GRADUATE'] = ''; // Dummy template var to use grad school text
         } else if ($this->internship->isInternational()){
             // Send international undergraduate internships to a special person
-            $this->to = $this->emailSettings->getInternationalRegEmail();
+            $this->to = explode(',', $this->emailSettings->getInternationalRegEmail());
             $this->tpl['UNDERGRAD'] = ''; // Dummy template var to use undergrad text
         } else {
             // Otherwise, send it to the general Registrar address
-            $this->to = $this->emailSettings->getRegistrarEmail();
+            $this->to = explode(',', $this->emailSettings->getRegistrarEmail());
             $this->tpl['UNDERGRAD'] = ''; // Dummy template var to use undergrad text
         }
 

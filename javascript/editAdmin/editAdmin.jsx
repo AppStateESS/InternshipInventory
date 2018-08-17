@@ -109,7 +109,7 @@ class SearchAdmin extends React.Component {
 		// Sends an ajax request to deptRest to grab the
 		// department data.
 		$.ajax({
-			url: 'index.php?module=intern&action=deptRest',
+			url: 'index.php?module=intern&action=deptRest&hidden=true',
 			action: 'GET',
 			dataType: 'json',
 			success: function(data) {

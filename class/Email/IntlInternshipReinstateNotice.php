@@ -63,7 +63,7 @@ class IntlInternshipReinstateNotice extends Email {
         $countries = \Intern\CountryFactory::getCountries();
         $this->tpl['COUNTRY'] = $countries[$this->internship->loc_country];
 
-        $this->to = $this->emailSettings->getInternationalOfficeEmail();
+        $this->to = explode(',', $this->emailSettings->getInternationalOfficeEmail());
         $this->subject = 'International Internship Reinstated';
     }
 }

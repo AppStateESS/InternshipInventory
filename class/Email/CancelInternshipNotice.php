@@ -65,18 +65,19 @@ class CancelInternshipNotice extends Email {
         $dept = new Department($this->internship->department_id);
         $this->tpl['DEPARTMENT'] = $dept->getName();
 
-        // Email the distance ed, graduate school (for grad level), international, or the registrar's office (for undergrad level)
+        // Email the distance ed, graduate school (for grad level), international, or the registrar's office (for undergrad level),
+        // Setting is a comma separated array
         if($this->internship->isDistanceEd()){
-            $this->to[] = $this->emailSettings->getDistanceEdEmail();
+            $this->to = explode(',', $this->emailSettings->getDistanceEdEmail());
             $this->tpl['UNDERGRAD'] = ''; // Dummy template var to use undergrad text
         } else if($this->internship->isGraduate()){
-            $this->to[] = explode(',', $this->emailSettings->getGraduateRegEmail()); // NB: Setting is a comma separated array
+            $this->to = explode(',', $this->emailSettings->getGraduateRegEmail());
             $this->tpl['GRADUATE'] = ''; // Dummy template var to use grad school text
         } else if($this->internship->isInternational()){
-            $this->to[] = $this->emailSettings->getInternationalRegEmail();
+            $this->to = explode(',', $this->emailSettings->getInternationalRegEmail());
             $this->tpl['UNDERGRAD'] = ''; // Dummy template var to use undergrad text
         } else {
-            $this->to[] = $this->emailSettings->getRegistrarEmail();
+            $this->to = explode(',', $this->emailSettings->getRegistrarEmail());
             $this->tpl['UNDERGRAD'] = ''; // Dummy template var to use undergrad text
         }
 
