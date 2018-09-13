@@ -190,6 +190,10 @@ class EditInternshipFormView {
         $this->form->setLabel('student_last_name', 'Last Name');
         $this->form->addCssClass('student_last_name', 'form-control');
 
+        $this->form->addText('student_preferred_name');
+        $this->form->setLabel('student_preferred_name', 'Preferred Name');
+        $this->form->addCssClass('student_preferred_name', 'form-control');
+
         $this->form->addText('student_phone');
         $this->form->setLabel('student_phone', 'Phone');
         $this->form->addCssClass('student_phone', 'form-control');
@@ -659,6 +663,7 @@ class EditInternshipFormView {
         $this->formVals['student_first_name'] = $this->intern->first_name;
         $this->formVals['student_middle_name'] = $this->intern->middle_name;
         $this->formVals['student_last_name'] = $this->intern->last_name;
+        $this->formVals['student_preferred_name'] = $this->intern->preferred_name;
         $this->formVals['student_phone'] = $this->intern->phone;
         $this->formVals['student_email'] = $this->intern->email;
 

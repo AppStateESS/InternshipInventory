@@ -58,12 +58,14 @@ class Internship {
     public $first_name;
     public $middle_name;
     public $last_name;
+    public $preferred_name;
     public $birth_date = 0;
 
     // Metaphones for fuzzy search
     public $first_name_meta;
     public $middle_name_meta;
     public $last_name_meta;
+    public $preferred_name_meta;
 
     // Academic info
     public $level;
@@ -192,16 +194,18 @@ class Internship {
     private function initalizeStudentData(Student $student)
     {
         // Basic student demographics
-        $this->banner       = $student->getStudentId();
-        $this->email        = $student->getUsername();
-        $this->first_name   = $student->getFirstName();
-        $this->middle_name  = $student->getMiddleName();
-        $this->last_name    = $student->getLastName();
-        //$this->birth_date   = $student->getBirthDate();
+        $this->banner         = $student->getStudentId();
+        $this->email          = $student->getUsername();
+        $this->first_name     = $student->getFirstName();
+        $this->middle_name    = $student->getMiddleName();
+        $this->last_name      = $student->getLastName();
+        $this->preferred_name = $student->getPreferredName();
+        //$this->birth_date     = $student->getBirthDate();
 
         $this->setFirstNameMetaphone($student->getFirstName());
         $this->setMiddleNameMetaphone($student->getMiddleName());
         $this->setLastNameMetaphone($student->getLastName());
+        $this->setPreferredNameMetaphone($student->getPreferredName());
 
         // Academic info
         $this->level = $student->getLevel();
@@ -291,10 +295,11 @@ class Internship {
         $csv = array();
 
         // Student data
-        $csv['Banner ID']   = $this->banner;
-        $csv['First Name']  = $this->first_name;
-        $csv['Middle Name'] = $this->middle_name;
-        $csv['Last Name']   = $this->last_name;
+        $csv['Banner ID']      = $this->banner;
+        $csv['First Name']     = $this->first_name;
+        $csv['Middle Name']    = $this->middle_name;
+        $csv['Last Name']      = $this->last_name;
+        $csv['Preferred Name'] = $this->preferred_name;
 
         // Academic Info
         $csv['Level'] = $this->getLevel();
@@ -957,10 +962,19 @@ class Internship {
     }
 
     /**
-    * Returns this student's level code ('U' or 'G' ...)
-    *
-    * @return string
-    */
+     * Calculates and sets the metaphone value for this student's preferred name.
+     *
+     * @param string $preferredName
+     */
+    public function setPreferredNameMetaphone($preferredName){
+        $this->preferred_name_meta = metaphone($preferredName);
+    }
+
+    /**
+     * Returns this student's level code ('U' or 'G' ...)
+     *
+     * @return string
+     */
     public function getLevel(){
         return $this->level;
     }
@@ -1090,6 +1104,14 @@ class Internship {
 
     public function setDrugCheck($check){
         $this->drug_check = $check;
+    }
+
+    public function getPreferredName(){
+        return $this->preferred_name;
+    }
+
+    public function setPreferredName($pname){
+        $this->preferred_name = $pname;
     }
 
     /**

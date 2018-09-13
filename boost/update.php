@@ -11,7 +11,7 @@ function internRunDbMigration($fileName)
 
 /**
  *
- * @author Micah Carter 
+ * @author Micah Carter
  *
  */
 function intern_update(&$content, $currentVersion)
@@ -135,6 +135,8 @@ function intern_update(&$content, $currentVersion)
             internRunDbMigration('update_00.05.00.sql');
         case version_compare($currentVersion, '0.5.1', '<') :
             internRunDbMigration('update_00.05.01.sql');
+        case version_compare($currentVersion, '0.5.2', '<') :
+            internRunDbMigration('update_00.05.02.sql');
     }
 
     return TRUE;
