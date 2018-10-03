@@ -74,8 +74,6 @@ class InternshipContractPdfView {
         $a = $this->internship->getAgency();
         $d = $this->internship->getDepartment();
         $f = $this->internship->getFaculty();
-        //$m = $this->internship->getUgradMajor();
-        //$g = $this->internship->getGradProgram();
         //$subject = $this->internship->getSubject();
 
         //$pagecount = $this->pdf->setSourceFile(PHPWS_SOURCE_DIR . 'mod/intern/pdf/AppStateInternshipContractNew.pdf');

@@ -158,11 +158,12 @@ class InternshipView {
         }
 
         // Show warning if the student's current level is different from the level listed in banner
-        $currentLevel = $this->student->getLevel();
-        $currentC = LevelFactory::getLevelObjectById($currentLevel);
-        if($level != $currentLevel)
-        {
-            \NQ::simple('intern', UI\NotifyUI::WARNING, "The students current level is {$currentC->getDesc()} and is different from the internships level listed.");
+        if($this->student->getLevel() !== null){
+            $currentLevel = $this->student->getLevel();
+            $currentC = LevelFactory::getLevelObjectById($currentLevel);
+            if($level != $currentLevel){
+                \NQ::simple('intern', UI\NotifyUI::WARNING, "The students current level is {$currentC->getDesc()} and is different from the internships level listed.");
+            }
         }
 
         // Show warning if graduation date is prior to start date
@@ -185,7 +186,7 @@ class InternshipView {
         if(isset($internHours) && $this->student->isCreditHourLimited($internHours, $this->studentExistingCreditHours, $this->term)) {
             \NQ::simple('intern', UI\NotifyUI::WARNING, 'This internship will cause the student to exceed the semester credit hour limit. This student will need an Overload Permit from their Dean\'s Office.');
         }
-         * 
+         *
          */
 
         // Show warning if GPA is below the minimum

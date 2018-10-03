@@ -101,7 +101,6 @@ class MajorSelector extends React.Component {
                         </div>
                     </div>
                 </div>
-
                 {majorsDropdown}
             </div>
         );

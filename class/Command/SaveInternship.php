@@ -445,7 +445,7 @@ class SaveInternship
 
             $workflow->doNotification(isset($_POST['notes']) ? $_POST['notes'] : null);
         }
-        //var_dump($_POST['generateContract']);exit;
+
         // If the user clicked the 'Generate Contract' button, then redirect to the PDF view
         if (isset($_POST['generateContract']) && $_POST['generateContract'] == 'true') {
             //return \PHPWS_Core::reroute('index.php?module=intern&action=pdf&internship_id=' . $i->id);

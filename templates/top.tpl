@@ -23,12 +23,6 @@
       <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog"></i> Settings &nbsp;<b class="caret"></b></a>
         <ul class="dropdown-menu">
-          <!-- BEGIN majors -->
-          <li>{EDIT_MAJORS_LINK}</li>
-          <!-- END majors -->
-          <!-- BEGIN grad -->
-          <li>{EDIT_GRAD_LINK}</li>
-          <!-- END grad -->
           <!-- BEGIN depts -->
           <li>{EDIT_DEPARTMENTS_LINK}</li>
           <!-- END depts -->

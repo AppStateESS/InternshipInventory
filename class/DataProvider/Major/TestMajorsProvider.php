@@ -59,18 +59,6 @@ class TestMajorsProvider extends BannerMajorsProvider {
         $major->major_desc = $majorDesc;
         $major->levl = $level;
 
-        /*
-        $major->program_code = $programCode;
-        $major->program_desc = $programDesc;
-        $major->degree_code = $degreeCode;
-
-        $major->college_code = $collegeCode;
-        $major->college_desc = $collegeDesc;
-
-        $major->dept_code = $deptCode;
-        $major->dept_desc = $deptDesc;
-        */
-
         return $major;
     }
 

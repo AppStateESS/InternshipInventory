@@ -105,14 +105,6 @@ class InternshipInventory {
                 $view = new UI\DepartmentUI();
                 $this->content = $view->display();
                 break;
-            case 'showEditMajors':
-                $view = new UI\MajorUI();
-                $this->content = $view->display();
-                break;
-            case 'showEditGradProgs':
-                $view = new UI\GradProgramUI();
-                $this->content = $view->display();
-                break;
             case 'showAffiliateAgreement':
                 $view = new UI\AffiliateAgreementUI();
                 $this->content = $view->display();
@@ -274,10 +266,6 @@ class InternshipInventory {
                 break;
             case 'majorRest':
                 $ctrl = new Command\MajorRest();
-                $ctrl->execute();
-                break;
-            case 'gradRest':
-                $ctrl = new Command\GradRest();
                 $ctrl->execute();
                 break;
             case 'deptRest':

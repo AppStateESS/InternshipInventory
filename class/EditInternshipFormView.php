@@ -23,6 +23,7 @@ namespace Intern;
 use Intern\ChangeHistoryView;
 use Intern\DepartmentFactory;
 use Intern\TermFactory;
+use Intern\Command\MajorRest;
 
 /**
  * View class for showing the big internship form for
@@ -592,15 +593,6 @@ class EditInternshipFormView {
         // Student
         $this->tpl['BANNER'] = $this->intern->getBannerId();
 
-        
-//        $birthday = $this->intern->getBirthDateFormatted();
-//
-//        if(is_null($birthday)) {
-//            $this->tpl['BIRTH_DATE'] = '<span class="text-muted"><em>Not available</em></span>';
-//        } else {
-//            $this->tpl['BIRTH_DATE'] = $this->intern->getBirthDateFormatted();
-//        }
-
         $this->tpl['STUDENT_GPA'] = $this->intern->getGpa();
 
         if (\Current_User::isDeity()) {
@@ -655,9 +647,20 @@ class EditInternshipFormView {
                         $this->tpl['majors_repeat'][] = array('CODE' => $m->getCode(), 'DESC' => $m->getDescription(), 'ACTIVE' => '', 'CHECKED' => '');
                     }
                 }
+            } else {
+                if($this->intern->getMajorDescription() != null){
+                    $this->tpl['MAJOR'] = $this->intern->getMajorDescription();
+                } else{
+                    $this->tpl['MAJOR'] = '<span class="text-muted"><em>Not Available</em></span>';
+                }
             }
+
         } else {
-            $this->tpl['MAJOR'] = '<span class="text-muted"><em>Not Available</em></span>';
+            if($this->intern->getMajorDescription() != null){
+                $this->tpl['MAJOR'] = $this->intern->getMajorDescription();
+            } else{
+                $this->tpl['MAJOR'] = '<span class="text-muted"><em>Not Available</em></span>';
+            }
         }
 
         $this->formVals['student_first_name'] = $this->intern->first_name;

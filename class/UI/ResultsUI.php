@@ -269,13 +269,12 @@ class ResultsUI implements UI
             }
         }
 
-        // Major
+        // Major for Undergrad major or Graduate program, searches on description
+        // since mutiple major codes can have same description
         if ($level == Level::UNDERGRAD && isset($ugradMajor) && $ugradMajor != -1) {
-            // Undergrad major
-            $pager->addWhere('major_code', $ugradMajor);
+            $pager->addWhere('major_description', $ugradMajor);
         } else if ($level == Level::GRADUATE && isset($gradProg) && $gradProg != -1) {
-            // Graduate program
-            $pager->addWhere('major_code', $gradProg);
+            $pager->addWhere('major_description', $gradProg);
         }
 
         // Experience type

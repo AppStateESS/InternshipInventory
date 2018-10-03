@@ -1,9 +1,8 @@
 -- Drop all the intern tables
--- @author Micah Carter 
+-- @author Micah Carter
 BEGIN;
 
 DROP TABLE intern_major CASCADE;
-DROP TABLE intern_grad_prog CASCADE;
 DROP TABLE intern_department CASCADE;
 DROP TABLE intern_faculty CASCADE;
 DROP TABLE intern_faculty_department CASCADE;
@@ -18,6 +17,7 @@ DROP TABLE intern_agreement_location CASCADE;
 DROP TABLE intern_agreement_documents CASCADE;
 DROP TABLE intern_term CASCADE;
 DROP TABLE intern_student_autocomplete CASCADE;
+DROP TABLE intern_student_level CASCADE;
 DROP TABLE intern_internship CASCADE;
 DROP TABLE intern_contract_documents CASCADE;
 DROP TABLE intern_emergency_contact CASCADE;
@@ -35,7 +35,6 @@ DROP SEQUENCE intern_change_history_seq;
 DROP SEQUENCE intern_courses;
 DROP SEQUENCE intern_department_seq;
 DROP SEQUENCE intern_major_seq;
-DROP SEQUENCE intern_grad_prog_seq;
 DROP SEQUENCE intern_student_seq;
 DROP SEQUENCE intern_agency_seq;
 DROP SEQUENCE intern_term_seq;
