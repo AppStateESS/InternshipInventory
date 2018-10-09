@@ -268,10 +268,6 @@ class InternshipInventory {
                 $ctrl = new Command\MajorRest();
                 $ctrl->execute();
                 break;
-            case 'gradRest':
-                $ctrl = new Command\GradRest();
-                $ctrl->execute();
-                break;
             case 'deptRest':
                 $ctrl = new Command\DeptRest();
                 $ctrl->execute();
