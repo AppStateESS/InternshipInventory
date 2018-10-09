@@ -209,10 +209,7 @@ function initFacultySelector()
     var facultyData = null;
 
     // Handle the AJAX response containing the faculty members for a department
-    function handleFacultyResponse(data)
-    {
-      //console.log(data);
-
+    function handleFacultyResponse(data){
       // Save the data outside this method for later
       facultyData = data;
 

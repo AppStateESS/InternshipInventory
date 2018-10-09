@@ -76,8 +76,6 @@ class Settings extends Component {
     			}.bind(this)
             });
         });
-
-        console.log(data);
     }
 
     componentDidMount() {

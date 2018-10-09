@@ -46,7 +46,7 @@ class LocalDbMajorsProvider extends MajorsProvider {
         $majorsList = new AcademicMajorList();
 
         foreach ($results as $row){
-            $majorsList->addMajor(new AcademicMajor($row['code'], $row['description'], $row['level']));
+            $majorsList->addMajor(new AcademicMajor($row['id'], $row['description'], $row['level']));
         }
 
         return $majorsList;

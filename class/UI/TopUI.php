@@ -44,16 +44,6 @@ class TopUI implements UI
 
         $adminOptions = array();
 
-        // Edit list of majors
-        if(\Current_User::allow('intern', 'edit_major')){
-            $adminOptions['EDIT_MAJORS_LINK'] = \PHPWS_Text::secureLink('Edit Undergraduate Majors','intern',array('action' => 'showEditMajors'));
-        }
-
-        // Edit list grad programs
-        if(\Current_User::allow('intern', 'edit_grad_prog')){
-            $adminOptions['EDIT_GRAD_LINK'] = \PHPWS_Text::secureLink('Edit Graduate Programs','intern',array('action' => 'showEditGradProgs'));
-        }
-
         // Edit departments
         if(\Current_User::allow('intern', 'edit_dept')){
             $adminOptions['EDIT_DEPARTMENTS_LINK'] = \PHPWS_Text::secureLink('Edit Departments','intern',array('action' => 'showEditDept'));

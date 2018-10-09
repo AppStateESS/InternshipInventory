@@ -76,7 +76,7 @@
       <fieldset>
         <legend>Internship Type</legend>
         <div class="form-group">
-          <label class="col-md-3 control-label" for="type">Location</label>
+          <label class="col-md-3 control-label" for="type">Type</label>
           <div class="col-md-9">
               <div class="btn-group" data-toggle="buttons">
                 <label class="btn btn-default">Internship

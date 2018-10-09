@@ -77,12 +77,9 @@ class Internship {
     /**
     * @deprecated
     * @see $major_code
+    * for old internships only
     */
     public $grad_prog;
-    /**
-    * @deprecated
-    * @see $major_code
-    */
     public $ugrad_major;
 
     // Contact Info
@@ -217,10 +214,10 @@ class Internship {
         if(is_array($majors) && sizeof($majors) > 0) {
             $this->major_code = $majors[0]->getCode();
             $this->major_description = $majors[0]->getDescription();
-        } else if (is_object($majors)) {
+        } else if(is_object($majors)) {
             $this->major_code = $majors->getCode();
             $this->major_description = $majors->getDescription();
-        } // Else, there were no majors set in the Student object
+        }// Else, there were no majors set in the Student object
 
         // Contact Info
         $this->phone = $student->getPhone();
@@ -378,7 +375,7 @@ class Internship {
         $f = $this->getFaculty();
         $d = $this->getDepartment();
         $c = DocumentRest::contractAffilationSelected($this->id);
-        var_dump($c);
+
         // Merge data from other objects.
         $csv = array_merge($csv, $a->getCSV());
 
@@ -431,30 +428,6 @@ class Internship {
             return true;
         }
         return false;
-    }
-
-    /**
-    * Get a Major object for the major of this student.
-    */
-    public function getUgradMajor()
-    {
-        if(!is_null($this->ugrad_major) && $this->ugrad_major != 0){
-            return new Major($this->ugrad_major);
-        }else{
-            return null;
-        }
-    }
-
-    /**
-    * Get a GradProgram object for the graduate program of this student.
-    */
-    public function getGradProgram()
-    {
-        if(!is_null($this->grad_prog) && $this->grad_prog != 0){
-            return new GradProgram($this->grad_prog);
-        }else{
-            return null;
-        }
     }
 
     public function getAgencyId() {

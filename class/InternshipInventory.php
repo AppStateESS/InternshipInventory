@@ -105,14 +105,6 @@ class InternshipInventory {
                 $view = new UI\DepartmentUI();
                 $this->content = $view->display();
                 break;
-            case 'showEditMajors':
-                $view = new UI\MajorUI();
-                $this->content = $view->display();
-                break;
-            case 'showEditGradProgs':
-                $view = new UI\GradProgramUI();
-                $this->content = $view->display();
-                break;
             case 'showAffiliateAgreement':
                 $view = new UI\AffiliateAgreementUI();
                 $this->content = $view->display();

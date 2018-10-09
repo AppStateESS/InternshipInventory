@@ -23,8 +23,6 @@ namespace Intern\UI;
 use Intern\Internship;
 use Intern\TermFactory;
 use Intern\DepartmentFactory;
-use Intern\Major;
-use Intern\GradProgram;
 use Intern\Subject;
 use Intern\WorkflowStateFactory;
 use Intern\DataProvider\Major\MajorsProviderFactory;
@@ -84,10 +82,9 @@ class SearchUI implements UI
         $form->setMaxSize('course_sect', 4);
         $form->setClass('course_sect', 'form-control');
 
-        /*******************
-         * Department Info *
-         *******************/
-
+        /***********
+         * Faculty *
+         ***********/
         // Deity can search for any department. Other users are restricted.
         if(\Current_User::isDeity()){
             $depts = DepartmentFactory::getDepartmentsAssoc();
@@ -109,12 +106,8 @@ class SearchUI implements UI
             $form->setMatch('department', $keys[1]);
         }
 
-        /***************************
-         * Faculty Member Dropdown
-         *
-         * The options for this drop down are provided through AJAX on page-load and
-         * when the user changes the department dropdown above.
-         */
+        //Faculty Member Dropdown provided through AJAX on page-load and
+        //when the user changes the department dropdown above.
         $form->addSelect('faculty', array(-1=>'Select Faculty Supervisor'));
         $form->setExtra('faculty', 'disabled');
         $form->setLabel('faculty', 'Faculty Supervisor / Instructor of Record');
@@ -123,24 +116,25 @@ class SearchUI implements UI
         // Hidden field for selected faculty member
         $form->addHidden('faculty_id');
 
+        //Level and Major handled with react
+
         /*******************
          * Internship Type *
          *******************/
         // Handeled directly in the html template
+        //$types = Internship::getTypesAssoc();
+        //$form->addRadioAssoc('type', $types);
 
         /************
          * Location *
          ************/
         // Campus Handeled directly in the html template
+        // International vs Domestic - Handeled with react
+        // State & Country search handeled with react
 
-        // International vs Domestic - Handeled directly in the html template
-
-        // State & Country search handeled in-browser
-
-        /*******************
-         * Workflow States *
-         *******************/
-        // Date Range
+        /***************
+         * Date Range *
+         ***************/
         $form->addText('start_date');
         $form->setLabel('start_date', 'Starting After');
         $form->addCssClass('start_date', 'form-control');
@@ -149,13 +143,13 @@ class SearchUI implements UI
         $form->setLabel('end_date', 'Ending Before');
         $form->addCssClass('end_date', 'form-control');
 
+        /***********
+         * Status *
+         ***********/
+         //Workflow States
         $workflowStates = WorkflowStateFactory::getStatesAssoc();
         unset($workflowStates['Intern\WorkflowState\CreationState']); // Remove this state, since it's not valid (internal only state for initial creation)
         $form->addCheckAssoc('workflow_state', $workflowStates);
-
-        // Internship types.
-        $types = Internship::getTypesAssoc();
-        $form->addRadioAssoc('type', $types);
 
         /************************
          * Certification Status *

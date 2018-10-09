@@ -270,12 +270,8 @@ class ResultsUI implements UI
         }
 
         // Major
-        if ($level == Level::UNDERGRAD && isset($ugradMajor) && $ugradMajor != -1) {
-            // Undergrad major
-            $pager->addWhere('major_code', $ugradMajor);
-        } else if ($level == Level::GRADUATE && isset($gradProg) && $gradProg != -1) {
-            // Graduate program
-            $pager->addWhere('major_code', $gradProg);
+        if (isset($major_code) && $major_code != -1) {
+            $pager->addWhere('major_code', $major_code);
         }
 
         // Experience type

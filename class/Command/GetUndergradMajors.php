@@ -35,7 +35,7 @@ class GetUndergradMajors {
         $majorsList = MajorsProviderFactory::getProvider()->getMajors($terms[0]);
         $majorsList = $majorsList->getMajorsByLevel(AcademicMajor::LEVEL_UNDERGRAD);
 
-        $majorsList = array(array('code'=>'-1', 'description' => 'Select Undergraduate Major')) + $majorsList;
+        $majorsList = array_merge(array(array('code'=>'-1', 'description' => 'Select Undergraduate Major')), $majorsList);
 
         echo json_encode($majorsList);
         exit;
