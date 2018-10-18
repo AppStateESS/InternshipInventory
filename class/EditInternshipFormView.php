@@ -654,7 +654,6 @@ class EditInternshipFormView {
                     $this->tpl['MAJOR'] = '<span class="text-muted"><em>Not Available</em></span>';
                 }
             }
-
         } else {
             if($this->intern->getMajorDescription() != null){
                 $this->tpl['MAJOR'] = $this->intern->getMajorDescription();
