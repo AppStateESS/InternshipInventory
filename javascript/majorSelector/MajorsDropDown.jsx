@@ -16,7 +16,11 @@ class MajorsDropDown extends React.Component {
 
         if(level === 'ugrad' || level === 'grad'){
             options = Object.keys(majors).map(function(index) {
-                        return <option key={majors[index].code} value={majors[index].code}>{majors[index].description}</option>;
+                        if(index === '0'){
+                            return <option key={majors[index].code} value={-1}>{majors[index].description}</option>;
+                        } else{
+                            return <option key={majors[index].code} value={majors[index].description}>{majors[index].description}</option>;
+                        }
                     });
         } else {
             options = (<option >Choose a level first</option>);

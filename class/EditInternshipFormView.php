@@ -647,16 +647,19 @@ class EditInternshipFormView {
                         $this->tpl['majors_repeat'][] = array('CODE' => $m->getCode(), 'DESC' => $m->getDescription(), 'ACTIVE' => '', 'CHECKED' => '');
                     }
                 }
-            } else if($this->intern->ugrad_major != NULL){
-                $this->tpl['MAJOR'] = MajorRest::getMajorDesc($this->intern->ugrad_major);
-            } else if($this->intern->grad_prog != NULL){
-                $this->tpl['MAJOR'] = MajorRest::getMajorDesc($this->intern->grad_prog);
             } else {
+                if($this->intern->getMajorDescription() != null){
+                    $this->tpl['MAJOR'] = $this->intern->getMajorDescription();
+                } else{
+                    $this->tpl['MAJOR'] = '<span class="text-muted"><em>Not Available</em></span>';
+                }
+            }
+        } else {
+            if($this->intern->getMajorDescription() != null){
+                $this->tpl['MAJOR'] = $this->intern->getMajorDescription();
+            } else{
                 $this->tpl['MAJOR'] = '<span class="text-muted"><em>Not Available</em></span>';
             }
-
-        } else {
-            $this->tpl['MAJOR'] = '<span class="text-muted"><em>Not Available</em></span>';
         }
 
         $this->formVals['student_first_name'] = $this->intern->first_name;

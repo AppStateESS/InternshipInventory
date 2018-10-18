@@ -49,7 +49,7 @@ class EditAgreementUI implements UI
         $tpl['terminate_bundle'] = AssetResolver::resolveJsPath('assets.json', 'affiliationTerminate');
         $tpl['uploadAffil_bundle'] = AssetResolver::resolveJsPath('assets.json', 'affiliationUpload');
 
-        /* Form for adding new grad program */
+        /* Form for editing affiliation agreements */
         $form = new \PHPWS_Form('edit_affil');
 
 

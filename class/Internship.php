@@ -74,14 +74,6 @@ class Internship {
     public $major_code;
     public $major_description;
 
-    /**
-    * @deprecated
-    * @see $major_code
-    * for old internships only
-    */
-    public $grad_prog;
-    public $ugrad_major;
-
     // Contact Info
     public $phone;
     public $email; // NB: Username, without a domain name

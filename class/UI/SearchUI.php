@@ -25,7 +25,6 @@ use Intern\TermFactory;
 use Intern\DepartmentFactory;
 use Intern\Subject;
 use Intern\WorkflowStateFactory;
-use Intern\DataProvider\Major\MajorsProviderFactory;
 use Intern\AssetResolver;
 
   /**

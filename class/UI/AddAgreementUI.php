@@ -33,8 +33,8 @@ class AddAgreementUI implements UI
 
         javascript('jquery');
 
-        /* Form for adding new grad program */
-        $form = new \PHPWS_Form('add_prog');
+        /* Form for adding new a new affiliation agreement*/
+        $form = new \PHPWS_Form('add_affil');
 
         $form->addText('name');
         $form->setLabel('name', 'Affiliate Name');

@@ -45,12 +45,12 @@ class DeptRest {
 
 	public function post()
 	{
-		$grad = $_REQUEST['create'];
+		$dept = $_REQUEST['create'];
 
-		if ($grad == '')
+		if ($dept == '')
 		{
 			header('HTTP/1.1 500 Internal Server Error');
-			echo("Missing a Graduate Program Title.");
+			echo("Missing Department Title.");
             exit;
 		}
 
@@ -58,11 +58,11 @@ class DeptRest {
 		$pdo = $db->getPDO();
 
 		$sql = "INSERT INTO intern_department (id, name, hidden, corequisite)
-				VALUES (nextval('intern_major_seq'), :grad, :hidden, :corequisite)";
+				VALUES (nextval('intern_department_seq'), :dept, :hidden, :corequisite)";
 
 		$sth = $pdo->prepare($sql);
 
-		$sth->execute(array('grad'=>$grad, 'hidden'=>0, 'corequisite'=>0));
+		$sth->execute(array('dept'=>$dept, 'hidden'=>0, 'corequisite'=>0));
 
 	}
 	public function put()
