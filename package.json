@@ -35,7 +35,6 @@
     "json-loader": "0.5.4",
     "react-a11y": "^0.3.3",
     "react-bootstrap": "^0.31.0",
-    "react-dev-utils": "^3.0.1",
     "strip-loader": "~0.1.2",
     "style-loader": "~0.18.2",
     "webpack": "^3.0.0"
