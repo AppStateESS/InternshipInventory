@@ -1,7 +1,7 @@
 #!/usr/bin/php
 <?php
 /**
- * Used to import internships from a csv file. There are some assumed values here because the data file 
+ * Used to import internships from a csv file. There are some assumed values here because the data file
  * we get is incomplete. A human will need to evaluate the format of the csv file and make adjustments
  * as needed.
  */
@@ -38,7 +38,7 @@ $values['term'] = $term;
 $values['department_id'] = $department_id;
 $values['state'] = 'RegisteredState'; // Since these are past internships
 $values['level'] = 'U'; // Assuming undergraduate
-$values['campus'] = 'main_campus'; 
+$values['campus'] = 'main_campus';
 $values['multi_part'] = 0;
 $values['secondary_part'] = 0;
 $values['domestic'] = 1;
@@ -53,11 +53,10 @@ while(($line = fgetcsv($inputFile, 0, ',')) !== FALSE) {
     if($bannerId == ''){
         continue;
     }
-   
+
     $values['last_name'] = $line[0];
     $values['first_name'] = $line[1];
     $values['banner'] = $bannerId;
-    //$values['birth_date'] = strtotime($line[3]);
     $values['gpa'] = $line[4];
     $email = explode('@',$line[5]);
     $values['email'] = $email[0];

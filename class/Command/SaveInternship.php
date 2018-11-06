@@ -270,15 +270,6 @@ class SaveInternship
         $i->phone = self::trimField($_REQUEST['student_phone']);
         $i->email = self::trimField($_REQUEST['student_email']);
 
-        $i->student_address = self::trimField($_REQUEST['student_address']);
-        $i->student_city = self::trimField($_REQUEST['student_city']);
-        if ($_REQUEST['student_state'] != '-1') {
-            $i->student_state = $_REQUEST['student_state'];
-        } else {
-            $i->student_state = "";
-        }
-        $i->student_zip = $_REQUEST['student_zip'];
-
         if (\Current_User::isDeity()) {
             $i->campus = $_REQUEST['campus'];
         }

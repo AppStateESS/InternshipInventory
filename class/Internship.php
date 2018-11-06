@@ -59,7 +59,6 @@ class Internship {
     public $middle_name;
     public $last_name;
     public $preferred_name;
-    public $birth_date = 0;
 
     // Metaphones for fuzzy search
     public $first_name_meta;
@@ -77,13 +76,6 @@ class Internship {
     // Contact Info
     public $phone;
     public $email; // NB: Username, without a domain name
-
-    // Student address
-    public $student_address;
-    public $student_address2;
-    public $student_city;
-    public $student_state;
-    public $student_zip;
 
     // Location data
     public $domestic;
@@ -189,7 +181,6 @@ class Internship {
         $this->middle_name    = $student->getMiddleName();
         $this->last_name      = $student->getLastName();
         $this->preferred_name = $student->getPreferredName();
-        //$this->birth_date     = $student->getBirthDate();
 
         $this->setFirstNameMetaphone($student->getFirstName());
         $this->setMiddleNameMetaphone($student->getMiddleName());
@@ -213,13 +204,6 @@ class Internship {
 
         // Contact Info
         $this->phone = $student->getPhone();
-
-        // Student address
-        $this->student_address  = $student->getAddress();
-        $this->student_address2 = $student->getAddress2();
-        $this->student_city = $student->getCity();
-        $this->student_state = $student->getState();
-        $this->student_zip = $student->getZip();
     }
 
     /**
@@ -313,13 +297,6 @@ class Internship {
         // Student Academic Info
         $csv['Phone #']     = $this->phone;
         $csv['Email']       = $this->email;
-
-        // Student Address
-        $csv['Student Address']        = $this->student_address;
-        $csv['Student Address 2']      = $this->student_address2;
-        $csv['Student City']           = $this->student_city;
-        $csv['Student State']          = $this->student_state;
-        $csv['Student Zip']            = $this->student_zip;
 
         // Emergency Contact
         $csv['Emergency Contact Name']     = $this->getEmergencyContactName();
@@ -755,14 +732,6 @@ class Internship {
         return $this->email;
     }
 
-    public function getBirthDateFormatted() {
-        if(!isset($this->birth_date) || $this->birth_date === 0){
-            return null;
-        }
-
-        return date('n/j/Y', $this->birth_date);
-    }
-
     public function getFacultyId()
     {
         return $this->faculty_id;
@@ -969,25 +938,6 @@ class Internship {
 
     public function getPhoneNumber(){
         return $this->phone;
-    }
-
-    public function getStudentAddress()
-    {
-        $studentAddress = "";
-        if(!empty($this->student_address)){
-            $studentAddress .= ($this->student_address . ", ");
-        }
-        if(!empty($this->student_city)){
-            $studentAddress .= ($this->student_city . ", ");
-        }
-        if(!empty($this->student_state) && $this->student_state != '-1'){
-            $studentAddress .= ($this->student_state . " ");
-        }
-        if(!empty($this->student_zip)){
-            $studentAddress .= $this->student_zip;
-        }
-
-        return $studentAddress;
     }
 
     /**

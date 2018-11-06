@@ -65,12 +65,6 @@ class InternshipTest extends TestCase
 
         $student->setPhone('828-262-1234');
 
-        $student->setAddress('John Thomas Hall');
-        $student->setAddress2('123 Rivers St.');
-        $student->setCity('Boone');
-        $student->setState('NC');
-        $student->setZip('28608');
-
         return $student;
     }
 }

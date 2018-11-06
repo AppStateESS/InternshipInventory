@@ -60,8 +60,6 @@ class LocalDbStudentDataProvider extends StudentDataProvider {
         $student->setMiddleName($data['middle_name']);
         $student->setLastName($data['last_name']);
         $student->setPreferredName($data['preferred_name']);
-        //$student->setBirthDateFromString($data['birth_date']);
-        $student->setGender($data['gender']);
 
         if($data['confidential'] === 'Y'){
             $student->setConfidentialFlag(true);
@@ -106,13 +104,6 @@ class LocalDbStudentDataProvider extends StudentDataProvider {
 
         // Contact Info
         $student->setPhone($data['phone']);
-
-        // Address info
-        $student->setAddress($data['address']);
-        $student->setAddress2($data['address2']);
-        $student->setCity($data['city']);
-        $student->setState($data['state']);
-        $student->setZip($data['zip']);
     }
 
     public function getCreditHours(string $studentId, string $term)

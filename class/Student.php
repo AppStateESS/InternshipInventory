@@ -34,36 +34,22 @@ class Student {
     private $middleName;
     private $lastName;
     private $preferredName;
-    private $birthDate;
-    private $gender;
 
     private $confidential;
 
     // Academic info
     private $campus;
-    //private $college;
-    //private $department;
     private $level;
     private $majors; // Array holding multiple major objects
     private $gpa;
     private $gradDate;
     private $holds;
-    //private $creditHours;
 
     // Person type flags
     private $isStaff;
     private $isStudent;
 
-    // Contact info
-    private $phone;
-    private $address;
-    private $address2;
-    private $city;
-    private $state;
-    private $zip;
-
-    public function __construct()
-    {
+    public function __construct() {
         $this->majors = array();
     }
 
@@ -77,8 +63,7 @@ class Student {
      * @param $term integer The term the internship will be in. Used to check existing credit hours.
      * @return boolean
      */
-    public function isCreditHourLimited(int $internHours, int $existingHours, Term $term): bool
-    {
+    public function isCreditHourLimited(int $internHours, int $existingHours, Term $term): bool {
         $totalHours = $existingHours + $internHours;
         $semester = $term->getSemesterType();
         $code = $this->getLevel();
@@ -153,32 +138,11 @@ class Student {
         $this->preferredName = $name;
     }
 
-    public function getBirthDate() {
-        return $this->birthDate;
-    }
-
-    /**
-    * Sets birth date
-    * @param $date String - Date, formatted as mm/dd/yyyy, ex: 6/20/1995
-    */
-    public function setBirthDateFromString($date) {
-        $this->birthDate = strtotime($date);
-    }
-
-    public function getGender() {
-        return $this->gender;
-    }
-
-    public function setGender($gender) {
-        $this->gender = $gender;
-    }
-
     public function getConfidentialFlag() {
         return $this->confidential;
     }
 
-    public function setConfidentialFlag($flag)
-    {
+    public function setConfidentialFlag($flag) {
         $this->confidential = $flag;
     }
 
@@ -233,8 +197,7 @@ class Student {
         $this->gradDate = strtotime($date);
     }
 
-    public function getGradDate()
-    {
+    public function getGradDate() {
         return $this->gradDate;
     }
 
@@ -262,53 +225,11 @@ class Student {
         $this->isStaff = $flag;
     }
 
-
     public function getPhone() {
         return $this->phone;
     }
 
     public function setPhone($phone) {
         $this->phone = $phone;
-    }
-
-    public function getAddress() {
-        return $this->address;
-    }
-
-    public function setAddress($address) {
-        $this->address = $address;
-    }
-
-    public function getAddress2()
-    {
-        return $this->address2;
-    }
-
-    public function setAddress2($address) {
-        $this->address2 = $address;
-    }
-
-    public function getCity() {
-        return $this->city;
-    }
-
-    public function setCity($city) {
-        $this->city = $city;
-    }
-
-    public function getState() {
-        return $this->state;
-    }
-
-    public function setState($state) {
-        $this->state = $state;
-    }
-
-    public function getZip() {
-        return $this->zip;
-    }
-
-    public function setZip($zip) {
-        $this->zip = $zip;
     }
 }

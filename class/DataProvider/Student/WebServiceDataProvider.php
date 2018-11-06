@@ -229,8 +229,6 @@ class WebServiceDataProvider extends StudentDataProvider {
         $student->setMiddleName($data->middle_name);
         $student->setLastName($data->last_name);
         $student->setPreferredName($data->preferred_name);
-        //$student->setBirthDateFromString($data->birth_date);
-        $student->setGender($data->gender);
 
         if($data->confid === 'N') {
             $student->setConfidentialFlag(false);
@@ -303,13 +301,6 @@ class WebServiceDataProvider extends StudentDataProvider {
 
         // Contact info
         $student->setPhone($data->phone);
-
-        // Address info
-        $student->setAddress($data->addr1);
-        $student->setAddress2($data->addr2);
-        $student->setCity($data->city);
-        $student->setState($data->state);
-        $student->setZip($data->zip);
     }
 
     /**

@@ -75,7 +75,6 @@ class BackgroundCheckEmail extends Email{
         $this->tpl['BANNER'] = $this->internship->banner;
         $this->tpl['TERM'] = $this->term->getDescription();
         $this->tpl['LEVEL'] = $this->internship->getLevel();
-        //$this->tpl['BIRTHDAY'] = $this->internship->getBirthDateFormatted();
         $this->tpl['EMAIL'] = $this->internship->getEmailAddress() . $this->emailSettings->getEmailDomain();
         $this->tpl['AGENCY'] = $this->agency->getName();
 
