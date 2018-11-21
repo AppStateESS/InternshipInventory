@@ -710,7 +710,7 @@ class EditInternshipFormView {
         $this->formVals['start_date'] = $this->intern->start_date ? date('m/d/Y', $this->intern->start_date) : null;
         $this->formVals['end_date'] = $this->intern->end_date ? date('m/d/Y', $this->intern->end_date) : null;
 
-        $this->tpl['TERM_DATES'] = $this->term->getStartDateFormatted() . ' through ' . $this->term->getEndDateFormatted();
+        $this->tpl['TERM_DATES'] =  'Broadest dates of term: <br />' . $this->term->getStartDateFormatted() . ' through ' . $this->term->getEndDateFormatted();
 
         $this->formVals['credits'] = $this->intern->credits;
         $this->formVals['avg_hours_week'] = $this->intern->avg_hours_week;

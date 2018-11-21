@@ -41,25 +41,10 @@ class GetFacultyListForDept {
 
         if(is_null($department) || !isset($department))
         {
-          throw new Exceptiong('Department returned was null. Check department id.');
+          throw new Exception('Department returned was null. Check department id.');
         }
 
         $faculty = FacultyFactory::getFacultyByDepartmentAssoc($department);
-
-        if(is_null($faculty) || !isset($faculty))
-        {
-          throw new Exceptiong('Faculty returned was null.');
-        }
-
-        /*
-        $props = array();
-
-        foreach ($faculty as $id => $val) {
-            $props[]=array('id'=>$id, 'name'=>$val);
-        }
-
-        return $props;
-    */
 
         echo json_encode($faculty);
         exit; // Exit since this is called by JSON

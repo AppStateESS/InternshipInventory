@@ -69,8 +69,7 @@ class TermBlock extends React.Component {
         if(this.state.selectedTerm !== null){
             let startDate = new Date(this.state.terms[this.state.selectedTerm].start_timestamp * 1000);
             let endDate = new Date(this.state.terms[this.state.selectedTerm].end_timestamp * 1000);
-
-            termDates = startDate.toDateString() + " through " + endDate.toDateString();
+            termDates = "Broadest dates: " + startDate.toLocaleDateString() + " through " + endDate.toLocaleDateString();
         }else{
             termDates = '';
         }
@@ -97,7 +96,7 @@ class TermBlock extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className="col-md-4 col-md-push-2">
+                <div className="col-md-4 col-md-push-3">
                     <span id="helpBlock" className="help-block" style={{marginTop: '32px'}}>{termDates}</span>
                 </div>
             </div>

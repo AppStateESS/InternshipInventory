@@ -251,7 +251,7 @@
       </div>
 
       <div class="form-group">
-          <div class="col-lg-6 col-lg-push-3"><p class="form-control-static">{TERM_DATES}</p></div>
+          <div class="col-lg-6 col-lg-push-3"><small class="text-muted">{TERM_DATES}</small></div>
       </div>
 
       <div class="form-group">

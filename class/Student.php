@@ -218,11 +218,19 @@ class Student {
         $this->isStudent = $flag;
     }
 
+    public function getStudentFlag() {
+        return $this->isStudent;
+    }
+
     /**
     * @param $flag bool
     */
     public function setStaffFlag($flag) {
         $this->isStaff = $flag;
+    }
+
+    public function getStaffFlag() {
+        return $this->isStaff;
     }
 
     public function getPhone() {
