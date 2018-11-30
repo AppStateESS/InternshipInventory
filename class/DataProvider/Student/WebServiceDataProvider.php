@@ -262,8 +262,9 @@ class WebServiceDataProvider extends StudentDataProvider {
             // We're not going to check for every possible campus name; as long as there's *something* there, we'll assume it's distance ed
             $student->setCampus(Student::DISTANCE_ED);
         } else {
-            // If the campus isn't set, then throw an exception
-            //throw new \InvalidArgumentException("Unrecognized campus ({$data->campus}) for {$data->banner_id}.");
+            // If the campus isn't set, then defalt to main campus with a warning to check the campus
+            \NQ::simple('intern', \Intern\UI\NotifyUI::WARNING, "We couldn't find a campus listed for this student so Main Campus was selected. Please check that the campus is correct.");
+            \NQ::close();
         }
 
         // Check if level exist, if not add it
