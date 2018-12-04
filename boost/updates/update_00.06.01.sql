@@ -1,7 +1,7 @@
 ALTER TABLE intern_internship DROP COLUMN student_address;
 ALTER TABLE intern_internship DROP COLUMN student_address2;
 ALTER TABLE intern_internship DROP COLUMN student_city;
-ALTER TABLE intern_internship DROP COLUMN student_stat;
+ALTER TABLE intern_internship DROP COLUMN student_state;
 ALTER TABLE intern_internship DROP COLUMN student_zip;
 ALTER TABLE intern_internship DROP COLUMN birth_date;
 
