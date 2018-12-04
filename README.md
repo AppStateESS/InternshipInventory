@@ -50,13 +50,14 @@ And constructed with the following guidelines:
 For more information on SemVer, please visit <http://semver.org/>.
 
 ## Authors
-- **Jeremy Booker** - <http://twitter.com/jbook3r>
+- Jeremy Booker
 - Jacob Pollard
 - Jeff Tickle
 - Robert Bost
 - Micah Carter
 - Eric Cambel
 - Chris Detsch
+- Cydney Caldwell
 
 ## Copyright and license
 Code and documentation copyright 2008-2018 Appalachian State University. Code released under the [GNU GPL v3](LICENSE). Docs released under Creative Commons Attribution 4.0 International (CC BY 4.0).

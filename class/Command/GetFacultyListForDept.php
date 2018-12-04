@@ -39,8 +39,7 @@ class GetFacultyListForDept {
 
         $department = DepartmentFactory::getDepartmentById($departmentId);
 
-        if(is_null($department) || !isset($department))
-        {
+        if(is_null($department) || !isset($department)) {
           throw new Exception('Department returned was null. Check department id.');
         }
 
