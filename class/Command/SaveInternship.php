@@ -176,8 +176,9 @@ class SaveInternship
         } catch (StudentNotFoundException $e) {
             $student = null;
 
-            $this->rerouteWithError('index.php?module=intern&action=ShowInternship',
-                    "We couldn't find a matching student in Banner. Your changes were saved, but this student probably needs to contact the Registrar's Office to re-enroll.");
+            //$this->rerouteWithError('index.php?module=intern&action=ShowInternship',
+            //        "We couldn't find a matching student in Banner. Your changes were saved, but this student probably needs to contact the Registrar's Office to re-enroll.");
+            \NQ::simple('intern', \Intern\UI\NotifyUI::WARNING, "We couldn't find a matching student in Banner. Your changes were saved, but this student probably needs to contact the Registrar's Office to re-enroll.");
             \NQ::close();
         }
 
@@ -269,15 +270,6 @@ class SaveInternship
 
         $i->phone = self::trimField($_REQUEST['student_phone']);
         $i->email = self::trimField($_REQUEST['student_email']);
-
-        $i->student_address = self::trimField($_REQUEST['student_address']);
-        $i->student_city = self::trimField($_REQUEST['student_city']);
-        if ($_REQUEST['student_state'] != '-1') {
-            $i->student_state = $_REQUEST['student_state'];
-        } else {
-            $i->student_state = "";
-        }
-        $i->student_zip = $_REQUEST['student_zip'];
 
         if (\Current_User::isDeity()) {
             $i->campus = $_REQUEST['campus'];

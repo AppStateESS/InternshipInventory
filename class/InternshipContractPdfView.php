@@ -76,8 +76,7 @@ class InternshipContractPdfView {
         $f = $this->internship->getFaculty();
         //$subject = $this->internship->getSubject();
 
-        //$pagecount = $this->pdf->setSourceFile(PHPWS_SOURCE_DIR . 'mod/intern/pdf/AppStateInternshipContractNew.pdf');
-        $this->pdf->setSourceFile(PHPWS_SOURCE_DIR . 'mod/intern/pdf/AppStateInternshipContractNew.pdf');
+        $this->pdf->setSourceFile(PHPWS_SOURCE_DIR . 'mod/intern/pdf/AppState_Internship_Contract.pdf');
         $tplidx = $this->pdf->importPage(1);
         $this->pdf->addPage();
         $this->pdf->useTemplate($tplidx);
@@ -116,48 +115,44 @@ class InternshipContractPdfView {
         $this->pdf->setXY(155, 84);
         $this->pdf->cell(42, 5, $this->internship->getBannerId());
 
-        $this->pdf->setXY(41, 94);
+        $this->pdf->setXY(41, 91);
         $this->pdf->cell(54, 5, $this->internship->getEmailAddress() . '@appstate.edu');
 
-        $this->pdf->setXY(127, 94);
+        $this->pdf->setXY(127, 91);
         $this->pdf->cell(54, 5, $this->internship->getPhoneNumber());
-
-        /* Student Address */
-        $this->pdf->setXY(60, 89);
-        $this->pdf->cell(54, 5, $this->internship->getStudentAddress());
 
 
         /* Payment */
         if($this->internship->isPaid()){
-            $this->pdf->setXY(25, 99);
+            $this->pdf->setXY(25, 97);
             $this->pdf->cell(10,5, 'X');
         }else {
-            $this->pdf->setXY(87, 99);
+            $this->pdf->setXY(87, 97);
             $this->pdf->cell(10,5,'X');
         }
 
         // Stipend
         if($this->internship->hasStipend()) {
-            $this->pdf->setXY(56, 99);
+            $this->pdf->setXY(56, 97);
             $this->pdf->cell(10,5, 'X');
         }
 
         /* Hours */
-        $this->pdf->setXY(190, 100);
+        $this->pdf->setXY(190, 97);
         $this->pdf->cell(12, 5, $this->internship->getCreditHours());
 
         // Hours per week
-        $this->pdf->setXY(147, 100);
+        $this->pdf->setXY(147, 97);
         $this->pdf->cell(12, 5, $this->internship->getAvgHoursPerWeek());
 
-        /* Term right aligned*/
-        $this->pdf->setXY(1, 103);
-        $this->pdf->cell(27, 6, $this->term->getDescription(), 0, 0, 'R');
+        /* Term */
+        $this->pdf->setXY(22, 103);
+        $this->pdf->cell(27, 6, $this->term->getDescription());
 
         /* Dates for begining and end of term center aligned*/
-        $this->pdf->setXY(87, 106);
+        $this->pdf->setXY(109, 103);
         $this->pdf->cell(30, 5, $this->term->getStartDateFormatted(), 0, 0, 'C');
-        $this->pdf->setXY(160, 106);
+        $this->pdf->setXY(175, 103);
         $this->pdf->cell(30, 5, $this->term->getEndDateFormatted(), 0, 0, 'C');
 
         /***
@@ -281,13 +276,13 @@ class InternshipContractPdfView {
         if(sizeof($this->emergencyContacts) > 0){
             $firstContact = $this->emergencyContacts[0];
 
-            $this->pdf->setXY(60, 274);
+            $this->pdf->setXY(60, 273);
             $this->pdf->cell(52, 0, $firstContact->getName());
 
-            $this->pdf->setXY(134, 274);
+            $this->pdf->setXY(134, 273);
             $this->pdf->cell(52, 0, $firstContact->getRelation());
 
-            $this->pdf->setXY(175, 274);
+            $this->pdf->setXY(173, 273);
             $this->pdf->cell(52, 0, $firstContact->getPhone());
         }
     }

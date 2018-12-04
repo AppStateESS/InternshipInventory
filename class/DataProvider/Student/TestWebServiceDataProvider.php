@@ -71,19 +71,9 @@ class TestWebServiceDataProvider extends WebServiceDataProvider {
         $obj->last_name     = 'Booker';
         $obj->preferred_name = 'j-dogg';
         $obj->title         = 'Senior';
-        $obj->gender        = 'M';
-        //$obj->birth_date    = '6/20/1995';
 
         // Phone number
         $obj->phone = '828 123 4567';
-
-        // Address
-        $obj->addr1 = '123 Rivers Street';
-        $obj->addr2 = 'John Thomas Hall';
-
-        $obj->city  = 'Hickory';
-        $obj->state = 'NC';
-        $obj->zip   = '28602';
 
         // Academic Info
         $obj->level     = 'U';   // 'U' or 'G'

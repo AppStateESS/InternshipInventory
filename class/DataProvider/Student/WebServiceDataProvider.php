@@ -229,8 +229,6 @@ class WebServiceDataProvider extends StudentDataProvider {
         $student->setMiddleName($data->middle_name);
         $student->setLastName($data->last_name);
         $student->setPreferredName($data->preferred_name);
-        //$student->setBirthDateFromString($data->birth_date);
-        $student->setGender($data->gender);
 
         if($data->confid === 'N') {
             $student->setConfidentialFlag(false);
@@ -264,14 +262,17 @@ class WebServiceDataProvider extends StudentDataProvider {
             // We're not going to check for every possible campus name; as long as there's *something* there, we'll assume it's distance ed
             $student->setCampus(Student::DISTANCE_ED);
         } else {
-            // If the campus isn't set, then throw an exception
-            //throw new \InvalidArgumentException("Unrecognized campus ({$data->campus}) for {$data->banner_id}.");
+            // If the campus isn't set, then defalt to main campus with a warning
+            // TODO: fix so the message only appears on create.
+            $student->setCampus(Student::MAIN_CAMPUS);
+            \NQ::simple('intern', \Intern\UI\NotifyUI::WARNING, "Campus not found for this student in banner so Main Campus was initially selected.");
+            \NQ::close();
         }
 
         // Check if level exist, if not add it
-        if(LevelFactory::checkLevelExist($data->level)){
+        if(LevelFactory::checkLevelExist($data->level) && $student->getStudentFlag()){
             $student->setLevel($data->level);
-        } else {
+        } else if($student->getStudentFlag()) {
             $newLevel = LevelFactory::saveNewCode($data->level);
             $student->setLevel($newLevel);
         }
@@ -281,13 +282,12 @@ class WebServiceDataProvider extends StudentDataProvider {
         //$student->setCreditHours($data->creditHours);
 
         // Majors - Can be an array of objects, or just a single object, or not set at all
-        // TODO: Fix hard-coded 'U' level passed to AcademicMajor
         if(isset($data->majors) && is_array($data->majors)) {
             foreach($data->majors as $major){
-                $student->addMajor(new AcademicMajor($major->major_code, $major->major_desc, 'U'));
+                $student->addMajor(new AcademicMajor($major->major_code, $major->major_desc, AcademicMajor::LEVEL_UNDERGRAD));
             }
         } else if(isset($data->majors) &&  is_object($data->majors)){
-            $student->addMajor(new AcademicMajor($data->majors->major_code, $data->majors->major_desc, 'U'));
+            $student->addMajor(new AcademicMajor($data->majors->major_code, $data->majors->major_desc, AcademicMajor::LEVEL_UNDERGRAD));
         }
 
         // GPA - Rounded to 4 decimial places
@@ -303,13 +303,6 @@ class WebServiceDataProvider extends StudentDataProvider {
 
         // Contact info
         $student->setPhone($data->phone);
-
-        // Address info
-        $student->setAddress($data->addr1);
-        $student->setAddress2($data->addr2);
-        $student->setCity($data->city);
-        $student->setState($data->state);
-        $student->setZip($data->zip);
     }
 
     /**

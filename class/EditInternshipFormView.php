@@ -203,23 +203,6 @@ class EditInternshipFormView {
         $this->form->setLabel('student_email', 'ASU Email');
         $this->form->addCssClass('student_email', 'form-control');
 
-        /* Student Address */
-        $this->form->addText('student_address');
-        $this->form->setLabel('student_address','Address');
-        $this->form->addCssClass('student_address', 'form-control');
-
-        $this->form->addText('student_city');
-        $this->form->setLabel('student_city','City');
-        $this->form->addCssClass('student_city', 'form-control');
-
-        $this->form->addDropBox('student_state', State::$UNITED_STATES);
-        $this->form->setLabel('student_state','State');
-        $this->form->addCssClass('student_state', 'form-control');
-
-        $this->form->addText('student_zip');
-        $this->form->setLabel('student_zip','Zip Code');
-        $this->form->addCssClass('student_zip', 'form-control');
-
         if($this->intern->getBackgroundCheck() == 1){
             $this->tpl['BACK_CHECK_REQUESTED_BTN'] = 'Background Check Requested';
         }else{
@@ -671,13 +654,6 @@ class EditInternshipFormView {
 
         $this->formVals['student_gpa'] = $this->intern->gpa;
         $this->formVals['campus'] = $this->intern->campus;
-
-        // Student address
-        $this->formVals['student_address'] = $this->intern->student_address;
-        $this->formVals['student_city'] = $this->intern->student_city;
-        $this->formVals['student_state'] = $this->intern->student_state;
-        $this->formVals['student_zip'] = $this->intern->student_zip;
-
     }
 
     private function plugFaculty()
@@ -734,7 +710,7 @@ class EditInternshipFormView {
         $this->formVals['start_date'] = $this->intern->start_date ? date('m/d/Y', $this->intern->start_date) : null;
         $this->formVals['end_date'] = $this->intern->end_date ? date('m/d/Y', $this->intern->end_date) : null;
 
-        $this->tpl['TERM_DATES'] = $this->term->getStartDateFormatted() . ' through ' . $this->term->getEndDateFormatted();
+        $this->tpl['TERM_DATES'] =  'Broadest dates of term: <br />' . $this->term->getStartDateFormatted() . ' through ' . $this->term->getEndDateFormatted();
 
         $this->formVals['credits'] = $this->intern->credits;
         $this->formVals['avg_hours_week'] = $this->intern->avg_hours_week;

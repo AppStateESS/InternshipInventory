@@ -182,16 +182,16 @@ function initFacultySelector()
         $.ajax({
             success: function(data){
               if (data.length === 0){
-                $.ajax({
-                    success: handleGetFacultyResponse,
-                    error: handleGetFacultyResponseError,
-                    data: {module: 'intern',
-                        action: 'restFacultyById',
-                        id: $("#internship_faculty_id").val()
-                        },
-                    dataType: 'json',
-                    url: 'index.php'
-                });
+                  $.ajax({
+                      success: handleGetFacultyResponse,
+                      error: handleGetFacultyResponseError,
+                      data: {module: 'intern',
+                          action: 'restFacultyById',
+                          id: $("#internship_faculty_id").val()
+                          },
+                      dataType: 'json',
+                      url: 'index.php'
+                  });
               }
               else{
                 handleFacultyResponse(data)

@@ -92,26 +92,6 @@
         </div>
 
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{STUDENT_ADDRESS_ID}">{STUDENT_ADDRESS_LABEL_TEXT}</label>
-          <div class="col-lg-6">{STUDENT_ADDRESS}</div>
-        </div>
-
-        <div class="form-group">
-          <label class="col-lg-3 control-label" for="{STUDENT_CITY_ID}">{STUDENT_CITY_LABEL_TEXT}</label>
-          <div class="col-lg-6">{STUDENT_CITY}</div>
-        </div>
-
-        <div class="form-group">
-          <label class="col-lg-3 control-label" for="{STUDENT_STATE_ID}">{STUDENT_STATE_LABEL_TEXT}</label>
-          <div class="col-lg-6">{STUDENT_STATE}</div>
-        </div>
-
-        <div class="form-group">
-          <label class="col-lg-3 control-label" for="{STUDENT_ZIP_ID}">{STUDENT_ZIP_LABEL_TEXT}</label>
-          <div class="col-lg-6">{STUDENT_ZIP}</div>
-        </div>
-
-        <div class="form-group">
           <label class="col-lg-3 control-label" for="{STUDENT_PHONE_ID}">{STUDENT_PHONE_LABEL_TEXT}</label>
           <div class="col-lg-6">{STUDENT_PHONE}</div>
         </div>
@@ -271,7 +251,7 @@
       </div>
 
       <div class="form-group">
-          <div class="col-lg-6 col-lg-push-3"><p class="form-control-static">{TERM_DATES}</p></div>
+          <div class="col-lg-6 col-lg-push-3"><small class="text-muted">{TERM_DATES}</small></div>
       </div>
 
       <div class="form-group">

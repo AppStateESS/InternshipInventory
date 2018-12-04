@@ -20,12 +20,10 @@
 
 namespace Intern\Command;
 
-use \Intern\DataProvider\Term\TermInfoProviderFactory;
 use Intern\TermFactory;
 
 /**
  * JSON endpoint for getting begin/end date and census date information for a term.
- * Uses the TermInfoProviderFactory to load TermInfo objects.
  *
  * @author jbooker
  * @package Intern

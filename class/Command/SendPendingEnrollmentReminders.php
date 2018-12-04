@@ -22,7 +22,6 @@ namespace Intern\Command;
 
 use Intern\WorkflowStateFactory;
 use Intern\ChangeHistory;
-use Intern\DataProvider\Term\TermInfoProviderFactory;
 use Intern\TermFactory;
 use Intern\InternshipFactory;
 use Intern\Email;

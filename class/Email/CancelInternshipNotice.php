@@ -90,6 +90,6 @@ class CancelInternshipNotice extends Email {
             $this->cc[] = ($faculty->getUsername() . $this->emailSettings->getEmailDomain());
         }
 
-        $this->subject = 'Internship Cancelled ' . $this->term->getDescription() . '[' . $this->internship->getBannerId() . '] ' . $this->internship->getFullName();
+        $this->subject = 'Internship Canceled ' . $this->term->getDescription() . '[' . $this->internship->getBannerId() . '] ' . $this->internship->getFullName();
     }
 }
