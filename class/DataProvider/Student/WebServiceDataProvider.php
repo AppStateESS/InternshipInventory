@@ -262,11 +262,10 @@ class WebServiceDataProvider extends StudentDataProvider {
             // We're not going to check for every possible campus name; as long as there's *something* there, we'll assume it's distance ed
             $student->setCampus(Student::DISTANCE_ED);
         } else {
-            // If the campus isn't set, then defalt to main campus with a warning
-            // TODO: fix so the message only appears on create.
+            // If the campus isn't set, then defalt to main campus
             $student->setCampus(Student::MAIN_CAMPUS);
-            \NQ::simple('intern', \Intern\UI\NotifyUI::WARNING, "Campus not found for this student in banner so Main Campus was initially selected.");
-            \NQ::close();
+            //\NQ::simple('intern', \Intern\UI\NotifyUI::WARNING, "Campus not found for this student in banner so Main Campus was initially selected.");
+            //\NQ::close();
         }
 
         // Check if level exist, if not add it
