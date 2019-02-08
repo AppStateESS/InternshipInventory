@@ -64,7 +64,6 @@ class TermRow extends React.Component {
     handleSave() {
         this.setState({editMode: false});
 
-        var newTcode = ReactDOM.findDOMNode(this.refs.savedTcode).value.trim();
         var newStype = ReactDOM.findDOMNode(this.refs.savedStype).value.trim();
         var newDescr = ReactDOM.findDOMNode(this.refs.savedDescr).value.trim();
         var newCensusDate = ReactDOM.findDOMNode(this.refs.savedCensusDate).value.trim();
@@ -74,9 +73,6 @@ class TermRow extends React.Component {
         var newUgradOverload = ReactDOM.findDOMNode(this.refs.savedUgradOverload).value.trim();
         var newGradOverload = ReactDOM.findDOMNode(this.refs.savedGradOverload).value.trim();
 
-        if (newTcode === '') {
-            newTcode = this.props.tcode;
-        }
         if (newStype === '') {
             newStype = this.props.stype;
         }
@@ -102,7 +98,7 @@ class TermRow extends React.Component {
             newGradOverload = this.props.gradOverload;
         }
 
-        this.props.onTermSave(newTcode, newStype, newDescr, newCensusDate, newAvailDate, newStartDate, newEndDate, newUgradOverload, newGradOverload, this.props.tcode);
+        this.props.onTermSave(newStype, newDescr, newCensusDate, newAvailDate, newStartDate, newEndDate, newUgradOverload, newGradOverload, this.props.tcode);
     }
     onCancelSave() {
         this.setState({editMode: false});
@@ -141,7 +137,7 @@ class TermRow extends React.Component {
             mainButton = <a onClick={this.handleSave} data-toggle="tooltip" title="Save Changes"><i className="glyphicon glyphicon-floppy-save"/></a>
             return (
             <tr>
-                <td><input type="text" className="form-control" ref="savedTcode" defaultValue={this.props.tcode}/></td>
+                <td><label type="text" ref="savedTcode">{this.props.tcode}</label></td>
                 <td><input type="text" className="form-control" ref="savedStype" defaultValue={this.props.stype}/></td>
                 <td><input type="text" className="form-control" ref="savedDescr" defaultValue={this.props.descr}/></td>
                 <td><input type="text" className="form-control" ref="savedCensusDate" defaultValue={censusDate}/></td>
@@ -291,7 +287,7 @@ class TermInput extends React.Component {
               <div className="col-sm-3">
                   <div className="form-group">
                       <label>Term Code: </label>
-                      <input type="text" className="form-control" placeholder="00000" ref="term_code"/>
+                      <input type="text" className="form-control" placeholder="000000" ref="term_code"/>
                   </div>
               </div>
 
@@ -422,13 +418,13 @@ class TermSelector extends React.Component {
 
         var errorMessage = null;
 
-        if (tcode === '') {
-            errorMessage = "Please enter a term code.";
+        if (tcode === '' || tcode.length !== 6) {
+            errorMessage = "Please enter a term code with 6 digits.";
             this.setState({errorWarning: errorMessage, messageType: "error"});
             return;
         }
-        if (stype === '') {
-            errorMessage = "Please enter a semester type.";
+        if (stype === '' || stype.length !== 1) {
+            errorMessage = "Please enter a semester type that is 1 digit long.";
             this.setState({errorWarning: errorMessage, messageType: "error"});
             return;
         }
@@ -457,13 +453,13 @@ class TermSelector extends React.Component {
             this.setState({errorWarning: errorMessage, messageType: "error"});
             return;
         }
-        if (ugradOver === '') {
-            errorMessage = "Please enter undergraduate overload hours.";
+        if (ugradOver === '' || ugradOver.length > 2) {
+            errorMessage = "Please enter undergraduate overload hours or lower the number of hours.";
             this.setState({errorWarning: errorMessage, messageType: "error"});
             return;
         }
-        if (gradOver === '') {
-            errorMessage = "Please enter graduate overload hours.";
+        if (gradOver === '' || gradOver.length > 2) {
+            errorMessage = "Please enter graduate overload hours or lower the number of hours.";
             this.setState({errorWarning: errorMessage, messageType: "error"});
             return;
         }
@@ -490,15 +486,14 @@ class TermSelector extends React.Component {
             }.bind(this)
         });
     }
-    onTermSave(newtermc, newsemtype, newdescri, newcensusd, newavaild, newstartd, newendd, newugradover, newgradover, oldTcode) {
+    onTermSave(newsemtype, newdescri, newcensusd, newavaild, newstartd, newendd, newugradover, newgradover, tcode) {
 
         newcensusd = this.dateToTimestamp(newcensusd);
         newavaild = this.dateToTimestamp(newavaild);
         newstartd = this.dateToTimestamp(newstartd);
         newendd = this.dateToTimestamp(newendd);
 
-        var cleanoldTcode = encodeURIComponent(oldTcode)
-        var cleantermc = encodeURIComponent(newtermc);
+        var cleantcode = encodeURIComponent(tcode)
         var cleansemtype = encodeURIComponent(newsemtype);
         var cleandescri = encodeURIComponent(newdescri);
         var cleancensusd = encodeURIComponent(newcensusd);
@@ -509,9 +504,9 @@ class TermSelector extends React.Component {
         var cleangradover = encodeURIComponent(newgradover);
 
         $.ajax({
-            url: 'index.php?module=intern&action=termRest&newTcode='+cleantermc+'&newSemtype='+cleansemtype+
+            url: 'index.php?module=intern&action=termRest&newSemtype='+cleansemtype+
             '&newDesc='+cleandescri+'&newCensus='+cleancensusd+'&newAvail='+cleanavaild+'&newStart='+cleanstartd+
-            '&newEnd='+cleanendd+'&newUgradOver='+cleanugradover+'&newGradOver='+cleangradover+'&oldTcode='+cleanoldTcode,
+            '&newEnd='+cleanendd+'&newUgradOver='+cleanugradover+'&newGradOver='+cleangradover+'&tCode='+cleantcode,
             type: 'PUT',
             success: function(data) {
                 $("#success").show();

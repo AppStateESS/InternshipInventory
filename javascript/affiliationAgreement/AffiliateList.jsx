@@ -248,7 +248,13 @@ class AffiliateList extends React.Component {
           case 'SoonerToLater':
 
               sorted = unsorted.sort(function (a,b) {
-                  if (a.end_date < b.end_date) return -1;
+                  if (a.end_date < b.end_date){
+                    if(a.auto_renew && !b.auto_renew){
+                        return 1;
+                    } else{
+                        return -1;
+                    }
+                  }
                   if (a.end_date > b.end_date) return 1;
                   return 0;
               });
@@ -256,7 +262,13 @@ class AffiliateList extends React.Component {
           case 'LaterToSooner':
 
               sorted = unsorted.sort(function (a,b) {
-                  if (a.end_date > b.end_date) return -1;
+                  if (a.end_date > b.end_date){
+                    if(!a.auto_renew && b.auto_renew){
+                        return 1;
+                    } else{
+                        return -1;
+                    }
+                  }
                   if (a.end_date < b.end_date) return 1;
                   return 0;
               });
@@ -289,7 +301,12 @@ class AffiliateList extends React.Component {
             var expiration = (itemDate - current)/1000;
 
             if (filter === 'active') {
-                if (item.auto_renew || expiration > 0) {
+                if (!item.auto_renew && expiration > 0) {
+                    filtered.push(item);
+                }
+            }
+            else if (filter ==='auto_renew') {
+                if (item.auto_renew && expiration > 0) {
                     filtered.push(item);
                 }
             }
@@ -422,6 +439,9 @@ class AffiliateList extends React.Component {
                             </button>
                             <button className="btn btn-default" value="active">
                                 <input type="radio"/>Active
+                            </button>
+                            <button className="btn btn-default" value="auto_renew">
+                                <input  type="radio"/>Auto
                             </button>
                             <button className="btn btn-default" value="expired">
                                 <input  type="radio"/>Expired

@@ -193,7 +193,7 @@ class SaveInternship
         $i->stipend = isset($_REQUEST['stipend']) && $i->paid;
         $i->pay_rate = self::trimField($_REQUEST['pay_rate']);
 
-        if (\Current_User::isDeity()) {
+        if (\Current_User::allow('intern', 'change_term')) {
             $i->term = $_REQUEST['term'];
         }
 

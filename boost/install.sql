@@ -547,7 +547,7 @@ CREATE TABLE intern_agreement_documents(
 
 CREATE SEQUENCE intern_affiliation_agreement_seq;
 
--- Term format YYYY# (e.g. 20111 is Spring 2011, 20113 is Fall 2011)
+-- Term format YYYY# (e.g. 201110 is Spring 2011, 201130 is Fall 2011)
 CREATE TABLE intern_term (
        term character varying NOT NULL,
        description character varying NOT NULL,
@@ -746,7 +746,7 @@ INSERT INTO intern_department VALUES (38, 'Theatre and Dance');
 INSERT INTO intern_department VALUES (39, 'University College');
 -- End departments
 
--- Add undergraduate majors
+-- Add majors
 INSERT INTO intern_major (id, description, level) VALUES (1, 'Accounting', 'U');
 INSERT INTO intern_major (id, description, level) VALUES (2, 'Actuarial Sciences', 'U');
 INSERT INTO intern_major (id, description, level) VALUES (3, 'Anthropology - Applied', 'U');

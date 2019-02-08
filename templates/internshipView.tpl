@@ -266,6 +266,46 @@
 
       <h4>Course Information</h4>
 
+      <!-- Link to Informational Modal -->
+      <div class="col-lg-12">
+        <a href="#partModal" id="internship-part-help-button" class="pull-right"  data-toggle="modal"><i class="fa fa-question-circle"></i> Multi-part Explanation</a>
+      </div>
+
+      <!-- Informational Modal -->
+      <div id ="partModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+          <div class = "modal-content">
+            <div class = "modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h2>Multi-part Experience Information</h2>
+            </div>
+            <div class="modal-body">
+              <div id="internship-part-help">
+                <h3>What is a Multi-part Experience?</h3>
+                <p>If a student’s internship takes place on two or more sites in one term than it is considered a multi-part experience. Do not check the box if the internship takes place at only one site.</p>
+
+                <h3>Why have a Multi-part checkbox?</h3>
+                <p>An internship record is created for each of the sites in the multi-part experience. This is to ensure the following:
+                    <ul>
+                        <li>Each location moves through all the approval steps</li>
+                        <li>Separate contracts can be generated and fully completed for each site</li>
+                        <li>All information is properly gathered for the additional sites</li>
+                    </ul></p>
+
+                <h3>What is the secondary part?</h3>
+                <p>The second site of the internship is called the secondary part. The secondary part requires a separate record from the first part and will include the secondary site location and start/end date.<br /><i>Note: ONLY check this box if it is the form for the secondary part. Boxes for course information will be grayed out upon checking the box indicating that the form is a secondary part. Course information should not be entered under the secondary part and should only be entered under the record for the first part of the multi-part experience. Leave boxes blank.</i></p>
+
+                <h3>When are the credits entered?</h3>
+                <p>All credits hours should be entered on the first part of the multi-part experience internship record. Do not fill in credit hours in on the secondary part.</p>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary pull-right" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="form-group">
         <div class="col-lg-8 col-lg-offset-3">
           <div class="checkbox">

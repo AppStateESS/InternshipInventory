@@ -122,7 +122,6 @@ class TermRest {
     }
 
     public function put() {
-        $newTcode = $_REQUEST['newTcode'];
         $newSemtype = $_REQUEST['newSemtype'];
         $newDesc = $_REQUEST['newDesc'];
         $newCensus = $_REQUEST['newCensus'];
@@ -131,24 +130,24 @@ class TermRest {
         $newEnd = $_REQUEST['newEnd'];
         $newUgradOver = $_REQUEST['newUgradOver'];
         $newGradOver = $_REQUEST['newGradOver'];
-        $oldTcode = $_REQUEST['oldTcode'];
+        $tCode = $_REQUEST['tCode'];
 
         $db = Database::newDB();
         $pdo = $db->getPDO();
 
         $sql = "UPDATE intern_term
-                SET term=:newTcode, semester_type=:newSemtype,
+                SET semester_type=:newSemtype,
                 description=:newDesc, census_date_timestamp=:newCensus,
                 available_on_timestamp=:newAvail, start_timestamp=:newStart,
                 end_timestamp=:newEnd, undergrad_overload_hours=:newUgradOver,
                 grad_overload_hours=:newGradOver
-                WHERE term=:oldTcode";
+                WHERE term=:tcode";
 
         $sth = $pdo->prepare($sql);
-        $sth->execute(array('newTcode'=>$newTcode, 'newSemtype'=>$newSemtype, 'newDesc'=>$newDesc,
+        $sth->execute(array('newSemtype'=>$newSemtype, 'newDesc'=>$newDesc,
                       'newCensus'=>$newCensus, 'newAvail'=>$newAvail, 'newStart'=>$newStart,
                       'newEnd'=>$newEnd, 'newUgradOver'=>$newUgradOver, 'newGradOver'=>$newGradOver,
-                      'oldTcode'=>$oldTcode));
+                      'tcode'=>$tCode));
 
 
     }

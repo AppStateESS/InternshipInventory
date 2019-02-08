@@ -11,6 +11,7 @@ $permissions['edit_states']             = _('Add/Edit/Hide states.');
 $permissions['edit_level']              = _('Add/Edit levels.');
 $permissions['affiliation_agreement']   = _('Add/Edit Affiliation Agreements');
 $permissions['edit_courses']            = _('Edit Standard Internship Course List.');
+$permissions['change_term']             = _('Change the Internships Term.');
 
 // Permissions for workflow transitions
 $permissions['create_internship']= _('Create Internships');

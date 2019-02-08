@@ -60,6 +60,14 @@ class RegistrationConfirmationEmail extends Email {
         $subjects = Subject::getSubjects();
         $faculty = $this->internship->getFaculty();
 
+        if($this->internship->isUndergraduate()){
+            $this->tpl['REG_NAME'] = "Registrar's Office";
+            $this->tpl['REG_NUM'] = "Registrar's Office Service Desk at (828-262-2050)";
+        } else{
+            $this->tpl['REG_NAME'] = 'Graduate School';
+            $this->tpl['REG_NUM'] = 'Graduate School at (828-262-2130)';
+        }
+
         $this->tpl['NAME'] = $this->internship->getFullName();
         $this->tpl['BANNER'] = $this->internship->banner;
         $this->tpl['USER'] = $this->internship->email;
