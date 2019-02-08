@@ -1,12 +1,12 @@
 Hello {NAME},
 
-The Registrar's Office has experienced a delay in processing the course enrollment for your internship.
+The {REG_NAME} has experienced a delay in processing the course enrollment for your internship.
 
-The Registrar's Office gave the following note which may provide more detail:
+The {REG_NAME} gave the following note which may provide more detail:
 
 {NOTE}
 
-If you have any questions, please contact your internship adviser (listed below) or the Registrar's Office Service Desk at (828-262-2050).
+If you have any questions, please contact your internship adviser (listed below) or the {REG_NUM}.
 
 
 Student
@@ -15,7 +15,7 @@ Name: {NAME}
 Banner ID: {BANNER}
 Username: {USER}
 Phone: {PHONE}
-    
+
 Internship
 -----------
 Term: {TERM}

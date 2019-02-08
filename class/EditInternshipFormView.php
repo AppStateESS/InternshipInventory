@@ -445,8 +445,7 @@ class EditInternshipFormView {
          * Term Info *
          */
 
-
-        if (\Current_User::isDeity()) {
+        if (\Current_User::allow('intern', 'change_term')) {
             $terms = TermFactory::getTermsAssoc();
             $this->form->addSelect('term', $terms);
             $this->form->setMatch('term', $this->intern->term);
