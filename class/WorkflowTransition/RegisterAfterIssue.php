@@ -21,6 +21,7 @@
 namespace Intern\WorkflowTransition;
 use Intern\WorkflowTransition;
 use Intern\Internship;
+use Intern\Exception\MissingDataException;
 use Intern\TermFactory;
 
 class RegisterAfterIssue extends WorkflowTransition {
@@ -53,5 +54,33 @@ class RegisterAfterIssue extends WorkflowTransition {
 
         $email = new \Intern\Email\RegistrationConfirmationEmail(\Intern\InternSettings::getInstance(), $i, $term);
         $email->send();
+    }
+    public function checkRequiredFields(Internship $i)
+    {
+        if (!$i->isSecondaryPart()) {
+            // Check the course subject
+            $courseSubj = $i->getSubject();
+            if (!isset($courseSubj) || $courseSubj == '' || $courseSubj->id == 0) {
+                throw new MissingDataException("Please select a course subject.");
+            }
+
+            // Check the course number
+            $courseNum = $i->getCourseNumber();
+            if (!isset($courseNum) || $courseNum == '') {
+                throw new MissingDataException("Please enter a course number.");
+            }
+
+            // Check the course section number
+            $sectionNum = $i->getCourseSection();
+            if (!isset($sectionNum) || $sectionNum == '') {
+                throw new MissingDataException("Please enter a course section number.");
+            }
+
+            // Check the course credit hours field
+            $creditHours = $i->getCreditHours();
+            if (!isset($creditHours) || $creditHours === '') {
+                throw new MissingDataException("Please enter the number of course credit hours.");
+            }
+        }
     }
 }

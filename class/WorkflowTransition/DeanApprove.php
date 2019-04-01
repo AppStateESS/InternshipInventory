@@ -50,8 +50,7 @@ class DeanApprove extends WorkflowTransition {
         }
     }
 
-    public function doNotification(Internship $i, $note = null)
-    {
+    public function doNotification(Internship $i, $note = null){
         $settings = \Intern\InternSettings::getInstance();
 
         $term = TermFactory::getTermByTermCode($i->getTerm());
@@ -72,7 +71,7 @@ class DeanApprove extends WorkflowTransition {
         // If the subject and course number are not registered with InternshipInventory,
         // send an email to the appropriate receiver.
         // Does not apply to secondary parts of multi-part internships
-        if (!$i->isSecondaryPart() && !ExpectedCourseFactory::isExpectedCourse($i->getSubject(), $i->getCourseNumber())) {
+        if (!$i->isSecondaryPart() && !ExpectedCourseFactory::isExpectedCourse($i->getSubject(), $i->getCourseNumber())){
             $email = new UnusualCourseEmail(InternSettings::getInstance(), $i, $term);
             $email->send();
         }

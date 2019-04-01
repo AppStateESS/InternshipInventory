@@ -545,7 +545,6 @@ class EditInternshipFormView {
 
     /**
      * Loads the form's fields with the internship's information.
-     * TODO: Use getter methods instead of just accessing Internship member variables directly.
      */
     public function plugInternship()
     {
@@ -563,10 +562,7 @@ class EditInternshipFormView {
         // Plug
         $this->form->plugIn($this->formVals);
 
-        /**
-         * *
-         * Emergency Contacts
-         */
+        //Emergency Contacts
         // Display of emergency contacts just requires the 'INTERN_ID' template variable be included. This is located in the constructor.
     }
 
@@ -589,7 +585,6 @@ class EditInternshipFormView {
         $this->tpl['LEVEL'] = $this->intern->getLevelFormatted();
 
         // Student object can be null, so be sure we actually have a student first
-        // TODO: newer PHP versions provide syntax to clean up this logic
         if(isset($this->student)){
             // Credit Hours
             $creditHours = $this->studentExistingCreditHours;
@@ -606,8 +601,7 @@ class EditInternshipFormView {
             } else {
                 $this->tpl['GRAD_DATE'] = '<span class="text-muted"><em>Not Available</em></span>';
             }
-
-
+            
         } else {
             $this->tpl['ENROLLED_CREDIT_HORUS'] = '<span class="text-muted"><em>Not Available</em></span>';
             $this->tpl['GRAD_DATE'] = '<span class="text-muted"><em>Not Available</em></span>';

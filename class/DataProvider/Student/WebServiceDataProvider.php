@@ -112,9 +112,6 @@ class WebServiceDataProvider extends StudentDataProvider {
         // Log the request
         $this->logRequest('getStudent', 'success', $params);
 
-        // Removed built-in credit-hour fetching because we don't always have a term (but still need to lookup a student)
-        //$response->creditHours = $this->getCreditHours($studentId, $term);
-
         // Create the Student object and plugin the values
         $student = new Student();
         $this->plugValues($student, $response);
@@ -276,10 +273,6 @@ class WebServiceDataProvider extends StudentDataProvider {
             $student->setLevel($newLevel);
         }
 
-        // Credit Hours
-        // Removed built-in credit hour fetching, since we don't always have a term
-        //$student->setCreditHours($data->creditHours);
-
         // Majors - Can be an array of objects, or just a single object, or not set at all
         if(isset($data->majors) && is_array($data->majors)) {
             foreach($data->majors as $major){
@@ -296,9 +289,6 @@ class WebServiceDataProvider extends StudentDataProvider {
         if(isset($data->grad_date) && $data->grad_date != '') {
             $student->setGradDateFromString($data->grad_date);
         }
-
-        // Holds
-        // TODO - Find out what these look like
 
         // Contact info
         $student->setPhone($data->phone);

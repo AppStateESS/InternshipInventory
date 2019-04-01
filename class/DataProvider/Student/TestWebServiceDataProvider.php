@@ -78,7 +78,7 @@ class TestWebServiceDataProvider extends WebServiceDataProvider {
         // Academic Info
         $obj->level     = 'U';   // 'U' or 'G'
         //$obj->level     = 'G2';
-        $obj->campus    = WebServiceDataProvider::MAIN_CAMPUS; // TODO verify values in SOAP
+        $obj->campus    = WebServiceDataProvider::MAIN_CAMPUS;
         $obj->gpa       = '3.8129032260';
         //$obj->gpa       = '1.8129032260';
 
@@ -100,12 +100,8 @@ class TestWebServiceDataProvider extends WebServiceDataProvider {
 
         $obj->majors = array($major1, $major2);
 
-        // Holds
-        // TODO verify what is returned
-        $obj->holds = '';
-
         // Confidential flag
-        $obj->confid = 'N'; //TODO verify this is 'N' or 'Y'
+        $obj->confid = 'N';
 
         // Assume there was no error
         $obj->error_num = 0;

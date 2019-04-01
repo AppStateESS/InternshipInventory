@@ -34,60 +34,56 @@ class GraduateRegistration extends WorkflowTransition {
         return array('register');
     }
 
-    public function isApplicable(Internship $i)
-    {
+    public function isApplicable(Internship $i){
         if($i->isGraduate()){
             return true;
-        }else{
+        } else{
             return false;
         }
     }
 
-    public function allowed(Internship $i)
-    {
+    public function allowed(Internship $i){
         if($i->isDistanceEd()) {
             if(\Current_User::allow('intern', 'distance_ed_register')) {
     		    return true;
-    		} else {
+    		} else{
     		    return false;
             }
-    	} else {
+    	} else{
     		return parent::allowed($i);
     	}
     }
 
-    public function doNotification(Internship $i, $note = null)
-    {
+    public function doNotification(Internship $i, $note = null){
         $term = TermFactory::getTermByTermCode($i->getTerm());
 
         $email = new \Intern\Email\RegistrationConfirmationEmail(\Intern\InternSettings::getInstance(), $i, $term);
         $email->send();
     }
 
-    public function checkRequiredFields(Internship $i)
-    {
+    public function checkRequiredFields(Internship $i){
         if (!$i->isSecondaryPart()) {
             // Check the course subject
             $courseSubj = $i->getSubject();
-            if (!isset($courseSubj) || $courseSubj == '' || $courseSubj->id == 0) {
+            if (!isset($courseSubj) || $courseSubj == '' || $courseSubj->id == 0){
                 throw new MissingDataException("Please select a course subject.");
             }
 
             // Check the course number
             $courseNum = $i->getCourseNumber();
-            if (!isset($courseNum) || $courseNum == '') {
+            if (!isset($courseNum) || $courseNum == ''){
                 throw new MissingDataException("Please enter a course number.");
             }
 
             // Check the course section number
             $sectionNum = $i->getCourseSection();
-            if (!isset($sectionNum) || $sectionNum == '') {
+            if (!isset($sectionNum) || $sectionNum == ''){
                 throw new MissingDataException("Please enter a course section number.");
             }
 
             // Check the course credit hours field
             $creditHours = $i->getCreditHours();
-            if (!isset($creditHours) || $creditHours === '') {
+            if (!isset($creditHours) || $creditHours === ''){
                 throw new MissingDataException("Please enter the number of course credit hours.");
             }
         }

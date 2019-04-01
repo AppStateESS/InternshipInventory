@@ -38,8 +38,7 @@ class CancelTransition extends WorkflowTransition {
         return array('NewState', 'SigAuthReadyState', 'SigAuthApprovedState', 'DeanApprovedState', 'GradSchoolApprovedState', 'RegistrationIssueState');
     }
 
-    public function doNotification(Internship $i, $note = null)
-    {
+    public function doNotification(Internship $i, $note = null){
         $settings = \Intern\InternSettings::getInstance();
 
         $term = TermFactory::getTermByTermCode($i->getTerm());
