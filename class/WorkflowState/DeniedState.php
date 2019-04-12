@@ -18,31 +18,14 @@
  * Copyright 2011-2018 Appalachian State University
  */
 
-namespace Intern\Command;
+namespace Intern\WorkflowState;
+use Intern\WorkflowState;
 
-use Intern\TermFactory;
+class DeniedState extends WorkflowState {
+    const friendlyName = 'Denied';
+    const sortIndex    = 9;
 
-/**
- *
- * @author Olivia Perugini
- */
-class RequestBackgroundCheck {
-
-    public function __construct(){}
-
-    public function execute(){
-
-        $i = \Intern\InternshipFactory::getInternshipById($_REQUEST['internship_id']);
-        $i->background_check = 1;
-        $host = $i->getHost();
-
-        $i->save();
-
-        $term = TermFactory::getTermByTermCode($i->getTerm());
-
-        $email = new \Intern\Email\BackgroundCheckEmail(\Intern\InternSettings::getInstance(), $i, $term, $host, true, false);
-        $email->send();
-
-        exit;
+    public function getAllowedPermissionList(){
+        return array('special_host');
     }
 }

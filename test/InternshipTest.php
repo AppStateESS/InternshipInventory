@@ -22,7 +22,7 @@ namespace Intern\test;
 
 use \Intern\Internship;
 use \Intern\Student;
-use \Intern\Agency;
+use \Intern\HostFactory;
 use \Intern\Department;
 use PHPUnit\Framework\TestCase;
 
@@ -36,11 +36,11 @@ class InternshipTest extends TestCase
         $state = 'NC';
         $country = null;
 
-        // Mocks for Department and Agency
+        // Mocks for Department and Host
         $department = $this->getMockBuilder('\Intern\Department')->getMock();
-        $agency = $this->getMockBuilder('\Intern\Agency')->setConstructorArgs(array('Acme, Inc.'))->getMock();
+        $host = HostFactory::getHostById(1);
 
-        $intern = new Internship($student, $term, $location, $state, $country, $department, $agency);
+        $intern = new Internship($student, $term, $location, $state, $country, $department, $host);
 
         $foo = true;
         $this->assertTrue($foo);

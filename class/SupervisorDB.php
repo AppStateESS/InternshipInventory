@@ -18,31 +18,10 @@
  * Copyright 2011-2018 Appalachian State University
  */
 
-namespace Intern\Command;
+namespace Intern;
 
-use Intern\TermFactory;
+class SupervisorDB extends Supervisor {
 
-/**
- *
- * @author Olivia Perugini
- */
-class RequestBackgroundCheck {
-
+    // Override constructor with empty parameter list
     public function __construct(){}
-
-    public function execute(){
-
-        $i = \Intern\InternshipFactory::getInternshipById($_REQUEST['internship_id']);
-        $i->background_check = 1;
-        $host = $i->getHost();
-
-        $i->save();
-
-        $term = TermFactory::getTermByTermCode($i->getTerm());
-
-        $email = new \Intern\Email\BackgroundCheckEmail(\Intern\InternSettings::getInstance(), $i, $term, $host, true, false);
-        $email->send();
-
-        exit;
-    }
 }

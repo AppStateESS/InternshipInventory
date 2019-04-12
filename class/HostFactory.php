@@ -18,31 +18,27 @@
  * Copyright 2011-2018 Appalachian State University
  */
 
-namespace Intern\Command;
+namespace Intern;
+use \phpws2\Database;
 
-use Intern\TermFactory;
+class HostFactory {
 
-/**
- *
- * @author Olivia Perugini
- */
-class RequestBackgroundCheck {
+    public static function getHostById($id) {
+        if(is_null($id) || !isset($id)) {
+            throw new \InvalidArgumentException('Host ID is required.');
+        }
 
-    public function __construct(){}
+        if($id <= 0) {
+            throw new \InvalidArgumentException('Invalid Host ID.');
+        }
 
-    public function execute(){
+        $db = Database::newDB();
+        $pdo = $db->getPDO();
 
-        $i = \Intern\InternshipFactory::getInternshipById($_REQUEST['internship_id']);
-        $i->background_check = 1;
-        $host = $i->getHost();
+        $stmt = $pdo->prepare("SELECT * FROM intern_host WHERE id = :id");
+        $stmt->execute(array('id' => $id));
+        $stmt->setFetchMode(\PDO::FETCH_CLASS, 'Intern\HostRestored');
 
-        $i->save();
-
-        $term = TermFactory::getTermByTermCode($i->getTerm());
-
-        $email = new \Intern\Email\BackgroundCheckEmail(\Intern\InternSettings::getInstance(), $i, $term, $host, true, false);
-        $email->send();
-
-        exit;
+        return $stmt->fetch();
     }
 }

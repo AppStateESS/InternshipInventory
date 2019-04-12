@@ -42,6 +42,9 @@
           <!-- BEGIN terms -->
           <li>{EDIT_TERMS_LINK}</li>
           <!-- END terms -->
+          <!-- BEGIN special_host -->
+          <li>{SPECIAL_HOST_LINK}</li>
+          <!-- END special_host -->
           <!-- BEGIN affiliation_agreement -->
           <li>{AFFIL_AGREE_LINK}</li>
           <!-- END affiliation_agreement -->

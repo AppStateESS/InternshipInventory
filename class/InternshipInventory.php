@@ -192,6 +192,13 @@ class InternshipInventory {
                 $view = new UI\TermUI();
                 $this->content = $view->display();
                 break;
+            case 'showSpecialHost':
+                if (!\Current_User::allow('intern', 'special_host')) {
+                    disallow();
+                }
+                $view = new UI\SpecialHostUI();
+                $this->content = $view->display();
+                break;
             case 'pdf':
                 $i = InternshipFactory::getInternshipById($_REQUEST['internship_id']);
                 $emgContacts = EmergencyContactFactory::getContactsForInternship($i);
@@ -226,6 +233,10 @@ class InternshipInventory {
                 break;
             case 'GetSearchSuggestions':
                 $ctrl = new Command\GetSearchSuggestions();
+                $ctrl->execute();
+                break;
+            case 'GetHostSuggestions':
+                $ctrl = new Command\GetHostSuggestions();
                 $ctrl->execute();
                 break;
             case 'GetStates':

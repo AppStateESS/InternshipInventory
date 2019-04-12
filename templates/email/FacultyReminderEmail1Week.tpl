@@ -19,7 +19,7 @@ Email Address: {EMAIL}
 Internship Info
 -----------
 Term: {TERM}
-Host: {AGENCY}
+Host: {HOST}
 <!-- BEGIN state -->State: {STATE}<!-- END state --><!-- BEGIN intl -->Country: {COUNTRY}<!-- END intl -->
 <!-- BEGIN start_date -->Start Date: {START_DATE}<!-- END start_date -->
 <!-- BEGIN end_date -->End Date: {END_DATE}<!-- END end_date -->

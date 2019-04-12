@@ -26,7 +26,7 @@ class UndoGraduateRegistration extends WorkflowTransition {
 
     const sourceState = 'RegisteredState';
     const destState   = 'GradSchoolApprovedState';
-    const actionName  = 'Mark as not registered';
+    const actionName  = 'Mark as Not Registered';
 
     const sortIndex = 6;
 

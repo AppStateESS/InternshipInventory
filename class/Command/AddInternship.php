@@ -90,6 +90,7 @@ class AddInternship {
             throw new \Exception('Could not load department.');
         }
 
+        //TODO: create an host object if one it's selected
         // Create and save the agency object
         $agency = new Agency($_POST['agency']);
         DatabaseStorage::save($agency);
@@ -106,7 +107,7 @@ class AddInternship {
         }
 
         // Create a new internship object
-        $intern = new Internship($student, $term, $location, $state, $country, $department, $agency);
+        $intern = new Internship($student, $term, $location, $state, $country, $department, $host);
 
         // Save it!!
         $intern->save();
@@ -162,9 +163,9 @@ class AddInternship {
             $missingFieldList[] = 'department';
         }
 
-        // Check Agency
-        if (!isset($_POST['agency']) || (isset($_POST['agency']) && $_POST['agency'] == '')) {
-            $missingFieldList[] = 'agency';
+        // Check Host
+        if (!isset($_POST['host']) || (isset($_POST['host']) && $_POST['host'] == '')) {
+            $missingFieldList[] = 'host';
         }
 
         return $missingFieldList;

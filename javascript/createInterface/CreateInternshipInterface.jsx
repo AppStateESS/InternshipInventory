@@ -8,6 +8,7 @@ import StudentSearch from './StudentSearch.jsx';
 import TermBlock from './TermBlock.jsx';
 import LocationBlock from './LocationBlock.jsx';
 import Department from './DepartmentBlock.jsx';
+//import HostAgencies from './HostBlock.jsx';
 
 /*********************
  * Host Agency Field *
@@ -186,6 +187,7 @@ class CreateInternshipInterface extends React.Component {
             thisComponent.refs.department.setError(false);
         }
 
+        //TODO: Check if a comfirmed host and if not that the info for address is filled
         // Check the host agency
         if(form.elements.agency.value === ''){
             thisComponent.refs.hostAgency.setError(true);

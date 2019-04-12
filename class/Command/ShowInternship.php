@@ -21,7 +21,8 @@
 namespace Intern\Command;
 
 use \Intern\InternshipFactory;
-use \Intern\AgencyFactory;
+use \Intern\HostFactory;
+use \Intern\SupervisorFactory;
 use \Intern\InternshipView;
 use \Intern\DataProvider\Student\StudentDataProviderFactory;
 use \Intern\TermFactory;
@@ -71,13 +72,16 @@ class ShowInternship {
         // Load the WorkflowState
         $wfState = $intern->getWorkflowState();
 
-        // Load the agency
-        $agency = AgencyFactory::getAgencyById($intern->getAgencyId());
-
+        // Load the host & sup
+        var_dump('here');
+        $host = HostFactory::getHostById($intern->getHostId());
+        var_dump($host);exit;
+        $supervisor = SupervisorFactory::getSupervisorById($intern->getSupervisorId());
+var_dump($host, $supervisor);exit;
         // Load the term info for this internship
         $term = TermFactory::getTermByTermCode($intern->getTerm());
 
-        $view = new InternshipView($intern, $student, $wfState, $agency, $term, $existingCreditHours);
+        $view = new InternshipView($intern, $student, $wfState, $host, $supervisor, $term, $existingCreditHours);
 
         return $view->display();
     }

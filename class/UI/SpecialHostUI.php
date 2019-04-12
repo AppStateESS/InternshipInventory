@@ -18,31 +18,27 @@
  * Copyright 2011-2018 Appalachian State University
  */
 
-namespace Intern\Command;
-
-use Intern\TermFactory;
+namespace Intern\UI;
+use \Intern\AssetResolver;
 
 /**
- *
- * @author Olivia Perugini
- */
-class RequestBackgroundCheck {
+ * Class for handling UI for Special Host editing, creation, and approval
+ * @author Cydney Caldwell
+ **/
+class SpecialHostUI implements UI {
 
-    public function __construct(){}
+    public function display() {
+        // permissions...
+        if(!\Current_User::allow('intern', 'special_host')) {
+            \NQ::simple('intern', NotifyUI::ERROR, 'You do not have permission to access special host.');
+            return false;
+        }
 
-    public function execute(){
+        $tpl = array();
 
-        $i = \Intern\InternshipFactory::getInternshipById($_REQUEST['internship_id']);
-        $i->background_check = 1;
-        $host = $i->getHost();
+        $tpl['vendor_bundle'] = AssetResolver::resolveJsPath('assets.json', 'vendor');
+        $tpl['entry_bundle'] = AssetResolver::resolveJsPath('assets.json', 'specialHost');
 
-        $i->save();
-
-        $term = TermFactory::getTermByTermCode($i->getTerm());
-
-        $email = new \Intern\Email\BackgroundCheckEmail(\Intern\InternSettings::getInstance(), $i, $term, $host, true, false);
-        $email->send();
-
-        exit;
+        return \PHPWS_Template::process($tpl, 'intern','special_host.tpl');
     }
 }

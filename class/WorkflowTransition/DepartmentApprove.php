@@ -28,6 +28,6 @@ class DepartmentApprove extends WorkflowTransition {
     const actionName  = 'Forward to Signature Authority';
 
     public function getAllowedPermissionList(){
-        return array('dept_approve','sig_auth_approve');
+        return array('create_internship','sig_auth_approve');
     }
 }

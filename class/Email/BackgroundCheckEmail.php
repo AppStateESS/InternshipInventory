@@ -20,7 +20,6 @@
 
 namespace Intern\Email;
 use \Intern\Internship;
-use \Intern\Agency;
 use \Intern\InternSettings;
 use \Intern\Term;
 use \Intern\TermFactory;
@@ -38,7 +37,7 @@ class BackgroundCheckEmail extends Email{
 
     private $internship;
     private $term;
-    private $agency;
+    private $host;
 
     private $backgroundCheck;
     private $drugCheck;
@@ -49,16 +48,15 @@ class BackgroundCheckEmail extends Email{
     * @param InternSettings $emailSettings
     * @param Internship $internship
     * @param Term $term
-    * @param Agency $agency
     * @param bool $backgroundCheck
     * @param bool $drugCheck
     */
-    public function __construct(InternSettings $emailSettings, Internship $internship, Term $term, Agency $agency, $backgroundCheck, $drugCheck) {
+    public function __construct(InternSettings $emailSettings, Internship $internship, Term $term, Host $host, $backgroundCheck, $drugCheck) {
         parent::__construct($emailSettings);
 
         $this->internship = $internship;
         $this->term = $term;
-        $this->agency = $agency;
+        $this->host = $host;
         $this->backgroundCheck = $backgroundCheck;
         $this->drugCheck = $drugCheck;
     }
@@ -76,7 +74,7 @@ class BackgroundCheckEmail extends Email{
         $this->tpl['TERM'] = $this->term->getDescription();
         $this->tpl['LEVEL'] = $this->internship->getLevel();
         $this->tpl['EMAIL'] = $this->internship->getEmailAddress() . $this->emailSettings->getEmailDomain();
-        $this->tpl['AGENCY'] = $this->agency->getName();
+        $this->tpl['HOST'] = $this->host->getName();
 
         if ($this->internship->getFaculty() !== null) {
             $this->tpl['FACULTY'] = $this->internship->getFaculty();

@@ -26,7 +26,7 @@ namespace Intern;
  * Represents a faculty member for a department.
  *
  * @author Jeremy Booker jbooker@tux.appstate.edu
- * @package Hms
+ * @package Intern
 */
 
 class Faculty extends Model implements DbStorable {

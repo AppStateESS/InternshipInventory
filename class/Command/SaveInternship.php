@@ -23,7 +23,6 @@ namespace Intern\Command;
 
 use \Intern\WorkflowStateFactory;
 use \Intern\ChangeHistory;
-use \Intern\AgencyFactory;
 use \Intern\DatabaseStorage;
 use \Intern\DataProvider\Student\StudentDataProviderFactory;
 use \Intern\TermFactory;
@@ -35,13 +34,9 @@ use \Intern\Exception\StudentNotFoundException;
  * @author jbooker
  * @package intern
  */
-class SaveInternship
-{
+class SaveInternship {
 
-    public function __construct()
-    {
-
-    }
+    public function __construct(){}
 
     private function rerouteWithError($url, $errorMessage)
     {
@@ -63,7 +58,7 @@ class SaveInternship
         if(\Canopy\Request::isAjax()){
             $isAjax = true;
         }
-        /** ************
+        /**************
          * Sanity Checks
          */
         // Required fields check
@@ -120,23 +115,13 @@ class SaveInternship
             }
         }
 
-        // Sanity check internship acency zip, allows a-z or A-Z if international
-        if ((isset($_REQUEST['agency_zip']) && $_REQUEST['agency_zip'] != "") && !is_numeric($_REQUEST['agency_zip'])) {
+        // Sanity check internship supervisor zip, allows a-z or A-Z if international
+        if ((isset($_REQUEST['supervisor_zip']) && $_REQUEST['supervisor_zip'] != "") && !is_numeric($_REQUEST['supervisor_zip'])) {
             if (!($_REQUEST['location'] == 'international' && preg_match('/[\w]/',
-                            $_REQUEST['agency_zip']))) {
-                $url = 'index.php?module=intern&action=ShowInternship&missing=agency_zip';
+                            $_REQUEST['supervisor_zip']))) {
+                $url = 'index.php?module=intern&action=ShowInternship&missing=supervisor_zip';
                 $this->rerouteWithError($url,
-                        "The agency's zip code is invalid. No changes were saved. Zip codes should be 5 digits only (no letters, spaces, or punctuation).");
-            }
-        }
-
-        // Sanity check internship agency supervisor zip, allows a-z or A-Z if international
-        if ((isset($_REQUEST['agency_sup_zip']) && $_REQUEST['agency_sup_zip'] != "") && !is_numeric($_REQUEST['agency_sup_zip'])) {
-            if (!($_REQUEST['location'] == 'international' && preg_match('/[\w]/',
-                            $_REQUEST['agency_sup_zip']))) {
-                $url = 'index.php?module=intern&action=ShowInternship&missing=agency_sup_zip';
-                $this->rerouteWithError($url,
-                        "The agency supervisor's zip code is invalid. No changes were saved. Zip codes should be 5 digits only (no letters, spaces, or punctuation).");
+                        "The supervisor's zip code is invalid. No changes were saved. Zip codes should be 5 digits only (no letters, spaces, or punctuation).");
             }
         }
 
@@ -149,7 +134,7 @@ class SaveInternship
 
         \PHPWS_DB::begin();
 
-        /*         * ******************************
+        /********************************
          * Load the existing internship *
          */
         try {
@@ -175,9 +160,6 @@ class SaveInternship
             $student = StudentDataProviderFactory::getProvider()->getStudent($i->getBannerId());
         } catch (StudentNotFoundException $e) {
             $student = null;
-
-            //$this->rerouteWithError('index.php?module=intern&action=ShowInternship',
-            //        "We couldn't find a matching student in Banner. Your changes were saved, but this student probably needs to contact the Registrar's Office to re-enroll.");
             \NQ::simple('intern', \Intern\UI\NotifyUI::WARNING, "We couldn't find a matching student in Banner. Your changes were saved, but this student probably needs to contact the Registrar's Office to re-enroll.");
             \NQ::close();
         }
@@ -258,18 +240,9 @@ class SaveInternship
         }
 
         // Student Information
-        $i->first_name = self::trimField($_REQUEST['student_first_name']);
-        $i->middle_name = self::trimField($_REQUEST['student_middle_name']);
-        $i->last_name = self::trimField($_REQUEST['student_last_name']);
         $i->preferred_name = self::trimField($_REQUEST['student_preferred_name']);
-
-        $i->setFirstNameMetaphone(self::trimField($_REQUEST['student_first_name']));
-        $i->setMiddleNameMetaphone(self::trimField($_REQUEST['student_middle_name']));
-        $i->setLastNameMetaphone(self::trimField($_REQUEST['student_last_name']));
         $i->setPreferredNameMetaphone(self::trimField($_REQUEST['student_preferred_name']));
-
         $i->phone = self::trimField($_REQUEST['student_phone']);
-        $i->email = self::trimField($_REQUEST['student_email']);
 
         if (\Current_User::isDeity()) {
             $i->campus = $_REQUEST['campus'];
@@ -308,7 +281,7 @@ class SaveInternship
             $i->major_description = $majors[0]->getDescription();
         }
 
-        /*         * **********
+        /************
          * OIED Certification
          */
         // Check if this has changed from non-certified->certified so we can log it later
@@ -327,7 +300,7 @@ class SaveInternship
             $i->oied_certified = 0;
         }
 
-        /*         * **********
+        /************
          * Background and Drug checks
          * Now handled in otherGoodies.js
          */
@@ -347,49 +320,37 @@ class SaveInternship
             throw $e;
         }
 
-        // Update agency
         try {
-            $agency = AgencyFactory::getAgencyById($_REQUEST['agency_id']);
+            $supervisor = SupervisorFactory::getSupervisorById($_REQUEST['supervisor_id']);
         } catch (\Exception $e) {
             // Rollback and re-throw the exception so that admins gets an email
             \PHPWS_DB::rollback();
             throw $e;
         }
 
-        // Agency Info
-        $agency->name = self::trimField($_REQUEST['agency_name']);
-        $agency->address = self::trimField($_REQUEST['agency_address']);
-        $agency->city = self::trimField($_REQUEST['agency_city']);
-        $agency->zip = $_REQUEST['agency_zip'];
-        $agency->phone = self::trimField($_REQUEST['agency_phone']);
+        //Supervisor Info
+        $supervisor->name = self::trimField($_REQUEST['supervisor_name']);
 
+        //Supervisor Info
+        $supervisor->supervisor_first_name = self::trimField($_REQUEST['supervisor_first_name']);
+        $supervisor->supervisor_last_name = self::trimField($_REQUEST['supervisor_last_name']);
+        $supervisor->supervisor_title = self::trimField($_REQUEST['supervisor_title']);
+        $supervisor->supervisor_phone = self::trimField($_REQUEST['supervisor_phone']);
+        $supervisor->supervisor_email = self::trimField($_REQUEST['supervisor_email']);
+        $supervisor->supervisor_fax = self::trimField($_REQUEST['supervisor_fax']);
+        $supervisor->supervisor_address = self::trimField($_REQUEST['supervisor_address']);
+        $supervisor->supervisor_city = self::trimField($_REQUEST['supervisor_city']);
+        $supervisor->supervisor_zip = $_REQUEST['supervisor_zip'];
         if ($i->isDomestic()) {
-            $agency->state = $_REQUEST['agency_state'] == '-1' ? null : $_REQUEST['agency_state'];
+            $supervisor->supervisor_state = $_REQUEST['supervisor_state'] == '-1' ? null : $_REQUEST['supervisor_state'];
         } else {
-            $agency->province = self::trimField($_REQUEST['agency_province']);
-            $agency->country = $_REQUEST['agency_country'] == '-1' ? null : $_REQUEST['agency_country'];
+            $supervisor->supervisor_province = self::trimField($_REQUEST['supervisor_province']);
+            $supervisor->supervisor_country = $_REQUEST['supervisor_country'] == '-1' ? null : $_REQUEST['supervisor_country'];
         }
-
-        // Agency Supervisor Info
-        $agency->supervisor_first_name = self::trimField($_REQUEST['agency_sup_first_name']);
-        $agency->supervisor_last_name = self::trimField($_REQUEST['agency_sup_last_name']);
-        $agency->supervisor_title = self::trimField($_REQUEST['agency_sup_title']);
-        $agency->supervisor_phone = self::trimField($_REQUEST['agency_sup_phone']);
-        $agency->supervisor_email = self::trimField($_REQUEST['agency_sup_email']);
-        $agency->supervisor_fax = self::trimField($_REQUEST['agency_sup_fax']);
-        $agency->supervisor_address = self::trimField($_REQUEST['agency_sup_address']);
-        $agency->supervisor_city = self::trimField($_REQUEST['agency_sup_city']);
-        $agency->supervisor_zip = $_REQUEST['agency_sup_zip'];
-        if ($i->isDomestic()) {
-            $agency->supervisor_state = $_REQUEST['agency_sup_state'] == '-1' ? null : $_REQUEST['agency_sup_state'];
-        } else {
-            $agency->supervisor_province = self::trimField($_REQUEST['agency_sup_province']);
-            $agency->supervisor_country = $_REQUEST['agency_sup_country'] == '-1' ? null : $_REQUEST['agency_sup_country'];
-        }
-        $agency->address_same_flag = isset($_REQUEST['copy_address']) ? 't' : 'f';
+        $supervisor->address_same_flag = isset($_REQUEST['copy_address']) ? 't' : 'f';
 
         try {
-            DatabaseStorage::save($agency);
+            DatabaseStorage::save($supervisor);
         } catch (\Exception $e) {
             // Rollback and re-throw the exception so that admins gets an email
             \PHPWS_DB::rollback();
@@ -427,8 +388,7 @@ class SaveInternship
 
                 // Notify the faculty member that OIED has certified the internship
                 if ($i->getFaculty() != null) {
-                    $email = new \Intern\Email\OIEDCertifiedEmail(\Intern\InternSettings::getInstance(),
-                            $i, $term);
+                    $email = new \Intern\Email\OIEDCertifiedEmail(\Intern\InternSettings::getInstance(), $i, $term);
                     $email->send();
                 }
             }
@@ -446,8 +406,7 @@ class SaveInternship
         } else {
             // Otherwise, redirect to the internship edit view
             // Show message if user edited internship
-            \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS,
-                    'Saved internship for ' . $i->getFullName());
+            \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, 'Saved internship for ' . $i->getFullName());
             \NQ::close();
 
             return \PHPWS_Core::reroute('index.php?module=intern&action=ShowInternship&internship_id=' . $i->id);

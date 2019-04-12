@@ -503,7 +503,6 @@ CREATE TABLE intern_agency (
        PRIMARY KEY(id)
 );
 
-
 CREATE TABLE intern_affiliation_agreement(
   id INT NOT NULL,
   name VARCHAR NOT NULL,

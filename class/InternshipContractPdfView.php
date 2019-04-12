@@ -71,7 +71,8 @@ class InternshipContractPdfView {
     private function generatePdf()
     {
         $this->pdf = new \setasign\Fpdi\Fpdi('P', 'mm', 'Letter');
-        $a = $this->internship->getAgency();
+        $h = $this->internship->getHost();
+        $s = $this->internship->getSupervisor();
         $d = $this->internship->getDepartment();
         $f = $this->internship->getFaculty();
         //$subject = $this->internship->getSubject();
@@ -188,48 +189,48 @@ class InternshipContractPdfView {
         }
 
         /***
-         * Agency information.
+         * Host information.
         */
-        $this->pdf->setXY(139, 118);
-        $this->pdf->cell(71, 5, $a->getName());
+        $this->pdf->setXY(139, 117);
+        $this->pdf->cell(71, 5, $h->getName());
 
-        $agency_address = $a->getStreetAddress();
+        $host_address = $h->getStreetAddress();
 
         //TODO: make this smarter so it adds the line break between words
-        if(strlen($agency_address) < 49){
+        if(strlen($host_address) < 49){
             // If it's short enough, just write it
-            $this->pdf->setXY(127, 123);
-            $this->pdf->cell(77, 5, $agency_address);
+            $this->pdf->setXY(127, 122);
+            $this->pdf->cell(77, 5, $host_address);
         }else{
             // Too long, need to use two lines
-            $agencyLine1 = substr($agency_address, 0, 44); // get first 50ish chars
-            $agencyLine2 = substr($agency_address, 44); // get the rest, hope it fits
+            $hostLine1 = substr($host_address, 0, 49); // get first 50 chars
+            $hostLine2 = substr($host_address, 49); // get the rest, hope it fits
 
-            $this->pdf->setXY(127, 123);
-            $this->pdf->cell(77, 5, $agencyLine1);
-            $this->pdf->setXY(113, 128);
-            $this->pdf->cell(77, 5, $agencyLine2);
+            $this->pdf->setXY(127, 122);
+            $this->pdf->cell(77, 5, $hostLine1);
+            $this->pdf->setXY(113, 127);
+            $this->pdf->cell(77, 5, $hostLine2);
         }
 
         /**
-         * Agency supervisor info.
+         * Supervisor info.
          */
         $this->pdf->setXY(113, 139);
         $super = "";
-        $superName = $a->getSupervisorFullName();
+        $superName = $s->getSupervisorFullName();
         if(isset($superName) && !empty($superName) && $superName != ''){
             //test('ohh hai',1);
-            $super .= $a->getSupervisorFullName();
+            $super .= $s->getSupervisorFullName();
         }
 
-        $supervisorTitle = $a->getSupervisorTitle();
+        $supervisorTitle = $s->getSupervisorTitle();
 
-        if(isset($a->supervisor_title) && !empty($a->supervisor_title)){
+        if(isset($s->supervisor_title) && !empty($s->supervisor_title)){
             $super .= ', ' . $supervisorTitle;
         }
         $this->pdf->cell(75, 5, $super);
 
-        $super_address = $a->getSuperAddress();
+        $super_address = $s->getSuperAddress();
         //TODO: make this smarter so it adds the line break between words
         if(strlen($super_address) < 54){
             // If it's short enough, just write it
@@ -246,21 +247,21 @@ class InternshipContractPdfView {
             $this->pdf->cell(78, 5, $superLine2);
         }
 
-        $this->pdf->setXY(125, 160);
-        $this->pdf->cell(72, 5, $a->getSupervisorEmail());
+        $this->pdf->setXY(125, 159);
+        $this->pdf->cell(72, 5, $s->getSupervisorEmail());
 
-        $this->pdf->setXY(125, 155);
-        $this->pdf->cell(33, 5, $a->getSupervisorPhoneNumber());
+        $this->pdf->setXY(125, 154);
+        $this->pdf->cell(33, 5, $s->getSupervisorPhoneNumber());
 
-        $this->pdf->setXY(166, 155);
-        $this->pdf->cell(40, 5, $a->getSupervisorFaxNumber());
+        $this->pdf->setXY(166, 154);
+        $this->pdf->cell(40, 5, $s->getSupervisorFaxNumber());
 
         /* Internship Location */
         $internshipAddress = trim($this->internship->getStreetAddress());
-        $agencyAddress = trim($a->getStreetAddress());
+        $hostAddress = trim($s->getStreetAddress());
 
-        if($internshipAddress != '' && $agencyAddress != '' && $internshipAddress != $agencyAddress) {
-            $this->pdf->setXY(112, 170);
+        if($internshipAddress != '' && $hostAddress != '' && $internshipAddress != $hostAddress) {
+            $this->pdf->setXY(112, 169);
             $this->pdf->cell(52, 5, $this->internship->getLocationAddress());
         }
 

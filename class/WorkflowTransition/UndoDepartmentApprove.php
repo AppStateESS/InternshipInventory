@@ -30,6 +30,6 @@ class UndoDepartmentApprove extends WorkflowTransition {
     const sortIndex = 6;
 
     public function getAllowedPermissionList(){
-        return array('dept_approve','sig_auth_approve');
+        return array('create_internship','sig_auth_approve');
     }
 }

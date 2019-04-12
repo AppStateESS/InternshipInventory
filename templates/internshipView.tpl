@@ -62,19 +62,19 @@
           <div id="bannerid" class="col-lg-6"><p class="form-control-static">{BANNER}</p></div>
         </div>
 
-        <div class="form-group required">
-          <label class="col-lg-3 control-label" for="{STUDENT_FIRST_NAME_ID}">{STUDENT_FIRST_NAME_LABEL_TEXT}</label>
-          <div class="col-lg-6">{STUDENT_FIRST_NAME}</div>
+        <div class="form-group">
+          <label class="col-lg-3 control-label" for="{STUDENT_FIRST_NAME_ID}">First Name</label>
+          <div class="col-lg-6"><p class="form-control-static">{STUDENT_FIRST_NAME}</p></div>
         </div>
 
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{STUDENT_MIDDLE_NAME_ID}">{STUDENT_MIDDLE_NAME_LABEL_TEXT}</label>
-          <div class="col-lg-6">{STUDENT_MIDDLE_NAME}</div>
+          <label class="col-lg-3 control-label" for="{STUDENT_MIDDLE_NAME_ID}">Middle Name/Initial</label>
+          <div class="col-lg-6"><p class="form-control-static">{STUDENT_MIDDLE_NAME}</p></div>
         </div>
 
-        <div class="form-group required">
-          <label class="col-lg-3 control-label" for="{STUDENT_LAST_NAME_ID}">{STUDENT_LAST_NAME_LABEL_TEXT}</label>
-          <div class="col-lg-6">{STUDENT_LAST_NAME}</div>
+        <div class="form-group">
+          <label class="col-lg-3 control-label" for="{STUDENT_LAST_NAME_ID}">Last Name</label>
+          <div class="col-lg-6"><p class="form-control-static">{STUDENT_LAST_NAME}</p></div>
         </div>
 
         <div class="form-group">
@@ -82,13 +82,9 @@
           <div class="col-lg-6">{STUDENT_PREFERRED_NAME}</div>
         </div>
 
-        <div class="form-group required">
-          <label class="col-lg-3 control-label" for="{STUDENT_EMAIL_ID}">{STUDENT_EMAIL_LABEL_TEXT}</label>
-          <div class="col-lg-6">
-            <div class="input-group">
-              {STUDENT_EMAIL}<span class="input-group-addon">@appstate.edu</span>
-            </div>
-          </div>
+        <div class="form-group">
+          <label class="col-lg-3 control-label" for="{STUDENT_EMAIL_ID}">ASU Email</label>
+          <div class="col-lg-6"><p class="form-control-static">{STUDENT_EMAIL}@appstate.edu</p></div>
         </div>
 
         <div class="form-group">
@@ -526,57 +522,53 @@
           </div>
       </fieldset>
 
-      <!-- Agency info -->
+      <!-- Host info -->
       <fieldset>
         <legend>Host Details</legend>
 
         <div class="form-group">
           <label class="col-lg-3 control-label" for="{STUDENT_GPA_ID}">Host Name</label>
-          <div class="col-lg-6"><p class="form-control-static">{AGENCY_NAME}</p></div>
+          <div class="col-lg-6"><p class="form-control-static">{HOST_NAME}</p></div>
         </div>
 
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{AGENCY_PHONE_ID}">{AGENCY_PHONE_LABEL_TEXT}</label>
-          <div class="col-lg-6">{AGENCY_PHONE}</div>
-        </div>
-
-        <div class="checkbox">
-          <label> {COPY_ADDRESS_AGENCY} {COPY_ADDRESS_AGENCY_LABEL_TEXT} </label>
+          <label class="col-lg-3 control-label" for="{HOST_PHONE_ID}">Phone</label>
+          <div class="col-lg-6"><p class="form-control-static">{HOST_PHONE}</p></div>
         </div>
 
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{AGENCY_ADDRESS_ID}">{AGENCY_ADDRESS_LABEL_TEXT}</label>
-          <div class="col-lg-6">{AGENCY_ADDRESS}</div>
+          <label class="col-lg-3 control-label" for="{HOST_ADDRESS_ID}">Address</label>
+          <div class="col-lg-6"><p class="form-control-static">{HOST_ADDRESS}</p></div>
         </div>
 
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{AGENCY_CITY_ID}">{AGENCY_CITY_LABEL_TEXT}</label>
-          <div class="col-lg-6">{AGENCY_CITY}</div>
+          <label class="col-lg-3 control-label" for="{HOST_CITY_ID}">City</label>
+          <div class="col-lg-6"><p class="form-control-static">{HOST_CITY}</p></div>
         </div>
 
-        <!-- BEGIN agency-state -->
+        <!-- BEGIN host-state -->
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{AGENCY_STATE_ID}">{AGENCY_STATE_LABEL_TEXT}</label>
-          <div class="col-lg-6">{AGENCY_STATE}</div>
+          <label class="col-lg-3 control-label" for="{HOST_STATE_ID}">{HOST_STATE_LABEL_TEXT}</label>
+          <div class="col-lg-6">{HOST_STATE}</div>
         </div>
-        <!-- END agency-state -->
+        <!-- END host-state -->
 
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{AGENCY_ZIP_ID}" id="internship_agency_zip-label">{AGENCY_ZIP_LABEL_TEXT}</label>
-          <div class="col-lg-6">{AGENCY_ZIP}</div>
+          <label class="col-lg-3 control-label" for="{HOST_ZIP_ID}" id="internship_host_zip-label">{HOST_ZIP_LABEL_TEXT}</label>
+          <div class="col-lg-6"><p class="form-control-static">{HOST_ZIP}</p></div>
         </div>
 
-        <!-- BEGIN agency-intl -->
+        <!-- BEGIN host-intl -->
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{AGENCY_PROVINCE_ID}">{AGENCY_PROVINCE_LABEL_TEXT}</label>
-          <div class="col-lg-6">{AGENCY_PROVINCE}</div>
+          <label class="col-lg-3 control-label" for="{HOST_PROVINCE_ID}">Province/Territory</label>
+          <div class="col-lg-6">{HOST_PROVINCE}</div>
         </div>
 
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{AGENCY_COUNTRY_ID}">{AGENCY_COUNTRY_LABEL_TEXT}</label>
-          <div class="col-lg-6">{AGENCY_COUNTRY}</div>
+          <label class="col-lg-3 control-label" for="{HOST_COUNTRY_ID}">{HOST_COUNTRY_LABEL_TEXT}</label>
+          <div class="col-lg-6">{HOST_COUNTRY}</div>
         </div>
-        <!-- END agency-intl -->
+        <!-- END host-intl -->
 
       </fieldset>
 
@@ -584,28 +576,28 @@
         <legend>Supervisor Info</legend>
 
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{AGENCY_SUP_FIRST_NAME_ID}">{AGENCY_SUP_FIRST_NAME_LABEL_TEXT}</label>
-          <div class="col-lg-6">{AGENCY_SUP_FIRST_NAME}</div>
+          <label class="col-lg-3 control-label" for="{SUPERVISOR_FIRST_NAME_ID}">{SUPERVISOR_FIRST_NAME_LABEL_TEXT}</label>
+          <div class="col-lg-6">{SUPERVISOR_FIRST_NAME}</div>
         </div>
 
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{AGENCY_SUP_LAST_NAME_ID}">{AGENCY_SUP_LAST_NAME_LABEL_TEXT}</label>
-          <div class="col-lg-6">{AGENCY_SUP_LAST_NAME}</div>
+          <label class="col-lg-3 control-label" for="{SUPERVISOR_LAST_NAME_ID}">{SUPERVISOR_LAST_NAME_LABEL_TEXT}</label>
+          <div class="col-lg-6">{SUPERVISOR_LAST_NAME}</div>
         </div>
 
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{AGENCY_SUP_TITLE_ID}">{AGENCY_SUP_TITLE_LABEL_TEXT}</label>
-          <div class="col-lg-6">{AGENCY_SUP_TITLE}</div>
+          <label class="col-lg-3 control-label" for="{SUPERVISOR_TITLE_ID}">{SUPERVISOR_TITLE_LABEL_TEXT}</label>
+          <div class="col-lg-6">{SUPERVISOR_TITLE}</div>
         </div>
 
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{AGENCY_SUP_EMAIL_ID}">{AGENCY_SUP_EMAIL_LABEL_TEXT}</label>
-          <div class="col-lg-6">{AGENCY_SUP_EMAIL}</div>
+          <label class="col-lg-3 control-label" for="{SUPERVISOR_EMAIL_ID}">{SUPERVISOR_EMAIL_LABEL_TEXT}</label>
+          <div class="col-lg-6">{SUPERVISOR_EMAIL}</div>
         </div>
 
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{AGENCY_SUP_FAX_ID}">{AGENCY_SUP_FAX_LABEL_TEXT}</label>
-          <div class="col-lg-6">{AGENCY_SUP_FAX}</div>
+          <label class="col-lg-3 control-label" for="{SUPERVISOR_FAX_ID}">{SUPERVISOR_FAX_LABEL_TEXT}</label>
+          <div class="col-lg-6">{SUPERVISOR_FAX}</div>
         </div>
 
         <div class="checkbox">
@@ -613,42 +605,42 @@
         </div>
 
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{AGENCY_SUP_PHONE_ID}">{AGENCY_SUP_PHONE_LABEL_TEXT}</label>
-          <div class="col-lg-6">{AGENCY_SUP_PHONE}</div>
+          <label class="col-lg-3 control-label" for="{SUPERVISOR_PHONE_ID}">{SUPERVISOR_PHONE_LABEL_TEXT}</label>
+          <div class="col-lg-6">{SUPERVISOR_PHONE}</div>
         </div>
 
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{AGENCY_SUP_ADDRESS_ID}">{AGENCY_SUP_ADDRESS_LABEL_TEXT}</label>
-          <div class="col-lg-6">{AGENCY_SUP_ADDRESS}</div>
+          <label class="col-lg-3 control-label" for="{SUPERVISOR_ADDRESS_ID}">{SUPERVISOR_ADDRESS_LABEL_TEXT}</label>
+          <div class="col-lg-6">{SUPERVISOR_ADDRESS}</div>
         </div>
 
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{AGENCY_SUP_CITY_ID}">{AGENCY_SUP_CITY_LABEL_TEXT}</label>
-          <div class="col-lg-6">{AGENCY_SUP_CITY}</div>
+          <label class="col-lg-3 control-label" for="{SUPERVISOR_CITY_ID}">{SUPERVISOR_CITY_LABEL_TEXT}</label>
+          <div class="col-lg-6">{SUPERVISOR_CITY}</div>
         </div>
 
-        <!-- BEGIN agency sup-state -->
+        <!-- BEGIN supervisor-state -->
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{AGENCY_SUP_STATE_ID}">{AGENCY_SUP_STATE_LABEL_TEXT}</label>
-          <div class="col-lg-6">{AGENCY_SUP_STATE}</div>
+          <label class="col-lg-3 control-label" for="{SUPERVISOR_STATE_ID}">{SUPERVISOR_STATE_LABEL_TEXT}</label>
+          <div class="col-lg-6">{SUPERVISOR_STATE}</div>
         </div>
-        <!-- END agency sup-state -->
+        <!-- END supervisor-state -->
 
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{AGENCY_SUP_ZIP_ID}" id="internship_agency_sup_zip-label">{AGENCY_SUP_ZIP_LABEL_TEXT}</label>
-          <div class="col-lg-6">{AGENCY_SUP_ZIP}</div>
+          <label class="col-lg-3 control-label" for="{SUPERVISOR_ZIP_ID}" id="internship_supervisor_sup_zip-label">{SUPERVISOR_ZIP_LABEL_TEXT}</label>
+          <div class="col-lg-6">{SUPERVISOR_ZIP}</div>
         </div>
 
-        <!-- BEGIN agency-sup-intl -->
+        <!-- BEGIN supervisor-intl -->
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{AGENCY_SUP_PROVINCE_ID}">{AGENCY_SUP_PROVINCE_LABEL_TEXT}</label>
-          <div class="col-lg-6">{AGENCY_SUP_PROVINCE}</div>
+          <label class="col-lg-3 control-label" for="{SUPERVISOR_PROVINCE_ID}">{SUPERVISOR_PROVINCE_LABEL_TEXT}</label>
+          <div class="col-lg-6">{SUPERVISOR_PROVINCE}</div>
         </div>
-        <!-- END agency-sup-intl -->
+        <!-- END supervisor-intl -->
 
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{AGENCY_SUP_COUNTRY_ID}">{AGENCY_SUP_COUNTRY_LABEL_TEXT}</label>
-          <div class="col-lg-6">{AGENCY_SUP_COUNTRY}</div>
+          <label class="col-lg-3 control-label" for="{SUPERVISOR_COUNTRY_ID}">{SUPERVISOR_COUNTRY_LABEL_TEXT}</label>
+          <div class="col-lg-6">{SUPERVISOR_COUNTRY}</div>
         </div>
       </fieldset>
 
@@ -679,7 +671,7 @@
       </fieldset>
 
       <div class="form-group">
-        <button type="submit" class="btn btn-primary pull-right" id="{SUBMIT_ID}">{SUBMIT_VALUE}</button>
+        <button type="submit" class="btn btn-primary pull-right" disabled="{SUBMIT_DIS}" id="{SUBMIT_ID}">{SUBMIT_VALUE}</button>
       </div>
     </div> <!-- End of right column -->
   </div> <!-- End of main row -->
@@ -690,7 +682,7 @@
         <label for="{NOTES_ID}">Add a note</label> {NOTES}
       </div>
       <div class="form-group">
-        <button type="submit" class="btn btn-primary pull-right" id="{SUBMIT_ID}">{SUBMIT_VALUE}</button>
+        <button type="submit" class="btn btn-primary pull-right" disabled="{SUBMIT_DIS}" id="{SUBMIT_ID}">{SUBMIT_VALUE}</button>
       </div>
     </div>
   </div>

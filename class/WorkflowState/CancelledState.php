@@ -24,4 +24,8 @@ use Intern\WorkflowState;
 class CancelledState extends WorkflowState {
     const friendlyName = 'Cancelled';
     const sortIndex    = 8;
+
+    public function getAllowedPermissionList(){
+        return array('cancel', 'reinstate');
+    }
 }

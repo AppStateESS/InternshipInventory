@@ -21,6 +21,8 @@
 namespace Intern;
 
 use \Intern\Student;
+use \Intern\HostFactory;
+use \Intern\SupervisorFactory;
 use \Intern\Command\DocumentRest;
 
 use \PHPWS_Text;
@@ -28,7 +30,7 @@ use \PHPWS_Text;
 /**
 * Internship
 *
-* Forms relationship between a student, department, and agency.
+* Forms relationship between a student, department, and host.
 *
 * @author Robert Bost <bostrt at tux dot appstate dot edu>
 * @author Jeremy Booker <jbooker at tux dot appstate dot edu>
@@ -40,8 +42,9 @@ class Internship {
 
     public $id;
 
-    // Agency
-    public $agency_id;
+    // Host & sup
+    public $host_id;
+    public $supervisor_id;
 
     // Department
     public $department_id;
@@ -129,7 +132,7 @@ class Internship {
     /**
     * Constructs a new Internship object.
     */
-    public function __construct(Student $student, $term, $location, $state, $country, Department $department, Agency $agency){
+    public function __construct(Student $student, $term, $location, $state, $country, Department $department, Host $host){
 
         // Initialize student data
         $this->initalizeStudentData($student);
@@ -155,8 +158,8 @@ class Internship {
         // Get department id
         $this->department_id = $department->getId();
 
-        // Get agency id
-        $this->agency_id = $agency->getId();
+        // Get host
+        $this->host_id = $host->getId();
 
         // Set initial state
         $this->setState(WorkflowStateFactory::getState('CreationState'));
@@ -340,7 +343,6 @@ class Internship {
         $csv['Course Title']           = $this->course_title;
 
         // Get external objects
-        $a = $this->getAgency();
         $f = $this->getFaculty();
         $d = $this->getDepartment();
         $c = DocumentRest::contractAffilationSelected($this->id);
@@ -399,16 +401,28 @@ class Internship {
         return false;
     }
 
-    public function getAgencyId() {
-        return $this->agency_id;
+    public function getHostId() {
+        return $this->host_id;
     }
 
     /**
-    * Get the Agency object associated with this internship.
+    * Get the Host object associated with this internship.
     */
-    public function getAgency()
+    public function getHost()
     {
-        return AgencyFactory::getAgencyById($this->getAgencyId());
+        return HostFactory::getHostById($this->getHostId());
+    }
+
+    public function getSupervisorId() {
+        return $this->supervisor_id;
+    }
+
+    /**
+    * Get the Supervisor object associated with this internship.
+    */
+    public function getSupervisor()
+    {
+        return SupervisorFactory::getSupervisorById($this->getSupervisorId());
     }
 
     /**
@@ -742,7 +756,7 @@ class Internship {
     }
 
     /**
-    * Get the domestic looking address of agency.
+    * Get the domestic looking address of host.
     */
     public function getLocationAddress()
     {

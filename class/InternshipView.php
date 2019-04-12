@@ -27,35 +27,32 @@ use \intern\Command\DocumentRest;
 class InternshipView {
 
     public static $requiredFields = array(
-            'student_first_name',
-            'student_last_name',
-            'student_email',
             'department',
-            'agency_name');
+            'host_name');
 
     private $intern;
     private $student;
     private $wfState;
-    private $agency;
+    private $host;
+    private $supervisor;
     private $term;
     private $studentExistingCreditHours;
 
-    public function __construct(Internship $internship, Student $student = null, WorkflowState $wfState, Agency $agency, Term $term, $studentExistingCreditHours)
-    {
+    public function __construct(Internship $internship, Student $student = null, WorkflowState $wfState, Host $host, Supervisor $supervisor, Term $term, $studentExistingCreditHours) {
         $this->intern = $internship;
         $this->student = $student;
         $this->wfState = $wfState;
-        $this->agency = $agency;
+        $this->host = $host;
+        $this->supervisor = $supervisor;
         $this->term = $term;
         $this->studentExistingCreditHours = $studentExistingCreditHours;
     }
 
-    public function display()
-    {
+    public function display() {
         $tpl = array();
 
         // Setup the form
-        $internshipForm = new EditInternshipFormView($this->intern, $this->student, $this->agency, $this->term, $this->studentExistingCreditHours);
+        $internshipForm = new EditInternshipFormView($this->intern, $this->student, $this->host, $this->supervisor, $this->term, $this->studentExistingCreditHours);
 
         // Get the Form object
         $form = $internshipForm->getForm();
@@ -133,12 +130,12 @@ class InternshipView {
 
         // Show a warning if the start date selected is outside of the term start date
         if($this->intern->start_date != 0 && ($this->intern->start_date < $this->term->getStartTimestamp() || $this->intern->start_date > $this->term->getEndTimestamp())){
-          \NQ::simple('intern', UI\NotifyUI::WARNING, "The start date you selected is ouside the dates of the term. If correct, fill out the <a target='_blank' href=\"https:\/\/registrar.appstate.edu\/\/sites/registrar.appstate.edu/files/academic_course_meeting_dates_exception_form_102416_1.pdf\">Meeting Dates Exception Form</a>.");
+          \NQ::simple('intern', UI\NotifyUI::WARNING, "The start date you selected is outside the dates of the term. If correct, fill out the <a target='_blank' href=\"https:\/\/registrar.appstate.edu\/\/sites/registrar.appstate.edu/files/academic_course_meeting_dates_exception_form_102416_1.pdf\">Meeting Dates Exception Form</a>.");
         }
 
         // Show a warning if the ending date selected is outside of the term end date
         if($this->intern->end_date != 0 && ($this->intern->end_date > $this->term->getEndTimestamp() || $this->intern->end_date < $this->term->getStartTimestamp())){
-          \NQ::simple('intern', UI\NotifyUI::WARNING, "The end date you selected is ouside the dates of the term. If correct, fill out the <a target='_blank' href=\"https:\/\/registrar.appstate.edu\/\/sites/registrar.appstate.edu/files/academic_course_meeting_dates_exception_form_102416_1.pdf\">Meeting Dates Exception Form</a>.");
+          \NQ::simple('intern', UI\NotifyUI::WARNING, "The end date you selected is outside the dates of the term. If correct, fill out the <a target='_blank' href=\"https:\/\/registrar.appstate.edu\/\/sites/registrar.appstate.edu/files/academic_course_meeting_dates_exception_form_102416_1.pdf\">Meeting Dates Exception Form</a>.");
         }
     }
 
