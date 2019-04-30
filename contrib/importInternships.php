@@ -42,6 +42,8 @@ $values['campus'] = 'main_campus';
 $values['multi_part'] = 0;
 $values['secondary_part'] = 0;
 $values['domestic'] = 1;
+$values['major_code'] = '809A';
+$values['major_description'] = 'Nursing';
 // Parse CSV input into fields line by line
 while(($line = fgetcsv($inputFile, 0, ',')) !== FALSE) {
     foreach($line as $key=>$element){
@@ -57,16 +59,11 @@ while(($line = fgetcsv($inputFile, 0, ',')) !== FALSE) {
     $values['last_name'] = $line[0];
     $values['first_name'] = $line[1];
     $values['banner'] = $bannerId;
-<<<<<<< HEAD
     $values['gpa'] = $line[3];
     $values['start_date'] = strtotime($line[11]);
     $values['end_date'] = strtotime($line[12]);
     $email = explode('@',$line[4]);
     $values['faculty_id'] = $line[10];
-=======
-    $values['gpa'] = $line[4];
-    $email = explode('@',$line[5]);
->>>>>>> 610dfa3af90016126082fe3374d5fad7b513a9f5
     $values['email'] = $email[0];
     $agency = trim($line[5]);
     $agency_id   = agencyExists($agency);
