@@ -22,7 +22,7 @@ CREATE TABLE intern_department (
 );
 
 CREATE TABLE intern_faculty (
-    id              INT NOT NULL,
+    id              INT NOT NULL, --banner id
     username        character varying NOT NULL,
     first_name      character varying NOT NULL,
     last_name       character varying NOT NULL,

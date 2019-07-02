@@ -1,6 +1,6 @@
 {
     "require": {
-        "setasign/fpdi-fpdf": "1.6",
+        "setasign/fpdi-fpdf": "^2.2",
         "swiftmailer/swiftmailer": "@stable"
     },
     "require-dev": {
