@@ -73,11 +73,9 @@ class ShowInternship {
         $wfState = $intern->getWorkflowState();
 
         // Load the host & sup
-        var_dump('here');
         $host = HostFactory::getHostById($intern->getHostId());
-        var_dump($host);exit;
         $supervisor = SupervisorFactory::getSupervisorById($intern->getSupervisorId());
-var_dump($host, $supervisor);exit;
+
         // Load the term info for this internship
         $term = TermFactory::getTermByTermCode($intern->getTerm());
 

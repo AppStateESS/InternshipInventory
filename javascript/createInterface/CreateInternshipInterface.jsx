@@ -1,45 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import classNames from 'classnames';
-
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import StudentSearch from './StudentSearch.jsx';
 import TermBlock from './TermBlock.jsx';
 import LocationBlock from './LocationBlock.jsx';
 import Department from './DepartmentBlock.jsx';
-//import HostAgencies from './HostBlock.jsx';
-
-/*********************
- * Host Agency Field *
- *********************/
-class HostAgency extends React.Component {
-    constructor(props) {
-      super(props);
-
-      this.state = {hasError: false};
-    }
-    setError(status){
-        this.setState({hasError: status});
-    }
-    render() {
-        var fgClasses = classNames({
-                        'form-group': true,
-                        'has-error': this.state.hasError
-                    });
-        return (
-            <div className="row">
-                <div className="col-sm-12 col-md-4 col-md-push-3">
-                    <div className={fgClasses} id="agency">
-                        <label htmlFor="agency2" className="control-label">Internship Host</label>
-                        <input type="text" id="agency2" name="agency" className="form-control" placeholder="Acme, Inc." />
-                    </div>
-                </div>
-            </div>
-        );
-    }
-}
-
+import HostAgency from './HostBlock.jsx';
 
 /*****************
  * Submit Button *

@@ -34,6 +34,7 @@ if(!$db){
 }
 
 $values = array();
+$emergency = array();
 $values['term'] = $term;
 $values['department_id'] = $department_id;
 $values['state'] = 'RegisteredState'; // Since these are past internships
@@ -42,8 +43,7 @@ $values['campus'] = 'main_campus';
 $values['multi_part'] = 0;
 $values['secondary_part'] = 0;
 $values['domestic'] = 1;
-$values['major_code'] = '809A';
-$values['major_description'] = 'Nursing';
+$values['clinical_practica'] = 1;
 // Parse CSV input into fields line by line
 while(($line = fgetcsv($inputFile, 0, ',')) !== FALSE) {
     foreach($line as $key=>$element){
@@ -59,18 +59,34 @@ while(($line = fgetcsv($inputFile, 0, ',')) !== FALSE) {
     $values['last_name'] = $line[0];
     $values['first_name'] = $line[1];
     $values['banner'] = $bannerId;
-    $values['gpa'] = $line[3];
-    $values['start_date'] = strtotime($line[11]);
-    $values['end_date'] = strtotime($line[12]);
-    $email = explode('@',$line[4]);
-    $values['faculty_id'] = $line[10];
+    $values['major_code'] = $line[3];
+    $values['major_description'] = $line[4];
+    $values['gpa'] = $line[5];
+    $email = explode('@',$line[6]);
     $values['email'] = $email[0];
-    $values['host_id'] = $host_id;
-    $values['supervisor_id'] = $supervisor_id;
-    $values['loc_state']   = 'NC'; // Data sheet does not have a good location field. They need to fix this
-    $values['clinical_practica'] = 1;
-    $values['course_no'] = $line[13];
-    $values['credits'] = $line[14];
+    $values['loc_city'] = $line[11];
+    $values['loc_state']   = $line[12];
+    $values['loc_zip'] = $line[13];
+    $values['faculty_id'] = $line[14];
+    $values['start_date'] = strtotime($line[15]);
+    $values['end_date'] = strtotime($line[16]);
+    //$valuse['course_subj'] = $line[17];
+    $values['course_no'] = $line[18];
+    $values['credits'] = $line[19];
+
+    $emergency['name'] = $line[7];
+    $emergency['relation'] = $line[8];
+    $emergency['phone'] = $line[9];
+
+    $agency = trim($line[10]);
+    $agency_id   = agencyExists($agency);
+    if(!$agency_id){
+        $agency_id = createInternAgency($agency);
+    }
+    if(!$agency_id){
+        continue;
+    }
+    $values['agency_id'] = $agency_id;
 
     $intern_result = createInternship($db, $values);
 
@@ -96,4 +112,34 @@ function createInternship($db, $values) {
   }else{
       return false;
   }
+}
+
+function createInternAgency($name){
+  $query = "SELECT NEXTVAL('intern_agency_seq')";
+  $id_result = pg_query($query);
+
+  // create new agency
+  if($id_result){
+    $id_result = pg_fetch_row($id_result);
+    $id = $id_result[0];
+    $sql = "INSERT INTO intern_agency (id, name) VALUES ($id, '$name')";
+    $result = pg_query($sql);
+    if($result === false){
+        echo "failed to insert agency\n\n";
+        return false;
+    }else{
+        return $id;
+    }
+  }
+}
+
+function agencyExists($name){
+    $sql = "select * from intern_agency where name='$name'";
+    $result = pg_query($sql);
+    if(pg_num_rows($result) != 0){
+        $result = pg_fetch_row($result);
+        return $result[0];
+    }else{
+        return false;
+    }
 }

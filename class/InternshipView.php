@@ -26,9 +26,7 @@ use \intern\Command\DocumentRest;
  */
 class InternshipView {
 
-    public static $requiredFields = array(
-            'department',
-            'host_name');
+    public static $requiredFields = array('department');
 
     private $intern;
     private $student;
@@ -189,7 +187,7 @@ class InternshipView {
         // Show warning if GPA is below the minimum
         if($this->student->getGpa() < Internship::GPA_MINIMUM) {
             $minGpa = sprintf('%.2f', Internship::GPA_MINIMUM);
-            \NQ::simple('intern', UI\NotifyUI::WARNING, "This student's GPA is less than the required minimum of {$minGpa}.");
+            \NQ::simple('intern', UI\NotifyUI::WARNING, "This student's current GPA of {$this->student->getGpa()} is less than the required minimum of {$minGpa}.");
         }
     }
 }

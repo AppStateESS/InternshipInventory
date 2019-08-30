@@ -477,32 +477,6 @@ INSERT INTO intern_subject (id, abbreviation, description) VALUES (nextval('inte
 INSERT INTO intern_subject (id, abbreviation, description) VALUES (nextval('intern_subject_seq'),'WS','Women’s Studies');
 INSERT INTO intern_subject (id, abbreviation, description) VALUES (nextval('intern_subject_seq'),'PHO','Photography');
 
-CREATE TABLE intern_agency (
-       id INT NOT NULL,
-       name VARCHAR NOT NULL,
-       address VARCHAR NULL,
-       city VARCHAR NULL,
-       state VARCHAR,
-       zip VARCHAR NULL,
-       province character varying,
-       country VARCHAR,
-       phone VARCHAR,
-       supervisor_first_name VARCHAR NULL,
-       supervisor_last_name VARCHAR NULL,
-       supervisor_title VARCHAR NULL,
-       supervisor_phone VARCHAR NULL,
-       supervisor_email VARCHAR NULL,
-       supervisor_fax VARCHAR NULL,
-       supervisor_address VARCHAR NULL,
-       supervisor_city VARCHAR NULL,
-       supervisor_state VARCHAR NULL,
-       supervisor_zip VARCHAR NULL,
-       supervisor_province character varying,
-       supervisor_country VARCHAR,
-       address_same_flag BOOLEAN DEFAULT false,
-       PRIMARY KEY(id)
-);
-
 CREATE TABLE intern_affiliation_agreement(
   id INT NOT NULL,
   name VARCHAR NOT NULL,
@@ -587,7 +561,6 @@ CREATE TABLE intern_student_level(
 CREATE TABLE intern_internship (
        id INT NOT NULL,
        term character varying NOT NULL REFERENCES intern_term(term),
-       agency_id INT NOT NULL REFERENCES intern_agency(id),
        faculty_id INT REFERENCES intern_faculty(id),
        department_id INT NOT NULL,
        start_date INT DEFAULT 0,
@@ -851,7 +824,6 @@ CREATE SEQUENCE intern_major_seq;
 SELECT SETVAL('intern_major_seq', MAX(id)) FROM intern_major;
 
 CREATE SEQUENCE intern_student_seq;
-CREATE SEQUENCE intern_agency_seq;
 CREATE SEQUENCE intern_term_seq;
 CREATE SEQUENCE intern_internship_seq;
 CREATE SEQUENCE intern_document_seq;

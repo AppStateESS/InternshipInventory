@@ -20,7 +20,7 @@
 
 namespace Intern;
 
-class SupervisorDB extends Supervisor {
+class HostRestored extends Host {
 
     // Override constructor with empty parameter list
     public function __construct(){}

@@ -1,124 +1,177 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import $ from 'jquery';
+import classNames from 'classnames';
+import {Button, Modal} from 'react-bootstrap';
+import LocationBlock from './LocationBlock.jsx';
 
 // on add internship page
-
-// fuzzy search for host, add button to create new host
-class SearchBox extends React.Component {
+class ModalHostForm extends React.Component {
     constructor(props) {
-      super(props);
-      this.state = {dataError: null};
-    }
-    componentDidMount() {
-    	var searchSuggestions = new Bloodhound({
-            datumTokenizer: function(datum){
-                var nameTokens      = Bloodhound.tokenizers.obj.whitespace('name');
-                return nameTokens.concat(statusTokens);
-            },
-    		queryTokenizer: Bloodhound.tokenizers.whitespace,
-    		remote: {
-                url: 'index.php?module=intern&action=GetHostSuggestions&searchString=%QUERY',
-                wildcard: '%QUERY'
-            }
-    	});
-        var myComponent = this;
-        var element = this.refs.typeahead;
-        $(element).typeahead({
-            minLength: 3,
-            highlight: true,
-            hint: true
-        },
-        {
-        	name: 'hosts',
-        	display: 'hostId',
-        	source: searchSuggestions.ttAdapter(),
-            limit: 15,
-        	templates: {
-        		suggestion: function(row) {
-                    if(row.error === undefined){
-                        return ('<p>'+row.name + ' &middot; ' + row.hostId + '</p>');
-                    } else {
-                        myComponent.setState({dataError: row.error});
-                        return ('<p></p>');
-                    }
-        		}
-        	}
-        });
-        // Event handler for selecting a suggestion
-        var handleSearch = this.props.onSelect;
-        $(element).bind('typeahead:select', function(obj, datum, name) {
-            if(datum.error === undefined){
-                handleSearch(datum.hostId);
-            }
-        });
-        // Event handler for enter key.. Search with whatever the person put in the box
-        var handleReset = this.props.onReset;
-        var thisElement = this;
-        $(element).keydown(function(e){
+        super(props);
 
-            // Look for the enter key
-            if(e.keyCode === 13) {
-                // Prevent default to keep the form from being submitted on enter
-                e.preventDefault();
-                return;
-            }
-            // Ignore the tab key
-            if(e.keyCode === 9){
-                return;
-            }
-            // For any other key, reset the search results because the input box has changed
-            thisElement.setState({dataError: null});
-            handleReset();
-        });
-        // Do a search onBlur too (in case user tabs away from the search field)
-        $(element).blur(function(e){
-            handleSearch($(element).typeahead('val'));
-        });
-    }
-    componentWillUnmount() {
-        var element = ReactDOM.findDOMNode(this);
-        $(element).typeahead('destroy');
-    }
-    render() {
-        var errorNotice = null;
+        this.state = {
+            showError: false,
+            warningMsg: ''
+        };
 
-        if(this.state.dataError !== null){
-            errorNotice = <div style={{marginTop: "1em"}} className="alert alert-danger">
-                                <p>{this.state.dataError}</p>
-                            </div>
+        this.handleSave = this.handleSave.bind(this);
+        this.handleExit = this.handleExit.bind(this);
+    }
+    handleSave() {
+        if (this.refs.host_name.value === '') {
+            this.setState({showError: true, warningMsg: "Please enter a name of host."});
+            return;
         }
-        return (
-            <div>
-                <div>
-                    <input type="search" name="hostName" id="hostSearch" className="form-control typeahead input-lg" placeholder="Acme, Inc." ref="typeahead" autoComplete="off"/>
-                </div>
-                {errorNotice}
-            </div>
-        );
-    }
-}
 
-// Host Preview
-class HostPreview extends React.Component {
+        this.setState({showError: false,
+                       warningMsg: ""});
+        var host = {id: this.props.id,
+                    name: this.refs.host_name.value};
+
+        // Call parent's save handler
+        this.props.handleSaveHost(host);
+    }
+    handleExit(){
+        //resets state so any warnings previously are reset.
+        this.setState({
+            showError: false,
+        })
+        this.props.hide();
+    }
     render() {
+        // Create red asterisk for a required field
+        var require = <span style={{color: '#FB0000'}}> *</span>;
         return (
-            <div>
-                <span className="lead"> {this.props.host.name}</span>
-                <i className="fa fa-credit-card"></i> {this.props.host.approve_flag}
-            </div>
+            <Modal show={this.props.show} onHide={this.handleExit} backdrop='static'>
+                <Modal.Header closeButton>
+                  <Modal.Title>Request Host</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <form className="form-horizontal">
+                        <div className="form-group">
+                            <label className="col-lg-3 control-label">Host Name {require}</label>
+                            <div className="col-lg-9"><input  type="text" className="form-control" id="host-name" ref="host_name" defaultValue={this.props.name}/></div>
+                        </div>
+                    </form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button onClick={this.handleSave}>Request Host</Button>
+                    <Button onClick={this.handleExit}>Close</Button>
+                </Modal.Footer>
+            </Modal>
+        );
+    }
+}
+class ModalSubForm extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            showError: false,
+            warningMsg: ''
+        };
+
+        this.handleSave = this.handleSave.bind(this);
+        this.handleExit = this.handleExit.bind(this);
+    }
+    handleSave() {
+        if (this.refs.host_name.value === '') {
+            this.setState({showError: true, warningMsg: "Please enter a name of host."});
+            return;
+        }
+
+        this.setState({showError: false,
+                       warningMsg: ""});
+        var host = {id: this.props.id,
+                    name: this.refs.host_name.value};
+
+        // Call parent's save handler
+        this.props.handleSaveHost(host);
+    }
+    handleExit(){
+        //resets state so any warnings previously are reset.
+        this.setState({
+            showError: false,
+            warningMsg: '',
+        })
+        this.props.hide();
+    }
+    render() {
+        // Create red asterisk for a required field
+        var require = <span style={{color: '#FB0000'}}> *</span>;
+        return (
+            <Modal show={this.props.show} onHide={this.handleExit} backdrop='static'>
+                <Modal.Header closeButton>
+                  <Modal.Title>Request Sub</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <form className="form-horizontal">
+                        <div className="form-group">
+                            <label className="col-lg-3 control-label">Sub Name {require}</label>
+                            <div className="col-lg-9"><input  type="text" className="form-control" id="host-name" ref="host_name" defaultValue={this.props.name}/></div>
+                        </div>
+                        <div className="form-group">
+                            <label className="col-lg-3 control-label">Address {require}</label>
+                            <div className="col-lg-9"><input  type="text" className="form-control" id="host-address" ref="host_address" defaultValue={this.props.address}/></div>
+                        </div>
+                        <div className="form-group">
+                            <label className="col-lg-3 control-label">City</label>
+                            <div className="col-lg-9"><input  type="text" className="form-control" id="host-city" ref="host_city" defaultValue={this.props.city}/></div>
+                        </div>
+                        <div className="form-group">
+                            <label className="col-lg-3 control-label">Province (International)</label>
+                            <div className="col-lg-9"><input  type="text" className="form-control" id="host-province" ref="host_province" defaultValue={this.props.province}/></div>
+                        </div>
+                        <LocationBlock ref="locationBlock"/>
+                        <div className="form-group">
+                            <label className="col-lg-3 control-label">Zip/Postal {require}</label>
+                            <div className="col-lg-9"><input  type="text" className="form-control" id="host-zip" ref="host_zip" defaultValue={this.props.zip}/></div>
+                        </div>
+                    </form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button onClick={this.handleSave}>Request Sub</Button>
+                    <Button onClick={this.handleExit}>Close</Button>
+                </Modal.Footer>
+            </Modal>
         );
     }
 }
 
-class HostAgencies extends React.Component {
+class HostAgency extends React.Component {
     constructor(props) {
-      super(props);
-
-      this.state = {hasError: false};
+        super(props);
+        this.state = {hasError: false,
+            showHostModal: false,
+            showSubModal: false};
+        this.closeHostModal = this.closeHostModal.bind(this);
+        this.openHostModal = this.openHostModal.bind(this);
+        this.handleSaveHost = this.handleSaveHost.bind(this);
+        this.closeSubModal = this.closeSubModal.bind(this);
+        this.openSubModal = this.openSubModal.bind(this);
+        this.handleSaveSub = this.handleSaveSub.bind(this);
     }
     setError(status){
         this.setState({hasError: status});
+    }
+    closeHostModal() {
+        this.setState({ showHostModal: false });
+    }
+    openHostModal() {
+        this.setState({ showHostModal: true });
+    }
+    handleSaveHost(host){
+        this.closeHostModal(); // Close the modal box
+        this.props.handleSave(host); // Call parent's handleSave method
+    }
+    closeSubModal() {
+        this.setState({ showSubModal: false });
+    }
+    openSubModal() {
+        this.setState({ showSubModal: true });
+    }
+    handleSaveSub(sub){
+        this.closeSubModal(); // Close the modal box
+        this.props.handleSave(sub); // Call parent's handleSave method
     }
     render() {
         var fgClasses = classNames({
@@ -129,8 +182,12 @@ class HostAgencies extends React.Component {
             <div className="row">
                 <div className="col-sm-12 col-md-4 col-md-push-3">
                     <div className={fgClasses} id="agency">
-                        <label htmlFor="agency2" className="control-label">Internship Host</label>
-                        <input type="text" id="agency2" name="agency" className="form-control" placeholder="Acme, Inc." />
+                        <label htmlFor="agency2" className="control-label">Host Name </label><button type="button" onClick={this.openHostModal}><i className="fa fa-plus"></i></button>
+                        <ModalHostForm show={this.state.showHostModal} hide={this.closeHostModal} edit={true} handleSaveHost={this.handleSaveHost}{...this.props} />
+                        <input type="text" id="agency2" name="agency2" className="form-control" placeholder="Acme, Inc." />
+                        <label htmlFor="agency3" className="control-label">Sub Name </label><button type="button" onClick={this.openSubModal}><i className="fa fa-plus"></i></button>
+                        <ModalSubForm show={this.state.showSubModal} hide={this.closeSubModal} edit={true} handleSaveSub={this.handleSaveSub}{...this.props} />
+                        <input type="text" id="agency3" name="agency3" className="form-control" placeholder="AI Boone" />
                     </div>
                 </div>
             </div>
@@ -138,4 +195,4 @@ class HostAgencies extends React.Component {
     }
 }
 
-export default HostAgencies;
+export default HostAgency;

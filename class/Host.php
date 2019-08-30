@@ -20,6 +20,8 @@
 
 namespace Intern;
 
+use \Intern\HostFactory;
+
 /**
  * Host
  *
@@ -31,6 +33,7 @@ namespace Intern;
 class Host implements DbStorable {
 
     public $id;
+    public $main_host_id;
     public $name;
     public $address;
     public $city;
@@ -39,27 +42,34 @@ class Host implements DbStorable {
     public $province;
     public $country;
     public $phone;
+    public $other_names;
+    public $conditions;
+    public $approve_flag;
 
-    public $address_same_flag;
-
-    public function __construct($name)
-    {
+    public function __construct($id, $main_host_id, $name, $address, $city, $state, $zip, $province, $country, $phone, $other_names, $conditions, $approve_flag){
+        $this->id = $id;
+        $this->main_host_id = $main_host_id;
         $this->name = $name;
+        $this->address = $address;
+        $this->city = $city;
+        $this->state = $state;
+        $this->zip = $zip;
+        $this->province = $province;
+        $this->country = $country;
+        $this->phone = $phone;
+        $this->other_names = $other_names;
+        $this->conditions = $conditions;
+        $this->approve_flag = $approve_flag;
     }
 
-    public static function getTableName()
-    {
-        return 'intern_host';
+    public static function getTableName(){
+        return 'intern_sub_host';
     }
 
-    /**
-     *
-     */
-    public function getCSV()
-    {
+    public function getCSV(){
         $csv = array();
 
-        $csv['Host Name']              = $this->name;
+        $csv['Host Sub Name']          = $this->name;
         $csv['Host Address']           = $this->address;
         $csv['Host City']              = $this->city;
         $csv['Host State']             = $this->state == null ? '' : $this->state;
@@ -102,7 +112,7 @@ class Host implements DbStorable {
         $vars = array();
 
         $vars['id']         = $this->getId();
-        $vars['name']       = $this->getName();
+        $vars['sub']        = $this->getSubName();
         $vars['address']    = $this->getAddress();
         $vars['city']       = $this->getCity();
         $vars['state']      = $this->getState();
@@ -110,7 +120,6 @@ class Host implements DbStorable {
         $vars['province']   = $this->getProvince();
         $vars['country']    = $this->getCountry();
         $vars['phone']      = $this->getPhoneNumber();
-        $vars['address_same_flag']      = $this->getAddressSameFlag();
 
         return $vars;
     }
@@ -123,7 +132,12 @@ class Host implements DbStorable {
         $this->id = $id;
     }
 
-    public function getName(){
+    public function getMainName(){
+        $sub_name = HostFactory::getMainHostById($this->main_host_id);
+        return $sub_name['name'];
+    }
+
+    public function getSubName(){
         return $this->name;
     }
 
@@ -155,7 +169,15 @@ class Host implements DbStorable {
         return $this->phone;
     }
 
-    public function getAddressSameFlag(){
-        return $this->address_same_flag;
+    public function getOtherNames(){
+        return $this->$other_names;
+    }
+
+    public function getConditions(){
+        return $this->$conditions;
+    }
+
+    public function getApproveFlag(){
+        return $this->$approve_flag;
     }
 }

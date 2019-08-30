@@ -35,9 +35,28 @@ class HostFactory {
         $db = Database::newDB();
         $pdo = $db->getPDO();
 
-        $stmt = $pdo->prepare("SELECT * FROM intern_host WHERE id = :id");
+        $stmt = $pdo->prepare("SELECT * FROM intern_sub_host WHERE id = :id");
         $stmt->execute(array('id' => $id));
         $stmt->setFetchMode(\PDO::FETCH_CLASS, 'Intern\HostRestored');
+
+        return $stmt->fetch();
+    }
+
+    public static function getMainHostById($id) {
+        if(is_null($id) || !isset($id)) {
+            throw new \InvalidArgumentException('Host ID is required.');
+        }
+
+        if($id <= 0) {
+            throw new \InvalidArgumentException('Invalid Host ID.');
+        }
+
+        $db = Database::newDB();
+        $pdo = $db->getPDO();
+
+        $stmt = $pdo->prepare("SELECT * FROM intern_host WHERE id = :id");
+        $stmt->execute(array('id' => $id));
+        $stmt->setFetchMode(\PDO::FETCH_ASSOC);
 
         return $stmt->fetch();
     }

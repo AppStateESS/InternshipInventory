@@ -22,23 +22,23 @@ namespace Intern\UI;
 use \Intern\AssetResolver;
 
 /**
- * Class for handling UI for Special Host editing, creation, and approval
+ * Class for handling UI for approval, editing, and creation of Host
  * @author Cydney Caldwell
  **/
-class SpecialHostUI implements UI {
+class ApproveHostUI implements UI {
 
     public function display() {
         // permissions...
         if(!\Current_User::allow('intern', 'special_host')) {
-            \NQ::simple('intern', NotifyUI::ERROR, 'You do not have permission to access special host.');
+            \NQ::simple('intern', NotifyUI::ERROR, 'You do not have permission to access and approve host.');
             return false;
         }
 
         $tpl = array();
 
         $tpl['vendor_bundle'] = AssetResolver::resolveJsPath('assets.json', 'vendor');
-        $tpl['entry_bundle'] = AssetResolver::resolveJsPath('assets.json', 'specialHost');
+        $tpl['entry_bundle'] = AssetResolver::resolveJsPath('assets.json', 'approveHost');
 
-        return \PHPWS_Template::process($tpl, 'intern','special_host.tpl');
+        return \PHPWS_Template::process($tpl, 'intern','approve_host.tpl');
     }
 }

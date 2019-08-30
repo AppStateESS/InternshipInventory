@@ -22,7 +22,7 @@ module.exports = {
       editTerms: JS_DIR + '/editTerms/EditTerms.jsx',
       contractAffiliation: JS_DIR + '/contractAffiliation/ContractAffiliation.jsx',
       otherDocuments: JS_DIR + '/otherDocuments/OtherDocuments.jsx',
-      specialHost: JS_DIR + '/specialHost/SpecialHost.jsx',
+      approveHost: JS_DIR + '/specialHost/ApproveHost.jsx',
       vendor: ['jquery', 'react', 'react-dom', 'react-bootstrap']
     }
 }

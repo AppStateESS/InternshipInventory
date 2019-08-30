@@ -14,7 +14,7 @@
       <li><a href="index.php?module=intern&action=ShowAddInternship"><i class="fa fa-plus"></i> Add Internship</a></li>
       <li><a href="index.php?module=intern&action=search"><i class="fa fa-search"></i> Search</a></li>
       <li><a href="index.php?module=intern&action=edit_faculty"><i class="fa fa-edit"></i> Faculty Supervisors</a></li>
-      <li><a href="mailto:esswebsupport@appstate.edu?subject=Internship Inventory Help Request"><i class="fa fa-question"></i> Get Help</a></li>
+      <li><a href="https://jira.appstate.edu/servicedesk/customer/portal/8/group/103"><i class="fa fa-question"></i> Get Help</a></li>
     </ul>
 
 
@@ -42,6 +42,9 @@
           <!-- BEGIN terms -->
           <li>{EDIT_TERMS_LINK}</li>
           <!-- END terms -->
+          <!-- BEGIN approve_host -->
+          <li>{APPROVE_HOST_LINK}</li>
+          <!-- END approve_host -->
           <!-- BEGIN special_host -->
           <li>{SPECIAL_HOST_LINK}</li>
           <!-- END special_host -->

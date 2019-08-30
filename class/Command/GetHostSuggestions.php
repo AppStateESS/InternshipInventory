@@ -65,7 +65,7 @@ class GetHostSuggestions {
         $db = \phpws2\Database::newDB();
         $pdo = $db->getPDO();
 
-        $stmt = $pdo->prepare("SELECT * FROM intern_host WHERE name = :name");
+        $stmt = $pdo->prepare("SELECT * FROM intern_host WHERE host_name = :name");
         $stmt->execute(array('name' => $string));
 
         $result = $stmt->fetch(\PDO::FETCH_ASSOC);

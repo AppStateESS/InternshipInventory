@@ -22,7 +22,7 @@ namespace Intern\Command;
 
 use Intern\Internship;
 use Intern\DepartmentFactory;
-use Intern\Agency;
+use Intern\Host;
 use Intern\DataProvider\Student\StudentDataProviderFactory;
 use Intern\WorkflowStateFactory;
 use Intern\ChangeHistory;
@@ -40,13 +40,9 @@ use Intern\DatabaseStorage;
  */
 class AddInternship {
 
-    public function __construct()
-    {
+    public function __construct() {}
 
-    }
-
-    public function execute()
-    {
+    public function execute() {
         // Check permissions
         if(!\Current_User::allow('intern', 'create_internship')){
             \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, 'You do not have permission to create new internships.');
@@ -90,10 +86,13 @@ class AddInternship {
             throw new \Exception('Could not load department.');
         }
 
-        //TODO: create an host object if one it's selected
-        // Create and save the agency object
-        $agency = new Agency($_POST['agency']);
-        DatabaseStorage::save($agency);
+        // Create and save the host and supervisor objects
+        $host = HostFactory::getHostById($_POST['host']);
+        $sub = SubFactory::getSubById($_POST['sub']);
+        //$host = new Host($_POST['hostname'],$_POST['hostaddress'],$_POST['hostcity'],$_POST['hoststate'],$_POST['hostzip'],$_POST['hostprovince'],$_POST['hostcountry'],$_POST['hostphone']);
+        //DatabaseStorage::save($host);
+        $supervisor = new Supervisor($_POST['supervisor']);
+        DatabaseStorage::save($supervisor);
 
         // Get the location
         $location = $_POST['location'];
@@ -128,8 +127,7 @@ class AddInternship {
      * Check all the input fields for missing values.
      * @return Array List of missing field names
      */
-    private function checkForMissingInput()
-    {
+    private function checkForMissingInput() {
         // Check for missing data
         $missingFieldList = array();
 
@@ -164,8 +162,11 @@ class AddInternship {
         }
 
         // Check Host
-        if (!isset($_POST['host']) || (isset($_POST['host']) && $_POST['host'] == '')) {
+        if (!isset($_POST['host']) || (isset($_POST['host']) && $_POST['host'] === '-1')) {
             $missingFieldList[] = 'host';
+        }
+        if (!isset($_POST['sub']) || (isset($_POST['sub']) && $_POST['sub'] === '-1')) {
+            $missingFieldList[] = 'sub';
         }
 
         return $missingFieldList;

@@ -26,6 +26,7 @@ use \Intern\ChangeHistory;
 use \Intern\DatabaseStorage;
 use \Intern\DataProvider\Student\StudentDataProviderFactory;
 use \Intern\TermFactory;
+use \Intern\SupervisorFactory;
 use \Intern\Exception\StudentNotFoundException;
 
 /**
@@ -51,8 +52,7 @@ class SaveInternship {
         return \PHPWS_Core::reroute($url);
     }
 
-    public function execute()
-    {
+    public function execute() {
         // We don't want to do certain things like state change or error checks if this is an ajax request.
         $isAjax = false;
         if(\Canopy\Request::isAjax()){
@@ -68,24 +68,7 @@ class SaveInternship {
             $url = 'index.php?module=intern&action=ShowInternship';
             $url .= '&missing=' . implode('+', $missing);
 
-            $this->rerouteWithError($url,
-                    'Please fill in the highlighted fields.');
-        }
-
-        // Sanity check student email
-        if (isset($_REQUEST['student_email']) && preg_match("/@/",
-                        $_REQUEST['student_email'])) {
-            $url = 'index.php?module=intern&action=ShowInternship&missing=student_email';
-            $this->rerouteWithError($url,
-                    "The student's email address is invalid. No changes were saved. Enter only the username portion of the student's email address. The '@appstate.edu' portion is not necessary.");
-        }
-
-        // Sanity check student zip
-        if (isset($_REQUEST['student_zip']) && $_REQUEST['student_zip'] != "" && !preg_match('/^[\d]{5}$|^[\d]{5}-[\d]{4}$/',
-                        $_REQUEST['student_zip'])) {
-            $url = 'index.php?module=intern&action=ShowInternship&missing=student_zip';
-            $this->rerouteWithError($url,
-                    "The student's zip code is invalid. No changes were saved. The zip code should be 5 digits (no letters, spaces, or punctuation), OR use the extended nine digit form (e.g. 28608-1234).");
+            $this->rerouteWithError($url, 'Please fill in the highlighted fields.');
         }
 
         // Course start date must be before end date
@@ -102,16 +85,6 @@ class SaveInternship {
                     $this->rerouteWithError($url,
                             'The internship start date must be before the end date.');
                 }
-            }
-        }
-
-        // Sanity check internship location zip, allows a-z or A-Z if international
-        if ((isset($_REQUEST['loc_zip']) && $_REQUEST['loc_zip'] != "") && !is_numeric($_REQUEST['loc_zip'])) {
-            if (!($_REQUEST['location'] == 'international' && preg_match('/[\w]/',
-                            $_REQUEST['loc_zip']))) {
-                $url = 'index.php?module=intern&action=ShowInternship&missing=loc_zip';
-                $this->rerouteWithError($url,
-                        "The internship location's zip code is invalid. No changes were saved. Zip codes should be 5 digits only (no letters, spaces, or punctuation).");
             }
         }
 
@@ -186,25 +159,10 @@ class SaveInternship {
             $i->setExperienceType($_REQUEST['experience_type']);
         }
 
-        if ($i->isInternational()) {
-            // Set province
-            $i->loc_province = self::trimField($_POST['loc_province']);
-        }
-
-        // Address, city, zip are always set (no matter domestic or international)
-        $i->loc_address = self::trimField(strip_tags($_POST['loc_address']));
-        $i->loc_city = self::trimField(strip_tags($_POST['loc_city']));
-        $i->loc_zip = strip_tags($_POST['loc_zip']);
-
         // Save Country if international
-        if ($i->isInternational() && \Current_User::isDeity()) {
-            $i->loc_country = $_REQUEST['loc_country'];
-        }
-
-        // Save state if domestic
-        if ($i->isDomestic() && \Current_User::isDeity()) {
-            $i->loc_state = $_REQUEST['loc_state'];
-        }
+        /*if (\Current_User::isDeity()) {
+            $i->sub_host = $_REQUEST['sub_host'];
+        }*/
 
         if (isset($_POST['course_subj']) && $_POST['course_subj'] != '-1') {
             $i->course_subj = strip_tags($_POST['course_subj']);
@@ -329,9 +287,6 @@ class SaveInternship {
         }
 
         //Supervisor Info
-        $supervisor->name = self::trimField($_REQUEST['supervisor_name']);
-
-        //Supervisor Info
         $supervisor->supervisor_first_name = self::trimField($_REQUEST['supervisor_first_name']);
         $supervisor->supervisor_last_name = self::trimField($_REQUEST['supervisor_last_name']);
         $supervisor->supervisor_title = self::trimField($_REQUEST['supervisor_title']);
@@ -416,8 +371,7 @@ class SaveInternship {
     /**
      * Check that required fields are in the REQUEST.
      */
-    private static function checkRequest()
-    {
+    private static function checkRequest() {
         $vals = null;
 
         foreach (\Intern\InternshipView::$requiredFields as $field) {
