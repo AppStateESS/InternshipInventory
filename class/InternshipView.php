@@ -36,7 +36,7 @@ class InternshipView {
     private $term;
     private $studentExistingCreditHours;
 
-    public function __construct(Internship $internship, Student $student = null, WorkflowState $wfState, Host $host, Supervisor $supervisor, Term $term, $studentExistingCreditHours) {
+    public function __construct(Internship $internship, Student $student = null, WorkflowState $wfState, SubHost $host, Supervisor $supervisor, Term $term, $studentExistingCreditHours) {
         $this->intern = $internship;
         $this->student = $student;
         $this->wfState = $wfState;
@@ -128,12 +128,12 @@ class InternshipView {
 
         // Show a warning if the start date selected is outside of the term start date
         if($this->intern->start_date != 0 && ($this->intern->start_date < $this->term->getStartTimestamp() || $this->intern->start_date > $this->term->getEndTimestamp())){
-          \NQ::simple('intern', UI\NotifyUI::WARNING, "The start date you selected is outside the dates of the term. If correct, fill out the <a target='_blank' href=\"https:\/\/registrar.appstate.edu\/\/sites/registrar.appstate.edu/files/academic_course_meeting_dates_exception_form_102416_1.pdf\">Meeting Dates Exception Form</a>.");
+          \NQ::simple('intern', UI\NotifyUI::WARNING, "The start date you selected is outside the dates of the term. If correct, fill out the <a target='_blank' href=\"https:\/\/registrar.appstate.edu/resources/forms\">Meeting Dates Exception Form</a>.");
         }
 
         // Show a warning if the ending date selected is outside of the term end date
         if($this->intern->end_date != 0 && ($this->intern->end_date > $this->term->getEndTimestamp() || $this->intern->end_date < $this->term->getStartTimestamp())){
-          \NQ::simple('intern', UI\NotifyUI::WARNING, "The end date you selected is outside the dates of the term. If correct, fill out the <a target='_blank' href=\"https:\/\/registrar.appstate.edu\/\/sites/registrar.appstate.edu/files/academic_course_meeting_dates_exception_form_102416_1.pdf\">Meeting Dates Exception Form</a>.");
+          \NQ::simple('intern', UI\NotifyUI::WARNING, "The end date you selected is outside the dates of the term. If correct, fill out the <a target='_blank' href=\"https:\/\/registrar.appstate.edu/resources/forms\">Meeting Dates Exception Form</a>.");
         }
     }
 

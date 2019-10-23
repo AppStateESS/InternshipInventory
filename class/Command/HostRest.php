@@ -19,6 +19,8 @@
  */
 
 namespace Intern\Command;
+
+use \Intern\PdoFactory;
 use \phpws2\Database;
 
 class HostRest {
@@ -52,9 +54,9 @@ class HostRest {
 		$pdo = $db->getPDO();
 
         if(isset($_REQUEST['Waiting'])){
-            $sql = "SELECT * FROM intern_host WHERE host_approve_flag = 2 ORDER BY host_name ASC";
+            $sql = "SELECT id, host_name, host_condition, host_approve_flag FROM intern_host WHERE host_approve_flag = 2 ORDER BY host_name ASC";
         }else{
-            $sql = "SELECT * FROM intern_host ORDER BY host_name ASC";
+            $sql = "SELECT id, host_name, host_condition, host_approve_flag FROM intern_host ORDER BY host_name ASC";
         }
 		$sth = $pdo->prepare($sql);
 		$sth->execute();
@@ -66,22 +68,27 @@ class HostRest {
     //New Host
     public function post() {
         $Name = $_REQUEST['name'];
-        $Condition = $_REQUEST['condition'];
-        $ConDate = $_REQUEST['date'];
-        $Flag = $_REQUEST['flag'];
-        $Notes= $_REQUEST['notes'];
+        $db = PdoFactory::getPdoInstance();
 
-        $db = Database::newDB();
-        $pdo = $db->getPDO();
+        if(isset($_REQUEST['admin'])){
+            $Condition = $_REQUEST['condition'];
+            $ConDate = $_REQUEST['date'];
+            $Flag = $_REQUEST['flag'];
+            $Notes= $_REQUEST['notes'];
+            $sql = "INSERT INTO intern_host (id, host_name, host_condition,
+                    host_condition_date, host_approve_flag, host_notes)
+                    VALUES (nextval('intern_host_seq'), :name, :condition, :conDate, :flag, :notes)";
+            $arr = array('name'=>$Name, 'condition'=>$Condition,
+                        'conDate'=>$ConDate, 'flag'=>$Flag, 'notes'=>$Notes);
+        } else{
+            $sql = "INSERT INTO intern_host (id, host_name)
+                    VALUES (nextval('intern_host_seq'), :name)";
+            $arr = array('name'=>$Name);
+        }
 
-        $sql = "INSERT INTO intern_host (nextval('intern_host_seq'), host_name, host_condition,
-                host_condition_date, host_approve_flag, host_notes)
-                VALUES (:name, :condition, :conDate, :flag, :notes)";
-
-        $sth = $pdo->prepare($sql);
-
-        $sth->execute(array('name'=>$Name, 'condition'=>$Condition,
-                    'conDate'=>$ConDate, 'flag'=>$Flag, 'notes'=>$Notes));
+        $sth = $db->prepare($sql);
+        $sth->execute($arr);
+        echo json_encode($Name);
     }
 
     //Update Host

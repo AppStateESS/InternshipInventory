@@ -50,22 +50,26 @@ class SubRest {
     public function get() {
         $db = \phpws2\Database::newDB();
 		$pdo = $db->getPDO();
-
         $arr = array();
-        if(isset($_REQUEST['ByState'])){
-            $Main = $_REQUEST['main'];
-            $State = $_REQUEST['state'];
-            $sql = "SELECT * FROM intern_sub_host WHERE main_host_id = :main AND state = :state ORDER BY sub_name ASC";
-            $arr = array('main' => $Main, 'state'=>$State);
-        } else if(isset($_REQUEST['ByCountry'])){
-            $Main = $_REQUEST['main'];
-            $Country = $_REQUEST['country'];
-            $sql = "SELECT * FROM intern_sub_host WHERE main_host_id = :main AND country = :country ORDER BY sub_name ASC";
-            $arr = array('main' => $Main, 'country'=>$Country);
+
+        if(isset($_REQUEST['domestic'])){
+            if($_REQUEST['domestic']='true'){
+                $Main = $_REQUEST['main'];
+                $State = $_REQUEST['location'];
+                $sql = "SELECT id, main_host_id, sub_name, sub_condition FROM intern_sub_host WHERE main_host_id = :main AND state = :state ORDER BY sub_name ASC";
+                $arr = array('main' => $Main, 'state'=>$State);
+            } else if($_REQUEST['domestic']='false'){
+                $Main = $_REQUEST['main'];
+                $Country = $_REQUEST['location'];
+                $sql = "SELECT id, main_host_id, sub_name, sub_condition FROM intern_sub_host WHERE main_host_id = :main AND country = :country ORDER BY sub_name ASC";
+                $arr = array('main' => $Main, 'country'=>$Country);
+            }
         } else if(isset($_REQUEST['Conditions'])){
-            $sql = "SELECT * FROM intern_sub_host WHERE sub_condition NOT NULL ORDER BY sub_name ASC";
+            $sql = "SELECT intern_sub_host.id, sub_name, host_name, admin_message, address, city, state, zip, province, country, other_name, sub_condition, sub_approve_flag, sub_notes
+            FROM intern_sub_host JOIN intern_host ON intern_sub_host.main_host_id = intern_host.id JOIN intern_special_host ON intern_sub_host.sub_condition = intern_special_host.id WHERE sub_condition IS NOT NULL ORDER BY sub_name ASC";
         } else{
-            $sql = "SELECT * FROM intern_sub_host JOIN intern_host ON intern_sub_host.main_host_id = intern_host.id ORDER BY sub_name ASC";
+            $sql = "SELECT intern_sub_host.id, sub_name, host_name, address, city, state, zip, province, country, other_name, sub_condition, sub_approve_flag, sub_notes
+            FROM intern_sub_host JOIN intern_host ON intern_sub_host.main_host_id = intern_host.id ORDER BY sub_name ASC";
         }
 		$sth = $pdo->prepare($sql);
 		$sth->execute($arr);
@@ -84,27 +88,37 @@ class SubRest {
         $Zip = $_REQUEST['zip'];
         $Province = $_REQUEST['province'];
         $Country = $_REQUEST['country'];
-        $Phone = $_REQUEST['phone'];
         $OtherName = $_REQUEST['other_name'];
-        $Condition = $_REQUEST['condition'];
-        $Date = $_REQUEST['dates'];
-        $Flag = $_REQUEST['flag'];
-        $Notes = $_REQUEST['notes'];
 
         $db = Database::newDB();
         $pdo = $db->getPDO();
 
-        $sql = "INSERT INTO intern_sub_host
-                VALUES (nextval('intern_sub_host_seq'), :main, :name, :address, :city, :state, :zip, :province,
-                    :country, :phone, :otherName, :condition, :dates, :flag, :notes)";
+        if(isset($_REQUEST['admin'])){
+            $Condition = $_REQUEST['condition'];
+            $Date = $_REQUEST['dates'];
+            $Flag = $_REQUEST['flag'];
+            $Notes = $_REQUEST['notes'];
 
+            $sql = "INSERT INTO intern_sub_host
+                    VALUES (nextval('intern_sub_host_seq'), :main, :name, :address, :city, :state, :zip, :province,
+                    :country, :otherName, :condition, :dates, :flag, :notes)";
+            $arr = array('main'=>$Main, 'name'=>$Name, 'address'=>$Address,
+                        'city'=>$City, 'state'=>$State, 'zip'=>$Zip,
+                        'province'=>$Province, 'country'=>$Country,
+                        'otherName'=>$OtherName, 'condition'=>$Condition,
+                        'dates'=>$Date, 'flag'=>$Flag, 'notes'=>$notes);
+        } else{
+            $sql = "INSERT INTO intern_sub_host
+                    VALUES (nextval('intern_sub_host_seq'), :main, :name, :address, :city, :state, :zip, :province,
+                    :country, :otherName)";
+            $arr = array('main'=>$Main, 'name'=>$Name, 'address'=>$Address,
+                        'city'=>$City, 'state'=>$State, 'zip'=>$Zip,
+                        'province'=>$Province, 'country'=>$Country,
+                        'otherName'=>$OtherName);
+        }
         $sth = $pdo->prepare($sql);
-
-        $sth->execute(array('main'=>$Main, 'name'=>$Name, 'address'=>$Address,
-                    'city'=>$City, 'state'=>$State, 'zip'=>$Zip,
-                    'province'=>$Province, 'country'=>$Country, 'phone'=>$Phone,
-                    'otherName'=>$OtherName, 'condition'=>$Condition,
-                    'dates'=>$Date, 'flag'=>$Flag, 'notes'=>$notes));
+        $sth->execute($arr);
+        echo json_encode($Name);
     }
 
     //Update Host
@@ -118,7 +132,6 @@ class SubRest {
         $Zip = $_REQUEST['zip'];
         $Province = $_REQUEST['province'];
         $Country = $_REQUEST['country'];
-        $Phone = $_REQUEST['phone'];
         $OtherName = $_REQUEST['other'];
         $Condition = $_REQUEST['condition'];
         $Date = $_REQUEST['dates'];
@@ -131,14 +144,14 @@ class SubRest {
         $sql = "UPDATE intern_sub_host
                 SET main_host_id=:main, sub_name=:name, address=:address, city=:city,
                 state=:state, zip=:zip, province=:province, country=:country,
-                phone=:phone, other_name=:otherName, sub_condition=:condition,
+                other_name=:otherName, sub_condition=:condition,
                 sub_condition_date=:dates, sub_approve_flag=:flag, sub_notes=:notes
                 WHERE id=:id";
 
         $sth = $pdo->prepare($sql);
         $sth->execute(array('id'=>$Id, 'main'=>$main, 'name'=>$Name, 'address'=>$Address,
                     'city'=>$City, 'state'=>$State, 'zip'=>$Zip,
-                    'province'=>$Province, 'country'=>$Country, 'phone'=>$Phone,
+                    'province'=>$Province, 'country'=>$Country,
                     'otherName'=>$OtherName, 'condition'=>$Condition,'dates'=>$Date,
                     'flag'=>$Flag, 'notes'=>$notes));
 

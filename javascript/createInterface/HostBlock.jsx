@@ -2,6 +2,8 @@ import React from 'react';
 import classNames from 'classnames';
 import {Button, Modal} from 'react-bootstrap';
 import LocationBlock from './LocationBlock.jsx';
+import Message from '../emergencyContact/Message.jsx';
+import $ from 'jquery';
 
 // on add internship page
 class ModalHostForm extends React.Component {
@@ -17,15 +19,14 @@ class ModalHostForm extends React.Component {
         this.handleExit = this.handleExit.bind(this);
     }
     handleSave() {
-        if (this.refs.host_name.value === '') {
+        if (this.refs.host_name.value === '' || this.refs.host_name.value === undefined) {
             this.setState({showError: true, warningMsg: "Please enter a name of host."});
             return;
         }
 
         this.setState({showError: false,
                        warningMsg: ""});
-        var host = {id: this.props.id,
-                    name: this.refs.host_name.value};
+        var host = {name: this.refs.host_name.value};
 
         // Call parent's save handler
         this.props.handleSaveHost(host);
@@ -44,6 +45,7 @@ class ModalHostForm extends React.Component {
             <Modal show={this.props.show} onHide={this.handleExit} backdrop='static'>
                 <Modal.Header closeButton>
                   <Modal.Title>Request Host</Modal.Title>
+                  {this.state.showError ? <Message type="warning" children={this.state.warningMsg}></Message> : null}
                 </Modal.Header>
                 <Modal.Body>
                     <form className="form-horizontal">
@@ -67,25 +69,45 @@ class ModalSubForm extends React.Component {
 
         this.state = {
             showError: false,
-            warningMsg: ''
+            warningMsg: '',
+            domestic: undefined,
+            international: undefined,
+            location: undefined,
+            availableHost: this.props.availableData
         };
 
         this.handleSave = this.handleSave.bind(this);
         this.handleExit = this.handleExit.bind(this);
     }
     handleSave() {
-        if (this.refs.host_name.value === '') {
-            this.setState({showError: true, warningMsg: "Please enter a name of host."});
+        if (this.refs.sub_address.value === ''||this.refs.sub_zip.value === ''||this.state.location === undefined) {
+            this.setState({showError: true, warningMsg: "Please enter sub host address information."});
+            return;
+        }
+        if (this.refs.host_name.value === '-1'||this.refs.sub_name.value === '') {
+            this.setState({showError: true, warningMsg: "Please enter host names."});
+            return;
+        }
+        if ((this.state.domestic === true&&this.refs.sub_city.value === '')||(this.state.domestic === false&&this.refs.sub_province.value === '')) {
+            this.setState({showError: true, warningMsg: "Please enter host names."});
             return;
         }
 
         this.setState({showError: false,
                        warningMsg: ""});
-        var host = {id: this.props.id,
-                    name: this.refs.host_name.value};
+        var host = null
+        if(this.state.domestic === true){
+            host = {host: this.refs.host_name.value, name: this.refs.sub_name.value, address: this.refs.sub_address.value,
+                    zip: this.refs.sub_zip.value,city: this.refs.sub_city.value, province: null, state: this.state.location,
+                    country: this.state.location, other: null}
+        } else{
+            host = {host: this.refs.host_name.value, name: this.refs.sub_name.value, address: this.refs.sub_address.value,
+                    zip: this.refs.sub_zip.value,city: null, province: this.refs.sub_province.value, state: null,
+                    country: this.state.location, other: null}
+        }
 
         // Call parent's save handler
-        this.props.handleSaveHost(host);
+        this.props.handleSaveSub(host);
     }
     handleExit(){
         //resets state so any warnings previously are reset.
@@ -98,34 +120,57 @@ class ModalSubForm extends React.Component {
     render() {
         // Create red asterisk for a required field
         var require = <span style={{color: '#FB0000'}}> *</span>;
+        var loc = null;
+        if(this.state.domestic === true){
+            loc = (<div className="form-group">
+                <label className="col-lg-3 control-label">City {require}</label>
+                <div className="col-lg-9"><input  type="text" className="form-control" id="sub-city" ref="sub_city"/></div>
+            </div>);
+        } else if (this.state.domestic === false) {
+            loc = (<div className="form-group">
+                <label className="col-lg-3 control-label">Province {require}</label>
+                <div className="col-lg-9"><input  type="text" className="form-control" id="sub-province" ref="sub_province"/></div>
+            </div>);
+        }
+        var availHost = null;
+        if (this.state.availableHost != null) {
+            availHost = this.state.availableHost.map(function (available) {
+            return (
+                    <option key={available.id} value={available.id}>{available.host_name}</option>
+                );
+            });
+        } else {
+            availHost = "";
+        }
         return (
             <Modal show={this.props.show} onHide={this.handleExit} backdrop='static'>
                 <Modal.Header closeButton>
-                  <Modal.Title>Request Sub</Modal.Title>
+                  <Modal.Title>Request Sub Host</Modal.Title>
+                  {this.state.showError ? <Message type="warning" children={this.state.warningMsg}></Message> : null}
                 </Modal.Header>
                 <Modal.Body>
                     <form className="form-horizontal">
                         <div className="form-group">
                             <label className="col-lg-3 control-label">Sub Name {require}</label>
-                            <div className="col-lg-9"><input  type="text" className="form-control" id="host-name" ref="host_name" defaultValue={this.props.name}/></div>
+                            <select className="form-control col-lg-9" id="host-name" ref="host_name">
+                                <option value="-1">Select a Host</option>
+                                {availHost}
+                            </select>
+                        </div>
+                        <div className="form-group">
+                            <label className="col-lg-3 control-label">Sub Name {require}</label>
+                            <div className="col-lg-9"><input  type="text" className="form-control" id="sub-name" ref="sub_name"/></div>
                         </div>
                         <div className="form-group">
                             <label className="col-lg-3 control-label">Address {require}</label>
-                            <div className="col-lg-9"><input  type="text" className="form-control" id="host-address" ref="host_address" defaultValue={this.props.address}/></div>
+                            <div className="col-lg-9"><input  type="text" className="form-control" id="sub-address" ref="sub_address"/></div>
                         </div>
-                        <div className="form-group">
-                            <label className="col-lg-3 control-label">City</label>
-                            <div className="col-lg-9"><input  type="text" className="form-control" id="host-city" ref="host_city" defaultValue={this.props.city}/></div>
-                        </div>
-                        <div className="form-group">
-                            <label className="col-lg-3 control-label">Province (International)</label>
-                            <div className="col-lg-9"><input  type="text" className="form-control" id="host-province" ref="host_province" defaultValue={this.props.province}/></div>
-                        </div>
-                        <LocationBlock ref="locationBlock"/>
                         <div className="form-group">
                             <label className="col-lg-3 control-label">Zip/Postal {require}</label>
-                            <div className="col-lg-9"><input  type="text" className="form-control" id="host-zip" ref="host_zip" defaultValue={this.props.zip}/></div>
+                            <div className="col-lg-9"><input  type="text" className="form-control" id="sub-zip" ref="sub_zip"/></div>
                         </div>
+                        <LocationBlock domestic={this.state.domestic} international={this.state.international} setDom={(dom) => this.setState({domestic:dom})} setInt={(inta) => this.setState({international: inta})}  setLoc={(loc) => this.setState({location: loc})} ref="locationBlock"/>
+                        {loc}
                     </form>
                 </Modal.Body>
                 <Modal.Footer>
@@ -142,13 +187,47 @@ class HostAgency extends React.Component {
         super(props);
         this.state = {hasError: false,
             showHostModal: false,
-            showSubModal: false};
+            showSubModal: false,
+            availableHost: null,
+            availableSub: null};
+        this.getSubData = this.getSubData.bind(this);
         this.closeHostModal = this.closeHostModal.bind(this);
         this.openHostModal = this.openHostModal.bind(this);
         this.handleSaveHost = this.handleSaveHost.bind(this);
         this.closeSubModal = this.closeSubModal.bind(this);
         this.openSubModal = this.openSubModal.bind(this);
         this.handleSaveSub = this.handleSaveSub.bind(this);
+    }
+    componentDidMount() {
+        // Fetch list of all host
+        $.ajax({
+            url: 'index.php?module=intern&action=HostRest',
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                this.setState({availableHost: data});
+            }.bind(this),
+            error: function(xhr, status, err) {
+                console.error(status, err.toString());
+            }
+        });
+    }
+    getSubData(e){
+        // Fetch list of available sub by location and main host
+        if(this.props.domestic !== undefined && this.props.location !== undefined){
+            $.ajax({
+                url: 'index.php?module=intern&action=SubRest&domestic=' + this.props.domestic + '&location=' + this.props.location + '&main=' + e.target.value,
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    data.unshift({sub_name: "Select a Sub Name", id: "-1"});
+                    this.setState({availableSub: data});
+                }.bind(this),
+                error: function(xhr, status, err) {
+                    console.error(status, err.toString());
+                }
+            });
+        }
     }
     setError(status){
         this.setState({hasError: status});
@@ -160,8 +239,19 @@ class HostAgency extends React.Component {
         this.setState({ showHostModal: true });
     }
     handleSaveHost(host){
-        this.closeHostModal(); // Close the modal box
-        this.props.handleSave(host); // Call parent's handleSave method
+        $.ajax({
+            url: 'index.php?module=intern&action=HostRest',
+            type: 'POST',
+            dataType: 'json',
+            data: {name: host.name},
+            success: function(data) {
+                this.closeHostModal(); // Close the modal box
+            }.bind(this),
+            error: function(xhr, status, err) {
+                alert("Failed to add Host to database properly.");
+                console.error(status, err.toString());
+            }
+        });
     }
     closeSubModal() {
         this.setState({ showSubModal: false });
@@ -170,24 +260,71 @@ class HostAgency extends React.Component {
         this.setState({ showSubModal: true });
     }
     handleSaveSub(sub){
-        this.closeSubModal(); // Close the modal box
-        this.props.handleSave(sub); // Call parent's handleSave method
+        $.ajax({
+            url: 'index.php?module=intern&action=SubRest',
+            type: 'POST',
+            dataType: 'json',
+            data: {main: sub.host,
+                   name: sub.name,
+                   address: sub.address,
+                   city: sub.city,
+                   state: sub.state,
+                   zip: sub.zip,
+                   province: sub.province,
+                   country: sub.country,
+                   other_name: sub.other
+               },
+            success: function() {
+                this.closeSubModal(); // Close the modal box
+            }.bind(this),
+            error: function(xhr, status, err) {
+                alert("Failed to add Sub Host to database properly.")
+                console.error(status, err.toString());
+            }
+        });
+
     }
     render() {
-        var fgClasses = classNames({
-                        'form-group': true,
-                        'has-error': this.state.hasError
-                    });
+        var fgClasses = classNames({'form-group': true, 'has-error': this.state.hasError});
+
+        var availHostOptions = null;
+        if (this.state.availableHost != null) {
+            availHostOptions = this.state.availableHost.map(function (avail) {
+            return (
+                    <option key={avail.id} value={avail.id}>{avail.host_name}</option>
+                );
+            });
+        } else {
+            availHostOptions = "";
+        }
+
+        var locationDropDown;
+        if(this.state.availableSub === null) {
+            locationDropDown = <option value="-1">Select a Location and Host First</option>;
+        } else if(this.state.availableSub.length === 0){
+            locationDropDown = <option value="-1">No Sub Name With That Location and Host</option>;
+        } else {
+    		locationDropDown = this.state.availableSub.map(function (availS) {
+    		return (
+    				<option key={availS.id} value={availS.id}>{availS.sub_name}</option>
+    			);
+    		});
+    	}
         return (
             <div className="row">
                 <div className="col-sm-12 col-md-4 col-md-push-3">
                     <div className={fgClasses} id="agency">
                         <label htmlFor="agency2" className="control-label">Host Name </label><button type="button" onClick={this.openHostModal}><i className="fa fa-plus"></i></button>
                         <ModalHostForm show={this.state.showHostModal} hide={this.closeHostModal} edit={true} handleSaveHost={this.handleSaveHost}{...this.props} />
-                        <input type="text" id="agency2" name="agency2" className="form-control" placeholder="Acme, Inc." />
+                        <select id="main_host" name="main_host" className="form-control" onChange={this.getSubData}>
+                            <option value="-1">Select a Host</option>
+                            {availHostOptions}
+                        </select>
                         <label htmlFor="agency3" className="control-label">Sub Name </label><button type="button" onClick={this.openSubModal}><i className="fa fa-plus"></i></button>
-                        <ModalSubForm show={this.state.showSubModal} hide={this.closeSubModal} edit={true} handleSaveSub={this.handleSaveSub}{...this.props} />
-                        <input type="text" id="agency3" name="agency3" className="form-control" placeholder="AI Boone" />
+                        <ModalSubForm show={this.state.showSubModal} availableData={this.state.availableHost} key={this.state.availableHost} hide={this.closeSubModal} edit={true} handleSaveSub={this.handleSaveSub}{...this.props} />
+                        <select id="sub_host" name="sub_host" className="form-control">
+                            {locationDropDown}
+                        </select>
                     </div>
                 </div>
             </div>
@@ -195,4 +332,4 @@ class HostAgency extends React.Component {
     }
 }
 
-export default HostAgency;
+ReactDOM.render(<HostAgency />, document.getElementById('HostAgency'));

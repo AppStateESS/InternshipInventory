@@ -6,6 +6,10 @@ class InternationalDropDown extends React.Component {
       super(props);
 
       this.state = {hasError: false};
+      this.handleDrop = this.handleDrop.bind(this);
+    }
+    handleDrop(e){
+        this.props.onChange(e.target.value);
     }
     setError(status){
         this.setState({hasError: status});
@@ -26,7 +30,7 @@ class InternationalDropDown extends React.Component {
                     <div className="col-sm-12 col-md-4 col-md-push-3">
                         <div className={fgClasses} id="country">
                             <label htmlFor="country" className="control-label">Country</label>
-                            <select id="country" name="country" className="form-control">
+                            <select id="country" onChange={this.handleDrop} name="country" className="form-control">
                                 {Object.keys(countries).map(function(key) {
                                     return <option key={key} value={key}>{countries[key]}</option>;
                                 })}

@@ -25,7 +25,7 @@ namespace Intern;
  * Singleton object for storing Internship Inventory Settings
  *
  * @author jbooker
- * @package hms
+ * @package intern
  */
 class InternSettings {
 

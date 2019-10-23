@@ -2,12 +2,12 @@ function copyAddress(){
 
     //copy from Host Details to Supervisor Info
     function doCopySupervisor(){
-        $("#internship_supervisor_address").val($("#internship_host_address").val());
-        $("#internship_supervisor_city").val($("#internship_host_city").val());
-        $("#internship_supervisor_state").val($("#internship_host_state").val());
-        $("#internship_supervisor_zip").val($("#internship_host_zip").val());
-        $("#internship_supervisor_province").val($("#internship_host_province").val());
-        $("#internship_supervisor_country").val($("#internship_host_country").val());
+        $("#internship_supervisor_address").val($("#internship_host_address").text());
+        $("#internship_supervisor_city").val($("#internship_host_city").text());
+        $("#internship_supervisor_state").val($("#internship_host_state").text());
+        $("#internship_supervisor_zip").val($("#internship_host_zip").text());
+        $("#internship_supervisor_province").val($("#internship_host_province").text());
+        $("#internship_supervisor_country").val($("#internship_host_country").text());
         $("#internship_supervisor_phone").val($("#internship_host_phone").val());
     }
 
@@ -36,7 +36,7 @@ function copyAddress(){
             // Same address box was checked, so copy the address
             doCopySupervisor();
             // Setup the event handlers for copying later changes
-            addHandlersSupervisor();
+            //addHandlersSupervisor();
         }else{
             // Box was unchecked, so remove event handlers for later changes
             removeHandlersSupervisor();

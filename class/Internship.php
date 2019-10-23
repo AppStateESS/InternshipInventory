@@ -21,7 +21,7 @@
 namespace Intern;
 
 use \Intern\Student;
-use \Intern\HostFactory;
+use \Intern\SubHostFactory;
 use \Intern\SupervisorFactory;
 use \Intern\Command\DocumentRest;
 
@@ -44,6 +44,7 @@ class Internship {
 
     // Host & sup
     public $host_id;
+    public $host_sub_id;
     public $supervisor_id;
 
     // Department
@@ -85,7 +86,7 @@ class Internship {
     public $international;
     public $loc_state;
     public $loc_country;
-    public $host_phone;
+    public $loc_phone;
 
     // Term Info
     public $term;
@@ -128,8 +129,7 @@ class Internship {
     /**
     * Constructs a new Internship object.
     */
-    public function __construct(Student $student, $term, $location, $state, $country, Department $department, Host $host){
-
+    public function __construct(Student $student, $term, $location, $state, $country, Department $department, SubHost $sub_host, Supervisor $supervisor){
         // Initialize student data
         $this->initalizeStudentData($student);
 
@@ -153,8 +153,11 @@ class Internship {
         $this->department_id = $department->getId();
 
         // Get host
-        $this->host_id = $host->getId();
+        $this->host_id = $sub_host->getMainId();
+        $this->host_sub_id = $sub_host->getId();
+        $this->supervisor_id = $supervisor->getId();
 
+        //TODO Set if denied state
         // Set initial state
         $this->setState(WorkflowStateFactory::getState('CreationState'));
 
@@ -315,7 +318,7 @@ class Internship {
         // Internship location data
         $csv['Domestic']               = $this->isDomestic() ? 'Yes' : 'No';
         $csv['International']          = $this->isInternational() ? 'Yes' : 'No';
-        $csv['Host Phone']             = $this->host_phone;
+        $csv['Host Phone']             = $this->loc_phone;
 
         // Course Info
         $csv['Multi-part']             = $this->isMultipart() ? 'Yes' : 'No';
@@ -394,16 +397,23 @@ class Internship {
         return $this->host_id;
     }
 
+    public function getSubId() {
+        return $this->host_sub_id;
+    }
+
     /**
     * Get the Host object associated with this internship.
     */
-    public function getHost()
-    {
-        return HostFactory::getHostById($this->getHostId());
+    public function getHost() {
+        return SubHostFactory::getSubById($this->getSubId());
     }
 
     public function getSupervisorId() {
         return $this->supervisor_id;
+    }
+
+    public function setSupervisorId($sup_id) {
+        $this->supervisor_id = $sup_id;
     }
 
     /**

@@ -22,7 +22,9 @@ namespace Intern\Command;
 
 use Intern\Internship;
 use Intern\DepartmentFactory;
-use Intern\Host;
+use Intern\SubHost;
+use Intern\SubHostFactory;
+use Intern\Supervisor;
 use Intern\DataProvider\Student\StudentDataProviderFactory;
 use Intern\WorkflowStateFactory;
 use Intern\ChangeHistory;
@@ -36,7 +38,7 @@ use Intern\DatabaseStorage;
  * Controller class for creating an new internship.
  *
  * @author Jeremy Booker
- * @package hms
+ * @package intern
  */
 class AddInternship {
 
@@ -86,17 +88,17 @@ class AddInternship {
             throw new \Exception('Could not load department.');
         }
 
-        // Create and save the host and supervisor objects
-        $host = HostFactory::getHostById($_POST['host']);
-        $sub = SubFactory::getSubById($_POST['sub']);
-        //$host = new Host($_POST['hostname'],$_POST['hostaddress'],$_POST['hostcity'],$_POST['hoststate'],$_POST['hostzip'],$_POST['hostprovince'],$_POST['hostcountry'],$_POST['hostphone']);
-        //DatabaseStorage::save($host);
-        $supervisor = new Supervisor($_POST['supervisor']);
+        // Get the host and sub objects
+        $sub = SubHostFactory::getSubById($_POST['sub_host']);
+        if(!($sub instanceof SubHost)){
+            throw new \Exception('Could not load Sub Host.');
+        }
+
+        $supervisor = new Supervisor(null,null,null,null,null,null,null,null,null,null,null,null,null);
         DatabaseStorage::save($supervisor);
 
         // Get the location
         $location = $_POST['location'];
-
         if ($location == 'international'){
             $state = null;
             $country = $_POST['country'];
@@ -106,16 +108,23 @@ class AddInternship {
         }
 
         // Create a new internship object
-        $intern = new Internship($student, $term, $location, $state, $country, $department, $host);
+        $intern = new Internship($student, $term, $location, $state, $country, $department, $sub, $supervisor);
 
         // Save it!!
         $intern->save();
 
-        $t = \Intern\WorkflowTransitionFactory::getTransitionByName('Intern\WorkflowTransition\CreationTransition');
-        $workflow = new \Intern\WorkflowController($intern, $t);
-        $workflow->doTransition(null);
-        $workflow->doNotification(null);
-
+        //TODO check if state is denied
+        if(checkDenied($sub)){
+            $t = \Intern\WorkflowTransitionFactory::getTransitionByName('Intern\WorkflowTransition\CreationTransition');
+            $workflow = new \Intern\WorkflowController($intern, $t);
+            $workflow->doTransition(null);
+            $workflow->doNotification(null);
+        } else{
+            $t = \Intern\WorkflowTransitionFactory::getTransitionByName('Intern\WorkflowTransition\DeniedTransition');
+            $workflow = new \Intern\WorkflowController($intern, $t);
+            $workflow->doTransition(null);
+            $workflow->doNotification(null);
+        }
         // Show a success notice and redirect to the edit page
         \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, "Created internship for {$intern->getFullName()}");
         \NQ::close();
@@ -162,10 +171,10 @@ class AddInternship {
         }
 
         // Check Host
-        if (!isset($_POST['host']) || (isset($_POST['host']) && $_POST['host'] === '-1')) {
+        if (!isset($_POST['main_host']) || (isset($_POST['main_host']) && $_POST['main_host'] === '-1')) {
             $missingFieldList[] = 'host';
         }
-        if (!isset($_POST['sub']) || (isset($_POST['sub']) && $_POST['sub'] === '-1')) {
+        if (!isset($_POST['sub_host']) || (isset($_POST['sub_host']) && $_POST['sub_host'] === '-1')) {
             $missingFieldList[] = 'sub';
         }
 

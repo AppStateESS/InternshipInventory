@@ -18,10 +18,26 @@
  * Copyright 2011-2018 Appalachian State University
  */
 
-namespace Intern;
+namespace Intern\WorkflowTransition;
+use Intern\WorkflowTransition;
+use Intern\Internship;
+use Intern\TermFactory;
 
-class HostRestored extends Host {
+class Reinstate extends WorkflowTransition {
+    const sourceState = 'DeniedState';
+    const destState   = 'NewState';
+    const actionName  = 'Host Reinstate';
 
-    // Override constructor with empty parameter list
-    public function __construct(){}
+    public function getAllowedPermissionList(){
+        return array('special_host');
+    }
+
+    public function doNotification(Internship $i, $note = null){
+        if($i->isInternational()){
+            $term = TermFactory::getTermByTermCode($i->getTerm());
+
+            $email = new \Intern\Email\IntlInternshipReinstateNotice(\Intern\InternSettings::getInstance(), $i, $term);
+            $email->send();
+        }
+    }
 }

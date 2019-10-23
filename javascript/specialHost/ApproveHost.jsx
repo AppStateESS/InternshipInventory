@@ -4,7 +4,7 @@ import $ from 'jquery';
 import {Button, Modal} from 'react-bootstrap';
 import Message from '../emergencyContact/Message.jsx';
 
-class ModalForm extends React.Component {
+class ModalFormHost extends React.Component {
     constructor(props) {
         super(props);
 
@@ -28,7 +28,7 @@ class ModalForm extends React.Component {
 
         this.setState({showError: false,
                        warningMsg: ""});
-        var host = {id: this.props.id,
+        var host = {id: this.props.key,
                        main: this.refs.host_main.value,
                        name: this.refs.host_name.value,
                        address: this.refs.host_address.value,
@@ -64,11 +64,11 @@ class ModalForm extends React.Component {
                 <Modal.Body>
                     <form className="form-horizontal">
                         <div className="form-group">
-                            <label className="col-lg-3 control-label">Host Main</label>
+                            <label className="col-lg-3 control-label">Host Name</label>
                             <div className="col-lg-9"><input  type="text" className="form-control" id="host-main" ref="host_main" defaultValue={this.props.main}/></div>
                         </div>
                         <div className="form-group">
-                            <label className="col-lg-3 control-label">Host Name {require}</label>
+                            <label className="col-lg-3 control-label">Sub Name</label>
                             <div className="col-lg-9"><input  type="text" className="form-control" id="host-name" ref="host_name" defaultValue={this.props.name}/></div>
                         </div>
                         <div className="form-group">
@@ -117,6 +117,90 @@ class ModalForm extends React.Component {
         );
     }
 }
+class ModalFormCondition extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            showError: false,
+            warningMsg: ''
+        };
+
+        this.handleSave = this.handleSave.bind(this);
+        this.handleExit = this.handleExit.bind(this);
+    }
+    handleSave() {
+        if (this.refs.admin_message.value === '') {
+            this.setState({showError: true, warningMsg: "Please enter a name for the condition."});
+            return;
+        }
+
+        this.setState({showError: false,
+                       warningMsg: ""});
+        var host = {id: this.props.key,
+                       admin_message: this.refs.admin_message.value,
+                       user_message: this.refs.user_message.value,
+                       stop_level: this.refs.stop_level.value,
+                       sup_check: this.refs.sup_check.value,
+                       email: this.refs.email.value,
+                       special_notes: this.refs.notes.value};
+console.log(host)
+        // Call parent's save handler
+        this.props.handleSaveHost(host);
+    }
+    handleExit(){
+        //resets state so any warnings previously are reset.
+        this.setState({
+            showError: false,
+            warningMsg: '',
+        })
+        this.props.hide();
+    }
+    render() {
+        // Create red asterisk for a required field
+        var require = <span style={{color: '#FB0000'}}> *</span>;
+        return (
+            <Modal show={this.props.show} onHide={this.handleExit} backdrop='static'>
+                <Modal.Header closeButton>
+                  <Modal.Title>Edit Condition</Modal.Title>
+                  {this.state.showError ? <Message type="warning" children={this.state.warningMsg}></Message> : null}
+                </Modal.Header>
+                <Modal.Body>
+                    <form className="form-horizontal">
+                        <div className="form-group">
+                            <label className="col-lg-3 control-label">Admin Name</label>
+                            <div className="col-lg-9"><input  type="text" className="form-control" id="admin" ref="admin_message" defaultValue={this.props.admin}/></div>
+                        </div>
+                        <div className="form-group">
+                            <label className="col-lg-3 control-label">Stop Level</label>
+                            <div className="col-lg-9"><input  type="text" className="form-control" id="stop" ref="stop_level" defaultValue={this.props.stop}/></div>
+                        </div>
+                        <div className="form-group">
+                            <label className="col-lg-3 control-label">User Message</label>
+                            <div className="col-lg-9"><input  type="text" className="form-control" id="user" ref="user_message" defaultValue={this.props.user}/></div>
+                        </div>
+                        <div className="form-group">
+                            <label className="col-lg-3 control-label">Email Listed</label>
+                            <div className="col-lg-9"><input  type="text" className="form-control" id="email" ref="email" defaultValue={this.props.email}/></div>
+                        </div>
+                        <div className="form-group">
+                            <label className="col-lg-3 control-label">Supervisor</label>
+                            <div className="col-lg-9"><input  type="text" className="form-control" id="sup" ref="sup_check" defaultValue={this.props.sup}/></div>
+                        </div>
+                        <div className="form-group">
+                            <label className="col-lg-3 control-label">Notes</label>
+                            <div className="col-lg-9"><input  type="text" className="form-control" id="notes" ref="notes" defaultValue={this.props.notes}/></div>
+                        </div>
+                    </form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button onClick={this.handleSave}>Save</Button>
+                    <Button onClick={this.handleExit}>Close</Button>
+                </Modal.Footer>
+            </Modal>
+        );
+    }
+}
 class ShowApprove extends React.Component {
     constructor(props){
         super(props);
@@ -139,7 +223,7 @@ class ShowApprove extends React.Component {
     render(){
         return (
             <li className="list-group-item" onClick={this.openModal} style={{cursor: "pointer"}}>
-                <ModalForm show={this.state.showModal} hide={this.closeModal} edit={true} handleSaveHost={this.handleSaveHost}{...this.props} />
+                <ModalFormHost show={this.state.showModal} hide={this.closeModal} edit={true} handleSaveHost={this.handleSaveHost}{...this.props} />
                 <div className="row">
                     <div className="col-lg-2">{this.props.main}</div>
                 </div>
@@ -171,15 +255,15 @@ class ShowHostCon extends React.Component {
     render(){
         return (
             <li className="list-group-item" onClick={this.openModal} style={{cursor: "pointer"}}>
-                <ModalForm show={this.state.showModal} hide={this.closeModal} edit={true} handleSaveHost={this.handleSaveHost}{...this.props} />
+                <ModalFormHost show={this.state.showModal} hide={this.closeModal} edit={true} handleSaveHost={this.handleSaveHost}{...this.props} />
                 <div className="row">
-                    <div className="col-lg-3">{this.props.main}</div>
+                    <div className="col-lg-2">{this.props.main}</div>
                     <div className="col-lg-3">{this.props.name}</div>
                     <div className="col-lg-2">{this.props.address}</div>
                     <div className="col-lg-1">{this.props.city}</div>
                     <div className="col-lg-1">{this.props.state}</div>
                     <div className="col-lg-1">{this.props.condition}</div>
-                    <div className="col-lg-1">{this.props.notes}</div>
+                    <div className="col-lg-2">{this.props.notes}</div>
                 </div>
             </li>
 
@@ -209,7 +293,7 @@ class ShowCondition extends React.Component {
     render(){
         return (
             <li className="list-group-item" onClick={this.openModal} style={{cursor: "pointer"}}>
-                <ModalForm show={this.state.showModal} hide={this.closeModal} edit={true} handleSaveHost={this.handleSaveHost}{...this.props} />
+                <ModalFormCondition show={this.state.showModal} hide={this.closeModal} edit={true} handleSaveHost={this.handleSaveHost}{...this.props} />
                 <div className="row">
                     <div className="col-lg-2">{this.props.admin}</div>
                     <div className="col-lg-2">{this.props.stop}</div>
@@ -246,7 +330,7 @@ class ShowAllHost extends React.Component {
     render(){
         return (
             <li className="list-group-item" onClick={this.openModal} style={{cursor: "pointer"}}>
-                <ModalForm show={this.state.showModal} hide={this.closeModal} edit={true} handleSaveHost={this.handleSaveHost}{...this.props} />
+                <ModalFormHost show={this.state.showModal} hide={this.closeModal} edit={true} handleSaveHost={this.handleSaveHost}{...this.props} />
                 <div className="row">
                     <div className="col-lg-2">{this.props.main}</div>
                     <div className="col-lg-3">{this.props.name}</div>
@@ -279,7 +363,8 @@ class AllHostList extends React.Component {
 
         this.openAddModal = this.openAddModal.bind(this);
         this.closeAddModal = this.closeAddModal.bind(this);
-        this.handleSave = this.handleSave.bind(this);
+        this.handleSaveSub = this.handleSaveSub.bind(this);
+        this.handleSaveCondition = this.handleSaveCondition.bind(this);
     }
     componentWillMount() {
         this.getData();
@@ -304,7 +389,7 @@ class AllHostList extends React.Component {
             }.bind(this)
         });
         $.ajax({
-            url: 'index.php?module=intern&action=SubRest',
+            url: 'index.php?module=intern&action=SubRest&Conditions=true',
             type: 'GET',
             dataType: 'json',
             success: function(data) {
@@ -323,7 +408,7 @@ class AllHostList extends React.Component {
                 this.setState({conditionData: data});
             }.bind(this),
             error: function(xhr, status, err) {
-                alert("Failed to grab host data.")
+                alert("Failed to grab condition data.")
                 console.error(this.props.url, status, err.toString());
             }.bind(this)
         });
@@ -335,12 +420,12 @@ class AllHostList extends React.Component {
                 this.setState({mainData: data});
             }.bind(this),
             error: function(xhr, status, err) {
-                alert("Failed to grab host data.")
+                alert("Failed to grab all host data.")
                 console.error(this.props.url, status, err.toString());
             }.bind(this)
         });
     }
-    handleSave(host) {
+    handleSaveSub(host) {
         $.ajax({
             url: 'index.php?module=intern&action=SubRest',
             type: 'PUT',
@@ -348,6 +433,23 @@ class AllHostList extends React.Component {
             data: {id: host.id, name: host.name, main: host.main, address: host.address,
                 city: host.city, state: host.state, zip: host.zip, province: host.province,
                 country: host.country, other: host.other, condition: host.condition, flag: host.flag,
+               },
+            success: function(data) {
+                // Grabs the new data
+                this.setState({mainData: data});
+            }.bind(this),
+            error: function(xhr, status, err) {
+                alert("Failed to save host data.")
+            }
+        });
+    }
+    handleSaveCondition(con) {
+        $.ajax({
+            url: 'index.php?module=intern&action=ConditionRest',
+            type: 'PUT',
+            dataType: 'json',
+            data: {id: con.id, admin: con.admin_message, user: con.user_message,
+                stop: con.stop_level, sup: con.sup_check, email: con.email, notes: con.special_notes
                },
             success: function(data) {
                 // Grabs the new data
@@ -374,8 +476,8 @@ class AllHostList extends React.Component {
         if (this.state.hostConData != null) {
             HostConData = this.state.hostConData.map(function (host) {
                 return (
-                    <ShowHostCon key={host.id} main={host.main} name={host.name} address={host.address}
-                        city={host.city} state={host.state} condition={host.special_condition} notes={host.notes} handleSave={this.handleSave}/>
+                    <ShowHostCon key={host.id} main={host.host_name} name={host.sub_name} address={host.address}
+                        city={host.city} state={host.state} condition={host.admin_message} notes={host.notes} handleSave={this.handleSaveSub}/>
                 );
             }.bind(this));
         } else {
@@ -387,7 +489,7 @@ class AllHostList extends React.Component {
             ConditionData = this.state.conditionData.map(function (host) {
                 return (
                     <ShowCondition key={host.id} admin={host.admin_message} stop={host.stop_level} user={host.user_message}
-                        sup={host.sup_check} email={host.email} notes={host.notes} handleSave={this.handleSave}/>
+                        sup={host.sup_check} email={host.email} notes={host.notes} handleSave={this.handleSaveCondition}/>
                 );
             }.bind(this));
         } else {
@@ -398,9 +500,9 @@ class AllHostList extends React.Component {
         if (this.state.mainData != null) {
             HostData = this.state.mainData.map(function (host) {
                 return (
-                    <ShowAllHost key={host.id} main={host.main} name={host.name} address={host.address}
+                    <ShowAllHost key={host.id} main={host.host_name} name={host.sub_name} address={host.address}
                         city={host.city} state={host.state} zip={host.zip} province={host.province} country={host.country}
-                        other={host.other_name} condition={host.special_condition} flag={host.approve_flag} handleSave={this.handleSave}/>
+                        other={host.other_name} condition={host.sub_condition} flag={host.sub_approve_flag} handleSave={this.handleSaveSub}/>
                 );
             }.bind(this));
         } else {
@@ -427,13 +529,13 @@ class AllHostList extends React.Component {
                         <table className="table">
                             <thead>
                                 <tr>
-                                    <th className="col-lg-3">Name</th>
+                                    <th className="col-lg-2">Name</th>
                                     <th className="col-lg-3">Sub</th>
                                     <th className="col-lg-2">Address</th>
                                     <th className="col-lg-1">City</th>
                                     <th className="col-lg-1">State</th>
                                     <th className="col-lg-1">Condition</th>
-                                    <th className="col-lg-1">Notes</th>
+                                    <th className="col-lg-2">Notes</th>
                                 </tr>
                             </thead>
                         </table>

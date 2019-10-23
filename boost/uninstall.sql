@@ -26,8 +26,8 @@ DROP TABLE intern_change_history CASCADE;
 DROP TABLE intern_courses CASCADE;
 DROP TABLE intern_local_student_data CASCADE;
 DROP TABLE intern_supervisor CASCADE;
-DROP TABLE intern_host CASCADE;
 DROP TABLE intern_sub_host CASCADE;
+DROP TABLE intern_host CASCADE;
 DROP TABLE intern_special_host CASCADE;
 
 DROP SEQUENCE intern_subject_seq;

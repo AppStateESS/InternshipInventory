@@ -51,7 +51,7 @@ class BackgroundCheckEmail extends Email{
     * @param bool $backgroundCheck
     * @param bool $drugCheck
     */
-    public function __construct(InternSettings $emailSettings, Internship $internship, Term $term, Host $host, $backgroundCheck, $drugCheck) {
+    public function __construct(InternSettings $emailSettings, Internship $internship, Term $term, SubHost $host, $backgroundCheck, $drugCheck) {
         parent::__construct($emailSettings);
 
         $this->internship = $internship;

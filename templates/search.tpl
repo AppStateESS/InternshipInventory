@@ -123,6 +123,11 @@
 
         <div id="LocationSelector"></div>
 
+        <div class="form-group">
+          <label class="col-md-3 control-label" for="{HOST_ID}">Host</label>
+          <div class="col-md-8">{HOST}</div>
+        </div>
+
       </fieldset>
 
       <fieldset>

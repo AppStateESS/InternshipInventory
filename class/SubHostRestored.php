@@ -18,8 +18,10 @@
  * Copyright 2011-2018 Appalachian State University
  */
 
-// This file contains the testing defines.  It has been moved out of defines.php
-// due to the obvious issue of what to do every time prod is exported.  This
-// file is in subversion is inc/intern_defines.php, and should live in phpWebSite's
-// root as /inc/intern_defines.php.
-require_once(PHPWS_SOURCE_DIR . 'inc/intern_defines.php');
+namespace Intern;
+
+class SubHostRestored extends SubHost {
+
+    // Override constructor with empty parameter list
+    public function __construct(){}
+}

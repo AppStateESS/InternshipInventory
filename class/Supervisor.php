@@ -31,6 +31,7 @@ namespace Intern;
 class Supervisor implements DbStorable {
 
     public $id;
+    public $host_id;
     public $supervisor_first_name;
     public $supervisor_last_name;
     public $supervisor_title;
@@ -43,14 +44,32 @@ class Supervisor implements DbStorable {
     public $supervisor_zip;
     public $supervisor_province;
     public $supervisor_country;
-    public $address_same_flag;
+    //public $address_same_flag;
 
-    public function __construct(){}
+    public function __construct($supervisor_first_name, $supervisor_last_name, $supervisor_title, $supervisor_phone, $supervisor_email,
+                $supervisor_fax, $supervisor_address, $supervisor_city, $supervisor_state, $supervisor_zip, $supervisor_province,
+                $supervisor_country, $host_id){
+        $this->supervisor_first_name = $supervisor_first_name;
+        $this->supervisor_last_name = $supervisor_last_name;
+        $this->supervisor_title = $supervisor_title;
+        $this->supervisor_phone = $supervisor_phone;
+        $this->supervisor_email = $supervisor_email;
+        $this->supervisor_fax = $supervisor_fax;
+        $this->supervisor_address = $supervisor_address;
+        $this->supervisor_city = $supervisor_city;
+        $this->supervisor_state = $supervisor_state;
+        $this->supervisor_zip = $supervisor_zip;
+        $this->supervisor_province = $supervisor_province;
+        $this->supervisor_country = $supervisor_country;
+        //$this->address_same_flag = $address_same_flag;
+        $this->host_id = $host_id;
+    }
 
     public function extractVars(){
         $vars = array();
 
         $vars['id']                     = $this->getId();
+        $vars['host_id']                = $this->gethost();
         $vars['supervisor_first_name']  = $this->getSupervisorFirstName();
         $vars['supervisor_last_name']   = $this->getSupervisorLastName();
         $vars['supervisor_title']       = $this->getSupervisorTitle();
@@ -63,7 +82,7 @@ class Supervisor implements DbStorable {
         $vars['supervisor_zip']         = $this->getSupervisorZip();
         $vars['supervisor_province']    = $this->getSupervisorProvince();
         $vars['supervisor_country']     = $this->getSupervisorCountry();
-        $vars['address_same_flag']      = $this->getAddressSameFlag();
+        //$vars['address_same_flag']      = $this->getAddressSameFlag();
 
         return $vars;
     }
@@ -144,6 +163,10 @@ class Supervisor implements DbStorable {
 
     public function setId($id){
         $this->id = $id;
+    }
+
+    public function getHost(){
+        return $this->host_id;
     }
 
     public function getSupervisorFirstName(){

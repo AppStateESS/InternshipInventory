@@ -55,7 +55,7 @@ class EditInternshipFormView {
      * @param string $pagetitle
      * @param Internship $i
      */
-    public function __construct(Internship $i, Student $student = null, Host $host, Supervisor $supervisor, Term $term, $studentExistingCreditHours)
+    public function __construct(Internship $i, Student $student = null, SubHost $host, Supervisor $supervisor, Term $term, $studentExistingCreditHours)
     {
         \Layout::addPageTitle('Edit Internship');
 
@@ -540,9 +540,10 @@ class EditInternshipFormView {
     }
 
     private function plugHost() {
+
         $this->form->addHidden('host_id', $this->host->id);
         $this->tpl['HOST_NAME'] = $this->host->getMainName();
-        $this->tpl['SUB_NAME'] = $this->host->name;
+        $this->tpl['SUB_NAME'] = $this->host->sub_name;
         $this->tpl['HOST_ADDRESS'] = $this->host->address;
         $this->tpl['HOST_CITY'] = $this->host->city;
         $this->tpl['HOST_ZIP'] = $this->host->zip;
@@ -618,7 +619,7 @@ class EditInternshipFormView {
         $this->formVals['course_no'] = $this->intern->course_no;
         $this->formVals['course_sect'] = $this->intern->course_sect;
         $this->formVals['course_title'] = $this->intern->course_title;
-        $this->formVals['host_phone'] = $this->intern->phone;
+        $this->formVals['host_phone'] = $this->intern->loc_phone;
 
         if ($this->intern->isMultipart()) {
             $this->form->setMatch('multipart', '1');

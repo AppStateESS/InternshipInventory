@@ -147,6 +147,7 @@ class SaveInternship {
         $i->paid = $_REQUEST['payment'] == 'paid';
         $i->stipend = isset($_REQUEST['stipend']) && $i->paid;
         $i->pay_rate = self::trimField($_REQUEST['pay_rate']);
+        $i->loc_phone = self::trimField($_REQUEST['host_phone']);
 
         if (\Current_User::allow('intern', 'change_term')) {
             $i->term = $_REQUEST['term'];

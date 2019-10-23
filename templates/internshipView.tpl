@@ -200,7 +200,7 @@
             <!-- BEGIN host-state -->
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="{HOST_STATE_ID}">State</label>
-                <div class="col-lg-6"><p class="form-control-static">{HOST_STATE}</p></div>
+                <div id="internship_host_state" class="col-lg-6"><p class="form-control-static">{HOST_STATE}</p></div>
             </div>
             <!-- END host-state -->
 
@@ -220,28 +220,28 @@
 
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="{HOST_ADDRESS_ID}">Address</label>
-                <div class="col-lg-6"><p class="form-control-static">{HOST_ADDRESS}</p></div>
+                <div id="internship_host_address" class="col-lg-6"><p class="form-control-static">{HOST_ADDRESS}</p></div>
             </div>
 
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="{HOST_CITY_ID}">City</label>
-                <div class="col-lg-6"><p class="form-control-static">{HOST_CITY}</p></div>
+                <div id="internship_host_city" class="col-lg-6"><p class="form-control-static">{HOST_CITY}</p></div>
             </div>
 
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="{HOST_ZIP_ID}" id="internship_host_zip-label">{HOST_ZIP_LABEL_TEXT}</label>
-                <div class="col-lg-6"><p class="form-control-static">{HOST_ZIP}</p></div>
+                <div id="internship_host_zip" class="col-lg-6"><p class="form-control-static">{HOST_ZIP}</p></div>
             </div>
 
           <!-- BEGIN host-intl -->
           <div class="form-group">
             <label class="col-lg-3 control-label" for="{HOST_PROVINCE_ID}">Province/Territory</label>
-            <div class="col-lg-6"><p class="form-control-static">{HOST_PROVINCE}</p></div>
+            <div id="internship_host_province" class="col-lg-6"><p class="form-control-static">{HOST_PROVINCE}</p></div>
           </div>
 
           <div class="form-group">
             <label class="col-lg-3 control-label" for="{HOST_COUNTRY_ID}">Country</label>
-            <div class="col-lg-6"><p class="form-control-static">{HOST_COUNTRY}</p></div>
+            <div id="internship_host_country" class="col-lg-6"><p class="form-control-static">{HOST_COUNTRY}</p></div>
           </div>
           <!-- END host-intl -->
 

@@ -18,8 +18,28 @@
  * Copyright 2011-2018 Appalachian State University
  */
 
-// This file contains the testing defines.  It has been moved out of defines.php
-// due to the obvious issue of what to do every time prod is exported.  This
-// file is in subversion is inc/intern_defines.php, and should live in phpWebSite's
-// root as /inc/intern_defines.php.
-require_once(PHPWS_SOURCE_DIR . 'inc/intern_defines.php');
+namespace Intern\WorkflowTransition;
+use Intern\WorkflowTransition;
+use Intern\Internship;
+use Intern\TermFactory;
+
+class CreationTransition extends WorkflowTransition {
+    const sourceState = 'CreationState';
+    const destState   = 'DeniedState';
+    const actionName  = 'Denied Internship';
+
+    public function getAllowedPermissionList(){
+        return array('create_internship');
+    }
+
+    public function doNotification(Internship $i, $note = null){
+        if(!$i->isDomestic()){
+            $settings = \Intern\InternSettings::getInstance();
+
+            $term = TermFactory::getTermByTermCode($i->getTerm());
+            //TODO: Current user email?
+            $email = new \Intern\Email\IntlInternshipCreateNotice($settings, $i, $term);
+            $email->send();
+        }
+    }
+}

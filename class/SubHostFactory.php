@@ -21,9 +21,9 @@
 namespace Intern;
 use \phpws2\Database;
 
-class HostFactory {
+class SubHostFactory {
 
-    public static function getHostById($id) {
+    public static function getSubById($id) {
         if(is_null($id) || !isset($id)) {
             throw new \InvalidArgumentException('Host ID is required.');
         }
@@ -37,7 +37,7 @@ class HostFactory {
 
         $stmt = $pdo->prepare("SELECT * FROM intern_sub_host WHERE id = :id");
         $stmt->execute(array('id' => $id));
-        $stmt->setFetchMode(\PDO::FETCH_CLASS, 'Intern\HostRestored');
+        $stmt->setFetchMode(\PDO::FETCH_CLASS, 'Intern\SubHostRestored');
 
         return $stmt->fetch();
     }

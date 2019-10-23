@@ -12,7 +12,7 @@
     "corejs-typeahead": "^1.1.1",
     "react": "~15.6.1",
     "react-addons-css-transition-group": "~15.6.0",
-    "react-calendar": "^2.19.0",
+    "react-calendar": "^2.19.2",
     "react-dom": "~15.6.1",
     "react-dropzone": "~3.13.3",
     "react-input-calendar": "^0.5.4"

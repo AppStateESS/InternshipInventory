@@ -32,8 +32,7 @@ class DatabaseStorage {
      * Saves the given object to the database.
      * @param Object $obj
      */
-    public static function save(DbStorable $obj)
-    {
+    public static function save(DbStorable $obj) {
         $db = new \PHPWS_DB($obj->getTableName());
 
         try {
@@ -56,8 +55,7 @@ class DatabaseStorage {
      * @param String $class
      * @param int $id
      */
-    public static function load($class, $id)
-    {
+    public static function load($class, $id) {
         \PHPWS_Core::initModClass($class . '.php');
 
         $table = $class::getTableName();
@@ -76,8 +74,7 @@ class DatabaseStorage {
         return $result;
     }
 
-    public static function saveObject(DbStorable $o)
-    {
+    public static function saveObject(DbStorable $o) {
         $vars = $o->extractVars();
         $tableName = $o::getTableName();
 

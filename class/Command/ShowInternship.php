@@ -21,7 +21,7 @@
 namespace Intern\Command;
 
 use \Intern\InternshipFactory;
-use \Intern\HostFactory;
+use \Intern\SubHostFactory;
 use \Intern\SupervisorFactory;
 use \Intern\InternshipView;
 use \Intern\DataProvider\Student\StudentDataProviderFactory;
@@ -73,7 +73,7 @@ class ShowInternship {
         $wfState = $intern->getWorkflowState();
 
         // Load the host & sup
-        $host = HostFactory::getHostById($intern->getHostId());
+        $host = SubHostFactory::getSubById($intern->getSubId());
         $supervisor = SupervisorFactory::getSupervisorById($intern->getSupervisorId());
 
         // Load the term info for this internship

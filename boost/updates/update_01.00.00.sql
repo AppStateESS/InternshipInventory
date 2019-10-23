@@ -63,9 +63,11 @@ CREATE TABLE intern_supervisor(
 ALTER TABLE intern_internship ADD COLUMN supervisor_id INT;
 ALTER TABLE intern_internship ADD COLUMN host_id INT;
 ALTER TABLE intern_internship ADD COLUMN host_sub_id INT;
+ALTER TABLE intern_internship ADD COLUMN loc_phone VARCHAR;
 ALTER TABLE intern_internship ADD CONSTRAINT supervisor_fkey FOREIGN KEY (supervisor_id) REFERENCES intern_supervisor(id);
 ALTER TABLE intern_internship ADD CONSTRAINT host_fkey FOREIGN KEY (host_id) REFERENCES intern_host(id);
-ALTER TABLE intern_internship ADD CONSTRAINT host_fkey FOREIGN KEY (host_sub_id) REFERENCES intern_sub_host(id);
+ALTER TABLE intern_internship ADD CONSTRAINT sub_fkey FOREIGN KEY (host_sub_id) REFERENCES intern_sub_host(id);
+ALTER TABLE intern_internship DROP CONSTRAINT intern_internship_agency_id_fkey;
 
 CREATE SEQUENCE intern_special_host_seq;
 CREATE SEQUENCE intern_supervisor_seq;
