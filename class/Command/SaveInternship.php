@@ -125,7 +125,7 @@ class SaveInternship {
         } else {
             // Form token doesn't match, so show a nice error message
             $this->rerouteWithError('index.php?module=intern&action=ShowInternship',
-                    'Some else has modified this internship while you were working. In order to not overwrite their changes, your changes were not saved.');
+                    'Someone else has modified this internship while you were working. In order to not overwrite their changes, your changes were not saved.');
         }
 
         // Load the student object
@@ -159,6 +159,9 @@ class SaveInternship {
         if (isset($_REQUEST['experience_type'])) {
             $i->setExperienceType($_REQUEST['experience_type']);
         }
+
+        //Location Data
+        $i->host_sub_id = $_REQUEST['SUB_NAME'];
 
         // Save Country if international
         /*if (\Current_User::isDeity()) {

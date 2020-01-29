@@ -113,14 +113,13 @@ class AddInternship {
         // Save it!!
         $intern->save();
 
-        //TODO check if state is denied
-        if(checkDenied($sub)){
-            $t = \Intern\WorkflowTransitionFactory::getTransitionByName('Intern\WorkflowTransition\CreationTransition');
+        if(SubHostFactory::deniedCheck($_POST['sub_host'])){
+            $t = \Intern\WorkflowTransitionFactory::getTransitionByName('Intern\WorkflowTransition\DeniedTransition');
             $workflow = new \Intern\WorkflowController($intern, $t);
             $workflow->doTransition(null);
             $workflow->doNotification(null);
         } else{
-            $t = \Intern\WorkflowTransitionFactory::getTransitionByName('Intern\WorkflowTransition\DeniedTransition');
+            $t = \Intern\WorkflowTransitionFactory::getTransitionByName('Intern\WorkflowTransition\CreationTransition');
             $workflow = new \Intern\WorkflowController($intern, $t);
             $workflow->doTransition(null);
             $workflow->doNotification(null);

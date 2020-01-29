@@ -26,6 +26,7 @@ use Intern\DepartmentFactory;
 use Intern\Subject;
 use Intern\WorkflowStateFactory;
 use Intern\AssetResolver;
+use Intern\SubHostFactory;
 
   /**
    * SearchUI
@@ -130,6 +131,11 @@ class SearchUI implements UI
         // Campus Handeled directly in the html template
         // International vs Domestic - Handeled with react
         // State & Country search handeled with react
+
+        $hosts = SubHostFactory::getHostAssoc();
+        $form->addSelect('host_select', array(-1 => 'All') + $hosts);
+        $form->setLabel('host_select', 'Host');
+        $form->setClass('host_select', 'form-control');
 
         /***************
          * Date Range *

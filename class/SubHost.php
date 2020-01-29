@@ -67,10 +67,12 @@ class SubHost implements DbStorable {
     public function getCSV(){
         $csv = array();
 
+        $csv['Host Name']              = $this->getMainName();
         $csv['Host Sub Name']          = $this->sub_name;
         $csv['Host Address']           = $this->address;
         $csv['Host City']              = $this->city;
         $csv['Host State']             = $this->state == null ? '' : $this->state;
+        $csv['Host Province']          = $this->province == null ? '' : $this->province;
         $csv['Host Zip Code']          = $this->zip == null ? '' : $this->zip;
         $csv['Host Country']           = $this->country;
 
@@ -92,11 +94,11 @@ class SubHost implements DbStorable {
         if(!empty($this->state)){
             $add[] = $this->state;
         }
-        if (!empty($this->zip)) {
-            $add[] = $this->zip;
-        }
         if(!empty($this->province)){
-            $add[] = $this->province . ', ';
+            $add[] = $this->province;
+        }
+        if (!empty($this->zip)) {
+            $add[] = $this->zip . ', ';
         }
         if(!empty($this->country)){
             $add[] = $this->country;

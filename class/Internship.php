@@ -38,7 +38,7 @@ use \PHPWS_Text;
 */
 class Internship {
 
-    const GPA_MINIMUM = 2.0;
+    const GPA_MINIMUM = 2.00;
 
     public $id;
 
@@ -157,7 +157,6 @@ class Internship {
         $this->host_sub_id = $sub_host->getId();
         $this->supervisor_id = $supervisor->getId();
 
-        //TODO Set if denied state
         // Set initial state
         $this->setState(WorkflowStateFactory::getState('CreationState'));
 
@@ -320,6 +319,21 @@ class Internship {
         $csv['International']          = $this->isInternational() ? 'Yes' : 'No';
         $csv['Host Phone']             = $this->loc_phone;
 
+        // Gets host information
+        $s = $this->getHost();
+        if ($s instanceof SubHost) {
+            $csv = array_merge($csv, $s->getCSV());
+        } else{
+            $csv['Host Name'] = '';
+            $csv['Host Sub Name'] = '';
+            $csv['Host Address'] = '';
+            $csv['Host City'] = '';
+            $csv['Host State'] = '';
+            $csv['Host Province'] = '';
+            $csv['Host Zip Code'] = '';
+            $csv['Host Country'] = '';
+        }
+
         // Course Info
         $csv['Multi-part']             = $this->isMultipart() ? 'Yes' : 'No';
         $csv['Secondary Part']         = $this->isSecondaryPart() ? 'Yes' : 'No';
@@ -338,9 +352,6 @@ class Internship {
         $f = $this->getFaculty();
         $d = $this->getDepartment();
         $c = DocumentRest::contractAffilationSelected($this->id);
-
-        // Merge data from other objects.
-        $csv = array_merge($csv, $a->getCSV());
 
         // Sets the type and if there are contracts, else sets the name of affiliation if one
         $csv['Agreement Type'] = $c['type'];

@@ -23,23 +23,12 @@ use Intern\WorkflowTransition;
 use Intern\Internship;
 use Intern\TermFactory;
 
-class CreationTransition extends WorkflowTransition {
+class DeniedTransition extends WorkflowTransition {
     const sourceState = 'CreationState';
     const destState   = 'DeniedState';
     const actionName  = 'Denied Internship';
 
     public function getAllowedPermissionList(){
         return array('create_internship');
-    }
-
-    public function doNotification(Internship $i, $note = null){
-        if(!$i->isDomestic()){
-            $settings = \Intern\InternSettings::getInstance();
-
-            $term = TermFactory::getTermByTermCode($i->getTerm());
-            //TODO: Current user email?
-            $email = new \Intern\Email\IntlInternshipCreateNotice($settings, $i, $term);
-            $email->send();
-        }
     }
 }

@@ -21,6 +21,7 @@
 namespace Intern\WorkflowTransition;
 use Intern\WorkflowTransition;
 use Intern\Internship;
+use Intern\SubHostFactory;
 use Intern\Exception\MissingDataException;
 
 class SigAuthApprove extends WorkflowTransition {
@@ -35,6 +36,12 @@ class SigAuthApprove extends WorkflowTransition {
     public function allowed(Internship $i){
         // If international and not certified by OIED, then return false
         if($i->international == 1 && $i->oied_certified != 1){
+            return false;
+        }
+
+        // If host waiting, then return false
+        $hostStatus = SubHostFactory:: getMainHostById($i->getHostId());
+        if($hostStatus['host_approve_flag'] != 1 ){
             return false;
         }
 

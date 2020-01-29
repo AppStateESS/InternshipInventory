@@ -53,23 +53,23 @@ class SubRest {
         $arr = array();
 
         if(isset($_REQUEST['domestic'])){
-            if($_REQUEST['domestic']='true'){
+            if($_REQUEST['domestic']=='true'){
                 $Main = $_REQUEST['main'];
                 $State = $_REQUEST['location'];
                 $sql = "SELECT id, main_host_id, sub_name, sub_condition FROM intern_sub_host WHERE main_host_id = :main AND state = :state ORDER BY sub_name ASC";
                 $arr = array('main' => $Main, 'state'=>$State);
-            } else if($_REQUEST['domestic']='false'){
+            } else if($_REQUEST['domestic']=='false'){
                 $Main = $_REQUEST['main'];
                 $Country = $_REQUEST['location'];
                 $sql = "SELECT id, main_host_id, sub_name, sub_condition FROM intern_sub_host WHERE main_host_id = :main AND country = :country ORDER BY sub_name ASC";
                 $arr = array('main' => $Main, 'country'=>$Country);
             }
         } else if(isset($_REQUEST['Conditions'])){
-            $sql = "SELECT intern_sub_host.id, sub_name, host_name, admin_message, address, city, state, zip, province, country, other_name, sub_condition, sub_approve_flag, sub_notes
+            $sql = "SELECT intern_sub_host.id, sub_name, host_name, admin_message, address, city, state, zip, province, country, other_name, sub_condition, sub_approve_flag, sub_notes, intern_special_host.id AS con_id
             FROM intern_sub_host JOIN intern_host ON intern_sub_host.main_host_id = intern_host.id JOIN intern_special_host ON intern_sub_host.sub_condition = intern_special_host.id WHERE sub_condition IS NOT NULL ORDER BY sub_name ASC";
         } else{
-            $sql = "SELECT intern_sub_host.id, sub_name, host_name, address, city, state, zip, province, country, other_name, sub_condition, sub_approve_flag, sub_notes
-            FROM intern_sub_host JOIN intern_host ON intern_sub_host.main_host_id = intern_host.id ORDER BY sub_name ASC";
+            $sql = "SELECT intern_sub_host.id, main_host_id, sub_name, host_name, address, city, state, zip, province, country, other_name, sub_condition, sub_approve_flag, sub_notes, intern_special_host.id AS con_id
+            FROM intern_sub_host JOIN intern_host ON intern_sub_host.main_host_id = intern_host.id LEFT JOIN intern_special_host ON intern_sub_host.sub_condition = intern_special_host.id ORDER BY sub_name ASC";
         }
 		$sth = $pdo->prepare($sql);
 		$sth->execute($arr);
@@ -118,42 +118,42 @@ class SubRest {
         }
         $sth = $pdo->prepare($sql);
         $sth->execute($arr);
-        echo json_encode($Name);
+        echo json_encode("Success");
     }
 
     //Update Host
     public function put() {
-        $Id = $_REQUEST['id'];
-        $Main = $_REQUEST['main'];
-        $Name = $_REQUEST['name'];
-        $Address = $_REQUEST['address'];
-        $City = $_REQUEST['city'];
-        $State = $_REQUEST['state'];
-        $Zip = $_REQUEST['zip'];
-        $Province = $_REQUEST['province'];
-        $Country = $_REQUEST['country'];
-        $OtherName = $_REQUEST['other'];
-        $Condition = $_REQUEST['condition'];
-        $Date = $_REQUEST['dates'];
-        $Flag = $_REQUEST['flag'];
-        $Notes = $_REQUEST['notes'];
+        $postarray = json_decode(file_get_contents('php://input'));
+
+        $Id = $postarray->id;
+        $Name = $postarray->name;
+        $Address = $postarray->address;
+        $City = $postarray->city;
+        $State = $postarray->state;
+        $Zip = $postarray->zip;
+        $Province = $postarray->province;
+        $Country = $postarray->country;
+        $OtherName = $postarray->other;
+        $Condition = $postarray->condition;
+        if ($Condition == '' || $Condition == '-1') {$Condition = null;}
+        $Flag = $postarray->flag;
 
         $db = Database::newDB();
         $pdo = $db->getPDO();
 
         $sql = "UPDATE intern_sub_host
-                SET main_host_id=:main, sub_name=:name, address=:address, city=:city,
+                SET sub_name=:name, address=:address, city=:city,
                 state=:state, zip=:zip, province=:province, country=:country,
                 other_name=:otherName, sub_condition=:condition,
-                sub_condition_date=:dates, sub_approve_flag=:flag, sub_notes=:notes
+                sub_approve_flag=:flag
                 WHERE id=:id";
 
         $sth = $pdo->prepare($sql);
-        $sth->execute(array('id'=>$Id, 'main'=>$main, 'name'=>$Name, 'address'=>$Address,
+        $sth->execute(array('id'=>$Id, 'name'=>$Name, 'address'=>$Address,
                     'city'=>$City, 'state'=>$State, 'zip'=>$Zip,
                     'province'=>$Province, 'country'=>$Country,
-                    'otherName'=>$OtherName, 'condition'=>$Condition,'dates'=>$Date,
-                    'flag'=>$Flag, 'notes'=>$notes));
-
+                    'otherName'=>$OtherName, 'condition'=>$Condition,
+                    'flag'=>$Flag));
+        echo json_encode("Success");
     }
 }

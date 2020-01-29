@@ -88,7 +88,7 @@ class ModalSubForm extends React.Component {
             this.setState({showError: true, warningMsg: "Please enter host names."});
             return;
         }
-        if ((this.state.domestic === true&&this.refs.sub_city.value === '')||(this.state.domestic === false&&this.refs.sub_province.value === '')) {
+        if ((this.state.domestic === true&&this.refs.sub_city.value === '')||(this.state.domestic === false&&this.refs.sub_province.value === ''&&this.refs.sub_city.value === '')) {
             this.setState({showError: true, warningMsg: "Please enter host names."});
             return;
         }
@@ -99,10 +99,10 @@ class ModalSubForm extends React.Component {
         if(this.state.domestic === true){
             host = {host: this.refs.host_name.value, name: this.refs.sub_name.value, address: this.refs.sub_address.value,
                     zip: this.refs.sub_zip.value,city: this.refs.sub_city.value, province: null, state: this.state.location,
-                    country: this.state.location, other: null}
+                    country: 'US', other: null}
         } else{
             host = {host: this.refs.host_name.value, name: this.refs.sub_name.value, address: this.refs.sub_address.value,
-                    zip: this.refs.sub_zip.value,city: null, province: this.refs.sub_province.value, state: null,
+                    zip: this.refs.sub_zip.value,city: this.refs.sub_city.value, province: this.refs.sub_province.value, state: null,
                     country: this.state.location, other: null}
         }
 
@@ -127,9 +127,15 @@ class ModalSubForm extends React.Component {
                 <div className="col-lg-9"><input  type="text" className="form-control" id="sub-city" ref="sub_city"/></div>
             </div>);
         } else if (this.state.domestic === false) {
-            loc = (<div className="form-group">
-                <label className="col-lg-3 control-label">Province {require}</label>
-                <div className="col-lg-9"><input  type="text" className="form-control" id="sub-province" ref="sub_province"/></div>
+            loc = (<div>
+                <div className="form-group">
+                  <label className="col-lg-3 control-label">City {require}</label>
+                  <div className="col-lg-9"><input  type="text" className="form-control" id="sub-city" ref="sub_city"/></div>
+                </div>
+                <div className="form-group">
+                  <label className="col-lg-3 control-label">Province {require}</label>
+                  <div className="col-lg-9"><input  type="text" className="form-control" id="sub-province" ref="sub_province"/></div>
+                </div>
             </div>);
         }
         var availHost = null;
@@ -151,8 +157,8 @@ class ModalSubForm extends React.Component {
                 <Modal.Body>
                     <form className="form-horizontal">
                         <div className="form-group">
-                            <label className="col-lg-3 control-label">Sub Name {require}</label>
-                            <select className="form-control col-lg-9" id="host-name" ref="host_name">
+                            <label className="col-lg-3 control-label">Host Name {require}</label>
+                            <select className="form-control col-lg-9 select-sub-host" id="host-name" ref="host_name">
                                 <option value="-1">Select a Host</option>
                                 {availHost}
                             </select>
@@ -189,7 +195,9 @@ class HostAgency extends React.Component {
             showHostModal: false,
             showSubModal: false,
             availableHost: null,
-            availableSub: null};
+            availableSub: null,
+            hostSelect: null};
+        this.getHostSelect = this.getHostSelect.bind(this)
         this.getSubData = this.getSubData.bind(this);
         this.closeHostModal = this.closeHostModal.bind(this);
         this.openHostModal = this.openHostModal.bind(this);
@@ -201,7 +209,7 @@ class HostAgency extends React.Component {
     componentDidMount() {
         // Fetch list of all host
         $.ajax({
-            url: 'index.php?module=intern&action=HostRest',
+            url: 'index.php?module=intern&action=HostRest&Waiting=true',
             type: 'GET',
             dataType: 'json',
             success: function(data) {
@@ -212,11 +220,15 @@ class HostAgency extends React.Component {
             }
         });
     }
-    getSubData(e){
+    getHostSelect(e){
+        //holds main host selection for getting the sub host
+        this.setState({hostSelect: e.target.value}, this.getSubData)
+    }
+    getSubData(){
         // Fetch list of available sub by location and main host
         if(this.props.domestic !== undefined && this.props.location !== undefined){
             $.ajax({
-                url: 'index.php?module=intern&action=SubRest&domestic=' + this.props.domestic + '&location=' + this.props.location + '&main=' + e.target.value,
+                url: 'index.php?module=intern&action=SubRest&domestic=' + this.props.domestic + '&location=' + this.props.location + '&main=' + this.state.hostSelect,
                 type: 'GET',
                 dataType: 'json',
                 success: function(data) {
@@ -245,6 +257,7 @@ class HostAgency extends React.Component {
             dataType: 'json',
             data: {name: host.name},
             success: function(data) {
+                this.setState({availableHost:data});
                 this.closeHostModal(); // Close the modal box
             }.bind(this),
             error: function(xhr, status, err) {
@@ -275,6 +288,7 @@ class HostAgency extends React.Component {
                    other_name: sub.other
                },
             success: function() {
+                this.getSubData();
                 this.closeSubModal(); // Close the modal box
             }.bind(this),
             error: function(xhr, status, err) {
@@ -312,19 +326,29 @@ class HostAgency extends React.Component {
     	}
         return (
             <div className="row">
-                <div className="col-sm-12 col-md-4 col-md-push-3">
-                    <div className={fgClasses} id="agency">
-                        <label htmlFor="agency2" className="control-label">Host Name </label><button type="button" onClick={this.openHostModal}><i className="fa fa-plus"></i></button>
-                        <ModalHostForm show={this.state.showHostModal} hide={this.closeHostModal} edit={true} handleSaveHost={this.handleSaveHost}{...this.props} />
-                        <select id="main_host" name="main_host" className="form-control" onChange={this.getSubData}>
-                            <option value="-1">Select a Host</option>
-                            {availHostOptions}
-                        </select>
-                        <label htmlFor="agency3" className="control-label">Sub Name </label><button type="button" onClick={this.openSubModal}><i className="fa fa-plus"></i></button>
-                        <ModalSubForm show={this.state.showSubModal} availableData={this.state.availableHost} key={this.state.availableHost} hide={this.closeSubModal} edit={true} handleSaveSub={this.handleSaveSub}{...this.props} />
-                        <select id="sub_host" name="sub_host" className="form-control">
-                            {locationDropDown}
-                        </select>
+                <div className="row">
+                    <div className="col-sm-12 col-md-4 col-md-push-3 form-align">
+                        <div className={fgClasses} id="agency">
+                            <label htmlFor="agency2" className="control-label">Host Name </label>
+                            <button type="button" id="small-button1" title="Click here to add a host" onClick={this.openHostModal}><i className="fa fa-plus fa-xs"></i></button>
+                            <ModalHostForm show={this.state.showHostModal} hide={this.closeHostModal} edit={true} handleSaveHost={this.handleSaveHost}{...this.props} />
+                            <select id="main_host" name="main_host" ref="host_selection" className="form-control" onChange={this.getHostSelect}>
+                                <option value="-1">Select a Host</option>
+                                {availHostOptions}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-sm-12 col-md-4 col-md-push-3 form-align">
+                        <div className={fgClasses} id="agency">
+                            <label htmlFor="agency3" className="control-label">Sub Name </label>
+                            <button type="button" id="small-button2" title="Click here to add sub host" onClick={this.openSubModal}><i className="fa fa-plus fa-xs"></i></button>
+                            <ModalSubForm show={this.state.showSubModal} availableData={this.state.availableHost} key={this.state.availableHost} hide={this.closeSubModal} edit={true} handleSaveSub={this.handleSaveSub}{...this.props} />
+                            <select id="sub_host" name="sub_host" className="form-control">
+                                {locationDropDown}
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -332,4 +356,4 @@ class HostAgency extends React.Component {
     }
 }
 
-ReactDOM.render(<HostAgency />, document.getElementById('HostAgency'));
+export default HostAgency;

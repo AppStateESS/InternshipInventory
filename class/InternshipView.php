@@ -91,19 +91,35 @@ class InternshipView {
         return \PHPWS_Template::process($form->getTemplate(), 'intern', 'internshipView.tpl');
     }
 
-    private function showWarnings()
-    {
+    private function showWarnings() {
+
         // Get state of documents or affiliation
         $conAffil = DocumentRest::contractAffilationSelected($this->intern->getId());
         // Show warning if no documents uploaded or affiliation agreement selected but workflow state suggests there should be
-        if(($this->wfState instanceof WorkflowState\SigAuthReadyState || $this->wfState instanceof WorkflowState\SigAuthApprovedState || $this->wfState instanceof WorkflowState\DeanApprovedState || $this->wfState instanceof WorkflowState\RegisteredState) && ($conAffil['value'] == 'No') && (!$this->intern->isSecondaryPart()))
-        {
+        if(($this->wfState instanceof WorkflowState\SigAuthReadyState || $this->wfState instanceof WorkflowState\SigAuthApprovedState || $this->wfState instanceof WorkflowState\DeanApprovedState || $this->wfState instanceof WorkflowState\RegisteredState) && ($conAffil['value'] == 'No') && (!$this->intern->isSecondaryPart())) {
             \NQ::simple('intern', UI\NotifyUI::WARNING, "No contract has been uploaded or affiliation agreement selected. Usually a copy of the signed contract should be uploaded or an affiliation agreement selected.");
+        }
+
+        $message = SubHostFactory::getMessage($this->intern->getSubId());
+        // Show a warning host or sub host has a condition of warning status
+        if ($message && !$this->wfState instanceof WorkflowState\DeniedState) {
+            \NQ::simple('intern', UI\NotifyUI::WARNING, "{$message['user_message']} {$message['email']}");
+        }
+
+        // Show a error message if in Denied State
+        if ($this->wfState instanceof WorkflowState\DeniedState) {
+            \NQ::simple('intern', UI\NotifyUI::ERROR, "{$message['user_message']} {$message['email']}");
         }
 
         // Show a warning if in SigAuthReadyState, is international, and not OIED approved
         if ($this->wfState instanceof WorkflowState\SigAuthReadyState && $this->intern->isInternational() && !$this->intern->isOiedCertified()) {
             \NQ::simple('intern', UI\NotifyUI::WARNING, 'This internship can not be approved by the Signature Authority bearer until the internship is certified by the Office of International Education and Development.');
+        }
+
+        // Show a warning if in SigAuthReadyState and host not approved
+        $hostStatus = SubHostFactory:: getMainHostById($this->intern->getHostId());
+        if ($this->wfState instanceof WorkflowState\SigAuthReadyState && $hostStatus['host_approve_flag'] == 2) {
+            \NQ::simple('intern', UI\NotifyUI::WARNING, 'This internship can not be approved by the Signature Authority bearer until the internship host has been approved.');
         }
 
         // Show a warning if in DeanApproved state and is distance_ed campus

@@ -80,25 +80,26 @@ class ConditionRest {
 
     //Update Condition
     public function put() {
-        $Id = $_REQUEST['id'];
-        $Admin = $_REQUEST['admin'];
-        $User = $_REQUEST['user'];
-        $Stop = $_REQUEST['stop'];
-        $Sup = $_REQUEST['sup'];
-        $Email = $_REQUEST['email'];
-        $Notes = $_REQUEST['notes'];
+        $postarray = json_decode(file_get_contents('php://input'));
+        $Id = $postarray->id;
+        $Admin = $postarray->admin;
+        $User = $postarray->user;
+        $Stop = $postarray->stop;
+        $Sup = $postarray->sup;
+        $Email = $postarray->email;
+        $Notes = $postarray->notes;
 
         $db = Database::newDB();
         $pdo = $db->getPDO();
 
         $sql = "UPDATE intern_special_host
                 SET admin_message=:admin, user_message=:user, stop_level=:stop,
-                sup_check=:sup, email=:email, notes=:notes
+                sup_check=:sup, email=:email, special_notes=:notes
                 WHERE id=:id";
 
         $sth = $pdo->prepare($sql);
         $sth->execute(array('id'=>$Id, 'admin'=>$Admin, 'user'=>$User, 'stop'=>$Stop,
                     'sup'=>$Sup, 'email'=>$Email, 'notes'=>$Notes));
-
+        echo json_encode($this->get());
     }
 }

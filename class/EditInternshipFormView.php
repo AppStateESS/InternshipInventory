@@ -128,40 +128,43 @@ class EditInternshipFormView {
         /*********************
          * Copy to Next Term *
         *********************/
+        if($this->intern->getStateName() != 'DeniedState'){
+            // Get next three terms
+            $term = TermFactory::getTermByTermCode($this->intern->getTerm());
 
-        // Get next three terms
-        $term = TermFactory::getTermByTermCode($this->intern->getTerm());
+            $nextTerm = TermFactory::getNextTerm($term);
 
-        $nextTerm = TermFactory::getNextTerm($term);
+            if($nextTerm !== null){
+                $nextTwoTerm = TermFactory::getNextTerm($nextTerm);
+            } else {
+                $nextTwoTerm = null;
+            }
 
-        if($nextTerm !== null){
-            $nextTwoTerm = TermFactory::getNextTerm($nextTerm);
-        } else {
-            $nextTwoTerm = null;
-        }
+            if($nextTwoTerm !== null){
+                $nextThreeTerm = TermFactory::getNextTerm($nextTwoTerm);
+            } else {
+                $nextThreeTerm = null;
+            }
 
-        if($nextTwoTerm !== null){
-            $nextThreeTerm = TermFactory::getNextTerm($nextTwoTerm);
-        } else {
-            $nextThreeTerm = null;
-        }
+            $this->tpl['CONTINUE_TERM_LIST'] = array();
 
-        $this->tpl['CONTINUE_TERM_LIST'] = array();
+            // Determine if we can copy to the next term (i.e. the next term exists)
+            if($nextTerm !== null){
+                $this->tpl['CONTINUE_TERM_LIST'][] = array('DEST_TERM'=>$nextTerm->getTermCode(), 'DEST_TERM_TEXT'=>$nextTerm->getDescription());
+            }
 
-        // Determine if we can copy to the next term (i.e. the next term exists)
-        if($nextTerm !== null){
-            $this->tpl['CONTINUE_TERM_LIST'][] = array('DEST_TERM'=>$nextTerm->getTermCode(), 'DEST_TERM_TEXT'=>$nextTerm->getDescription());
-        }
+            // Copy if it's Spring and exist, else if it's Summer 1 and exist.
+            if($nextThreeTerm !== null && $term->getSemesterType() == Term::SPRING){
+                $this->tpl['CONTINUE_TERM_LIST'][] = array('DEST_TERM'=>$nextThreeTerm->getTermCode(), 'DEST_TERM_TEXT'=>$nextThreeTerm->getDescription());
+            } else if($nextTwoTerm !== null && $term->getSemesterType() == Term::SUMMER1){
+                $this->tpl['CONTINUE_TERM_LIST'][] = array('DEST_TERM'=>$nextTwoTerm->getTermCode(), 'DEST_TERM_TEXT'=>$nextTwoTerm->getDescription());
+            }
 
-        // Copy if it's Spring and exist, else if it's Summer 1 and exist.
-        if($nextThreeTerm !== null && $term->getSemesterType() == Term::SPRING){
-            $this->tpl['CONTINUE_TERM_LIST'][] = array('DEST_TERM'=>$nextThreeTerm->getTermCode(), 'DEST_TERM_TEXT'=>$nextThreeTerm->getDescription());
-        } else if($nextTwoTerm !== null && $term->getSemesterType() == Term::SUMMER1){
-            $this->tpl['CONTINUE_TERM_LIST'][] = array('DEST_TERM'=>$nextTwoTerm->getTermCode(), 'DEST_TERM_TEXT'=>$nextTwoTerm->getDescription());
-        }
-
-        // If no terms are available to copy to, show a helpful message
-        if(sizeof($this->tpl['CONTINUE_TERM_LIST']) == 0) {
+            // If no terms are available to copy to, show a helpful message
+            if(sizeof($this->tpl['CONTINUE_TERM_LIST']) == 0) {
+                $this->tpl['CONTINUE_TERM_NO_TERMS'] = 'No future terms available.';
+            }
+        } else{
             $this->tpl['CONTINUE_TERM_NO_TERMS'] = 'No future terms available.';
         }
 
@@ -543,10 +546,17 @@ class EditInternshipFormView {
 
         $this->form->addHidden('host_id', $this->host->id);
         $this->tpl['HOST_NAME'] = $this->host->getMainName();
-        $this->tpl['SUB_NAME'] = $this->host->sub_name;
+        //$this->tpl['SUB_NAME'] = $this->host->sub_name;
         $this->tpl['HOST_ADDRESS'] = $this->host->address;
         $this->tpl['HOST_CITY'] = $this->host->city;
         $this->tpl['HOST_ZIP'] = $this->host->zip;
+        $host_id = SubHostFactory::getSubHostCond($this->host->main_host_id, $this->host->state, $this->host->country);
+        if (!in_array($this->host->sub_name, $host_id)) {
+          $host_id[$this->host->id] = $this->host->sub_name;
+        }
+        $this->form->addSelect('SUB_NAME', $host_id);
+        $this->form->setMatch('SUB_NAME', $this->host->id);
+        $this->form->addCssClass('SUB_NAME', 'form-control');
 
         if($this->intern->domestic) {
             $this->tpl['HOST_STATE'] = $this->host->state;

@@ -47,7 +47,7 @@ class ExceptionEmail extends Email {
     }
 
     protected function getTemplateFileName(){
-        return 'email/UncaughtException.tpl'; // TODO
+        return 'email/UncaughtException.tpl';
     }
 
     protected function buildMessage()

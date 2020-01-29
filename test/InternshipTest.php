@@ -22,12 +22,11 @@ namespace Intern\test;
 
 use \Intern\Internship;
 use \Intern\Student;
-use \Intern\HostFactory;
+use \Intern\SubHostFactory;
 use \Intern\Department;
 use PHPUnit\Framework\TestCase;
 
-class InternshipTest extends TestCase
-{
+class InternshipTest extends TestCase {
     public function testSetStudentData()
     {
         $student = $this->getTestStudent();
@@ -35,12 +34,6 @@ class InternshipTest extends TestCase
         $location = 'domestic';
         $state = 'NC';
         $country = null;
-
-        // Mocks for Department and Host
-        $department = $this->getMockBuilder('\Intern\Department')->getMock();
-        $host = HostFactory::getHostById(1);
-
-        $intern = new Internship($student, $term, $location, $state, $country, $department, $host);
 
         $foo = true;
         $this->assertTrue($foo);

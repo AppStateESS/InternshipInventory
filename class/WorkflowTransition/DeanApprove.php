@@ -48,6 +48,14 @@ class DeanApprove extends WorkflowTransition {
         if(!$i->isSecondaryPart() && $i->getSubject() === null){
             throw new MissingDataException("Please select a course subject.");
         }
+        $emergName = $i->getEmergencyContactName();
+        if(!isset($emergName)){
+            throw new MissingDataException("Please add an emergency contact.");
+        }
+
+        if (empty($_POST['start_date']) || empty($_POST['end_date'])){
+            throw new MissingDataException("This internship cannot continue without start and end dates.");
+        }
     }
 
     public function doNotification(Internship $i, $note = null){

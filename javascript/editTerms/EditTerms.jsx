@@ -279,6 +279,7 @@ class TermInput extends React.Component {
                          value={this.state.endDateInput} calendarType="US"/>
       }
 
+      //Treated as census date to regular users but is actually the drop/add date
       return (
       <div className="form-group" style={{margin: '1em'}}>
 
@@ -307,7 +308,7 @@ class TermInput extends React.Component {
 
               <div className="col-sm-3">
                   <div className="form-group">
-                      <label>Census Date:
+                      <label>Drop/Add Date:
                           <i className="fa fa-calendar" aria-hidden="true" onClick={this.showCalendarCensus}
                              style={{paddingLeft: '5px'}} title="Click for Calendar View"></i>
                       </label>
@@ -434,7 +435,7 @@ class TermSelector extends React.Component {
             return;
         }
         if (census === '') {
-            errorMessage = "Please enter a census date.";
+            errorMessage = "Please enter a drop/add date.";
             this.setState({errorWarning: errorMessage, messageType: "error"});
             return;
         }
@@ -584,7 +585,7 @@ class TermSelector extends React.Component {
                                     <th>Term Code</th>
                                     <th>Semester Type</th>
                                     <th>Description</th>
-                                    <th>Census Date</th>
+                                    <th>Drop/Add Date</th>
                                     <th>Available On Date</th>
                                     <th>Start Date</th>
                                     <th>End Date</th>

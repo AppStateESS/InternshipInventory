@@ -1,26 +1,33 @@
+ --reason for admin stop that only they see
+ --reason for stop that user sees
+ --Warning, Stop
+ --name to check sup on flag
+ --see about having this as Admin Setting
 CREATE TABLE intern_special_host(
     id INT NOT NULL,
-    admin_message VARCHAR NOT NULL, --reason for admin stop that only they see
-    user_message VARCHAR NOT NULL, --reason for stop that user sees
-    stop_level VARCHAR NOT NULL, --warning, full stop
-    sup_check VARCHAR, --name to check sup on flag
-    email VARCHAR NOT NULL, --see about having this as 'Admin Setting'
+    admin_message VARCHAR NOT NULL,
+    user_message VARCHAR NOT NULL,
+    stop_level VARCHAR NOT NULL,
+    sup_check VARCHAR,
+    email VARCHAR NOT NULL,
     special_notes VARCHAR,
     PRIMARY KEY(id)
 );
 
 --overall host name
+--flag to show if a new host or one that is awaiting approval 0=not approved 1=approve 2=awaiting
 CREATE TABLE intern_host (
     id INT NOT NULL,
     host_name VARCHAR NOT NULL,
     host_condition INT REFERENCES intern_special_host(id),
     host_condition_date VARCHAR,
-    host_approve_flag INT NOT NULL DEFAULT 2,--flag to show if a new host or one that is awaiting approval 0=not approved 1=approve 2=awaiting
+    host_approve_flag INT NOT NULL DEFAULT 2,
     host_notes VARCHAR,
     PRIMARY KEY(id)
 );
 
 --sub name of host that will contain the address information
+--flag to show if a new host or one that is awaiting approval 0=not approved 1=approve 2=awaiting
 CREATE TABLE intern_sub_host (
        id INT NOT NULL,
        main_host_id INT REFERENCES intern_host(id),
@@ -34,7 +41,7 @@ CREATE TABLE intern_sub_host (
        other_name VARCHAR,
        sub_condition INT REFERENCES intern_special_host(id),
        sub_condition_date VARCHAR,
-       sub_approve_flag INT NOT NULL DEFAULT 2,--flag to show if a new host or one that is awaiting approval 0=not approved 1=approve 2=awaiting
+       sub_approve_flag INT NOT NULL DEFAULT 2,
        sub_notes VARCHAR,
        PRIMARY KEY(id)
 );
@@ -55,7 +62,7 @@ CREATE TABLE intern_supervisor(
     supervisor_zip VARCHAR NULL,
     supervisor_province character varying,
     supervisor_country VARCHAR,
-    address_same_flag BOOLEAN DEFAULT false, --see if want to allow this now
+    address_same_flag BOOLEAN DEFAULT false,
     PRIMARY KEY(id)
 );
 

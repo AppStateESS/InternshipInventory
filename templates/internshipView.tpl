@@ -210,7 +210,7 @@
             </div>
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="{HOST_ID}">Sub Name</label>
-                <div class="col-lg-6"><p class="form-control-static">{SUB_NAME}</p></div>
+                <div class="col-lg-9"><p class="form-control-static">{SUB_NAME}</p></div>
             </div>
 
             <div class="form-group">
