@@ -6,7 +6,7 @@
       <a href="{BACK_LINK_URI}" class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i> Back to search</a>
     </p>
   </div>
-  <div class="col-lg-2 col-lg-offset-9">
+  <div class="col-lg-2 offset-right-inline">
     <a href="{EXPORT_URI}" class="btn btn-primary"><i class="fa fa-download"></i> Export to Spreadsheet</a>
   </div>
 </div>

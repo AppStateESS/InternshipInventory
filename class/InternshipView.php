@@ -26,36 +26,31 @@ use \intern\Command\DocumentRest;
  */
 class InternshipView {
 
-    public static $requiredFields = array(
-            'student_first_name',
-            'student_last_name',
-            'student_email',
-            'department',
-            'agency_name');
+    public static $requiredFields = array('department');
 
     private $intern;
     private $student;
     private $wfState;
-    private $agency;
+    private $host;
+    private $supervisor;
     private $term;
     private $studentExistingCreditHours;
 
-    public function __construct(Internship $internship, Student $student = null, WorkflowState $wfState, Agency $agency, Term $term, $studentExistingCreditHours)
-    {
+    public function __construct(Internship $internship, Student $student = null, WorkflowState $wfState, SubHost $host, Supervisor $supervisor, Term $term, $studentExistingCreditHours) {
         $this->intern = $internship;
         $this->student = $student;
         $this->wfState = $wfState;
-        $this->agency = $agency;
+        $this->host = $host;
+        $this->supervisor = $supervisor;
         $this->term = $term;
         $this->studentExistingCreditHours = $studentExistingCreditHours;
     }
 
-    public function display()
-    {
+    public function display() {
         $tpl = array();
 
         // Setup the form
-        $internshipForm = new EditInternshipFormView($this->intern, $this->student, $this->agency, $this->term, $this->studentExistingCreditHours);
+        $internshipForm = new EditInternshipFormView($this->intern, $this->student, $this->host, $this->supervisor, $this->term, $this->studentExistingCreditHours);
 
         // Get the Form object
         $form = $internshipForm->getForm();
@@ -96,19 +91,35 @@ class InternshipView {
         return \PHPWS_Template::process($form->getTemplate(), 'intern', 'internshipView.tpl');
     }
 
-    private function showWarnings()
-    {
+    private function showWarnings() {
+
         // Get state of documents or affiliation
         $conAffil = DocumentRest::contractAffilationSelected($this->intern->getId());
         // Show warning if no documents uploaded or affiliation agreement selected but workflow state suggests there should be
-        if(($this->wfState instanceof WorkflowState\SigAuthReadyState || $this->wfState instanceof WorkflowState\SigAuthApprovedState || $this->wfState instanceof WorkflowState\DeanApprovedState || $this->wfState instanceof WorkflowState\RegisteredState) && ($conAffil['value'] == 'No') && (!$this->intern->isSecondaryPart()))
-        {
+        if(($this->wfState instanceof WorkflowState\SigAuthReadyState || $this->wfState instanceof WorkflowState\SigAuthApprovedState || $this->wfState instanceof WorkflowState\DeanApprovedState || $this->wfState instanceof WorkflowState\RegisteredState) && ($conAffil['value'] == 'No') && (!$this->intern->isSecondaryPart())) {
             \NQ::simple('intern', UI\NotifyUI::WARNING, "No contract has been uploaded or affiliation agreement selected. Usually a copy of the signed contract should be uploaded or an affiliation agreement selected.");
+        }
+
+        $message = SubHostFactory::getMessage($this->intern->getSubId());
+        // Show a warning host or sub host has a condition of warning status
+        if ($message && !$this->wfState instanceof WorkflowState\DeniedState) {
+            \NQ::simple('intern', UI\NotifyUI::WARNING, "{$message['user_message']} {$message['email']}");
+        }
+
+        // Show a error message if in Denied State
+        if ($this->wfState instanceof WorkflowState\DeniedState) {
+            \NQ::simple('intern', UI\NotifyUI::ERROR, "{$message['user_message']} {$message['email']}");
         }
 
         // Show a warning if in SigAuthReadyState, is international, and not OIED approved
         if ($this->wfState instanceof WorkflowState\SigAuthReadyState && $this->intern->isInternational() && !$this->intern->isOiedCertified()) {
             \NQ::simple('intern', UI\NotifyUI::WARNING, 'This internship can not be approved by the Signature Authority bearer until the internship is certified by the Office of International Education and Development.');
+        }
+
+        // Show a warning if in SigAuthReadyState and host not approved
+        $hostStatus = SubHostFactory:: getMainHostById($this->intern->getHostId());
+        if ($this->wfState instanceof WorkflowState\SigAuthReadyState && $hostStatus['host_approve_flag'] == 2) {
+            \NQ::simple('intern', UI\NotifyUI::WARNING, 'This internship can not be approved by the Signature Authority bearer until the internship host has been approved.');
         }
 
         // Show a warning if in DeanApproved state and is distance_ed campus
@@ -133,12 +144,12 @@ class InternshipView {
 
         // Show a warning if the start date selected is outside of the term start date
         if($this->intern->start_date != 0 && ($this->intern->start_date < $this->term->getStartTimestamp() || $this->intern->start_date > $this->term->getEndTimestamp())){
-          \NQ::simple('intern', UI\NotifyUI::WARNING, "The start date you selected is ouside the dates of the term. If correct, fill out the <a target='_blank' href=\"https:\/\/registrar.appstate.edu\/\/sites/registrar.appstate.edu/files/academic_course_meeting_dates_exception_form_102416_1.pdf\">Meeting Dates Exception Form</a>.");
+          \NQ::simple('intern', UI\NotifyUI::WARNING, "The start date you selected is outside the dates of the term. If correct, fill out the <a target='_blank' href=\"https:\/\/registrar.appstate.edu/resources/forms\">Meeting Dates Exception Form</a>.");
         }
 
         // Show a warning if the ending date selected is outside of the term end date
         if($this->intern->end_date != 0 && ($this->intern->end_date > $this->term->getEndTimestamp() || $this->intern->end_date < $this->term->getStartTimestamp())){
-          \NQ::simple('intern', UI\NotifyUI::WARNING, "The end date you selected is ouside the dates of the term. If correct, fill out the <a target='_blank' href=\"https:\/\/registrar.appstate.edu\/\/sites/registrar.appstate.edu/files/academic_course_meeting_dates_exception_form_102416_1.pdf\">Meeting Dates Exception Form</a>.");
+          \NQ::simple('intern', UI\NotifyUI::WARNING, "The end date you selected is outside the dates of the term. If correct, fill out the <a target='_blank' href=\"https:\/\/registrar.appstate.edu/resources/forms\">Meeting Dates Exception Form</a>.");
         }
     }
 
@@ -192,7 +203,7 @@ class InternshipView {
         // Show warning if GPA is below the minimum
         if($this->student->getGpa() < Internship::GPA_MINIMUM) {
             $minGpa = sprintf('%.2f', Internship::GPA_MINIMUM);
-            \NQ::simple('intern', UI\NotifyUI::WARNING, "This student's GPA is less than the required minimum of {$minGpa}.");
+            \NQ::simple('intern', UI\NotifyUI::WARNING, "This student's current GPA of {$this->student->getGpa()} is less than the required minimum of {$minGpa}.");
         }
     }
 }

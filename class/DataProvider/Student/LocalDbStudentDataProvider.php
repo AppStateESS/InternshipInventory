@@ -85,9 +85,6 @@ class LocalDbStudentDataProvider extends StudentDataProvider {
         // Level
         $student->setLevel($data['level']);
 
-        // Credit Hours
-        //$student->setCreditHours($data['credit_hours']);
-
         // Majors - Only one allowed here (this differs from WebServiceDataProvider)
         // code and description fields must both be not null and not empty string to add a major
         if($data['major_code'] !== null && $data['major_code'] !== ''

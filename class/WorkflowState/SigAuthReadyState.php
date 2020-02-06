@@ -24,4 +24,8 @@ use Intern\WorkflowState;
 class SigAuthReadyState extends WorkflowState {
     const friendlyName = 'Ready for Signature Authority Approval';
     const sortIndex    = 2;
+
+    public function getAllowedPermissionList(){
+        return array('sig_auth_approve', 'dean_approve', 'grad_school_approve', 'register', 'oied_certify', 'distance_ed_register');
+    }
 }

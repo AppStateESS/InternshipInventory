@@ -28,23 +28,19 @@ use Intern\TermFactory;
  */
 class RequestBackgroundCheck {
 
-    public function __construct()
-    {
+    public function __construct(){}
 
-    }
-
-    public function execute()
-    {
+    public function execute(){
 
         $i = \Intern\InternshipFactory::getInternshipById($_REQUEST['internship_id']);
         $i->background_check = 1;
-        $agency = $i->getAgency();
+        $host = $i->getHost();
 
         $i->save();
 
         $term = TermFactory::getTermByTermCode($i->getTerm());
 
-        $email = new \Intern\Email\BackgroundCheckEmail(\Intern\InternSettings::getInstance(), $i, $term, $agency, true, false);
+        $email = new \Intern\Email\BackgroundCheckEmail(\Intern\InternSettings::getInstance(), $i, $term, $host, true, false);
         $email->send();
 
         exit;

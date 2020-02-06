@@ -64,6 +64,8 @@ class ResultsUI implements UI
         $faculty = null;
         $startDate = null;
         $endDate = null;
+        $host = null;
+        $subHost = null;
 
         /**
          * Check if any search fields are set.
@@ -109,11 +111,17 @@ class ResultsUI implements UI
         if (isset($_REQUEST['end_date'])) {
             $endDate = $_REQUEST['end_date'];
         }
+        if (isset($_REQUEST['host_select'])) {
+            $host = $_REQUEST['host_select'];
+        }
+        /*if (isset($_REQUEST['sub_host'])) {
+            $subHost = $_REQUEST['sub_host'];
+        }*/
         /* Get Pager */
         $pager = self::getPager($name, $dept, $term, $ugradMajor, $gradProg,
                         $level, $type, $campus, $loc, $state, $country,
                         $workflowState, $courseSubject, $courseNum, $courseSect,
-                        $oied, $faculty, $startDate, $endDate);
+                        $oied, $faculty, $startDate, $endDate, $host);
 
         $pagerContent = $pager->get();
 
@@ -147,7 +155,7 @@ class ResultsUI implements UI
             $campus = null, $loc = null, $state = null, $country = null,
             $workflowState = null, $courseSubject = null, $courseNum = null,
             $courseSect = null, $oied = null, $faculty = null,
-            $startDate = null, $endDate = null)
+            $startDate = null, $endDate = null, $host = null, $subHost = null)
     {
         $pager = new SubselectPager('intern_internship',
                 '\Intern\InternshipRestored');
@@ -308,6 +316,16 @@ class ResultsUI implements UI
         if (isset($campus) && $campus != '-1') {
             $pager->addWhere('campus', $campus);
         }
+
+        // Host
+        if (!is_null($host) && $host != '-1') {
+            $pager->addWhere('host_id', $host);
+        }
+
+        /* Sub Host
+        if (!is_null($subHost) && $subHost != '-1') {
+            $pager->addWhere('sub_host_id', $subHost);
+        }*/
 
         // Domestic state
         if (!is_null($state) && $state != '-1') {

@@ -15,18 +15,17 @@ $permissions['change_term']             = _('Change the Internships Term.');
 
 // Permissions for workflow transitions
 $permissions['create_internship']= _('Create Internships');
-$permissions['dept_approve']     = _('Department Approve');
 $permissions['sig_auth_approve'] = _('Signature Authority Approve');
 $permissions['dean_approve']     = _('Dean Approve');
 $permissions['register']         = _('Register');
 $permissions['cancel']           = _('Cancel');
 $permissions['reinstate']        = _('Reinstate');
 
-
 // Special workflow transitions
 $permissions['oied_certify']         = _('OIED Certification');
 $permissions['distance_ed_register'] = _('Distance Ed Registration');
 $permissions['grad_school_approve']  = _('Graduate School Approval');
+$permissions['special_host']         = _('Special Host');
 
 // Access to all departments
 $permissions['all_departments']      = _('Access All Departments');

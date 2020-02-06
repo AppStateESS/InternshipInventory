@@ -23,16 +23,16 @@ CREATE TABLE intern_department (
 
 CREATE TABLE intern_faculty (
     id              INT NOT NULL, --banner id
-    username        character varying NOT NULL,
-    first_name      character varying NOT NULL,
-    last_name       character varying NOT NULL,
-    phone           character varying,
-    fax             character varying,
-    street_address1 character varying,
-    street_address2 character varying,
-    city            character varying,
-    state           character varying,
-    zip             character varying,
+    username        VARCHAR NOT NULL,
+    first_name      VARCHAR NOT NULL,
+    last_name       VARCHAR NOT NULL,
+    phone           VARCHAR,
+    fax             VARCHAR,
+    street_address1 VARCHAR,
+    street_address2 VARCHAR,
+    city            VARCHAR,
+    state           VARCHAR,
+    zip             VARCHAR,
     PRIMARY KEY(id)
 );
 
@@ -41,6 +41,79 @@ CREATE TABLE intern_faculty_department (
     department_id   INT NOT NULL REFERENCES intern_department(id),
     PRIMARY KEY (faculty_id, department_id)
 );
+
+--reason for admin stop that only they see
+--reason for stop that user sees
+--Warning, Stop
+--name to check sup on flag
+--see about having this as Admin Setting
+CREATE TABLE intern_special_host(
+   id INT NOT NULL,
+   admin_message VARCHAR NOT NULL,
+   user_message VARCHAR NOT NULL,
+   stop_level VARCHAR NOT NULL,
+   sup_check VARCHAR,
+   email VARCHAR NOT NULL,
+   special_notes VARCHAR,
+   PRIMARY KEY(id)
+);
+
+--overall host name
+--flag to show if a new host or one that is awaiting approval 0=not approved 1=approve 2=awaiting
+CREATE TABLE intern_host (
+    id INT NOT NULL,
+    host_name VARCHAR NOT NULL,
+    host_condition INT REFERENCES intern_special_host(id),
+    host_condition_date VARCHAR,
+    host_approve_flag INT NOT NULL DEFAULT 2,
+    host_notes VARCHAR,
+    PRIMARY KEY(id)
+);
+
+--sub name of host that will contain the address information
+--flag to show if a new host or one that is awaiting approval 0=not approved 1=approve 2=awaiting
+CREATE TABLE intern_sub_host (
+       id INT NOT NULL,
+       main_host_id INT REFERENCES intern_host(id),
+       sub_name VARCHAR NOT NULL,
+       address VARCHAR NULL,
+       city VARCHAR NULL,
+       state VARCHAR,
+       zip VARCHAR NULL,
+       province VARCHAR,
+       country VARCHAR,
+       other_name VARCHAR,
+       sub_condition INT REFERENCES intern_special_host(id),
+       sub_condition_date VARCHAR,
+       sub_approve_flag INT NOT NULL DEFAULT 2,
+       sub_notes VARCHAR,
+       PRIMARY KEY(id)
+);
+
+--be able to handle old and new sups
+CREATE TABLE intern_supervisor(
+    id INT NOT NULL,
+    host_id INT REFERENCES intern_host(id),
+    supervisor_first_name VARCHAR NULL,
+    supervisor_last_name VARCHAR NULL,
+    supervisor_title VARCHAR NULL,
+    supervisor_phone VARCHAR NULL,
+    supervisor_email VARCHAR NULL,
+    supervisor_fax VARCHAR NULL,
+    supervisor_address VARCHAR NULL,
+    supervisor_city VARCHAR NULL,
+    supervisor_state VARCHAR NULL,
+    supervisor_zip VARCHAR NULL,
+    supervisor_province character varying,
+    supervisor_country VARCHAR,
+    address_same_flag BOOLEAN DEFAULT false,
+    PRIMARY KEY(id)
+);
+
+CREATE SEQUENCE intern_special_host_seq;
+CREATE SEQUENCE intern_supervisor_seq;
+CREATE SEQUENCE intern_host_seq;
+CREATE SEQUENCE intern_sub_host_seq;
 
 CREATE TABLE intern_state (
        abbr VARCHAR NOT NULL UNIQUE,
@@ -373,8 +446,8 @@ INSERT INTO "intern_country" ("id", "name") VALUES ('AX', 'Åland Islands');
 
 CREATE TABLE intern_subject (
     id INT NOT NULL,
-    abbreviation character varying(10) NOT NULL,
-    description character varying(128) NOT NULL,
+    abbreviation VARCHAR(10) NOT NULL,
+    description VARCHAR(128) NOT NULL,
     active SMALLINT NOT NULL DEFAULT 1,
     PRIMARY KEY(id)
 );
@@ -477,33 +550,6 @@ INSERT INTO intern_subject (id, abbreviation, description) VALUES (nextval('inte
 INSERT INTO intern_subject (id, abbreviation, description) VALUES (nextval('intern_subject_seq'),'WS','Women’s Studies');
 INSERT INTO intern_subject (id, abbreviation, description) VALUES (nextval('intern_subject_seq'),'PHO','Photography');
 
-CREATE TABLE intern_agency (
-       id INT NOT NULL,
-       name VARCHAR NOT NULL,
-       address VARCHAR NULL,
-       city VARCHAR NULL,
-       state VARCHAR,
-       zip VARCHAR NULL,
-       province character varying,
-       country VARCHAR,
-       phone VARCHAR,
-       supervisor_first_name VARCHAR NULL,
-       supervisor_last_name VARCHAR NULL,
-       supervisor_title VARCHAR NULL,
-       supervisor_phone VARCHAR NULL,
-       supervisor_email VARCHAR NULL,
-       supervisor_fax VARCHAR NULL,
-       supervisor_address VARCHAR NULL,
-       supervisor_city VARCHAR NULL,
-       supervisor_state VARCHAR NULL,
-       supervisor_zip VARCHAR NULL,
-       supervisor_province character varying,
-       supervisor_country VARCHAR,
-       address_same_flag BOOLEAN DEFAULT false,
-       PRIMARY KEY(id)
-);
-
-
 CREATE TABLE intern_affiliation_agreement(
   id INT NOT NULL,
   name VARCHAR NOT NULL,
@@ -549,8 +595,8 @@ CREATE SEQUENCE intern_affiliation_agreement_seq;
 
 -- Term format YYYY# (e.g. 201110 is Spring 2011, 201130 is Fall 2011)
 CREATE TABLE intern_term (
-       term character varying NOT NULL,
-       description character varying NOT NULL,
+       term VARCHAR NOT NULL,
+       description VARCHAR NOT NULL,
        available_on_timestamp INT NOT NULL,
        census_date_timestamp INT NOT NULL,
        start_timestamp INT NOT NULL,
@@ -563,32 +609,31 @@ CREATE TABLE intern_term (
 
 CREATE TABLE intern_student_autocomplete (
     banner_id           INT NOT NULL,
-    username            character varying,
-    first_name          character varying,
-    middle_name         character varying,
-    last_name           character varying,
-    first_name_lower    character varying,
-    middle_name_lower   character varying,
-    last_name_lower     character varying,
-    first_name_meta     character varying,
-    middle_name_meta    character varying,
-    last_name_meta      character varying,
+    username            VARCHAR,
+    first_name          VARCHAR,
+    middle_name         VARCHAR,
+    last_name           VARCHAR,
+    first_name_lower    VARCHAR,
+    middle_name_lower   VARCHAR,
+    last_name_lower     VARCHAR,
+    first_name_meta     VARCHAR,
+    middle_name_meta    VARCHAR,
+    last_name_meta      VARCHAR,
     start_term          INT,
     end_term            INT,
     PRIMARY KEY(banner_id)
 );
 
 CREATE TABLE intern_student_level(
-  code varchar NOT NULL,
-  description varchar,
-  level varchar NOT NULL,
+  code VARCHAR NOT NULL,
+  description VARCHAR,
+  level VARCHAR NOT NULL,
   PRIMARY KEY(code)
 );
 
 CREATE TABLE intern_internship (
        id INT NOT NULL,
-       term character varying NOT NULL REFERENCES intern_term(term),
-       agency_id INT NOT NULL REFERENCES intern_agency(id),
+       term VARCHAR NOT NULL REFERENCES intern_term(term),
        faculty_id INT REFERENCES intern_faculty(id),
        department_id INT NOT NULL,
        start_date INT DEFAULT 0,
@@ -607,13 +652,13 @@ CREATE TABLE intern_internship (
        level VARCHAR NOT NULL REFERENCES intern_student_level,
        phone VARCHAR,
        email VARCHAR NOT NULL,
-       major_code character varying,
-       major_description character varying,
-       campus character varying(128) NOT NULL,
-       first_name_meta character varying,
-       middle_name_meta character varying,
-       last_name_meta character varying,
-       preferred_name_meta character varying,
+       major_code VARCHAR,
+       major_description VARCHAR,
+       campus VARCHAR(128) NOT NULL,
+       first_name_meta VARCHAR,
+       middle_name_meta VARCHAR,
+       last_name_meta VARCHAR,
+       preferred_name_meta VARCHAR,
        loc_address VARCHAR NULL,
        loc_city VARCHAR NULL,
        loc_state VARCHAR NULL,
@@ -625,8 +670,8 @@ CREATE TABLE intern_internship (
        course_sect VARCHAR(20) NULL,
        course_title VARCHAR(40) NULL,
        credits INT NULL,
-       corequisite_number character varying,
-       corequisite_section character varying,
+       corequisite_number VARCHAR,
+       corequisite_section VARCHAR,
        avg_hours_week INT NULL,
        domestic SMALLINT NOT NULL,
        international SMALLINT NOT NULL,
@@ -638,9 +683,13 @@ CREATE TABLE intern_internship (
        experience_type VARCHAR DEFAULT 'internship',
        background_check SMALLINT DEFAULT 0,
        drug_check SMALLINT DEFAULT 0,
-       form_token character varying,
+       form_token VARCHAR,
        contract_type VARCHAR,
        affiliation_agreement_id INT,
+       supervisor_id INT REFERENCES intern_supervisor(id),
+       host_id INT REFERENCES intern_host(id),
+       host_sub_id INT REFERENCES intern_special_host(id),
+       loc_phone VARCHAR,
        PRIMARY KEY(id)
 );
 
@@ -660,10 +709,10 @@ CREATE SEQUENCE intern_contract_documents_seq;
 CREATE TABLE intern_emergency_contact (
     id          INT NOT NULL,
     internship_id INT REFERENCES intern_internship(id),
-    name        character varying,
-    relation    character varying,
-    phone       character varying,
-    email       character varying,
+    name        VARCHAR,
+    relation    VARCHAR,
+    phone       VARCHAR,
+    email       VARCHAR,
     PRIMARY KEY (id)
 );
 
@@ -684,10 +733,10 @@ CREATE TABLE intern_admin (
 CREATE TABLE intern_change_history (
     id INT NOT NULL,
     internship_id INT NOT NULL REFERENCES intern_internship(id),
-    username character varying(40) NOT NULL,
+    username VARCHAR(40) NOT NULL,
     timestamp INT NOT NULL,
-    from_state character varying(40) NOT NULL,
-    to_state character varying(40) NOT NULL,
+    from_state VARCHAR(40) NOT NULL,
+    to_state VARCHAR(40) NOT NULL,
     note text,
     PRIMARY KEY(id)
 );
@@ -852,7 +901,6 @@ CREATE SEQUENCE intern_major_seq;
 SELECT SETVAL('intern_major_seq', MAX(id)) FROM intern_major;
 
 CREATE SEQUENCE intern_student_seq;
-CREATE SEQUENCE intern_agency_seq;
 CREATE SEQUENCE intern_term_seq;
 CREATE SEQUENCE intern_internship_seq;
 CREATE SEQUENCE intern_document_seq;
@@ -860,22 +908,22 @@ CREATE SEQUENCE intern_admin_seq;
 
 -- Local table for import and storage of student info
 CREATE TABLE intern_local_student_data (
-    student_id          character varying NOT NULL,
-    user_name           character varying NOT NULL,
-    email               character varying NOT NULL,
-    first_name          character varying,
-    middle_name         character varying,
-    last_name           character varying,
-    preferred_name      character varying,
-    confidential        character varying,
-    level               character varying,
-    campus              character varying,
+    student_id          VARCHAR NOT NULL,
+    user_name           VARCHAR NOT NULL,
+    email               VARCHAR NOT NULL,
+    first_name          VARCHAR,
+    middle_name         VARCHAR,
+    last_name           VARCHAR,
+    preferred_name      VARCHAR,
+    confidential        VARCHAR,
+    level               VARCHAR,
+    campus              VARCHAR,
     gpa                 double precision,
     credit_hours        INT DEFAULT 0,
-    major_code          character varying,
-    major_description   character varying,
-    grad_date           character varying,
-    phone               character varying,
+    major_code          VARCHAR,
+    major_description   VARCHAR,
+    grad_date           VARCHAR,
+    phone               VARCHAR,
     PRIMARY KEY(student_id)
 );
 

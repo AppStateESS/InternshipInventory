@@ -12,7 +12,7 @@
     "corejs-typeahead": "^1.1.1",
     "react": "~15.6.1",
     "react-addons-css-transition-group": "~15.6.0",
-    "react-calendar": "^2.19.0",
+    "react-calendar": "^2.19.2",
     "react-dom": "~15.6.1",
     "react-dropzone": "~3.13.3",
     "react-input-calendar": "^0.5.4"
@@ -36,11 +36,12 @@
     "react-bootstrap": "^0.31.0",
     "strip-loader": "~0.1.2",
     "style-loader": "~0.18.2",
-    "webpack": "^3.0.0"
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.1.2"
   },
   "scripts": {
-    "dev": "webpack --config webpack.config.dev.js -d --watch",
-    "build": "webpack --config webpack.config.prod.js"
+    "dev": "webpack --mode development --watch",
+    "build": "rm -rf ./javascript/build && webpack --mode production"
   },
   "repository": {
     "type": "git",

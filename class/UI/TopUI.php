@@ -64,6 +64,11 @@ class TopUI implements UI
             $adminOptions['EDIT_TERMS_LINK'] = \PHPWS_Text::secureLink('Edit Terms','intern',array('action' => 'edit_terms'));
         }
 
+        // Approve Host Permissions
+        if(\Current_User::allow('intern', 'special_host')){
+            $adminOptions['APPROVE_HOST_LINK'] = \PHPWS_Text::secureLink('Approve Host','intern',array('action' => 'showApproveHost'));
+        }
+
         // Link to the Affiliation Agreements
         if(\Current_User::allow('intern', 'affiliation_agreement')){
             $adminOptions['AFFIL_AGREE_LINK'] = \PHPWS_Text::secureLink('Affiliation Agreements','intern',array('action' => 'showAffiliateAgreement'));

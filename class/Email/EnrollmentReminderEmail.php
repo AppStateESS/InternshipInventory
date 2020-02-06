@@ -57,7 +57,7 @@ class EnrollmentReminderEmail extends Email {
     protected function buildMessage()
     {
         $faculty = $this->internship->getFaculty();
-        $agency = $this->internship->getAgency();
+        $host = $this->internship->getHost();
 
         $this->tpl['NAME']    = $this->internship->getFullName();
         $this->tpl['BANNER']  = $this->internship->getBannerId();
@@ -97,7 +97,8 @@ class EnrollmentReminderEmail extends Email {
             $this->tpl['FACULTY'] = $faculty->getFullName();
         }
 
-        $this->tpl['AGENCY'] = $agency->getName();
+        $this->tpl['HOST'] = $host->getMainName();
+        $this->tpl['SUB_HOST'] = $host->getSubName();
         $this->tpl['CENSUS_DATE'] = date('l, F j, Y', $this->censusTimestamp);
 
         $this->subject = 'Internship Registration Pending';

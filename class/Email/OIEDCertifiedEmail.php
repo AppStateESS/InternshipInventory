@@ -34,7 +34,7 @@ use \Intern\InternSettings;
 class OIEDCertifiedEmail extends Email{
 
     private $internship;
-    private $agency;
+    private $host;
     private $term;
 
     /**
@@ -46,7 +46,7 @@ class OIEDCertifiedEmail extends Email{
 
         $this->internship = $internship;
         $this->term = $term;
-        $this->agency = $internship->getAgency();
+        $this->host = $internship->getHost();
     }
 
     protected function getTemplateFileName() {
@@ -61,7 +61,7 @@ class OIEDCertifiedEmail extends Email{
         $this->tpl['BANNER'] = $this->internship->getBannerId();
         $this->tpl['TERM'] = $this->term->getDescription();
         $this->tpl['FACULTY'] = $faculty->getFullName();
-        $this->tpl['AGENCY'] = $this->agency->getName();
+        $this->tpl['HOST'] = $this->host->getName();
 
         $this->to = $faculty->getUsername() . $this->emailSettings->getEmailDomain();
 

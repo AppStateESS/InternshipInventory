@@ -23,6 +23,8 @@ namespace Intern\Command;
 use \Intern\InternshipFactory;
 use \Intern\WorkflowStateFactory;
 use \Intern\TermFactory;
+use \Intern\Supervisor;
+use \Intern\SupervisorFactory;
 use \Intern\EmergencyContactFactory;
 use \Intern\EmergencyContact;
 use \Intern\DatabaseStorage;
@@ -36,18 +38,17 @@ use \Intern\DatabaseStorage;
  */
 class CopyInternshipToNextTerm {
 
-    public function __construct()
-    {
+    public function __construct() {}
 
-    }
-
-    public function execute()
-    {
+    public function execute() {
         // Load the existing internship using its ID
         $internship = InternshipFactory::getInternshipById($_REQUEST['internshipId']);
 
         // Load the emergency contacts from the old internship
         $contacts = EmergencyContactFactory::getContactsForInternship($internship);
+
+        //Load supervisor
+        $supervisor = SupervisorFactory::getSupervisorById($internship->getSupervisorId());
 
         // Clear the ID so that insert a new internship into the database the
         // next time we call save()
@@ -70,6 +71,16 @@ class CopyInternshipToNextTerm {
 
         $internship->setTerm($newTerm->getTermCode());
 
+        // Copy over supervisor
+        $newSupervisor = new Supervisor($supervisor->supervisor_first_name, $supervisor->supervisor_last_name, $supervisor->supervisor_title,
+                    $supervisor->supervisor_phone, $supervisor->supervisor_email,
+                    $supervisor->supervisor_fax, $supervisor->supervisor_address,
+                    $supervisor->supervisor_city, $supervisor->supervisor_state,
+                    $supervisor->supervisor_zip, $supervisor->supervisor_province,
+                    $supervisor->supervisor_country, $supervisor->host_id);
+        DatabaseStorage::save($newSupervisor);
+        $internship->setSupervisorId($newSupervisor->id);
+
         // Save the new internship
         $copyId = $internship->save();
 
@@ -84,7 +95,6 @@ class CopyInternshipToNextTerm {
             $newContact = new EmergencyContact($internship, $name, $relation, $phone, $email);
             DatabaseStorage::save($newContact);
         }
-
 
         // Show message if user edited internship
         \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, 'Continued internship for ' . $internship->getFullName() . ' to ' . $newTerm->getDescription() . '.');

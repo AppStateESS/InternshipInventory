@@ -18,17 +18,14 @@
  * Copyright 2011-2018 Appalachian State University
  */
 
-namespace Intern;
+namespace Intern\WorkflowState;
+use Intern\WorkflowState;
 
-/**
- * AgencyRestored -- A dummy class with
- * an empty constructor to allow restoring
- * Internship objects from DB. This is necessary
- * until we're running php 5.4.0 and can use
- * ReflectionClass::newInstanceWithoutConstructor.
- */
-class AgencyRestored extends Agency {
+class DeniedState extends WorkflowState {
+    const friendlyName = 'Denied';
+    const sortIndex    = 9;
 
-    // Override constructor with empty parameter list
-    public function __construct(){}
+    public function getAllowedPermissionList(){
+        return array('special_host');
+    }
 }

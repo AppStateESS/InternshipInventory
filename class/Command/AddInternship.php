@@ -22,7 +22,9 @@ namespace Intern\Command;
 
 use Intern\Internship;
 use Intern\DepartmentFactory;
-use Intern\Agency;
+use Intern\SubHost;
+use Intern\SubHostFactory;
+use Intern\Supervisor;
 use Intern\DataProvider\Student\StudentDataProviderFactory;
 use Intern\WorkflowStateFactory;
 use Intern\ChangeHistory;
@@ -36,17 +38,13 @@ use Intern\DatabaseStorage;
  * Controller class for creating an new internship.
  *
  * @author Jeremy Booker
- * @package hms
+ * @package intern
  */
 class AddInternship {
 
-    public function __construct()
-    {
+    public function __construct() {}
 
-    }
-
-    public function execute()
-    {
+    public function execute() {
         // Check permissions
         if(!\Current_User::allow('intern', 'create_internship')){
             \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, 'You do not have permission to create new internships.');
@@ -90,13 +88,17 @@ class AddInternship {
             throw new \Exception('Could not load department.');
         }
 
-        // Create and save the agency object
-        $agency = new Agency($_POST['agency']);
-        DatabaseStorage::save($agency);
+        // Get the host and sub objects
+        $sub = SubHostFactory::getSubById($_POST['sub_host']);
+        if(!($sub instanceof SubHost)){
+            throw new \Exception('Could not load Sub Host.');
+        }
+
+        $supervisor = new Supervisor(null,null,null,null,null,null,null,null,null,null,null,null,null);
+        DatabaseStorage::save($supervisor);
 
         // Get the location
         $location = $_POST['location'];
-
         if ($location == 'international'){
             $state = null;
             $country = $_POST['country'];
@@ -106,16 +108,22 @@ class AddInternship {
         }
 
         // Create a new internship object
-        $intern = new Internship($student, $term, $location, $state, $country, $department, $agency);
+        $intern = new Internship($student, $term, $location, $state, $country, $department, $sub, $supervisor);
 
         // Save it!!
         $intern->save();
 
-        $t = \Intern\WorkflowTransitionFactory::getTransitionByName('Intern\WorkflowTransition\CreationTransition');
-        $workflow = new \Intern\WorkflowController($intern, $t);
-        $workflow->doTransition(null);
-        $workflow->doNotification(null);
-
+        if(SubHostFactory::deniedCheck($_POST['sub_host'])){
+            $t = \Intern\WorkflowTransitionFactory::getTransitionByName('Intern\WorkflowTransition\DeniedTransition');
+            $workflow = new \Intern\WorkflowController($intern, $t);
+            $workflow->doTransition(null);
+            $workflow->doNotification(null);
+        } else{
+            $t = \Intern\WorkflowTransitionFactory::getTransitionByName('Intern\WorkflowTransition\CreationTransition');
+            $workflow = new \Intern\WorkflowController($intern, $t);
+            $workflow->doTransition(null);
+            $workflow->doNotification(null);
+        }
         // Show a success notice and redirect to the edit page
         \NQ::simple('intern', \Intern\UI\NotifyUI::SUCCESS, "Created internship for {$intern->getFullName()}");
         \NQ::close();
@@ -127,8 +135,7 @@ class AddInternship {
      * Check all the input fields for missing values.
      * @return Array List of missing field names
      */
-    private function checkForMissingInput()
-    {
+    private function checkForMissingInput() {
         // Check for missing data
         $missingFieldList = array();
 
@@ -162,9 +169,12 @@ class AddInternship {
             $missingFieldList[] = 'department';
         }
 
-        // Check Agency
-        if (!isset($_POST['agency']) || (isset($_POST['agency']) && $_POST['agency'] == '')) {
-            $missingFieldList[] = 'agency';
+        // Check Host
+        if (!isset($_POST['main_host']) || (isset($_POST['main_host']) && $_POST['main_host'] === '-1')) {
+            $missingFieldList[] = 'host';
+        }
+        if (!isset($_POST['sub_host']) || (isset($_POST['sub_host']) && $_POST['sub_host'] === '-1')) {
+            $missingFieldList[] = 'sub';
         }
 
         return $missingFieldList;

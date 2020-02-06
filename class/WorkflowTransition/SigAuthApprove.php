@@ -21,6 +21,7 @@
 namespace Intern\WorkflowTransition;
 use Intern\WorkflowTransition;
 use Intern\Internship;
+use Intern\SubHostFactory;
 use Intern\Exception\MissingDataException;
 
 class SigAuthApprove extends WorkflowTransition {
@@ -28,15 +29,19 @@ class SigAuthApprove extends WorkflowTransition {
     const destState   = 'SigAuthApprovedState';
     const actionName  = 'Approved by Signature Authority';
 
-    public function getAllowedPermissionList()
-    {
+    public function getAllowedPermissionList(){
         return array('sig_auth_approve');
     }
 
-    public function allowed(Internship $i)
-    {
+    public function allowed(Internship $i){
         // If international and not certified by OIED, then return false
         if($i->international == 1 && $i->oied_certified != 1){
+            return false;
+        }
+
+        // If host waiting, then return false
+        $hostStatus = SubHostFactory:: getMainHostById($i->getHostId());
+        if($hostStatus['host_approve_flag'] != 1 ){
             return false;
         }
 
@@ -49,21 +54,20 @@ class SigAuthApprove extends WorkflowTransition {
         }
     }
 
-    public function checkRequiredFields(Internship $i)
-    {
+    public function checkRequiredFields(Internship $i){
         $emergName = $i->getEmergencyContactName();
         if(!isset($emergName)){
             throw new MissingDataException("Please add an emergency contact.");
         }
-        
+
         /*
-         * Prevents internship moving from signature authority approved to dean status without an address, city, and zip code.
+         * Prevents internship moving from signature authority approved to dean status without an address, city, zip code, and dates.
          */
-        if ($i->state == 'SigAuthReadyState' && isset($_POST['workflow_action']) && $_POST['workflow_action'] == 'Intern\WorkflowTransition\SigAuthApprove') {
-            if (empty($_POST['loc_city']) || empty($_POST['loc_zip']) || empty($_POST['loc_address'])) {
-                        throw new MissingDataException("This internship cannot continue to dean approval without a full physical location address.");
-                }
+        if ($i->state == 'SigAuthReadyState' && isset($_POST['workflow_action']) && $_POST['workflow_action'] == 'Intern\WorkflowTransition\SigAuthApprove'){
+            if (empty($_POST['start_date']) || empty($_POST['end_date'])){
+                throw new MissingDataException("This internship cannot continue to dean approval without start and end dates.");
+            }
         }
-        
+
     }
 }

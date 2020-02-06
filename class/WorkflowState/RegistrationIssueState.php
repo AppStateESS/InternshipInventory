@@ -24,4 +24,8 @@ use Intern\WorkflowState;
 class RegistrationIssueState extends WorkflowState {
     const friendlyName = 'Registration Issue';
     const sortIndex    = 7;
+
+    public function getAllowedPermissionList(){
+        return array('grad_school_approve', 'register', 'oied_certify', 'distance_ed_register');
+    }
 }

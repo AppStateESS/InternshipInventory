@@ -25,7 +25,7 @@ use Intern\Internship;
 class UndoUndergradRegistration extends WorkflowTransition {
     const sourceState = 'RegisteredState';
     const destState   = 'DeanApprovedState';
-    const actionName  = 'Mark as not registered';
+    const actionName  = 'Mark as Not Registered';
 
     const sortIndex = 6;
 

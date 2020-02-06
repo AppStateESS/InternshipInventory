@@ -62,19 +62,19 @@
           <div id="bannerid" class="col-lg-6"><p class="form-control-static">{BANNER}</p></div>
         </div>
 
-        <div class="form-group required">
-          <label class="col-lg-3 control-label" for="{STUDENT_FIRST_NAME_ID}">{STUDENT_FIRST_NAME_LABEL_TEXT}</label>
-          <div class="col-lg-6">{STUDENT_FIRST_NAME}</div>
+        <div class="form-group">
+          <label class="col-lg-3 control-label" for="{STUDENT_FIRST_NAME_ID}">First Name</label>
+          <div class="col-lg-6"><p class="form-control-static">{STUDENT_FIRST_NAME}</p></div>
         </div>
 
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{STUDENT_MIDDLE_NAME_ID}">{STUDENT_MIDDLE_NAME_LABEL_TEXT}</label>
-          <div class="col-lg-6">{STUDENT_MIDDLE_NAME}</div>
+          <label class="col-lg-3 control-label" for="{STUDENT_MIDDLE_NAME_ID}">Middle Name/Initial</label>
+          <div class="col-lg-6"><p class="form-control-static">{STUDENT_MIDDLE_NAME}</p></div>
         </div>
 
-        <div class="form-group required">
-          <label class="col-lg-3 control-label" for="{STUDENT_LAST_NAME_ID}">{STUDENT_LAST_NAME_LABEL_TEXT}</label>
-          <div class="col-lg-6">{STUDENT_LAST_NAME}</div>
+        <div class="form-group">
+          <label class="col-lg-3 control-label" for="{STUDENT_LAST_NAME_ID}">Last Name</label>
+          <div class="col-lg-6"><p class="form-control-static">{STUDENT_LAST_NAME}</p></div>
         </div>
 
         <div class="form-group">
@@ -82,13 +82,9 @@
           <div class="col-lg-6">{STUDENT_PREFERRED_NAME}</div>
         </div>
 
-        <div class="form-group required">
-          <label class="col-lg-3 control-label" for="{STUDENT_EMAIL_ID}">{STUDENT_EMAIL_LABEL_TEXT}</label>
-          <div class="col-lg-6">
-            <div class="input-group">
-              {STUDENT_EMAIL}<span class="input-group-addon">@appstate.edu</span>
-            </div>
-          </div>
+        <div class="form-group">
+          <label class="col-lg-3 control-label" for="{STUDENT_EMAIL_ID}">ASU Email</label>
+          <div class="col-lg-6"><p class="form-control-static">{STUDENT_EMAIL}@appstate.edu</p></div>
         </div>
 
         <div class="form-group">
@@ -199,48 +195,59 @@
             <p class="form-control-static">{LOCATION}</p>
           </div>
         </div>
+        <!-- Host info -->
+        <fieldset>
+            <!-- BEGIN host-state -->
+            <div class="form-group">
+                <label class="col-lg-3 control-label" for="{HOST_STATE_ID}">State</label>
+                <div id="internship_host_state" class="col-lg-6"><p class="form-control-static">{HOST_STATE}</p></div>
+            </div>
+            <!-- END host-state -->
 
-      </fieldset>
+            <div class="form-group">
+                <label class="col-lg-3 control-label" for="{HOST_ID}">Host Name</label>
+                <div class="col-lg-6"><p class="form-control-static">{HOST_NAME}</p></div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label" for="{HOST_ID}">Sub Name</label>
+                <div class="col-lg-9"><p class="form-control-static">{SUB_NAME}</p></div>
+            </div>
 
-      <div class="form-group">
-        <label class="col-lg-3 control-label" for="{LOC_ADDRESS_ID}">{LOC_ADDRESS_LABEL_TEXT}</label>
-        <div class="col-lg-6">{LOC_ADDRESS}</div>
-      </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label" for="{HOST_PHONE_ID}">Phone</label>
+                <div class="col-lg-6">{HOST_PHONE}</div>
+            </div>
 
-      <div class="form-group">
-        <label class="col-lg-3 control-label" for="{LOC_CITY_ID}">{LOC_CITY_LABEL_TEXT}</label>
-        <div class="col-lg-6">{LOC_CITY}</div>
-      </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label" for="{HOST_ADDRESS_ID}">Address</label>
+                <div id="internship_host_address" class="col-lg-6"><p class="form-control-static">{HOST_ADDRESS}</p></div>
+            </div>
 
-      <!-- BEGIN loc_state -->
-      <div class="form-group">
-        <div class="col-lg-3 control-label">
-          <label>State</label>
-        </div>
-        <div class="col-lg-6"><p class="form-control-static">{LOC_STATE}</p></div>
-      </div>
-      <!-- END loc_state -->
+            <div class="form-group">
+                <label class="col-lg-3 control-label" for="{HOST_CITY_ID}">City</label>
+                <div id="internship_host_city" class="col-lg-6"><p class="form-control-static">{HOST_CITY}</p></div>
+            </div>
 
-      <div class="form-group">
-        <label class="col-lg-3 control-label" for="{LOC_ZIP_ID}" id="internship_loc_zip-label">{LOC_ZIP_LABEL_TEXT}</label>
-        <div class="col-lg-6">{LOC_ZIP}</div>
-      </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label" for="{HOST_ZIP_ID}" id="internship_host_zip-label">{HOST_ZIP_LABEL_TEXT}</label>
+                <div id="internship_host_zip" class="col-lg-6"><p class="form-control-static">{HOST_ZIP}</p></div>
+            </div>
 
-      <div class="form-group">
-        <label class="col-lg-3 control-label" for="{LOC_PROVINCE_ID}">{LOC_PROVINCE_LABEL_TEXT}</label>
-        <div class="col-lg-6">{LOC_PROVINCE}</div>
-      </div>
+          <!-- BEGIN host-intl -->
+          <div class="form-group">
+            <label class="col-lg-3 control-label" for="{HOST_PROVINCE_ID}">Province/Territory</label>
+            <div id="internship_host_province" class="col-lg-6"><p class="form-control-static">{HOST_PROVINCE}</p></div>
+          </div>
 
-      <!-- BEGIN loc_country -->
-      <div class="form-group">
-        <div class="col-lg-3 control-label">
-          <label>Country</label>
-        </div>
-        <div class="col-lg-6"><p class="form-control-static">{LOC_COUNTRY}</p></div>
-      </div>
-      <!-- END loc_country -->
+          <div class="form-group">
+            <label class="col-lg-3 control-label" for="{HOST_COUNTRY_ID}">Country</label>
+            <div id="internship_host_country" class="col-lg-6"><p class="form-control-static">{HOST_COUNTRY}</p></div>
+          </div>
+          <!-- END host-intl -->
 
-      <h4>Term Information</h4>
+        </fieldset>
+
+      <legend>Term Information</legend>
       <div class="form-group">
         <div class="col-lg-3 control-label">
             <label>Term</label>
@@ -264,7 +271,7 @@
         <div class="col-lg-6">{END_DATE}</div>
       </div>
 
-      <h4>Course Information</h4>
+      <legend>Course Information</legend>
 
       <!-- Link to Informational Modal -->
       <div class="col-lg-12">
@@ -363,52 +370,6 @@
       </div>
       <!-- END corequisite -->
 
-      <fieldset>
-        <legend>Type</legend>
-        <div class="form-group">
-          <div class="col-lg-5 col-lg-offset-3">
-            <!-- BEGIN experience_type_repeat -->
-            <label class="radio"> {EXPERIENCE_TYPE} {EXPERIENCE_TYPE_LABEL} </label>
-            <!-- END experience_type_repeat -->
-          </div>
-
-          <!-- Link to Informational Modal -->
-          <div class="col-lg-4">
-            <a href="#typeModal" id="internship-type-help-button" class="pull-right"  data-toggle="modal"><i class="fa fa-question-circle"></i> Type Definitions</a>
-          </div>
-
-          <!-- Informational Modal -->
-          <div id ="typeModal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-              <div class = "modal-content">
-                <div class = "modal-header">
-                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  <h2>Internship Type Definitions</h2>
-                </div>
-                <div class="modal-body">
-                  <div id="internship-type-help">
-                    <h3>Student Teaching</h3>
-                    <p>A course requiring students to instruct or teach at an entity external to the institution, generally as part of the culminating curriculum of a teacher education or certificate program.</p>
-
-                    <h3>Practicum</h3>
-                    <p>A course requiring students to participate in an approved project or proposal that practically applies previously studied theory of the field or discipline under the supervision of an expert or qualified representative of the field or discipline.</p>
-
-                    <h3>Clinical</h3>
-                    <p>A course requiring medical- or healthcare-focused experiential work where students test, observe, experiment, or practice a field or discipline in a hands-on or simulated environment.</p>
-
-                    <h3>Internship</h3>
-                    <p>A course requiring students to participate in a partnership, professional employment, work experience or cooperative education with any entity external to the institution, generally under the supervision of an employee of the external entity.</p>
-                  </div>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-primary pull-right" data-dismiss="modal">Close</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </fieldset>
     </div>
     <!-- End of left column -->
 
@@ -526,86 +487,32 @@
           </div>
       </fieldset>
 
-      <!-- Agency info -->
-      <fieldset>
-        <legend>Host Details</legend>
-
-        <div class="form-group">
-          <label class="col-lg-3 control-label" for="{STUDENT_GPA_ID}">Host Name</label>
-          <div class="col-lg-6"><p class="form-control-static">{AGENCY_NAME}</p></div>
-        </div>
-
-        <div class="form-group">
-          <label class="col-lg-3 control-label" for="{AGENCY_PHONE_ID}">{AGENCY_PHONE_LABEL_TEXT}</label>
-          <div class="col-lg-6">{AGENCY_PHONE}</div>
-        </div>
-
-        <div class="checkbox">
-          <label> {COPY_ADDRESS_AGENCY} {COPY_ADDRESS_AGENCY_LABEL_TEXT} </label>
-        </div>
-
-        <div class="form-group">
-          <label class="col-lg-3 control-label" for="{AGENCY_ADDRESS_ID}">{AGENCY_ADDRESS_LABEL_TEXT}</label>
-          <div class="col-lg-6">{AGENCY_ADDRESS}</div>
-        </div>
-
-        <div class="form-group">
-          <label class="col-lg-3 control-label" for="{AGENCY_CITY_ID}">{AGENCY_CITY_LABEL_TEXT}</label>
-          <div class="col-lg-6">{AGENCY_CITY}</div>
-        </div>
-
-        <!-- BEGIN agency-state -->
-        <div class="form-group">
-          <label class="col-lg-3 control-label" for="{AGENCY_STATE_ID}">{AGENCY_STATE_LABEL_TEXT}</label>
-          <div class="col-lg-6">{AGENCY_STATE}</div>
-        </div>
-        <!-- END agency-state -->
-
-        <div class="form-group">
-          <label class="col-lg-3 control-label" for="{AGENCY_ZIP_ID}" id="internship_agency_zip-label">{AGENCY_ZIP_LABEL_TEXT}</label>
-          <div class="col-lg-6">{AGENCY_ZIP}</div>
-        </div>
-
-        <!-- BEGIN agency-intl -->
-        <div class="form-group">
-          <label class="col-lg-3 control-label" for="{AGENCY_PROVINCE_ID}">{AGENCY_PROVINCE_LABEL_TEXT}</label>
-          <div class="col-lg-6">{AGENCY_PROVINCE}</div>
-        </div>
-
-        <div class="form-group">
-          <label class="col-lg-3 control-label" for="{AGENCY_COUNTRY_ID}">{AGENCY_COUNTRY_LABEL_TEXT}</label>
-          <div class="col-lg-6">{AGENCY_COUNTRY}</div>
-        </div>
-        <!-- END agency-intl -->
-
-      </fieldset>
-
       <fieldset>
         <legend>Supervisor Info</legend>
 
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{AGENCY_SUP_FIRST_NAME_ID}">{AGENCY_SUP_FIRST_NAME_LABEL_TEXT}</label>
-          <div class="col-lg-6">{AGENCY_SUP_FIRST_NAME}</div>
+          <label class="col-lg-3 control-label" for="{SUPERVISOR_FIRST_NAME_ID}">{SUPERVISOR_FIRST_NAME_LABEL_TEXT}</label>
+          <div class="col-lg-6">{SUPERVISOR_FIRST_NAME}</div>
         </div>
 
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{AGENCY_SUP_LAST_NAME_ID}">{AGENCY_SUP_LAST_NAME_LABEL_TEXT}</label>
-          <div class="col-lg-6">{AGENCY_SUP_LAST_NAME}</div>
+          <label class="col-lg-3 control-label" for="{SUPERVISOR_LAST_NAME_ID}">{SUPERVISOR_LAST_NAME_LABEL_TEXT}</label>
+          <div class="col-lg-6">{SUPERVISOR_LAST_NAME}</div>
         </div>
 
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{AGENCY_SUP_TITLE_ID}">{AGENCY_SUP_TITLE_LABEL_TEXT}</label>
-          <div class="col-lg-6">{AGENCY_SUP_TITLE}</div>
+          <label class="col-lg-3 control-label" for="{SUPERVISOR_TITLE_ID}">{SUPERVISOR_TITLE_LABEL_TEXT}</label>
+          <div class="col-lg-6">{SUPERVISOR_TITLE}</div>
         </div>
 
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{AGENCY_SUP_EMAIL_ID}">{AGENCY_SUP_EMAIL_LABEL_TEXT}</label>
-          <div class="col-lg-6">{AGENCY_SUP_EMAIL}</div>
+          <label class="col-lg-3 control-label" for="{SUPERVISOR_EMAIL_ID}">{SUPERVISOR_EMAIL_LABEL_TEXT}</label>
+          <div class="col-lg-6">{SUPERVISOR_EMAIL}</div>
         </div>
 
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{AGENCY_SUP_FAX_ID}">{AGENCY_SUP_FAX_LABEL_TEXT}</label>
-          <div class="col-lg-6">{AGENCY_SUP_FAX}</div>
+          <label class="col-lg-3 control-label" for="{SUPERVISOR_FAX_ID}">{SUPERVISOR_FAX_LABEL_TEXT}</label>
+          <div class="col-lg-6">{SUPERVISOR_FAX}</div>
         </div>
 
         <div class="checkbox">
@@ -613,42 +520,42 @@
         </div>
 
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{AGENCY_SUP_PHONE_ID}">{AGENCY_SUP_PHONE_LABEL_TEXT}</label>
-          <div class="col-lg-6">{AGENCY_SUP_PHONE}</div>
+          <label class="col-lg-3 control-label" for="{SUPERVISOR_PHONE_ID}">{SUPERVISOR_PHONE_LABEL_TEXT}</label>
+          <div class="col-lg-6">{SUPERVISOR_PHONE}</div>
         </div>
 
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{AGENCY_SUP_ADDRESS_ID}">{AGENCY_SUP_ADDRESS_LABEL_TEXT}</label>
-          <div class="col-lg-6">{AGENCY_SUP_ADDRESS}</div>
+          <label class="col-lg-3 control-label" for="{SUPERVISOR_ADDRESS_ID}">{SUPERVISOR_ADDRESS_LABEL_TEXT}</label>
+          <div class="col-lg-6">{SUPERVISOR_ADDRESS}</div>
         </div>
 
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{AGENCY_SUP_CITY_ID}">{AGENCY_SUP_CITY_LABEL_TEXT}</label>
-          <div class="col-lg-6">{AGENCY_SUP_CITY}</div>
+          <label class="col-lg-3 control-label" for="{SUPERVISOR_CITY_ID}">{SUPERVISOR_CITY_LABEL_TEXT}</label>
+          <div class="col-lg-6">{SUPERVISOR_CITY}</div>
         </div>
 
-        <!-- BEGIN agency sup-state -->
+        <!-- BEGIN supervisor-state -->
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{AGENCY_SUP_STATE_ID}">{AGENCY_SUP_STATE_LABEL_TEXT}</label>
-          <div class="col-lg-6">{AGENCY_SUP_STATE}</div>
+          <label class="col-lg-3 control-label" for="{SUPERVISOR_STATE_ID}">{SUPERVISOR_STATE_LABEL_TEXT}</label>
+          <div class="col-lg-6">{SUPERVISOR_STATE}</div>
         </div>
-        <!-- END agency sup-state -->
+        <!-- END supervisor-state -->
 
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{AGENCY_SUP_ZIP_ID}" id="internship_agency_sup_zip-label">{AGENCY_SUP_ZIP_LABEL_TEXT}</label>
-          <div class="col-lg-6">{AGENCY_SUP_ZIP}</div>
+          <label class="col-lg-3 control-label" for="{SUPERVISOR_ZIP_ID}" id="internship_supervisor_sup_zip-label">{SUPERVISOR_ZIP_LABEL_TEXT}</label>
+          <div class="col-lg-6">{SUPERVISOR_ZIP}</div>
         </div>
 
-        <!-- BEGIN agency-sup-intl -->
+        <!-- BEGIN supervisor-intl -->
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{AGENCY_SUP_PROVINCE_ID}">{AGENCY_SUP_PROVINCE_LABEL_TEXT}</label>
-          <div class="col-lg-6">{AGENCY_SUP_PROVINCE}</div>
+          <label class="col-lg-3 control-label" for="{SUPERVISOR_PROVINCE_ID}">{SUPERVISOR_PROVINCE_LABEL_TEXT}</label>
+          <div class="col-lg-6">{SUPERVISOR_PROVINCE}</div>
         </div>
-        <!-- END agency-sup-intl -->
+        <!-- END supervisor-intl -->
 
         <div class="form-group">
-          <label class="col-lg-3 control-label" for="{AGENCY_SUP_COUNTRY_ID}">{AGENCY_SUP_COUNTRY_LABEL_TEXT}</label>
-          <div class="col-lg-6">{AGENCY_SUP_COUNTRY}</div>
+          <label class="col-lg-3 control-label" for="{SUPERVISOR_COUNTRY_ID}">{SUPERVISOR_COUNTRY_LABEL_TEXT}</label>
+          <div class="col-lg-6">{SUPERVISOR_COUNTRY}</div>
         </div>
       </fieldset>
 
@@ -677,23 +584,65 @@
           <div class="col-lg-3">{AVG_HOURS_WEEK}</div>
         </div>
       </fieldset>
+      <fieldset>
+        <legend>Type</legend>
+        <div class="form-group">
+          <div class="col-lg-5 col-lg-offset-3">
+            <!-- BEGIN experience_type_repeat -->
+            <label class="radio"> {EXPERIENCE_TYPE} {EXPERIENCE_TYPE_LABEL} </label>
+            <!-- END experience_type_repeat -->
+          </div>
 
-      <div class="form-group">
-        <button type="submit" class="btn btn-primary pull-right" id="{SUBMIT_ID}">{SUBMIT_VALUE}</button>
+          <!-- Link to Informational Modal -->
+          <div class="col-lg-4">
+            <a href="#typeModal" id="internship-type-help-button" class="pull-right"  data-toggle="modal"><i class="fa fa-question-circle"></i> Type Definitions</a>
+          </div>
+
+          <!-- Informational Modal -->
+          <div id ="typeModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+              <div class = "modal-content">
+                <div class = "modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h2>Internship Type Definitions</h2>
+                </div>
+                <div class="modal-body">
+                  <div id="internship-type-help">
+                    <h3>Student Teaching</h3>
+                    <p>A course requiring students to instruct or teach at an entity external to the institution, generally as part of the culminating curriculum of a teacher education or certificate program.</p>
+
+                    <h3>Practicum</h3>
+                    <p>A course requiring students to participate in an approved project or proposal that practically applies previously studied theory of the field or discipline under the supervision of an expert or qualified representative of the field or discipline.</p>
+
+                    <h3>Clinical</h3>
+                    <p>A course requiring medical- or healthcare-focused experiential work where students test, observe, experiment, or practice a field or discipline in a hands-on or simulated environment.</p>
+
+                    <h3>Internship</h3>
+                    <p>A course requiring students to participate in a partnership, professional employment, work experience or cooperative education with any entity external to the institution, generally under the supervision of an employee of the external entity.</p>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-primary pull-right" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="form-group print-hide">
+            <label for="{NOTES_ID}">Add a note</label> {NOTES}
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary pull-right" id="{SUBMIT_ID}">{SUBMIT_VALUE}</button>
+          </div>
+        </div>
       </div>
+
     </div> <!-- End of right column -->
   </div> <!-- End of main row -->
-
-  <div class="row">
-    <div class="col-lg-6">
-      <div class="form-group print-hide">
-        <label for="{NOTES_ID}">Add a note</label> {NOTES}
-      </div>
-      <div class="form-group">
-        <button type="submit" class="btn btn-primary pull-right" id="{SUBMIT_ID}">{SUBMIT_VALUE}</button>
-      </div>
-    </div>
-  </div>
 
   <div class="row">
     <div class="col-lg-8">

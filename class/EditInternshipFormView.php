@@ -41,7 +41,8 @@ class EditInternshipFormView {
     private $student;
     private $tpl;
 
-    private $agency;
+    private $host;
+    private $supervisor;
     private $department;
     private $term;
     private $studentExistingCreditHours;
@@ -54,14 +55,15 @@ class EditInternshipFormView {
      * @param string $pagetitle
      * @param Internship $i
      */
-    public function __construct(Internship $i, Student $student = null, Agency $agency, Term $term, $studentExistingCreditHours)
+    public function __construct(Internship $i, Student $student = null, SubHost $host, Supervisor $supervisor, Term $term, $studentExistingCreditHours)
     {
         \Layout::addPageTitle('Edit Internship');
 
         $this->intern = $i;
         $this->student = $student;
 
-        $this->agency = $agency;
+        $this->host = $host;
+        $this->supervisor = $supervisor;
         $this->department = $this->intern->getDepartment();
         $this->term = $term;
         $this->studentExistingCreditHours = $studentExistingCreditHours;
@@ -96,15 +98,27 @@ class EditInternshipFormView {
     /**
      * Builds the body of the internship form.
      */
-    public function buildInternshipForm()
-    {
+    public function buildInternshipForm() {
         javascript('jquery');
         javascript('jquery_ui');
         javascriptMod('intern', 'formGoodies');
 
-        // Form Submission setup
-        $this->form->setAction('index.php?module=intern&action=SaveInternship');
-        $this->form->addSubmit('submit', 'Save');
+        // Form Submission setup, only allowed to save if you have permission
+        $permAllowed = false;
+        $currentState = $this->intern->getWorkflowState();
+        $permAllowSave = $currentState->getAllowedPermissionList();
+        foreach($permAllowSave as $p){
+            if(\Current_User::allow('intern', $p)){
+                $permAllowed = true;
+            }
+        }
+        if($permAllowed){
+            $this->form->setAction('index.php?module=intern&action=SaveInternship');
+            $this->form->addSubmit('submit', 'Save');
+        } else{
+            $this->form->setAction('index.php?module=intern&action=ShowInternship&internship_id=' . $this->intern->getId());
+            $this->form->addSubmit('submit', 'Refresh');
+        }
 
         // Delete button setup
         if (\Current_User::isDeity()) {
@@ -114,40 +128,43 @@ class EditInternshipFormView {
         /*********************
          * Copy to Next Term *
         *********************/
+        if($this->intern->getStateName() != 'DeniedState'){
+            // Get next three terms
+            $term = TermFactory::getTermByTermCode($this->intern->getTerm());
 
-        // Get next three terms
-        $term = TermFactory::getTermByTermCode($this->intern->getTerm());
+            $nextTerm = TermFactory::getNextTerm($term);
 
-        $nextTerm = TermFactory::getNextTerm($term);
+            if($nextTerm !== null){
+                $nextTwoTerm = TermFactory::getNextTerm($nextTerm);
+            } else {
+                $nextTwoTerm = null;
+            }
 
-        if($nextTerm !== null){
-            $nextTwoTerm = TermFactory::getNextTerm($nextTerm);
-        } else {
-            $nextTwoTerm = null;
-        }
+            if($nextTwoTerm !== null){
+                $nextThreeTerm = TermFactory::getNextTerm($nextTwoTerm);
+            } else {
+                $nextThreeTerm = null;
+            }
 
-        if($nextTwoTerm !== null){
-            $nextThreeTerm = TermFactory::getNextTerm($nextTwoTerm);
-        } else {
-            $nextThreeTerm = null;
-        }
+            $this->tpl['CONTINUE_TERM_LIST'] = array();
 
-        $this->tpl['CONTINUE_TERM_LIST'] = array();
+            // Determine if we can copy to the next term (i.e. the next term exists)
+            if($nextTerm !== null){
+                $this->tpl['CONTINUE_TERM_LIST'][] = array('DEST_TERM'=>$nextTerm->getTermCode(), 'DEST_TERM_TEXT'=>$nextTerm->getDescription());
+            }
 
-        // Determine if we can copy to the next term (i.e. the next term exists)
-        if($nextTerm !== null){
-            $this->tpl['CONTINUE_TERM_LIST'][] = array('DEST_TERM'=>$nextTerm->getTermCode(), 'DEST_TERM_TEXT'=>$nextTerm->getDescription());
-        }
+            // Copy if it's Spring and exist, else if it's Summer 1 and exist.
+            if($nextThreeTerm !== null && $term->getSemesterType() == Term::SPRING){
+                $this->tpl['CONTINUE_TERM_LIST'][] = array('DEST_TERM'=>$nextThreeTerm->getTermCode(), 'DEST_TERM_TEXT'=>$nextThreeTerm->getDescription());
+            } else if($nextTwoTerm !== null && $term->getSemesterType() == Term::SUMMER1){
+                $this->tpl['CONTINUE_TERM_LIST'][] = array('DEST_TERM'=>$nextTwoTerm->getTermCode(), 'DEST_TERM_TEXT'=>$nextTwoTerm->getDescription());
+            }
 
-        // Copy if it's Spring and exist, else if it's Summer 1 and exist.
-        if($nextThreeTerm !== null && $term->getSemesterType() == Term::SPRING){
-            $this->tpl['CONTINUE_TERM_LIST'][] = array('DEST_TERM'=>$nextThreeTerm->getTermCode(), 'DEST_TERM_TEXT'=>$nextThreeTerm->getDescription());
-        } else if($nextTwoTerm !== null && $term->getSemesterType() == Term::SUMMER1){
-            $this->tpl['CONTINUE_TERM_LIST'][] = array('DEST_TERM'=>$nextTwoTerm->getTermCode(), 'DEST_TERM_TEXT'=>$nextTwoTerm->getDescription());
-        }
-
-        // If no terms are available to copy to, show a helpful message
-        if(sizeof($this->tpl['CONTINUE_TERM_LIST']) == 0) {
+            // If no terms are available to copy to, show a helpful message
+            if(sizeof($this->tpl['CONTINUE_TERM_LIST']) == 0) {
+                $this->tpl['CONTINUE_TERM_NO_TERMS'] = 'No future terms available.';
+            }
+        } else{
             $this->tpl['CONTINUE_TERM_NO_TERMS'] = 'No future terms available.';
         }
 
@@ -179,18 +196,6 @@ class EditInternshipFormView {
         /******************
          * Student fields *
          */
-        $this->form->addText('student_first_name');
-        $this->form->setLabel('student_first_name', 'First Name');
-        $this->form->addCssClass('student_first_name', 'form-control');
-
-        $this->form->addText('student_middle_name');
-        $this->form->setLabel('student_middle_name', 'Middle Name/Initial');
-        $this->form->addCssClass('student_middle_name', 'form-control');
-
-        $this->form->addText('student_last_name');
-        $this->form->setLabel('student_last_name', 'Last Name');
-        $this->form->addCssClass('student_last_name', 'form-control');
-
         $this->form->addText('student_preferred_name');
         $this->form->setLabel('student_preferred_name', 'Preferred Name');
         $this->form->addCssClass('student_preferred_name', 'form-control');
@@ -198,10 +203,6 @@ class EditInternshipFormView {
         $this->form->addText('student_phone');
         $this->form->setLabel('student_phone', 'Phone');
         $this->form->addCssClass('student_phone', 'form-control');
-
-        $this->form->addText('student_email');
-        $this->form->setLabel('student_email', 'ASU Email');
-        $this->form->addCssClass('student_email', 'form-control');
 
         if($this->intern->getBackgroundCheck() == 1){
             $this->tpl['BACK_CHECK_REQUESTED_BTN'] = 'Background Check Requested';
@@ -242,7 +243,6 @@ class EditInternshipFormView {
             $this->form->setMatch('department', $keys[1]);
         }
 
-
         /********************
          * Faculty Member Dropdown
          *
@@ -257,117 +257,66 @@ class EditInternshipFormView {
         // Hidden field for selected faculty member
         $this->form->addHidden('faculty_id');
 
-
-        /***************
-         * Agency info *
-         */
-
-        $this->form->addText('agency_name');
-        $this->form->addCssClass('agency_name', 'form-control');
-
-        $this->form->addCheck('copy_address_agency');
-        $this->form->setLabel('copy_address_agency', "Agency's address is same as Internship's");
-
-        $this->form->addText('agency_address');
-        $this->form->setLabel('agency_address', 'Address');
-        $this->form->addCssClass('agency_address', 'form-control');
-
-        $this->form->addText('agency_city');
-        $this->form->setLabel('agency_city', 'City');
-        $this->form->addCssClass('agency_city', 'form-control');
-
-        $this->form->addText('agency_zip');
-        $this->form->addCssClass('agency_zip', 'form-control');
-
-        $countries = CountryFactory::getCountries();
-        asort($countries, SORT_STRING);
-        $countries = array('-1' => 'Select Country') + $countries;
-
-        if($this->intern->domestic) {
-            $this->form->addSelect('agency_state', State::$UNITED_STATES);
-            $this->form->setLabel('agency_state', 'State');
-            $this->form->addCssClass('agency_state', 'form-control');
-
-            $this->form->setLabel('agency_zip', 'Zip Code');
-        } else {
-            $this->form->addText('agency_province');
-            $this->form->setLabel('agency_province', 'Province/Territory');
-            $this->form->addCssClass('agency_province', 'form-control');
-
-            $this->form->addSelect('agency_country', $countries);
-            $this->form->setLabel('agency_country', 'Country');
-            $this->form->addCssClass('agency_country', 'form-control');
-
-            $this->form->setLabel('agency_zip', 'Postal Code');
-        }
-
-        $this->form->addText('agency_phone');
-        $this->form->setLabel('agency_phone', 'Phone');
-        $this->form->addCssClass('agency_phone', 'form-control');
-
         /***
-         * Agency supervisor info
+         * Supervisor info
         */
-        $this->form->addText('agency_sup_first_name');
-        $this->form->setLabel('agency_sup_first_name', 'First Name');
-        $this->form->addCssClass('agency_sup_first_name', 'form-control');
+        $this->form->addText('supervisor_first_name');
+        $this->form->setLabel('supervisor_first_name', 'First Name');
+        $this->form->addCssClass('supervisor_first_name', 'form-control');
 
-        $this->form->addText('agency_sup_last_name');
-        $this->form->setLabel('agency_sup_last_name', 'Last Name');
-        $this->form->addCssClass('agency_sup_last_name', 'form-control');
+        $this->form->addText('supervisor_last_name');
+        $this->form->setLabel('supervisor_last_name', 'Last Name');
+        $this->form->addCssClass('supervisor_last_name', 'form-control');
 
-        $this->form->addText('agency_sup_title');
-        $this->form->setLabel('agency_sup_title', 'Title');
-        $this->form->addCssClass('agency_sup_title', 'form-control');
+        $this->form->addText('supervisor_title');
+        $this->form->setLabel('supervisor_title', 'Title');
+        $this->form->addCssClass('supervisor_title', 'form-control');
 
-        $this->form->addText('agency_sup_phone');
-        $this->form->setLabel('agency_sup_phone', 'Phone');
-        $this->form->addCssClass('agency_sup_phone', 'form-control');
+        $this->form->addText('supervisor_phone');
+        $this->form->setLabel('supervisor_phone', 'Phone');
+        $this->form->addCssClass('supervisor_phone', 'form-control');
 
-        $this->form->addText('agency_sup_email');
-        $this->form->setLabel('agency_sup_email', 'Email');
-        $this->form->addCssClass('agency_sup_email', 'form-control');
+        $this->form->addText('supervisor_email');
+        $this->form->setLabel('supervisor_email', 'Email');
+        $this->form->addCssClass('supervisor_email', 'form-control');
 
         $this->form->addCheck('copy_address');
-        $this->form->setLabel('copy_address', "Supervisor's information is same as agency's");
+        $this->form->setLabel('copy_address', "Supervisor's information is same as host's");
 
-        $this->form->addText('agency_sup_address');
-        $this->form->setLabel('agency_sup_address', 'Address');
-        $this->form->addCssClass('agency_sup_address', 'form-control');
+        $this->form->addText('supervisor_address');
+        $this->form->setLabel('supervisor_address', 'Address');
+        $this->form->addCssClass('supervisor_address', 'form-control');
 
-        $this->form->addText('agency_sup_city');
-        $this->form->setLabel('agency_sup_city', 'City');
-        $this->form->addCssClass('agency_sup_city', 'form-control');
+        $this->form->addText('supervisor_city');
+        $this->form->setLabel('supervisor_city', 'City');
+        $this->form->addCssClass('supervisor_city', 'form-control');
 
-        $this->form->addText('agency_sup_zip');
-        $this->form->addCssClass('agency_sup_zip', 'form-control');
+        $this->form->addText('supervisor_zip');
+        $this->form->addCssClass('supervisor_zip', 'form-control');
 
         if($this->intern->domestic) {
-            $this->form->addSelect('agency_sup_state', State::$UNITED_STATES);
-            $this->form->setLabel('agency_sup_state', 'State');
-            $this->form->addCssClass('agency_sup_state', 'form-control');
+            $this->form->addSelect('supervisor_state', State::$UNITED_STATES);
+            $this->form->setLabel('supervisor_state', 'State');
+            $this->form->addCssClass('supervisor_state', 'form-control');
 
-            $this->form->setLabel('agency_sup_zip', 'Zip Code');
+            $this->form->setLabel('supervisor_zip', 'Zip Code');
         } else {
-            $this->form->addText('agency_sup_province');
-            $this->form->setLabel('agency_sup_province', 'Province');
-            $this->form->addCssClass('agency_sup_province', 'form-control');
+            $countries = CountryFactory::getCountries();
+            asort($countries, SORT_STRING);
+            $countries = array('-1' => 'Select Country') + $countries;
 
-            $this->form->addSelect('agency_sup_country', $countries);
-            $this->form->setLabel('agency_sup_country', 'Country');
-            $this->form->addCssClass('agency_sup_country', 'form-control');
-
-            $this->form->setLabel('agency_sup_zip', 'Postal Code');
+            $this->form->addText('supervisor_province');
+            $this->form->setLabel('supervisor_province', 'Province');
+            $this->form->addCssClass('supervisor_province', 'form-control');
+            $this->form->addSelect('supervisor_country', $countries);
+            $this->form->setLabel('supervisor_country', 'Country');
+            $this->form->addCssClass('supervisor_country', 'form-control');
+            $this->form->setLabel('supervisor_zip', 'Postal Code');
         }
 
-        $this->form->addText('agency_sup_fax');
-        $this->form->setLabel('agency_sup_fax', 'Fax');
-        $this->form->addCssClass('agency_sup_fax', 'form-control');
-
-
-        /**********************
-         * Internship details *
-         */
+        $this->form->addText('supervisor_fax');
+        $this->form->setLabel('supervisor_fax', 'Fax');
+        $this->form->addCssClass('supervisor_fax', 'form-control');
 
         /***********************
          * Internship location *
@@ -379,72 +328,13 @@ class EditInternshipFormView {
             $this->tpl['LOCATION'] = 'International';
             $this->form->addHidden('location', 'international');
         }
-
-        // Domestic fields
-        $this->form->addText('loc_address');
-        $this->form->setLabel('loc_address', 'Address');
-        $this->form->addCssClass('loc_address', 'form-control');
-
-        // City
-        $this->form->addText('loc_city');
-        $this->form->setLabel('loc_city', 'City');
-        $this->form->addCssClass('loc_city', 'form-control');
-
-        // Zip or postal code
-        $this->form->addText('loc_zip');
-        $this->form->addCssClass('loc_zip', 'form-control');
-
-        // State or Country & Province
-        if ($this->intern->isDomestic()) {
-            $states = State::getStates();
-
-            $locationState = $this->intern->getLocationState();
-            if($locationState === null) {
-                throw new \InvalidArgumentException('Domestic internship with null value for state.');
-            }
-
-            if (\Current_User::isDeity()) {
-                $states = State::getAllowedStates();
-                $this->form->addSelect('loc_state', $states);
-                $this->form->setMatch('loc_state', $this->intern->loc_state);
-                $this->form->addCssClass('loc_state', 'form-control');
-            }else{
-                $this->tpl['LOC_STATE'] = $states[$locationState]->full_name;
-            }
-
-            $this->form->setLabel('loc_zip', 'Zip');
-        } else {
-            $countries = CountryFactory::getCountries();
-
-            $locationCountry = $this->intern->getLocationCountry();
-            if($locationCountry === null) {
-                throw new \InvalidArgumentException('International internship with null value for country.');
-            }
-
-
-            if (\Current_User::isDeity()) {
-                $countries = CountryFactory::getCountries();
-                asort($countries, SORT_STRING);
-                unset($countries['US']);
-                $this->form->addSelect('loc_country', $countries);
-                $this->form->setMatch('loc_country', $this->intern->loc_country);
-                $this->form->addCssClass('loc_country', 'form-control');
-            }else{
-                $this->tpl['LOC_COUNTRY'] = $countries[$locationCountry];
-            }
-
-            // Itn'l location fields
-            $this->form->addText('loc_province');
-            $this->form->setLabel('loc_province', 'Province/Territory');
-            $this->form->addCssClass('loc_province', 'form-control');
-
-            $this->form->setLabel('loc_zip', 'Postal Code');
-        }
+        // Phone
+        $this->form->addText('host_phone');
+        $this->form->addCssClass('host_phone', 'form-control');
 
         /*************
          * Term Info *
          */
-
         if (\Current_User::allow('intern', 'change_term')) {
             $terms = TermFactory::getTermsAssoc();
             $this->form->addSelect('term', $terms);
@@ -453,8 +343,6 @@ class EditInternshipFormView {
         }else{
             $this->tpl['TERM'] = $this->term->getDescription();
         }
-
-
 
         $this->form->addText('start_date');
         $this->form->setLabel('start_date', 'Start Date');
@@ -545,14 +433,13 @@ class EditInternshipFormView {
 
     /**
      * Loads the form's fields with the internship's information.
-     * TODO: Use getter methods instead of just accessing Internship member variables directly.
      */
-    public function plugInternship()
-    {
+    public function plugInternship() {
         $this->plugStudent();
         $this->plugDept();
         $this->plugFaculty();
-        $this->plugAgency();
+        $this->plugHost();
+        $this->plugSupervisor();
         $this->plugInternInfo();
         $this->plugCourseInfo();
 
@@ -563,18 +450,17 @@ class EditInternshipFormView {
         // Plug
         $this->form->plugIn($this->formVals);
 
-        /**
-         * *
-         * Emergency Contacts
-         */
+        //Emergency Contacts
         // Display of emergency contacts just requires the 'INTERN_ID' template variable be included. This is located in the constructor.
     }
 
-    private function plugStudent()
-    {
+    private function plugStudent() {
         // Student
         $this->tpl['BANNER'] = $this->intern->getBannerId();
-
+        $this->tpl['STUDENT_FIRST_NAME'] = $this->intern->getFirstName();
+        $this->tpl['STUDENT_MIDDLE_NAME'] = $this->intern->middle_name;
+        $this->tpl['STUDENT_LAST_NAME'] = $this->intern->getLastName();
+        $this->tpl['STUDENT_EMAIL'] = $this->intern->email;
         $this->tpl['STUDENT_GPA'] = $this->intern->getGpa();
 
         if (\Current_User::isDeity()) {
@@ -589,7 +475,6 @@ class EditInternshipFormView {
         $this->tpl['LEVEL'] = $this->intern->getLevelFormatted();
 
         // Student object can be null, so be sure we actually have a student first
-        // TODO: newer PHP versions provide syntax to clean up this logic
         if(isset($this->student)){
             // Credit Hours
             $creditHours = $this->studentExistingCreditHours;
@@ -606,7 +491,6 @@ class EditInternshipFormView {
             } else {
                 $this->tpl['GRAD_DATE'] = '<span class="text-muted"><em>Not Available</em></span>';
             }
-
 
         } else {
             $this->tpl['ENROLLED_CREDIT_HORUS'] = '<span class="text-muted"><em>Not Available</em></span>';
@@ -644,19 +528,13 @@ class EditInternshipFormView {
             }
         }
 
-        $this->formVals['student_first_name'] = $this->intern->first_name;
-        $this->formVals['student_middle_name'] = $this->intern->middle_name;
-        $this->formVals['student_last_name'] = $this->intern->last_name;
+
         $this->formVals['student_preferred_name'] = $this->intern->preferred_name;
         $this->formVals['student_phone'] = $this->intern->phone;
-        $this->formVals['student_email'] = $this->intern->email;
-
-        $this->formVals['student_gpa'] = $this->intern->gpa;
         $this->formVals['campus'] = $this->intern->campus;
     }
 
-    private function plugFaculty()
-    {
+    private function plugFaculty() {
         // Faculty Supervisor
         $facultyId = $this->intern->getFacultyId();
         if (isset($facultyId) && $facultyId != 0) {
@@ -664,46 +542,54 @@ class EditInternshipFormView {
         }
     }
 
-    private function plugAgency()
-    {
-        // Agency
-        $this->form->addHidden('agency_id', $this->agency->id);
+    private function plugHost() {
 
-        $this->formVals['agency_name']            = $this->agency->name;
-
-        $this->formVals['agency_address']         = $this->agency->address;
-        $this->formVals['agency_city']            = $this->agency->city;
-        $this->formVals['agency_zip']             = $this->agency->zip;
+        $this->form->addHidden('host_id', $this->host->id);
+        $this->tpl['HOST_NAME'] = $this->host->getMainName();
+        //$this->tpl['SUB_NAME'] = $this->host->sub_name;
+        $this->tpl['HOST_ADDRESS'] = $this->host->address;
+        $this->tpl['HOST_CITY'] = $this->host->city;
+        $this->tpl['HOST_ZIP'] = $this->host->zip;
+        $host_id = SubHostFactory::getSubHostCond($this->host->main_host_id, $this->host->state, $this->host->country);
+        if (!in_array($this->host->sub_name, $host_id)) {
+          $host_id[$this->host->id] = $this->host->sub_name;
+        }
+        $this->form->addSelect('SUB_NAME', $host_id);
+        $this->form->setMatch('SUB_NAME', $this->host->id);
+        $this->form->addCssClass('SUB_NAME', 'form-control');
 
         if($this->intern->domestic) {
-            $this->formVals['agency_state']           = $this->agency->state;
+            $this->tpl['HOST_STATE'] = $this->host->state;
+            $this->tpl['HOST_ZIP_LABEL_TEXT'] = 'Zip Code';
         } else {
-            $this->formVals['agency_province']        = $this->agency->province;
-            $this->form->setMatch('agency_country', $this->agency->country);
+            $this->tpl['HOST_PROVINCE'] = $this->host->province;
+            $this->tpl['HOST_COUNTRY'] = $this->host->country;
+            $this->tpl['HOST_ZIP_LABEL_TEXT'] = 'Postal Code';
         }
-
-        //$this->formVals['agency_country']         = $this->agency->country;
-        $this->formVals['agency_phone']           = $this->agency->phone;
-        $this->formVals['agency_sup_first_name']  = $this->agency->supervisor_first_name;
-        $this->formVals['agency_sup_last_name']   = $this->agency->supervisor_last_name;
-        $this->formVals['agency_sup_title']       = $this->agency->supervisor_title;
-        $this->formVals['agency_sup_phone']       = $this->agency->supervisor_phone;
-        $this->formVals['agency_sup_email']       = $this->agency->supervisor_email;
-        $this->formVals['agency_sup_fax']         = $this->agency->supervisor_fax;
-        $this->formVals['agency_sup_address']     = $this->agency->supervisor_address;
-        $this->formVals['agency_sup_city']        = $this->agency->supervisor_city;
-        $this->formVals['agency_sup_zip']         = $this->agency->supervisor_zip;
-        if($this->intern->domestic) {
-            $this->formVals['agency_sup_state']       = $this->agency->supervisor_state;
-        } else {
-            $this->formVals['agency_sup_province']    = $this->agency->supervisor_province;
-            $this->form->setMatch('agency_sup_country', $this->agency->supervisor_country);
-        }
-        $this->formVals['copy_address']           = $this->agency->address_same_flag == 't';
     }
 
-    private function plugInternInfo()
-    {
+    private function plugSupervisor() {
+        $this->form->addHidden('supervisor_id', $this->supervisor->id);
+
+        $this->formVals['supervisor_first_name']  = $this->supervisor->supervisor_first_name;
+        $this->formVals['supervisor_last_name']   = $this->supervisor->supervisor_last_name;
+        $this->formVals['supervisor_title']       = $this->supervisor->supervisor_title;
+        $this->formVals['supervisor_phone']       = $this->supervisor->supervisor_phone;
+        $this->formVals['supervisor_email']       = $this->supervisor->supervisor_email;
+        $this->formVals['supervisor_fax']         = $this->supervisor->supervisor_fax;
+        $this->formVals['supervisor_address']     = $this->supervisor->supervisor_address;
+        $this->formVals['supervisor_city']        = $this->supervisor->supervisor_city;
+        $this->formVals['supervisor_zip']         = $this->supervisor->supervisor_zip;
+        if($this->intern->domestic) {
+            $this->formVals['supervisor_state']       = $this->supervisor->supervisor_state;
+        } else {
+            $this->formVals['supervisor_province']    = $this->supervisor->supervisor_province;
+            $this->form->setMatch('supervisor_country', $this->supervisor->supervisor_country);
+        }
+        $this->formVals['copy_address']           = $this->supervisor->address_same_flag == 't';
+    }
+
+    private function plugInternInfo() {
         // Internship
         $this->form->addHidden('internship_id', $this->intern->id);
         $this->formVals['start_date'] = $this->intern->start_date ? date('m/d/Y', $this->intern->start_date) : null;
@@ -713,16 +599,6 @@ class EditInternshipFormView {
 
         $this->formVals['credits'] = $this->intern->credits;
         $this->formVals['avg_hours_week'] = $this->intern->avg_hours_week;
-        $this->formVals['loc_address'] = $this->intern->loc_address;
-        $this->formVals['loc_city'] = $this->intern->loc_city;
-        $this->formVals['loc_zip'] = $this->intern->loc_zip;
-
-        // Other internship details
-        if ($this->intern->domestic) {
-            $this->formVals['loc_state'] = $this->intern->loc_state;
-        } else {
-            $this->formVals['loc_province'] = $this->intern->loc_province;
-        }
 
         if ($this->intern->paid) {
             $this->form->setMatch('payment', 'paid');
@@ -753,6 +629,7 @@ class EditInternshipFormView {
         $this->formVals['course_no'] = $this->intern->course_no;
         $this->formVals['course_sect'] = $this->intern->course_sect;
         $this->formVals['course_title'] = $this->intern->course_title;
+        $this->formVals['host_phone'] = $this->intern->loc_phone;
 
         if ($this->intern->isMultipart()) {
             $this->form->setMatch('multipart', '1');

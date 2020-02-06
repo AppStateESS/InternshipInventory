@@ -18,27 +18,27 @@
  * Copyright 2011-2018 Appalachian State University
  */
 
-namespace Intern;
-use \phpws2\Database;
+namespace Intern\UI;
+use \Intern\AssetResolver;
 
-class AgencyFactory {
+/**
+ * Class for handling UI for approval, editing, and creation of Host
+ * @author Cydney Caldwell
+ **/
+class ApproveHostUI implements UI {
 
-    public static function getAgencyById($id) {
-        if(is_null($id) || !isset($id)) {
-            throw new \InvalidArgumentException('Agency ID is required.');
+    public function display() {
+        // permissions...
+        if(!\Current_User::allow('intern', 'special_host')) {
+            \NQ::simple('intern', NotifyUI::ERROR, 'You do not have permission to access and approve host.');
+            return false;
         }
 
-        if($id <= 0) {
-            throw new \InvalidArgumentException('Invalid agency ID.');
-        }
+        $tpl = array();
 
-        $db = Database::newDB();
-        $pdo = $db->getPDO();
+        $tpl['vendor_bundle'] = AssetResolver::resolveJsPath('assets.json', 'vendor');
+        $tpl['entry_bundle'] = AssetResolver::resolveJsPath('assets.json', 'approveHost');
 
-        $stmt = $pdo->prepare("SELECT * FROM intern_agency WHERE id = :id");
-        $stmt->execute(array('id' => $id));
-        $stmt->setFetchMode(\PDO::FETCH_CLASS, 'Intern\AgencyRestored');
-
-        return $stmt->fetch();
+        return \PHPWS_Template::process($tpl, 'intern','approve_host.tpl');
     }
 }

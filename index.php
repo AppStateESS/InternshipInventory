@@ -82,7 +82,7 @@ if(DEBUG){
             $message2 = $e;
             echo "The Intern Inventory has experienced a major internal error.  Attempting to email an admin and then exit.";
             $message = "Something terrible has happened, and the exception catch-all threw an exception.\n\nThe first exception was:\n\n$message2";
-            mail('webmaster@tux.appstate.edu', 'A Major Intern Inventory Error Has Occurred', $message);
+            mail('esswebsupport@appstate.edu', 'A Major Intern Inventory Error Has Occurred', $message);
             exit();
         }
     }

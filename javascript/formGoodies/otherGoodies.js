@@ -284,7 +284,6 @@ function initFacultySelector()
         $("#internship_faculty_id").val(bannerId);
 
         // Search the list of faculty for a match to the JSON data fetched earlier
-        //TODO What if there isn't a match? We still need to be able to find/show that faculty member.
         var faculty = null;
 
         for(var i = 0; i < facultyData.length; i++){

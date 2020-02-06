@@ -34,6 +34,7 @@ if(!$db){
 }
 
 $values = array();
+$emergency = array();
 $values['term'] = $term;
 $values['department_id'] = $department_id;
 $values['state'] = 'RegisteredState'; // Since these are past internships
@@ -42,8 +43,7 @@ $values['campus'] = 'main_campus';
 $values['multi_part'] = 0;
 $values['secondary_part'] = 0;
 $values['domestic'] = 1;
-$values['major_code'] = '809A';
-$values['major_description'] = 'Nursing';
+$values['clinical_practica'] = 1;
 // Parse CSV input into fields line by line
 while(($line = fgetcsv($inputFile, 0, ',')) !== FALSE) {
     foreach($line as $key=>$element){
@@ -59,13 +59,26 @@ while(($line = fgetcsv($inputFile, 0, ',')) !== FALSE) {
     $values['last_name'] = $line[0];
     $values['first_name'] = $line[1];
     $values['banner'] = $bannerId;
-    $values['gpa'] = $line[3];
-    $values['start_date'] = strtotime($line[11]);
-    $values['end_date'] = strtotime($line[12]);
-    $email = explode('@',$line[4]);
-    $values['faculty_id'] = $line[10];
+    $values['major_code'] = $line[3];
+    $values['major_description'] = $line[4];
+    $values['gpa'] = $line[5];
+    $email = explode('@',$line[6]);
     $values['email'] = $email[0];
-    $agency = trim($line[5]);
+    $values['loc_city'] = $line[11];
+    $values['loc_state']   = $line[12];
+    $values['loc_zip'] = $line[13];
+    $values['faculty_id'] = $line[14];
+    $values['start_date'] = strtotime($line[15]);
+    $values['end_date'] = strtotime($line[16]);
+    //$valuse['course_subj'] = $line[17];
+    $values['course_no'] = $line[18];
+    $values['credits'] = $line[19];
+
+    $emergency['name'] = $line[7];
+    $emergency['relation'] = $line[8];
+    $emergency['phone'] = $line[9];
+
+    $agency = trim($line[10]);
     $agency_id   = agencyExists($agency);
     if(!$agency_id){
         $agency_id = createInternAgency($agency);
@@ -74,12 +87,6 @@ while(($line = fgetcsv($inputFile, 0, ',')) !== FALSE) {
         continue;
     }
     $values['agency_id'] = $agency_id;
-    $values['loc_city'] = $line[6];
-    $values['loc_state']   = $line[7];
-    $values['loc_zip'] = $line[8];
-    $values['clinical_practica'] = 1;
-    $values['course_no'] = $line[13];
-    $values['credits'] = $line[14];
 
     $intern_result = createInternship($db, $values);
 

@@ -122,6 +122,41 @@ form .required label:after {
 	margin-left: 2em;
 }
 
+/*** Formatting ***/
+.form-align {
+  left: 25.7%;
+  width: 32.5%;
+}
+#small-button1 {
+  width: 9%;
+  background: white;
+  border: .1em black solid;
+  border-radius: .3em;
+  margin-left: 10px;
+  padding: 1px 0;
+  transition: .25s ease;
+}
+#small-button2 {
+  width: 9%;
+  background: white;
+  border: .1em black solid;
+  border-radius: .3em;
+  margin-left: 15px;
+  padding: 1px 0;
+  transition: .25s ease;
+}
+#small-button1:hover, #small-button2:hover {
+  background: black;
+  color: white;
+  transition: .25s ease;
+}
+
+/*** Request Sub Host ***/
+.select-sub-host {
+  width: 70.1% !important;
+  margin-left: 1em !important;
+}
+
 /****** Search Results Styles **************/
 tr.result-row td {
   padding: 0;
@@ -139,4 +174,8 @@ tr.result-row td a {
 
 .ui-autocomplete {
     width: 100px;
+}
+
+.offset-right-inline {
+  margin-left: 73.5%;
 }

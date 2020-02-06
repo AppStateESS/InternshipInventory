@@ -37,7 +37,7 @@ class AssetResolver {
         $relativePath = self::$assets->$entryPointName->js;
 
         // Change the relative path into an absolute URL
-        $absolutePath = PHPWS_SOURCE_HTTP . '/mod/intern/' . $relativePath;
+        $absolutePath = PHPWS_SOURCE_HTTP . 'mod/intern/javascript/dist/' . $relativePath;
 
         return $absolutePath;
     }

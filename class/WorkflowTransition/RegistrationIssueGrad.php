@@ -60,7 +60,7 @@ class RegistrationIssueGrad extends WorkflowTransition {
 
     public function doNotification(Internship $i, $note = null)
     {
-        $term = InternFactory::getTermByTermCode($i->getTerm());
+        $term = TermFactory::getTermByTermCode($i->getTerm());
 
         $email = new \Intern\Email\RegistrationIssueEmail(\Intern\InternSettings::getInstance(), $i, $term, $note);
         $email->send();

@@ -22,7 +22,10 @@ namespace Intern\WorkflowState;
 use Intern\WorkflowState;
 
 class NewState extends WorkflowState {
-
     const friendlyName = 'New';
     const sortIndex    = 1;
+
+    public function getAllowedPermissionList(){
+        return array('create_internship', 'sig_auth_approve', 'dean_approve', 'grad_school_approve', 'register', 'oied_certify', 'distance_ed_register');
+    }
 }

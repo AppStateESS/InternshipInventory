@@ -14,8 +14,6 @@ class LocationBlock extends React.Component {
         super(props);
 
         this.state =  {
-            domestic: null,
-            international: null,
             availableStates: null,
             availableCountries: null,
             hasError: false
@@ -23,6 +21,7 @@ class LocationBlock extends React.Component {
 
         this.domestic = this.domestic.bind(this);
         this.international = this.international.bind(this);
+        this.handleDrop = this.handleDrop.bind(this);
     }
     componentDidMount() {
         // Fetch list of states
@@ -51,13 +50,18 @@ class LocationBlock extends React.Component {
         });
     }
     domestic() {
-        this.setState({domestic: true, international: false});
+        this.props.setDom(true);
+        this.props.setInt(false);
     }
     international() {
-        this.setState({domestic: false, international: true});
+        this.props.setDom(false);
+        this.props.setInt(true);
     }
     setError(status){
         this.setState({hasError: status});
+    }
+    handleDrop(e){
+        this.props.setLoc(e);
     }
     render() {
         var fgClasses = classNames({
@@ -66,12 +70,12 @@ class LocationBlock extends React.Component {
                     });
 
         var dropdown;
-        if(this.state.domestic === null) {
+        if(this.props.domestic === undefined) {
             dropdown = '';
-        } else if (this.state.domestic) {
-            dropdown = <StateDropDown key="states" ref={(element) => {this.stateDropDown = element}} states={this.state.availableStates}/>;
+        } else if (this.props.domestic) {
+            dropdown = <StateDropDown onChange={this.handleDrop} key="states" ref={(element) => {this.stateDropDown = element}} states={this.state.availableStates}/>;
         } else {
-            dropdown = <InternationalDropDown key="countries" ref={(element) => {this.countryDropDown = element}} countries={this.state.availableCountries}/>;
+            dropdown = <InternationalDropDown onChange={this.handleDrop} key="countries" ref={(element) => {this.countryDropDown = element}} countries={this.state.availableCountries}/>;
         }
         return (
             <div>

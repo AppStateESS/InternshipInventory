@@ -1,44 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import classNames from 'classnames';
-
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import StudentSearch from './StudentSearch.jsx';
 import TermBlock from './TermBlock.jsx';
 import LocationBlock from './LocationBlock.jsx';
 import Department from './DepartmentBlock.jsx';
-
-/*********************
- * Host Agency Field *
- *********************/
-class HostAgency extends React.Component {
-    constructor(props) {
-      super(props);
-
-      this.state = {hasError: false};
-    }
-    setError(status){
-        this.setState({hasError: status});
-    }
-    render() {
-        var fgClasses = classNames({
-                        'form-group': true,
-                        'has-error': this.state.hasError
-                    });
-        return (
-            <div className="row">
-                <div className="col-sm-12 col-md-4 col-md-push-3">
-                    <div className={fgClasses} id="agency">
-                        <label htmlFor="agency2" className="control-label">Internship Host</label>
-                        <input type="text" id="agency2" name="agency" className="form-control" placeholder="Acme, Inc." />
-                    </div>
-                </div>
-            </div>
-        );
-    }
-}
-
+import HostAgency from './HostBlock.jsx';
 
 /*****************
  * Submit Button *
@@ -95,10 +63,15 @@ class CreateInternshipInterface extends React.Component {
     constructor(props){
         super(props);
 
-        this.state = {submitted: false, errorMessages: null};
+        this.state = {submitted: false,
+                    errorMessages: null,
+                    domestic: undefined,
+                    international: undefined,
+                    location: undefined};
 
         this.handleSubmit = this.handleSubmit.bind(this);
     }
+
     // Top-level onSubmit handler for the creation form
     handleSubmit(e) {
         // Stop the browser from immediately sending the post
@@ -186,17 +159,20 @@ class CreateInternshipInterface extends React.Component {
             thisComponent.refs.department.setError(false);
         }
 
-        // Check the host agency
-        if(form.elements.agency.value === ''){
+        // Check host
+        if(form.elements.main_host.value === '-1'){
             thisComponent.refs.hostAgency.setError(true);
             valid = false;
-            errors.push('Host Agency');
+            errors.push('Main Host');
         }else{
             thisComponent.refs.hostAgency.setError(false);
         }
-
-        if(errors.length !== 0){
-            thisComponent.setErrorMessages(errors);
+        if(form.elements.sub_host.value === '-1'){
+            thisComponent.refs.hostAgency.setError(true);
+            valid = false;
+            errors.push('Sub Host');
+        }else{
+            thisComponent.refs.hostAgency.setError(false);
         }
 
         return valid;
@@ -211,7 +187,6 @@ class CreateInternshipInterface extends React.Component {
         } else {
             errors = <ErrorMessagesBlock key="errorSet" errors={this.state.errorMessages} />
         }
-
         return (
 
             <form role="form" id="newInternshipForm" className="form-protected" action="index.php" method="post" onSubmit={this.handleSubmit}>
@@ -226,11 +201,11 @@ class CreateInternshipInterface extends React.Component {
 
                 <TermBlock ref="termBlock"/>
 
-                <LocationBlock ref="locationBlock"/>
+                <LocationBlock domestic={this.state.domestic} international={this.state.international} location={this.state.location} setDom={(dom) => this.setState({domestic:dom})} setInt={(inta) => this.setState({international: inta})}  setLoc={(loc) => this.setState({location: loc})} ref="locationBlock"/>
 
                 <Department ref="department"/>
 
-                <HostAgency ref="hostAgency"/>
+                <HostAgency domestic={this.state.domestic} location={this.state.location} key={this.state.location} ref="hostAgency"/>
 
                 <CreateInternshipButton submitted={this.state.submitted}/>
             </form>

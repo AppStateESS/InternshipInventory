@@ -33,41 +33,35 @@ class UndergradRegistration extends WorkflowTransition {
         return array('register');
     }
 
-    public function isApplicable(Internship $i)
-    {
+    public function isApplicable(Internship $i){
         if($i->isUndergraduate()){
             return true;
-        }else{
+        } else{
             return false;
         }
     }
 
-    public function allowed(Internship $i)
-    {
+    public function allowed(Internship $i){
         if($i->isDistanceEd()){
             if(\Current_User::allow('intern', 'distance_ed_register')){
                 return true;
-            }else{
+            } else{
                 return false;
             }
-        }
-        else
-        {
+        } else{
             return parent::allowed($i);
         }
 
     }
 
-    public function doNotification(Internship $i, $note = null)
-    {
+    public function doNotification(Internship $i, $note = null){
         $term = TermFactory::getTermByTermCode($i->getTerm());
 
         $email = new \Intern\Email\RegistrationConfirmationEmail(\Intern\InternSettings::getInstance(), $i, $term);
         $email->send();
     }
 
-    public function checkRequiredFields(Internship $i)
-    {
+    public function checkRequiredFields(Internship $i){
         if (!$i->isSecondaryPart()) {
             // Check the course subject
             $courseSubj = $i->getSubject();
