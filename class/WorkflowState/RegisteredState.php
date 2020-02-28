@@ -23,7 +23,7 @@ use Intern\WorkflowState;
 
 class RegisteredState extends WorkflowState {
     const friendlyName = 'Registered';
-    const sortIndex    = 6;
+    const sortIndex    = 7;
 
     public function getAllowedPermissionList(){
         return array('register');

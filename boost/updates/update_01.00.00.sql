@@ -1,8 +1,3 @@
- --reason for admin stop that only they see
- --reason for stop that user sees
- --Warning, Stop
- --name to check sup on flag
- --see about having this as Admin Setting
 CREATE TABLE intern_special_host(
     id INT NOT NULL,
     admin_message VARCHAR NOT NULL,
@@ -14,20 +9,16 @@ CREATE TABLE intern_special_host(
     PRIMARY KEY(id)
 );
 
---overall host name
---flag to show if a new host or one that is awaiting approval 0=not approved 1=approve 2=awaiting
 CREATE TABLE intern_host (
     id INT NOT NULL,
     host_name VARCHAR NOT NULL,
-    host_condition INT REFERENCES intern_special_host(id),
+    host_condition INT DEFAULT NULL REFERENCES intern_special_host(id),
     host_condition_date VARCHAR,
     host_approve_flag INT NOT NULL DEFAULT 2,
     host_notes VARCHAR,
     PRIMARY KEY(id)
 );
 
---sub name of host that will contain the address information
---flag to show if a new host or one that is awaiting approval 0=not approved 1=approve 2=awaiting
 CREATE TABLE intern_sub_host (
        id INT NOT NULL,
        main_host_id INT REFERENCES intern_host(id),
@@ -39,17 +30,16 @@ CREATE TABLE intern_sub_host (
        province VARCHAR,
        country VARCHAR,
        other_name VARCHAR,
-       sub_condition INT REFERENCES intern_special_host(id),
+       sub_condition INT DEFAULT NULL REFERENCES intern_special_host(id),
        sub_condition_date VARCHAR,
        sub_approve_flag INT NOT NULL DEFAULT 2,
        sub_notes VARCHAR,
        PRIMARY KEY(id)
 );
 
---be able to handle old and new sups
 CREATE TABLE intern_supervisor(
     id INT NOT NULL,
-    host_id INT REFERENCES intern_host(id),
+    host_id INT DEFAULT NULL REFERENCES intern_host(id),
     supervisor_first_name VARCHAR NULL,
     supervisor_last_name VARCHAR NULL,
     supervisor_title VARCHAR NULL,
@@ -66,7 +56,6 @@ CREATE TABLE intern_supervisor(
     PRIMARY KEY(id)
 );
 
---agency_id keep for old records for now
 ALTER TABLE intern_internship ADD COLUMN supervisor_id INT;
 ALTER TABLE intern_internship ADD COLUMN host_id INT;
 ALTER TABLE intern_internship ADD COLUMN host_sub_id INT;

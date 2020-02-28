@@ -23,7 +23,7 @@ use Intern\WorkflowState;
 
 class DeniedState extends WorkflowState {
     const friendlyName = 'Denied';
-    const sortIndex    = 9;
+    const sortIndex    = 10;
 
     public function getAllowedPermissionList(){
         return array('special_host');

@@ -23,7 +23,7 @@ use Intern\WorkflowState;
 
 class DeanApprovedGradState extends WorkflowState {
     const friendlyName = 'Dean Approved / Pending Graduate School Aproval';
-    const sortIndex    = 10;
+    const sortIndex    = 5;
 
     public function getAllowedPermissionList(){
         return array('grad_school_approve', 'register', 'oied_certify', 'distance_ed_register');

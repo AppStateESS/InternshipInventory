@@ -128,7 +128,7 @@ class EditInternshipFormView {
         /*********************
          * Copy to Next Term *
         *********************/
-        if($this->intern->getStateName() != 'DeniedState'){
+        if($this->intern->getStateName() != 'DeniedState' && \Current_User::allow('intern', 'create_internship')){
             // Get next three terms
             $term = TermFactory::getTermByTermCode($this->intern->getTerm());
 
@@ -164,6 +164,8 @@ class EditInternshipFormView {
             if(sizeof($this->tpl['CONTINUE_TERM_LIST']) == 0) {
                 $this->tpl['CONTINUE_TERM_NO_TERMS'] = 'No future terms available.';
             }
+        } else if(!\Current_User::allow('intern', 'create_internship')){
+            $this->tpl['CONTINUE_TERM_NO_TERMS'] = 'You do not have permission to create new internships.';
         } else{
             $this->tpl['CONTINUE_TERM_NO_TERMS'] = 'No future terms available.';
         }

@@ -132,29 +132,25 @@ class Supervisor implements DbStorable {
      * Get the domestic looking address of supervisor.
      */
     public function getSuperAddress(){
-        if($this->address_same_flag == 1){
-            return $this->getAddress();
-        }else{
-            $add = array();
-            if(!empty($this->supervisor_address)){
-                $add[] = $this->supervisor_address . ',';
-            }
-            if(!empty($this->supervisor_city)){
-                $add[] = $this->supervisor_city . ',';
-            }
-            if(!empty($this->supervisor_state)){
-                $add[] = $this->supervisor_state;
-            }
-            if(!empty($this->supervisor_zip)){
-                $add[] = $this->supervisor_zip;
-            }
-
-            if(!empty($this->supervisor_country)){
-                $add[] = $this->supervisor_country;
-            }
-
-            return implode(' ', $add);
+        $add = array();
+        if(!empty($this->supervisor_address)){
+            $add[] = $this->supervisor_address . ',';
         }
+        if(!empty($this->supervisor_city)){
+            $add[] = $this->supervisor_city . ',';
+        }
+        if(!empty($this->supervisor_state)){
+            $add[] = $this->supervisor_state;
+        }
+        if(!empty($this->supervisor_zip)){
+            $add[] = $this->supervisor_zip;
+        }
+
+        if(!empty($this->supervisor_country)){
+            $add[] = $this->supervisor_country;
+        }
+
+        return implode(' ', $add);
     }
 
     public function getId(){

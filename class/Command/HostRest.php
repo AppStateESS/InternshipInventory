@@ -58,7 +58,7 @@ class HostRest {
             $sql = "SELECT id, host_name, host_condition, host_approve_flag FROM intern_host WHERE host_approve_flag = 2 ORDER BY host_name ASC";
         } else if(isset($_REQUEST['Condition'])){
             $sql = "SELECT intern_host.id, host_name, host_condition, host_approve_flag, host_condition_date, host_notes, admin_message, intern_special_host.id AS con_id
-            FROM intern_host JOIN intern_special_host ON intern_host.host_condition = intern_special_host.id WHERE host_condition IS NOT NULL ORDER BY host_name ASC";
+            FROM intern_host LEFT JOIN intern_special_host ON intern_host.host_condition = intern_special_host.id ORDER BY host_name ASC";
         } else if(isset($_REQUEST['Waiting'])){
             if($_REQUEST['Waiting']){
                 $sql = "SELECT id, host_name, host_condition, host_approve_flag FROM intern_host WHERE host_approve_flag != 0 ORDER BY host_name ASC";

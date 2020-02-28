@@ -60,7 +60,7 @@ function createHost($name){
     if($id_result){
       $id_result = pg_fetch_row($id_result);
       $id = $id_result[0];
-      $sql = "INSERT INTO intern_host (id, host_name) VALUES ($id, '$name')";
+      $sql = "INSERT INTO intern_host (id, host_name, host_approve_flag) VALUES ($id, '$name', 1)";
       $result = pg_query($sql);
       if($result === false){
           echo "failed to insert host\n\n";

@@ -47,6 +47,7 @@ while(($line = fgetcsv($inputFile, 0, ',')) !== FALSE) {
     $values['zip'] = $line[5];
     $values['province'] = $line[6];
     $values['country'] = $line[7];
+    $values['sub_approve_flag'] = 1;
 
     $intern_result = createSubHost($db, $values);
 

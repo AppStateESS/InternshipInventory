@@ -158,8 +158,8 @@ class SubHostFactory {
         if ($country == 'US') {
           $stmt = $db->prepare("SELECT ish.id, ish.sub_name FROM intern_sub_host AS ish
             LEFT JOIN intern_special_host AS isp ON ish.sub_condition=isp.id
-            WHERE ish.state=:state AND ish.main_host_id=:m_host_id
-            AND (ish.sub_condition IS null OR isp.stop_level<>'Stop')");
+            WHERE ish.state=:state AND ish.main_host_id=:m_host_id AND ish.sub_approve_flag != 0
+            AND (ish.sub_condition IS null OR isp.stop_level<>'Stop') ORDER BY ish.sub_name ASC");
           $stmt->execute(array('state' => $state, 'm_host_id' => $m_host_id));
           $stmt->setFetchMode(\PDO::FETCH_ASSOC);
 
@@ -167,8 +167,8 @@ class SubHostFactory {
         } else {
           $stmt = $db->prepare("SELECT ish.id, ish.sub_name FROM intern_sub_host AS ish
             LEFT JOIN intern_special_host AS isp ON ish.sub_condition=isp.id
-            WHERE ish.country=:country AND ish.main_host_id=:m_host_id
-            AND (ish.sub_condition IS null OR isp.stop_level<>'Stop')");
+            WHERE ish.country=:country AND ish.main_host_id=:m_host_id AND ish.sub_approve_flag != 0
+            AND (ish.sub_condition IS null OR isp.stop_level<>'Stop') ORDER BY ish.sub_name ASC");
           $stmt->execute(array('country' => $country, 'm_host_id' => $m_host_id));
           $stmt->setFetchMode(\PDO::FETCH_ASSOC);
 

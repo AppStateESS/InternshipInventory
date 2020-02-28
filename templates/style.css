@@ -179,3 +179,35 @@ tr.result-row td a {
 .offset-right-inline {
   margin-left: 73.5%;
 }
+
+.host-container {
+    overflowY: 'scroll';
+    height: 600;
+    maxWidth: 210;
+    marginTop: 75;
+    scrollbarWidth: 'thin';
+    marginBottom: 10;
+}
+
+@media only screen and (max-width: 992px){
+    .form-align{
+        left: 2%;
+        width: 96.3%;
+    }
+    #small-button1{
+        width: 6%;
+    }
+    #small-button2{
+        width: 6%;
+    }
+}
+
+.host-overflow {
+    overflow-y: auto;
+    height: auto;
+    max-height: 800px;
+    overscroll-behavior: auto;
+}
+.bottom-host-ul {
+    margin-bottom: 0 !important;
+}

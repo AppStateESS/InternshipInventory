@@ -78,7 +78,7 @@ class ModalFormHost extends React.Component {
                             <div className="col-lg-9"><p  type="text" className="form-control-static" id="host-main" ref="host_main">{this.props.main}</p></div>
                         </div>
                         <div className="form-group">
-                            <label className="col-lg-3 control-label">Sub Name</label>
+                            <label className="col-lg-3 control-label">Sub Name {require}</label>
                             <div className="col-lg-9"><input  type="text" className="form-control" id="host-name" ref="host_name" defaultValue={this.props.name}/></div>
                         </div>
                         <div className="form-group">
@@ -111,14 +111,18 @@ class ModalFormHost extends React.Component {
                         </div>
                         <div className="form-group">
                             <label className="col-lg-3 control-label">Sub Condition</label>
-                            <select className="col-lg-4" id="host-condition" ref="host_condition" defaultValue={this.props.conId}>
+                            <select className="form-control col-lg-7 select-sub-host" id="host-condition" ref="host_condition" defaultValue={this.props.conId}>
                                 <option value="-1">Select a Condition</option>
                                 {conData}
                             </select>
                         </div>
                         <div className="form-group">
                             <label className="col-lg-3 control-label">Approve {require}</label>
-                            <div className="col-lg-9"><input  type="text" className="form-control" id="host-flag" ref="host_flag" defaultValue={this.props.flag}/></div>
+                                <select className="form-control col-lg-7 select-sub-host" id="host-flag" ref="host_flag" defaultValue={this.props.flag}>
+                                    <option value="0">Not Approved</option>
+                                    <option value="1">Approved</option>
+                                    <option value="2">Waiting</option>
+                                </select>
                         </div>
                     </form>
                 </Modal.Body>
@@ -276,14 +280,18 @@ class ModalFormHostCondition extends React.Component {
                         </div>
                         <div className="form-group">
                             <label className="col-lg-3 control-label">Condition</label>
-                            <select className="col-lg-4" id="host-condition" ref="host_condition" defaultValue={this.props.conId}>
+                            <select className="form-control col-lg-7 select-sub-host" id="host-condition" ref="host_condition" defaultValue={this.props.conId}>
                                 <option value="-1">Select a Condition</option>
                                 {conData}
                             </select>
                         </div>
                         <div className="form-group">
                             <label className="col-lg-3 control-label">Approve {require}</label>
-                            <div className="col-lg-9"><input  type="text" className="form-control" id="flag" ref="flag" defaultValue={this.props.flag}/></div>
+                                <select className="form-control col-lg-7 select-sub-host" id="host-flag" ref="flag" defaultValue={this.props.flag}>
+                                    <option value="0">Not Approved</option>
+                                    <option value="1">Approved</option>
+                                    <option value="2">Waiting</option>
+                                </select>
                         </div>
                         <div className="form-group">
                             <label className="col-lg-3 control-label">Notes</label>
@@ -393,53 +401,23 @@ class ShowHostCon extends React.Component {
         this.props.handleSave(host); // Call parent's handleSave method
     }
     render(){
-        let readDate = new Date(this.props.date*1000).toLocaleDateString();
+        let readDate = null
+        if(this.props.date > 1577876400){
+            readDate = new Date(this.props.date*1000).toLocaleDateString();
+        } else{ readDate = ' '}
+        let apFlag = null
+        if(this.props.flag === 0){apFlag = 'Not Approved'}
+        else if(this.props.flag === 1){apFlag = 'Approved'}
+        else{apFlag = 'Waiting'}
         return (
             <li className="list-group-item" onClick={this.openModal} style={{cursor: "pointer"}}>
                 <ModalFormHostCondition show={this.state.showModal} hide={this.closeModal} edit={true} handleSaveHost={this.handleSaveHost}{...this.props} />
                 <div className="row">
-                    <div className="col-lg-4">{this.props.name}</div>
+                    <div className="col-lg-3">{this.props.name}</div>
                     <div className="col-lg-2">{this.props.condition}</div>
                     <div className="col-lg-1">{readDate}</div>
-                    <div className="col-lg-5">{this.props.notes}</div>
-                </div>
-            </li>
-
-        );
-    }
-}
-
-class ShowSubCon extends React.Component {
-    constructor(props){
-        super(props);
-        this.state = {showModal: false};
-
-        this.closeModal = this.closeModal.bind(this);
-        this.openModal = this.openModal.bind(this);
-        this.handleSaveHost = this.handleSaveHost.bind(this);
-    }
-    closeModal() {
-        this.setState({ showModal: false });
-    }
-    openModal() {
-        this.setState({ showModal: true });
-    }
-    handleSaveHost(host){
-        this.closeModal(); // Close the modal box
-        this.props.handleSave(host); // Call parent's handleSave method
-    }
-    render(){
-        return (
-            <li className="list-group-item" onClick={this.openModal} style={{cursor: "pointer"}}>
-                <ModalFormHost show={this.state.showModal} hide={this.closeModal} edit={true} handleSaveHost={this.handleSaveHost}{...this.props} />
-                <div className="row">
-                    <div className="col-lg-2">{this.props.main}</div>
-                    <div className="col-lg-3">{this.props.name}</div>
-                    <div className="col-lg-2">{this.props.address}</div>
-                    <div className="col-lg-1">{this.props.city}</div>
-                    <div className="col-lg-1">{this.props.state}</div>
-                    <div className="col-lg-1">{this.props.condition}</div>
-                    <div className="col-lg-2">{this.props.notes}</div>
+                    <div className="col-lg-2">{apFlag}</div>
+                    <div className="col-lg-4">{this.props.notes}</div>
                 </div>
             </li>
 
@@ -531,12 +509,19 @@ class AllHostList extends React.Component {
 
         this.state = {
             mainData: null,
+            mainDisplayData: null,
             approveData: null,
             hostConData: null,
-            subConData: null,
+            hostDisplayData: null,
             conditionData: null,
             hostData: null,
-            showAddModal: false
+            showAddModal: false,
+            searchName: '',
+            sortBy: '',
+            showFilter: '',
+            searchHostName: '',
+            sortHostBy: '',
+            showHostFilter: ''
         };
 
         this.openAddModal = this.openAddModal.bind(this);
@@ -546,10 +531,19 @@ class AllHostList extends React.Component {
         this.handleApproveSave = this.handleApproveSave.bind(this);
         this.handleSwitchSave = this.handleSwitchSave.bind(this);
         this.handleHostConSave = this.handleHostConSave.bind(this);
+        this.onSearchListChange = this.onSearchListChange.bind(this);
+        this.onSortByChange = this.onSortByChange.bind(this);
+        this.onShow = this.onShow.bind(this);
+        this.onSearchHostListChange = this.onSearchHostListChange.bind(this);
+        this.onSortByHostChange = this.onSortByHostChange.bind(this);
+        this.onHostShow = this.onHostShow.bind(this);
+        this.viewShowFilter = this.viewShowFilter.bind(this)
+        this.updateDisplayData = this.updateDisplayData.bind(this);
     }
     componentWillMount() {
         this.getData();
         this.getHostConData()
+        this.getMainData()
     }
     openAddModal() {
         this.setState({ showAddModal: true });
@@ -583,18 +577,6 @@ class AllHostList extends React.Component {
             }.bind(this)
         });
         $.ajax({
-            url: 'index.php?module=intern&action=SubRest&Conditions=true',
-            type: 'GET',
-            dataType: 'json',
-            success: function(data) {
-                this.setState({subConData: data});
-            }.bind(this),
-            error: function(xhr, status, err) {
-                alert("Failed to grab sub host data.")
-                console.error(this.props.url, status, err.toString());
-            }.bind(this)
-        });
-        $.ajax({
             url: 'index.php?module=intern&action=ConditionRest',
             type: 'GET',
             dataType: 'json',
@@ -606,12 +588,14 @@ class AllHostList extends React.Component {
                 console.error(this.props.url, status, err.toString());
             }.bind(this)
         });
+    }
+    getMainData(){
         $.ajax({
             url: 'index.php?module=intern&action=SubRest',
             type: 'GET',
             dataType: 'json',
             success: function(data) {
-                this.setState({mainData: data});
+                this.setState({mainData: data, mainDisplayData: data});
             }.bind(this),
             error: function(xhr, status, err) {
                 alert("Failed to grab all host data.")
@@ -625,7 +609,7 @@ class AllHostList extends React.Component {
             type: 'GET',
             dataType: 'json',
             success: function(data) {
-                this.setState({hostConData: data});
+                this.setState({hostConData: data, hostDisplayData: data});
             }.bind(this),
             error: function(xhr, status, err) {
                 alert("Failed to grab wating approval data.")
@@ -643,9 +627,8 @@ class AllHostList extends React.Component {
                 country: host.country, other: host.other, condition: host.condition, flag: host.flag,
             }),
             success: function(data) {
-                // Grabs the new data
-                //this.setState({mainData: data});
-            },//.bind(this),
+                this.getMainData()
+            }.bind(this),
             error: function(xhr, status, err) {
                 alert("Failed to save host data.")
             }
@@ -715,6 +698,148 @@ class AllHostList extends React.Component {
             }
         });
     }
+    onSearchListChange(e) {
+        var name = null;
+        name = e.target.value.toLowerCase();
+        this.setState({searchName: name});
+        this.updateDisplayData(name, this.state.sortBy, this.state.showFilter, this.state.mainData, 'mainDisplayData');
+    }
+    onSearchHostListChange(e) {
+        var name = null;
+        name = e.target.value.toLowerCase();
+        this.setState({searchHostName: name});
+        this.updateDisplayData(name, this.state.sortHostBy, this.state.showHostFilter, this.state.hostConData, 'hostDisplayData');
+    }
+    searchListByName(data, nameToSearch, display) {
+      var filtered = [];
+      // Looks for the name by filtering the mainData
+      for (var i = 0; i < data.length; i++) {
+          var item = data[i];
+          // Make the item, name lowercase for easier searching
+          if (display === 'mainDisplayData' && item.sub_name.toLowerCase().includes(nameToSearch)) {
+              filtered.push(item);
+          }
+          if (display === 'hostDisplayData' && item.host_name.toLowerCase().includes(nameToSearch)) {
+              filtered.push(item);
+          }
+      }
+      return filtered;
+    }
+    onSortByChange(e) {
+        var sort = null;
+        sort = e.target.value;
+        this.setState({sortBy: sort});
+        this.updateDisplayData(this.state.searchName, sort, this.state.showFilter, this.state.mainData, 'mainDisplayData');
+    }
+    onSortByHostChange(e) {
+        var sort = null;
+        sort = e.target.value;
+        this.setState({sortHostBy: sort});
+        this.updateDisplayData(this.state.searchHostName, sort, this.state.showHostFilter, this.state.hostConData, 'hostDisplayData');
+    }
+    sortBy(unsorted, typeOfSort) {
+      var sorted = [];
+      switch(typeOfSort) {
+          case 'subA':
+              sorted = unsorted.sort(function (a, b) {
+                  if (a.sub_name.toLowerCase() < b.sub_name.toLowerCase()) return -1;
+                  if (a.sub_name.toLowerCase() > b.sub_name.toLowerCase()) return 1;
+                  return 0;
+              });
+              break;
+          case 'subZ':
+              sorted = unsorted.sort(function (a, b) {
+                  if (a.sub_name.toLowerCase() > b.sub_name.toLowerCase()) return -1;
+                  if (a.sub_name.toLowerCase() < b.sub_name.toLowerCase()) return 1;
+                  return 0;
+              });
+              break;
+          case 'hostA':
+              sorted = unsorted.sort(function (a,b) {
+                  if (a.host_name.toLowerCase() < b.host_name.toLowerCase()) return -1;
+                  if (a.host_name.toLowerCase() > b.host_name.toLowerCase()) return 1;
+                  return 0;
+              });
+              break;
+          case 'hostZ':
+              sorted = unsorted.sort(function (a,b) {
+                  if (a.host_name.toLowerCase() > b.host_name.toLowerCase()) return -1;
+                  if (a.host_name.toLowerCase() < b.host_name.toLowerCase()) return 1;
+                  return 0;
+              });
+              break;
+          default:
+              sorted = unsorted;
+      }
+      return sorted;
+
+    }
+    onShow(e) {
+        var option = null;
+        option = e.target.value;
+        this.setState({showFilter: option});
+        this.updateDisplayData(this.state.searchName, this.state.sortBy, option, this.state.mainData, 'mainDisplayData');
+
+    }
+    onHostShow(e) {
+        var option = null;
+        option = e.target.value;
+        this.setState({showHostFilter: option});
+        this.updateDisplayData(this.state.searchHostName, this.state.sortHostBy, option, this.state.hostConData, 'hostDisplayData');
+
+    }
+    viewShowFilter(data, filter) {
+        var filtered = [];
+        for (var i = 0; i < data.length; i++) {
+            var item = data[i];
+            if (filter === 'condition') {
+                if (typeof(item.sub_condition) === 'number') {
+                    filtered.push(item);
+                }
+            }
+            else if (filter === 'conditions') {
+                if (typeof(item.host_condition) === 'number') {
+                    filtered.push(item);
+                }
+            }
+            else if (filter === 'approved') {
+                if (item.host_approve_flag === 1) {
+                    filtered.push(item);
+                }
+            }
+            else {
+                filtered.push(item);
+            }
+        }
+        return filtered;
+
+    }
+    updateDisplayData(typedName, sort, showFilter, data, display) {
+        var filtered = [];
+
+        // First filters data.
+        if (showFilter !== null) {
+            filtered = this.viewShowFilter(data, showFilter);
+        } else {
+            filtered = data;
+        }
+
+        // Second searches list for name.
+        if (typedName !== null) {
+            filtered = this.searchListByName(filtered, typedName, display);
+        }
+
+        // Third sorts list.
+        if (sort !== null) {
+            filtered = this.sortBy(filtered, sort);
+        } else {
+            filtered = this.sortBy(filtered, 'hostA');
+        }
+
+        if(display === 'mainDisplayData'){this.setState({mainDisplayData: filtered});}
+        else{this.setState({hostDisplayData: filtered});}
+
+    }
     render() {
         var ApproveData = null;
         if (this.state.approveData != null && this.state.hostData != null && this.state.conditionData != null) {
@@ -730,7 +855,7 @@ class AllHostList extends React.Component {
 
         var HostConData = null;
         if (this.state.hostConData != null && this.state.conditionData != null) {
-            HostConData = this.state.hostConData.map(function (host) {
+            HostConData = this.state.hostDisplayData.map(function (host) {
                 return (
                     <ShowHostCon key={host.id} id={host.id} name={host.host_name} conditionData={this.state.conditionData} conId={host.con_id}
                         condition={host.admin_message} date={host.host_condition_date} flag={host.host_approve_flag} notes={host.host_notes} handleSave={this.handleHostConSave}/>
@@ -738,19 +863,6 @@ class AllHostList extends React.Component {
             }.bind(this));
         } else {
             HostConData = <p className="text-muted"><i className="fa fa-spinner fa-2x fa-spin"></i> Loading Host With Conditions...</p>;
-        }
-
-        var SubConData = null;
-        if (this.state.subConData != null && this.state.conditionData != null) {
-            SubConData = this.state.subConData.map(function (host) {
-                return (
-                    <ShowSubCon key={host.id} id={host.id} main={host.host_name} name={host.sub_name} address={host.address}
-                        city={host.city} state={host.state} conditionData={this.state.conditionData} conId={host.con_id}
-                        condition={host.admin_message} flag={host.sub_approve_flag} notes={host.sub_notes} handleSave={this.handleSaveSub}/>
-                );
-            }.bind(this));
-        } else {
-            SubConData = <p className="text-muted"><i className="fa fa-spinner fa-2x fa-spin"></i> Loading Host With Conditions...</p>;
         }
 
         var ConditionData = null;
@@ -767,7 +879,7 @@ class AllHostList extends React.Component {
 
         var HostData = null;
         if (this.state.mainData != null) {
-            HostData = this.state.mainData.map(function (host) {
+            HostData = this.state.mainDisplayData.map(function (host) {
                 return (
                     <ShowAllHost key={host.id} id={host.id} main={host.host_name} name={host.sub_name} address={host.address}
                         city={host.city} state={host.state} zip={host.zip} province={host.province} country={host.country}
@@ -789,51 +901,6 @@ class AllHostList extends React.Component {
                 <ul className="list-group">
                     {ApproveData}
                 </ul>
-                <br></br>
-                    <div className="row">
-                        <div className="col-md-4">
-                            <h3>Hosts With Conditions</h3>
-                        </div>
-                    </div>
-                    <div className="hostTable">
-                            <table className="table">
-                                <thead>
-                                    <tr>
-                                        <th className="col-lg-4">Name</th>
-                                        <th className="col-lg-2">Condition</th>
-                                        <th className="col-lg-1">Condition Added</th>
-                                        <th className="col-lg-5">Notes</th>
-                                    </tr>
-                                </thead>
-                            </table>
-                        <ul className="list-group">
-                            {HostConData}
-                        </ul>
-                    </div>
-                    <br></br>
-                <div className="row">
-                    <div className="col-md-4">
-                        <h3>Sub Hosts With Conditions</h3>
-                    </div>
-                </div>
-                <div className="hostTable">
-                        <table className="table">
-                            <thead>
-                                <tr>
-                                    <th className="col-lg-2">Name</th>
-                                    <th className="col-lg-3">Sub</th>
-                                    <th className="col-lg-2">Address</th>
-                                    <th className="col-lg-1">City</th>
-                                    <th className="col-lg-1">State</th>
-                                    <th className="col-lg-1">Condition</th>
-                                    <th className="col-lg-2">Notes</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    <ul className="list-group">
-                        {SubConData}
-                    </ul>
-                </div>
                 <br></br>
                 <div className="row">
                     <div className="col-md-4">
@@ -858,9 +925,102 @@ class AllHostList extends React.Component {
                     </ul>
                 </div>
                 <br></br>
+                    <div className="row">
+                        <div className="col-md-4">
+                            <h3>Hosts</h3>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-md-3">
+                            <div className="input-group">
+                                <label>Search by Name</label>
+                                <input type="text" className="form-control" placeholder="Search for..." onChange={this.onSearchHostListChange} />
+                            </div>
+                        </div>
+                        <div className="col-md-2">
+                            <label className="control-label">Sort By</label> <br />
+                            <div className="btn-group" data-toggle="buttons" onClick={this.onSortByHostChange} value={this.state.value}>
+                                <button className="btn btn-default" value="hostA">
+                                    <input  type="radio"/>Host A-Z
+                                </button>
+                                <button className="btn btn-default" value="hostZ">
+                                    <input  type="radio"/>Host Z-A
+                                </button>
+                            </div>
+                        </div>
+                        <div className="col-md-3">
+                            <label className="control-label">Filter</label> <br />
+                            <div className="btn-group" data-toggle="buttons" onClick={this.onHostShow} value={this.state.value}>
+                                <button className="btn btn-default" value="all">
+                                    <input  type="radio"/>All
+                                </button>
+                                <button className="btn btn-default" value="conditions">
+                                    <input type="radio"/>Conditions
+                                </button>
+                                <button className="btn btn-default" value="approved">
+                                    <input type="radio"/>Approved
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="hostTable">
+                            <table className="table">
+                                <thead>
+                                    <tr>
+                                        <th className="col-lg-3">Name</th>
+                                        <th className="col-lg-2">Condition</th>
+                                        <th className="col-lg-1">Condition Changed</th>
+                                        <th className="col-lg-2">Approval</th>
+                                        <th className="col-lg-4">Notes</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        <div id="container" className="col host-overflow">
+                            <ul className="list-group bottom-host-ul">
+                                {HostConData}
+                            </ul>
+                        </div>
+                    </div>
+                <br></br>
                 <div className="row">
                     <div className="col-md-4">
-                        <h3>All Hosts</h3>
+                        <h3>Sub Host</h3>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-md-3">
+                        <div className="input-group">
+                            <label>Search by Name</label>
+                            <input type="text" className="form-control" placeholder="Search for..." onChange={this.onSearchListChange} />
+                        </div>
+                    </div>
+                    <div className="col-md-4">
+                        <label className="control-label">Sort By</label> <br />
+                        <div className="btn-group" data-toggle="buttons" onClick={this.onSortByChange} value={this.state.value}>
+                            <button className="btn btn-default" value="subA">
+                                <input  type="radio"/>Sub A-Z
+                            </button>
+                            <button className="btn btn-default" value="subZ">
+                                <input type="radio"/>Sub Z-A
+                            </button>
+                            <button className="btn btn-default" value="hostA">
+                                <input  type="radio"/>Host A-Z
+                            </button>
+                            <button className="btn btn-default" value="hostZ">
+                                <input  type="radio"/>Host Z-A
+                            </button>
+                        </div>
+                    </div>
+                    <div className="col-md-3">
+                        <label className="control-label">Filter</label> <br />
+                        <div className="btn-group" data-toggle="buttons" onClick={this.onShow} value={this.state.value}>
+                            <button className="btn btn-default" value="all">
+                                <input  type="radio"/>All
+                            </button>
+                            <button className="btn btn-default" value="condition">
+                                <input type="radio"/>Conditions
+                            </button>
+                        </div>
                     </div>
                 </div>
                         <table className="table">
@@ -877,13 +1037,18 @@ class AllHostList extends React.Component {
                                 </tr>
                             </thead>
                         </table>
-                    <ul className="list-group">
-                        {HostData}
-                    </ul>
+                    <div id="container" className="col host-overflow">
+                            <ul className="list-group bottom-host-ul">
+                            {HostData}
+                        </ul>
+                    </div>
             </div>
 
         );
     }
+}
+const containerStyle = {
+  overflowY: 'scroll', height: 600, scrollbarWidth: 'thin'
 }
 
 ReactDOM.render(<AllHostList />, document.getElementById('approve_host'));
