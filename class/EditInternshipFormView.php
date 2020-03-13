@@ -101,7 +101,6 @@ class EditInternshipFormView {
     public function buildInternshipForm() {
         javascript('jquery');
         javascript('jquery_ui');
-        javascriptMod('intern', 'formGoodies');
 
         // Form Submission setup, only allowed to save if you have permission
         $permAllowed = false;
@@ -112,6 +111,8 @@ class EditInternshipFormView {
                 $permAllowed = true;
             }
         }
+
+        javascriptMod('intern', 'formGoodies', array('perm' => (string)$permAllowed, 'id' => $this->intern->getId()));
         if($permAllowed){
             $this->form->setAction('index.php?module=intern&action=SaveInternship');
             $this->form->addSubmit('submit', 'Save');

@@ -34,13 +34,12 @@ class RequestBackgroundCheck {
 
         $i = \Intern\InternshipFactory::getInternshipById($_REQUEST['internship_id']);
         $i->background_check = 1;
-        $host = $i->getHost();
 
         $i->save();
 
         $term = TermFactory::getTermByTermCode($i->getTerm());
 
-        $email = new \Intern\Email\BackgroundCheckEmail(\Intern\InternSettings::getInstance(), $i, $term, $host, true, false);
+        $email = new \Intern\Email\BackgroundCheckEmail(\Intern\InternSettings::getInstance(), $i, $term, true, false);
         $email->send();
 
         exit;

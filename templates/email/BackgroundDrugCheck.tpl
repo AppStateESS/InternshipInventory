@@ -1,6 +1,6 @@
 Hello,
 
-The following student requires a {CHECK} Check for their internship with {HOST}.
+The following student requires a {CHECK} Check for their internship with {HOST}, {SUB_HOST}.
 
 Student
 --------

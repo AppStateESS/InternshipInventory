@@ -27,12 +27,15 @@ function generateContractHandler()
 
     // Change the button text
     $('.generateContract').html('<i class="fa fa-spinner fa-spin"></i> Generating...');
-
-    $.post('index.php?module=intern&action=SaveInternship', $('#internship').serialize() + '&generateContract=true',
-            function(data){
-                window.location = 'index.php?module=intern&action=pdf&internship_id=' + data.id;
-            },
+    if(!approved){
+        window.location = 'index.php?module=intern&action=pdf&internship_id=' + toGenId;
+    } else {
+        $.post('index.php?module=intern&action=SaveInternship', $('#internship').serialize() + '&generateContract=true',
+        function(data){
+            window.location = 'index.php?module=intern&action=pdf&internship_id=' + data.id;
+        },
         'json');
+    }
 }
 
 function addFormErrors()

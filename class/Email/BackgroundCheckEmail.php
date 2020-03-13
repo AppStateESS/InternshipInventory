@@ -37,7 +37,6 @@ class BackgroundCheckEmail extends Email{
 
     private $internship;
     private $term;
-    private $host;
 
     private $backgroundCheck;
     private $drugCheck;
@@ -51,12 +50,11 @@ class BackgroundCheckEmail extends Email{
     * @param bool $backgroundCheck
     * @param bool $drugCheck
     */
-    public function __construct(InternSettings $emailSettings, Internship $internship, Term $term, SubHost $host, $backgroundCheck, $drugCheck) {
+    public function __construct(InternSettings $emailSettings, Internship $internship, Term $term, $backgroundCheck, $drugCheck) {
         parent::__construct($emailSettings);
 
         $this->internship = $internship;
         $this->term = $term;
-        $this->host = $host;
         $this->backgroundCheck = $backgroundCheck;
         $this->drugCheck = $drugCheck;
     }
@@ -68,13 +66,15 @@ class BackgroundCheckEmail extends Email{
     protected function buildMessage()
     {
         $this->to = explode(',', $this->emailSettings->getBackgroundCheckEmail());
+        $host = $this->internship->getHost();
 
         $this->tpl['NAME'] = $this->internship->getFullName();
         $this->tpl['BANNER'] = $this->internship->banner;
         $this->tpl['TERM'] = $this->term->getDescription();
         $this->tpl['LEVEL'] = $this->internship->getLevel();
         $this->tpl['EMAIL'] = $this->internship->getEmailAddress() . $this->emailSettings->getEmailDomain();
-        $this->tpl['HOST'] = $this->host->getName();
+        $this->tpl['HOST'] = $host->getMainName();
+        $this->tpl['SUB_HOST'] = $host->getSubName();
 
         if ($this->internship->getFaculty() !== null) {
             $this->tpl['FACULTY'] = $this->internship->getFaculty();

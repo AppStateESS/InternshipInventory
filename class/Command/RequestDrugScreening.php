@@ -38,13 +38,12 @@ class RequestDrugScreening {
 
         $i = \Intern\InternshipFactory::getInternshipById($_REQUEST['internship_id']);
         $i->drug_check = 1;
-        $host = $i->getHost();
 
         $i->save();
 
         $term = TermFactory::getTermByTermCode($i->getTerm());
 
-        $email = new \Intern\Email\BackgroundCheckEmail(\Intern\InternSettings::getInstance(), $i, $term, $host, false, true);
+        $email = new \Intern\Email\BackgroundCheckEmail(\Intern\InternSettings::getInstance(), $i, $term, false, true);
         $email->send();
 
         //echo json_encode('Success');
