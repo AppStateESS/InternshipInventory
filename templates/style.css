@@ -208,6 +208,12 @@ tr.result-row td a {
     max-height: 800px;
     overscroll-behavior: auto;
 }
+.host-add-overflow {
+    overflow-y: auto;
+    height: auto;
+    max-height: 100px;
+    overscroll-behavior: auto;
+}
 .bottom-host-ul {
     margin-bottom: 0 !important;
 }

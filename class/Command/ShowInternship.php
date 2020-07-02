@@ -61,13 +61,14 @@ class ShowInternship {
             \NQ::simple('intern', \Intern\UI\NotifyUI::WARNING, "We couldn't find a student with an ID of {$studentId} in Banner. This probably means this person is not an active student.");
         }
 
-        try {
+        /*try {
             $existingCreditHours = StudentDataProviderFactory::getProvider()->getCreditHours($intern->getBannerId(), $intern->getTerm());
         } catch(\Exception $e){
             $studentId = $intern->getBannerId();
             $student = null;
             \NQ::simple('intern', \Intern\UI\NotifyUI::WARNING, "We couldn't get the credit hours for {$studentId}. This probably means this person is not an active student.");
-        }
+        }*/
+        $existingCreditHours = 0;
 
         // Load the WorkflowState
         $wfState = $intern->getWorkflowState();

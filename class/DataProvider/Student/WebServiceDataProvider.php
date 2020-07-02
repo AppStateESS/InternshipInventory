@@ -23,8 +23,7 @@ namespace Intern\DataProvider\Student;
 use Intern\Student;
 use Intern\AcademicMajor;
 use Intern\LevelFactory;
-
-use \SoapFault;
+use Intern\DataProvider\Curl;
 
 /**
  * WebServiceDataProvider
@@ -38,7 +37,7 @@ class WebServiceDataProvider extends StudentDataProvider {
 
     protected $currentUserName;
 
-    private $client;
+    private $apiKey;
 
     // Campus: main campus, distance ed
     const MAIN_CAMPUS = 'Main Campus';
@@ -51,10 +50,8 @@ class WebServiceDataProvider extends StudentDataProvider {
         $this->currentUserName = $currentUserName;
 
         // Get the WSDL URI from module's settings
-        $wsdlUri = \PHPWS_Settings::get('intern', 'wsdlUri');
-
-        // Create the SOAP instance
-        $this->client = new \SoapClient($wsdlUri, array('WSDL_CACHE_MEMORY'));
+        $this->apiKey = \PHPWS_Settings::get('intern', 'wsdlUri');
+        //$this->client = new \SoapClient($wsdlUri, array('WSDL_CACHE_MEMORY'));
     }
 
     /**
@@ -67,46 +64,30 @@ class WebServiceDataProvider extends StudentDataProvider {
             throw new \InvalidArgumentException('Missing student ID.');
         }
 
-        $params = array('BannerID' => $studentId,
-        'UserName' => $this->currentUserName);
-
-        try {
-            $response = $this->sendRequest($params);
-        } catch (SoapFault $e){
-            throw $e;
+        //See if current user has permission to access data
+        if(!\Current_User::isLogged()){
+            throw new \BannerPermissionException('You do not have permission to access student data.');
         }
 
+        $params = array('BannerID' => $studentId, 'UserName' => $this->currentUserName);
+
+        $url = 'https://sawarehouse.ess.appstate.edu/api/intern/student/' . $studentId . '?username=intern&api_token=' . $this->apiKey;
+
+        $curl = new Curl();
+        $curl->setUrl($url);
+        $result = json_decode($curl->exec());
+        $curl->close();
+
         // Check for an empty response
-        if(isset($response->GetInternInfoResult->DirectoryInfo)) {
-            $response = $response->GetInternInfoResult->DirectoryInfo;
-        } else {
+        if($result === null || (isset($result->message) && $result->message == "No Results Found")) {
             throw new \Intern\Exception\StudentNotFoundException("Could not locate student: $studentId");
         }
 
         // Response may have multiple records (faculty/staff + student), so
         // just take the first one
         // TODO: Maybe be smarter about which result we use?
-        if(is_array($response)){
-            $response = $response[0];
-        }
-
-        // Check for an InvalidUsername error (i.e. the user doesn't have banner permissions)
-        if($response->error_num == 1002 && $response->error_desc == 'InvalidUserName'){
-            throw new \Intern\Exception\BannerPermissionException("No banner permissions for {$this->currentUserName}");
-        }
-
-        // Check for a web service system error
-        if($response->error_num == 1 && $response->error_desc == 'SYSTEM'){
-            throw new \Intern\Exception\WebServiceException("Web service system error while looking up {$studentId}");
-        }
-
-        if($response->error_num == 1101 && $response->error_desc == 'LookupBannerID'){
-            throw new \Intern\Exception\StudentNotFoundException("Invalid banner id: {$studentId}");
-        }
-
-        if($response->error_num == 1001 && $response->error_desc == 'InvalidBannerID'){
-            throw new \Intern\Exception\StudentNotFoundException("Invalid banner id: {$studentId}");
-
+        if(is_array($result)){
+            $result = $result[0];
         }
 
         // Log the request
@@ -114,7 +95,7 @@ class WebServiceDataProvider extends StudentDataProvider {
 
         // Create the Student object and plugin the values
         $student = new Student();
-        $this->plugValues($student, $response);
+        $this->plugStudentValues($student, $result);
 
         return $student;
     }
@@ -134,21 +115,25 @@ class WebServiceDataProvider extends StudentDataProvider {
             throw new \InvalidArgumentException('Missing student term.');
         }
 
-        $params = array('BannerID'  => $studentId,
-        'Term'      => $term,
-        'UserName'  => $this->currentUserName);
-
-        try {
-            $response = $this->client->GetCreditHours($params);
-        } catch (SoapFault $e){
-            throw $e;
+        //See if current user has permission to access data
+        if(!\Current_User::isLogged()){
+            throw new \BannerPermissionException('You do not have permission to access student data.');
         }
+
+        $params = array('BannerID' => $studentId, 'Term' => $term, 'UserName' => $this->currentUserName);
+
+        $url = 'https://sawarehouse.ess.appstate.edu/api/intern/student/' . $studentId . '/' . $term . '?username=intern&api_token=' . $this->apiKey;
+
+        $curl = new Curl();
+        $curl->setUrl($url);
+        $result = json_decode($curl->exec());
+        $curl->close();
 
         // Log the request
         $this->logRequest('getCreditHours', 'success', $params);
 
-        if(isset($response->GetCreditHoursResult)){
-            return $response->GetCreditHoursResult;
+        if(isset($result->GetCreditHoursResult)){
+            return $result->GetCreditHoursResult;
         }else{
             return null;
         }
@@ -160,87 +145,69 @@ class WebServiceDataProvider extends StudentDataProvider {
             throw new \InvalidArgumentException('Missing student ID.');
         }
 
-        $params = array('BannerID' => $facultyId,
-        'UserName' => $this->currentUserName);
-
-        try {
-            $response = $this->client->getInternInfo($params);
-        } catch (SoapFault $e){
-            throw $e;
+        //See if current user has permission to access data
+        if(!\Current_User::isLogged()){
+            throw new \BannerPermissionException('You do not have permission to access student data.');
         }
 
+        $params = array('BannerID' => $facultyId, 'UserName' => $this->currentUserName);
+
+        $url = 'https://sawarehouse.ess.appstate.edu/api/intern/employee/' . $facultyId . '?username=intern&api_token=' . $this->apiKey;
+
+        $curl = new Curl();
+        $curl->setUrl($url);
+        $result = json_decode($curl->exec());
+        $curl->close();
+
         // Check for an empty response
-        if(isset($response->GetInternInfoResult->DirectoryInfo)) {
-            $response = $response->GetInternInfoResult->DirectoryInfo;
-        } else {
+        if($result === null || (isset($result->message) && $result->message == "No Results Found")) {
             throw new \Intern\Exception\StudentNotFoundException("Could not locate faculty member with id: $facultyId");
         }
 
         // Check for an arry of results
-        if(is_array($response)){
-            $response = $response[0];
+        if(is_array($result)){
+            $result = $result[0];
         }
 
-        // Check for an InvalidUsername error (i.e. the user doesn't have banner permissions)
-        if($response->error_num == 1002 && $response->error_desc == 'InvalidUserName'){
-            throw new \Intern\Exception\BannerPermissionException("No banner permissions for {$this->currentUserName}");
-        }
+        $facultyRes = $this->plugfacultyValues($result);
 
-        // Check for a web service system error
-        if($response->error_num == 1 && $response->error_desc == 'SYSTEM'){
-            throw new \Intern\Exception\WebServiceException("Web service system error while looking up {$facultyId}");
-        }
-
-        if($response->error_num == 1101 && $response->error_desc == 'LookupBannerID'){
-            throw new \Intern\Exception\StudentNotFoundException("Invalid banner id: {$facultyId}");
-        }
-
-        if($response->error_num == 1001 && $response->error_desc == 'InvalidBannerID'){
-            throw new \Intern\Exception\StudentNotFoundException("Invalid banner id: {$facultyId}");
-
-        }
-
-        if(is_array($response)){
-            $response = $response[0];
-        }
-
-        return $response;
+        return $facultyRes;
     }
 
     /**
-    * Takes a reference to a Student object and a SOAP response,
-    * Plugs the SOAP values into Student object.
+    * Takes a reference to a Student object and a curl response,
+    * Plugs the curl values into Student object.
     *
     * @param Student $student
     * @param stdClass $data
     */
-    protected function plugValues(&$student, \stdClass $data)
+    protected function plugStudentValues(&$student, \stdClass $data)
     {
         /**********************
         * Basic Demographics *
         **********************/
-        $student->setStudentId($data->banner_id);
-        $student->setUsername($data->user_name);
+        $student->setStudentId($data->bannerID);
+        $student->setUsername($data->userName);
 
-        $student->setFirstName($data->first_name);
-        $student->setMiddleName($data->middle_name);
-        $student->setLastName($data->last_name);
-        $student->setPreferredName($data->preferred_name);
+        $student->setFirstName($data->firstName);
+        $student->setMiddleName($data->middleName);
+        $student->setLastName($data->lastName);
+        $student->setPreferredName($data->preferredName);
 
-        if($data->confid === 'N') {
+        if($data->confidential === 'N') {
             $student->setConfidentialFlag(false);
         } else {
             $student->setConfidentialFlag(true);
         }
 
         // Person type flags
-        if($data->isstudent == 1){
+        if($data->isStudent == 1){
             $student->setStudentFlag(true);
         } else {
             $student->setStudentFlag(false);
         }
 
-        if($data->isstaff == 1){
+        if($data->isStaff == 1){
             $student->setStaffFlag(true);
         } else {
             $student->setStaffFlag(false);
@@ -251,10 +218,10 @@ class WebServiceDataProvider extends StudentDataProvider {
         *****************/
 
         // Campus
-        if($data->campus == WebServiceDataProvider::MAIN_CAMPUS) {
+        if($data->campusDescription == WebServiceDataProvider::MAIN_CAMPUS) {
             // If campus is 'Main Campus', then we know it's a main campus student
             $student->setCampus(Student::MAIN_CAMPUS);
-        } else if ($data->campus != '') {
+        } else if ($data->campusDescription != '') {
             // If the campus is set, but is not 'Main Campus', then we know it's some other campus name (e.g. "Catawba EdD EdLead")
             // We're not going to check for every possible campus name; as long as there's *something* there, we'll assume it's distance ed
             $student->setCampus(Student::DISTANCE_ED);
@@ -266,41 +233,66 @@ class WebServiceDataProvider extends StudentDataProvider {
         }
 
         // Check if level exist, if not add it
-        if(LevelFactory::checkLevelExist($data->level) && $student->getStudentFlag()){
-            $student->setLevel($data->level);
+        if(LevelFactory::checkLevelExist($data->studentLevel) && $student->getStudentFlag()){
+            $student->setLevel($data->studentLevel);
         } else if($student->getStudentFlag()) {
-            $newLevel = LevelFactory::saveNewCode($data->level);
+            $newLevel = LevelFactory::saveNewCode($data->studentLevel);
             $student->setLevel($newLevel);
         }
 
         // Majors - Can be an array of objects, or just a single object, or not set at all
         if(isset($data->majors) && is_array($data->majors)) {
             foreach($data->majors as $major){
-                $student->addMajor(new AcademicMajor($major->major_code, $major->major_desc, AcademicMajor::LEVEL_UNDERGRAD));
+                $student->addMajor(new AcademicMajor($major->majorCode, $major->majorDescription, AcademicMajor::LEVEL_UNDERGRAD));
             }
         } else if(isset($data->majors) &&  is_object($data->majors)){
-            $student->addMajor(new AcademicMajor($data->majors->major_code, $data->majors->major_desc, AcademicMajor::LEVEL_UNDERGRAD));
+            $student->addMajor(new AcademicMajor($data->majors->majorCode, $data->majors->majorDescription, AcademicMajor::LEVEL_UNDERGRAD));
         }
 
         // GPA - Rounded to 4 decimial places
-        $student->setGpa(round($data->gpa, 4));
+        $student->setGpa(round($data->overallGPA, 4));
 
         // Grad date, if available
-        if(isset($data->grad_date) && $data->grad_date != '') {
-            $student->setGradDateFromString($data->grad_date);
+        if(isset($data->gradDate) && $data->gradDate != '') {
+            $student->setGradDateFromString($data->gradDate);
+        } else if(isset($data->gradYear) && $data->gradYear != '') {
+            $student->setGradDateFromString($data->gradYear);
         }
 
         // Contact info
-        $student->setPhone($data->phone);
+        $student->setPhone($data->phoneNumber);
     }
 
     /**
-    * Logs this request to PHPWS' soap.log file
+    * Renames fields of a curl response
+    *
+    * @param stdClass $data
+    */
+    protected function plugFacultyValues(\stdClass $data) {
+
+        $result = array();
+        $result['id'] = $data->bannerID;
+        $result['username'] = $data->userName;
+        $result['first_name'] = $data->firstName;
+        $result['last_name'] = $data->lastName;
+        $result['phone'] = $data->phoneNumber;
+        //taking only the first address listed
+        $result['street_address1'] = $data->address[0]->street1;
+        $result['street_address2'] = $data->address[0]->street2;
+        $result['city'] = $data->address[0]->city;
+        $result['state'] = $data->address[0]->state;
+        $result['zip'] = $data->address[0]->zip;
+
+        return $result;
+    }
+
+    /**
+    * Logs this request to PHPWS' curlapi.log file
     */
     private function logRequest($functionName, $result, Array $params)
     {
         $args = implode(', ', $params);
         $msg = "$functionName($args) result: $result";
-        \PHPWS_Core::log($msg, 'soap.log', 'SOAP');
+        \PHPWS_Core::log($msg, 'curlapi.log', 'CURLAPI');
     }
 }

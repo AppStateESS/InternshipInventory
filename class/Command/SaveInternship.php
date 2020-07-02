@@ -209,6 +209,9 @@ class SaveInternship {
         if (\Current_User::isDeity()) {
             $i->campus = $_REQUEST['campus'];
         }
+        if (\Current_User::isDeity()) {
+            $i->level = $_REQUEST['level'];
+        }
 
         // Student major handling, if more than one major
         // Make sure we have a student object, since it could be null if the Banner lookup failed

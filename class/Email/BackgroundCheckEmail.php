@@ -75,6 +75,8 @@ class BackgroundCheckEmail extends Email{
         $this->tpl['EMAIL'] = $this->internship->getEmailAddress() . $this->emailSettings->getEmailDomain();
         $this->tpl['HOST'] = $host->getMainName();
         $this->tpl['SUB_HOST'] = $host->getSubName();
+        $this->tpl['USER'] = \Current_User::getUsername();
+        $this->tpl['USER_FULL_NAME'] = \Current_User::getDisplayName();
 
         if ($this->internship->getFaculty() !== null) {
             $this->tpl['FACULTY'] = $this->internship->getFaculty();

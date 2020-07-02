@@ -11,4 +11,6 @@ Level: {LEVEL}
 Email: {EMAIL}
 Faculty Supervisor: {FACULTY}
 
+Requested by user: {USER_FULL_NAME}, {USER}
+
 - Internship Inventory

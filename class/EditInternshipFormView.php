@@ -475,7 +475,15 @@ class EditInternshipFormView {
             $this->tpl['CAMPUS'] = $this->intern->getCampusFormatted();
         }
 
-        $this->tpl['LEVEL'] = $this->intern->getLevelFormatted();
+        if (\Current_User::isDeity()) {
+            $level = LevelFactory::getLevelList();
+            $this->form->addSelect('level', $level);
+            $this->form->setMatch('level', $this->intern->level);
+            $this->form->addCssClass('level', 'form-control');
+        }else{
+            $this->tpl['LEVEL'] = $this->intern->getLevelFormatted();
+        }
+
 
         // Student object can be null, so be sure we actually have a student first
         if(isset($this->student)){

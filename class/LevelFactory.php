@@ -61,4 +61,21 @@ class LevelFactory {
         }
         return true;
     }
+
+    public static function getLevelList(){
+        $levels = array();
+
+        $db = Database::newDB();
+        $pdo = $db->getPDO();
+
+        $stmt = $pdo->prepare("SELECT code, description FROM intern_student_level");
+        $stmt->execute();
+        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        foreach ($result as $level) {
+            $levels[$level['code']] = $level['description'];
+        }
+
+        return $levels;
+    }
 }

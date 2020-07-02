@@ -163,17 +163,19 @@ class CreateInternshipInterface extends React.Component {
         if(form.elements.main_host.value === '-1'){
             thisComponent.refs.hostAgency.setError(true);
             valid = false;
-            errors.push('Main Host');
+            errors.push('Host Name: If you don\'t see the correct host, request it by clicking the plus(+)');
         }else{
             thisComponent.refs.hostAgency.setError(false);
         }
         if(form.elements.sub_host.value === '-1'){
             thisComponent.refs.hostAgency.setError(true);
             valid = false;
-            errors.push('Sub Host');
+            errors.push('Sub Name: If you don\'t see the correct sub, request it by clicking the plus(+)');
         }else{
             thisComponent.refs.hostAgency.setError(false);
         }
+
+        this.setErrorMessages(errors)
 
         return valid;
     }
@@ -182,7 +184,7 @@ class CreateInternshipInterface extends React.Component {
     }
     render() {
         var errors;
-        if(this.state.errorMessages == null){
+        if(this.state.errorMessages == null || this.state.errorMessages.length == 0){
             errors = '';
         } else {
             errors = <ErrorMessagesBlock key="errorSet" errors={this.state.errorMessages} />
