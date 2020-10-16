@@ -18,7 +18,7 @@
     "react-input-calendar": "^0.5.4"
   },
   "devDependencies": {
-    "assets-webpack-plugin": "^6.0.1",
+    "assets-webpack-plugin": "^5.1.0",
     "babel-core": "^6.26.3",
     "babel-eslint": "7.2.3",
     "babel-loader": "^7.1.5",

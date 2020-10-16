@@ -80,8 +80,6 @@ module.exports = (env, argv) => {
 	  new webpack.DefinePlugin({'process.env.NODE_ENV': JSON.stringify('production')})
       )
 
-      //settings.plugins.push(  new AssetsPlugin({filename: 'assets.json',
-	//					prettyPrint: true,}) )
       settings.output = {
 	  path: setup.path.join(JS_DIR, 'dist'),
 	  filename: '[name].[chunkhash:8].min.js',
