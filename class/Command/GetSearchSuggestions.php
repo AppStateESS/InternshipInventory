@@ -174,7 +174,7 @@ class GetSearchSuggestions {
 
         for($i = 0; $i < $tokenCount; $i++){
             // Add column for least value of (lev-distance between token and first name, lev-distance between token and last name)
-            $columnList[] = "LEAST(levenshtein('{$tokens[$i]}', last_name_lower), levenshtein('{$tokens[$i]}', first_name_lower), levenshtein('{$tokens[$i]}', middle_name_lower)) as t{$i}_lev";
+            $columnList[] = "LEAST(levenshtein('{$tokens[$i]}', lower(last_name)), levenshtein('{$tokens[$i]}', lower(first_name)), levenshtein('{$tokens[$i]}', lower(middle_name))) as t{$i}_lev";
             // Add column for least value of (lev-distance between token and metaphone of first name, lev distance between token and metaphone of last name)
             $columnList[] = "LEAST(levenshtein(metaphone('{$tokens[$i]}', 10), last_name_meta), levenshtein(metaphone('{$tokens[$i]}', 10), first_name_meta), levenshtein(metaphone('{$tokens[$i]}', 10), middle_name_meta)) as t{$i}_metalev";
 

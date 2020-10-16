@@ -333,6 +333,24 @@ class Internship {
             $csv['Host Zip Code'] = '';
             $csv['Host Country'] = '';
         }
+        // Gets site supervisor information
+        $sup = $this->getSupervisor();
+        if ($sup instanceof Supervisor) {
+            $csv = array_merge($csv, $sup->getCSV());
+        } else{
+            $csv['Host Super. First Name'] = '';
+            $csv['Host Super. Last Name'] = '';
+            $csv['Host Super. Title'] = '';
+            $csv['Host Super. Phone'] = '';
+            $csv['Host Super. Email'] = '';
+            $csv['Host Super. Fax'] = '';
+            $csv['Host Super. Address'] = '';
+            $csv['Host Super. City'] = '';
+            $csv['Host Super. State'] = '';
+            $csv['Host Super. Zip Code'] = '';
+            $csv['Host Super. Province'] = '';
+            $csv['Host Super. Country']  = '';
+        }
 
         // Course Info
         $csv['Multi-part']             = $this->isMultipart() ? 'Yes' : 'No';

@@ -11,12 +11,17 @@ class ModalHostForm extends React.Component {
         super(props);
 
         this.state = {
+            availableHost: this.props.availableData,
+            hostDisplayData: null,
+            searchName: null,
             showError: false,
             warningMsg: ''
         };
 
         this.handleSave = this.handleSave.bind(this);
         this.handleExit = this.handleExit.bind(this);
+        this.onSearchListChange = this.onSearchListChange.bind(this);
+        this.updateDisplayData = this.updateDisplayData.bind(this);
     }
     handleSave() {
         if (this.refs.host_name.value === '' || this.refs.host_name.value === undefined) {
@@ -38,9 +43,47 @@ class ModalHostForm extends React.Component {
         })
         this.props.hide();
     }
+    searchListByName(data, nameToSearch) {
+      var filtered = [];
+      // Looks for the name by filtering the mainData
+      for (var i = 0; i < data.length; i++) {
+          var item = data[i];
+          // Make the item, name lowercase for easier searching
+          if (item.host_name.toLowerCase().includes(nameToSearch)) {
+              filtered.push(item);
+          }
+      }
+      return filtered;
+    }
+    updateDisplayData(typedName, data) {
+        var filtered = [];
+
+        // Second searches list for name.
+        if (typedName !== null) {
+            filtered = this.searchListByName(data, typedName);
+        }
+
+        this.setState({hostDisplayData: filtered});
+
+    }
+    onSearchListChange(e) {
+        var name = null;
+        name = e.target.value.toLowerCase();
+        this.setState({searchName: name});
+        if(name === ''){this.state.hostDisplayData = null;}
+        else if(this.state.availableHost!=null){this.updateDisplayData(name, this.state.availableHost);}
+    }
     render() {
         // Create red asterisk for a required field
         var require = <span style={{color: '#FB0000'}}> *</span>;
+        var HostData = null;
+        if (this.state.hostDisplayData != null) {
+            HostData = this.state.hostDisplayData.map(function (host) {
+                return (
+                    <p>{host.host_name}</p>
+                );
+            }.bind(this));
+        }
         return (
             <Modal show={this.props.show} onHide={this.handleExit} backdrop='static'>
                 <Modal.Header closeButton>
@@ -51,9 +94,16 @@ class ModalHostForm extends React.Component {
                     <form className="form-horizontal">
                         <div className="form-group">
                             <label className="col-lg-3 control-label">Host Name {require}</label>
-                            <div className="col-lg-9"><input  type="text" className="form-control" id="host-name" ref="host_name" defaultValue={this.props.name}/></div>
+                            <div className="col-lg-9"><input  type="text" className="form-control" id="host-name" ref="host_name" defaultValue={this.props.name} onChange={this.onSearchListChange}/></div>
                         </div>
                     </form>
+                    <label className="col-lg-6 control-label">Suggested Host Previously Added:</label>
+                    <div id="container" className="col host-add-overflow">
+                            <ul className="list-group bottom-host-ul">
+                            {HostData}
+                        </ul>
+                    </div>
+                <p></p>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={this.handleSave}>Request Host</Button>
@@ -62,6 +112,9 @@ class ModalHostForm extends React.Component {
             </Modal>
         );
     }
+}
+const containerStyle = {
+  overflowY: 'scroll', height: 100, scrollbarWidth: 'thin'
 }
 class ModalSubForm extends React.Component {
     constructor(props) {
@@ -331,7 +384,7 @@ class HostAgency extends React.Component {
                         <div className={fgClasses} id="agency">
                             <label htmlFor="agency2" className="control-label">Host Name </label>
                             <button type="button" id="small-button1" title="Click here to add a host" onClick={this.openHostModal}><i className="fa fa-plus fa-xs"></i></button>
-                            <ModalHostForm show={this.state.showHostModal} hide={this.closeHostModal} edit={true} handleSaveHost={this.handleSaveHost}{...this.props} />
+                            <ModalHostForm show={this.state.showHostModal} availableData={this.state.availableHost} key={this.state.availableHost} hide={this.closeHostModal} edit={true} handleSaveHost={this.handleSaveHost}{...this.props} />
                             <select id="main_host" name="main_host" ref="host_selection" className="form-control" onChange={this.getHostSelect}>
                                 <option value="-1">Select a Host</option>
                                 {availHostOptions}

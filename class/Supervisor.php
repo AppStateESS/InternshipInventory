@@ -107,6 +107,7 @@ class Supervisor implements DbStorable {
         $csv['Host Super. City']       = $this->supervisor_city;
         $csv['Host Super. State']      = $this->supervisor_state == null ? '' : $this->supervisor_state;
         $csv['Host Super. Zip Code']   = $this->supervisor_zip == null ? '' : $this->supervisor_zip;
+        $csv['Host Super. Province']   = $this->supervisor_province == null ? '' : $this->supervisor_province;
         $csv['Host Super. Country']    = $this->supervisor_country;
 
         return $csv;

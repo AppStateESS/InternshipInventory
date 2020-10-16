@@ -850,7 +850,7 @@ class AllHostList extends React.Component {
                 );
             }.bind(this));
         } else {
-            ApproveData = <p className="text-muted">No Hosts to Approve</p>;
+            ApproveData = <p className="text-muted"><i className="fa fa-spinner fa-2x fa-spin"></i> Loading Hosts to Approve...</p>;
         }
 
         var HostConData = null;

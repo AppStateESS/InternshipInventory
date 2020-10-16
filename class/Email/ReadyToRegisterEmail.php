@@ -158,10 +158,10 @@ class ReadyToRegisterEmail extends Email {
         /***
         * Figure out who the notification email goes to, Setting is a comma separated array
         */
-        if ($this->internship->isDistanceEd()) {
+        if ($this->internship->isDistanceEd() && $this->internship->isGraduate()) {
             // Send distance ed internship to Distance Ed Office
             $this->to = explode(',', $this->emailSettings->getDistanceEdEmail());
-            $this->tpl['UNDERGRAD'] = ''; // Dummy template var to use undergrad text
+            $this->tpl['GRADUATE'] = ''; // Dummy template var to use undergrad text
         } else if ($this->internship->isGraduate()) {
             // Send all graduate internships to the graduate school (whether international or not)
             $this->to = explode(',', $this->emailSettings->getGraduateRegEmail());

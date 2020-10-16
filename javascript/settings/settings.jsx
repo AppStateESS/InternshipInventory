@@ -126,7 +126,7 @@ class Settings extends Component {
                     <input className="form-control" type="text" defaultValue={this.state.data.systemName} id="systemName" name="systemName" ref={input => this.systemNameInput = input} ></input>
                 </div>
                 <div className="form-group col-md-6">
-                    <label>wsdlUri:</label>
+                    <label>API Key:</label>
                     <input className="form-control" type="text" defaultValue={this.state.data.wsdlUri} id="wsdlUri" name="wsdlUri" ref={input => this.wsdlUriInput = input}></input>
                 </div>
                 <div className="col-md-12">

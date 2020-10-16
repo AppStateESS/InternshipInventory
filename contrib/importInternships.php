@@ -13,7 +13,7 @@ ini_set('display_errors', 1);
 ini_set('ERROR_REPORTING', E_WARNING);
 error_reporting(E_ALL);
 
-$args = array('input_file'=>'','department_id'=>'','term'=>'');
+$args = array('input_file'=>'','department_id'=>'','term'=>'', 'major'=>'');
 $switches = array();
 check_args($argc, $argv, $args, $switches);
 
@@ -21,6 +21,7 @@ check_args($argc, $argv, $args, $switches);
 $inputFile = fopen($args['input_file'], 'r');
 $term = $args['term'];
 $department_id = $args['department_id'];
+$major = $args['major'];
 
 if($inputFile === FALSE){
     die("Could not open input file.\n");
@@ -37,6 +38,7 @@ $values = array();
 $emergency = array();
 $values['term'] = $term;
 $values['department_id'] = $department_id;
+$values['major_description'] = $major;
 $values['state'] = 'RegisteredState'; // Since these are past internships
 $values['level'] = 'U'; // Assuming undergraduate
 $values['campus'] = 'main_campus';
@@ -44,6 +46,7 @@ $values['multi_part'] = 0;
 $values['secondary_part'] = 0;
 $values['domestic'] = 1;
 $values['clinical_practica'] = 1;
+
 // Parse CSV input into fields line by line
 while(($line = fgetcsv($inputFile, 0, ',')) !== FALSE) {
     foreach($line as $key=>$element){
@@ -60,33 +63,27 @@ while(($line = fgetcsv($inputFile, 0, ',')) !== FALSE) {
     $values['first_name'] = $line[1];
     $values['banner'] = $bannerId;
     $values['major_code'] = $line[3];
-    $values['major_description'] = $line[4];
-    $values['gpa'] = $line[5];
-    $email = explode('@',$line[6]);
+    $values['gpa'] = $line[4];
+    $email = explode('@',$line[5]);
     $values['email'] = $email[0];
-    $values['loc_city'] = $line[11];
-    $values['loc_state']   = $line[12];
-    $values['loc_zip'] = $line[13];
+    $values['loc_state']   = $line[11];
+    $values['loc_phone'] = $line[13];
     $values['faculty_id'] = $line[14];
     $values['start_date'] = strtotime($line[15]);
     $values['end_date'] = strtotime($line[16]);
-    //$valuse['course_subj'] = $line[17];
+    $values['course_subj'] = $line[17];
     $values['course_no'] = $line[18];
     $values['credits'] = $line[19];
+    $values['host_id'] = $line[9];
+    $values['host_sub_id'] = $line[10];
 
-    $emergency['name'] = $line[7];
-    $emergency['relation'] = $line[8];
-    $emergency['phone'] = $line[9];
+    $values['supervisor_id'] = createSupervisor();
 
-    $agency = trim($line[10]);
-    $agency_id   = agencyExists($agency);
-    if(!$agency_id){
-        $agency_id = createInternAgency($agency);
-    }
-    if(!$agency_id){
-        continue;
-    }
-    $values['agency_id'] = $agency_id;
+    $emergency['name'] = $line[6];
+    $emergency['relation'] = $line[7];
+    $emergency['phone'] = $line[8];
+
+
 
     $intern_result = createInternship($db, $values);
 
@@ -114,32 +111,21 @@ function createInternship($db, $values) {
   }
 }
 
-function createInternAgency($name){
-  $query = "SELECT NEXTVAL('intern_agency_seq')";
+function createSupervisor(){
+  $query = "SELECT NEXTVAL('intern_supervisor_seq')";
   $id_result = pg_query($query);
 
-  // create new agency
+  // create new supervisor
   if($id_result){
     $id_result = pg_fetch_row($id_result);
     $id = $id_result[0];
-    $sql = "INSERT INTO intern_agency (id, name) VALUES ($id, '$name')";
+    $sql = "INSERT INTO intern_supervisor (id) VALUES ($id)";
     $result = pg_query($sql);
     if($result === false){
-        echo "failed to insert agency\n\n";
+        echo "failed to insert supervisor\n\n";
         return false;
     }else{
         return $id;
     }
   }
-}
-
-function agencyExists($name){
-    $sql = "select * from intern_agency where name='$name'";
-    $result = pg_query($sql);
-    if(pg_num_rows($result) != 0){
-        $result = pg_fetch_row($result);
-        return $result[0];
-    }else{
-        return false;
-    }
 }
