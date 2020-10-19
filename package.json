@@ -1,6 +1,6 @@
 {
   "name": "InternshipInventory",
-  "version": "0.1.8",
+  "version": "1.1.0",
   "description": "Web app for tracking and approving student internships.",
   "main": "index.php",
   "directories": {
@@ -10,10 +10,10 @@
   "dependencies": {
     "classnames": "^2.2.5",
     "corejs-typeahead": "^1.3.1",
-    "react": "^16.14.0",
+    "react": "~15.6.1",
     "react-addons-css-transition-group": "~15.6.0",
     "react-calendar": "^2.19.2",
-    "react-dom": "^16.14.0",
+    "react-dom": "~15.6.1",
     "react-dropzone": "~3.13.3",
     "react-input-calendar": "^0.5.4"
   },
