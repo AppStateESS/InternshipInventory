@@ -1,7 +1,7 @@
 import React from 'react';
 import $ from 'jquery';
 import classNames from 'classnames';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import {CSSTransition} from 'react-transition-group';
 
 import InternationalDropDown from './InternationalDropDown.jsx';
 import StateDropDown from './StateDropDown.jsx';
@@ -95,9 +95,11 @@ class LocationBlock extends React.Component {
                     </div>
                 </div>
 
-                <ReactCSSTransitionGroup transitionName="example" transitionLeave={false} transitionEnterTimeout={500} >
-                    {dropdown}
-                </ReactCSSTransitionGroup>
+                <CSSTransition timeout={500}>
+                    <div>
+                        {dropdown}
+                    </div>
+                </CSSTransition>
             </div>
         );
     }

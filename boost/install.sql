@@ -659,8 +659,6 @@ CREATE TABLE intern_internship (
        middle_name_meta VARCHAR,
        last_name_meta VARCHAR,
        preferred_name_meta VARCHAR,
-       loc_address VARCHAR NULL,
-       loc_city VARCHAR NULL,
        loc_state VARCHAR NULL,
        loc_zip VARCHAR NULL,
        loc_province VARCHAR(255) NULL,
@@ -690,6 +688,8 @@ CREATE TABLE intern_internship (
        host_id INT REFERENCES intern_host(id),
        host_sub_id INT REFERENCES intern_special_host(id),
        loc_phone VARCHAR,
+       remote SMALLINT,
+       remote_state VARCHAR,
        PRIMARY KEY(id)
 );
 

@@ -20,7 +20,7 @@ class TermBlock extends React.Component {
 
         this.handleChange = this.handleChange.bind(this);
     }
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         $.ajax({
             url: 'index.php?module=intern&action=GetAvailableTerms',
             dataType: 'json',

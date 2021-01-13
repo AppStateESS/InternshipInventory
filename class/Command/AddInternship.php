@@ -58,7 +58,7 @@ class AddInternship {
 
         // If there are missing fields, redirect to the add internship interface
         if(!empty($missingFieldList)) {
-            \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "Please complete the highlighted fields.");
+            \NQ::simple('intern', \Intern\UI\NotifyUI::ERROR, "Banner ID must be in Student box before creating internship.");
             $this->redirectToForm();
             return;
         }
@@ -140,7 +140,7 @@ class AddInternship {
         $missingFieldList = array();
 
         // Check student ID
-        if (!isset($_POST['studentId']) || (isset($_POST['studentId']) && $_POST['studentId'] == '')) {
+        if (!isset($_POST['studentId']) || (isset($_POST['studentId']) && $_POST['studentId'] == '') || !preg_match('/^([0-9]){9}$/', $_POST['studentId'])) {
             $missingFieldList[] = 'studentId';
         }
 

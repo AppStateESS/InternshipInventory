@@ -126,12 +126,12 @@ class Manager extends React.Component{
 		this.state = {mainData: null,
 			errorWarning: '',
 			success: ''};
-		this.componentWillMount = this.componentWillMount.bind(this);
+		this.UNSAFE_componentWillMount = this.UNSAFE_componentWillMount.bind(this);
 		this.getData = this.getData.bind(this);
 		this.onSave = this.onSave.bind(this);
 		this.onCreate = this.onCreate.bind(this);
 	}
-	componentWillMount(){
+	UNSAFE_componentWillMount(){
 		this.getData();
 	}
 	getData(){

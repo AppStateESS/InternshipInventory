@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import {Button, Modal} from 'react-bootstrap';
 import Message from './Message.jsx';
-
+import '../custom.css';
 
 // !!The internshipId variable is important!!
 
@@ -184,6 +184,7 @@ class EmergencyContact extends React.Component {
     }
     handleSaveContact(contact){
         this.closeModal(); // Close the modal box
+        this.setState({ showModal: false });
         this.props.handleSave(contact); // Call parent's handleSave method
     }
     handleRemove(event) {
@@ -204,9 +205,9 @@ class EmergencyContact extends React.Component {
                 <li className="list-group-item" onClick={this.openModal} style={{cursor: "pointer"}}>
                     {contactInfo}
                     <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={this.handleRemove}><span aria-hidden="true">&times;</span></button>
-
+                    <div onClick={e => e.stopPropagation()}>
                     <ModalForm show={this.state.showModal} hide={this.closeModal} edit={true} handleSaveContact={this.handleSaveContact}{...this.props} />
-
+                    </div>
                 </li>
         );
     }
@@ -226,7 +227,7 @@ class EmergencyContactList extends React.Component {
         this.openAddModal = this.openAddModal.bind(this);
         this.closeAddModal = this.closeAddModal.bind(this);
     }
-    componentWillMount(){
+    UNSAFE_componentWillMount(){
         this.getData();
     }
     closeAddModal() {

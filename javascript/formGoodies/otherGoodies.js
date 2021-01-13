@@ -91,6 +91,34 @@ function initOIED()
     });
 }
 
+function initRemote(){
+    /**********
+     * Remote State *
+     */
+    // Set inital state for checkbox
+    if($("#internship_remote").prop('checked')){
+        $("#internship_remote_state_label").toggle(true);
+        $("#internship_remote_state").parent().removeClass('text-muted');
+    }else{
+        // disable remote dropdown
+        $("#internship_remote_state_label").toggle(false);
+        $("#internship_remote_state").parent().addClass('text-muted');
+    }
+
+    // Bind event handler
+    $("#internship_remote").click(function(){
+        if($("#internship_remote").prop('checked')){
+            // Enable remote dropdown
+            $("#internship_remote_state_label").toggle(true);
+            $("#internship_remote_state").parent().removeClass('text-muted');
+        }else{
+            // Disable and clear remote dropdown
+            $("#internship_remote_state_label").toggle(false);
+            $("#internship_remote_state").parent().addClass('text-muted');
+        }
+    });
+}
+
 function initMultiPart()
 {
     /**********
@@ -410,6 +438,7 @@ function otherStuff()
     initPayment();
     initOIED();
     initMultiPart();
+    initRemote();
     initSecondaryPart();
     initFacultySelector();
     initRequestBackCheck();

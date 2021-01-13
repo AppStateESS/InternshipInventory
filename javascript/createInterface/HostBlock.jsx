@@ -4,6 +4,7 @@ import {Button, Modal} from 'react-bootstrap';
 import LocationBlock from './LocationBlock.jsx';
 import Message from '../emergencyContact/Message.jsx';
 import $ from 'jquery';
+import '../custom.css'
 
 // on add internship page
 class ModalHostForm extends React.Component {

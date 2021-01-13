@@ -331,6 +331,14 @@ class EditInternshipFormView {
             $this->tpl['LOCATION'] = 'International';
             $this->form->addHidden('location', 'international');
         }
+        // Remote
+        $this->form->addCheck('remote');
+        $this->form->setLabel('remote', 'This internship is remote.');
+
+        $this->form->addSelect('remote_state', State::$UNITED_STATES);
+        $this->form->setLabel('remote_state', 'Remote State');
+        $this->form->addCssClass('remote_state', 'form-control');
+
         // Phone
         $this->form->addText('host_phone');
         $this->form->addCssClass('host_phone', 'form-control');
@@ -610,6 +618,11 @@ class EditInternshipFormView {
 
         $this->formVals['credits'] = $this->intern->credits;
         $this->formVals['avg_hours_week'] = $this->intern->avg_hours_week;
+
+        if ($this->intern->isRemote()) {
+            $this->form->setMatch('remote', '1');
+            $this->formVals['remote_state'] = $this->intern->remote_state;
+        }
 
         if ($this->intern->paid) {
             $this->form->setMatch('payment', 'paid');

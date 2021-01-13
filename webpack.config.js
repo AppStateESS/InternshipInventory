@@ -35,7 +35,7 @@ module.exports = (env, argv) => {
       extensions: ['.js', '.jsx']
     },
     plugins: [new AssetsPlugin({filename: 'assets.json',
-                      prettyPrint: true,}) ],
+                      prettyPrint: true, removeFullPathAutoPrefix: true,}) ],
     module: {
       rules: [
         {
@@ -50,12 +50,12 @@ module.exports = (env, argv) => {
           test: /\.(js|jsx)$/,
           include: JS_DIR,
           loader: 'babel-loader',
-          query: {
-            presets: ['es2015', 'react']
+          options: {
+            presets: ['babel-preset-es2015','babel-preset-react']
           }
         }, {
           test: /\.css$/,
-          loader: "style-loader!css-loader"
+          use: ['style-loader', 'css-loader']
         }
       ]
     }

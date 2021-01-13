@@ -46,7 +46,7 @@ class TerminateBox extends React.Component {
       this.getData = this.getData.bind(this);
       this.clicked = this.clicked.bind(this);
     }
-    componentWillMount(){
+    UNSAFE_componentWillMount(){
         this.getData();
     }
     getData(){
