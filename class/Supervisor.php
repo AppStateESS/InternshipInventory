@@ -138,10 +138,10 @@ class Supervisor implements DbStorable {
             $add[] = $this->supervisor_address . ',';
         }
         if(!empty($this->supervisor_city)){
-            $add[] = $this->supervisor_city . ',';
+            $add[] = $this->supervisor_city . ', ';
         }
         if(!empty($this->supervisor_state)){
-            $add[] = $this->supervisor_state;
+            $add[] = $this->supervisor_state . ' ';
         }
         if(!empty($this->supervisor_zip)){
             $add[] = $this->supervisor_zip;

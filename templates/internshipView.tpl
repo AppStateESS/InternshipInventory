@@ -197,6 +197,43 @@
         </div>
         <!-- Host info -->
         <fieldset>
+
+            <div class="col-lg-8 col-lg-offset-3">
+              <div class="checkbox">
+                <label>{REMOTE}&nbsp;{REMOTE_LABEL_TEXT} </label><a href="#partModal" id="internship-remote-help-button" class="pull-right"  data-toggle="modal"><i class="fa fa-question-circle"></i> Explanation</a>
+              </div>
+            </div>
+            <!-- BEGIN remote-state -->
+            <div class="form-group" id="internship_remote_state_label">
+                <label class="col-lg-3 control-label" for="{REMOTE_STATE_ID}">Remote State</label>
+                <div id="internship_remote_state" class="col-lg-6"><p class="form-control-static">{REMOTE_STATE}</p></div>
+            </div>
+            <!-- END remote-state -->
+
+            <!-- Informational Modal -->
+            <div id ="partModal" class="modal fade" role="dialog">
+              <div class="modal-dialog">
+                <div class = "modal-content">
+                  <div class = "modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h2>Remote Internship Explanation</h2>
+                  </div>
+                  <div class="modal-body">
+                    <div id="internship-remote-help">
+                      <h3>When do I need to click this?</h3>
+                      <p>Select the checkbox when the student is working remotely, such as from their house. As most remote locations are students working from home, and we do not want to record students' home address, we are only collecting the state for reporting purposes.</p>
+
+                      <h3>What if it's a different country?</h3>
+                      <p>As working remotely from another country that is not the USA is rare, we have not added that feature. If you have a student working remotely in a country that is not America, please check the remote box and list the details in the notes section.</p>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-primary pull-right" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <!-- BEGIN host-state -->
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="{HOST_STATE_ID}">State</label>
@@ -322,7 +359,7 @@
 
         <div class="col-lg-8 col-lg-offset-3">
           <div class="checkbox">
-            <label id="secondar-part-label">{SECONDARY_PART}&nbsp;{SECONDARY_PART_LABEL_TEXT}</label>
+            <label id="secondary-part-label">{SECONDARY_PART}&nbsp;{SECONDARY_PART_LABEL_TEXT}</label>
           </div>
         </div>
       </div>

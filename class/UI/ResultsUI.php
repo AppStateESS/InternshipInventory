@@ -262,7 +262,7 @@ class ResultsUI implements UI
                 'department_id', 'id');
 
         // Student level
-        if (isset($level)) {
+        if (isset($level) && $level != null) {
             $sLevel = LevelFactory::getLevelObjectByLevel($level);
             if ($level == Level::UNDERGRAD) {
                 for ($i = 0; $i < count($sLevel); $i++) {

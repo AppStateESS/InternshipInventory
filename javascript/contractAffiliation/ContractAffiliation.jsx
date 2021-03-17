@@ -174,12 +174,15 @@ class ContractSelected extends React.Component{
                 <button type="button" className="close" onClick={this.deleteFile.bind(this, f)}><span aria-hidden="true"><i className='fa fa-trash-o'></i></span></button> </li>
             )}.bind(this));
         } else{
-            DropZone = <div className="dropzone text-center pointer">
-                <Dropzone multiple={false} ref="dropzone" style={{width: 'auto', height: 'auto', border: '2px dashed gray'}} onDrop={this.addFiles}>
-                    <div style={{paddingTop: '1%'}}>
-                        <i className="fa fa-file"></i><br/>
-                        <p>Click to browse or drag contract here.</p>
-                    </div>
+            DropZone = <div className="dropzone text-center pointer" style={{width: 'auto', height: 'auto', border: '2px dashed gray'}} >
+                <Dropzone multiple={false} ref="dropzone" onDrop={this.addFiles}>
+                    {({getRootProps, getInputProps}) => (
+                        <div {...getRootProps()}>
+                            <input {...getInputProps()} />
+                            <i className="fa fa-file" style={{paddingTop: '1%'}}></i><br/>
+                            <p>Click to browse or drag contract here.</p>
+                        </div>
+                    )}
                 </Dropzone>
             </div>
         }

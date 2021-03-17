@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+import {CSSTransition} from 'react-transition-group'
 import classNames from 'classnames';
 
 class ErrorMessagesBlock extends React.Component {
@@ -116,7 +116,7 @@ class AffiliateList extends React.Component {
         this.onShow = this.onShow.bind(this);
         this.updateDisplayData = this.updateDisplayData.bind(this);
     }
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         // Grabs department and affiliate agreement
         // data at start of execution.
         this.getData();
@@ -306,7 +306,7 @@ class AffiliateList extends React.Component {
                 }
             }
             else if (filter ==='auto_renew') {
-                if (item.auto_renew && expiration > 0) {
+                if (item.auto_renew) {
                     filtered.push(item);
                 }
             }
@@ -389,9 +389,11 @@ class AffiliateList extends React.Component {
         return (
             <div className="affiliateList">
 
-                <ReactCSSTransitionGroup transitionName="example" transitionEnterTimeout={500} transitionLeaveTimeout={500}>
-                    {errors}
-                </ReactCSSTransitionGroup>
+                <CSSTransition timeout={500}>
+                    <div>
+                        {errors}
+                    </div>
+                </CSSTransition>
 
                 <div className="row">
                     <div className="col-md-4">

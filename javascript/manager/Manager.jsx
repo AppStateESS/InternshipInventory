@@ -133,7 +133,7 @@ class Manager extends React.Component {
         this.onSave = this.onSave.bind(this);
         this.onCreate = this.onCreate.bind(this);
 	}
-	componentWillMount(){
+	UNSAFE_componentWillMount(){
 		this.getData();
 	}
 	getData(){

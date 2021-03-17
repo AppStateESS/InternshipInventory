@@ -45,8 +45,7 @@ class WebServiceDataProvider extends StudentDataProvider {
     /**
     * @param string $currentUserName - Username of the user currently logged in. Will be sent to web service
     */
-    public function __construct($currentUserName)
-    {
+    public function __construct($currentUserName){
         $this->currentUserName = $currentUserName;
 
         // Get the WSDL URI from module's settings
@@ -58,8 +57,7 @@ class WebServiceDataProvider extends StudentDataProvider {
      * Returns a Student object with hard-coded data
      * @return \Intern\Student
      */
-    public function getStudent($studentId)
-    {
+    public function getStudent($studentId){
         if($studentId === null || $studentId == ''){
             throw new \InvalidArgumentException('Missing student ID.');
         }
@@ -93,20 +91,22 @@ class WebServiceDataProvider extends StudentDataProvider {
         // Log the request
         $this->logRequest('getStudent', 'success', $params);
 
-        // Create the Student object and plugin the values
-        $student = new Student();
-        $this->plugStudentValues($student, $result);
-
+        // Create the Student object and plugin the values, Full check for missing data
+        try {
+            $student = new Student();
+            $this->plugStudentValues($student, $result);
+        }
+        catch(\Exception $e) {
+            throw new \Intern\Exception\StudentNotFoundException("Missing student data: $studentId");
+        }
         return $student;
     }
 
-    protected function sendRequest(Array $params)
-    {
+    protected function sendRequest(Array $params){
         return $this->client->GetInternInfo($params);
     }
 
-    public function getCreditHours(string $studentId, string $term)
-    {
+    public function getCreditHours(string $studentId, string $term){
         if($studentId === null || $studentId == ''){
             throw new \InvalidArgumentException('Missing student ID.');
         }
@@ -139,8 +139,7 @@ class WebServiceDataProvider extends StudentDataProvider {
         }
     }
 
-    public function getFacultyMember($facultyId)
-    {
+    public function getFacultyMember($facultyId){
         if($facultyId === null || $facultyId == ''){
             throw new \InvalidArgumentException('Missing student ID.');
         }
@@ -181,33 +180,35 @@ class WebServiceDataProvider extends StudentDataProvider {
     * @param Student $student
     * @param stdClass $data
     */
-    protected function plugStudentValues(&$student, \stdClass $data)
-    {
+    protected function plugStudentValues(&$student, \stdClass $data){
         /**********************
         * Basic Demographics *
         **********************/
         $student->setStudentId($data->bannerID);
         $student->setUsername($data->userName);
-
         $student->setFirstName($data->firstName);
-        $student->setMiddleName($data->middleName);
+        if(isset($data->middleName)){
+            $student->setMiddleName($data->middleName);
+        }
         $student->setLastName($data->lastName);
-        $student->setPreferredName($data->preferredName);
+        if(isset($data->preferredName)){
+            $student->setPreferredName($data->preferredName);
+        }
 
-        if($data->confidential === 'N') {
+        if(isset($data->confidential) && $data->confidential === 'N') {
             $student->setConfidentialFlag(false);
         } else {
             $student->setConfidentialFlag(true);
         }
 
         // Person type flags
-        if($data->isStudent == 1){
+        if(isset($data->isStudent) && $data->isStudent == 1){
             $student->setStudentFlag(true);
         } else {
             $student->setStudentFlag(false);
         }
 
-        if($data->isStaff == 1){
+        if(isset($data->isStaff) && $data->isStaff == 1){
             $student->setStaffFlag(true);
         } else {
             $student->setStaffFlag(false);
@@ -218,10 +219,10 @@ class WebServiceDataProvider extends StudentDataProvider {
         *****************/
 
         // Campus
-        if($data->campusDescription == WebServiceDataProvider::MAIN_CAMPUS) {
+        if(isset($data->campusDescription) && $data->campusDescription == WebServiceDataProvider::MAIN_CAMPUS) {
             // If campus is 'Main Campus', then we know it's a main campus student
             $student->setCampus(Student::MAIN_CAMPUS);
-        } else if ($data->campusDescription != '') {
+        } else if (isset($data->campusDescription) && $data->campusDescription != '') {
             // If the campus is set, but is not 'Main Campus', then we know it's some other campus name (e.g. "Catawba EdD EdLead")
             // We're not going to check for every possible campus name; as long as there's *something* there, we'll assume it's distance ed
             $student->setCampus(Student::DISTANCE_ED);
@@ -233,9 +234,9 @@ class WebServiceDataProvider extends StudentDataProvider {
         }
 
         // Check if level exist, if not add it
-        if(LevelFactory::checkLevelExist($data->studentLevel) && $student->getStudentFlag()){
+        if(isset($data->studentLevel) && LevelFactory::checkLevelExist($data->studentLevel) && $student->getStudentFlag()){
             $student->setLevel($data->studentLevel);
-        } else if($student->getStudentFlag()) {
+        } else if(isset($data->studentLevel) && $student->getStudentFlag()) {
             $newLevel = LevelFactory::saveNewCode($data->studentLevel);
             $student->setLevel($newLevel);
         }
@@ -255,12 +256,14 @@ class WebServiceDataProvider extends StudentDataProvider {
         // Grad date, if available
         if(isset($data->gradDate) && $data->gradDate != '') {
             $student->setGradDateFromString($data->gradDate);
-        } else if(isset($data->gradYear) && $data->gradYear != '') {
+        } /*else if(isset($data->gradYear) && $data->gradYear != '') {
             $student->setGradDateFromString($data->gradYear);
-        }
+        }*/
 
         // Contact info
-        $student->setPhone($data->phoneNumber);
+        if(isset($data->phoneNumber)){
+            $student->setPhone($data->phoneNumber);
+        }
     }
 
     /**
@@ -289,8 +292,7 @@ class WebServiceDataProvider extends StudentDataProvider {
     /**
     * Logs this request to PHPWS' curlapi.log file
     */
-    private function logRequest($functionName, $result, Array $params)
-    {
+    private function logRequest($functionName, $result, Array $params) {
         $args = implode(', ', $params);
         $msg = "$functionName($args) result: $result";
         \PHPWS_Core::log($msg, 'curlapi.log', 'CURLAPI');

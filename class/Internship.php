@@ -87,6 +87,8 @@ class Internship {
     public $loc_state;
     public $loc_country;
     public $loc_phone;
+    public $remote;
+    public $remote_state;
 
     // Term Info
     public $term;
@@ -317,6 +319,8 @@ class Internship {
         // Internship location data
         $csv['Domestic']               = $this->isDomestic() ? 'Yes' : 'No';
         $csv['International']          = $this->isInternational() ? 'Yes' : 'No';
+        $csv['Remote']                 = $this->isRemote() ? 'Yes' : 'No';
+        $csv['Remote State']           = $this->remote_state;
         $csv['Host Phone']             = $this->loc_phone;
 
         // Gets host information
@@ -666,6 +670,14 @@ class Internship {
         }
     }
 
+    public function isRemote() {
+        if($this->remote == 1){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     public function isMultipart() {
         if($this->multi_part == 1){
             return true;
@@ -923,6 +935,10 @@ class Internship {
 
     public function getPhoneNumber(){
         return $this->phone;
+    }
+
+    public function getRemoteState(){
+        return $this->remote_state;
     }
 
     /**

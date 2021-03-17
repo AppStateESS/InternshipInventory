@@ -119,7 +119,7 @@ class DepartmentBox extends React.Component {
     removeClick(dept) {
         this.deleteData(dept);
     }
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         // Get the department data on initial load
         this.getData();
     }

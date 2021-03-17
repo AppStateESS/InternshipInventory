@@ -1,9 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
-
-//var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
+import {CSSTransition} from 'react-transition-group'
 
 class ErrorMessagesBlock extends React.Component {
     render() {
@@ -81,7 +79,7 @@ class SearchAdmin extends React.Component {
         this.onAdminDelete = this.onAdminDelete.bind(this);
         this.onAdminCreate = this.onAdminCreate.bind(this);
 	}
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		// Grabs the department data and admin data
 		// at the start of execution
 		this.getData();
@@ -285,9 +283,11 @@ class SearchAdmin extends React.Component {
 		return (
 			<div className="search">
 
-				<ReactCSSTransitionGroup transitionName="example" transitionEnterTimeout={500} transitionLeaveTimeout={500}>
-                    {errors}
-                </ReactCSSTransitionGroup>
+                <CSSTransition timeout={500}>
+                    <div>
+                        {errors}
+                    </div>
+                </CSSTransition>
                 <h1> Administrators </h1>
                     <div className="row" style={{marginTop: '2em'}}>
                         <div className="col-md-5 col-md-push-6">

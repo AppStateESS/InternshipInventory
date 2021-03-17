@@ -1,8 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import Calendar from 'react-calendar';
+import {CSSTransition} from 'react-transition-group';
 
 class ErrorMessagesBlock extends React.Component {
     render() {
@@ -262,22 +261,6 @@ class TermInput extends React.Component {
       var startCalendar = null;
       var endCalendar = null;
 
-      if (this.state.showCalendarCensus) {
-          censusCalendar = <Calendar onChange={this.onChangeCensus}
-                            value={this.state.censusDateInput} calendarType="US"/>
-      }
-      if (this.state.showCalendarAvailable) {
-          availableCalendar = <Calendar onChange={this.onChangeAvailable}
-                               value={this.state.availableDateInput} calendarType="US"/>
-      }
-      if (this.state.showCalendarStart) {
-          startCalendar = <Calendar onChange={this.onChangeStart}
-                           value={this.state.startDateInput} calendarType="US"/>
-      }
-      if (this.state.showCalendarEnd) {
-          endCalendar = <Calendar onChange={this.onChangeEnd}
-                         value={this.state.endDateInput} calendarType="US"/>
-      }
 
       //Treated as census date to regular users but is actually the drop/add date
       return (
@@ -398,7 +381,7 @@ class TermSelector extends React.Component {
         this.onTermCreate = this.onTermCreate.bind(this);
         this.onTermSave = this.onTermSave.bind(this);
     }
-    componentWillMount() {
+    componentDidMount() {
         this.getData();
     }
     getData() {
@@ -564,9 +547,11 @@ class TermSelector extends React.Component {
         return (
             <div className="terms">
 
-              <ReactCSSTransitionGroup transitionName="example" transitionEnterTimeout={500} transitionLeaveTimeout={500}>
-                  {errors}
-              </ReactCSSTransitionGroup>
+              <CSSTransition timeout={500}>
+                  <div>
+                      {errors}
+                  </div>
+              </CSSTransition>
 
                 <h3>Add Term: </h3>
                 <div className="addTerm">

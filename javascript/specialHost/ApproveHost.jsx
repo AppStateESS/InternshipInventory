@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import {Button, Modal} from 'react-bootstrap';
 import Message from '../emergencyContact/Message.jsx';
+import '../custom.css'
 
 class ModalFormHost extends React.Component {
     constructor(props) {
@@ -411,7 +412,9 @@ class ShowHostCon extends React.Component {
         else{apFlag = 'Waiting'}
         return (
             <li className="list-group-item" onClick={this.openModal} style={{cursor: "pointer"}}>
+                <div onClick={e => e.stopPropagation()}>
                 <ModalFormHostCondition show={this.state.showModal} hide={this.closeModal} edit={true} handleSaveHost={this.handleSaveHost}{...this.props} />
+                </div>
                 <div className="row">
                     <div className="col-lg-3">{this.props.name}</div>
                     <div className="col-lg-2">{this.props.condition}</div>
@@ -447,7 +450,9 @@ class ShowCondition extends React.Component {
     render(){
         return (
             <li className="list-group-item" onClick={this.openModal} style={{cursor: "pointer"}}>
+                <div onClick={e => e.stopPropagation()}>
                 <ModalFormCondition show={this.state.showModal} hide={this.closeModal} edit={true} handleSaveHost={this.handleSaveHost}{...this.props} />
+                </div>
                 <div className="row">
                     <div className="col-lg-2">{this.props.admin}</div>
                     <div className="col-lg-1">{this.props.stop}</div>
@@ -484,7 +489,9 @@ class ShowAllHost extends React.Component {
     render(){
         return (
             <li className="list-group-item" onClick={this.openModal} style={{cursor: "pointer"}}>
+                <div onClick={e => e.stopPropagation()}>
                 <ModalFormHost show={this.state.showModal} hide={this.closeModal} edit={true} handleSaveHost={this.handleSaveHost}{...this.props} />
+                </div>
                 <div className="row">
                     <div className="col-lg-2">{this.props.main}</div>
                     <div className="col-lg-3">{this.props.name}</div>
@@ -540,7 +547,7 @@ class AllHostList extends React.Component {
         this.viewShowFilter = this.viewShowFilter.bind(this)
         this.updateDisplayData = this.updateDisplayData.bind(this);
     }
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.getData();
         this.getHostConData()
         this.getMainData()

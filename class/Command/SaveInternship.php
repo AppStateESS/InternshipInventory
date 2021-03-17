@@ -148,6 +148,13 @@ class SaveInternship {
         $i->stipend = isset($_REQUEST['stipend']) && $i->paid;
         $i->pay_rate = self::trimField($_REQUEST['pay_rate']);
         $i->loc_phone = self::trimField($_REQUEST['host_phone']);
+        if (isset($_POST['remote'])){
+            $i->remote = 1;
+            $i->remote_state = $_POST['remote_state'];
+        } else{
+            $i->remote = 0;
+            $i->remote_state = NULL;
+        }
 
         if (\Current_User::allow('intern', 'change_term')) {
             $i->term = $_REQUEST['term'];

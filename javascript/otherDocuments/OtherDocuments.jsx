@@ -89,12 +89,15 @@ class DocumentInfo extends React.Component{
         return(
             <section>
                 <div>
-                    <div className="dropzone text-center pointer">
-                        <Dropzone ref="dropzone" style={{width: 'auto', height: 'auto', border: '2px dashed gray'}} onDrop={this.addFiles}>
-                            <div style={{paddingTop: '1%'}}>
-                                <i className="fa fa-file"></i><br/>
-                                <p>Click to browse or drag file(s) here.</p>
-                            </div>
+                    <div className="dropzone text-center pointer" style={{width: 'auto', height: 'auto', border: '2px dashed gray'}}>
+                        <Dropzone ref="dropzone" onDrop={this.addFiles}>
+                            {({getRootProps, getInputProps}) => (
+                                <div {...getRootProps()}>
+                                    <input {...getInputProps()} />
+                                    <i className="fa fa-file" style={{paddingTop: '1%'}}></i><br/>
+                                    <p>Click to browse or drag file(s) here.</p>
+                                </div>
+                            )}
                         </Dropzone>
                     </div>
                     <div>

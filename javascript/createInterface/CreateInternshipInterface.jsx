@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import {CSSTransition} from 'react-transition-group';
 
 import StudentSearch from './StudentSearch.jsx';
 import TermBlock from './TermBlock.jsx';
@@ -105,9 +105,9 @@ class CreateInternshipInterface extends React.Component {
         var errors = [];
 
         // Check the student Component
-        if(form.elements.studentId.value === '' || !thisComponent.refs.studentSearch.studentFound()){
+        if(form.elements.studentId.value === '' || !thisComponent.refs.studentSearch.studentFound() || !form.elements.studentId.value.match(/^([0-9]){9}$/)){
             thisComponent.refs.studentSearch.setError(true);
-            errors.push('Student ID');
+            errors.push('Student ID (Box must be changed to banner if not automatically done when student is selected.)');
             valid = false;
         }else{
             thisComponent.refs.studentSearch.setError(false);
@@ -195,9 +195,11 @@ class CreateInternshipInterface extends React.Component {
                 <input type="hidden" name="module" value="intern"/>
                 <input type="hidden" name="action" value="AddInternship"/>
 
-                <ReactCSSTransitionGroup transitionName="example" transitionEnterTimeout={500} transitionLeaveTimeout={500}>
-                    {errors}
-                </ReactCSSTransitionGroup>
+                <CSSTransition timeout={500}>
+                    <div>
+                        {errors}
+                    </div>
+                </CSSTransition>
 
                 <StudentSearch ref="studentSearch"/>
 

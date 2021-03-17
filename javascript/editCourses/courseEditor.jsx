@@ -12,14 +12,11 @@ class Notifications extends React.Component {
 
         // Determine if the screen should render a notification.
         if (this.props.msg !== '') {
-            if (this.props.msgType === 'success')
-            {
+            if (this.props.msgType === 'success') {
                 notification = <div className="alert alert-success" role="alert">
                                 <i className="fa fa-check fa-2x pull-left"></i> {this.props.msg}
                             </div>
-            }
-            else if (this.props.msgType === 'error')
-            {
+            } else if (this.props.msgType === 'error') {
                 notification = <div className="alert alert-danger" role="alert">
                                 	<i className="fa fa-times fa-2x pull-left"></i> {this.props.msg}
                                </div>
@@ -168,7 +165,7 @@ class CourseSelector extends React.Component {
         this.saveCourse = this.saveCourse.bind(this);
         this.deleteCourse = this.deleteCourse.bind(this);
 	}
-	componentWillMount(){
+	UNSAFE_componentWillMount(){
 		this.getCourseData();
 	}
 	getCourseData(){
