@@ -48,6 +48,7 @@ class Student {
     // Person type flags
     private $isStaff;
     private $isStudent;
+    private $phone;
 
     public function __construct() {
         $this->majors = array();

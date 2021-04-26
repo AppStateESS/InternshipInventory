@@ -200,7 +200,7 @@
 
             <div class="col-lg-8 col-lg-offset-3">
               <div class="checkbox">
-                <label>{REMOTE}&nbsp;{REMOTE_LABEL_TEXT} </label><a href="#partModal" id="internship-remote-help-button" class="pull-right"  data-toggle="modal"><i class="fa fa-question-circle"></i> Explanation</a>
+                <label>{REMOTE}&nbsp;{REMOTE_LABEL_TEXT} </label><a href="#remoteModal" id="internship-remote-help-button" class="pull-right"  data-toggle="modal"><i class="fa fa-question-circle"></i> Explanation</a>
               </div>
             </div>
             <!-- BEGIN remote-state -->
@@ -211,7 +211,7 @@
             <!-- END remote-state -->
 
             <!-- Informational Modal -->
-            <div id ="partModal" class="modal fade" role="dialog">
+            <div id ="remoteModal" class="modal fade" role="dialog">
               <div class="modal-dialog">
                 <div class = "modal-content">
                   <div class = "modal-header">

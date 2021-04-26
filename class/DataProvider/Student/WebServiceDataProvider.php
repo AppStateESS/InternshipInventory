@@ -234,9 +234,9 @@ class WebServiceDataProvider extends StudentDataProvider {
         }
 
         // Check if level exist, if not add it
-        if(isset($data->studentLevel) && LevelFactory::checkLevelExist($data->studentLevel) && $student->getStudentFlag()){
+        if(isset($data->studentLevel) && LevelFactory::checkLevelExist($data->studentLevel)){
             $student->setLevel($data->studentLevel);
-        } else if(isset($data->studentLevel) && $student->getStudentFlag()) {
+        } else if(isset($data->studentLevel)) {
             $newLevel = LevelFactory::saveNewCode($data->studentLevel);
             $student->setLevel($newLevel);
         }

@@ -77,7 +77,7 @@ class InternshipContractPdfView {
         $f = $this->internship->getFaculty();
         //$subject = $this->internship->getSubject();
 
-        $this->pdf->setSourceFile(PHPWS_SOURCE_DIR . 'mod/intern/pdf/Acknowledgment_Updated_202110.pdf');
+        $this->pdf->setSourceFile(PHPWS_SOURCE_DIR . 'mod/intern/pdf/Acknowledgment_Updated_202120.pdf');
         $tplidx = $this->pdf->importPage(1);
         $this->pdf->addPage();
         $this->pdf->useTemplate($tplidx);
