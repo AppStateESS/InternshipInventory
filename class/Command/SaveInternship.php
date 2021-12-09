@@ -170,9 +170,13 @@ class SaveInternship {
         //Location Data
         $i->host_sub_id = $_REQUEST['SUB_NAME'];
 
-        // Save Country if international
+        // Save State/Country if deity changing host
         /*if (\Current_User::isDeity()) {
-            $i->sub_host = $_REQUEST['sub_host'];
+            if($i->isDomestic()) {
+                $i->loc_state = $_REQUEST['HOST_STATE'];
+            } else{
+                $i->loc_country = $_REQUEST['HOST_COUNTRY'];
+            }
         }*/
 
         if (isset($_POST['course_subj']) && $_POST['course_subj'] != '-1') {
@@ -274,8 +278,12 @@ class SaveInternship {
 
         /************
          * Background and Drug checks
-         * Now handled in otherGoodies.js
+         * mainly handled in otherGoodies.js
          */
+        //var_dump('here');
+        $i->bgcheck = isset($_POST['bgcheck']) ? 1 : 0;
+        $i->dcheck = isset($_POST['dcheck']) ? 1 : 0;
+
 
         // If we don't have a state and this is a new internship,
         // then set an initial state

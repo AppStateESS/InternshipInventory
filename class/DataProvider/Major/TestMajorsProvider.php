@@ -45,7 +45,7 @@ class TestMajorsProvider extends BannerMajorsProvider {
         $majors = array();
 
         foreach ($objs as $obj){
-            $majors[] = new AcademicMajor($obj->major_code, $obj->major_desc, $obj->levl);
+            $majors[] = new AcademicMajor($obj->majorCode, $obj->majorDescription, $obj->majorLevel);
         }
 
         return new AcademicMajorList($majors);
@@ -55,9 +55,9 @@ class TestMajorsProvider extends BannerMajorsProvider {
     {
         $major = new \stdClass();
 
-        $major->major_code = $majorCode;
-        $major->major_desc = $majorDesc;
-        $major->levl = $level;
+        $major->majorCode = $majorCode;
+        $major->majorDescription = $majorDesc;
+        $major->majorLevel = $level;
 
         return $major;
     }

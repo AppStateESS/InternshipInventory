@@ -119,7 +119,9 @@ class Internship {
 
     // Checks
     public $background_check;
+    public $bgcheck;
     public $drug_check;
+    public $dcheck;
 
     // Form token
     public $form_token;

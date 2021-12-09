@@ -207,16 +207,24 @@ class EditInternshipFormView {
         $this->form->setLabel('student_phone', 'Phone');
         $this->form->addCssClass('student_phone', 'form-control');
 
-        if($this->intern->getBackgroundCheck() == 1){
-            $this->tpl['BACK_CHECK_REQUESTED_BTN'] = 'Background Check Requested';
-        }else{
-            $this->tpl['BACK_CHECK_REQUEST_BTN'] = 'Request Background Check';
-        }
+        // checks are need is needed
+        $this->form->addCheck('bgcheck');
+        $this->form->setMatch('bgcheck', $this->intern->bgcheck);
+        $this->form->addCheck('dcheck');
+        $this->form->setMatch('dcheck', $this->intern->dcheck);
 
-        if($this->intern->getDrugCheck() == 1){
-            $this->tpl['DRUG_CHECK_REQUESTED_BTN'] = 'Drug Screening Requested';
-        }else{
-            $this->tpl['DRUG_CHECK_REQUEST_BTN'] = 'Request Drug Screening';
+        if(\Current_User::allow('intern', 'sig_auth_approve')){
+            if($this->intern->getBackgroundCheck() == 1){
+                $this->tpl['BACK_CHECK_REQUESTED_BTN'] = 'Background Check Requested';
+            }else{
+                $this->tpl['BACK_CHECK_REQUEST_BTN'] = 'Send Background Check Request';
+            }
+
+            if($this->intern->getDrugCheck() == 1){
+                $this->tpl['DRUG_CHECK_REQUESTED_BTN'] = 'Drug Screening Requested';
+            }else{
+                $this->tpl['DRUG_CHECK_REQUEST_BTN'] = 'Send Drug Screening Request';
+            }
         }
 
         /************************
@@ -563,20 +571,34 @@ class EditInternshipFormView {
 
     private function plugHost() {
 
+        if (\Current_User::isDeity()) {
+            /*$host_list = SubHostFactory::getHostAssoc();
+            $this->form->addSelect('HOST_NAME', $host_list);
+            $this->form->setMatch('HOST_NAME', $this->host->main_host_id);
+            $this->form->addCssClass('HOST_NAME', 'form-control');
+
+            $host_id = SubHostFactory::getSubHostCond($this->host->main_host_id, $this->host->state, $this->host->country);
+            if (!in_array($this->host->sub_name, $host_id)) {
+                $host_id[$this->host->id] = $this->host->sub_name;
+            }
+            $this->form->addSelect('SUB_NAME', $host_id);
+            $this->form->setMatch('SUB_NAME', $this->host->id);
+            $this->form->addCssClass('SUB_NAME', 'form-control');*/
+        }else{
+            $this->tpl['HOST_NAME'] = $this->host->getMainName();
+            $host_id = SubHostFactory::getSubHostCond($this->host->main_host_id, $this->host->state, $this->host->country);
+            if (!in_array($this->host->sub_name, $host_id)) {
+                $host_id[$this->host->id] = $this->host->sub_name;
+            }
+            $this->form->addSelect('SUB_NAME', $host_id);
+            $this->form->setMatch('SUB_NAME', $this->host->id);
+            $this->form->addCssClass('SUB_NAME', 'form-control');
+        }
+
         $this->form->addHidden('host_id', $this->host->id);
-        $this->tpl['HOST_NAME'] = $this->host->getMainName();
-        //$this->tpl['SUB_NAME'] = $this->host->sub_name;
         $this->tpl['HOST_ADDRESS'] = $this->host->address;
         $this->tpl['HOST_CITY'] = $this->host->city;
         $this->tpl['HOST_ZIP'] = $this->host->zip;
-        $host_id = SubHostFactory::getSubHostCond($this->host->main_host_id, $this->host->state, $this->host->country);
-        if (!in_array($this->host->sub_name, $host_id)) {
-          $host_id[$this->host->id] = $this->host->sub_name;
-        }
-        $this->form->addSelect('SUB_NAME', $host_id);
-        $this->form->setMatch('SUB_NAME', $this->host->id);
-        $this->form->addCssClass('SUB_NAME', 'form-control');
-
         if($this->intern->domestic) {
             $this->tpl['HOST_STATE'] = $this->host->state;
             $this->tpl['HOST_ZIP_LABEL_TEXT'] = 'Zip Code';

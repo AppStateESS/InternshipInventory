@@ -138,6 +138,11 @@
         <div class="form-group">
           <label class="col-lg-3 control-label" for="{BACKGROUND_CHECK_ID}">Background Check Needed?</label>
           <div class="col-lg-6">
+              <div class="col-lg-8 col-lg-offset-3">
+                <div class="checkbox">
+                  <label>{BGCHECK}&nbsp;{BGCHECK_LABLE_TEXT}</label>
+                </div>
+              </div>
             <!-- BEGIN back_check -->
               <button type="button" class="btn btn-default" name="background_code" id="back_check_id" value="0">
                 {BACK_CHECK_REQUEST_BTN}
@@ -154,6 +159,11 @@
         <div class="form-group">
           <label class="col-lg-3 control-label" for="{BACKGROUND_CHECK_ID}">Drug Test Needed?</label>
           <div class="col-lg-6">
+              <div class="col-lg-8 col-lg-offset-3">
+                <div class="checkbox">
+                  <label>{DCHECK}&nbsp;{DCHECK_LABLE_TEXT}</label>
+                </div>
+              </div>
               <!-- BEGIN drug_check -->
               <button type="button" class="btn btn-default" name="drug_code" id="drug_check_id" value="0">
                 {DRUG_CHECK_REQUEST_BTN}
@@ -246,9 +256,17 @@
                 <div class="col-lg-6"><p class="form-control-static">{HOST_NAME}</p></div>
             </div>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="{HOST_ID}">Sub Name</label>
+                <label class="col-lg-3 control-label" for="{HOST_SUB_ID}">Sub Name</label>
                 <div class="col-lg-9"><p class="form-control-static">{SUB_NAME}</p></div>
             </div>
+            <!-- Sub Contact Info -->
+                <div class="row">
+                    <!-- React sub-->
+                    <div class="col-md-12">
+                        <div id="sub-list"></div>
+                    </div>
+
+                </div>
 
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="{HOST_PHONE_ID}">Phone</label>
@@ -697,3 +715,4 @@
 <script type="text/javascript" src="{emergency_entry_bundle}"></script>
 <script type="text/javascript" src="{contract_entry_bundle}"></script>
 <script type="text/javascript" src="{documents_entry_bundle}"></script>
+<script type="text/javascript" src="{location_entry_bundle}"></script>
