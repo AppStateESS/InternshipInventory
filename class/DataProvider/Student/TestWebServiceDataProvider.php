@@ -19,6 +19,8 @@
  */
 
 namespace Intern\DataProvider\Student;
+use Intern\AcademicMajor;
+use Intern\Student;
 
 /**
  * TestStudentProvider - Always returns student objects with hard-coded testing data
@@ -32,89 +34,61 @@ class TestWebServiceDataProvider extends WebServiceDataProvider {
         $this->currentUserName = $currentUserName;
     }
 
-    protected function sendRequest(Array $params)
-    {
+    public function getStudent($studentId){
         return $this->getFakeResponse();
-        //return $this->getFakeErrorResponse();
     }
 
-    public function getCreditHours(string $studentId, string $term)
-    {
+    public function getCreditHours(string $studentId, string $term){
         return 16;
     }
 
-    public function getFacultyMember($facultyId)
-    {
+    public function getFacultyMember($facultyId){
         $response = $this->getFakeResponse();
 
         return $response->GetInternInfoResult->DirectoryInfo;
     }
 
-    private function getFakeResponse()
-    {
-        $obj = new \stdClass();
+    private function getFakeResponse(){
+        $obj = new Student();;
 
         // ID & email
-        $obj->banner_id = '900123456';
-        $obj->user_name = 'jb67803';
-        $obj->email     = 'jb67803@appstate.edu';
+        $obj->setStudentId('900123456');
+        $obj->setUsername('yosef');
 
         // Person type
-        $obj->isstaff   = '';
-        $obj->isstudent = '1';
-        $obj->type      = 'Student';
-        $obj->department = '';
+        $obj->setStaffFlag(false);
+        $obj->setStudentFlag(true);
 
         // Basic demographics
-        $obj->first_name    = 'Jeremy';
-        $obj->middle_name   = 'Awesome';
-        $obj->last_name     = 'Booker';
-        $obj->preferred_name = 'j-dogg';
-        $obj->title         = 'Senior';
+        $obj->setFirstName('Yosef');
+        $obj->setMiddleName('Awesome');
+        $obj->setLastName('Jr');
+        $obj->setPreferredName('Joe Awesome');
 
         // Phone number
-        $obj->phone = '828 123 4567';
+        $obj->setPhone('828 123 4567');
 
         // Academic Info
-        $obj->level     = 'U';   // 'U' or 'G'
-        //$obj->level     = 'G2';
-        $obj->campus    = WebServiceDataProvider::MAIN_CAMPUS;
-        $obj->gpa       = '3.8129032260';
+        $obj->setLevel('U');   // 'U' or 'G'
+        //$obj->setLevel('G2');
+        $obj->setCampus(Student::MAIN_CAMPUS);
+        $obj->setGpa(round('3.8129032260', 4));
         //$obj->gpa       = '1.8129032260';
 
-        $obj->grad_date = '';
+        //$obj->setGradDateFromString('');
         //$obj->grad_date = '12/23/2015'; // Can be empty, or format 12/12/2015 (MM/DD/YYYY)
 
-        $obj->term_code = '201540';
-
         // Majors - Can be an arry of objects, or a single object
-        $major1 = new \stdClass();
-        $major1->major_code = '355*';
-        $major1->major_desc = 'Management';
-        $major1->program_admit = '';
-
-        $major2 = new \stdClass();
-        $major2->major_code = '219A';
-        $major2->major_desc = 'Computer Science';
-        $major2->program_admit = '';
-
-        $obj->majors = array($major1, $major2);
+        $obj->addMajor(new AcademicMajor('355*','Management', AcademicMajor::LEVEL_UNDERGRAD));
+        $obj->addMajor(new AcademicMajor('219A', 'Computer Science', AcademicMajor::LEVEL_UNDERGRAD));
 
         // Confidential flag
-        $obj->confid = 'N';
+        //$obj->setConfidentialFlag('N');
 
-        // Assume there was no error
-        $obj->error_num = 0;
-
-        $parentObj = new \stdClass();
-        $parentObj->GetInternInfoResult = new \stdClass();
-        $parentObj->GetInternInfoResult->DirectoryInfo = $obj;
-
-        return $parentObj;
+        return $obj;
     }
 
-    private function getFakeErrorResponse()
-    {
+    private function getFakeErrorResponse(){
         $obj = new \stdClass();
 
         $obj->banner_id = '900123456';
