@@ -244,13 +244,12 @@
               </div>
             </div>
 
-            <!-- BEGIN host-state -->
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="{HOST_STATE_ID}">State</label>
                 <div id="internship_host_state" class="col-lg-6"><p class="form-control-static">{HOST_STATE}</p></div>
             </div>
-            <!-- END host-state -->
 
+            <!-- BEGIN HOST_NAME -->
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="{HOST_ID}">Host Name</label>
                 <div class="col-lg-6"><p class="form-control-static">{HOST_NAME}</p></div>
@@ -259,14 +258,11 @@
                 <label class="col-lg-3 control-label" for="{HOST_SUB_ID}">Sub Name</label>
                 <div class="col-lg-9"><p class="form-control-static">{SUB_NAME}</p></div>
             </div>
+            <!-- END HOST_NAME -->
             <!-- Sub Contact Info -->
-                <div class="row">
-                    <!-- React sub-->
-                    <div class="col-md-12">
-                        <div id="sub-list"></div>
-                    </div>
+            <!-- React sub-->
+            <div id="sub-list"></div>
 
-                </div>
 
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="{HOST_PHONE_ID}">Phone</label>
@@ -709,6 +705,7 @@
 
 <script type = "text/javascript">
     window.internshipId = {INTERN_ID};
+    window.deityStat = {DEITY_STAT};
 </script>
 
 <script type="text/javascript" src="{vendor_bundle}"></script>

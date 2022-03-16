@@ -47,7 +47,7 @@ class InternshipRest {
 
         $banner = $_REQUEST['banner'];
         $term = $_REQUEST['term'];
-        $sql = "SELECT id FROM intern_internship WHERE banner = :banner AND term = :term AND multi_part != 1 AND state !='RegisteredState'";
+        $sql = "SELECT id FROM intern_internship WHERE banner = :banner AND term = :term AND multi_part != 1 AND state !='CancelledState'";
         $arr = array('banner' => $banner, 'term'=>$term);
 
         $sth = $pdo->prepare($sql);

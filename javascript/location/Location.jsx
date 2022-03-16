@@ -15,6 +15,7 @@ class LocationBlock extends React.Component {
             subSelect: null,
             domestic: null};
         this.getHostSelect = this.getHostSelect.bind(this)
+        this.getSubSelect = this.getSubSelect.bind(this)
         this.getRecordData = this.getRecordData.bind(this);
         this.getSubData = this.getSubData.bind(this);
     }
@@ -36,6 +37,10 @@ class LocationBlock extends React.Component {
     getHostSelect(e){
         //holds main host selection for getting the sub host
         this.setState({hostSelect: e.target.value}, this.getSubData)
+    }
+    getSubSelect(e){
+        //holds main host selection for getting the sub host
+        this.setState({subSelect: e.target.value})
     }
     async getRecordData(){
         let hostid
@@ -60,7 +65,6 @@ class LocationBlock extends React.Component {
                 this.setState({availableSub: datas});
             }.bind(this),
             error: function(xhr, status, err) {
-                console.log('e')
                 console.error(status, err.toString());
             }
         });
@@ -91,7 +95,7 @@ class LocationBlock extends React.Component {
                 );
             });
         } else {
-            availHostOptions = "";
+            availHostOptions = <option key={-1} value={-1}>{'None'}</option>;
         }
 
         var locationDropDown;
@@ -102,29 +106,32 @@ class LocationBlock extends React.Component {
                 );
             });
         } else {
-            locationDropDown = "";
+            locationDropDown = <option key={-1} value={-1}>{'None'}</option>;
         }
-
-        return (
-            <div className="row">
-                <div className="form-group">
-                    <label htmlFor="agency2" className="col-lg-3 control-label">Host Name </label>
-                    <div className="col-lg-6"><select id="main_host" name="main_host" ref="host_selection" className="form-control" onChange={this.getHostSelect} value={this.state.hostSelect}>
-                        {availHostOptions}
-                    </select></div>
+        if (this.props.deityStat){
+            return (
+                <div>
+                    <div className="form-group">
+                        <label htmlFor="agency2" className="col-lg-3 control-label">Host Name </label>
+                        <div className="col-lg-6"><select id="main_host" name="main_host" ref="host_selection" className="form-control" onChange={this.getHostSelect} value={this.state.hostSelect}>
+                            {availHostOptions}
+                        </select></div>
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="agency3" className="col-lg-3 control-label">Sub Name </label>
+                        <div className="col-lg-6"><select id="sub_host" name="sub_host" className="form-control" onChange={this.getSubSelect} value={this.state.subSelect}>
+                            {locationDropDown}
+                        </select></div>
+                    </div>
                 </div>
-                <div className="form-group">
-                    <label htmlFor="agency3" className="col-lg-3 control-label">Sub Name </label>
-                    <div className="col-lg-6"><select id="sub_host" name="sub_host" className="form-control" value={this.state.subSelect}>
-                        {locationDropDown}
-                    </select></div>
-                </div>
-            </div>
-        );
+            );
+        }else {
+            return(<div></div>);
+        }
     }
 }
 
 ReactDOM.render(
-    <LocationBlock internshipId={window.internshipId}/>,
+    <LocationBlock internshipId={window.internshipId} deityStat={window.deityStat}/>,
     document.getElementById('sub-list')
 );

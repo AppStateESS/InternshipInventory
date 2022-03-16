@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {CSSTransition} from 'react-transition-group';
+import $ from 'jquery';
+import {Button, Modal} from 'react-bootstrap';
 
 import StudentSearch from './StudentSearch.jsx';
 import TermBlock from './TermBlock.jsx';
@@ -56,6 +58,43 @@ class ErrorMessagesBlock extends React.Component {
     }
 }
 
+class ModalDuplicate extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {showModal: true};
+
+        this.handleContinue = this.handleContinue.bind(this);
+        this.handleExit = this.handleExit.bind(this);
+    }
+    handleContinue() {
+        this.prop.continueRecord();
+    }
+    handleExit(){
+        this.setState({ showModal: false });
+    }
+    render() {
+        return (
+            <Modal show={this.state.showModal} onHide={this.handleExit} backdrop='static'>
+                <Modal.Header closeButton>
+                  <Modal.Title>Duplication Notice</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <form className="form-horizontal">
+                        <div className="form-group">
+                            <p>'There is a record for the selected student and term already in the Inventory.
+                                Please make sure the previous record(s) are cancelled or have multi-part checked.'</p>
+                        </div>
+                    </form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button onClick={this.handleContinue}>Continue Anyway</Button>
+                    <Button onClick={this.handleExit}>Go Back</Button>
+                </Modal.Footer>
+            </Modal>
+        );
+    }
+}
+
 /*********************************
  * Top level Interface Component *
  *********************************/
@@ -65,6 +104,7 @@ class CreateInternshipInterface extends React.Component {
 
         this.state = {submitted: false,
                     errorMessages: null,
+                    duplicate: false,
                     domestic: undefined,
                     international: undefined,
                     location: undefined};
@@ -81,12 +121,20 @@ class CreateInternshipInterface extends React.Component {
         var thisComponent = this; // Save a reference to 'this' for later use
         var formElement = e.target; // Save a reference to the form DOM nodes that were submitted
 
-        this.setState({submitted: true, errorMessages: null}, function(){
+        this.setState({submitted: true, errorMessages: null, duplicate: false}, function(){
             // After disabling submit buttons, use callback to validate the data
-            if(!this.validate(formElement, thisComponent) && !this.duplicate(formElement, thisComponent)){
+            if(!this.validate(formElement, thisComponent)){
                 // If the data doesn't validate, wait a second before re-enabling the submit button
                 // This makes sure the user sees the "Creating..." spinner, instead of it re-rendering
                 // so fast that they don't think it did anything
+                setTimeout(function(){
+                    thisComponent.setState({submitted: false});
+                }, 1000);
+
+                return;
+            } else if(this.duplicate(formElement, thisComponent)){
+
+
                 setTimeout(function(){
                     thisComponent.setState({submitted: false});
                 }, 1000);
@@ -98,11 +146,25 @@ class CreateInternshipInterface extends React.Component {
             formElement.submit();
         });
     }
+    continueRecord(){
+
+    }
     duplicate(form, thisComponent){
         var check = true;
-        
 
-        return valid;
+        $.ajax({
+            url: 'index.php?module=intern&action=InternshipRest&banner=' + form.elements.studentId.value + '&term=' + form.elements.term.value,
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                check = data;
+            }.bind(this),
+            error: function(xhr, status, err) {
+                console.error(status, err.toString());
+            }
+        });
+
+        return check;
     }
     validate(form, thisComponent) {
 
@@ -189,11 +251,14 @@ class CreateInternshipInterface extends React.Component {
         this.setState({errorMessages: messages});
     }
     render() {
-        var errors;
+        var errors, duplicate;
         if(this.state.errorMessages == null || this.state.errorMessages.length == 0){
             errors = '';
         } else {
             errors = <ErrorMessagesBlock key="errorSet" errors={this.state.errorMessages} />
+        }
+        if(this.state.duplicate){
+            duplicate = <ModalDuplicate continueRecord={this.continueRecord} {...this.props}/>
         }
         return (
 
@@ -217,6 +282,7 @@ class CreateInternshipInterface extends React.Component {
 
                 <HostAgency domestic={this.state.domestic} location={this.state.location} key={this.state.location} ref="hostAgency"/>
 
+                {duplicate}
                 <CreateInternshipButton submitted={this.state.submitted}/>
             </form>
         );

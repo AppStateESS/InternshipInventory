@@ -86,6 +86,7 @@ class Internship {
     public $international;
     public $loc_state;
     public $loc_country;
+    public $loc_province;
     public $loc_phone;
     public $remote;
     public $remote_state;
