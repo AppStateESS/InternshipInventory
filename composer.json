@@ -1,7 +1,7 @@
 {
     "require": {
         "setasign/fpdi-fpdf": "^2.2",
-        "swiftmailer/swiftmailer": "@stable"
+        "symfony/mailer": "^5.4"
     },
     "require-dev": {
         "phpunit/phpunit": "6",

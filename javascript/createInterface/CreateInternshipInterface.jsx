@@ -83,26 +83,19 @@ class CreateInternshipInterface extends React.Component {
 
         this.setState({submitted: true, errorMessages: null}, function(){
             // After disabling submit buttons, use callback to validate the data
-            if(!this.validate(formElement, thisComponent) && !this.duplicate(formElement, thisComponent)){
+            if(!this.validate(formElement, thisComponent)){
                 // If the data doesn't validate, wait a second before re-enabling the submit button
                 // This makes sure the user sees the "Creating..." spinner, instead of it re-rendering
                 // so fast that they don't think it did anything
                 setTimeout(function(){
                     thisComponent.setState({submitted: false});
                 }, 1000);
-
                 return;
             }
 
             // If we get here, then validation was successful
             formElement.submit();
         });
-    }
-    duplicate(form, thisComponent){
-        var check = true;
-        
-
-        return valid;
     }
     validate(form, thisComponent) {
 

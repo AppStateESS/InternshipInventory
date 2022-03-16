@@ -14,7 +14,8 @@
       <li><a href="index.php?module=intern&action=ShowAddInternship"><i class="fa fa-plus"></i> Add Internship</a></li>
       <li><a href="index.php?module=intern&action=search"><i class="fa fa-search"></i> Search</a></li>
       <li><a href="index.php?module=intern&action=edit_faculty"><i class="fa fa-edit"></i> Faculty Supervisors</a></li>
-      <li><a href="https://jira.appstate.edu/servicedesk/customer/portal/8/group/103"><i class="fa fa-question"></i> Get Help</a></li>
+      <li><a href="https://jira.appstate.edu/servicedesk/customer/portal/8/create/284"><i class="fa fa-question"></i> Get Help</a></li>
+      <li><a href="https://confluence.appstate.edu/display/ESSDOCS/Internship+Inventory"><i class="fa fa-book"></i> User Guide</a></li>
     </ul>
 
 

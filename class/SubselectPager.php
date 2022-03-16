@@ -1119,9 +1119,9 @@ class SubselectPager extends \DBPager {
             if (!empty($this->convert_date)) {
                 foreach ($this->convert_date as $key => $format) {
                     if ($this->class && isset($disp_row->$key)) {
-                        $disp_row->$key = strftime($format, $disp_row->$key);
+                        $disp_row->$key = date($format, $disp_row->$key);
                     } elseif (isset($disp_row[$key])) {
-                        $disp_row[$key] = strftime($format, $disp_row[$key]);
+                        $disp_row[$key] = date($format, $disp_row[$key]);
                     }
                 }
             }

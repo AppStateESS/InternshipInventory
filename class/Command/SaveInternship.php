@@ -27,6 +27,7 @@ use \Intern\DatabaseStorage;
 use \Intern\DataProvider\Student\StudentDataProviderFactory;
 use \Intern\TermFactory;
 use \Intern\SupervisorFactory;
+use \Intern\SubHostFactory;
 use \Intern\Exception\StudentNotFoundException;
 
 /**
@@ -168,16 +169,23 @@ class SaveInternship {
         }
 
         //Location Data
-        $i->host_sub_id = $_REQUEST['SUB_NAME'];
+        if(isset($_REQUEST['SUB_NAME'])){
+            $i->host_sub_id = $_REQUEST['SUB_NAME'];
+        }
 
         // Save State/Country if deity changing host
-        /*if (\Current_User::isDeity()) {
+        if (\Current_User::isDeity()) {
+            $i->host_id = $_REQUEST['main_host'];
+            $i->host_sub_id = $_REQUEST['sub_host'];
+
+            $subInfo = SubHostFactory::getSubById($_REQUEST['sub_host']);
             if($i->isDomestic()) {
-                $i->loc_state = $_REQUEST['HOST_STATE'];
+                $i->loc_state = $subInfo->state;
             } else{
-                $i->loc_country = $_REQUEST['HOST_COUNTRY'];
+                $i->loc_country = $subInfo->country;
+                $i->loc_province = $subInfo->province;
             }
-        }*/
+        }
 
         if (isset($_POST['course_subj']) && $_POST['course_subj'] != '-1') {
             $i->course_subj = strip_tags($_POST['course_subj']);

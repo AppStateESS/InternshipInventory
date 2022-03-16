@@ -207,10 +207,6 @@ class InternshipInventory {
                 $ctrl = new Command\SubRest();
                 $ctrl->execute();
                 break;
-            case 'InternshipRest':
-                $ctrl = new Command\InternshipRest();
-                $ctrl->execute();
-                break;
             case 'ConditionRest':
                 $ctrl = new Command\ConditionRest();
                 $ctrl->execute();

@@ -40,7 +40,7 @@ class WebServiceDataProvider extends StudentDataProvider {
     private $apiKey;
 
     // Campus: main campus, distance ed
-    const MAIN_CAMPUS = 'Main Campus';
+    const MAIN_CAMPUS = 'Main';
 
     /**
     * @param string $currentUserName - Username of the user currently logged in. Will be sent to web service

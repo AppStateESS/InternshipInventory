@@ -126,7 +126,7 @@ class DepartmentBox extends React.Component {
     getData() {
         // Fetch the full list of departments
         $.ajax({
-            url: 'index.php?module=intern&action=deptRest',
+            url: 'index.php?module=intern&action=deptRest&hidden=true',
             type: 'GET',
             dataType: 'json',
             success: function(data) {

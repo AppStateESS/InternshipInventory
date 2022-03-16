@@ -71,6 +71,7 @@ class EditInternshipFormView {
         $this->tpl = array();
 
         $this->tpl['INTERN_ID'] = $this->intern->getId();
+        $this->tpl['DEITY_STAT'] = \Current_User::isDeity();
 
         $this->form = new \PHPWS_Form('internship');
         $this->formVals = array();
@@ -200,7 +201,7 @@ class EditInternshipFormView {
          * Student fields *
          */
         $this->form->addText('student_preferred_name');
-        $this->form->setLabel('student_preferred_name', 'Preferred Name');
+        $this->form->setLabel('student_preferred_name', 'Chosen Name');
         $this->form->addCssClass('student_preferred_name', 'form-control');
 
         $this->form->addText('student_phone');
@@ -571,20 +572,7 @@ class EditInternshipFormView {
 
     private function plugHost() {
 
-        if (\Current_User::isDeity()) {
-            /*$host_list = SubHostFactory::getHostAssoc();
-            $this->form->addSelect('HOST_NAME', $host_list);
-            $this->form->setMatch('HOST_NAME', $this->host->main_host_id);
-            $this->form->addCssClass('HOST_NAME', 'form-control');
-
-            $host_id = SubHostFactory::getSubHostCond($this->host->main_host_id, $this->host->state, $this->host->country);
-            if (!in_array($this->host->sub_name, $host_id)) {
-                $host_id[$this->host->id] = $this->host->sub_name;
-            }
-            $this->form->addSelect('SUB_NAME', $host_id);
-            $this->form->setMatch('SUB_NAME', $this->host->id);
-            $this->form->addCssClass('SUB_NAME', 'form-control');*/
-        }else{
+        if (!\Current_User::isDeity()) {
             $this->tpl['HOST_NAME'] = $this->host->getMainName();
             $host_id = SubHostFactory::getSubHostCond($this->host->main_host_id, $this->host->state, $this->host->country);
             if (!in_array($this->host->sub_name, $host_id)) {
