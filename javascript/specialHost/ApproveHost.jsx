@@ -862,7 +862,8 @@ class AllHostList extends React.Component {
 
         var HostConData = null;
         if (this.state.hostConData != null && this.state.conditionData != null) {
-            HostConData = this.state.hostDisplayData.map(function (host) {
+            var reduceHost = this.state.hostDisplayData.slice(0,51);
+            HostConData = reduceHost.map(function (host) {
                 return (
                     <ShowHostCon key={host.id} id={host.id} name={host.host_name} conditionData={this.state.conditionData} conId={host.con_id}
                         condition={host.admin_message} date={host.host_condition_date} flag={host.host_approve_flag} notes={host.host_notes} handleSave={this.handleHostConSave}/>
@@ -886,7 +887,8 @@ class AllHostList extends React.Component {
 
         var HostData = null;
         if (this.state.mainData != null) {
-            HostData = this.state.mainDisplayData.map(function (host) {
+            var reduceSub = this.state.mainDisplayData.slice(0,51);
+            HostData = reduceSub.map(function (host) {
                 return (
                     <ShowAllHost key={host.id} id={host.id} main={host.host_name} name={host.sub_name} address={host.address}
                         city={host.city} state={host.state} zip={host.zip} province={host.province} country={host.country}
