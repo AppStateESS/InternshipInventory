@@ -25,6 +25,10 @@ use \Intern\InternSettings;
 // Setup autoloader for Composer to load SwiftMail via autoload
 require_once PHPWS_SOURCE_DIR . 'mod/intern/vendor/autoload.php';
 
+use \Symfony\Component\Mailer\Transport;
+use \Symfony\Component\Mailer\Mailer;
+use \Symfony\Component\Mime\Address;
+
 /**
  * Abstract class for representing an email to be sent. Provides a
  * central implementaion of message sending/delivery via SwiftMail
@@ -106,14 +110,14 @@ abstract class Email {
     /**
      * Performs the email delivery process.
      *
-     * @param  string $to
+     * @param  Array $to
      * @param  string $fromAddress
      * @param  string $fromName
      * @param  string $subject
      * @param  string $content
      * @param  Array $cc
      * @param  Array $bcc
-     * @return \Swift_Message if successful.
+     * @return Symfony\Component\Mime\Email if successful.
      */
     protected static function buildSwiftMessage($to, $fromAddress, $fromName, $subject, $content, $cc = NULL, $bcc = NULL){
 
@@ -139,28 +143,28 @@ abstract class Email {
         }
 
         // Set up Swift Mailer message
-        $message = \Swift_Message::newInstance()
-            ->setSubject($subject)
-            ->setFrom(array($fromAddress => $fromName))
-            ->setTo($to,$to)
-            ->setBody($content);
+        $message = (new \Symfony\Component\Mime\Email())
+            ->subject($subject)
+            ->from( new Address($fromAddress, $fromName))
+            ->to(...$to)
+            ->text($content);
 
         if(isset($cc)){
-            $message->setCc($cc);
+            $message->cc(...$cc);
         }
 
         if(isset($bcc)){
-            $message->setBcc($bcc);
+            $message->bcc(...$bcc);
         }
 
         return $message;
     }
 
-    protected static function sendSwiftMessage(\Swift_Message $message)
+    protected static function sendSwiftMessage(\Symfony\Component\Mime\Email $message)
     {
         //Set up Swift Mailer delivery
-        $transport = \Swift_SmtpTransport::newInstance('localhost');
-        $mailer = \Swift_Mailer::newInstance($transport);
+        $transport = Transport::fromDsn('sendmail://default');
+        $mailer = new Mailer($transport);
 
         // If we're not in test mode, actually send the message
         if(!EMAIL_TEST_FLAG){
@@ -177,7 +181,7 @@ abstract class Email {
     *
     * @param  $message
     */
-    public static function logEmail(\Swift_Message $message){
+    public static function logEmail(\Symfony\Component\Mime\Email $message){
         // Log the message to a text file
         $fd = fopen(PHPWS_SOURCE_DIR . 'logs/email.log',"a");
 
@@ -197,10 +201,10 @@ abstract class Email {
             }
         }
 
-        fprintf($fd, "From: %s\n", implode('',$message->getFrom()));
+        fprintf($fd, "From: %s\n", $message->getFrom()[0]->getAddress(), $message->getFrom()[0]->getName());
         fprintf($fd, "Subject: %s\n", $message->getSubject());
         fprintf($fd, "Content: \n");
-        fprintf($fd, "%s\n\n", $message->getBody());
+        fprintf($fd, "%s\n\n", $message->getTextBody());
 
         fclose($fd);
     }

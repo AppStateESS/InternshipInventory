@@ -55,7 +55,7 @@ class OIEDCertifiedEmail extends Email{
     {
         $faculty = $this->internship->getFaculty();
         $host = $this->internship->getHost();
-        
+
         $this->tpl['NAME'] = $this->internship->getFullName();
         $this->tpl['BANNER'] = $this->internship->getBannerId();
         $this->tpl['TERM'] = $this->term->getDescription();
@@ -64,7 +64,7 @@ class OIEDCertifiedEmail extends Email{
         $this->tpl['SUB_HOST'] = $host->getSubName();
 
 
-        $this->to = $faculty->getUsername() . $this->emailSettings->getEmailDomain();
+        $this->to[] = $faculty->getUsername() . $this->emailSettings->getEmailDomain();
 
         $this->subject = 'OIED Certified Internship';
     }

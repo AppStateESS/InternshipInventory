@@ -114,6 +114,22 @@ class TermFactory
         return $results;
     }
 
+    //gets current term as of current date
+    public static function getMajorTerm(){
+
+        $db = PdoFactory::getPdoInstance();
+
+        $stmt = $db->prepare('SELECT * from intern_term where
+                    extract(epoch from now())::int >= start_timestamp AND
+                    extract(epoch from now())::int <= end_timestamp');
+        $stmt->execute();
+        $stmt->setFetchMode(\PDO::FETCH_CLASS, '\Intern\TermRestored');
+
+        $results = $stmt->fetchAll();
+
+        return $results;
+    }
+
     /**
      * Determine if a term exists in the database.
      * Useful for deciding if a future term is "ready" yet

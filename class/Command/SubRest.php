@@ -67,6 +67,12 @@ class SubRest {
         } else if(isset($_REQUEST['Conditions'])){
             $sql = "SELECT intern_sub_host.id, sub_name, host_name, admin_message, address, city, state, zip, province, country, other_name, sub_condition, sub_approve_flag, sub_notes, intern_special_host.id AS con_id
             FROM intern_sub_host JOIN intern_host ON intern_sub_host.main_host_id = intern_host.id JOIN intern_special_host ON intern_sub_host.sub_condition = intern_special_host.id WHERE sub_condition IS NOT NULL ORDER BY sub_name ASC";
+        } else if(isset($_REQUEST['internId'])){
+            $id = $_REQUEST['internId'];
+            $sql = "SELECT host_id, host_sub_id FROM intern_internship WHERE id = $id";
+        } else if(isset($_REQUEST['change'])){
+            $id = $_REQUEST['change'];
+            $sql = "SELECT id, main_host_id, sub_name, sub_condition FROM intern_sub_host WHERE main_host_id = $id";
         } else{
             $sql = "SELECT intern_sub_host.id, main_host_id, sub_name, host_name, address, city, state, zip, province, country, other_name, sub_condition, sub_approve_flag, sub_notes, intern_special_host.id AS con_id
             FROM intern_sub_host JOIN intern_host ON intern_sub_host.main_host_id = intern_host.id LEFT JOIN intern_special_host ON intern_sub_host.sub_condition = intern_special_host.id ORDER BY sub_name ASC";

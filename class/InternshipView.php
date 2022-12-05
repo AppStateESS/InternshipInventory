@@ -82,7 +82,8 @@ class InternshipView {
         $tpl['emergency_entry_bundle'] = AssetResolver::resolveJsPath('assets.json', 'emergencyContact');
         $tpl['contract_entry_bundle'] = AssetResolver::resolveJsPath('assets.json', 'contractAffiliation');
         $tpl['documents_entry_bundle'] = AssetResolver::resolveJsPath('assets.json', 'otherDocuments');
-
+        $tpl['location_entry_bundle'] = AssetResolver::resolveJsPath('assets.json', 'location');
+        
         $form->mergeTemplate($tpl);
 
         $this->showWarnings();

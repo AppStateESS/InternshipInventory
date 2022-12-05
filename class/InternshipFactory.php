@@ -71,7 +71,7 @@ class InternshipFactory {
 
         $stmt = $pdo->prepare("SELECT *
                                FROM intern_internship
-                               WHERE state IN ('NewState', 'SigAuthReadyState', 'RegistrationIssueState')
+                               WHERE state IN ('NewState', 'CreationState', 'SigAuthReadyState', 'RegistrationIssueState')
                                     AND term = :term");
         $stmt->execute(array('term'  => $term->getTermCode()));
         $stmt->setFetchMode(\PDO::FETCH_CLASS, 'Intern\InternshipRestored');

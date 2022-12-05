@@ -138,15 +138,24 @@
         <div class="form-group">
           <label class="col-lg-3 control-label" for="{BACKGROUND_CHECK_ID}">Background Check Needed?</label>
           <div class="col-lg-6">
-            <!-- BEGIN back_check -->
-              <button type="button" class="btn btn-default" name="background_code" id="back_check_id" value="0">
-                {BACK_CHECK_REQUEST_BTN}
-              </button>
+              <div class="col-lg-2">
+                  <div class="checkbox">
+                      <label>{BGCHECK}&nbsp;{BGCHECK_LABLE_TEXT}</label>
+                  </div>
+              </div>
+             <!-- BEGIN back_check -->
+             <div class="col-lg-4">
+                 <button type="button" class="btn btn-default" name="background_code" id="back_check_id" value="0">
+                     {BACK_CHECK_REQUEST_BTN}
+                 </button>
+              </div>
               <!-- END back_check -->
               <!-- BEGIN back_check_req -->
-              <button type="button" class="btn btn-default" name="background_code" id="back_check_id" value="1" disabled>
-                {BACK_CHECK_REQUESTED_BTN}
-              </button>
+              <div class="col-lg-4">
+                   <button type="button" class="btn btn-default" name="background_code" id="back_check_id" value="1" disabled>
+                       {BACK_CHECK_REQUESTED_BTN}
+                   </button>
+              </div>
               <!-- END back_check_req -->
           </div>
         </div>
@@ -154,15 +163,24 @@
         <div class="form-group">
           <label class="col-lg-3 control-label" for="{BACKGROUND_CHECK_ID}">Drug Test Needed?</label>
           <div class="col-lg-6">
+              <div class="col-lg-2">
+                <div class="checkbox">
+                  <label>{DCHECK}&nbsp;{DCHECK_LABLE_TEXT}</label>
+                </div>
+              </div>
               <!-- BEGIN drug_check -->
-              <button type="button" class="btn btn-default" name="drug_code" id="drug_check_id" value="0">
-                {DRUG_CHECK_REQUEST_BTN}
-              </button>
+              <div class="col-lg-4">
+                  <button type="button" class="btn btn-default" name="drug_code" id="drug_check_id" value="0">
+                      {DRUG_CHECK_REQUEST_BTN}
+                  </button>
+              </div>
               <!-- END drug_check -->
               <!-- BEGIN drug_check_req -->
-              <button type="button" class="btn btn-default" name="drug_code" id="drug_check_id" value="1" disabled>
-                {DRUG_CHECK_REQUESTED_BTN}
-              </button>
+              <div class="col-lg-4">
+                  <button type="button" class="btn btn-default" name="drug_code" id="drug_check_id" value="1" disabled>
+                      {DRUG_CHECK_REQUESTED_BTN}
+                  </button>
+              </div>
               <!-- END drug_check_req -->
           </div>
       </div>
@@ -241,14 +259,20 @@
             </div>
             <!-- END host-state -->
 
+            <!-- BEGIN HOST_NAME -->
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="{HOST_ID}">Host Name</label>
                 <div class="col-lg-6"><p class="form-control-static">{HOST_NAME}</p></div>
             </div>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="{HOST_ID}">Sub Name</label>
+                <label class="col-lg-3 control-label" for="{HOST_SUB_ID}">Sub Name</label>
                 <div class="col-lg-9"><p class="form-control-static">{SUB_NAME}</p></div>
             </div>
+            <!-- END HOST_NAME -->
+            <!-- Sub Contact Info -->
+            <!-- React sub-->
+            <div id="sub-list"></div>
+
 
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="{HOST_PHONE_ID}">Phone</label>
@@ -691,9 +715,11 @@
 
 <script type = "text/javascript">
     window.internshipId = {INTERN_ID};
+    window.deityStat = {DEITY_STAT};
 </script>
 
 <script type="text/javascript" src="{vendor_bundle}"></script>
 <script type="text/javascript" src="{emergency_entry_bundle}"></script>
 <script type="text/javascript" src="{contract_entry_bundle}"></script>
 <script type="text/javascript" src="{documents_entry_bundle}"></script>
+<script type="text/javascript" src="{location_entry_bundle}"></script>

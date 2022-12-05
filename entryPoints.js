@@ -22,6 +22,7 @@ exports.entry = {
       editTerms: exports.JS_DIR + '/editTerms/EditTerms.jsx',
       contractAffiliation: exports.JS_DIR + '/contractAffiliation/ContractAffiliation.jsx',
       otherDocuments: exports.JS_DIR + '/otherDocuments/OtherDocuments.jsx',
-      approveHost: exports.JS_DIR + '/specialHost/ApproveHost.jsx'
+      approveHost: exports.JS_DIR + '/specialHost/ApproveHost.jsx',
+      location: exports.JS_DIR + '/location/Location.jsx'
       //vendor: ['jquery', 'react', 'react-dom', 'react-bootstrap']
 }

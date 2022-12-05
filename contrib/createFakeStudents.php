@@ -569,7 +569,7 @@ function dob()
     $low_range = floor(17 * 86400 * 365.25);
     $high_range = floor(22 * 86400 * 365.25);
     $unix_dob = time() - mt_rand($low_range, $high_range);
-    return strftime('%Y-%m-%d', $unix_dob);
+    return date('%Y-%m-%d', $unix_dob);
 }
 
 /**

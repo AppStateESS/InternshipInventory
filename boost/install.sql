@@ -18,6 +18,7 @@ CREATE TABLE intern_department (
        name VARCHAR NOT NULL UNIQUE,
        hidden SMALLINT NULL DEFAULT 0,
        corequisite SMALLINT NOT NULL DEFAULT 0,
+       college_name VARCHAR,
        PRIMARY KEY(id)
 );
 
@@ -680,7 +681,9 @@ CREATE TABLE intern_internship (
        secondary_part SMALLINT,
        experience_type VARCHAR DEFAULT 'internship',
        background_check SMALLINT DEFAULT 0,
+       bgcheck SMALLINT,
        drug_check SMALLINT DEFAULT 0,
+       dcheck SMALLINT,
        form_token VARCHAR,
        contract_type VARCHAR,
        affiliation_agreement_id INT,

@@ -86,6 +86,7 @@ class Internship {
     public $international;
     public $loc_state;
     public $loc_country;
+    public $loc_province;
     public $loc_phone;
     public $remote;
     public $remote_state;
@@ -119,7 +120,9 @@ class Internship {
 
     // Checks
     public $background_check;
+    public $bgcheck;
     public $drug_check;
+    public $dcheck;
 
     // Form token
     public $form_token;
@@ -273,7 +276,7 @@ class Internship {
         $csv['First Name']     = $this->first_name;
         $csv['Middle Name']    = $this->middle_name;
         $csv['Last Name']      = $this->last_name;
-        $csv['Preferred Name'] = $this->preferred_name;
+        $csv['Chosen Name'] = $this->preferred_name;
 
         // Academic Info
         $csv['Level'] = $this->getLevel();

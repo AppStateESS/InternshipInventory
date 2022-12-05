@@ -90,7 +90,6 @@ class CreateInternshipInterface extends React.Component {
                 setTimeout(function(){
                     thisComponent.setState({submitted: false});
                 }, 1000);
-
                 return;
             }
 

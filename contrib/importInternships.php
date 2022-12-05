@@ -5,6 +5,9 @@
  * we get is incomplete. A human will need to evaluate the format of the csv file and make adjustments
  * as needed.
  */
+ use \Intern\EmergencyContactFactory;
+ use \Intern\EmergencyContact;
+ use \Intern\DatabaseStorage;
 
 require_once('cliCommon.php');
 require_once('dbConnect.php');
@@ -13,7 +16,7 @@ ini_set('display_errors', 1);
 ini_set('ERROR_REPORTING', E_WARNING);
 error_reporting(E_ALL);
 
-$args = array('input_file'=>'','department_id'=>'','term'=>'', 'major'=>'');
+$args = array('input_file'=>'','department_id'=>'','term'=>'');
 $switches = array();
 check_args($argc, $argv, $args, $switches);
 
@@ -21,7 +24,6 @@ check_args($argc, $argv, $args, $switches);
 $inputFile = fopen($args['input_file'], 'r');
 $term = $args['term'];
 $department_id = $args['department_id'];
-$major = $args['major'];
 
 if($inputFile === FALSE){
     die("Could not open input file.\n");
@@ -38,12 +40,8 @@ $values = array();
 $emergency = array();
 $values['term'] = $term;
 $values['department_id'] = $department_id;
-$values['major_description'] = $major;
 $values['state'] = 'RegisteredState'; // Since these are past internships
-$values['level'] = 'U'; // Assuming undergraduate
 $values['campus'] = 'main_campus';
-$values['multi_part'] = 0;
-$values['secondary_part'] = 0;
 $values['domestic'] = 1;
 $values['clinical_practica'] = 1;
 
@@ -63,27 +61,31 @@ while(($line = fgetcsv($inputFile, 0, ',')) !== FALSE) {
     $values['first_name'] = $line[1];
     $values['banner'] = $bannerId;
     $values['major_code'] = $line[3];
-    $values['gpa'] = $line[4];
-    $email = explode('@',$line[5]);
-    $values['email'] = $email[0];
-    $values['loc_state']   = $line[11];
-    $values['loc_phone'] = $line[13];
-    $values['faculty_id'] = $line[14];
-    $values['start_date'] = strtotime($line[15]);
-    $values['end_date'] = strtotime($line[16]);
-    $values['course_subj'] = $line[17];
-    $values['course_no'] = $line[18];
-    $values['credits'] = $line[19];
-    $values['host_id'] = $line[9];
-    $values['host_sub_id'] = $line[10];
+    $values['major_description'] = $line[4];
+    $values['gpa'] = $line[5];
+    $values['email'] = $line[6]; //$email = explode('@',$line[5]);
+    $values['level'] = $line[7]; //change to letter
+
+    $emergency['name'] = $line[8];
+    $emergency['relation'] = $line[9];
+    $emergency['phone'] = $line[10];
+
+    $values['remote'] = $line[11]; //change to num
+    $values['remote_state'] = $line[12];
+    $values['host_id'] = $line[13]; //change to num
+    $values['host_sub_id'] = $line[14]; //change to num
+    $values['loc_state']   = $line[15];
+    $values['loc_phone'] = $line[16];
+    $values['faculty_id'] = $line[17]; //make sure fac in inventory
+    $values['start_date'] = strtotime($line[18]);
+    $values['end_date'] = strtotime($line[19]);
+    $values['course_subj'] = $line[20]; //change to num
+    $values['course_no'] = $line[21];
+    $values['credits'] = $line[22];
+    $values['multi_part'] = $line[23];
+    $values['secondary_part'] = $line[24];
 
     $values['supervisor_id'] = createSupervisor();
-
-    $emergency['name'] = $line[6];
-    $emergency['relation'] = $line[7];
-    $emergency['phone'] = $line[8];
-
-
 
     $intern_result = createInternship($db, $values);
 
@@ -109,6 +111,11 @@ function createInternship($db, $values) {
   }else{
       return false;
   }
+}
+
+function createEmergency(){
+    $newContact = new EmergencyContact($internship, $name, $relation, $phone, $email);
+    DatabaseStorage::save($newContact);
 }
 
 function createSupervisor(){

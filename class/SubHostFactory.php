@@ -110,8 +110,9 @@ class SubHostFactory {
         $stmt->setFetchMode(\PDO::FETCH_ASSOC);
         $result = $stmt->fetch();
 
-        if (sizeof($result) > 0 && $result != false){
-            return $result;
+        if ($result != false){
+            if(sizeof($result) > 0){
+            return $result;}
         }
 
         $stmt = $pdo->prepare("SELECT sub_condition, user_message, email FROM intern_sub_host

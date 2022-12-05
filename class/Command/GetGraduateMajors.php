@@ -28,7 +28,7 @@ class GetGraduateMajors {
 
     public function execute()
     {
-        $terms = TermFactory::getAvailableTerms();
+        $terms = TermFactory::getMajorTerm();
 
         // A bit of a hack regarding the term. There isn't always a single "current" term, so we'll take whatever
         // the first active term is.
