@@ -1,7 +1,7 @@
 sudo: false
 language: php
 php:
-    - 7
+    - 7.4
 
 install:
     - nvm install 10
