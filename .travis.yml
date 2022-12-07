@@ -1,4 +1,3 @@
-sudo: false
 language: php
 php:
     - 7.4
@@ -24,16 +23,12 @@ addons:
   code_climate:
     repo_token: 3060bdda5db8f779d82ab527acadec5cd581bde782093136322604a4280162e7
 
-addons:
-    code_climate:
-        repo_token: 3060bdda5db8f779d82ab527acadec5cd581bde782093136322604a4280162e7
-
 notifications:
 deploy:
   provider: releases
   skip_cleanup: true
   api_key:
-    secure: lPFLb25Gwb/X8aBiNQ4Mz2b5XBviLLg0Zp7Rgoj9Xc8ZwFlNw/JqnoLKnZFljXBW38yUt3fEyxUGFrImLDbwwzN6+1iOfjVrCrIYdJtKf1CoF9Mq1+bjUbz8wIXfvdIvuF+VxFWFcbFtUiTiVpeDkSBwWXLaazCZWQJZpWYZuQc=
+    secure: d1dDZ6gam6rV7aR9wVzruzZJlwYMyAmeyF47vwLyAupyHbaiWqeqtwAxliYZpVUT1eNrcIXQg8oIpxTItsypG9T4qAcGPtXFMqDUffqdgnlh5Tv37vcr+wM+/usHrYOfSiGPTRaV02aPgE0+RICbObv5ZBNUSTGZi4sFMcZ8Svs=
   file: Internshipinventory.tar.gz
   overwrite: true
   on:
