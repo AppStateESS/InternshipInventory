@@ -24,7 +24,7 @@ deploy:
   provider: releases
   skip_cleanup: true
   api_key:
-    secure: d1dDZ6gam6rV7aR9wVzruzZJlwYMyAmeyF47vwLyAupyHbaiWqeqtwAxliYZpVUT1eNrcIXQg8oIpxTItsypG9T4qAcGPtXFMqDUffqdgnlh5Tv37vcr+wM+/usHrYOfSiGPTRaV02aPgE0+RICbObv5ZBNUSTGZi4sFMcZ8Svs=
+    secure: Z0MDT8vjcP7XQejnHXvE2m6khNXRM92XY/y2KsvQnT+m/YIgUh8etCuRxlW6Hs96UKcbuYF34B/Dqou6ruv3xkoiba7nm4pcdWrklxzbpEUJmaAqq8j6s0rhPDhPf7nnWCQmU5Lv/nEakB1xgn7N427mdwEu+7xnwXZXLUAV/FU=
   file: Internshipinventory.tar.gz
   overwrite: true
   on:
