@@ -7,9 +7,9 @@
         depends="prepare,lint" />
 
     <target name="build-parallel"
-        depends="prepare,lint,tools-parallel,phpunit,phpcb" />
-    
-    <target name="metrics" depends="phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpcb" />
+        depends="prepare,lint,tools-parallel,phpcb" />
+
+    <target name="metrics" depends="phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpcb" />
 
     <target name="post-rpm" depends="metrics" />
 
@@ -126,10 +126,6 @@
     <target name="phpdox"
         description="Generate API documentation using phpDox">
         <exec executable="phpdox"/>
-    </target>
-
-    <target name="phpunit" description="Run unit tests with PHPUnit">
-<!--        <exec executable="phpunit" failonerror="true"/>-->
     </target>
 
     <target name="phpcb"
