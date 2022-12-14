@@ -141,9 +141,9 @@ class AffiliationAgreement
 
           if($this->getAutoRenew()){
             $tpl['STATUS'] = "active";
-          }else if($expirationTime < 0){
+          }elseif($expirationTime < 0){
             $tpl['STATUS'] = "danger";
-          } else if($expirationTime < 7884000) {
+          } elseif($expirationTime < 7884000) {
             $tpl['STATUS'] = "warning";
           } else {
             $tpl['STATUS'] = "active";

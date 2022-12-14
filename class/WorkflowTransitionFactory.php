@@ -53,7 +53,7 @@ class WorkflowTransitionFactory {
 
             if(is_array($t->getSourceState()) && in_array($stateName, $t->getSourceState()) && $t->isApplicable($i)){
                 $outgoingTrans[] = $t;
-            }else if(($t->getSourceState() == $stateName || $t->getSourceState() == '*') && $t->isApplicable($i)){
+            }elseif(($t->getSourceState() == $stateName || $t->getSourceState() == '*') && $t->isApplicable($i)){
                 $outgoingTrans[] = $t;
             }
         }

@@ -84,7 +84,7 @@ class DeptRest {
 
 			$sth->execute(array('val'=>$hVal, 'id'=>$id));
 		}
-		else if(isset($_REQUEST['name']))
+		elseif(isset($_REQUEST['name']))
 		{
 			$mname = $_REQUEST['name'];
 			$id = $_REQUEST['id'];

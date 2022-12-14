@@ -49,7 +49,7 @@ class TestWebServiceDataProvider extends WebServiceDataProvider {
     }
 
     private function getFakeResponse(){
-        $obj = new Student();;
+        $obj = new Student();
 
         // ID & email
         $obj->setStudentId('900123456');

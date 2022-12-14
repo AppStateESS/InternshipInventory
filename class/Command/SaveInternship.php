@@ -240,7 +240,7 @@ class SaveInternship {
             $majors = array();
         }
 
-        if (sizeof($majors) > 1) {
+        if (count($majors) > 1) {
 
             if (!isset($_POST['major_code'])) {
                 // Student has multiple majors, but user didn't choose one, so just take the first one
@@ -259,7 +259,7 @@ class SaveInternship {
                 $i->major_code = $major->getCode();
                 $i->major_description = $major->getDescription();
             }
-        } else if (sizeof($majors) == 1) {
+        } elseif (count($majors) == 1) {
             // Student has exactly one major
             $i->major_code = $majors[0]->getCode();
             $i->major_description = $majors[0]->getDescription();
@@ -278,7 +278,7 @@ class SaveInternship {
 
         if ($_POST['oied_certified_hidden'] == 'true') {
             $i->oied_certified = 1;
-        } else if ($_POST['oied_certified_hidden'] == 'false') {
+        } elseif ($_POST['oied_certified_hidden'] == 'false') {
             $i->oied_certified = 0;
         } else {
             $i->oied_certified = 0;

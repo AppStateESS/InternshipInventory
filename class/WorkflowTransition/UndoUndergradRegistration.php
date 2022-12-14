@@ -35,10 +35,6 @@ class UndoUndergradRegistration extends WorkflowTransition {
 
     public function isApplicable(Internship $i)
     {
-        if($i->isUndergraduate()){
-            return true;
-        }else{
-            return false;
-        }
+        return $i->isUndergraduate();
     }
 }

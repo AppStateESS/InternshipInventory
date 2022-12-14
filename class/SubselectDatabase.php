@@ -576,8 +576,7 @@ class SubselectDatabase extends PHPWS_DB{
         if (isset($this->tables[0])) {
             return $this->tables[0];
         } else {
-            foreach ($this->table_as as $as => $table);
-            reset($this->table_as);
+            foreach ($this->table_as as $as => $table) reset($this->table_as);
             if ($use_as) {
                 return $as;
             } else {
@@ -856,7 +855,7 @@ class SubselectDatabase extends PHPWS_DB{
                         } else {
                             $table_name = sprintf('count(%s.%s)', $table, $name);
                         }
-                    } else if (!is_null($coalesce)) {
+                    } elseif (!is_null($coalesce)) {
                         if ($distinct) {
                             $table_name = sprintf('coalesce(distinct(%s.%s), %s)', $table, $name, $coalesce);
                         } else {
@@ -1949,11 +1948,7 @@ class SubselectDatabase extends PHPWS_DB{
             }
         }
 
-        if ($error) {
-            return false;
-        } else {
-            return true;
-        }
+        return !$error;
     }
 
     public static function homogenize(&$query)

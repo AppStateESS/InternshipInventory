@@ -82,7 +82,7 @@ class AdminRest {
 
 		$result = $sth->fetchAll(\PDO::FETCH_ASSOC);
 
-		if (sizeof($result) > 0)
+		if (count($result) > 0)
 		{
 
 			header('HTTP/1.1 500 Internal Server Error');
@@ -100,7 +100,7 @@ class AdminRest {
 		$sth->execute(array('user'=>$user));
 
 		$result = $sth->fetchAll(\PDO::FETCH_ASSOC);
-		if (sizeof($result) == 0)
+		if (count($result) == 0)
 		{
 
 			header('HTTP/1.1 500 Internal Server Error');

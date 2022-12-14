@@ -78,7 +78,7 @@ class LocalDbStudentDataProvider extends StudentDataProvider {
         // Campus
         if($data['campus'] === 'Main'){
             $student->setCampus(Student::MAIN_CAMPUS);
-        } else if ($data['campus'] != ''){
+        } elseif ($data['campus'] != ''){
             $student->setCampus($data['campus']);
         }
 

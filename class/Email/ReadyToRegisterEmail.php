@@ -125,7 +125,7 @@ class ReadyToRegisterEmail extends Email {
         $campus = $this->internship->getCampus();
         if ($campus == 'distance_ed') {
             $this->tpl['CAMPUS'] = 'Distance Ed';
-        } else if ($campus == 'main_campus') {
+        } elseif ($campus == 'main_campus') {
             $this->tpl['CAMPUS'] = 'Main campus';
         } else {
             $this->tpl['CAMPUS'] = $campus;
@@ -162,11 +162,11 @@ class ReadyToRegisterEmail extends Email {
             // Send distance ed internship to Distance Ed Office
             $this->to = explode(',', $this->emailSettings->getDistanceEdEmail());
             $this->tpl['GRADUATE'] = ''; // Dummy template var to use undergrad text
-        } else if ($this->internship->isGraduate()) {
+        } elseif ($this->internship->isGraduate()) {
             // Send all graduate internships to the graduate school (whether international or not)
             $this->to = explode(',', $this->emailSettings->getGraduateRegEmail());
             $this->tpl['GRADUATE'] = ''; // Dummy template var to use grad school text
-        } else if ($this->internship->isInternational()){
+        } elseif ($this->internship->isInternational()){
             // Send international undergraduate internships to a special person
             $this->to = explode(',', $this->emailSettings->getInternationalRegEmail());
             $this->tpl['UNDERGRAD'] = ''; // Dummy template var to use undergrad text

@@ -36,10 +36,6 @@ class UndoGraduateRegistration extends WorkflowTransition {
 
     public function isApplicable(Internship $i)
     {
-        if($i->isGraduate()){
-            return true;
-        }else{
-            return false;
-        }
+        return $i->isGraduate();
     }
 }

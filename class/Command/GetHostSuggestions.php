@@ -130,7 +130,7 @@ class GetHostSuggestions {
         $hostArray = array();
 
         // If an empty array was given, just return an empty JSON array
-        if(sizeof($hosts) === 0){
+        if(empty($hosts)){
             return json_encode($hostArray);
         }
 

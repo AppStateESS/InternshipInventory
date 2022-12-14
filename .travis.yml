@@ -10,9 +10,6 @@ install:
 script:
 - ".travis-build/phplint ."
 
-after_script:
-- vendor/bin/test-reporter
-
 after_success:
     - npm run build
     - rm -rf node_modules

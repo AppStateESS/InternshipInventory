@@ -50,7 +50,7 @@ class ExpectedCourseFactory {
         $sth->execute(array('subject_id'=>$subject->getId(), 'cnum'=>$courseNumber));
         $result = $sth->fetchAll(\PDO::FETCH_ASSOC);
 
-        if (sizeof($result) === 0) {
+        if (count($result) === 0) {
             return false;
         }
 

@@ -127,7 +127,7 @@ class ResultsUI implements UI
 
 
         // If there were no results, send the user back to the search interface
-        if (is_null($pager->display_rows) || sizeof($pager->display_rows) == 0) {
+        if (is_null($pager->display_rows) || count($pager->display_rows) == 0) {
             \NQ::simple('intern', NotifyUI::WARNING,
                     "There were no internships that matched your search criteria. If you're looking for a specific student double check the student's name, id number, or email address. Otherwise, try selecting less search criteria and then search again.");
             \NQ::close();
@@ -200,7 +200,7 @@ class ResultsUI implements UI
             $pager->addWhere('fuzzy.banner', $name);
 
             // Else, check to see if name is set
-        } else if (!is_null($name) && $name != '') {
+        } elseif (!is_null($name) && $name != '') {
 
             // Prevent SQL Injection and syntax errors, since we're going to be using the addColumnRaw() method.
             $name = addslashes($name);
@@ -264,12 +264,7 @@ class ResultsUI implements UI
         // Student level
         if (isset($level) && $level != null) {
             $sLevel = LevelFactory::getLevelObjectByLevel($level);
-            if ($level == Level::UNDERGRAD) {
-                for ($i = 0; $i < count($sLevel); $i++) {
-                    $pager->addWhere('level', $sLevel[$i]->code, null, 'OR',
-                            'grad_level');
-                }
-            } else if ($level == Level::GRADUATE) {
+            if ($level == Level::UNDERGRAD || $level == Level::GRADUATE) {
                 for ($i = 0; $i < count($sLevel); $i++) {
                     $pager->addWhere('level', $sLevel[$i]->code, null, 'OR',
                             'grad_level');
@@ -281,7 +276,7 @@ class ResultsUI implements UI
         // since mutiple major codes can have same description
         if ($level == Level::UNDERGRAD && isset($ugradMajor) && $ugradMajor != -1) {
             $pager->addWhere('major_description', $ugradMajor);
-        } else if ($level == Level::GRADUATE && isset($gradProg) && $gradProg != -1) {
+        } elseif ($level == Level::GRADUATE && isset($gradProg) && $gradProg != -1) {
             $pager->addWhere('major_description', $gradProg);
         }
 
@@ -307,7 +302,7 @@ class ResultsUI implements UI
         if (!is_null($loc)) {
             if ($loc == 'domestic') {
                 $pager->addWhere('domestic', 1);
-            } else if ($loc == 'internat') {
+            } elseif ($loc == 'internat') {
                 $pager->addWhere('international', 1);
             }
         }

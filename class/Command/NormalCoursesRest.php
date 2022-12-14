@@ -71,7 +71,7 @@ class NormalCoursesRest {
 
 		$sth->execute(array('subject_id'=>$subjectId, 'cnum'=>$cnum));
 		$result = $sth->fetchAll(\PDO::FETCH_ASSOC);
-		if (sizeof($result) > 0)
+		if (count($result) > 0)
 		{
 			header('HTTP/1.1 500 Internal Server Error');
 			echo("it already exists.");

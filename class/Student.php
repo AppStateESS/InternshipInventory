@@ -76,11 +76,7 @@ class Student {
             $limit = $term->getGradOverloadHours();
         }
 
-        if($totalHours > $limit){
-            return true;
-        } else {
-            return false;
-        }
+        return $totalHours > $limit;
     }
 
     /*****

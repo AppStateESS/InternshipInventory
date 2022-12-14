@@ -34,11 +34,7 @@ class GradSchoolApprove extends WorkflowTransition {
     }
 
     public function isApplicable(Internship $i){
-        if($i->isGraduate()){
-            return true;
-        }else{
-            return false;
-        }
+        return $i->isGraduate();
     }
 
     public function doNotification(Internship $i, $note = null)

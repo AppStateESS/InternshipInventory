@@ -222,7 +222,7 @@ class WebServiceDataProvider extends StudentDataProvider {
         if(isset($data->campusDescription) && $data->campusDescription == WebServiceDataProvider::MAIN_CAMPUS) {
             // If campus is 'Main Campus', then we know it's a main campus student
             $student->setCampus(Student::MAIN_CAMPUS);
-        } else if (isset($data->campusDescription) && $data->campusDescription != '') {
+        } elseif (isset($data->campusDescription) && $data->campusDescription != '') {
             // If the campus is set, but is not 'Main Campus', then we know it's some other campus name (e.g. "Catawba EdD EdLead")
             // We're not going to check for every possible campus name; as long as there's *something* there, we'll assume it's distance ed
             $student->setCampus(Student::DISTANCE_ED);
@@ -236,7 +236,7 @@ class WebServiceDataProvider extends StudentDataProvider {
         // Check if level exist, if not add it
         if(isset($data->studentLevel) && LevelFactory::checkLevelExist($data->studentLevel)){
             $student->setLevel($data->studentLevel);
-        } else if(isset($data->studentLevel)) {
+        } elseif(isset($data->studentLevel)) {
             $newLevel = LevelFactory::saveNewCode($data->studentLevel);
             $student->setLevel($newLevel);
         }
@@ -246,7 +246,7 @@ class WebServiceDataProvider extends StudentDataProvider {
             foreach($data->majors as $major){
                 $student->addMajor(new AcademicMajor($major->majorCode, $major->majorDescription, AcademicMajor::LEVEL_UNDERGRAD));
             }
-        } else if(isset($data->majors) &&  is_object($data->majors)){
+        } elseif(isset($data->majors) &&  is_object($data->majors)){
             $student->addMajor(new AcademicMajor($data->majors->majorCode, $data->majors->majorDescription, AcademicMajor::LEVEL_UNDERGRAD));
         }
 

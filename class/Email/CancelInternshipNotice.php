@@ -70,10 +70,10 @@ class CancelInternshipNotice extends Email {
         if($this->internship->isDistanceEd() && $this->internship->isGraduate()){
             $this->to = explode(',', $this->emailSettings->getDistanceEdEmail());
             $this->tpl['GRADUATE'] = ''; // Dummy template var to use undergrad text
-        } else if($this->internship->isGraduate()){
+        } elseif($this->internship->isGraduate()){
             $this->to = explode(',', $this->emailSettings->getGraduateRegEmail());
             $this->tpl['GRADUATE'] = ''; // Dummy template var to use grad school text
-        } else if($this->internship->isInternational()){
+        } elseif($this->internship->isInternational()){
             $this->to = explode(',', $this->emailSettings->getInternationalRegEmail());
             $this->tpl['UNDERGRAD'] = ''; // Dummy template var to use undergrad text
         } else {

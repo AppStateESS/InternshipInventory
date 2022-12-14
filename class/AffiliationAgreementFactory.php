@@ -51,7 +51,7 @@ class AffiliationAgreementFactory {
             throw new DatabaseException($result->toString());
         }
 
-        if(count($result) == 0){
+        if(empty($result)){
             return null;
         }
 

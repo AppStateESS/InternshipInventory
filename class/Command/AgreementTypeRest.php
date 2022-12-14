@@ -61,7 +61,7 @@ class AgreementTypeRest {
 
 		$sth->execute(array('id'=>$id));
 		$result = $sth->fetchAll(\PDO::FETCH_ASSOC);
-		if(sizeof($result) <= 0){
+		if(count($result) <= 0){
 			$result = array();
 		}
 		return $result;
@@ -87,7 +87,7 @@ class AgreementTypeRest {
 			$sth = $pdo->prepare($sql);
 			$sth->execute(array('affil'=>$affilNum, 'id'=>$id));
 
-		} else if(isset($_REQUEST['agreeType'])){
+		} elseif(isset($_REQUEST['agreeType'])){
 			$type = $_REQUEST['agreeType'];
 
 			$sql = "UPDATE intern_internship

@@ -58,7 +58,7 @@ class SubselectPager extends \DBPager {
             $result = $this->initialize();
             if (PHPWS_Error::isError($result)) {
                 throw new \Exception ($result->toString());
-                return $result;
+                //return $result;
             }
         }
 
@@ -80,7 +80,7 @@ class SubselectPager extends \DBPager {
 
         if (PHPWS_Error::isError($rows)) {
             throw new \Exception($rows);
-            return $rows;
+            //return $rows;
         }
 
         if (isset($this->toggles)) {
@@ -516,7 +516,7 @@ class SubselectPager extends \DBPager {
     {
         $args = func_get_args();
 
-        if (sizeof($args) == 1 && is_array($args[0])) {
+        if (count($args) == 1 && is_array($args[0])) {
             $col_list = $args[0];
         } else {
             $col_list = $args;
@@ -702,7 +702,7 @@ class SubselectPager extends \DBPager {
     public function getLimit()
     {
         if (empty($this->limit) || !in_array($this->limit, $this->limitList)) {
-            $this->limit = $this->limitList[sizeof($this->limitList)-1];
+            $this->limit = $this->limitList[count($this->limitList)-1];
         }
 
         $start = ($this->current_page - 1) * $this->limit;
@@ -1052,7 +1052,7 @@ class SubselectPager extends \DBPager {
         return $values;
     }
 
-    function getReportLink()
+    public function getReportLink()
     {
         $values = $this->getLinkValues();
         $module = $values['module'];
@@ -1253,7 +1253,7 @@ class SubselectPager extends \DBPager {
         return implode("\n", $template);
     }
 
-    function createReport()
+    public function createReport()
     {
         if ($this->class) {
             $methods = get_class_methods($this->class);
@@ -1274,7 +1274,7 @@ class SubselectPager extends \DBPager {
         $tmp_file = \PHPWS_Text::randomString(10) . time();
         $directory = CACHE_DIRECTORY;
         $file_path = sprintf('%s/%s', $directory, $tmp_file);
-        ;
+        
         $fp = fopen($file_path, 'w');
 
         foreach ($this->display_rows as $foo) {

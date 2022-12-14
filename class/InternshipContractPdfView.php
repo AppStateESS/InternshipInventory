@@ -264,7 +264,7 @@ class InternshipContractPdfView {
         $this->pdf->useTemplate($tplidx);
 
         /* Emergency Contact Info */
-        if(sizeof($this->emergencyContacts) > 0){
+        if(count($this->emergencyContacts) > 0){
             $firstContact = $this->emergencyContacts[0];
 
             $this->pdf->setXY(59, 273);

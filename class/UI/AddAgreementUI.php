@@ -66,7 +66,7 @@ class AddAgreementUI implements UI
             $form->plugIn($_GET);
         }
 
-        $form->setAction('index.php?module=intern&action=addAffiliate');
+        $form->setAction('index.php?module=intern&action=saveAffiliate');
 
         $form->mergeTemplate($tpl);
         $v = \PHPWS_Template::process($form->getTemplate(), 'intern', 'addAffiliate.tpl');

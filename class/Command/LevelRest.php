@@ -77,7 +77,7 @@ class LevelRest {
 		$sth->execute(array('cod'=>$cod));
 		$result = $sth->fetchAll(\PDO::FETCH_ASSOC);
 
-		if (sizeof($result) > 0){
+		if (count($result) > 0){
 			header('HTTP/1.1 500 Internal Server Error');
 			echo("Code already exist.");
 			exit;

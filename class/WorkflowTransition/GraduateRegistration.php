@@ -35,20 +35,12 @@ class GraduateRegistration extends WorkflowTransition {
     }
 
     public function isApplicable(Internship $i){
-        if($i->isGraduate()){
-            return true;
-        } else{
-            return false;
-        }
+        return $i->isGraduate();
     }
 
     public function allowed(Internship $i){
         if($i->isDistanceEd()) {
-            if(\Current_User::allow('intern', 'distance_ed_register')) {
-    		    return true;
-    		} else{
-    		    return false;
-            }
+            return \Current_User::allow('intern', 'distance_ed_register');
     	} else{
     		return parent::allowed($i);
     	}

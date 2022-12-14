@@ -121,7 +121,7 @@ class GradSchoolNotificationEmail extends Email {
         $campus = $this->internship->getCampus();
         if($campus == 'distance_ed'){
             $this->tpl['CAMPUS'] = 'Distance Ed';
-        }else if($campus == 'main_campus'){
+        }elseif($campus == 'main_campus'){
             $this->tpl['CAMPUS'] = 'Main campus';
         }else{
             $this->tpl['CAMPUS'] = $campus;

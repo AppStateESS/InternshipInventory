@@ -87,7 +87,7 @@ class TopUI implements UI
 
         // If any admin options were added, them show the dropdown and merge those
         // links into the main set of template tags
-        if(sizeof($adminOptions) > 0){
+        if(!empty($adminOptions)){
             $tpl['ADMIN_OPTIONS'] = ''; // dummy var to show dropdown menu in template
             $tpl = array_merge($tpl, $adminOptions);
         }

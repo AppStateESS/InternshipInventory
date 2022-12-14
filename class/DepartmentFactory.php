@@ -48,7 +48,7 @@ class DepartmentFactory {
             throw new DatabaseException($result->toString());
         }
 
-        if (sizeof($result) == 0) {
+        if (empty($result)) {
            return null;
         }
 

@@ -70,10 +70,6 @@ class Admin extends Model
         $db->addColumn('id', $count=true);
         $count = $db->select();
         // If 1+ row exists in table then they're allowed.
-        if(sizeof($count) >= 1){
-            return true;
-        }else{
-            return false;
-        }
+        return count($count) >= 1;
     }
 }

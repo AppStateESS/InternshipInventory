@@ -56,11 +56,8 @@ class BannerMajorsProvider extends MajorsProvider {
 
         foreach($result as $major){
             // Makes sure the data from api is an object
-            if(!is_object($major)){
-                continue;
-            }
             // Skip majors/programs in University College
-            else if($major->collegeCode === 'GC' || $major->majorLevel === null){
+            if(!is_object($major) || $major->collegeCode === 'GC' || $major->majorLevel === null){
                 continue;
             }
 

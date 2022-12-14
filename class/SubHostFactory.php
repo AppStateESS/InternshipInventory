@@ -111,8 +111,9 @@ class SubHostFactory {
         $result = $stmt->fetch();
 
         if ($result != false){
-            if(sizeof($result) > 0){
-            return $result;}
+            if(count($result) > 0){
+                return $result;
+            }
         }
 
         $stmt = $pdo->prepare("SELECT sub_condition, user_message, email FROM intern_sub_host

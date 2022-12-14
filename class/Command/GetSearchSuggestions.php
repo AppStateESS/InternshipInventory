@@ -202,7 +202,7 @@ class GetSearchSuggestions {
         $studentArray = array();
 
         // If an empty array was given, just return an empty JSON array
-        if(sizeof($students) === 0){
+        if(empty($students)){
             return json_encode($studentArray);
         }
 

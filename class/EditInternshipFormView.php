@@ -158,15 +158,15 @@ class EditInternshipFormView {
             // Copy if it's Spring and exist, else if it's Summer 1 and exist.
             if($nextThreeTerm !== null && $term->getSemesterType() == Term::SPRING){
                 $this->tpl['CONTINUE_TERM_LIST'][] = array('DEST_TERM'=>$nextThreeTerm->getTermCode(), 'DEST_TERM_TEXT'=>$nextThreeTerm->getDescription());
-            } else if($nextTwoTerm !== null && $term->getSemesterType() == Term::SUMMER1){
+            } elseif($nextTwoTerm !== null && $term->getSemesterType() == Term::SUMMER1){
                 $this->tpl['CONTINUE_TERM_LIST'][] = array('DEST_TERM'=>$nextTwoTerm->getTermCode(), 'DEST_TERM_TEXT'=>$nextTwoTerm->getDescription());
             }
 
             // If no terms are available to copy to, show a helpful message
-            if(sizeof($this->tpl['CONTINUE_TERM_LIST']) == 0) {
+            if(count($this->tpl['CONTINUE_TERM_LIST']) == 0) {
                 $this->tpl['CONTINUE_TERM_NO_TERMS'] = 'No future terms available.';
             }
-        } else if(!\Current_User::allow('intern', 'create_internship')){
+        } elseif(!\Current_User::allow('intern', 'create_internship')){
             $this->tpl['CONTINUE_TERM_NO_TERMS'] = 'You do not have permission to create new internships.';
         } else{
             $this->tpl['CONTINUE_TERM_NO_TERMS'] = 'No future terms available.';
@@ -249,8 +249,8 @@ class EditInternshipFormView {
         $this->form->addCssClass('department', 'form-control');
 
         // If the user only has one department, select it for them
-        // sizeof($depts) == 2 because of the 'Select Deparmtnet' option
-        if(sizeof($depts) == 2){
+        // count($depts) == 2 because of the 'Select Deparmtnet' option
+        if(count($depts) == 2){
             $keys = array_keys($depts);
             $this->form->setMatch('department', $keys[1]);
         }
@@ -336,7 +336,7 @@ class EditInternshipFormView {
         if($this->intern->isDomestic() && !$this->intern->isInternational()) {
             $this->tpl['LOCATION'] = 'Domestic';
             $this->form->addHidden('location', 'domestic');
-        } else if (!$this->intern->isDomestic() && $this->intern->isInternational()) {
+        } elseif (!$this->intern->isDomestic() && $this->intern->isInternational()) {
             $this->tpl['LOCATION'] = 'International';
             $this->form->addHidden('location', 'international');
         }
@@ -528,11 +528,11 @@ class EditInternshipFormView {
         // Major handling -- Shows a selector if there's more than one major
         if(isset($this->student)){
             $majors = $this->student->getMajors();
-            $majorsCount = sizeof($majors);
+            $majorsCount = count($majors);
             if($majorsCount == 1) {
                 // Only one major, so display it
                 $this->tpl['MAJOR'] = $this->intern->getMajorDescription();
-            } else if($majorsCount > 1) {
+            } elseif($majorsCount > 1) {
                 // Add a repeat for each major
                 foreach($majors as $m) {
                     if($this->intern->getMajorCode() == $m->getCode()){

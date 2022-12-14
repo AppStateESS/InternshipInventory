@@ -146,7 +146,7 @@ class Internship {
             $this->setDomestic(true);
             $this->setInternational(false);
             $this->setLocationState($state);
-        } else if($location == 'international') {
+        } elseif($location == 'international') {
             $this->setDomestic(false);
             $this->setInternational(true);
             $this->setLocationCountry($country);
@@ -198,10 +198,10 @@ class Internship {
 
         // Majors - If double major, just take index 0
         $majors = $student->getMajors();
-        if(is_array($majors) && sizeof($majors) > 0) {
+        if(is_array($majors) && !empty($majors)) {
             $this->major_code = $majors[0]->getCode();
             $this->major_description = $majors[0]->getDescription();
-        } else if(is_object($majors)) {
+        } elseif(is_object($majors)) {
             $this->major_code = $majors->getCode();
             $this->major_description = $majors->getDescription();
         }// Else, there were no majors set in the Student object
@@ -243,8 +243,9 @@ class Internship {
     */
     public function delete()
     {
-        if (is_null($this->id) || !is_numeric($this->id))
-        return false;
+        if (is_null($this->id) || !is_numeric($this->id)){
+            return false;
+        }
 
         $db = $this->getDb();
         $db->addWhere('id', $this->id);
@@ -284,7 +285,7 @@ class Internship {
         if($level->getLevel() == Level::UNDERGRAD){
             $csv['Undergrad Major'] = $this->major_description;
             $csv['Graduate Program'] = '';
-        }else if($level->getLevel() == Level::GRADUATE){
+        }elseif($level->getLevel() == Level::GRADUATE){
             $csv['Undergrad Major'] = '';
             $csv['Graduate Program'] = $this->major_description;
         }else{
@@ -653,11 +654,7 @@ class Internship {
     }
 
     public function isOiedCertified() {
-        if($this->oied_certified == 1){
-            return true;
-        }else{
-            return false;
-        }
+        return $this->oied_certified == 1;
     }
 
     /**
@@ -674,27 +671,15 @@ class Internship {
     }
 
     public function isRemote() {
-        if($this->remote == 1){
-            return true;
-        }else{
-            return false;
-        }
+        return $this->remote == 1;
     }
 
     public function isMultipart() {
-        if($this->multi_part == 1){
-            return true;
-        }else{
-            return false;
-        }
+        return $this->multi_part == 1;
     }
 
     public function isSecondaryPart() {
-        if($this->secondary_part == 1){
-            return true;
-        }else{
-            return false;
-        }
+        return $this->secondary_part == 1;
     }
 
     /**
@@ -848,7 +833,7 @@ class Internship {
     public function getCampusFormatted() {
         if($this->getCampus() == 'main_campus') {
             return 'Main campus';
-        } else if ($this->getCampus() == 'distance_ed') {
+        } elseif ($this->getCampus() == 'distance_ed') {
             return 'Distance Ed';
         } else {
             return 'Unknown campus';

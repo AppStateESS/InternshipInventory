@@ -87,10 +87,10 @@ class BackgroundCheckEmail extends Email{
         if ($this->backgroundCheck === true && $this->drugCheck === true) {
             $this->subject = 'Internship Background & Drug Check Needed for ' . $this->internship->getFullName();
             $this->tpl['CHECK'] = 'Background & Drug';
-        } else if ($this->backgroundCheck === true) {
+        } elseif ($this->backgroundCheck === true) {
             $this->subject = 'Internship Background Check Needed for ' . $this->internship->getFullName();
             $this->tpl['CHECK'] = 'Background';
-        } else if ($this->drugCheck === true) {
+        } elseif ($this->drugCheck === true) {
             $this->subject = 'Internship Drug Test Needed for ' . $this->internship->getFullName();
             $this->tpl['CHECK'] = 'Drug';
         } else {

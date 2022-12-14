@@ -68,7 +68,7 @@ class DocumentRest
         // See where the file is to be saved
         if ($type == 'other') {
             $target_dir = $otherDir;
-        } else if ($type == 'affiliation') {
+        } elseif ($type == 'affiliation') {
             $target_dir = $affiliationDir;
         } else {
             $target_dir = $contractDir;
@@ -77,7 +77,7 @@ class DocumentRest
 
         // Check is the file type is one of the accepted ones
         $fileType = pathinfo($target_file, PATHINFO_EXTENSION);
-        for ($i = 0; $i < sizeof($known_documents); $i++) {
+        for ($i = 0; $i < count($known_documents); $i++) {
             if ($fileType == $known_documents[$i]) {
                 $data['message'] = '';
                 break;
@@ -315,7 +315,7 @@ class DocumentRest
             $sthC = $pdoC->prepare($sqlC);
             $sthC->execute(array('id' => $id, 'type' => 'contract'));
             $resultCon = $sthC->fetchAll(\PDO::FETCH_ASSOC);
-            if (sizeof($resultCon) > 0) {
+            if (count($resultCon) > 0) {
                 $info['value'] = 'Yes';
             } else {
                 $info['value'] = 'No';
