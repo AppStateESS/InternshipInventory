@@ -280,12 +280,19 @@ class WebServiceDataProvider extends StudentDataProvider {
         $result['last_name'] = $data->lastName;
         $result['phone'] = $data->phoneNumber;
         //taking only the first address listed
-        $result['street_address1'] = $data->address[0]->street1;
-        $result['street_address2'] = $data->address[0]->street2;
-        $result['city'] = $data->address[0]->city;
-        $result['state'] = $data->address[0]->state;
-        $result['zip'] = $data->address[0]->zip;
-
+        if(!empty($data->address)){
+            $result['street_address1'] = $data->address[0]->street1;
+            $result['street_address2'] = $data->address[0]->street2;
+            $result['city'] = $data->address[0]->city;
+            $result['state'] = $data->address[0]->state;
+            $result['zip'] = $data->address[0]->zip;
+        }else{
+            $result['street_address1'] = '';
+            $result['street_address2'] = '';
+            $result['city'] = '';
+            $result['state'] = '';
+            $result['zip'] = '';
+        }
         return $result;
     }
 

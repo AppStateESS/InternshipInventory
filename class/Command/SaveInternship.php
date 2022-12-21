@@ -240,7 +240,7 @@ class SaveInternship {
             $majors = array();
         }
 
-        if (count($majors) > 1) {
+        if (!empty($majors) && count($majors) > 1) {
 
             if (!isset($_POST['major_code'])) {
                 // Student has multiple majors, but user didn't choose one, so just take the first one
@@ -259,7 +259,7 @@ class SaveInternship {
                 $i->major_code = $major->getCode();
                 $i->major_description = $major->getDescription();
             }
-        } elseif (count($majors) == 1) {
+        } elseif (!empty($majors) && count($majors) == 1) {
             // Student has exactly one major
             $i->major_code = $majors[0]->getCode();
             $i->major_description = $majors[0]->getDescription();

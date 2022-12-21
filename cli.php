@@ -58,7 +58,7 @@ try {
 
 function processArgs($argc, $argv, &$args, &$switches)
 {
-    if($argc < count(array_keys($args)) + 1) {
+    if(is_array($args) && $argc < count(array_keys($args)) + 1) {
         echo "USAGE: php {$argv[0]}";
 
         foreach(array_keys($switches) as $switch) {

@@ -61,7 +61,7 @@ class AgreementTypeRest {
 
 		$sth->execute(array('id'=>$id));
 		$result = $sth->fetchAll(\PDO::FETCH_ASSOC);
-		if(count($result) <= 0){
+		if(empty($result)){
 			$result = array();
 		}
 		return $result;

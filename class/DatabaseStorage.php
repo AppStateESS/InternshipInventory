@@ -82,19 +82,13 @@ class DatabaseStorage {
         $query = "SELECT * FROM $tableName WHERE id = {$vars['id']}";
         $result = \PHPWS_DB::getAll($query);
 
-        if (count($result) > 0) {
-            $exists = true;
-        } else {
-            $exists = false;
-        }
-
         $db = new \PHPWS_DB($o->getTableName());
 
         foreach ($vars as $key => $value) {
             $db->addValue($key, $value);
         }
 
-        if ($exists) {
+        if (!empty($result)) {
             $db->addWhere('id', $vars['id']);
             $result = $db->update();
         } else {

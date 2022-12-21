@@ -163,7 +163,7 @@ class EditInternshipFormView {
             }
 
             // If no terms are available to copy to, show a helpful message
-            if(count($this->tpl['CONTINUE_TERM_LIST']) == 0) {
+            if(empty($this->tpl['CONTINUE_TERM_LIST'])) {
                 $this->tpl['CONTINUE_TERM_NO_TERMS'] = 'No future terms available.';
             }
         } elseif(!\Current_User::allow('intern', 'create_internship')){
@@ -250,7 +250,7 @@ class EditInternshipFormView {
 
         // If the user only has one department, select it for them
         // count($depts) == 2 because of the 'Select Deparmtnet' option
-        if(count($depts) == 2){
+        if(!empty($depts) && count($depts) == 2){
             $keys = array_keys($depts);
             $this->form->setMatch('department', $keys[1]);
         }
@@ -528,11 +528,10 @@ class EditInternshipFormView {
         // Major handling -- Shows a selector if there's more than one major
         if(isset($this->student)){
             $majors = $this->student->getMajors();
-            $majorsCount = count($majors);
-            if($majorsCount == 1) {
+            if(!empty($majors) && count($majors) == 1) {
                 // Only one major, so display it
                 $this->tpl['MAJOR'] = $this->intern->getMajorDescription();
-            } elseif($majorsCount > 1) {
+            } elseif(!empty($majors) && count($majors) > 1) {
                 // Add a repeat for each major
                 foreach($majors as $m) {
                     if($this->intern->getMajorCode() == $m->getCode()){

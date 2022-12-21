@@ -49,7 +49,7 @@ class EmergencyContactFactory {
             throw new \Exception($result->toString());
         }
 
-        if($result == NULL || count($result) <= 0){
+        if(empty($result)){
             return array(); // Return an empty array
         }
 

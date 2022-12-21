@@ -315,7 +315,7 @@ class DocumentRest
             $sthC = $pdoC->prepare($sqlC);
             $sthC->execute(array('id' => $id, 'type' => 'contract'));
             $resultCon = $sthC->fetchAll(\PDO::FETCH_ASSOC);
-            if (count($resultCon) > 0) {
+            if (!empty($resultCon)) {
                 $info['value'] = 'Yes';
             } else {
                 $info['value'] = 'No';

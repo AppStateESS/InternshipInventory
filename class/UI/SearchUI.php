@@ -101,7 +101,7 @@ class SearchUI implements UI
 
         // If the user only has one department, select it for them
         // count($depts) == 2 because of the 'Select Deparmtnet' option
-        if(count($depts) == 2){
+        if(!empty($depts) && count($depts) == 2){
             $keys = array_keys($depts);
             $form->setMatch('department', $keys[1]);
         }

@@ -82,9 +82,7 @@ class AdminRest {
 
 		$result = $sth->fetchAll(\PDO::FETCH_ASSOC);
 
-		if (count($result) > 0)
-		{
-
+		if (!empty($result)){
 			header('HTTP/1.1 500 Internal Server Error');
 			echo("Multiple usernames in the same department.");
             exit;
@@ -100,9 +98,7 @@ class AdminRest {
 		$sth->execute(array('user'=>$user));
 
 		$result = $sth->fetchAll(\PDO::FETCH_ASSOC);
-		if (count($result) == 0)
-		{
-
+		if (empty($result)){
 			header('HTTP/1.1 500 Internal Server Error');
 			echo("Please enter a valid username.");
             exit;
